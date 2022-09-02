@@ -1,0 +1,53 @@
+.mdhui-single-external-account {
+    position: relative;
+    overflow: hidden;
+    background: #FFF;
+}
+
+.mdhui-single-external-account .external-account-header {
+    position: relative;
+    padding: 16px;
+    font-weight: bold;
+    border-bottom: solid 1px #eee;
+}
+
+.mdhui-single-external-account .external-account-header .delete-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    padding: 16px;
+    color: #bbb;
+    height: 24px;
+    font-size: .88em;
+}
+
+.mdhui-single-external-account .external-account-header .external-account-provider-logo {
+    height: 24px;
+    display: block;
+}
+
+.mdhui-single-external-account .external-account-header .external-account-provider-name {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.mdhui-single-external-account .external-account-status {
+    padding: 16px;
+    padding-bottom: 0;
+    padding-top: 0;
+    font-size: .88em;
+}
+
+.mdhui-single-external-account .external-account-status p {
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+
+.mdhui-single-external-account .external-account-status a {
+    cursor: pointer;
+}
+
+.mdhui-single-external-account .external-account-status .error {
+    color: var(--color-danger);
+}

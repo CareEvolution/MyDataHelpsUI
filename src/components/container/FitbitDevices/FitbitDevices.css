@@ -1,0 +1,62 @@
+.mdhui-fitbit-devices
+{
+}
+
+    .mdhui-fitbit-devices .fitbit-device
+    {
+        border-bottom: solid 1px var(--color-border);
+        padding: 16px;
+        position: relative;
+        padding-left: 48px;
+    }
+
+        .mdhui-fitbit-devices .fitbit-device:last-child
+        {
+            border-bottom: none;
+        }
+
+        .mdhui-fitbit-devices .fitbit-device .device-icon
+        {
+            position: absolute;
+            left: 16px;
+            top: calc(50% - 8px);
+            color: var(--color-muted2);
+            font-size: 16px;
+        }
+
+        .mdhui-fitbit-devices .fitbit-device .device-title
+        {
+            font-weight: bold;
+            font-size: .88em;
+        }
+
+        .mdhui-fitbit-devices .fitbit-device .device-sync
+        {
+            font-size: .88em;
+            color: var(--color-muted);
+        }
+
+
+        .mdhui-fitbit-devices .fitbit-device .battery-icon
+        {
+            position: absolute;
+            font-size: 21px;
+            right: 16px;
+            top: calc(50% - 11px);
+        }
+
+            .mdhui-fitbit-devices .fitbit-device .battery-icon.battery-empty,
+            .mdhui-fitbit-devices .fitbit-device .battery-icon.battery-low
+            {
+                color: var(--color-danger);
+            }
+
+            .mdhui-fitbit-devices .fitbit-device .battery-icon.battery-medium
+            {
+                color: var(--color-warning);
+            }
+
+            .mdhui-fitbit-devices .fitbit-device .battery-icon.battery-high
+            {
+                color: var(--color-success);
+            }

@@ -1,0 +1,40 @@
+.mdhui-project-header
+{
+    padding: 16px;
+    text-align: center;
+    background: #FFF;
+    border-bottom: solid 1px #ddd;
+}
+
+    .mdhui-project-header .logo
+    {
+        display: inline-block;
+        width: 48px;
+        height: 48px;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+    }
+
+    .mdhui-project-header .project-info
+    {
+        display: inline-block;
+        text-align: left;
+        padding-left: 16px;
+        vertical-align: top;
+        padding-right: 16px;
+        max-width: calc(100% - 80px);
+    }
+
+        .mdhui-project-header .project-info .project-name
+        {
+            font-weight: bold;
+            font-size: 1.5em;
+            max-width: 100%;
+        }
+
+        .mdhui-project-header .project-info .organization-name
+        {
+            max-width: 100%;
+        }

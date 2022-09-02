@@ -1,0 +1,16 @@
+.mdhui-calendar-day-with-data-value .calendar-value
+{
+	height: 32px;
+	width: 32px;
+	font-size: 12px;
+	border-radius: 17px;
+	line-height: 34px;
+	text-align: center;
+	background: #f4f4f4;
+	font-weight: bold;
+	display: inline-block;
+}
+.mdhui-calendar-day-with-data-value .calendar-day
+{
+	text-align: center;
+}

@@ -1,0 +1,13 @@
+.mdhui-most-recent-notification
+{
+}
+
+    .mdhui-most-recent-notification .mdhui-notification
+    {
+        border-bottom: solid 1px var(--color-border);
+    }
+
+    .mdhui-most-recent-notification .mdhui-action .subtitle
+    {
+        color: var(--color-primary);
+    }

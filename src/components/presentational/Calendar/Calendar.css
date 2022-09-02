@@ -1,0 +1,31 @@
+.mdhui-calendar
+{
+	padding-bottom: 16px;
+}
+
+.mdhui-calendar table
+{
+	width: 100%;
+	font-size: 14px;
+}
+
+        .mdhui-calendar table tr th
+        {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            padding-bottom: 16px;
+            padding-top: 16px;
+            border-bottom: solid 1px #eee;
+            text-align: center;
+        }
+        
+        .mdhui-calendar table tr td
+        {
+            padding-top: 16px;
+            vertical-align: top;
+            text-align: center;
+            height: 50px;
+            padding-bottom: 0;
+            position: relative;
+        }

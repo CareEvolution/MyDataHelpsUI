@@ -1,0 +1,37 @@
+.mdhui-segmented-control
+{
+    border-radius: 32px;
+    border: solid 1px var(--color-primary);
+    background: #FFF;
+    overflow: hidden;
+    padding: 1px;
+}
+
+    .mdhui-segmented-control .mdhui-segment
+    {
+        display: inline-block;
+        font-size: .7em;
+        cursor: pointer;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+        font-weight: bold;
+        color: var(--color-primary);
+        position: relative;
+        border-radius: 32px;
+        overflow: hidden;
+        vertical-align: top;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .mdhui-segmented-control .mdhui-segment:last-child
+        {
+            border: none;
+        }
+
+        .mdhui-segmented-control .mdhui-segment.mdhui-segment-selected
+        {
+            background: var(--color-primary);
+            color: #FFF;
+        }

@@ -1,0 +1,16 @@
+.mdhui-card-title
+{
+    padding: 16px;
+    font-weight: bold;
+    padding-bottom: 0;
+    position: relative;
+}
+
+    .mdhui-card-title .detail-link
+    {
+        position: absolute;
+        right: 16px;
+        bottom: 0;
+        font-size: .88em;
+        cursor: pointer;
+    }

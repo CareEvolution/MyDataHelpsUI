@@ -1,0 +1,53 @@
+.mdhui-day-tracker-symbol
+{
+    padding: 10px;
+}
+
+    .mdhui-day-tracker-symbol .day-circle
+    {
+        font-size: 12px;
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        border-radius: 17px;
+        line-height: 30px;
+        background: #eee;
+        position: relative;
+    }
+
+        .mdhui-day-tracker-symbol .day-circle .secondary-color
+        {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+            .mdhui-day-tracker-symbol .day-circle .secondary-color:first-child
+            {
+                left: 36.6%;
+                top: -33.33%;
+            }
+
+            .mdhui-day-tracker-symbol .day-circle .secondary-color:nth-child(2)
+            {
+                left: 0%;
+                top: -23.333%;
+            }
+
+            .mdhui-day-tracker-symbol .day-circle .secondary-color:nth-child(3)
+            {
+                left: 73%;
+                top: -23.333%;
+            }
+
+        .mdhui-day-tracker-symbol .day-circle .more-items
+        {
+            position: absolute;
+            left: 30px;
+            top: 0px;
+            font-size: 10px;
+            height: 8px;
+            width: 7px;
+            line-height: 6px;
+        }

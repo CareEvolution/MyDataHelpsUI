@@ -1,0 +1,36 @@
+﻿.mdhui-connect-ehr {
+    background: #FFF;
+    position: relative;
+}
+
+.mdhui-connect-ehr .error-content {
+    padding: 16px;
+}
+
+.mdhui-connect-ehr .content {
+    padding: 16px 42px 16px 16px;
+    font-size: .88em;
+    color: var(--color-muted1);
+}
+
+.mdhui-connect-ehr .connection-status {
+    padding: 16px 42px 0 16px;
+    font-size: .88em;
+    color: #555;
+}
+
+.mdhui-connect-ehr .connection-status .success svg {
+    color: var(--color-success);
+}
+
+.mdhui-connect-ehr .connection-status .warning {
+    color: var(--color-danger);
+}
+
+.mdhui-connect-ehr .indicator {
+    position: absolute;
+    top: calc(50% - 8px);
+    right: 16px;
+    font-size: 16px;
+    color: var(--color-muted2);
+}

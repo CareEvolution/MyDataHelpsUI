@@ -1,0 +1,64 @@
+.mdhui-single-survey-task
+{
+    padding: 16px;
+    padding-left: 48px;
+    position: relative;
+}
+
+    .mdhui-single-survey-task .status-icon
+    {
+        position: absolute;
+        left: 16px;
+        top: calc(50% - 8px);
+        color: var(--color-muted2);
+    }
+
+    .mdhui-single-survey-task.complete .status-icon
+    {
+        color: var(--color-success);
+    }
+
+    .mdhui-single-survey-task .survey-name
+    {
+        font-size: .88em;
+        font-weight: bold;
+    }
+
+    .mdhui-single-survey-task .survey-description,
+    .mdhui-single-survey-task .completed-date
+    {
+        font-size: .88em;
+        color: #555;
+    }
+
+    .mdhui-single-survey-task .due-date
+    {
+        font-size: .88em;
+        color: var(--color-primary);
+    }
+
+        .mdhui-single-survey-task .due-date.warning
+        {
+            color: var(--color-warning);
+            font-weight: bold;
+        }
+
+        .mdhui-single-survey-task .due-date.danger
+        {
+            color: var(--color-danger);
+            font-weight: bold;
+        }
+
+    .mdhui-single-survey-task .indicator
+    {
+        position: absolute;
+        top: calc(50% - 8px);
+        right: 16px;
+        font-size: 16px;
+        color: var(--color-muted2);
+    }
+
+    .mdhui-single-survey-task.incomplete
+    {
+        cursor: pointer;
+    }
