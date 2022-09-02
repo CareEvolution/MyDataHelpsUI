@@ -34,7 +34,7 @@ export default function () {
 
 ## Storybook
 
-This library uses Storybook[https://storybook.js.org/].  To look at examples, clone this repository and:
+This library uses [Storybook](https://storybook.js.org/).  To look at examples, clone this repository and:
 
 ```npm run storybook```
 
@@ -44,11 +44,11 @@ To run Storybook previews with the data from one of your test MyDataHelps partic
 1. Obtain a participant access token using the MyDataHelps [JavaScript SDK](https://developer.mydatahelps.org/sdk/participant_tokens.html) 
 2. Create a .env file in your root directory with the token details
 
-`
+```
 .env
 -----
 PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
-`
+```
 
 If you have issues getting storybook to run, particuarly around the NODE_OPTIONS being used, try upgrading Node to the latest version.
 
