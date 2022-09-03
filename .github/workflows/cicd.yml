@@ -27,8 +27,8 @@ jobs:
           npm config set @careevolution:registry=https://registry.npmjs.org/
           npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPMJS_TOKEN }}
           npm publish --access public
-      #- name: Deploy to ProGet
-      #  run: |
-      #    npm config set @careevolution:registry=https://proget.careevolution.com/npm/npm/
-      #    npm config set //proget.careevolution.com/npm/npm/:_authToken ${{ secrets.PROGET_TOKEN }}
-      #    npm publish ./dist/npm
+      - name: Deploy to ProGet
+        run: |
+          npm config set @careevolution:registry=https://proget.careevolution.com/npm/npm/
+          npm config set //proget.careevolution.com/npm/npm/:_authToken ${{ secrets.PROGET_TOKEN }}
+          npm publish
