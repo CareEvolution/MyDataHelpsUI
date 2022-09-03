@@ -10,6 +10,8 @@ export interface NavigationBarProps {
 	showBackButton?: boolean;
 	showCloseButton?: boolean;
 	children?: React.ReactNode;
+	closeButtonText?: string;
+	backButtonText?: string;
 }
 
 export default function (props: NavigationBarProps) {
@@ -44,7 +46,8 @@ export default function (props: NavigationBarProps) {
 		<div className="mdhui-navigation-bar" ref={navBar}>
 			{props.showBackButton &&
 				<a className="back-button" onClick={() => back()}>
-					<FontAwesomeIcon icon={faChevronLeft} /> {language["back"]}
+					<FontAwesomeIcon icon={faChevronLeft} />
+					{props.backButtonText ? props.backButtonText : language["back"]}
 				</a>
 			}
 			{props.title &&
@@ -54,7 +57,7 @@ export default function (props: NavigationBarProps) {
 			}
 			{props.showCloseButton &&
 				<a className="close-button" onClick={() => close()}>
-					{language["close"]}
+					{props.closeButtonText ? props.closeButtonText : language["close"]}
 				</a>
 			}
 			{props.children}
