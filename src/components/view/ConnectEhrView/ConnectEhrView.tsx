@@ -32,7 +32,7 @@ export default function (props: ConnectEhrViewProps) {
                 <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeDeviceManufacturers={true}/>
             </Card>
             <Card>
-                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={["Provider", "Health Plan"]}/>
+                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={["Provider", "Health Plan"]} pageSize={10} />
             </Card>
         </Layout>
     )

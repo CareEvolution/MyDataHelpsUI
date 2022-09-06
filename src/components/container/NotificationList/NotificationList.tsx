@@ -4,6 +4,7 @@ import { LoadingIndicator, SingleNotification, Card, TextBlock } from '../../pre
 import useInterval from '../../../hooks/UseInterval'
 import { previewNotifications } from './NotificationList.previewdata'
 import language from '../../../helpers/language';
+import InfiniteScroller from '../../presentational/InfiniteScroller/InfiniteScroller'
 
 export interface NotificationListProps {
 	notificationType?: NotificationType,
@@ -17,7 +18,6 @@ export default function (props: NotificationListProps) {
 	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
 	const [finishedLoading, setFinishedLoading] = useState(false);
 	const [notifications, setNotifications] = useState<Notification[]>([]);
-	const loader = useRef<HTMLDivElement>(null);
 
 	function loadNextPage() {
 		if (props.previewState == "Default") {
@@ -33,7 +33,8 @@ export default function (props: NotificationListProps) {
 		if (loading || finishedLoading) { return; }
 		setLoading(true);
 		var parameters: NotificationQueryParameters = {
-			statusCode: "Succeeded"
+			statusCode: "Succeeded",
+			limit: 10
 		};
 		if (props.notificationType) {
 			parameters.type = props.notificationType;
@@ -50,18 +51,6 @@ export default function (props: NotificationListProps) {
 			setNextPageID(result.nextPageID);
 		});
 	}
-
-	function elementIsVisible(elm: HTMLElement) {
-		var rect = elm.getBoundingClientRect();
-		var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-	}
-
-	useInterval(() => {
-		if (loader.current && elementIsVisible(loader.current as HTMLElement)) {
-			loadNextPage();
-		}
-	}, loading ? null : 1000);
 
 	useEffect(() => {
 		loadNextPage();
@@ -95,9 +84,7 @@ export default function (props: NotificationListProps) {
 					</TextBlock>
 				</Card>
 			}
-			{!loading && !finishedLoading &&
-				<div style={{ height: "20px" }} ref={loader} />
-			}
+			<InfiniteScroller onTrigger={loadNextPage} enabled={!loading && !finishedLoading}></InfiniteScroller>
 		</div>
 	);
 }

@@ -6,10 +6,14 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';
+import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import InfiniteScroller from '../../presentational/InfiniteScroller/InfiniteScroller';
 
 export interface ProviderSearchProps {
-	previewState?: ProviderSearchPreviewState
+	previewState?: ProviderSearchPreviewState;
 	providerCategories?: string[];
+	pageSize: number;
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -21,6 +25,8 @@ export default function (props: ProviderSearchProps) {
 	const [searchResults, setSearchResults] = useState<ExternalAccountProvider[]>([]);
 	const [searching, setSearching] = useState(true);
 	const [searchString, _setSearchString] = useState("");
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalResults, setTotalResults] = useState(0);
 
 	const searchStringRef = useRef(searchString);
 	const setSearchString = (data: string) => {
@@ -51,12 +57,20 @@ export default function (props: ProviderSearchProps) {
 	}
 
 	function performSearch(search: string) {
+		setSearching(true);
 		let requestID = ++currentRequestID;
 
-		MyDataHelps.getExternalAccountProviders(search, null, 0, 0).then(function (searchResults) {
+		MyDataHelps.getExternalAccountProviders(search, null, props.pageSize, currentPage).then(function (searchResultsResponse) {
 			if (requestID == currentRequestID) {
-				// @ts-ignore
-				setSearchResults(searchResults.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+				if (props.pageSize === 0) {
+					// @ts-ignore
+					setSearchResults(searchResultsResponse.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+				}
+				else {
+					var newResults = searchResults.concat(searchResultsResponse.externalAccountProviders.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+					setSearchResults(newResults);
+					setTotalResults(searchResultsResponse.totalExternalAccountProviders);
+				}
 				setSearching(false);
 			}
 		});
@@ -74,10 +88,11 @@ export default function (props: ProviderSearchProps) {
 
 	function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
 		setSearchString(event.target.value);
+		setSearchResults([]);
+		setCurrentPage(0);
 		if (props.previewState) {
 			return;
 		}
-		setSearching(true);
 		debouncedPerformSearch(event.target.value);
 	}
 
@@ -93,6 +108,14 @@ export default function (props: ProviderSearchProps) {
 		});
 	}
 
+	function canLoadNextPage() {
+		return props.pageSize > 0 && (currentPage + 1) * props.pageSize < totalResults;
+	}
+
+	function loadNextPage() {
+		setCurrentPage(currentPage + 1);
+	}
+
 	useEffect(() => {
 		initialize();
 		MyDataHelps.on("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
@@ -100,6 +123,12 @@ export default function (props: ProviderSearchProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!searching) {
+			performSearch(searchStringRef.current)
+		}
+	}, [currentPage]);
 
 	return (
 		<div className="mdhui-provider-search">
@@ -110,10 +139,7 @@ export default function (props: ProviderSearchProps) {
 				</div>
 			</div>
 			<div className="search-results">
-				{searching &&
-					<LoadingIndicator />
-				}
-				{!searching && searchResults.map((provider) =>
+				{searchResults && searchResults.map((provider) =>
 					<div key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
 						{provider.logoUrl &&
 							<div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
@@ -129,7 +155,11 @@ export default function (props: ProviderSearchProps) {
 						</div>
 					</div>
 				)}
+				{searching &&
+					<LoadingIndicator />
+				}
 			</div>
+			<InfiniteScroller onTrigger={loadNextPage} enabled={canLoadNextPage()}></InfiniteScroller>
 		</div>
 	);
 }
