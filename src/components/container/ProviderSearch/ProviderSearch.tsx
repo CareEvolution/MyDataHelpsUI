@@ -6,8 +6,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
-import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import InfiniteScroller from '../../presentational/InfiniteScroller/InfiniteScroller';
 
 export interface ProviderSearchProps {
