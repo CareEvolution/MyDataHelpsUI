@@ -16,14 +16,8 @@ const Template: ComponentStory<typeof Switch> = (args: SwitchProps) =>
 		<Switch  {...args} />
 	</Layout>;
 
-export const Enabled = Template.bind({});
-Enabled.args = {
-	enabled: false,
-	enabledBackgroundColor: "blue"
-}
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-	enabled: false,
-	enabledBackgroundColor: "blue"
+export const Default = Template.bind({});
+Default.args = {
+	isOn: false,
+	onBackgroundColor: "blue"
 }

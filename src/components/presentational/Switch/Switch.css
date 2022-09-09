@@ -16,7 +16,7 @@
     background-clip: content-box;
 }
 
-    .mdhui-switch.mdhui-switch-enabled
+    .mdhui-switch.mdhui-switch-on
     {
         background: var(--color-primary);
     }
@@ -32,7 +32,7 @@
         width: 30px;
     }
 
-    .mdhui-switch.mdhui-switch-enabled .mdhui-switch-circle
+    .mdhui-switch.mdhui-switch-on .mdhui-switch-circle
     {
         right: 0;
     }
