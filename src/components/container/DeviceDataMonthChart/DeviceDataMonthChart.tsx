@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import "./DeviceDataMonthChart.css"
-import MyDataHelps, { DeviceDataNamespace, DeviceDataPoint, DeviceDataPointQuery, Guid } from "@careevolution/mydatahelps-js"
-import parseISO from 'date-fns/parseISO'
+import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { format } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
+import queryDailyData, { checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
+import getDayKey from '../../../helpers/get-day-key'
 
 export interface DeviceDataMonthChartProps {
-	namespace: DeviceDataNamespace,
 	lines: DeviceDataChartLine[],
 	month: number,
 	year: number,
@@ -21,20 +21,12 @@ export interface DeviceDataMonthChartProps {
 
 export interface DeviceDataChartLine {
 	label: string,
-	deviceDataPointType: string,
+	dailyDataType: string,
 	valueConverter?: Function,
-	displayByDate?: DateAnchor,
-	aggregation: AggregationType,
-	//if true, all dates are treated as local time
-	ignoreDateOffsets?: boolean,
-	ignoreZeros?: boolean,
 	showAverage?: boolean
 }
 
 export type DeviceDataMonthChartPreviewState = "WithData" | "NoData" | "Loading";
-
-export type AggregationType = "Sum" | "Average" | "Count";
-export type DateAnchor = "observation" | "start";
 
 interface TickProps {
 	x: number,
@@ -52,7 +44,7 @@ function DayTick(props: TickProps) {
 }
 
 export default function (props: DeviceDataMonthChartProps) {
-	const [dataPoints, setDeviceDataPoints] = useState<DeviceDataPoint[] | null>(null);
+	const [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [hasData, setHasData] = useState(false);
 
@@ -63,19 +55,15 @@ export default function (props: DeviceDataMonthChartProps) {
 
 	function checkForAnyData() {
 		if (!hasData) {
-			var params: DeviceDataPointQuery = {
-				namespace: props.namespace,
-				type: props.lines.map((l) => l.deviceDataPointType),
-				limit: 1
-			}
-			MyDataHelps.queryDeviceData(params).then(function (result) {
-				if (result.deviceDataPoints.length) {
+			var promises = props.lines.map(l => checkDailyDataAvailability(l.dailyDataType));
+			Promise.all(promises).then(function (values) {
+				if (values.find(v => v)) {
 					setHasData(true);
 					if (props.onDataDetected) {
 						props.onDataDetected();
 					}
 				}
-			})
+			});
 		}
 	}
 
@@ -86,22 +74,23 @@ export default function (props: DeviceDataMonthChartProps) {
 				props.onDataDetected();
 			}
 		}
+
 		if (props.previewState == "Loading") {
 			setLoading(true);
 		}
-		if (props.previewState == "WithData") {
-			var previewData: DeviceDataPoint[] = [];
-			props.lines.forEach((l) => {
-				var newData = getPreviewData(l.deviceDataPointType, props.namespace, props.year, props.month);
-				if (newData) {
-					previewData = previewData.concat(newData);
-				}
-			})
-			setDeviceDataPoints(previewData);
-		}
+		//if (props.previewState == "WithData") {
+		//	var previewData: DeviceDataPoint[] = [];
+		//	props.lines.forEach((l) => {
+		//		var newData = getPreviewData(l.dailyDataType, props.year, props.month);
+		//		if (newData) {
+		//			previewData = previewData.concat(newData);
+		//		}
+		//	})
+		//	setDailyData(previewData);
+		//}
 
 		if (props.previewState == "NoData") {
-			setDeviceDataPoints([]);
+			setDailyData({});
 			setLoading(false);
 		}
 		if (props.previewState) { return; }
@@ -112,33 +101,14 @@ export default function (props: DeviceDataMonthChartProps) {
 		var initialization = currentInitialization.current ?? 0;
 		setLoading(true);
 		var loadData = function () {
-			var allDataPoints: DeviceDataPoint[] = [];
-			var makeRequest = function (pageID: Guid | null) {
-				var params: DeviceDataPointQuery = {
-					namespace: props.namespace,
-					type: props.lines.map((l) => l.deviceDataPointType),
-					//Add a buffer so "startDate" anchored data points are filled in, and any utc shifting is accounted for
-					observedAfter: add(monthStart, { days: -3 }).toISOString(),
-					observedBefore: add(monthEnd, { days: 1 }).toISOString()
+			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd));
+			Promise.all(dataRequests).then(function (data) {
+				var newDailyData: { [key: string]: DailyDataQueryResult } = {};
+				for (var i = 0; i < props.lines.length; i++) {
+					newDailyData[props.lines[i].dailyDataType] = data[i];
 				}
-				if (pageID) {
-					params.pageID = pageID;
-				}
-				return MyDataHelps.queryDeviceData(params).then(function (result) {
-					if (initialization != currentInitialization.current) {
-						return;
-					}
-
-					allDataPoints = allDataPoints.concat(result.deviceDataPoints);
-					if (result.nextPageID) {
-						makeRequest(result.nextPageID);
-					} else {
-						setLoading(false);
-						setDeviceDataPoints(allDataPoints);
-					}
-				});
-			}
-			makeRequest(null);
+				setDailyData(newDailyData);
+			})
 		}
 
 		loadData();
@@ -155,60 +125,6 @@ export default function (props: DeviceDataMonthChartProps) {
 		}
 	}, [props]);
 
-	var getDay = function (deviceDataPoint: DeviceDataPoint) {
-		var type = props.lines.filter((l) => l.deviceDataPointType == deviceDataPoint.type)[0];
-
-		var dateString:string = deviceDataPoint.observationDate!;
-		if (type.displayByDate == "start") {
-			dateString = deviceDataPoint.startDate!;
-		}
-		if (type.ignoreDateOffsets) {
-			dateString = dateString?.substr(0, 19);
-		}
-		if (!dateString) {
-			return null;
-		}
-		var date = parseISO(dateString);
-		if (date.getMonth() != props.month) {
-			return null;
-		}
-		return date.getDate();
-	}
-
-	function getGroupedDataPoints(line: DeviceDataChartLine) {
-		var groupedDataPoints: { [day: number]: number[] } = {};
-		dataPoints?.forEach((d) => {
-			if (d.type != line.deviceDataPointType) {
-				return;
-			}
-
-			var day = getDay(d);
-			if (!day) {
-				return;
-			}
-			if (line.ignoreZeros && parseFloat(d.value) == 0) {
-				return;
-			}
-
-			if (!groupedDataPoints[day]) {
-				groupedDataPoints[day] = [];
-			}
-
-			var value = parseFloat(d.value);
-			if (line.valueConverter) {
-				value = line.valueConverter(d);
-			}
-
-			groupedDataPoints[day].push(value);
-		});
-		return groupedDataPoints;
-	}
-
-	var typeGroups: { [type: string]: { [day: number]: number[] } } = {};
-	props.lines.forEach(function (l) {
-		typeGroups[l.deviceDataPointType] = getGroupedDataPoints(l);
-	});
-
 	var data: any[] = [];
 	var currentDate = monthStart;
 	var graphHasData = false;
@@ -217,17 +133,13 @@ export default function (props: DeviceDataMonthChartProps) {
 			day: currentDate.getDate()
 		};
 		data.push(dataDay);
+		var dayKey = getDayKey(currentDate);
 		props.lines.forEach((line) => {
-			var dataPoints = typeGroups[line.deviceDataPointType][dataDay.day];
-			if (dataPoints && dataPoints.length) {
-				if (line.aggregation == "Average") {
-					dataDay[line.deviceDataPointType] = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
-				} else if (line.aggregation == "Count") {
-					dataDay[line.deviceDataPointType] = dataPoints.length;
-				} else if (line.aggregation == "Sum") {
-					dataDay[line.deviceDataPointType] = dataPoints.reduce((partialSum, a) => partialSum + a, 0);
+			if (dailyData) {
+				dataDay[line.dailyDataType] = dailyData[line.dailyDataType][dayKey];
+				if (dataDay[line.dailyDataType] > 0) {
+					graphHasData = true;
 				}
-				graphHasData = true;
 			}
 		});
 		currentDate = add(currentDate, { days: 1 });
@@ -238,7 +150,7 @@ export default function (props: DeviceDataMonthChartProps) {
 			var date = new Date(props.year, props.month, payload[0].payload.day);
 			var labelLookup: { [key: string]: string } = {};
 			props.lines.forEach(function (line) {
-				labelLookup[line.deviceDataPointType] = line.label;
+				labelLookup[line.dailyDataType] = line.label;
 			});
 
 			return (
@@ -277,7 +189,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		}
 
 		var line = lines[0];
-		var values = data.map((d) => d[line.deviceDataPointType]) as number[];
+		var values = data.map((d) => d[line.dailyDataType]) as number[];
 		values = values.filter(v => !!v);
 		if (!values.length) { return null; }
 		var calculated = values.reduce((a, b) => a + b) / values.length;
@@ -327,7 +239,7 @@ export default function (props: DeviceDataMonthChartProps) {
 					<ResponsiveContainer width="100%" height={150}>
 						<LineChart width={400} height={400} data={data} syncId={props.syncId}>
 							{props.lines.map((line) =>
-								<Line key={line.deviceDataPointType} type="monotone" dataKey={line.deviceDataPointType} stroke="var(--color-primary)" />
+								<Line key={line.dailyDataType} type="monotone" dataKey={line.dailyDataType} stroke="var(--color-primary)" />
 							)}
 							<Tooltip content={<GraphToolTip />} />
 							<CartesianGrid strokeDasharray="3 3" />
