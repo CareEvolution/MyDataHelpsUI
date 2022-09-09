@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import DeviceDataMonthChart from '../DeviceDataMonthChart'
 import language from '../../../helpers/language';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { DateRangeNavigator, TextBlock } from '../../presentational';
 
 export interface DeviceDataMonthChartsProps {
@@ -36,15 +35,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 				<DateRangeNavigator intervalType="Month" intervalStart={intervalStart} onIntervalChange={updateInterval} />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="Fitbit"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "Steps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: true,
-						ignoreZeros: true,
-						aggregation: "Average"
+						dailyDataType: "FitbitSteps",
+						label: language["steps"]
 					}]}
 					title={"Fitbit " + language["steps"]}
 					month={month}
@@ -52,15 +46,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="Fitbit"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "RestingHeartRate",
-						label: language["resting-heart-rate"],
-						displayByDate: "start",
-						ignoreDateOffsets: true,
-						ignoreZeros: true,
-						aggregation: "Average"
+						dailyDataType: "FitbitRestingHeartRate",
+						label: language["resting-heart-rate"]
 					}]}
 					title={"Fitbit " + language["resting-heart-rate"]}
 					month={month}
@@ -68,58 +57,52 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="AppleHealth"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "HourlySteps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum"
+						dailyDataType: "AppleHealthSteps",
+						label: language["steps"]
 					}]}
 					title={"Apple Health " + language["steps"]}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
-				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
-					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="AppleHealth"
-					lines={[{
-						showAverage: true,
-						deviceDataPointType: "HourlyDistanceWalkingRunning",
-						label: language["distance-traveled"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum",
-						valueConverter: function (dataPoint: DeviceDataPoint) {
-							if (dataPoint.units == "m") {
-								return parseFloat(dataPoint.value) * 0.000621371;
-							}
-							return null;
-						}
-					}]}
-					title={"Apple Health " + language["distance-traveled"] + " (Miles)"}
-					month={month}
-					year={year}
-					syncId="DeviceDataCharts" />
-				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
-					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="GoogleFit"
-					lines={[{
-						showAverage: true,
-						deviceDataPointType: "Steps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum"
-					}]}
-					title={"Google Fit " + language["steps"]}
-					month={month}
-					year={year}
-					syncId="DeviceDataCharts" />
+				{/*<DeviceDataMonthChart onDataDetected={() => onDataDetected()}*/}
+				{/*	previewState={props.previewState == "Default" ? "WithData" : undefined}*/}
+				{/*	lines={[{*/}
+				{/*		showAverage: true,*/}
+				{/*		dailyDataType: "HourlyDistanceWalkingRunning",*/}
+				{/*		label: language["distance-traveled"],*/}
+				{/*		displayByDate: "start",*/}
+				{/*		ignoreDateOffsets: false,*/}
+				{/*		ignoreZeros: true,*/}
+				{/*		aggregation: "Sum",*/}
+				{/*		valueConverter: function (dataPoint: DeviceDataPoint) {*/}
+				{/*			if (dataPoint.units == "m") {*/}
+				{/*				return parseFloat(dataPoint.value) * 0.000621371;*/}
+				{/*			}*/}
+				{/*			return null;*/}
+				{/*		}*/}
+				{/*	}]}*/}
+				{/*	title={"Apple Health " + language["distance-traveled"] + " (Miles)"}*/}
+				{/*	month={month}*/}
+				{/*	year={year}*/}
+				{/*	syncId="DeviceDataCharts" />*/}
+				{/*<DeviceDataMonthChart onDataDetected={() => onDataDetected()}*/}
+				{/*	previewState={props.previewState == "Default" ? "WithData" : undefined}*/}
+				{/*	namespace="GoogleFit"*/}
+				{/*	lines={[{*/}
+				{/*		showAverage: true,*/}
+				{/*		deviceDataPointType: "Steps",*/}
+				{/*		label: language["steps"],*/}
+				{/*		displayByDate: "start",*/}
+				{/*		ignoreDateOffsets: false,*/}
+				{/*		ignoreZeros: true,*/}
+				{/*		aggregation: "Sum"*/}
+				{/*	}]}*/}
+				{/*	title={"Google Fit " + language["steps"]}*/}
+				{/*	month={month}*/}
+				{/*	year={year}*/}
+				{/*	syncId="DeviceDataCharts" />*/}
 			</div>
 		</>
 	);

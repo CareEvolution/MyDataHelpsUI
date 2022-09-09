@@ -27,14 +27,9 @@ Loading.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 		showAverage: true,
-		deviceDataPointType: "Steps",
-		label: "Steps",
-		displayByDate: "start",
-		ignoreDateOffsets: true,
-		ignoreZeros: true,
-		aggregation: "Average"
+		dailyDataType: "Steps",
+		label: "Steps"
 	}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };
 
@@ -46,14 +41,9 @@ FitbitSteps.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 			showAverage: true,
-			deviceDataPointType: "Steps",
-			label: "Steps",
-			displayByDate: "start",
-			ignoreDateOffsets: true,
-			ignoreZeros: true,
-			aggregation: "Average"
+			dailyDataType: "Steps",
+			label: "Steps"
 		}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };
 
@@ -64,14 +54,9 @@ NoData.args = {
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
+		dailyDataType: "FitbitRestingHeartRate",
 		showAverage: true,
-		deviceDataPointType: "Steps",
 		label: "Steps",
-		displayByDate: "start",
-		ignoreDateOffsets: true,
-		ignoreZeros: true,
-		aggregation: "Average"
 	}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };

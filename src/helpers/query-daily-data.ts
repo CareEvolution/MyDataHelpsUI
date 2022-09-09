@@ -1,6 +1,6 @@
 ﻿import MyDataHelps, { DeviceDataNamespace, DeviceDataPointQuery } from "@careevolution/mydatahelps-js";
 import { add } from "date-fns";
-import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider } from "./daily-device-data-providers";
+import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider } from "./daily-data-providers";
 import getDayKey from "./get-day-key";
 
 export type DailyDataQueryResult = { [key: string]: number };
@@ -42,7 +42,9 @@ function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | 
 		}
 		return MyDataHelps.queryDeviceData(parameters).then(function (result) {
 			return result.deviceDataPoints.length > 0;
-		})
+		}).catch(function () {
+			return false;
+		});
 	}
 }
 

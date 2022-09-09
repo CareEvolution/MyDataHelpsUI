@@ -78,16 +78,14 @@ export default function (props: DeviceDataMonthChartProps) {
 		if (props.previewState == "Loading") {
 			setLoading(true);
 		}
-		//if (props.previewState == "WithData") {
-		//	var previewData: DeviceDataPoint[] = [];
-		//	props.lines.forEach((l) => {
-		//		var newData = getPreviewData(l.dailyDataType, props.year, props.month);
-		//		if (newData) {
-		//			previewData = previewData.concat(newData);
-		//		}
-		//	})
-		//	setDailyData(previewData);
-		//}
+		if (props.previewState == "WithData") {
+			var previewData: { [key: string]: { [key: string]: number } } = {};
+			props.lines.forEach((l) => {
+				var newData = getPreviewData(l.dailyDataType, props.year, props.month);
+				previewData[l.dailyDataType] = newData;
+			})
+			setDailyData(previewData);
+		}
 
 		if (props.previewState == "NoData") {
 			setDailyData({});
@@ -103,11 +101,15 @@ export default function (props: DeviceDataMonthChartProps) {
 		var loadData = function () {
 			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd));
 			Promise.all(dataRequests).then(function (data) {
+				if (initialization != currentInitialization.current) {
+					return;
+				}
 				var newDailyData: { [key: string]: DailyDataQueryResult } = {};
 				for (var i = 0; i < props.lines.length; i++) {
 					newDailyData[props.lines[i].dailyDataType] = data[i];
 				}
 				setDailyData(newDailyData);
+				setLoading(false);
 			})
 		}
 
