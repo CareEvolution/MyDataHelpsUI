@@ -139,6 +139,9 @@ export default function (props: DeviceDataMonthChartProps) {
 		props.lines.forEach((line) => {
 			if (dailyData) {
 				dataDay[line.dailyDataType] = dailyData[line.dailyDataType][dayKey];
+				if (line.valueConverter) {
+					dataDay[line.dailyDataType] = line.valueConverter(dataDay[line.dailyDataType]);
+				}
 				if (dataDay[line.dailyDataType] > 0) {
 					graphHasData = true;
 				}
