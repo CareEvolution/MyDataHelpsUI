@@ -1,4 +1,5 @@
-﻿import { add, formatISO, parseISO } from "date-fns";
+﻿import { add, parseISO } from "date-fns";
+import getDayKey from "../get-day-key";
 import queryAllDeviceData from "./query-all-device-data";
 
 export default function (startDate: Date, endDate: Date) {
@@ -12,7 +13,7 @@ export default function (startDate: Date, endDate: Date) {
 
 		ddp.forEach((d) => {
 			if (!d.startDate) { return; }
-			var day = formatISO(parseISO(d.startDate)).substring(0, 10);
+			var day = getDayKey(parseISO(d.startDate));
 			if (!data[day]) {
 				data[day] = 0;
 			}
