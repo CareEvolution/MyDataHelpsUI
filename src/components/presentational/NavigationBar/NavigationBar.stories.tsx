@@ -30,6 +30,15 @@ Modal.args = {
 	showCloseButton: true
 }
 
+export const CustomButtons = Template.bind({});
+CustomButtons.args = {
+	title: "My Title",
+	showBackButton: true,
+	showCloseButton: true,
+	backButtonText: "Home",
+	closeButtonText: "Done"
+}
+
 export const WithDateRangeNavigator = Template.bind({});
 WithDateRangeNavigator.args = {
 	title: "Migraine",
