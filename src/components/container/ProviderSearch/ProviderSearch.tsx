@@ -11,7 +11,6 @@ import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTri
 export interface ProviderSearchProps {
 	previewState?: ProviderSearchPreviewState;
 	providerCategories?: string[];
-	pageSize: number;
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -31,6 +30,8 @@ export default function (props: ProviderSearchProps) {
 		searchStringRef.current = data;
 		_setSearchString(data);
 	};
+
+	const pageSize = 100;
 
 	function initialize() {
 		if (props.previewState == "Default") {
@@ -58,17 +59,11 @@ export default function (props: ProviderSearchProps) {
 		setSearching(true);
 		let requestID = ++currentRequestID;
 
-		MyDataHelps.getExternalAccountProviders(search, null, props.pageSize, currentPage).then(function (searchResultsResponse) {
+		MyDataHelps.getExternalAccountProviders(search, null, pageSize, currentPage).then(function (searchResultsResponse) {
 			if (requestID == currentRequestID) {
-				if (props.pageSize === 0) {
-					// @ts-ignore
-					setSearchResults(searchResultsResponse.filter(a => props.providerCategories?.indexOf(a.category) != -1));
-				}
-				else {
-					var newResults = searchResults.concat(searchResultsResponse.externalAccountProviders.filter(a => props.providerCategories?.indexOf(a.category) != -1));
-					setSearchResults(newResults);
-					setTotalResults(searchResultsResponse.totalExternalAccountProviders);
-				}
+				var newResults = searchResults.concat(searchResultsResponse.externalAccountProviders.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+				setSearchResults(newResults);
+				setTotalResults(searchResultsResponse.totalExternalAccountProviders);
 				setSearching(false);
 			}
 		});
@@ -107,7 +102,7 @@ export default function (props: ProviderSearchProps) {
 	}
 
 	function canLoadNextPage() {
-		return props.pageSize > 0 && (currentPage + 1) * props.pageSize < totalResults;
+		return pageSize > 0 && (currentPage + 1) * pageSize < totalResults;
 	}
 
 	function loadNextPage() {
