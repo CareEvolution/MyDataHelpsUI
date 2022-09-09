@@ -6,7 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';
-import InfiniteScroller from '../../presentational/InfiniteScroller/InfiniteScroller';
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 
 export interface ProviderSearchProps {
 	previewState?: ProviderSearchPreviewState;
@@ -157,7 +157,7 @@ export default function (props: ProviderSearchProps) {
 					<LoadingIndicator />
 				}
 			</div>
-			<InfiniteScroller onTrigger={loadNextPage} enabled={canLoadNextPage()}></InfiniteScroller>
+			<OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>
 		</div>
 	);
 }

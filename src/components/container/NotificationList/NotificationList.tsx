@@ -4,7 +4,7 @@ import { LoadingIndicator, SingleNotification, Card, TextBlock } from '../../pre
 import useInterval from '../../../hooks/UseInterval'
 import { previewNotifications } from './NotificationList.previewdata'
 import language from '../../../helpers/language';
-import InfiniteScroller from '../../presentational/InfiniteScroller/InfiniteScroller'
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger'
 
 export interface NotificationListProps {
 	notificationType?: NotificationType,
@@ -84,7 +84,7 @@ export default function (props: NotificationListProps) {
 					</TextBlock>
 				</Card>
 			}
-			<InfiniteScroller onTrigger={loadNextPage} enabled={!loading && !finishedLoading}></InfiniteScroller>
+			<OnVisibleTrigger onTrigger={loadNextPage} enabled={!loading && !finishedLoading}></OnVisibleTrigger>
 		</div>
 	);
 }

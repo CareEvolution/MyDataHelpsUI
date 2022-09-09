@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { useInterval } from '../../../hooks';
 
-export interface InfiniteScrollerProps {
+export interface OnVisibleTriggerProps {
 	onTrigger: Function;
 	enabled: boolean;
 }
 
-export default function (props: InfiniteScrollerProps) {
+export default function (props: OnVisibleTriggerProps) {
 	const loader = useRef<HTMLDivElement>(null);
 
 	function elementIsVisible(elm: HTMLElement) {
