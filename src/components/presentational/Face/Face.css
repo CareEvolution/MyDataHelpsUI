@@ -1,0 +1,26 @@
+﻿.mdhui-face
+{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+    .mdhui-face img
+    {
+        width: 100%;
+        height: 100%;
+        opacity: .7;
+    }
+
+    .mdhui-face.mdhui-face-selected
+    {
+        background: #eec04c;
+    }
+
+    .mdhui-face.mdhui-face-selectable
+    {
+        cursor: pointer;
+    }
