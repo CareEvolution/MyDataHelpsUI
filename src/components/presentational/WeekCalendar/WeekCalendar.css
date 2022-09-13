@@ -1,0 +1,101 @@
+﻿.mdhui-week-calendar
+{
+    background: #FFF;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    z-index: 0;
+    position: relative;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+}
+
+    .mdhui-week-calendar .mdhui-week-calendar-loading
+    {
+        position: absolute;
+        width: 100%;
+        left: 100%;
+        top: calc(50% - 10px);
+    }
+
+    .mdhui-week-calendar *
+    {
+        user-select: none;
+    }
+
+    .mdhui-week-calendar::-webkit-scrollbar
+    {
+        display: none; /* Safari and Chrome */
+    }
+
+    .mdhui-week-calendar .mdhui-week-calendar-week
+    {
+        min-width: 100%;
+        scroll-snap-align: start;
+    }
+
+    .mdhui-week-calendar .mdhui-week-calendar-day
+    {
+        width: calc(14.28% - 1px);
+        border-left: solid 1px #ddd;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+        .mdhui-week-calendar .mdhui-week-calendar-day:first-child
+        {
+            width: 14.28%;
+            border-left: none;
+        }
+
+    .mdhui-week-calendar .mdhui-week-calendar-date-label
+    {
+        padding-top: 4px;
+        line-height: 16px;
+        padding-bottom: 8px;
+        text-align: center;
+    }
+
+        .mdhui-week-calendar .mdhui-week-calendar-date-label .mdhui-week-calendar-day-of-week
+        {
+            font-size: 10px;
+        }
+
+        .mdhui-week-calendar .mdhui-week-calendar-date-label .mdhui-week-calendar-day-of-month
+        {
+            font-size: 14px;
+            display: inline-block;
+            text-align: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 24px;
+            line-height: 24px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+    .mdhui-week-calendar .mdhui-week-calendar-day-selectable
+    {
+        cursor: pointer;
+    }
+
+    .mdhui-week-calendar .mdhui-week-calendar-day-selected
+    {
+        background: #EAF4FB;
+    }
+
+        .mdhui-week-calendar .mdhui-week-calendar-day-selected .mdhui-week-calendar-date-label .mdhui-week-calendar-day-of-month
+        {
+            background-color: var(--color-theme);
+            color: #FFF;
+            font-weight: bold;
+        }
+
+    .mdhui-week-calendar .mdhui-week-calendar-day-future > *
+    {
+        opacity: .4;
+    }
