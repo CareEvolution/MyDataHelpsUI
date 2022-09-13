@@ -1,0 +1,29 @@
+﻿.mdhui-spark-bar-chart
+{
+    position: relative;
+    height: 72px;
+}
+
+    .mdhui-spark-bar-chart .mdhui-spark-bar-chart-bars
+    {
+        margin-left: 8px;
+        width: calc( 100% - 16px);
+        position: relative;
+        height: 100%;
+    }
+
+        .mdhui-spark-bar-chart .mdhui-spark-bar-chart-bars .mdhui-spark-bar-chart-bar
+        {
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+        }
+
+    .mdhui-spark-bar-chart .mdhui-spark-bar-chart-average
+    {
+        border-top: dashed 1px #ddd;
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        z-index: 1;
+    }
