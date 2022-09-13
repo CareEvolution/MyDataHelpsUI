@@ -15,22 +15,22 @@ export interface WeekCalendarProps {
 }
 
 export default function (props: WeekCalendarProps) {
-	const weekNavigator = useRef<HTMLDivElement>(null);
+	const element = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (props.onStartDateChange) {
 			var scrollListener = function (ev: Event) {
-				if (weekNavigator.current?.scrollLeft == 0) {
+				if (element.current?.scrollLeft == 0) {
 					props.onStartDateChange!(add(props.startDate, { weeks: -1 }));
-					weekNavigator.current?.removeEventListener("scroll", scrollListener);
-				} else if (weekNavigator.current?.scrollLeft == window.innerWidth * 2) {
+					element.current?.removeEventListener("scroll", scrollListener);
+				} else if (element.current?.scrollLeft == window.innerWidth * 2) {
 					props.onStartDateChange!(add(props.startDate, { weeks: 1 }));
-					weekNavigator.current?.removeEventListener("scroll", scrollListener);
+					element.current?.removeEventListener("scroll", scrollListener);
 				}
 			};
-			weekNavigator.current?.addEventListener("scroll", scrollListener);
+			element.current?.addEventListener("scroll", scrollListener);
 			return () => {
-				weekNavigator.current?.removeEventListener("scroll", scrollListener);
+				element.current?.removeEventListener("scroll", scrollListener);
 			}
 		}
 	}, [props.startDate])
@@ -51,13 +51,13 @@ export default function (props: WeekCalendarProps) {
 	}
 
 	useEffect(() => {
-		if (weekNavigator.current) {
-			weekNavigator.current.scrollLeft = window.innerWidth;
+		if (element.current) {
+			element.current.scrollLeft = window.innerWidth;
 		}
 	});
 
-	if (weekNavigator.current) {
-		weekNavigator.current.scrollLeft = window.innerWidth;
+	if (element.current) {
+		element.current.scrollLeft = window.innerWidth;
 	}
 
 	function getLabel(date: Date) {
@@ -81,7 +81,17 @@ export default function (props: WeekCalendarProps) {
 		return classes;
 	}
 
-	return <div className="mdhui-week-calendar" ref={weekNavigator}>
+	function selectDate(date: Date) {
+		if (date > new Date()) {
+			return;
+		}
+		if (!props.onDateSelected) {
+			return;
+		}
+		props.onDateSelected(date);
+	}
+
+	return <div className="mdhui-week-calendar" ref={element}>
 		{props.loading &&
 			<div className="mdhui-week-calendar-loading">
 				<LoadingIndicator />
@@ -99,7 +109,7 @@ export default function (props: WeekCalendarProps) {
 			{currentWeek.map((d) =>
 				<div key={d.getTime()}
 					className={getDayClasses(d).join(" ")}
-					onClick={() => props.onDateSelected ? props.onDateSelected(d) : undefined}>
+					onClick={() => selectDate(d)}>
 					{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), true)}
 					{!props.hideDateLabel && getLabel(d)}
 				</div>
