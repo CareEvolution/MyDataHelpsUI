@@ -7,7 +7,7 @@
   "scripts": {
     "rollup": "rollup -c",
     "storybook": "set NODE_OPTIONS=--openssl-legacy-provider & start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "set NODE_OPTIONS=--openssl-legacy-provider & build-storybook"
   },
   "repository": {
     "type": "git",
