@@ -116,4 +116,35 @@ import StackAlt from './assets/stackalt.svg';
 
 # Welcome to MyDataHelps UI
 
-MyDataHelps UI allows you to compose interfaces for MyDataHelps quickly with reusable copmonents.
+[MyDataHelpsUI](https://github.com/CareEvolution/MyDataHelpsUI/) is a set of reusable React-based components based on the [MyDataHelps.js SDK](https://developer.mydatahelps.org/sdk/).This component library allows you to compose interfaces for MyDataHelps quickly with reusable copmonents.
+
+Utilize this component library to accelerate the development of [custom participant views](https://developer.mydatahelps.org/views/) for your digital clinical trial and digital therapeutic application powered by [MyDataHelps platform](https://careevolution.com/mydatahelps/). Integrating MyDataHelpsUI will help you follow best practices for implementing return of results and eCOA within your participant views.
+
+You may also find [MyDataHelpsStarterKit](https://github.com/CareEvolution/MyDataHelpsStarterKit) to be helpful. The starter kit is a react web app template designed for you to be able to fork/clone as a starting point for developing your custom view.
+
+Install via:
+
+```npm install @careevolution/mydatahelps-ui```
+
+### Example of how to use MyDataHelpsUI in your Participant View
+```
+import { Action, Card, Layout, SurveyTaskList } from "@careevolution/mydatahelps-ui"
+
+export default function () {
+  return (
+    <Layout>
+        <Card className='primary-card'>
+            <Action
+            title="Do you think you have COVID-19?"
+            subtitle="It's important to tell us immediately if might have COVID-19.  Click or tap here to report a new infection, symptoms, or close contact."
+            onClick={() => MyDataHelps.startSurvey('New COVID Infection')} />
+        </Card>
+        <Card>
+            <SurveyTaskList status="incomplete" title="Tasks" limit={3} />
+        </Card>
+    </Layout>
+    );
+```
+
+
+[© CareEvolution, LLC](https://developer.mydatahelps.org)
