@@ -1,13 +1,12 @@
 # MyDataHelpsUI
 
-MyDataHelpsUI is a set of reusable React-based components based on the MyDataHelps.js SDK:
-https://github.com/CareEvolution/MyDataHelps.js
+MyDataHelpsUI is a set of reusable React-based components based on the MyDataHelps.js SDK: https://developer.mydatahelps.org/sdk/
+
+Utilize this component library to accelerate the development of [custom participant views](https://developer.mydatahelps.org/views/) for your digital clinical trial and digital therapeutic application powered by [MyDataHelps platform](https://careevolution.com/mydatahelps/). Integrating MyDataHelpsUI will help you follow best practices for implementing return of results and eCOA within your participant views.
 
 Install via:
 
 ```npm install @careevolution/mydatahelps-ui```
-
-Utilize the library to integrate components into your [participant views](https://developer.mydatahelps.org/views/). 
 
 ### Example of how to use MyDataHelpsUI in your Participant View
 ```
