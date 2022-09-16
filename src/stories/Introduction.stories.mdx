@@ -114,7 +114,7 @@ import StackAlt from './assets/stackalt.svg';
   
 `}</style>
 
-# Welcome to MyDataHelps UI
+# Welcome to MyDataHelps UI Storybook
 
 [MyDataHelpsUI](https://github.com/CareEvolution/MyDataHelpsUI/) is a set of reusable React-based components based on the [MyDataHelps.js SDK](https://developer.mydatahelps.org/sdk/).This component library allows you to compose interfaces for MyDataHelps quickly with reusable copmonents.
 
@@ -122,6 +122,7 @@ Utilize this component library to accelerate the development of [custom particip
 
 You may also find [MyDataHelpsStarterKit](https://github.com/CareEvolution/MyDataHelpsStarterKit) to be helpful. The starter kit is a react web app template designed for you to be able to fork/clone as a starting point for developing your custom view.
 
+# Using MyDataHelpsUI in your participant view
 Install via:
 
 ```npm install @careevolution/mydatahelps-ui```
@@ -146,5 +147,21 @@ export default function () {
     );
 ```
 
+# Using Storybook with participant data
+To run Storybook previews with data from one of your test MyDataHelps participants:
+
+1. Clone the [MyDataHelpsUI](https://github.com/CareEvolution/MyDataHelpsUI/) repo
+2. Get a [participant access token](https://developer.mydatahelps.org/sdk/participant_tokens.html) - either using browser dev tools while logged in as a test participant at mydatahelps.org, or by using the REST API.
+    - Hint: if using browser dev tools, examine the response on the request to https://mydatahelps.org/identityserver/connect/token.
+3. Create a .env file in your root directory with the token details
+
+```
+.env
+-----
+PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
+```
+4. Run `npm run storybook` to view the storybook.
+
+If you have issues getting storybook to run, particuarly around the NODE_OPTIONS being used, try upgrading Node to the latest version.
 
 [© CareEvolution, LLC](https://developer.mydatahelps.org)
