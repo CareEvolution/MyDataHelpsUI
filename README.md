@@ -1,6 +1,6 @@
 # MyDataHelpsUI
 
-MyDataHelpsUI is a set of reusable React-based components based on the MyDataHelps.js SDK: https://developer.mydatahelps.org/sdk/
+MyDataHelpsUI is a set of reusable React-based components based on the [MyDataHelps.js SDK](https://developer.mydatahelps.org/sdk/). Explore the component library at [ui.mydatahelps.org](https://ui.mydatahelps.org/).
 
 Utilize this component library to accelerate the development of [custom participant views](https://developer.mydatahelps.org/views/) for your digital clinical trial and digital therapeutic application powered by [MyDataHelps platform](https://careevolution.com/mydatahelps/). Integrating MyDataHelpsUI will help you follow best practices for implementing return of results and eCOA within your participant views.
 
@@ -35,21 +35,21 @@ export default function () {
 
 ## Storybook
 
-This library uses [Storybook](https://storybook.js.org/).  To look at examples, clone this repository and:
+This library uses [Storybook](https://storybook.js.org/). To look at examples, visit [ui.mydatahelps.org](https://ui.mydatahelps.org/).
 
-```npm run storybook```
+To run Storybook previews with data from one of your test MyDataHelps participants:
 
-to view the storybook.
-
-To run Storybook previews with the data from one of your test MyDataHelps participants:
-1. Obtain a participant access token using the MyDataHelps [JavaScript SDK](https://developer.mydatahelps.org/sdk/participant_tokens.html) 
-2. Create a .env file in your root directory with the token details
+1. Clone this repo
+2. Get a [participant access token](https://developer.mydatahelps.org/sdk/participant_tokens.html) - either using browser dev tools while logged in as a test participant at mydatahelps.org, or by using the REST API.
+    - Hint: if using browser dev tools, examine the response on the request to https://mydatahelps.org/identityserver/connect/token.
+3. Create a .env file in your root directory with the token details
 
 ```
 .env
 -----
 PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
 ```
+4. Run `npm run storybook` to view the storybook.
 
 If you have issues getting storybook to run, particuarly around the NODE_OPTIONS being used, try upgrading Node to the latest version.
 
