@@ -18,11 +18,6 @@
 
   * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 
-#### **Do you intend to add or update a visualization or view?**
-
-* Start writing code and testing your visualizations by setting up a MDH project. 
-* Once you've written and tested your changes, open a [new Github pull request](https://github.com/CareEvolution/MyDataHelpsUI/pulls) with the new feature.
-
 #### **Do you have questions about the source code?**
 
 * Ask any question about how to use MyDataHelpsUI by making a post on [our community forum](https://support.mydatahelps.org/hc/en-us/community/topics/4405770479123-Help-Q-A-).
