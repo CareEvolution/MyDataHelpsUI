@@ -47,7 +47,7 @@ export function WithNavigator() {
 	const [selectedDate, setSelectedDate] = useState(currentDate);
 	const [intervalStartDate, setIntervalStartDate] = useState(initialIntervalStart);
 
-	function getDaySparkChart(d: Date) {
+	function getDaySparkChart() {
 		var bars = [
 			{
 				barFillPercent: .5,
@@ -87,7 +87,7 @@ export function WithNavigator() {
 			onIntervalChange={(n, _) => setIntervalStartDate(n)} />
 		<Section>
 			<WeekCalendar hideDateLabel={false}
-				dayRenderer={(d) => getDaySparkChart(d)}
+				dayRenderer={(y, m, d, s) => getDaySparkChart()}
 				loading={false}
 				startDate={intervalStartDate}
 				selectedDate={selectedDate}
