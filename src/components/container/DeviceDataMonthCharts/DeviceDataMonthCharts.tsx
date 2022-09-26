@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import DeviceDataMonthChart from '../DeviceDataMonthChart'
 import language from '../../../helpers/language';
 import { DateRangeNavigator, TextBlock } from '../../presentational';
+import { DefaultDailyDataType } from '../../..';
 
 export interface DeviceDataMonthChartsProps {
 	previewState?: DeviceDataMonthChartsPreviewState
@@ -37,7 +38,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
-						dailyDataType: "FitbitSteps",
+						dailyDataType: DefaultDailyDataType.FitbitSteps,
 						label: language["steps"]
 					}]}
 					title={"Fitbit " + language["steps"]}
@@ -48,7 +49,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
-						dailyDataType: "FitbitRestingHeartRate",
+						dailyDataType: DefaultDailyDataType.FitbitRestingHeartRate,
 						label: language["resting-heart-rate"]
 					}]}
 					title={"Fitbit " + language["resting-heart-rate"]}
@@ -59,7 +60,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
-						dailyDataType: "AppleHealthSteps",
+						dailyDataType: DefaultDailyDataType.AppleHealthSteps,
 						label: language["steps"]
 					}]}
 					title={"Apple Health " + language["steps"]}
@@ -70,7 +71,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
-						dailyDataType: "AppleHealthDistanceWalkingRunning",
+						dailyDataType: DefaultDailyDataType.AppleHealthDistanceWalkingRunning,
 						label: language["distance-traveled"],
 						valueConverter: function (dataPoint: number) {
 							return dataPoint * 0.000621371;
@@ -84,7 +85,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
-						dailyDataType: "GoogleFitSteps",
+						dailyDataType: DefaultDailyDataType.GoogleFitSteps,
 						label: language["steps"]
 					}]}
 					title={"Google Fit " + language["steps"]}
