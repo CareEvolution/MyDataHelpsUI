@@ -88,7 +88,11 @@ export default function (props: DeviceDataMonthChartProps) {
 		}
 
 		if (props.previewState == "NoData") {
-			setDailyData({});
+			var previewData: { [key: string]: { [key: string]: number } } = {};
+			props.lines.forEach((l) => {
+				previewData[l.dailyDataType] = {};
+			})
+			setDailyData(previewData);
 			setLoading(false);
 		}
 		if (props.previewState) { return; }
