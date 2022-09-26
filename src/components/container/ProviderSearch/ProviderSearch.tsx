@@ -6,9 +6,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 
 export interface ProviderSearchProps {
-	previewState?: ProviderSearchPreviewState
+	previewState?: ProviderSearchPreviewState;
 	providerCategories?: string[];
 }
 
@@ -21,12 +22,16 @@ export default function (props: ProviderSearchProps) {
 	const [searchResults, setSearchResults] = useState<ExternalAccountProvider[]>([]);
 	const [searching, setSearching] = useState(true);
 	const [searchString, _setSearchString] = useState("");
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalResults, setTotalResults] = useState(0);
 
 	const searchStringRef = useRef(searchString);
 	const setSearchString = (data: string) => {
 		searchStringRef.current = data;
 		_setSearchString(data);
 	};
+
+	const pageSize = 100;
 
 	function initialize() {
 		if (props.previewState == "Default") {
@@ -51,12 +56,14 @@ export default function (props: ProviderSearchProps) {
 	}
 
 	function performSearch(search: string) {
+		setSearching(true);
 		let requestID = ++currentRequestID;
 
-		MyDataHelps.getExternalAccountProviders(search, null, 0, 0).then(function (searchResults) {
+		MyDataHelps.getExternalAccountProviders(search, null, pageSize, currentPage).then(function (searchResultsResponse) {
 			if (requestID == currentRequestID) {
-				// @ts-ignore
-				setSearchResults(searchResults.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+				var newResults = searchResults.concat(searchResultsResponse.externalAccountProviders.filter(a => props.providerCategories?.indexOf(a.category) != -1));
+				setSearchResults(newResults);
+				setTotalResults(searchResultsResponse.totalExternalAccountProviders);
 				setSearching(false);
 			}
 		});
@@ -74,10 +81,11 @@ export default function (props: ProviderSearchProps) {
 
 	function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
 		setSearchString(event.target.value);
+		setSearchResults([]);
+		setCurrentPage(0);
 		if (props.previewState) {
 			return;
 		}
-		setSearching(true);
 		debouncedPerformSearch(event.target.value);
 	}
 
@@ -93,6 +101,14 @@ export default function (props: ProviderSearchProps) {
 		});
 	}
 
+	function canLoadNextPage() {
+		return pageSize > 0 && (currentPage + 1) * pageSize < totalResults;
+	}
+
+	function loadNextPage() {
+		setCurrentPage(currentPage + 1);
+	}
+
 	useEffect(() => {
 		initialize();
 		MyDataHelps.on("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
@@ -100,6 +116,12 @@ export default function (props: ProviderSearchProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!searching) {
+			performSearch(searchStringRef.current)
+		}
+	}, [currentPage]);
 
 	return (
 		<div className="mdhui-provider-search">
@@ -110,10 +132,7 @@ export default function (props: ProviderSearchProps) {
 				</div>
 			</div>
 			<div className="search-results">
-				{searching &&
-					<LoadingIndicator />
-				}
-				{!searching && searchResults.map((provider) =>
+				{searchResults && searchResults.map((provider) =>
 					<div key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
 						{provider.logoUrl &&
 							<div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
@@ -129,7 +148,11 @@ export default function (props: ProviderSearchProps) {
 						</div>
 					</div>
 				)}
+				{searching &&
+					<LoadingIndicator />
+				}
 			</div>
+			<OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>
 		</div>
 	);
 }
