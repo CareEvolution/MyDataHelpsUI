@@ -20,7 +20,7 @@ export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
 	return dailyDataType.availabilityCheck(modifiedAfter);
 }
 
-export default function (type: string, startDate: Date, endDate: Date) {
+export default function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	var dailyDataType = dailyDataTypes[type];
 	return dailyDataType.provider(startDate, endDate).then(function (data) {
 		var result: DailyDataQueryResult = {};
