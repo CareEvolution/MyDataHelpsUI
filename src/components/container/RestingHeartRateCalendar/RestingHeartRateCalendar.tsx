@@ -6,7 +6,7 @@ import { getPreviewData } from '../DeviceDataMonthChart/DeviceDataMonthChart.pre
 import { add } from 'date-fns';
 import "./RestingHeartRateCalendar.css";
 import getDayKey from '../../../helpers/get-day-key';
-import queryDailyData, { DailyDataType } from '../../../helpers/query-daily-data';
+import { queryDailyData, DailyDataType } from '../../../helpers/query-daily-data';
 
 type HeartRateMap = { [key: string]: number };
 

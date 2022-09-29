@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
-import queryDailyData, { checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
+import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
 
 export interface DeviceDataMonthChartProps {
