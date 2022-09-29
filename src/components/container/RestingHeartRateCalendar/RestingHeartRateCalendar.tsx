@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Calendar from '../../presentational/Calendar';
-import MyDataHelps, { DeviceDataPoint } from "@careevolution/mydatahelps-js"
+import MyDataHelps from "@careevolution/mydatahelps-js"
 import { LoadingIndicator } from '../../presentational';
 import { getPreviewData } from '../DeviceDataMonthChart/DeviceDataMonthChart.previewdata';
 import { add } from 'date-fns';
 import "./RestingHeartRateCalendar.css";
+import getDayKey from '../../../helpers/get-day-key';
+import queryDailyData, { DailyDataType } from '../../../helpers/query-daily-data';
 
-type HeartRateMap = { [key: string]: number[] };
+type HeartRateMap = { [key: string]: number };
 
 export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading";
 
@@ -23,44 +25,10 @@ export default function (props: RestingHeartRateCalendarProps) {
 	var monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
 	var monthEnd = add(monthStart, { months: 1 });
 
-	function getAppleHeartRates() {
-		return MyDataHelps.queryDeviceData({
-			namespace: 'AppleHealth',
-			type: ['RestingHeartRate'],
-			observedAfter: add(monthStart, { days: -3 }).toISOString(),
-			observedBefore: add(monthEnd, { days: 1 }).toISOString()
-		});
-	}
-
-	function getFitbitHeartRates() {
-		return MyDataHelps.queryDeviceData({
-			namespace: 'Fitbit',
-			type: ['RestingHeartRate'],
-			observedAfter: add(monthStart, { days: -3 }).toISOString(),
-			observedBefore: add(monthEnd, { days: 1 }).toISOString()
-		});
-	}
-
 	function getRestingHeartRates() {
-		return Promise.all([getAppleHeartRates(), getFitbitHeartRates()]).then(function (heartRates) {
-			var result = parseRestingHeartRates(heartRates[0].deviceDataPoints.concat(heartRates[1].deviceDataPoints));
+		return queryDailyData(DailyDataType.RestingHeartRate, monthStart, monthEnd).then(function (result) {
 			setHeartRates(result);
 		});
-	}
-
-	function parseRestingHeartRates(heartRates: DeviceDataPoint[]) {
-		var result: HeartRateMap = {};
-		heartRates.forEach(function (heartRate) {
-			var startDate = heartRate.startDate?.substring(0, 10);
-			if (startDate) {
-				if (!result[startDate]) {
-					result[startDate] = [];
-				}
-				result[startDate].push(parseFloat(heartRate.value));
-			}
-		});
-
-		return result;
 	}
 
 	function getHeartRate(year: number, month: number, day?: number): number | undefined {
@@ -68,13 +36,8 @@ export default function (props: RestingHeartRateCalendarProps) {
 			return undefined;
 		}
 
-		var dateString = new Date(year, month, day).toJSON().substring(0, 10);
-		var heartRatesForDay = heartRates[dateString];
-		if (!heartRatesForDay) {
-			return undefined;
-		}
-
-		return Math.round(heartRatesForDay.reduce((previousValue, currentValue) => previousValue + currentValue, 0) / heartRatesForDay.length);
+		var dateString = getDayKey(new Date(year, month, day));
+		return heartRates[dateString];
 	}
 
 	function renderDay(year: number, month: number, day?: number): JSX.Element {
@@ -95,9 +58,9 @@ export default function (props: RestingHeartRateCalendarProps) {
 				setLoading(true);
 			}
 			else if (props.showPreviewData === "WithData") {
-				var previewData = getPreviewData("RestingHeartRate", "Fitbit", props.year, props.month);
+				var previewData = getPreviewData("FitbitRestingHeartRates", props.year, props.month);
 				if (previewData) {
-					setHeartRates(parseRestingHeartRates(previewData));
+					setHeartRates(previewData);
 				}
 			}
 		}
@@ -117,7 +80,6 @@ export default function (props: RestingHeartRateCalendarProps) {
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
 	}, [props]);
-
 
 	return (
 		<div>

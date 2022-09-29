@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { DateRangeNavigator } from '../../presentational';
 import DeviceDataMonthChart from '../DeviceDataMonthChart'
 import language from '../../../helpers/language';
+import { DailyDataType } from '../../../helpers/query-daily-data';
 
 export interface FitbitMonthChartsProps {
 	previewState?: FitbitMonthChartsPreviewState
@@ -32,29 +33,19 @@ export default function (props: FitbitMonthChartsProps) {
 				previewState={props.previewState == "connected" ? "WithData" : props.previewState == "notEnabled" || props.previewState == "notConnected" ? "NoData" : undefined }
 				lines={[{
 					showAverage: true,
-					deviceDataPointType: "Steps",
-					label: language["steps"],
-					displayByDate: "start",
-					ignoreDateOffsets: true,
-					ignoreZeros: true,
-					aggregation: "Average"
+					dailyDataType: DailyDataType.FitbitSteps,
+					label: language["steps"]
 				}]}
 				title={language["steps"]}
 				syncId="fitbit"
-				namespace="Fitbit"
 				month={month}
 				year={year} />
 			<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 				previewState={props.previewState == "connected" ? "WithData" : props.previewState == "notEnabled" || props.previewState == "notConnected" ? "NoData" : undefined }
-				namespace="Fitbit"
 				lines={[{
 					showAverage: true,
-					deviceDataPointType: "RestingHeartRate",
-					label: language["resting-heart-rate"],
-					displayByDate: "start",
-					ignoreDateOffsets: true,
-					ignoreZeros: true,
-					aggregation: "Average"
+					dailyDataType: DailyDataType.FitbitRestingHeartRate,
+					label: language["resting-heart-rate"]
 				}]}
 				title={language["resting-heart-rate"]}
 				month={month}
