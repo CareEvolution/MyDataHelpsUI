@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataMonthChart, { DeviceDataMonthChartProps } from "./DeviceDataMonthChart"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { DefaultDailyDataType } from "../../../helpers/query-daily-data"
+import { DailyDataType } from "../../../helpers/query-daily-data"
 
 export default {
 	title: "Container/DeviceDataMonthChart",
@@ -28,7 +28,7 @@ Loading.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 		showAverage: true,
-		dailyDataType: DefaultDailyDataType.FitbitSteps,
+		dailyDataType: DailyDataType.FitbitSteps,
 		label: "Steps"
 	}],
 	syncId: "Fitbit"
@@ -42,7 +42,7 @@ FitbitSteps.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 			showAverage: true,
-			dailyDataType: DefaultDailyDataType.FitbitSteps,
+			dailyDataType: DailyDataType.FitbitSteps,
 			label: "Steps"
 		}],
 	syncId: "Fitbit"
@@ -55,7 +55,7 @@ NoData.args = {
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
-		dailyDataType: DefaultDailyDataType.FitbitRestingHeartRate,
+		dailyDataType: DailyDataType.FitbitRestingHeartRate,
 		showAverage: true,
 		label: "Steps",
 	}],

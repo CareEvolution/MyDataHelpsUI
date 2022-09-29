@@ -48,7 +48,7 @@ function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | 
 	}
 }
 
-export enum DefaultDailyDataType {
+export enum DailyDataType {
 	AppleHealthDistanceWalkingRunning = "AppleHealthDistanceWalkingRunning",
 	AppleHealthFlightsClimbed = "AppleHealthFlightsClimbed",
 	AppleHealthHeartRateRange = "AppleHealthHeartRateRange",
@@ -82,37 +82,37 @@ export enum DefaultDailyDataType {
 	GoogleFitSteps = "GoogleFitSteps"
 };
 
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthDistanceWalkingRunning, appleHealthDistanceDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyDistanceWalkingRunning"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthFlightsClimbed, appleHealthFlightsClimbedDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthHeartRateRange, appleHealthHeartRateRangeDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthHrv, appleHealthHrvDataProvider, simpleAvailabilityCheck("AppleHealth", ["HeartRateVariability"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthMaxHeartRate, appleHealthMaxHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthRestingHeartRate, appleHealthRestingHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthSleepMinutes, appleHealthSleepDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthInBedMinutes, appleHealthInBedDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthStandMinutes, appleHealthStandTimeDataProvider, simpleAvailabilityCheck("AppleHealth", ["AppleStandTime"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthSteps, appleHealthStepsDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
-registerDailyDataProvider(DefaultDailyDataType.AppleHealthWalkingHeartRateAverage, appleHealthWalkingHeartRateAverageDataProvider, simpleAvailabilityCheck("AppleHealth", ["WalkingHeartRateAverage"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitActiveMinutes, fitbitTotalActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitLightlyActiveMinutes, fitbitLightlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesLightlyActive"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitFairlyActiveMinutes, fitbitFairlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesFairlyActive"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitVeryActiveMinutes, fitbitVeryActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitBreathingRate, fitbitBreathingRateDataProvider, simpleAvailabilityCheck("Fitbit", ["BreathingRate"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitCaloriesBurned, fitbitCaloriesBurnedDataProvider, simpleAvailabilityCheck("Fitbit", ["Calories"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitElevatedHeartRateMinutes, fitbitElevatedHeartRateMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitFatBurnHeartRateMinutes, fitbitFatBurnMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitCardioHeartRateMinutes, fitbitCardioMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitPeakHeartRateMinutes, fitbitPeakMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitFloors, fitbitFloorsDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitHrv, fitbitHrvDataProvider, simpleAvailabilityCheck("Fitbit", ["Floors"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitRestingHeartRate, fitbitRestingHeartRateDataProvider, simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitSleepMinutes, fitbitTotalSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitLightSleepMinutes, fitbitLightSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelLight"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitRemSleepMinutes, fitbitRemSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelRem"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitDeepSleepMinutes, fitbitDeepSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelDeep"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitSpO2, fitbitSpO2DataProvider, simpleAvailabilityCheck("Fitbit", ["SpO2"]));
-registerDailyDataProvider(DefaultDailyDataType.FitbitSteps, fitbitStepsDataProvider, simpleAvailabilityCheck("Fitbit", ["Steps"]));
-registerDailyDataProvider(DefaultDailyDataType.GoogleFitSteps, googleFitStepsDataProvider, simpleAvailabilityCheck("GoogleFit", ["Steps"]));
+registerDailyDataProvider(DailyDataType.AppleHealthDistanceWalkingRunning, appleHealthDistanceDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyDistanceWalkingRunning"]));
+registerDailyDataProvider(DailyDataType.AppleHealthFlightsClimbed, appleHealthFlightsClimbedDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
+registerDailyDataProvider(DailyDataType.AppleHealthHeartRateRange, appleHealthHeartRateRangeDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]));
+registerDailyDataProvider(DailyDataType.AppleHealthHrv, appleHealthHrvDataProvider, simpleAvailabilityCheck("AppleHealth", ["HeartRateVariability"]));
+registerDailyDataProvider(DailyDataType.AppleHealthMaxHeartRate, appleHealthMaxHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]));
+registerDailyDataProvider(DailyDataType.AppleHealthRestingHeartRate, appleHealthRestingHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"]));
+registerDailyDataProvider(DailyDataType.AppleHealthSleepMinutes, appleHealthSleepDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
+registerDailyDataProvider(DailyDataType.AppleHealthInBedMinutes, appleHealthInBedDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
+registerDailyDataProvider(DailyDataType.AppleHealthStandMinutes, appleHealthStandTimeDataProvider, simpleAvailabilityCheck("AppleHealth", ["AppleStandTime"]));
+registerDailyDataProvider(DailyDataType.AppleHealthSteps, appleHealthStepsDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
+registerDailyDataProvider(DailyDataType.AppleHealthWalkingHeartRateAverage, appleHealthWalkingHeartRateAverageDataProvider, simpleAvailabilityCheck("AppleHealth", ["WalkingHeartRateAverage"]));
+registerDailyDataProvider(DailyDataType.FitbitActiveMinutes, fitbitTotalActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]));
+registerDailyDataProvider(DailyDataType.FitbitLightlyActiveMinutes, fitbitLightlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesLightlyActive"]));
+registerDailyDataProvider(DailyDataType.FitbitFairlyActiveMinutes, fitbitFairlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesFairlyActive"]));
+registerDailyDataProvider(DailyDataType.FitbitVeryActiveMinutes, fitbitVeryActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive"]));
+registerDailyDataProvider(DailyDataType.FitbitBreathingRate, fitbitBreathingRateDataProvider, simpleAvailabilityCheck("Fitbit", ["BreathingRate"]));
+registerDailyDataProvider(DailyDataType.FitbitCaloriesBurned, fitbitCaloriesBurnedDataProvider, simpleAvailabilityCheck("Fitbit", ["Calories"]));
+registerDailyDataProvider(DailyDataType.FitbitElevatedHeartRateMinutes, fitbitElevatedHeartRateMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
+registerDailyDataProvider(DailyDataType.FitbitFatBurnHeartRateMinutes, fitbitFatBurnMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
+registerDailyDataProvider(DailyDataType.FitbitCardioHeartRateMinutes, fitbitCardioMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
+registerDailyDataProvider(DailyDataType.FitbitPeakHeartRateMinutes, fitbitPeakMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
+registerDailyDataProvider(DailyDataType.FitbitFloors, fitbitFloorsDataProvider, simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]));
+registerDailyDataProvider(DailyDataType.FitbitHrv, fitbitHrvDataProvider, simpleAvailabilityCheck("Fitbit", ["Floors"]));
+registerDailyDataProvider(DailyDataType.FitbitRestingHeartRate, fitbitRestingHeartRateDataProvider, simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"]));
+registerDailyDataProvider(DailyDataType.FitbitSleepMinutes, fitbitTotalSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]));
+registerDailyDataProvider(DailyDataType.FitbitLightSleepMinutes, fitbitLightSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelLight"]));
+registerDailyDataProvider(DailyDataType.FitbitRemSleepMinutes, fitbitRemSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelRem"]));
+registerDailyDataProvider(DailyDataType.FitbitDeepSleepMinutes, fitbitDeepSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelDeep"]));
+registerDailyDataProvider(DailyDataType.FitbitSpO2, fitbitSpO2DataProvider, simpleAvailabilityCheck("Fitbit", ["SpO2"]));
+registerDailyDataProvider(DailyDataType.FitbitSteps, fitbitStepsDataProvider, simpleAvailabilityCheck("Fitbit", ["Steps"]));
+registerDailyDataProvider(DailyDataType.GoogleFitSteps, googleFitStepsDataProvider, simpleAvailabilityCheck("GoogleFit", ["Steps"]));
 
 //Currently combined steps does not include google fit
 registerDailyDataProvider("Steps", combinedStepsDataProvider, function (modifiedAfter?: Date) {
