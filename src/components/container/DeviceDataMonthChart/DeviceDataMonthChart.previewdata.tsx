@@ -1,54 +1,31 @@
-import { DeviceDataNamespace, DeviceDataPoint } from "@careevolution/mydatahelps-js";
 import add from 'date-fns/add'
+import getDayKey from "../../../helpers/get-day-key";
 
-export function getPreviewData(deviceDataType: string, deviceDataNamespace: DeviceDataNamespace, year: number, month: number) {
-	if (deviceDataNamespace == "Fitbit") {
-		if (deviceDataType == "Steps") {
-			return getPreviewFitbitSteps(year, month);
-		}
-		if (deviceDataType == "RestingHeartRate") {
-			return getPreviewFitbitRestingHeartRates(year, month);
-		}
+export function getPreviewData(dailyDataType: string, year: number, month: number) {
+	if (dailyDataType == "FitbitSteps") {
+		return getPreviewFitbitSteps(year, month);
 	}
-	if (deviceDataNamespace == "AppleHealth") {
-		if (deviceDataType == "HourlySteps") {
-			return getPreviewAppleHealthSteps(year, month);
-		}
-		if (deviceDataType == "HourlyDistanceWalkingRunning") {
-			return getPreviewAppleHealthDistance(year, month);
-		}
+	if (dailyDataType == "FitbitRestingHeartRates") {
+		return getPreviewFitbitRestingHeartRates(year, month);
 	}
-	if (deviceDataNamespace == "GoogleFit") {
-		if (deviceDataType == "Steps") {
-			return getPreviewGoogleFitSteps(year, month);
-		}
+	if (dailyDataType == "AppleHealthSteps") {
+		return getPreviewFitbitRestingHeartRates(year, month);
 	}
+	if (dailyDataType == "AppleHealthDistanceRunningWalking") {
+		return getPreviewAppleHealthDistance(year, month);
+	}
+	if (dailyDataType == "GoogleFitSteps") {
+		return getPreviewGoogleFitSteps(year, month);
+	}
+	return getPreviewFitbitSteps(year, month);
 }
 
 function getPreviewFitbitSteps(year: number, month: number) {
 	var date = new Date(year, month, 1, 0, 0, 0, 0);
-
 	var monthEnd = add(date, { months: 1 });
-
-	var result: DeviceDataPoint[] = [];
+	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result.push({
-			id: "1",
-			identifier: "1",
-			// @ts-ignore
-			observationDate: add(date, { days: 1 }).toISOString(),
-			namespace: "Fitbit",
-			insertedDate: "empty",
-			modifiedDate: "empty",
-			properties: {},
-			source: {
-				identifier: "empty",
-				properties: {}
-			},
-			type: "Steps",
-			value: (3000 + Math.floor(Math.random() * 10000)).toString(),
-			startDate: date.toISOString()
-		})
+		result[getDayKey(date)] = (3000 + Math.floor(Math.random() * 10000));
 		date = add(date, { days: 1 });
 	}
 	return result;
@@ -56,28 +33,10 @@ function getPreviewFitbitSteps(year: number, month: number) {
 
 function getPreviewFitbitRestingHeartRates(year: number, month: number) {
 	var date = new Date(year, month, 1, 0, 0, 0, 0);
-
 	var monthEnd = add(date, { months: 1 });
-
-	var result: DeviceDataPoint[] = [];
+	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result.push({
-			id: "1",
-			identifier: "1",
-			// @ts-ignore
-			observationDate: add(date, { days: 1 }).toISOString(),
-			namespace: "Fitbit",
-			insertedDate: "empty",
-			modifiedDate: "empty",
-			properties: {},
-			source: {
-				identifier: "empty",
-				properties: {}
-			},
-			type: "RestingHeartRate",
-			value: (60 + Math.floor(Math.random() * 5)).toString(),
-			startDate: date.toISOString()
-		});
+		result[getDayKey(date)] = (60 + Math.floor(Math.random() * 5));
 		date = add(date, { days: 1 });
 	}
 	return result;
@@ -86,28 +45,10 @@ function getPreviewFitbitRestingHeartRates(year: number, month: number) {
 
 function getPreviewAppleHealthSteps(year: number, month: number) {
 	var date = new Date(year, month, 1, 0, 0, 0, 0);
-
 	var monthEnd = add(date, { months: 1 });
-
-	var result: DeviceDataPoint[] = [];
+	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result.push({
-			id: "1",
-			identifier: "1",
-			// @ts-ignore
-			observationDate: add(date, { hours: 1 }).toISOString(),
-			namespace: "AppleHealth",
-			insertedDate: "empty",
-			modifiedDate: "empty",
-			properties: {},
-			source: {
-				identifier: "empty",
-				properties: {}
-			},
-			type: "HourlySteps",
-			value: (Math.floor(Math.random() * 500)).toString(),
-			startDate: date.toISOString()
-		})
+		result[getDayKey(date)] = (Math.floor(Math.random() * 500));
 		date = add(date, { hours: 1 });
 	}
 	return result;
@@ -119,26 +60,9 @@ function getPreviewAppleHealthDistance(year: number, month: number) {
 
 	var monthEnd = add(date, { months: 1 });
 
-	var result: DeviceDataPoint[] = [];
+	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result.push({
-			id: "1",
-			identifier: "1",
-			// @ts-ignore
-			observationDate: add(date, { hours: 1 }).toISOString(),
-			namespace: "AppleHealth",
-			insertedDate: "empty",
-			modifiedDate: "empty",
-			properties: {},
-			source: {
-				identifier: "empty",
-				properties: {}
-			},
-			type: "HourlyDistanceWalkingRunning",
-			value: (Math.floor(Math.random() * 500)).toString(),
-			startDate: date.toISOString(),
-			units: "m"
-		})
+		result[getDayKey(date)] = (Math.floor(Math.random() * 500));
 		date = add(date, { hours: 1 });
 	}
 	return result;
@@ -149,25 +73,9 @@ function getPreviewGoogleFitSteps(year: number, month: number) {
 
 	var monthEnd = add(date, { months: 1 });
 
-	var result: DeviceDataPoint[] = [];
+	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result.push({
-			id: "1",
-			identifier: "1",
-			// @ts-ignore
-			observationDate: add(date, { hours: 1 }).toISOString(),
-			namespace: "GoogleFit",
-			insertedDate: "empty",
-			modifiedDate: "empty",
-			properties: {},
-			source: {
-				identifier: "empty",
-				properties: {}
-			},
-			type: "Steps",
-			value: (Math.floor(Math.random() * 500)).toString(),
-			startDate: date.toISOString()
-		})
+		result[getDayKey(date)] = (Math.floor(Math.random() * 500));
 		date = add(date, { hours: 1 });
 	}
 	return result;

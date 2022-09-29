@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import DeviceDataMonthChart from '../DeviceDataMonthChart'
 import language from '../../../helpers/language';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { DateRangeNavigator, TextBlock } from '../../presentational';
+import { DailyDataType } from '../../..';
 
 export interface DeviceDataMonthChartsProps {
 	previewState?: DeviceDataMonthChartsPreviewState
@@ -36,15 +36,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 				<DateRangeNavigator intervalType="Month" intervalStart={intervalStart} onIntervalChange={updateInterval} />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="Fitbit"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "Steps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: true,
-						ignoreZeros: true,
-						aggregation: "Average"
+						dailyDataType: DailyDataType.FitbitSteps,
+						label: language["steps"]
 					}]}
 					title={"Fitbit " + language["steps"]}
 					month={month}
@@ -52,15 +47,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="Fitbit"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "RestingHeartRate",
-						label: language["resting-heart-rate"],
-						displayByDate: "start",
-						ignoreDateOffsets: true,
-						ignoreZeros: true,
-						aggregation: "Average"
+						dailyDataType: DailyDataType.FitbitRestingHeartRate,
+						label: language["resting-heart-rate"]
 					}]}
 					title={"Fitbit " + language["resting-heart-rate"]}
 					month={month}
@@ -68,15 +58,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="AppleHealth"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "HourlySteps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum"
+						dailyDataType: DailyDataType.AppleHealthSteps,
+						label: language["steps"]
 					}]}
 					title={"Apple Health " + language["steps"]}
 					month={month}
@@ -84,20 +69,12 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="AppleHealth"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "HourlyDistanceWalkingRunning",
+						dailyDataType: DailyDataType.AppleHealthDistanceWalkingRunning,
 						label: language["distance-traveled"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum",
-						valueConverter: function (dataPoint: DeviceDataPoint) {
-							if (dataPoint.units == "m") {
-								return parseFloat(dataPoint.value) * 0.000621371;
-							}
-							return null;
+						valueConverter: function (dataPoint: number) {
+							return dataPoint * 0.000621371;
 						}
 					}]}
 					title={"Apple Health " + language["distance-traveled"] + " (Miles)"}
@@ -106,15 +83,10 @@ export default function (props: DeviceDataMonthChartsProps) {
 					syncId="DeviceDataCharts" />
 				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					namespace="GoogleFit"
 					lines={[{
 						showAverage: true,
-						deviceDataPointType: "Steps",
-						label: language["steps"],
-						displayByDate: "start",
-						ignoreDateOffsets: false,
-						ignoreZeros: true,
-						aggregation: "Sum"
+						dailyDataType: DailyDataType.GoogleFitSteps,
+						label: language["steps"]
 					}]}
 					title={"Google Fit " + language["steps"]}
 					month={month}

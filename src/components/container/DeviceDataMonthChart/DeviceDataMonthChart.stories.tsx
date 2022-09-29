@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataMonthChart, { DeviceDataMonthChartProps } from "./DeviceDataMonthChart"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { DailyDataType } from "../../../helpers/query-daily-data"
 
 export default {
 	title: "Container/DeviceDataMonthChart",
@@ -27,14 +28,9 @@ Loading.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 		showAverage: true,
-		deviceDataPointType: "Steps",
-		label: "Steps",
-		displayByDate: "start",
-		ignoreDateOffsets: true,
-		ignoreZeros: true,
-		aggregation: "Average"
+		dailyDataType: DailyDataType.FitbitSteps,
+		label: "Steps"
 	}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };
 
@@ -46,14 +42,9 @@ FitbitSteps.args = {
 	year: new Date().getFullYear(),
 	lines: [{
 			showAverage: true,
-			deviceDataPointType: "Steps",
-			label: "Steps",
-			displayByDate: "start",
-			ignoreDateOffsets: true,
-			ignoreZeros: true,
-			aggregation: "Average"
+			dailyDataType: DailyDataType.FitbitSteps,
+			label: "Steps"
 		}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };
 
@@ -64,14 +55,9 @@ NoData.args = {
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
+		dailyDataType: DailyDataType.FitbitRestingHeartRate,
 		showAverage: true,
-		deviceDataPointType: "Steps",
 		label: "Steps",
-		displayByDate: "start",
-		ignoreDateOffsets: true,
-		ignoreZeros: true,
-		aggregation: "Average"
 	}],
-	namespace: "Fitbit",
 	syncId: "Fitbit"
 };
