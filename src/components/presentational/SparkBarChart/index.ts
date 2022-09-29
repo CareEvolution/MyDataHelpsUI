@@ -1,1 +1,1 @@
-export { default } from "./SparkBarChart";
+export { default, SparkBarChartBar } from "./SparkBarChart";

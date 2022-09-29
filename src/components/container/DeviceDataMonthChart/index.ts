@@ -1,1 +1,1 @@
-export { default } from "./DeviceDataMonthChart";
+export { default, DeviceDataChartLine } from "./DeviceDataMonthChart";

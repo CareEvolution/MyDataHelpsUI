@@ -1,6 +1,6 @@
 export { default as ConnectEhr } from "./ConnectEhr"
 export { default as ConnectFitbit } from "./ConnectFitbit"
-export { default as DeviceDataMonthChart } from "./DeviceDataMonthChart"
+export { default as DeviceDataMonthChart, DeviceDataChartLine } from "./DeviceDataMonthChart"
 export { default as DeviceDataMonthCharts } from "./DeviceDataMonthCharts"
 export { default as ExternalAccountList } from "./ExternalAccountList"
 export { default as ExternalAccountsPreview } from "./ExternalAccountsPreview"
