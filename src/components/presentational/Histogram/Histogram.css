@@ -1,25 +1,41 @@
-﻿.mdhui-histogram {
+﻿.mdhui-histogram
+{
     padding: 16px;
 }
 
-.mdhui-histogram-entry {
-    padding-top: 8px;
-    font-size: 15px;
-}
+    .mdhui-histogram .mdhui-histogram-entry
+    {
+        padding-top: 8px;
+        font-size: 15px;
+    }
 
-.mdhui-histogram-entry-bar-wrapper {
-    display: flex;
-}
+        .mdhui-histogram .mdhui-histogram-entry.mdhui-histogram-entry-clickable
+        {
+            cursor: pointer;
+        }
 
-.mdhui-histogram-entry-bar {
-    position: relative;
-    height: 16px;
-    border-radius: 8px;
-}
+            .mdhui-histogram .mdhui-histogram-entry.mdhui-histogram-entry-clickable .mdhui-histogram-entry-label
+            {
+                text-decoration: underline;
+                color: #429bdf;
+            }
 
-.mdhui-histogram-entry-value {
-    padding-left: 4px;
-    line-height: 16px;
-    font-size: 12px;
-    font-weight: bold;
-}
+    .mdhui-histogram .mdhui-histogram-entry-bar-wrapper
+    {
+        display: flex;
+    }
+
+    .mdhui-histogram .mdhui-histogram-entry-bar
+    {
+        position: relative;
+        height: 16px;
+        border-radius: 8px;
+    }
+
+    .mdhui-histogram .mdhui-histogram-entry-value
+    {
+        padding-left: 4px;
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: bold;
+    }
