@@ -9,6 +9,14 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
+const limitBytes = 1e6
+
+const onAnalysis = ({ bundleSize }) => {
+	if (bundleSize < limitBytes) return
+	console.log(`Bundle size exceeds ${limitBytes/1024} kb: ${bundleSize/1024} kb`)
+	return process.exit(1)
+}
+
 export default [
 	{
 		input: "src/index.ts",
@@ -32,7 +40,7 @@ export default [
 			postcss(),
 			terser(),
 			image(),
-			analyze({ summaryOnly: true })
+			analyze({ onAnalysis, summaryOnly: true })
 		]
 	},
 	{
