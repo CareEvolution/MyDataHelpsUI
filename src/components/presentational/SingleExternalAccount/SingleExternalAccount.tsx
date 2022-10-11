@@ -1,4 +1,6 @@
-import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh';
+import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat';
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';

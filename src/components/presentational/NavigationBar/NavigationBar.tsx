@@ -2,7 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react'
 import "./NavigationBar.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import language from "../../../helpers/language"
 
 export interface NavigationBarProps {

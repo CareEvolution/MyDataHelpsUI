@@ -4,6 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
+import analyze from 'rollup-plugin-analyzer';
 
 const packageJson = require("./package.json");
 
@@ -32,7 +33,8 @@ export default [
 			typescript({ tsconfig: "./tsconfig.json", sourceMap: false }),
 			postcss(),
 			terser(),
-			image()
+			image(),
+			analyze({ summaryOnly: true })
 		]
 	},
 	{

@@ -2,20 +2,21 @@ import React from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faChevronRight, faCircleCheck, faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons'
-import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons/faCircleCheck'
+import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons/faCircleHalfStroke'
+import { faCircle } from '@fortawesome/free-regular-svg-icons/faCircle'
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import parseISO from 'date-fns/parseISO'
 import add from 'date-fns/add'
-import { format, isAfter } from 'date-fns'
+import { isAfter } from 'date-fns'
 import language from '../../../helpers/language'
 import { enUS, es } from 'date-fns/locale'
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
-	descriptionIcon?: IconDefinition,
+	descriptionIcon?: React.ReactNode;
 	hideDueDate?: boolean,
 	disableClick?: boolean
 }
@@ -50,7 +51,7 @@ export default function (props: SingleSurveyTaskProps) {
 	} else {
 		var timeDifference;
 		var dueDateFormatted = new Date(props.task.dueDate);
-		timeDifference = formatDistanceToNow(dueDateFormatted, {locale: locale});
+		timeDifference = formatDistanceToNow(dueDateFormatted, { locale: locale });
 		dueDateString = language["due-in"] + " " + timeDifference;
 	}
 
