@@ -1,8 +1,9 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
 import "./Action.css"
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export interface ActionProps {
 	title?: string;
@@ -29,7 +30,7 @@ export default function (props: ActionProps) {
 			}
 			{props.children}
 			<div className="indicator">
-				<FontAwesomeIcon icon={indicatorIcon} />
+				<FontAwesomeSvgIcon icon={indicatorIcon} />
 			</div>
 		</div>
 	);

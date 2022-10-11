@@ -2,8 +2,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ActivityMeter, { ActivityMeterProps } from "./ActivityMeter";
 import Layout from "../Layout"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBed, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faShoePrints } from "@fortawesome/free-solid-svg-icons/faShoePrints";
+import { faBed } from "@fortawesome/free-solid-svg-icons/faBed";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export default {
 	title: "Presentational/ActivityMeter",
@@ -26,7 +28,7 @@ Sleep.args = {
 	fillPercent: .6,
 	averageFillPercent: .5,
 	color: "#7b88c6",
-	icon: <FontAwesomeIcon icon={faBed} />,
+	icon: <FontAwesomeSvgIcon icon={faBed} />,
 	label: "Sleep",
 	value: "8h 5m",
 	message: "Above average"
@@ -37,7 +39,7 @@ Steps.args = {
 	fillPercent: .4,
 	averageFillPercent: .5,
 	color: "#f5b722",
-	icon: <FontAwesomeIcon icon={faShoePrints} rotate={270} />,
+	icon: <FontAwesomeSvgIcon icon={faShoePrints} rotate={270} />,
 	label: "Steps",
 	value: "5,251",
 	message: "Below average"

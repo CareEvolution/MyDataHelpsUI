@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { DeviceDataPointQuery } from "@careevolution/mydatahelps-js"
 import "./FitbitDevices.css"
 import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from '@fortawesome/free-solid-svg-icons';
+import { faBatteryEmpty } from "@fortawesome/free-solid-svg-icons/faBatteryEmpty"
+import { faBatteryFull } from "@fortawesome/free-solid-svg-icons/faBatteryFull"
+import { faBatteryHalf } from "@fortawesome/free-solid-svg-icons/faBatteryHalf"
+import { faBatteryQuarter } from "@fortawesome/free-solid-svg-icons/faBatteryQuarter"
+import { faWeightScale } from "@fortawesome/free-solid-svg-icons/faWeightScale"
 import formatRelative from 'date-fns/formatRelative'
 import parseISO from 'date-fns/parseISO'
 import * as FeatherIcon from 'react-feather'
 import { fitbitDevicePreviewData } from './FitbitDevices.previewdata';
 import { enUS, es } from 'date-fns/locale';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export interface FitbitDevicesProps {
 	previewState?: FitbitDevicesPreviewState;
@@ -26,8 +31,7 @@ export default function (props: FitbitDevicesProps) {
 			return;
 		}
 
-		if (props.previewState == "notEnabled" || props.previewState == "notConnected")
-		{
+		if (props.previewState == "notEnabled" || props.previewState == "notConnected") {
 			setFitbitDevices([]);
 			return;
 		}
@@ -68,7 +72,7 @@ export default function (props: FitbitDevicesProps) {
 					}
 					{device.properties?.Type == 'SCALE' &&
 						<div className="device-icon">
-							<FontAwesomeIcon icon={faWeightScale} />
+							<FontAwesomeSvgIcon icon={faWeightScale} />
 						</div>
 					}
 					<div className="device-info">
@@ -77,28 +81,28 @@ export default function (props: FitbitDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-							{language["last-sync"]} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
+								{language["last-sync"]} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
 							</div>
 						}
 					</div>
 					{device.properties?.Battery == 'Empty' &&
 						<div className="battery-icon battery-empty">
-							<FontAwesomeIcon icon={faBatteryEmpty} transform={{ rotate: -90 }} />
+							<FontAwesomeSvgIcon icon={faBatteryEmpty} rotate={-90} />
 						</div>
 					}
 					{device.properties?.Battery == 'Low' &&
 						<div className="battery-icon battery-low">
-							<FontAwesomeIcon icon={faBatteryQuarter} transform={{ rotate: -90 }} />
+							<FontAwesomeSvgIcon icon={faBatteryQuarter} rotate={-90} />
 						</div>
 					}
 					{device.properties?.Battery == 'Medium' &&
 						<div className="battery-icon battery-medium">
-							<FontAwesomeIcon icon={faBatteryHalf} transform={{ rotate: -90 }} />
+							<FontAwesomeSvgIcon icon={faBatteryHalf} rotate={-90} />
 						</div>
 					}
 					{device.properties?.Battery == 'High' &&
 						<div className="battery-icon battery-high">
-							<FontAwesomeIcon icon={faBatteryFull} transform={{ rotate: -90 }} />
+							<FontAwesomeSvgIcon icon={faBatteryFull} rotate={-90} />
 						</div>
 					}
 				</div>
