@@ -3,7 +3,7 @@ import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { format } from 'date-fns'
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from './Recharts'
 import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
@@ -239,7 +239,7 @@ export default function (props: DeviceDataMonthChartProps) {
 							<LineChart width={400} height={400} data={data} syncId={props.syncId}>
 								<CartesianGrid strokeDasharray="3 3" />
 								<YAxis axisLine={false} interval={0} tickLine={false} width={30} scale="linear" />
-								<XAxis tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
+								<XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
 							</LineChart>
 						</ResponsiveContainer>
 					</div>
@@ -253,7 +253,7 @@ export default function (props: DeviceDataMonthChartProps) {
 							<Tooltip content={<GraphToolTip />} />
 							<CartesianGrid strokeDasharray="3 3" />
 							<YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={30} />
-							<XAxis tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
+							<XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
 						</LineChart>
 					</ResponsiveContainer>
 				}

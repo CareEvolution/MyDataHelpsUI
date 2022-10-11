@@ -4,11 +4,10 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
-
 const packageJson = require("./package.json");
-
 import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import analyze from 'rollup-plugin-analyzer';
 
 export default [
 	{
@@ -32,7 +31,8 @@ export default [
 			typescript({ tsconfig: "./tsconfig.json", sourceMap: false }),
 			postcss(),
 			terser(),
-			image()
+			image(),
+			analyze({ summaryOnly: true })
 		]
 	},
 	{
