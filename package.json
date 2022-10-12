@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/CareEvolution/MyDataHelpsUI.git"
   },
+  "sideEffects": false,
   "keywords": [
     "MyDataHelps"
   ],
@@ -38,6 +39,7 @@
     "@types/react": "^17.0.39",
     "babel-loader": "^8.2.3",
     "rollup": "^2.69.2",
+    "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-dts": "^4.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
@@ -51,6 +53,7 @@
     "@fortawesome/react-fontawesome": "^0.1.17",
     "date-fns": "^2.28.0",
     "react-feather": "^2.0.9",
+    "react-fontawesome-svg-icon": "^1.1.2",
     "recharts": "^2.1.9"
   },
   "peerDependencies": {

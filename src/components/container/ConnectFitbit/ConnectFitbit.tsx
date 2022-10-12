@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faExclamationTriangle, faRefresh } from '@fortawesome/free-solid-svg-icons'
-import MyDataHelps, { ExternalAccount, ExternalAccountStatus  } from "@careevolution/mydatahelps-js"
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
+import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
+import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, Button, CardTitle } from '../../presentational';
 import "./ConnectFitbit.css"
 import language from "../../../helpers/language"
@@ -9,6 +10,7 @@ import add from 'date-fns/add'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ConnectFitbitProps {
 	title?: string,
@@ -132,18 +134,18 @@ export default function (props: ConnectFitbitProps) {
 					}
 					{fitbitExternalAccount && fitbitAccountStatus == 'fetchComplete' &&
 						<div className="subtitle success">
-							<FontAwesomeIcon icon={faCheckCircle} /> {language["received-fitbit-data"]}
+							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language["received-fitbit-data"]}
 						</div>
 					}
 					{fitbitExternalAccount && fitbitAccountStatus == 'fetchingData' &&
 						<div className="subtitle downloading">
-							<FontAwesomeIcon icon={faRefresh} spin /> {language["downloading-data"]}
+							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language["downloading-data"]}
 						</div>
 					}
 					{fitbitExternalAccount && fitbitAccountStatus == 'unauthorized' &&
 						<div>
 							<div className="subtitle reconnect">
-								<FontAwesomeIcon icon={faExclamationTriangle} /> {language["reconnect"]}
+								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language["reconnect"]}
 							</div>
 							<Button onClick={() => connectToFitbit()}>{language["connect-fitbit-button"]}</Button>
 						</div>

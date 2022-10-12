@@ -1,12 +1,13 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRefresh } from '@fortawesome/free-solid-svg-icons'
+import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
 import "./LoadingIndicator.css"
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 function LoadingIndicator() {
 	return (
 		<div className="mdhui-loading-indicator">
-			<FontAwesomeIcon icon={faRefresh} spin />
+			<FontAwesomeSvgIcon icon={faRefresh} spin />
 		</div>
 	);
 }

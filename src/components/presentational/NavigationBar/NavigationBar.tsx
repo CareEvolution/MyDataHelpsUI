@@ -1,9 +1,10 @@
 import React, { useRef, useLayoutEffect } from 'react'
 import "./NavigationBar.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import language from "../../../helpers/language"
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 
 export interface NavigationBarProps {
 	title: string;
@@ -46,7 +47,7 @@ export default function (props: NavigationBarProps) {
 		<div className="mdhui-navigation-bar" ref={navBar}>
 			{props.showBackButton &&
 				<a className="back-button" onClick={() => back()}>
-					<FontAwesomeIcon icon={faChevronLeft} />
+					<FontAwesomeSvgIcon icon={faChevronLeft} />
 					{props.backButtonText ? props.backButtonText : language["back"]}
 				</a>
 			}

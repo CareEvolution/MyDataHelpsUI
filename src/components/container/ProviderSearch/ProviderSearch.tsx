@@ -1,12 +1,13 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator } from '../../presentational';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ProviderSearchProps {
 	previewState?: ProviderSearchPreviewState;
@@ -128,7 +129,7 @@ export default function (props: ProviderSearchProps) {
 			<div className="search-bar-wrapper">
 				<div className="search-bar">
 					<input type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
-					<FontAwesomeIcon icon={faSearch} />
+					<FontAwesomeSvgIcon icon={faSearch} />
 				</div>
 			</div>
 			<div className="search-results">

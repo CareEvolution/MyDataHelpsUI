@@ -1,17 +1,20 @@
 import React from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faChevronRight, faCircleCheck, faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons'
-import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons/faCircleCheck'
+import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons/faCircleHalfStroke'
+import { faCircle } from '@fortawesome/free-regular-svg-icons/faCircle'
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import parseISO from 'date-fns/parseISO'
 import add from 'date-fns/add'
-import { format, isAfter } from 'date-fns'
+import { isAfter } from 'date-fns'
 import language from '../../../helpers/language'
 import { enUS, es } from 'date-fns/locale'
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -50,7 +53,7 @@ export default function (props: SingleSurveyTaskProps) {
 	} else {
 		var timeDifference;
 		var dueDateFormatted = new Date(props.task.dueDate);
-		timeDifference = formatDistanceToNow(dueDateFormatted, {locale: locale});
+		timeDifference = formatDistanceToNow(dueDateFormatted, { locale: locale });
 		dueDateString = language["due-in"] + " " + timeDifference;
 	}
 
@@ -59,10 +62,10 @@ export default function (props: SingleSurveyTaskProps) {
 			<div className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
 				<div className="status-icon">
 					{props.task.hasSavedProgress &&
-						<FontAwesomeIcon icon={faCircleHalfStroke} />
+						<FontAwesomeSvgIcon icon={faCircleHalfStroke} />
 					}
 					{!props.task.hasSavedProgress &&
-						<FontAwesomeIcon icon={faCircle} />
+						<FontAwesomeSvgIcon icon={faCircle} />
 					}
 				</div>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
@@ -71,7 +74,7 @@ export default function (props: SingleSurveyTaskProps) {
 					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
 				}
 				<div className="indicator">
-					<FontAwesomeIcon icon={faChevronRight} />
+					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</div>
 			</div>
 		);
@@ -81,7 +84,7 @@ export default function (props: SingleSurveyTaskProps) {
 		return (
 			<div className="mdhui-single-survey-task complete">
 				<div className="status-icon">
-					<FontAwesomeIcon icon={faCircleCheck} />
+					<FontAwesomeSvgIcon icon={faCircleCheck} />
 				</div>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				<div className="completed-date">{language["completed"]} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>

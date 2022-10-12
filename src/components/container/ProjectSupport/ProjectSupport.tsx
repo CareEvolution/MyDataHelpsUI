@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import "./ProjectSupport.css"
 import MyDataHelps, { ProjectInfo } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, Action } from '../../presentational';
-import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { LoadingIndicator, Action } from '../../presentational'
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope"
+import { faGlobe } from "@fortawesome/free-solid-svg-icons/faGlobe"
+import { faPhone } from "@fortawesome/free-solid-svg-icons/faPhone"
 import language from '../../../helpers/language';
 
 export interface ProjectSupportProps {

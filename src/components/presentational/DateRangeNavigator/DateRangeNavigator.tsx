@@ -1,11 +1,13 @@
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { format, sub } from 'date-fns';
 import React from 'react';
 import "./DateRangeNavigator.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { enUS, es } from 'date-fns/locale';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Week" | "Month";
@@ -44,7 +46,7 @@ export default function (props: DateRangeNavigatorProps) {
 	return (
 		<div className="mdhui-date-range-navigator">
 			<div className="navigator-button navigate-previous" onClick={() => previousInterval()}>
-				<FontAwesomeIcon icon={faChevronLeft} />
+				<FontAwesomeSvgIcon icon={faChevronLeft} />
 			</div>
 			{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
 				<div>
@@ -59,7 +61,7 @@ export default function (props: DateRangeNavigatorProps) {
 			}
 			{!isCurrentInterval &&
 				<div className="navigator-button navigate-next" onClick={() => nextInterval()}>
-					<FontAwesomeIcon icon={faChevronRight} />
+					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</div>
 			}
 		</div>

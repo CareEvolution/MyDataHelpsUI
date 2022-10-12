@@ -1,5 +1,6 @@
-import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
+import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
@@ -7,6 +8,8 @@ import formatRelative from 'date-fns/formatRelative'
 import "./SingleExternalAccount.css"
 import parseISO from 'date-fns/parseISO'
 import { enUS, es } from 'date-fns/locale';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
@@ -48,7 +51,7 @@ export default function (props: SingleExternalAccountProps) {
 				}
 				{getStatus() !== "deleting" && getStatus() !== "fetchingData" &&
 					<div className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
-						<FontAwesomeIcon icon={faTrash} />
+						<FontAwesomeSvgIcon icon={faTrash} />
 					</div>
 				}
 			</div>
@@ -60,7 +63,7 @@ export default function (props: SingleExternalAccountProps) {
 				}
 				{getStatus() === "fetchingData" &&
 					<p>
-						<FontAwesomeIcon icon={faRefresh} spin /> {language["external-account-fetching-data"]}
+						<FontAwesomeSvgIcon icon={faRefresh} spin /> {language["external-account-fetching-data"]}
 					</p>
 				}
 				{getStatus() === "fetchComplete" &&
@@ -77,20 +80,20 @@ export default function (props: SingleExternalAccountProps) {
 				{(getStatus() === "fetchComplete" || getStatus() === "error") &&
 					<p>
 						<a onClick={refresh}>
-							<FontAwesomeIcon icon={faRepeat} /> {language["external-account-refresh"]}
+							<FontAwesomeSvgIcon icon={faRepeat} /> {language["external-account-refresh"]}
 						</a>
 					</p>
 				}
 				{getStatus() === "unauthorized" &&
 					<p>
 						<a onClick={() => props.onReconnectAccount(props.externalAccount)}>
-							<FontAwesomeIcon icon={faRepeat} /> {language["external-account-reconnect"]}
+							<FontAwesomeSvgIcon icon={faRepeat} /> {language["external-account-reconnect"]}
 						</a>
 					</p>
 				}
 				{getStatus() === "deleting" &&
 					<p>
-						<FontAwesomeIcon icon={faRefresh} spin /> {language["external-account-deleting"]}
+						<FontAwesomeSvgIcon icon={faRefresh} spin /> {language["external-account-deleting"]}
 					</p>
 				}
 			</div>
