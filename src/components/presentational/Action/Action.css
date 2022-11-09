@@ -4,6 +4,11 @@
     position: relative;
     cursor: pointer;
     background: inherit;
+    width: 100%;
+    text-align: left;
+    border: none;
+    font-size: 1em;
+    line-height: 1.2em;
 }
 
     .mdhui-action .title

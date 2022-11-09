@@ -17,7 +17,7 @@ export interface ActionProps {
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<div className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
+		<button className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
 			{props.title &&
 				<div className="title">
 					{props.title}
@@ -32,6 +32,6 @@ export default function (props: ActionProps) {
 			<div className="indicator">
 				<FontAwesomeSvgIcon icon={indicatorIcon} />
 			</div>
-		</div>
+		</button>
 	);
 }

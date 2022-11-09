@@ -20,12 +20,14 @@ const Template: ComponentStory<typeof Action> = (args: ActionProps) =>
 export const StartSurvey = Template.bind({});
 StartSurvey.args = {
 	title: "Baseline Survey",
-	subtitle: "Tap here to start your baseline survey"
+	subtitle: "Tap here to start your baseline survey",
+	onClick: () => alert("Clicked")
 }
 
 export const ActionWithClass = Template.bind({});
 ActionWithClass.args = {
 	title: "Baseline Survey",
 	subtitle: "Tap here to start your baseline survey",
-	className: "action-story-primary"
+	className: "action-story-primary",
+	onClick: () => alert("Clicked")
 }
