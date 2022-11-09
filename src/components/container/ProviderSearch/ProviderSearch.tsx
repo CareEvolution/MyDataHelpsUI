@@ -128,7 +128,7 @@ export default function (props: ProviderSearchProps) {
 		<div className="mdhui-provider-search">
 			<div className="search-bar-wrapper">
 				<div className="search-bar">
-					<input type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+					<input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
 					<FontAwesomeSvgIcon icon={faSearch} />
 				</div>
 			</div>
