@@ -47,7 +47,6 @@
 
     .mdhui-provider-search .search-results .provider
     {
-        border: none;
         border-bottom: solid 1px #ddd;
         padding: 16px;
         position: relative;
@@ -55,8 +54,6 @@
         cursor: pointer;
         font-size: .88em;
         line-height: 1.25em;
-        background: #FFF;
-        position: relative;
         width: 100%;
     }
 
