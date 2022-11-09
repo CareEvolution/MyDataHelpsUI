@@ -9,11 +9,11 @@ export interface SwitchProps {
 
 export default function (props: SwitchProps) {
 	return (
-		<div
+		<button
 			onClick={() => props.onValueChanged(!props.isOn)}
 			className={"mdhui-switch" + (props.isOn ? " mdhui-switch-on" : "")}
 			style={{ backgroundColor: props.isOn ? props.onBackgroundColor : "#eee" }}>
 			<div className="mdhui-switch-circle"></div>
-		</div>
+		</button>
 	)
 }

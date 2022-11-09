@@ -50,9 +50,9 @@ export default function (props: SingleExternalAccountProps) {
 					<div className="external-account-provider-name">{props.externalAccount.provider.name}</div>
 				}
 				{getStatus() !== "deleting" && getStatus() !== "fetchingData" &&
-					<div className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
+					<button className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
 						<FontAwesomeSvgIcon icon={faTrash} />
-					</div>
+					</button>
 				}
 			</div>
 			<div className="external-account-status">
@@ -79,14 +79,14 @@ export default function (props: SingleExternalAccountProps) {
 				}
 				{(getStatus() === "fetchComplete" || getStatus() === "error") &&
 					<p>
-						<a onClick={refresh}>
+						<a href="javascript:{}" onClick={refresh}>
 							<FontAwesomeSvgIcon icon={faRepeat} /> {language["external-account-refresh"]}
 						</a>
 					</p>
 				}
 				{getStatus() === "unauthorized" &&
 					<p>
-						<a onClick={() => props.onReconnectAccount(props.externalAccount)}>
+						<a href="javascript:{}" onClick={() => props.onReconnectAccount(props.externalAccount)}>
 							<FontAwesomeSvgIcon icon={faRepeat} /> {language["external-account-reconnect"]}
 						</a>
 					</p>

@@ -6,6 +6,9 @@
     border-radius: 50%;
     overflow: hidden;
     position: relative;
+    background: none;
+    padding: 0;
+    border: none;
 }
 
     .mdhui-face img
@@ -20,7 +23,7 @@
         background: #eec04c;
     }
 
-    .mdhui-face.mdhui-face-selectable
-    {
-        cursor: pointer;
-    }
+button.mdhui-face
+{
+    cursor: pointer;
+}

@@ -94,7 +94,7 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	return (
-		<div className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
+		<button className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
 			<CardTitle title={language["connect-ehr-title"]} />
 			{connected
 				? <div>
@@ -116,6 +116,6 @@ export default function (props: ConnectEhrProps) {
 				<FontAwesomeSvgIcon icon={faChevronRight} />
 			</div>
 			<ShinyOverlay />
-		</div>
+		</button>
 	);
 }

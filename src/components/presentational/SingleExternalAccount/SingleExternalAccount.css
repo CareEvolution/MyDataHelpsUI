@@ -18,8 +18,10 @@
     cursor: pointer;
     padding: 16px;
     color: #bbb;
-    height: 24px;
     font-size: .88em;
+    border:none;
+    background:none;
+    height:100%;
 }
 
 .mdhui-single-external-account .external-account-header .external-account-provider-logo {
@@ -46,6 +48,7 @@
 
 .mdhui-single-external-account .external-account-status a {
     cursor: pointer;
+    text-decoration:none;
 }
 
 .mdhui-single-external-account .external-account-status .error {

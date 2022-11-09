@@ -46,7 +46,7 @@ export default function (props: NavigationBarProps) {
 	return (
 		<div className="mdhui-navigation-bar" ref={navBar}>
 			{props.showBackButton &&
-				<a className="back-button" onClick={() => back()}>
+				<a className="back-button" href="javascript:{}" onClick={() => back()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
 					{props.backButtonText ? props.backButtonText : language["back"]}
 				</a>
@@ -57,7 +57,7 @@ export default function (props: NavigationBarProps) {
 				</div>
 			}
 			{props.showCloseButton &&
-				<a className="close-button" onClick={() => close()}>
+				<a className="close-button" href="javascript:{}" onClick={() => close()}>
 					{props.closeButtonText ? props.closeButtonText : language["close"]}
 				</a>
 			}

@@ -107,12 +107,12 @@ export default function (props: WeekCalendarProps) {
 		</div>
 		<div className="mdhui-week-calendar-week">
 			{currentWeek.map((d) =>
-				<div key={d.getTime()}
+				<button key={d.getTime()}
 					className={getDayClasses(d).join(" ")}
 					onClick={() => selectDate(d)}>
 					{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), true)}
 					{!props.hideDateLabel && getLabel(d)}
-				</div>
+				</button>
 			)}
 		</div>
 		{add(props.startDate, { days: 7 }) < new Date() &&

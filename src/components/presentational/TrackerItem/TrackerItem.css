@@ -11,6 +11,8 @@
     position: relative;
     border: solid 1px #000;
     user-select: none;
+    border: none;
+    line-height: 1.3em;
 }
 
     .mdhui-tracker-item.selectable
@@ -54,4 +56,5 @@
         min-width: 10px;
         user-select: none;
         font-size: .62em;
+        line-height: 1.3em;
     }

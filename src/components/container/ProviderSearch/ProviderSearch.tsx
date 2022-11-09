@@ -134,7 +134,7 @@ export default function (props: ProviderSearchProps) {
 			</div>
 			<div className="search-results">
 				{searchResults && searchResults.map((provider) =>
-					<div key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
+					<button key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
 						{provider.logoUrl &&
 							<div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
 						}
@@ -147,7 +147,7 @@ export default function (props: ProviderSearchProps) {
 								<div className="provider-status connected-status">{language["connected"]}</div>
 							}
 						</div>
-					</div>
+					</button>
 				)}
 				{searching &&
 					<LoadingIndicator />

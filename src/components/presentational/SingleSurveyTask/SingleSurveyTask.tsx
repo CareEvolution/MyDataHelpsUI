@@ -59,7 +59,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'incomplete') {
 		return (
-			<div className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
+			<button className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
 				<div className="status-icon">
 					{props.task.hasSavedProgress &&
 						<FontAwesomeSvgIcon icon={faCircleHalfStroke} />
@@ -76,7 +76,7 @@ export default function (props: SingleSurveyTaskProps) {
 				<div className="indicator">
 					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</div>
-			</div>
+			</button>
 		);
 	}
 

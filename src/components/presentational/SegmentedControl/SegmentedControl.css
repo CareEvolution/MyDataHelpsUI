@@ -23,6 +23,8 @@
         vertical-align: top;
         text-overflow: ellipsis;
         white-space: nowrap;
+        border: none;
+        background: none;
     }
 
         .mdhui-segmented-control .mdhui-segment:last-child
