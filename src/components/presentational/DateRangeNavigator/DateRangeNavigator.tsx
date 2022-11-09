@@ -45,7 +45,7 @@ export default function (props: DateRangeNavigatorProps) {
 
 	return (
 		<div className="mdhui-date-range-navigator">
-			<button className="navigator-button navigate-previous" onClick={() => previousInterval()}>
+			<button title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 				<FontAwesomeSvgIcon icon={faChevronLeft} />
 			</button>
 			{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
@@ -60,7 +60,7 @@ export default function (props: DateRangeNavigatorProps) {
 				</div>
 			}
 			{!isCurrentInterval &&
-				<button className="navigator-button navigate-next" onClick={() => nextInterval()}>
+				<button title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
 					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</button>
 			}
