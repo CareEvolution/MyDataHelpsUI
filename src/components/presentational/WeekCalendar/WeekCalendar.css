@@ -38,16 +38,12 @@
 
     .mdhui-week-calendar .mdhui-week-calendar-day
     {
-        -webkit-appearance: none;
         width: calc(14.28% - 1px);
-        border: none;
         border-left: solid 1px #ddd;
         overflow: hidden;
         position: relative;
         display: inline-block;
         vertical-align: top;
-        background: none;
-        padding: 0;
     }
 
         .mdhui-week-calendar .mdhui-week-calendar-day:first-child

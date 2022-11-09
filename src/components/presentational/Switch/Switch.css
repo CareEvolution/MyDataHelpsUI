@@ -14,8 +14,6 @@
     box-sizing: content-box;
     -webkit-background-clip: content-box;
     background-clip: content-box;
-    background: none;
-    padding: 0;
 }
 
     .mdhui-switch.mdhui-switch-on

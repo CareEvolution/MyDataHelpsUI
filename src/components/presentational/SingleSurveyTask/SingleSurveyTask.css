@@ -4,12 +4,7 @@
     padding-left: 48px;
     position: relative;
     width: 100%;
-    box-sizing: border-box;
-    text-align: left;
     border: none;
-    font-size: 1em;
-    line-height: 1.2em;
-    background: none;
 }
 
     .mdhui-single-survey-task .status-icon

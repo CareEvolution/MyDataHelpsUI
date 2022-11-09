@@ -24,6 +24,23 @@ html
     line-height: 1.3;
 }
 
+button
+{
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    line-height: inherit;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    display: block;
+    box-sizing: border-box;
+    padding: 0;
+    cursor: pointer;
+}
+
 @@supports (font: -apple-system-body)
 {
     html

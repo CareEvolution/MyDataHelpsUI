@@ -22,10 +22,6 @@
         top: 0;
         padding: 16px;
         color: var(--color-primary);
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-size: 1em;
         height: 100%;
     }
 

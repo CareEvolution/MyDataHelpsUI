@@ -58,8 +58,6 @@
         background: #FFF;
         position: relative;
         width: 100%;
-        box-sizing:border-box;
-        text-align: left;
     }
 
         .mdhui-provider-search .search-results .provider .provider-logo
