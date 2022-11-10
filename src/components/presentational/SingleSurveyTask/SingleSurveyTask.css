@@ -3,6 +3,7 @@
     padding: 16px;
     padding-left: 48px;
     position: relative;
+    width: 100%;
 }
 
     .mdhui-single-survey-task .status-icon

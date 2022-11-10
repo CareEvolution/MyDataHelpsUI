@@ -19,9 +19,6 @@ export default function (props: FaceProps) {
 	if (props.selected) {
 		className += " mdhui-face-selected";
 	}
-	if (props.onClick) {
-		className += " mdhui-face-selectable";
-	}
 	if (props.className) {
 		className += " " + props.className;
 	}
@@ -34,8 +31,15 @@ export default function (props: FaceProps) {
 		if (props.faceValue == 5) { return face5; }
 	}
 
+	if (props.onClick) {
+		return <button className={className} onClick={props.onClick}>
+			<img src={getFace()} />
+			<ShinyOverlay />
+		</button>
+	}
+
 	return (
-		<div className={className} onClick={props.onClick}>
+		<div className={className}>
 			<img src={getFace()} />
 			<ShinyOverlay />
 		</div>

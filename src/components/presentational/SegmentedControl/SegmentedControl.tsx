@@ -13,7 +13,7 @@ export default function (props: SegmentedControlProps) {
 	return (
 		<div className="mdhui-segmented-control">
 			{props.segments.map((s) =>
-				<div className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
+				<button className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}
 					onClick={() => props.onSegmentSelected(s.key)}
 					style={{ width: width + "%" }}>
@@ -21,7 +21,7 @@ export default function (props: SegmentedControlProps) {
 						<ShinyOverlay />
 					}
 					{s.title}
-				</div>
+				</button>
 			)}
 		</div>
 	);

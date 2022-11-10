@@ -21,3 +21,10 @@ Default.args = {
 	faceValue: 1,
 	selected: true
 }
+
+export const Clickable = Template.bind({});
+Clickable.args = {
+	faceValue: 1,
+	selected: true,
+	onClick: () => alert("clicked")
+}

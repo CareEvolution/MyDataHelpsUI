@@ -54,6 +54,7 @@
         cursor: pointer;
         font-size: .88em;
         line-height: 1.25em;
+        width: 100%;
     }
 
         .mdhui-provider-search .search-results .provider .provider-logo

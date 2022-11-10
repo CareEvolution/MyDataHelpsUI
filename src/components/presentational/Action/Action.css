@@ -4,6 +4,7 @@
     position: relative;
     cursor: pointer;
     background: inherit;
+    width: 100%;
 }
 
     .mdhui-action .title

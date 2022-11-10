@@ -34,7 +34,7 @@ export default function (props: TrackerItemProps) {
 	};
 
 	return (
-		<div className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+		<button className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
 			{props.text}
 			<ShinyOverlay />
 			{props.badge && props.selected &&
@@ -42,6 +42,6 @@ export default function (props: TrackerItemProps) {
 					{props.badge}
 				</div>
 			}
-		</div>
+		</button>
 	);
 }

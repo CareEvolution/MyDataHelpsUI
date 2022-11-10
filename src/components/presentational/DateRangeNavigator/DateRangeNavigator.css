@@ -22,7 +22,7 @@
         top: 0;
         padding: 16px;
         color: var(--color-primary);
-        cursor: pointer;
+        height: 100%;
     }
 
     .mdhui-date-range-navigator > .navigate-previous

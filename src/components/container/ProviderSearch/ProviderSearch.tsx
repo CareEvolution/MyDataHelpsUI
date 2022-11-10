@@ -128,13 +128,13 @@ export default function (props: ProviderSearchProps) {
 		<div className="mdhui-provider-search">
 			<div className="search-bar-wrapper">
 				<div className="search-bar">
-					<input type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+					<input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
 					<FontAwesomeSvgIcon icon={faSearch} />
 				</div>
 			</div>
 			<div className="search-results">
 				{searchResults && searchResults.map((provider) =>
-					<div key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
+					<button key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
 						{provider.logoUrl &&
 							<div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
 						}
@@ -147,7 +147,7 @@ export default function (props: ProviderSearchProps) {
 								<div className="provider-status connected-status">{language["connected"]}</div>
 							}
 						</div>
-					</div>
+					</button>
 				)}
 				{searching &&
 					<LoadingIndicator />
