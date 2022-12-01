@@ -12,8 +12,59 @@ export default {
 
 const Template: ComponentStory<typeof ExternalAccountsView> = (args: ExternalAccountsViewProps) => <ExternalAccountsView {...args} />;
 
-export const Preview = Template.bind({});
-Preview.args = {preview: true, excludeDeviceManufacturers: false, presentation: "Push"};
+export const Default = Template.bind({});
+Default.args = {
+    preview: true,
+    presentation: "Push"
+};
+
+export const ProvidersOnly = Template.bind({});
+ProvidersOnly.args = {
+    preview: true,
+    presentation: "Push",
+    excludeHealthPlans: true,
+    excludeDeviceManufacturers: true
+};
+
+export const HealthPlansOnly = Template.bind({});
+HealthPlansOnly.args = {
+    preview: true,
+    presentation: "Push",
+    excludeProviders: true,
+    excludeDeviceManufacturers: true
+};
+
+export const DeviceManufacturersOnly = Template.bind({});
+DeviceManufacturersOnly.args = {
+    preview: true,
+    presentation: "Push",
+    excludeProviders: true,
+    excludeHealthPlans: true
+};
+
+export const ProvidersAndHealthPlans = Template.bind({});
+ProvidersAndHealthPlans.args = {
+    preview: true,
+    presentation: "Push",
+    excludeDeviceManufacturers: true
+};
+
+export const ProvidersAndDeviceManufacturers = Template.bind({});
+ProvidersAndDeviceManufacturers.args = {
+    preview: true,
+    presentation: "Push",
+    excludeHealthPlans: true
+};
+
+export const HealthPlansAndDeviceManufacturers = Template.bind({});
+HealthPlansAndDeviceManufacturers.args = {
+    preview: true,
+    presentation: "Push",
+    excludeProviders: true
+};
 
 export const Live = Template.bind({});
-Live.args = {preview: false, excludeDeviceManufacturers: false, presentation: "Push"};
+Live.args = {
+    preview: false,
+    presentation: "Push"
+};

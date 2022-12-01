@@ -8,6 +8,8 @@ import {ExternalAccountsApplicationUrl} from "../../container/ExternalAccountsPr
 
 export interface ConnectEhrViewProps {
     externalAccountsApplicationUrl: ExternalAccountsApplicationUrl,
+    excludeProviders?: boolean,
+    excludeHealthPlans?: boolean,
     presentation?: ViewPresentationType,
     preview?: boolean
 }
@@ -15,10 +17,27 @@ export interface ConnectEhrViewProps {
 export type ViewPresentationType = "Modal" | "Push";
 
 export default function (props: ConnectEhrViewProps) {
+
+    let title = '';
+    let providerCategories: string[] = [];
+
+    if (!props.excludeProviders) {
+        providerCategories.push('Provider');
+        title += language['connect-ehr-title-providers'];
+    }
+    if (!props.excludeHealthPlans) {
+        providerCategories.push('Health Plan');
+        if (title.length > 0) {
+            title += language['connect-ehr-title-divider'];
+        }
+        title += language['connect-ehr-title-health-plans'];
+    }
+    title = language['connect-ehr-title-prefix'] + title;
+
     return (
         <Layout>
             {props.presentation &&
-            <NavigationBar title={language["connect-ehr-title"]}
+            <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}
                            showCloseButton={props.presentation == "Modal"}/>
             }
@@ -29,10 +48,10 @@ export default function (props: ConnectEhrViewProps) {
                 {language["ehr-intro"]}
             </TextBlock>
             <Card>
-                <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeDeviceManufacturers={true}/>
+                <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true}/>
             </Card>
             <Card>
-                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={["Provider", "Health Plan"]}/>
+                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories}/>
             </Card>
         </Layout>
     )
