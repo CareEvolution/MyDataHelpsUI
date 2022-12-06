@@ -8,7 +8,7 @@ import {previewAccounts} from './ExternalAccountsPreview.previewdata'
 export interface ExternalAccountsPreviewProps {
     excludeProviders?: boolean;
     excludeHealthPlans?: boolean;
-    excludeDeviceManufacturers?: true;
+    excludeDeviceManufacturers?: boolean;
     applicationUrl: ExternalAccountsApplicationUrl;
     previewState?: ExternalAccountsPreviewPreviewState;
 }
