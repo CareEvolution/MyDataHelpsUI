@@ -26,15 +26,15 @@ export default function (props: ExternalAccountListProps) {
 
     function loadExternalAccounts() {
         MyDataHelps.getExternalAccounts().then(function (accounts) {
-            if (props.externalAccountProviderCategories) {
-                accounts = accounts.filter(a => props.externalAccountProviderCategories?.indexOf(a.provider.category) != -1);
-            }
             updateExternalAccounts(accounts);
             setLoading(false);
         });
     }
 
     function updateExternalAccounts(accounts: ExternalAccount[]) {
+        if (props.externalAccountProviderCategories) {
+            accounts = accounts.filter(a => props.externalAccountProviderCategories?.indexOf(a.provider.category) != -1);
+        }
         setExternalAccounts(accounts);
         if (props.onExternalAccountsLoaded) {
             props.onExternalAccountsLoaded(accounts);
