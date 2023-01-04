@@ -14,7 +14,7 @@ export default function (props: SingleNotificationProps) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	var locale = MyDataHelps.getCurrentLanguage() == "es" ? es : enUS;
+	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	return (
 		<div className="mdhui-single-notification">
 			{props.notification.content?.title &&

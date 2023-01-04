@@ -36,7 +36,7 @@ export default function (props: DateRangeNavigatorProps) {
 	}
 
 	function getMonthName() {
-		var locale = MyDataHelps.getCurrentLanguage() == "es" ? es : enUS;
+		var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 		function capitalizeFirstLetter(string: string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		}

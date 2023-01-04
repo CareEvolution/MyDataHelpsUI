@@ -19,7 +19,7 @@ interface CalendarDay {
 
 export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
-	var locale = MyDataHelps.getCurrentLanguage() === "es" ? es : enUS;
+	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 
 	const weekdays = Array.from(Array(7).keys()).map((i) =>
 		locale.localize?.day(i, { width: "narrow" })

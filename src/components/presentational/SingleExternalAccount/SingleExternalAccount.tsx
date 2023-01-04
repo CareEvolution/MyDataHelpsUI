@@ -18,7 +18,7 @@ export interface SingleExternalAccountProps {
 }
 
 export default function (props: SingleExternalAccountProps) {
-	let locale = MyDataHelps.getCurrentLanguage() == "es" ? es : enUS;
+	let locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {

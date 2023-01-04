@@ -40,7 +40,7 @@ export default function (props: SingleSurveyTaskProps) {
 	var tomorrow = add(new Date(), { days: 1 });
 	var dueDateString = "";
 	var dueDateIntent = "";
-	var locale = MyDataHelps.getCurrentLanguage() == "es" ? es : enUS;
+	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	if (datesAreOnSameDay(dueDate, tomorrow)) {
 		dueDateString = language["due-tomorrow"];
 		dueDateIntent = "warning";

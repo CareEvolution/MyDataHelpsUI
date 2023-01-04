@@ -59,7 +59,7 @@ export default function (props: FitbitDevicesProps) {
 		return null;
 	}
 
-	var locale = MyDataHelps.getCurrentLanguage() == "es" ? es : enUS;
+	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	return (
 		<div className="mdhui-fitbit-devices">
 			<CardTitle title={"Fitbit " + language["devices"]} />
