@@ -30,4 +30,5 @@ Default.args = {
   dayRenderer: (year, month, day) => {
     return plainCalendarDay(year, month, day);
   },
+  weekStartsOn: 0
 };

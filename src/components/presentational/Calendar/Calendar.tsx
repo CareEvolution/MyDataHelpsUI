@@ -6,7 +6,8 @@ import "./Calendar.css";
 export interface CalendarProps {
 	month: number,
 	year: number,
-	dayRenderer(year: number, month: number, day?: number): JSX.Element | null
+	dayRenderer(year: number, month: number, day?: number): JSX.Element | null,
+	weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 
 interface CalendarWeek {
@@ -21,7 +22,14 @@ export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 
-	const weekdays = Array.from(Array(7).keys()).map((i) =>
+	var daysOfTheWeekIndeces = Array.from(Array(7).keys());
+	if (props.weekStartsOn) {
+		while (daysOfTheWeekIndeces[0] !== props.weekStartsOn) {
+			daysOfTheWeekIndeces.push(daysOfTheWeekIndeces.shift());
+		}
+	}
+
+	const weekdays = daysOfTheWeekIndeces.map((i) =>
 		locale.localize?.day(i, { width: "narrow" })
 	);
 
@@ -38,7 +46,7 @@ export default function (props: CalendarProps) {
 				days: []
 			};
 			for (let j = 0; j < 7; j++) {
-				if (i === 0 && j < firstDay) {
+				if (i === 0 && j < firstDay + daysOfTheWeekIndeces[j]) {
 					week.days[j] = { day: undefined };
 				}
 				else if (date > daysInMonth(props.month, props.year)) {
