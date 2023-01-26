@@ -1,0 +1,52 @@
+html {
+    font-size: 17px;
+}
+
+@supports (font: -apple-system-body) {
+    html {
+        font: -apple-system-body;
+    }
+}
+
+body, div, pre, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    display: block !important;
+}
+
+a {
+    color: #5381c3;
+    text-decoration: none;
+}
+
+.step-container {
+    padding: 10px 20px 10px 20px;
+}
+
+.step-container ol {
+    list-style-type: decimal;
+    white-space: normal;
+    list-style-position: inside;
+}
+
+.step-container ul {
+    list-style-type: disc;
+    text-align: left;
+    display: block;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    white-space: normal;
+}
+
+.step-container ul ul {
+    list-style-type: circle;
+}
+
+.step-container ul ul ul {
+    list-style-type: square;
+}

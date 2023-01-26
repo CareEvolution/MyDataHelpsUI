@@ -1,0 +1,8 @@
+.step-text {
+  font-size: 1em;
+  line-height: 1.3em;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}

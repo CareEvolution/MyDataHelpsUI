@@ -1,0 +1,14 @@
+.step-next-button {
+  margin-top: 20px;
+  padding: 16px;
+  background: #5381c3;
+  font-size: 1em;
+  color: #FFF;
+  font-weight: bold;
+  border: solid 1px #5381c3;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
