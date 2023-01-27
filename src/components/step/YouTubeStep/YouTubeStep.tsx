@@ -19,8 +19,8 @@ export default function (props: YouTubeStepProps) {
 
     useEffect(() => {
         MyDataHelps.getStepConfiguration().then(function(config: StepConfiguration){
-          setProperties(config.properties ?? {});
-          setStyles(config.styles ?? {});
+          setProperties(config?.properties ?? {});
+          setStyles(config?.styles ?? {});
         });
     }, []);
 
