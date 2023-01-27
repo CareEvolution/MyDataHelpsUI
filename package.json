@@ -60,7 +60,6 @@
     "markdown-it": "^13.0.1",
     "react-feather": "^2.0.9",
     "react-fontawesome-svg-icon": "^1.1.2",
-    "react-markdown": "^8.0.5",
     "recharts": "^2.1.9"
   },
   "peerDependencies": {

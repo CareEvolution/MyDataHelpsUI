@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
 import stepElementStyle from '../step-helpers';
 import './StepNextButton.css'
 import { StepElementProps } from '../shared';
