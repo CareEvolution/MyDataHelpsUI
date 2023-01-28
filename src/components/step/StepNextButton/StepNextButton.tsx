@@ -1,7 +1,8 @@
 import React from 'react'
 import stepElementStyle from '../step-helpers';
-import './StepNextButton.css'
 import { StepElementProps } from '../shared';
+import language from '../../../helpers/language'
+import './StepNextButton.css'
 
 export interface StepNextButtonProps extends StepElementProps {
     backgroundColor: string,
@@ -23,7 +24,7 @@ export default function (props: StepNextButtonProps) {
     style.letterSpacing = props.letterSpacing;
     style.textTransform = props.textTransform;
     style.backgroundColor = props.backgroundColor;
-    var text = props.text ? props.text : "Next"; // todo: use language helper here
+    var text = props.text ? props.text : language["next-button-text"];
     return (
       <button 
         id="nextButton" 

@@ -55,7 +55,8 @@
     "external-account-refresh": "Actualizar",
     "external-account-remove": "Eliminar",
     "device-data-no-data": "Si ha conectado Apple Health, Google Fit o Fitbit, vuelva más tarde para ver sus datos.",
-    "no-notifications-received": "No se recibieron notificaciones."
+    "no-notifications-received": "No se recibieron notificaciones.",
+    "next-button-text": "Siguiente"
 };
 
 export default strings;
