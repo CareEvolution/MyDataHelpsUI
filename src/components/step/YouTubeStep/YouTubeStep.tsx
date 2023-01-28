@@ -27,7 +27,14 @@ export default function (props: YouTubeStepProps) {
     if (!properties.videoId) {
         return <div className="step-container"></div>;
     }
+    // ref player params at https://developers.google.com/youtube/player_parameters
     let frameHeight = (properties.height ? properties.height : "225") + "px";
+    let ccLanguage = MyDataHelps.getCurrentLanguage(); // used to set default CC language
+    let showRelated = 0; // restricts related videos to current channel only
+    let showControls = 1; // show player controls, probably something we should make configurable
+    let autoplay = 0; // do not autoplay, probably should make this configurable
+    let allowFullscreen = 1; // show fullscreen controls
+    let youTubeBranding = 1; // hide youtube logo
     return (
       <div className="step-container">
            <StepTitle 
@@ -47,7 +54,8 @@ export default function (props: YouTubeStepProps) {
             <div style={{textAlign: 'center', position: "relative", width: "calc(100% + 40px)", left: "-20px"}} >
               <iframe
                 style={{width: "100%", height: frameHeight, border: 0}}
-                id="video" src={`https://www.youtube.com/embed/${properties.videoId}`}
+                id="video" 
+                  src={`https://www.youtube.com/embed/${properties.videoId}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                   allowFullScreen={true}>
