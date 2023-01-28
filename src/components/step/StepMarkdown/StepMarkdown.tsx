@@ -11,10 +11,10 @@ export default function (props: StepMarkdownProps) {
     let md = new MarkdownIt();
     let htmlContent;
     if (props.inline) {
-      htmlContent = md.renderInline(props.text);
+      htmlContent = md.renderInline(props.text ?? "");
     }
     else {
-      htmlContent = md.render(props.text);
+      htmlContent = md.render(props.text ?? "");
     }
     let elements = parse(htmlContent, {
       replace: domNode => {

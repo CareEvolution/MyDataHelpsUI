@@ -4,8 +4,7 @@ import StepTitle from '../StepTitle';
 import StepText from '../StepText';
 import StepDetailText from '../StepDetailText'
 import StepNextButton from '../StepNextButton';
-import './YouTubeStep.css'
-import '../index.css';
+import '../step.css';
 
 export interface YouTubeStepProps {
     properties?: any;
@@ -19,6 +18,7 @@ export default function (props: YouTubeStepProps) {
 
     useEffect(() => {
         MyDataHelps.getStepConfiguration().then(function(config: StepConfiguration){
+          if (!config) return; // allows test mode to work
           setProperties(config?.properties ?? {});
           setStyles(config?.styles ?? {});
         });
@@ -27,7 +27,7 @@ export default function (props: YouTubeStepProps) {
     if (!properties.videoId) {
         return <div className="step-container"></div>;
     }
-    var height = properties.height ? properties.height : "225";
+    let frameHeight = (properties.height ? properties.height : "225") + "px";
     return (
       <div className="step-container">
            <StepTitle 
@@ -44,13 +44,13 @@ export default function (props: YouTubeStepProps) {
               fontSize={styles.textFontSize}
               fontWeight={styles.textFontWeight}
             />
-            <div style={{textAlign: 'center'}} >
+            <div style={{textAlign: 'center', position: "relative", width: "calc(100% + 40px)", left: "-20px"}} >
               <iframe
-                style={{position: "relative", width: "calc(100% + 40px)", left: "-20px"}}
-                id="video" width="100%" height={height} src={`https://www.youtube.com/embed/${properties.videoId}`}
+                style={{width: "100%", height: frameHeight, border: 0}}
+                id="video" src={`https://www.youtube.com/embed/${properties.videoId}`}
                   title="YouTube video player" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen>
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen={true}>
               </iframe>
             </div>
             <StepDetailText 

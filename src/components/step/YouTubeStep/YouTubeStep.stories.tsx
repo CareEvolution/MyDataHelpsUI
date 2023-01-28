@@ -21,8 +21,7 @@ YouTubeStepDefault.args = {
         "transcript": "Meet participants where they are with MyDataHelps™—your one-stop digital health platform for conducting clinical research, clinical trials, and wellness projects! eConsent and enroll participants, collect digital biomarkers, automate survey delivery, and begin analyzing digital phenotype and EHR data in hours.",
         "videoId": "Ee3x4oK_qv8"
     },
-    styles: {
-    }
+    styles: {}
 }
 
 export const YouTubeStepCustomStyling = Template.bind({});
@@ -59,4 +58,10 @@ YouTubeStepCustomStyling.args = {
         "titleFontSize": "36",
         "titleFontWeight": "900"
     }
+}
+
+export const YouTubeStepEmpty = Template.bind({});
+YouTubeStepEmpty.args = {
+    properties: {"videoId": "Ee3x4oK_qv8"},
+    styles: {}
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import '../index.css';
+import '../step.css';
 
 export interface ExampleStepProps {
     children?: React.ReactNode;

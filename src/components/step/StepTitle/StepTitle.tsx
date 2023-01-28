@@ -6,6 +6,9 @@ import StepMarkdown from '../StepMarkdown/StepMarkdown';
 
 
 export default function (props: StepElementProps) {
+    if (!props.text) {
+      return (<></>)
+    }
     return (
       <div id="title" className="step-title" style={stepElementStyle(props)}>
           <StepMarkdown 

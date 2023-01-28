@@ -1,5 +1,6 @@
 html {
     font-size: 17px;
+    background-color: #FFFFFF;
 }
 
 @supports (font: -apple-system-body) {
@@ -8,7 +9,7 @@ html {
     }
 }
 
-body, div, pre, p {
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
     margin: 0;
     padding: 0;
 }
@@ -16,6 +17,7 @@ body, div, pre, p {
 body {
     font-family: Helvetica, Arial, sans-serif;
     display: block !important;
+    background-color: #FFFFFF;
 }
 
 a {
