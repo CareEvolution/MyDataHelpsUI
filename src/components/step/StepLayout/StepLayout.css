@@ -1,6 +1,5 @@
 html {
     font-size: 17px;
-    background-color: #FFFFFF;
 }
 
 @supports (font: -apple-system-body) {
@@ -9,24 +8,24 @@ html {
     }
 }
 
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+body {
+    padding: 0;
+    margin: 0;
+    font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
+}
+
+.step-container {
+    background-color: #FFFFFF;
+}
+
+.step-container div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
     margin: 0;
     padding: 0;
 }
 
-body {
-    font-family: Helvetica, Arial, sans-serif;
-    display: block !important;
-    background-color: #FFFFFF;
-}
-
-a {
+.step-container a {
     color: #5381c3;
     text-decoration: none;
-}
-
-.step-container {
-    padding: 10px 20px 10px 20px;
 }
 
 .step-container ol {

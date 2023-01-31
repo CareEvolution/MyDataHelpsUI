@@ -27,7 +27,6 @@ export default function (props: StepNextButtonProps) {
     var text = props.text ? props.text : language["next-button-text"];
     return (
       <button 
-        id="nextButton" 
         className="step-next-button" 
         style={style} 
         onClick={props.onClick}>

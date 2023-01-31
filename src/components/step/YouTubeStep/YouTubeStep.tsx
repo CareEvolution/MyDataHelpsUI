@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
+import StepLayout from '../StepLayout'
 import StepTitle from '../StepTitle';
 import StepText from '../StepText';
 import StepDetailText from '../StepDetailText'
 import StepNextButton from '../StepNextButton';
-import '../step.css';
 
 export interface YouTubeStepProps {
-    properties?: any;
-    styles?: any;
+    properties?: { [key: string]: any };
+    styles?: { [key: string]: any };
 }
 
 export default function (props: YouTubeStepProps) {
@@ -36,7 +36,7 @@ export default function (props: YouTubeStepProps) {
     let allowFullscreen = 1; // show fullscreen controls
     let youTubeBranding = 1; // hide youtube logo
     return (
-      <div className="step-container">
+      <StepLayout>
            <StepTitle 
               text={properties.title} 
               textAlign={styles.titleAlignment}
@@ -51,10 +51,9 @@ export default function (props: YouTubeStepProps) {
               fontSize={styles.textFontSize}
               fontWeight={styles.textFontWeight}
             />
-            <div style={{textAlign: 'center', position: "relative", width: "calc(100% + 40px)", left: "-20px"}} >
+            <div style={{textAlign: 'center', width: "100%"}} >
               <iframe
                 style={{width: "100%", height: frameHeight, border: 0}}
-                id="video" 
                   src={`https://www.youtube.com/embed/${properties.videoId}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
@@ -78,6 +77,6 @@ export default function (props: YouTubeStepProps) {
               gradient={styles.nextButtonBackgroundGradient}
               onClick={() => MyDataHelps.completeStep('')}
             />            
-    </div>
+      </StepLayout>
     );
 }

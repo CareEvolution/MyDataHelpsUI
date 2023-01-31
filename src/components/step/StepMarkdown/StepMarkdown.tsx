@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import MarkdownIt from 'markdown-it';
 import parse from 'html-react-parser'
 
@@ -16,6 +16,8 @@ export default function (props: StepMarkdownProps) {
     else {
       htmlContent = md.render(props.text ?? "");
     }
+    // trim prevents white-space: "pre" from adding unwanted line breaks
+    htmlContent = htmlContent?.trim();
     let elements = parse(htmlContent, {
       replace: domNode => {
         let untypedNode = domNode as any;
@@ -26,9 +28,7 @@ export default function (props: StepMarkdownProps) {
       }
     });
     return (
-      <>
-        {elements}
-      </>
+      <>{elements}</>
     );
 }
 

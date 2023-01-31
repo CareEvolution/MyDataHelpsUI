@@ -2,7 +2,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StepTitle from "./StepTitle";
 import {StepElementProps} from "../shared"
-import ExampleStep from "../ExampleStep";
+import StepLayout from "../StepLayout";
 
 export default {
     title: "SurveyStep/Components/StepTitle",
@@ -13,9 +13,9 @@ export default {
 } as ComponentMeta<typeof StepTitle>;
 
 const Template: ComponentStory<typeof StepTitle> = (args: StepElementProps) =>
-    <ExampleStep>
+    <StepLayout>
         <StepTitle {...args} />
-    </ExampleStep>
+    </StepLayout>
 
 export const StepTitleDefault = Template.bind({});
 StepTitleDefault.args = {

@@ -1,11 +1,11 @@
 import React from 'react'
-import '../step.css';
+import './StepLayout.css'
 
-export interface ExampleStepProps {
+export interface StepLayoutProps {
     children?: React.ReactNode;
 }
 
-export default function (props: ExampleStepProps) {
+export default function (props: StepLayoutProps) {
     return (
       <div className="step-container">
         {props.children}

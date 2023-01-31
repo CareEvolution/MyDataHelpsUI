@@ -7,12 +7,13 @@ import StepMarkdown from '../StepMarkdown/StepMarkdown';
 
 export default function (props: StepElementProps) {
     if (!props.text) {
-      return (<></>)
+      return null
     }
     return (
-      <div id="text" className="step-text" style={stepElementStyle(props)}>
+      <div className="step-text" style={stepElementStyle(props)}>
           <StepMarkdown 
-            text={props.text} /> 
+            text={props.text}
+            />
       </div>
     );
 }

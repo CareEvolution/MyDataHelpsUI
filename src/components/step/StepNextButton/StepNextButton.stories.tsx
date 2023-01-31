@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StepNextButton, {StepNextButtonProps} from "./StepNextButton";
-import ExampleStep from "../ExampleStep";
+import StepLayout from "../StepLayout";
 
 export default {
     title: "SurveyStep/Components/StepNextButton",
@@ -12,9 +12,9 @@ export default {
 } as ComponentMeta<typeof StepNextButton>;
 
 const Template: ComponentStory<typeof StepNextButton> = (args: StepNextButtonProps) =>
-    <ExampleStep>
+    <StepLayout>
         <StepNextButton {...args} />
-    </ExampleStep>
+    </StepLayout>
 
 export const StepNextButtonDefault = Template.bind({});
 StepNextButtonDefault.args = {
