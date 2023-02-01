@@ -1,9 +1,10 @@
-html {
-    background-color: #FFFFFF;
+:root
+{
+    --main-bg-color: #FFFFFF;
 }
 
 .step-container {
-    background-color: #FFFFFF;
+    background: var(--main-bg-color);
 }
 
 .step-container div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
