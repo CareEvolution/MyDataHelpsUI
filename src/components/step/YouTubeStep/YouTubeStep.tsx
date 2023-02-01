@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
+import React from 'react'
+import MyDataHelps from '@careevolution/mydatahelps-js';
 import StepLayout from '../StepLayout'
 import StepTitle from '../StepTitle';
 import StepText from '../StepText';
