@@ -1,8 +1,8 @@
 
 export interface StepElementProps {
-    text: string;
+    text?: string;
     textAlign?: any;
-    color: string;
+    color?: string;
     fontSize?: string;
-    fontWeight: string;
+    fontWeight?: string;
 }
