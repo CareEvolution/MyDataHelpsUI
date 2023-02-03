@@ -5,6 +5,7 @@ import StepTitle from '../StepTitle';
 import StepText from '../StepText';
 import StepDetailText from '../StepDetailText'
 import StepNextButton from '../StepNextButton';
+import StepStyle from '../StepStyle';
 
 export interface YouTubeStepProps {
     properties: { [key: string]: any };
@@ -65,7 +66,13 @@ export default function (props: YouTubeStepProps) {
               textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
               gradient={props.styles.nextButtonBackgroundGradient}
               onClick={() => MyDataHelps.completeStep('')}
-            />            
+            />
+            <StepStyle 
+              titleAlignment={props.styles.titleAlignment}
+              titleColor={props.styles.titleAlignment}
+              titleFontSize={props.styles.titleAlignment}
+              titleFontWeight={props.styles.titleAlignment}
+              ></StepStyle>
       </StepLayout>
     );
 }
