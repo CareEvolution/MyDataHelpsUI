@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof StepTitle> = (args: StepElementProps) =>
         <StepStyle 
               titleAlignment="Right"
               titleColor="Pink"
-              titleFontSize="100px"
+              titleFontSize="100"
               titleFontWeight="100"
               ></StepStyle>
     </StepLayout>
@@ -36,9 +36,5 @@ StepTitleMarkdownItalics.args = {
 
 export const StepTitleCustomStyle = Template.bind({});
 StepTitleCustomStyle.args = {
-    text: "This is the title",
-    textAlign: "Left",
-    color: "#FF0000",
-    fontSize: "72",
-    fontWeight: "900"
+    text: "This is the title"
 }

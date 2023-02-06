@@ -6,6 +6,7 @@ import StepText from '../StepText';
 import StepDetailText from '../StepDetailText'
 import StepNextButton from '../StepNextButton';
 import StepStyle from '../StepStyle';
+import { StepStyleProps } from '../shared';
 
 export interface YouTubeStepProps {
     title?: string;
@@ -15,6 +16,8 @@ export interface YouTubeStepProps {
     nextButtonText?: string;
     height?: string;
     styles: { [key: string]: any };
+    styles2: StepStyleProps;
+    children?: any;
 }
 
 export default function (props: YouTubeStepProps) {
@@ -34,10 +37,6 @@ export default function (props: YouTubeStepProps) {
       <StepLayout>
            <StepTitle 
               text={props.title} 
-              textAlign={props.styles.titleAlignment}
-              color={props.styles.titleColor}
-              fontSize={props.styles.titleFontSize}
-              fontWeight={props.styles.titleFontWeight}
             />
            <StepText 
               text={props.text} 
@@ -72,12 +71,12 @@ export default function (props: YouTubeStepProps) {
               gradient={props.styles.nextButtonBackgroundGradient}
               onClick={() => MyDataHelps.completeStep('')}
             />
-            <StepStyle 
-              titleAlignment={props.styles.titleAlignment}
-              titleColor={props.styles.titleAlignment}
-              titleFontSize={props.styles.titleAlignment}
-              titleFontWeight={props.styles.titleAlignment}
-              ></StepStyle>
+            <StepStyle
+              titleAlignment={props.styles2.titleAlignment}
+              titleColor={props.styles2.titleColor}
+              titleFontSize={props.styles2.titleFontSize}
+              titleFontWeight={props.styles2.titleFontWeight}
+             />
       </StepLayout>
     );
 }

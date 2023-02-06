@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
 import YouTubeStep from '../YouTubeStep';
+import StepStyle from '../StepStyle';
 
 export default function () {
 
@@ -36,6 +37,8 @@ export default function () {
           height={height}
           videoId={videoId}
           styles={styles}
-         />
+          styles2={styles}
+         >
+      </YouTubeStep>
     );
 }

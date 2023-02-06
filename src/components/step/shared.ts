@@ -6,3 +6,10 @@ export interface StepElementProps {
     fontSize?: string;
     fontWeight?: string;
 }
+
+export interface StepStyleProps {
+    titleAlignment?: string;
+    titleColor?: string;
+    titleFontSize?: string;
+    titleFontWeight?: string;
+  }

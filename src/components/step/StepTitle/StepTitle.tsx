@@ -10,7 +10,7 @@ export default function (props: StepElementProps) {
       return null
     }
     return (
-      <div className="step-title" style={stepElementStyle(props)}>
+      <div className="step-title" >
           <StepMarkdown 
             text={props.text} 
             inline={true}
