@@ -4,12 +4,13 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
+import json from '@rollup/plugin-json'
 const packageJson = require("./package.json");
 import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 1e6
+const limitBytes = 2e6
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -40,6 +41,7 @@ export default [
 			postcss(),
 			terser(),
 			image(),
+			json(),
 			analyze({ onAnalysis, summaryOnly: true })
 		]
 	},

@@ -1,0 +1,10 @@
+.step-container .step-text {
+  font-size: 1em;
+  line-height: 1.3em;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 20px;  
+  white-space: pre-line;
+}
