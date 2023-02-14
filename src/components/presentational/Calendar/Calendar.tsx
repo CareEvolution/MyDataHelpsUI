@@ -23,7 +23,7 @@ export default function (props: CalendarProps) {
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 
 	var daysOfTheWeekIndices = Array.from(Array(7).keys());
-	var weekStartsOn = !props.weekStartsOn || props.weekStartsOn < 7 ? props.weekStartsOn : 0;
+	var weekStartsOn = props.weekStartsOn && props.weekStartsOn < 7 ? props.weekStartsOn : 0;
 	if (weekStartsOn) {
 		while (daysOfTheWeekIndices[0] !== weekStartsOn) {
 			daysOfTheWeekIndices.push(daysOfTheWeekIndices.shift());
