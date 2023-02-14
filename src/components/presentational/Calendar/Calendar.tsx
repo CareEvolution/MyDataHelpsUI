@@ -39,7 +39,10 @@ export default function (props: CalendarProps) {
 	}
 
 	var generateWeeks = function () {
-		var firstDay = (new Date(props.year, props.month)).getDay();
+		var firstDay = (new Date(props.year, props.month)).getDay() - weekStartsOn;
+		if (firstDay < 0) {
+			firstDay = 7 + firstDay;
+		}
 		var newWeeks: CalendarWeek[] = [];
 		var date = 1;
 		for (let i = 0; i < 6; i++) {
@@ -47,7 +50,7 @@ export default function (props: CalendarProps) {
 				days: []
 			};
 			for (let j = 0; j < 7; j++) {
-				if (i === 0 && j < firstDay + daysOfTheWeekIndices[j]) {
+				if (i === 0 && j < firstDay) {
 					week.days[j] = { day: undefined };
 				}
 				else if (date > daysInMonth(props.month, props.year)) {
