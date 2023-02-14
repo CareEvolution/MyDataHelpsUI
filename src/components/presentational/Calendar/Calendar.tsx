@@ -22,14 +22,15 @@ export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 
-	var daysOfTheWeekIndeces = Array.from(Array(7).keys());
-	if (props.weekStartsOn) {
-		while (daysOfTheWeekIndeces[0] !== props.weekStartsOn) {
-			daysOfTheWeekIndeces.push(daysOfTheWeekIndeces.shift());
+	var daysOfTheWeekIndices = Array.from(Array(7).keys());
+	var weekStartsOn = !props.weekStartsOn || props.weekStartsOn < 7 ? props.weekStartsOn : 0;
+	if (weekStartsOn) {
+		while (daysOfTheWeekIndices[0] !== weekStartsOn) {
+			daysOfTheWeekIndices.push(daysOfTheWeekIndices.shift());
 		}
 	}
 
-	const weekdays = daysOfTheWeekIndeces.map((i) =>
+	const weekdays = daysOfTheWeekIndices.map((i) =>
 		locale.localize?.day(i, { width: "narrow" })
 	);
 
@@ -46,7 +47,7 @@ export default function (props: CalendarProps) {
 				days: []
 			};
 			for (let j = 0; j < 7; j++) {
-				if (i === 0 && j < firstDay + daysOfTheWeekIndeces[j]) {
+				if (i === 0 && j < firstDay + daysOfTheWeekIndices[j]) {
 					week.days[j] = { day: undefined };
 				}
 				else if (date > daysInMonth(props.month, props.year)) {
