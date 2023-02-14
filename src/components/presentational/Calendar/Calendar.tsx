@@ -6,7 +6,8 @@ import "./Calendar.css";
 export interface CalendarProps {
 	month: number,
 	year: number,
-	dayRenderer(year: number, month: number, day?: number): JSX.Element | null
+	dayRenderer(year: number, month: number, day?: number): JSX.Element | null,
+	weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 
 interface CalendarWeek {
@@ -21,7 +22,15 @@ export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 
-	const weekdays = Array.from(Array(7).keys()).map((i) =>
+	var daysOfTheWeekIndices = Array.from(Array(7).keys());
+	var weekStartsOn = props.weekStartsOn && props.weekStartsOn < 7 ? props.weekStartsOn : 0;
+	if (weekStartsOn) {
+		while (daysOfTheWeekIndices[0] !== weekStartsOn) {
+			daysOfTheWeekIndices.push(daysOfTheWeekIndices.shift());
+		}
+	}
+
+	const weekdays = daysOfTheWeekIndices.map((i) =>
 		locale.localize?.day(i, { width: "narrow" })
 	);
 
@@ -30,7 +39,10 @@ export default function (props: CalendarProps) {
 	}
 
 	var generateWeeks = function () {
-		var firstDay = (new Date(props.year, props.month)).getDay();
+		var firstDay = (new Date(props.year, props.month)).getDay() - weekStartsOn;
+		if (firstDay < 0) {
+			firstDay = 7 + firstDay;
+		}
 		var newWeeks: CalendarWeek[] = [];
 		var date = 1;
 		for (let i = 0; i < 6; i++) {
