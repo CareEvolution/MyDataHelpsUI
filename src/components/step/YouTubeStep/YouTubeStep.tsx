@@ -18,9 +18,6 @@ export interface YouTubeStepProps {
 
 export default function (props: YouTubeStepProps) {
 
-    if (!props.videoId) {
-        return (<StepLayout></StepLayout>)
-    }
     // ref player params at https://developers.google.com/youtube/player_parameters
     let frameHeight = (props.height ? props.height : "225") + "px";
     let ccLanguage = MyDataHelps.getCurrentLanguage(); // used to set default CC language
