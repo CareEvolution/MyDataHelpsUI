@@ -95,7 +95,7 @@ export default function (props: ConnectEhrProps) {
 
 	return (
 		<button className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
-			<CardTitle title={language["connect-ehr-title"]} />
+			<CardTitle title={language['connect-ehr-title-prefix'] + language['connect-ehr-title-providers'] + language['connect-ehr-title-divider'] + language['connect-ehr-title-health-plans']} />
 			{connected
 				? <div>
 					<div className="connection-status">
