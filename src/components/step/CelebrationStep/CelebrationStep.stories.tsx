@@ -17,9 +17,9 @@ export const CelebrationStepDefault = Template.bind({});
 CelebrationStepDefault.args = {
     title: "Thank You!",
     text: "We appreciate your participation",
-	detailText: "We will be in touch soon",
-	iconUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/CE-Logo-2022.png",
-	imageUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg",
+    detailText: "We will be in touch soon",
+    iconUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/CE-Logo-2022.png",
+    imageUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg",
     styles: {}
 }
 
@@ -27,7 +27,7 @@ export const CelebrationStepCustomStyling = Template.bind({});
 CelebrationStepCustomStyling.args = {
     title: "_Thank You!_",
     text: "We **appreciate** your participation",
-	detailText: "We will be in touch soon**™**",
+    detailText: "We will be in touch soon**™**",
     nextButtonText: "Forward",
     styles: {
         "detailTextAlignment": "Left",
