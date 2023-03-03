@@ -5,7 +5,7 @@ import StepTitle from '../StepTitle';
 import StepText from '../StepText';
 import StepDetailText from '../StepDetailText'
 import StepNextButton from '../StepNextButton';
-import confetti from '../../../helpers/confetti.min.js';
+import {startConfetti, stopConfetti} from '../../../helpers/confetti';
 import StepImageIcon from '../StepImageIcon';
 import StepImage from '../StepImage';
 
@@ -20,11 +20,9 @@ export interface CelebrationStepProps {
 }
 
 export default function (props: CelebrationStepProps) {
-    //@ts-ignore
-    confetti.confetti.start();
+    startConfetti();
     window.setTimeout(function () {
-      //@ts-ignore
-      confetti.confetti.stop();
+        stopConfetti();
     }, 1200);
     return (
       <StepLayout>
