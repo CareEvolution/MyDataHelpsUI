@@ -19,8 +19,8 @@ export default function () {
           setTitle(config.properties.title);
           setText(config.properties.text);
           setDetailText(config.properties.detailText);
-          setIconUrl(config.properties.iconUrl);
-          setImageUrl(config.properties.imageUrl);
+          setIconUrl(config.properties.iconImage);
+          setImageUrl(config.properties.image);
           setNextButtonText(config.properties.nextButtonText);
 
           setStyles(config.styles ?? {});
