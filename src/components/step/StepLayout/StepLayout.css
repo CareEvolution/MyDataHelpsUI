@@ -2,7 +2,28 @@
     background-color: #FFFFFF;
 }
 
-.step-container div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+.step-container div,
+.step-container dl,
+.step-container dt,
+.step-container dd,
+.step-container ul,
+.step-container ol,
+.step-container li,
+.step-container h1,
+.step-container h2,
+.step-container h3,
+.step-container h4,
+.step-container h5,
+.step-container h6,
+.step-container pre,
+.step-container form,
+.step-container fieldset,
+.step-container input,
+.step-container textarea,
+.step-container p,
+.step-container blockquote,
+.step-container th,
+.step-container td { 
     margin: 0;
     padding: 0;
 }
