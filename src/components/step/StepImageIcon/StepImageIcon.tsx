@@ -8,7 +8,7 @@ export default function (props: IconElementProps) {
       return null
     }
     return (
-      <div className="step-image-icon">
+      <div className="mdhui-step-image-icon">
         <img src={props.srcUrl} />
       </div>
     );

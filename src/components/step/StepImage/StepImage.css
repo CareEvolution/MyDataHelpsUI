@@ -1,7 +1,7 @@
-.step-container .step-image {
+.mdhui-step-container .mdhui-step-image {
     text-align: center;
 }
-.step-container .step-image img {
+.mdhui-step-container .mdhui-step-image img {
     width: 100%;
     padding: 0;
     margin: 0;

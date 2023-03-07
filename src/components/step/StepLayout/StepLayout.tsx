@@ -10,7 +10,7 @@ export default function (props: StepLayoutProps) {
   document.body.style.backgroundColor = "#FFFFFF";
 
   return (
-      <div className="step-container">
+      <div className="mdhui-step-container">
         {props.children}
       </div>
     );
