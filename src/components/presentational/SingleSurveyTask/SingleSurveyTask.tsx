@@ -35,26 +35,28 @@ export default function (props: SingleSurveyTaskProps) {
 		first.getMonth() === second.getMonth() &&
 		first.getDate() === second.getDate();
 
-	var dueDate = parseISO(props.task.dueDate);
-	var today = new Date();
-	var tomorrow = add(new Date(), { days: 1 });
-	var dueDateString = "";
-	var dueDateIntent = "";
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
-	if (datesAreOnSameDay(dueDate, tomorrow)) {
-		dueDateString = language["due-tomorrow"];
-		dueDateIntent = "warning";
-	} else if (datesAreOnSameDay(dueDate, today)) {
-		dueDateString = language["due-today"];
-		dueDateIntent = "warning";
-	} else if (isAfter(today, dueDate)) {
-		dueDateString = language["overdue"];
-		dueDateIntent = "danger";
-	} else {
-		var timeDifference;
-		var dueDateFormatted = new Date(props.task.dueDate);
-		timeDifference = formatDistanceToNow(dueDateFormatted, { locale: locale });
-		dueDateString = language["due-in"] + " " + timeDifference;
+	let today = new Date();
+	let tomorrow = add(new Date(), { days: 1 });
+	let dueDateString = "";
+	let dueDateIntent = "";
+	let locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	if (props.task.dueDate) {
+		let dueDate = parseISO(props.task.dueDate);
+		if (datesAreOnSameDay(dueDate, tomorrow)) {
+			dueDateString = language["due-tomorrow"];
+			dueDateIntent = "warning";
+		} else if (datesAreOnSameDay(dueDate, today)) {
+			dueDateString = language["due-today"];
+			dueDateIntent = "warning";
+		} else if (isAfter(today, dueDate)) {
+			dueDateString = language["overdue"];
+			dueDateIntent = "danger";
+		} else {
+			let timeDifference;
+			let dueDateFormatted = new Date(props.task.dueDate);
+			timeDifference = formatDistanceToNow(dueDateFormatted, { locale: locale });
+			dueDateString = language["due-in"] + " " + timeDifference;
+		}
 	}
 
 	if (props.task.status == 'incomplete') {
@@ -70,7 +72,7 @@ export default function (props: SingleSurveyTaskProps) {
 				</div>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				<div className="survey-description">{props.descriptionIcon} {props.task.surveyDescription}</div>
-				{!props.hideDueDate &&
+				{!props.hideDueDate && dueDateString &&
 					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
 				}
 				<div className="indicator">

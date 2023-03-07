@@ -2,7 +2,28 @@
     background-color: #FFFFFF;
 }
 
-.mdhui-step-container div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+.mdhui-step-container div,
+.mdhui-step-container dl,
+.mdhui-step-container dt,
+.mdhui-step-container dd,
+.mdhui-step-container ul,
+.mdhui-step-container ol,
+.mdhui-step-container li,
+.mdhui-step-container h1,
+.mdhui-step-container h2,
+.mdhui-step-container h3,
+.mdhui-step-container h4,
+.mdhui-step-container h5,
+.mdhui-step-container h6,
+.mdhui-step-container pre,
+.mdhui-step-container form,
+.mdhui-step-container fieldset,
+.mdhui-step-container input,
+.mdhui-step-container textarea,
+.mdhui-step-container p,
+.mdhui-step-container blockquote,
+.mdhui-step-container th,
+.mdhui-step-container td { 
     margin: 0;
     padding: 0;
 }

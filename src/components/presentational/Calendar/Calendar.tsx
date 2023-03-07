@@ -26,7 +26,7 @@ export default function (props: CalendarProps) {
 	var weekStartsOn = props.weekStartsOn && props.weekStartsOn < 7 ? props.weekStartsOn : 0;
 	if (weekStartsOn) {
 		while (daysOfTheWeekIndices[0] !== weekStartsOn) {
-			daysOfTheWeekIndices.push(daysOfTheWeekIndices.shift());
+			daysOfTheWeekIndices.push(daysOfTheWeekIndices.shift()!);
 		}
 	}
 
