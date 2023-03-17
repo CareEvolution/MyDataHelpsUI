@@ -6,3 +6,7 @@ export interface StepElementProps {
     fontSize?: string;
     fontWeight?: string;
 }
+
+export interface IconElementProps {
+    srcUrl?: string
+}

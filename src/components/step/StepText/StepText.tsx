@@ -10,7 +10,7 @@ export default function (props: StepElementProps) {
       return null
     }
     return (
-      <div className="step-text" style={stepElementStyle(props)}>
+      <div className="mdhui-step-text" style={stepElementStyle(props)}>
           <StepMarkdown 
             text={props.text}
             />
