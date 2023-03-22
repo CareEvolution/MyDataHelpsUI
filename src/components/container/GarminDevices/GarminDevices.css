@@ -1,0 +1,62 @@
+.mdhui-garmin-devices
+{
+}
+
+    .mdhui-garmin-devices .garmin-device
+    {
+        border-bottom: solid 1px var(--color-border);
+        padding: 16px;
+        position: relative;
+        padding-left: 48px;
+    }
+
+        .mdhui-garmin-devices .garmin-device:last-child
+        {
+            border-bottom: none;
+        }
+
+        .mdhui-garmin-devices .garmin-device .device-icon
+        {
+            position: absolute;
+            left: 16px;
+            top: calc(50% - 8px);
+            color: var(--color-muted2);
+            font-size: 16px;
+        }
+
+        .mdhui-garmin-devices .garmin-device .device-title
+        {
+            font-weight: bold;
+            font-size: .88em;
+        }
+
+        .mdhui-garmin-devices .garmin-device .device-sync
+        {
+            font-size: .88em;
+            color: var(--color-muted);
+        }
+
+
+        .mdhui-garmin-devices .garmin-device .battery-icon
+        {
+            position: absolute;
+            font-size: 21px;
+            right: 16px;
+            top: calc(50% - 11px);
+        }
+
+            .mdhui-garmin-devices .garmin-device .battery-icon.battery-empty,
+            .mdhui-garmin-devices .garmin-device .battery-icon.battery-low
+            {
+                color: var(--color-danger);
+            }
+
+            .mdhui-garmin-devices .garmin-device .battery-icon.battery-medium
+            {
+                color: var(--color-warning);
+            }
+
+            .mdhui-garmin-devices .garmin-device .battery-icon.battery-high
+            {
+                color: var(--color-success);
+            }

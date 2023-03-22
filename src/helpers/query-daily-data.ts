@@ -1,6 +1,6 @@
 ﻿import MyDataHelps, { DeviceDataNamespace, DeviceDataPointQuery } from "@careevolution/mydatahelps-js";
 import { add } from "date-fns";
-import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider } from "./daily-data-providers";
+import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider, garminStepsDataProvider } from "./daily-data-providers";
 import combinedRestingHeartRate from "./daily-data-providers/combined-resting-heart-rate";
 import getDayKey from "./get-day-key";
 
@@ -80,6 +80,8 @@ export enum DailyDataType {
 	FitbitDeepSleepMinutes = "FitbitDeepSleepMinutes",
 	FitbitSpO2 = "FitbitSpO2",
 	FitbitSteps = "FitbitSteps",
+	GarminRestingHeartRate = "GarminRestingHeartRate",
+	GarminSteps = "GarminSteps",
 	GoogleFitSteps = "GoogleFitSteps",
 	Steps = "Steps",
 	RestingHeartRate = "RestingHeartRate"
@@ -115,13 +117,22 @@ registerDailyDataProvider(DailyDataType.FitbitRemSleepMinutes, fitbitRemSleepMin
 registerDailyDataProvider(DailyDataType.FitbitDeepSleepMinutes, fitbitDeepSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelDeep"]));
 registerDailyDataProvider(DailyDataType.FitbitSpO2, fitbitSpO2DataProvider, simpleAvailabilityCheck("Fitbit", ["SpO2"]));
 registerDailyDataProvider(DailyDataType.FitbitSteps, fitbitStepsDataProvider, simpleAvailabilityCheck("Fitbit", ["Steps"]));
+registerDailyDataProvider(DailyDataType.GarminSteps, garminStepsDataProvider, simpleAvailabilityCheck("Garmin", ["Steps"]));
+registerDailyDataProvider(DailyDataType.GarminRestingHeartRate, garminStepsDataProvider, simpleAvailabilityCheck("Garmin", ["RestingHeartRateInBeatsPerMinute"]));
 registerDailyDataProvider(DailyDataType.GoogleFitSteps, googleFitStepsDataProvider, simpleAvailabilityCheck("GoogleFit", ["Steps"]));
 
 //Currently combined RHR does not include google fit
 registerDailyDataProvider(DailyDataType.RestingHeartRate, combinedRestingHeartRate, function (modifiedAfter?: Date) {
 	return simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
 		if (!result) {
-			return simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"])(modifiedAfter);
+			return simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
+				if (!result) {
+					return simpleAvailabilityCheck("Garmin", ["RestingHeartRate"])(modifiedAfter);
+				}
+				else {
+					return result;
+				}
+			})
 		}
 		else {
 			return result;
@@ -133,7 +144,14 @@ registerDailyDataProvider(DailyDataType.RestingHeartRate, combinedRestingHeartRa
 registerDailyDataProvider(DailyDataType.Steps, combinedStepsDataProvider, function (modifiedAfter?: Date) {
 	return simpleAvailabilityCheck("AppleHealth", ["Steps"])(modifiedAfter).then(function (result) {
 		if (!result) {
-			return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter);
+			return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter).then(function (result) {
+				if (!result) {
+					return simpleAvailabilityCheck("Garmin", ["Steps"])(modifiedAfter);
+				}
+				else {
+					return result;
+				}
+			})
 		}
 		else {
 			return result;

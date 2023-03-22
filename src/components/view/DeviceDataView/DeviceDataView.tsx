@@ -1,6 +1,6 @@
 import React from 'react'
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import { PlatformSpecificContent, Layout, Card, StatusBarBackground, ConnectFitbit, FitbitDevices, DeviceDataMonthCharts, Action } from "../.."
+import { PlatformSpecificContent, Layout, Card, StatusBarBackground, ConnectFitbit, FitbitDevices, DeviceDataMonthCharts, Action, ConnectGarmin, GarminDevices } from "../.."
 import language from '../../../helpers/language'
 
 export interface DeviceDataViewProps {
@@ -21,6 +21,12 @@ export default function (props: DeviceDataViewProps) {
 			</Card>
 			<Card>
 				<FitbitDevices previewState={props.preview ? "connected" : undefined} />
+			</Card>
+			<Card>
+				<ConnectGarmin previewState={props.preview ? "notConnected" : undefined} />
+			</Card>
+			<Card>
+				<GarminDevices previewState={props.preview ? "connected" : undefined} />
 			</Card>
 			<Card allowOverflow={true}>
 				<DeviceDataMonthCharts previewState={props.preview ? "Default" : undefined} />
