@@ -1,0 +1,36 @@
+﻿.mdhui-connect-garmin
+{
+}
+
+    .mdhui-connect-garmin .title
+    {
+        font-weight: bold;
+    }
+
+    .mdhui-connect-garmin .subtitle
+    {
+        font-size: .88em;
+        font-weight: normal;
+        color: var(--color-muted1);
+    }
+
+        .mdhui-connect-garmin .subtitle.reconnect
+        {
+            color: var(--color-danger);
+            font-weight: bold;
+        }
+
+        .mdhui-connect-garmin .subtitle.success svg
+        {
+            color: var(--color-success);
+        }
+
+    .mdhui-connect-garmin .mdhui-button
+    {
+        margin-top: 16px;
+    }
+
+    .mdhui-connect-garmin .content
+    {
+        padding: 16px;
+    }
