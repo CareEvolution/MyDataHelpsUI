@@ -71,7 +71,7 @@ export default function (props: SingleSurveyTaskProps) {
 					}
 				</div>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
-				<div className="survey-description">{props.descriptionIcon} {props.task.surveyDescription}</div>
+				<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
 				{!props.hideDueDate && dueDateString &&
 					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
 				}

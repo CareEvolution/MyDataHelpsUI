@@ -28,6 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@careevolution/mydatahelps-js": "^3.6.0",
+    "@mdx-js/react": "^2.3.0",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-json": "^6.0.0",
@@ -41,9 +42,10 @@
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
     "@types/markdown-it": "^12.2.3",
-    "@types/react": "^17.0.39",
+    "@types/react": "^18.0.28",
     "babel-loader": "^8.2.3",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rollup": "^2.69.2",
     "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-dts": "^4.2.0",
@@ -66,8 +68,8 @@
   },
   "peerDependencies": {
     "@careevolution/mydatahelps-js": "^3.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "files": [
     "dist"
