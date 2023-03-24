@@ -27,7 +27,7 @@
   "homepage": "https://github.com/CareEvolution/MyDataHelpsUI#readme",
   "devDependencies": {
     "@babel/core": "^7.17.5",
-    "@rollup/plugin-commonjs": "^21.0.2",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
