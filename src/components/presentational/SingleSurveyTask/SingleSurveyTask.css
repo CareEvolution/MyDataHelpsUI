@@ -1,16 +1,14 @@
 .mdhui-single-survey-task
 {
     padding: 16px;
-    padding-left: 48px;
-    position: relative;
-    width: 100%;
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    grid-column-gap: 16px;
+    align-items: center;
 }
 
     .mdhui-single-survey-task .status-icon
     {
-        position: absolute;
-        left: 16px;
-        top: calc(50% - 8px);
         color: var(--color-muted2);
     }
 
@@ -52,9 +50,6 @@
 
     .mdhui-single-survey-task .indicator
     {
-        position: absolute;
-        top: calc(50% - 8px);
-        right: 16px;
         font-size: 16px;
         color: var(--color-muted2);
     }

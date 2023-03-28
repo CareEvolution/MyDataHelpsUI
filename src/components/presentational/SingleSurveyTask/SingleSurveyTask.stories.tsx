@@ -68,3 +68,20 @@ InProgress.args = {
 	}
 }
 
+export const LongDescription = Template.bind({});
+LongDescription.args = {
+	task: {
+		id: "test",
+		status: "incomplete",
+		surveyDisplayName: "Long Description",
+		surveyDescription: "Here is a really long description that will likely need to wrap.  It should wrap before overlapping the right chevron.",
+		surveyName: "PainSurvey",
+		dueDate: (new Date()).toISOString(),
+		hasSavedProgress: false,
+		insertedDate: "2022-03-06T20:00:00Z",
+		modifiedDate: "2022-03-06T20:00:00Z",
+		surveyID: "1",
+		linkIdentifier:"1"
+	}
+}
+
