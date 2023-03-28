@@ -5,6 +5,7 @@
     grid-template-columns: max-content auto max-content;
     grid-column-gap: 16px;
     align-items: center;
+    width: 100%;
 }
 
     .mdhui-single-survey-task .status-icon
