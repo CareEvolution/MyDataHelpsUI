@@ -6,7 +6,8 @@ export interface LayoutProps {
 	children?: React.ReactNode;
 	stylesheetPath?: string;
 	bodyBackgroundColor?: string;
-	statusBarStyle?: StatusBarStyle
+	statusBarStyle?: StatusBarStyle;
+	className?: string;
 }
 
 export default function (props: LayoutProps) {
@@ -21,7 +22,7 @@ export default function (props: LayoutProps) {
 	}
 
 	return (
-		<div className="mdhui-layout">
+		<div className={"mdhui-layout" + (props.className ? (" " + props.className) : "")}>
 			{props.stylesheetPath &&
 				<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 			}
