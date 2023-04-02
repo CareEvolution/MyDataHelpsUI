@@ -22,6 +22,12 @@ Default.args = {
 	selected: true
 }
 
+export const Unselected = Template.bind({});
+Unselected.args = {
+	faceValue: 1,
+	selected: false
+}
+
 export const Clickable = Template.bind({});
 Clickable.args = {
 	faceValue: 1,
