@@ -84,3 +84,7 @@
     text-align: left;
     font-weight: bold;
 }
+
+.mdhui-device-data-month-chart .recharts-cartesian-axis-tick {
+    fill: var(--mdhui-text-color-1);
+}

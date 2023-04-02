@@ -70,9 +70,9 @@ export const defaultVariables = css`
 export const darkMode = css`
 @media (prefers-color-scheme: dark) {
     :root {
-        --mdhui-background-color-0: #000;
-        --mdhui-background-color-1: #111;
-        --mdhui-background-color-2: #222;
+        --mdhui-background-color-0: #1a1b1e;
+        --mdhui-background-color-1: #141517;
+        --mdhui-background-color-2: #000;
 
         --mdhui-border-color-0: #333;
         --mdhui-border-color-1: #444;
@@ -80,7 +80,7 @@ export const darkMode = css`
         --mdhui-border-color-3: #FFF;
 
         --mdhui-text-color-0: #FFF;
-        --mdhui-text-color-1: #ccc;
+        --mdhui-text-color-1: #a6a7ab;
         --mdhui-text-color-2: #aaa;
         --mdhui-text-color-3: #777;
         --mdhui-text-color-4: #444;
@@ -88,8 +88,8 @@ export const darkMode = css`
         --mdhui-box-shadow-color-0: #333;
         --mdhui-box-shadow-color-1: #666;
         
-        --mdhui-box-shadow-0: 0px 3px 9px 0px var(--mdhui-box-shadow-color-0);
-        --mdhui-box-shadow-1: 0px 0px 5px 0px var(--mdhui-box-shadow-color-1);
+        --mdhui-box-shadow-0: none;
+        --mdhui-box-shadow-1: none;
         --mdhui-overlay-gradient:linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 11, 15, 0.2) 100%) !important;
     }
 }`;
@@ -102,7 +102,7 @@ a {
 
 html {
     font-size: 17px;
-    line-height: 1.3;
+    line-height: 1.3em;
 }
 
 /* this needs to be moved to a component called unstyledButton */

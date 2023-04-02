@@ -16,4 +16,5 @@
 .mdhui-button:disabled {
     color: var(--mdhui-text-color-3);
     background: var(--mdhui-background-color-2);
+    cursor: default;
 }
