@@ -3,11 +3,12 @@
     margin: 16px;
     background: var(--mdhui-background-color-0);
     box-shadow: var(--mdhui-box-shadow-0);
-    animation: fadein 1s;
-    -moz-animation: fadein 1s;
-    -webkit-animation: fadein 1s;
+    animation: var(--mdhui-fadein-animation);
+    -moz-animation: var(--mdhui-fadein-animation);
+    -webkit-animation: var(--mdhui-fadein-animation);
     position: relative;
     overflow: hidden;
+
 }
 
 .mdhui-card:empty {
@@ -17,34 +18,4 @@
 .mdhui-card.allow-overflow {
     overflow: visible;
     display: flow-root;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@-moz-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
 }
