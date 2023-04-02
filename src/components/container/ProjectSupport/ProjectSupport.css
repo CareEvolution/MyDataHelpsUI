@@ -11,11 +11,11 @@
 
     .mdhui-project-support .mdhui-action
     {
-        color: var(--color-primary);
-        border-bottom: solid 1px var(--color-border);
+        color: var(--mdhui-color-primary);
+        border-bottom: solid 1px var(--mdhui-border-color-0);
     }
 
         .mdhui-project-support .mdhui-action .subtitle
         {
-            color: var(--color-primary);
+            color: var(--mdhui-color-primary);
         }

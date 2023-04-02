@@ -1,7 +1,7 @@
 .mdhui-segmented-control
 {
     border-radius: 32px;
-    border: solid 1px var(--color-primary);
+    border: solid 1px var(--mdhui-color-primary);
     background: #FFF;
     overflow: hidden;
     padding: 1px;
@@ -16,7 +16,7 @@
         padding: 8px;
         box-sizing: border-box;
         font-weight: bold;
-        color: var(--color-primary);
+        color: var(--mdhui-color-primary);
         position: relative;
         border-radius: 32px;
         overflow: hidden;
@@ -32,6 +32,6 @@
 
         .mdhui-segmented-control .mdhui-segment.mdhui-segment-selected
         {
-            background: var(--color-primary);
+            background: var(--mdhui-color-primary);
             color: #FFF;
         }

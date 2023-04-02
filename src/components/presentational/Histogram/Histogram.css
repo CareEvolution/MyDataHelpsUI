@@ -17,7 +17,7 @@
             .mdhui-histogram .mdhui-histogram-entry.mdhui-histogram-entry-clickable .mdhui-histogram-entry-label
             {
                 text-decoration: underline;
-                color: var(--color-theme);
+                color: var(--mdhui-color-theme);
             }
 
     .mdhui-histogram .mdhui-histogram-entry-bar-wrapper

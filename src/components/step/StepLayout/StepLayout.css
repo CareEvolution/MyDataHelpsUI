@@ -23,13 +23,13 @@
 .mdhui-step-container p,
 .mdhui-step-container blockquote,
 .mdhui-step-container th,
-.mdhui-step-container td { 
+.mdhui-step-container td {
     margin: 0;
     padding: 0;
 }
 
 .mdhui-step-container a {
-    color: #5381c3;
+    color: var(--mdhui-color-theme);
     text-decoration: none;
 }
 

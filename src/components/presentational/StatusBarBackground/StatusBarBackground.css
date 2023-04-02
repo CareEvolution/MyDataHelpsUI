@@ -1,5 +1,4 @@
-﻿.mdhui-status-bar-background
-{
+﻿.mdhui-status-bar-background {
     position: sticky;
     position: -webkit-sticky;
     left: 0;
@@ -8,5 +7,5 @@
     height: env(safe-area-inset-top);
     width: 100%;
     z-index: 1;
-    background: #FFF;
+    background: var(--mdhui-background-color-0);
 }

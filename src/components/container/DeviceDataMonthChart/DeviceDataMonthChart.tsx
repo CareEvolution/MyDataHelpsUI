@@ -248,7 +248,7 @@ export default function (props: DeviceDataMonthChartProps) {
 					<ResponsiveContainer width="100%" height={150}>
 						<LineChart width={400} height={400} data={data} syncId={props.syncId}>
 							{props.lines.map((line) =>
-								<Line key={line.dailyDataType} type="monotone" dataKey={line.dailyDataType} stroke="var(--color-primary)" />
+								<Line key={line.dailyDataType} type="monotone" dataKey={line.dailyDataType} stroke="var(--mdhui-color-primary)" />
 							)}
 							<Tooltip content={<GraphToolTip />} />
 							<CartesianGrid strokeDasharray="3 3" />

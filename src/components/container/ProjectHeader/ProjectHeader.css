@@ -2,7 +2,7 @@
 {
     padding: 16px;
     text-align: center;
-    background: #FFF;
+    background: var(--mdhui-background-color-0);
     border-bottom: solid 1px #ddd;
 }
 

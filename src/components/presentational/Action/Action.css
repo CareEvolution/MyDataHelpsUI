@@ -16,7 +16,7 @@
     .mdhui-action .subtitle
     {
         font-size: .88em;
-        color: #555;
+        color: var(--mdhui-text-color-2);
     }
 
     .mdhui-action .indicator
@@ -25,5 +25,5 @@
         top: calc(50% - 9px);
         right: 16px;
         font-size: 16px;
-        color: #999;
+        color: var(--mdhui-text-color-3);
     }

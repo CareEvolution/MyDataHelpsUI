@@ -1,13 +1,7 @@
-.mdhui-most-recent-notification
-{
+.mdhui-most-recent-notification .mdhui-notification {
+    border-bottom: solid 1px var(--mdhui-border-color-0);
 }
 
-    .mdhui-most-recent-notification .mdhui-notification
-    {
-        border-bottom: solid 1px var(--color-border);
-    }
-
-    .mdhui-most-recent-notification .mdhui-action .subtitle
-    {
-        color: var(--color-primary);
-    }
+.mdhui-most-recent-notification .mdhui-action .subtitle {
+    color: var(--mdhui-color-primary);
+}
