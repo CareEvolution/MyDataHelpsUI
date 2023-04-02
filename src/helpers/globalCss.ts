@@ -102,4 +102,6 @@ body {
     margin: 0;
     font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
     background: var(--mdhui-background-color-1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }`;
