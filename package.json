@@ -39,7 +39,7 @@
     "@storybook/addon-links": "^6.4.19",
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/react": "^6.4.19",
-    "@storybook/testing-library": "^0.0.9",
+    "@storybook/testing-library": "^0.0.13",
     "@types/markdown-it": "^12.2.3",
     "@types/react": "^17.0.39",
     "babel-loader": "^8.2.3",
