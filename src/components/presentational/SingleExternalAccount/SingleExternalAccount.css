@@ -6,7 +6,7 @@
 
 .mdhui-single-external-account .external-account-header {
     position: relative;
-    padding: 16px;
+    padding: 8px;
     font-weight: bold;
     border-bottom: solid 1px var(--mdhui-border-color-0);
 }
@@ -28,6 +28,9 @@
 .mdhui-single-external-account .external-account-header .external-account-provider-logo {
     height: 24px;
     display: block;
+    background: #FFF;
+    padding: 8px;
+    border-radius: 8px;
 }
 
 .mdhui-single-external-account .external-account-header .external-account-provider-name {

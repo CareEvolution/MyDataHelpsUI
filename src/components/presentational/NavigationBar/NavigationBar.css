@@ -16,7 +16,7 @@
 
     .mdhui-navigation-bar.scroll-shadow
     {
-        box-shadow: 0px 0px 5px #aaa;
+        box-shadow: var(--mdhui-box-shadow-1);
     }
 
     .mdhui-navigation-bar .icon

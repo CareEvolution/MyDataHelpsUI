@@ -26,6 +26,8 @@
     padding-top: 8px;
     padding-bottom: 8px;
     border: none;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-text-color-1);
 }
 
 .mdhui-provider-search .search-bar-wrapper .search-bar .fa-magnifying-glass {
@@ -56,6 +58,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
+    background-color:#FFF;
+    border-radius: 4px;
 }
 
 .mdhui-provider-search .search-results .provider .provider-status {

@@ -28,7 +28,7 @@
     .mdhui-single-survey-task .completed-date
     {
         font-size: .88em;
-        color: #555;
+        color: var(--mdhui-text-color-2);
     }
 
     .mdhui-single-survey-task .due-date
