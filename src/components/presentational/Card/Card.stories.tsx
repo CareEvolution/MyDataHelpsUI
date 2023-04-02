@@ -15,7 +15,7 @@ export default {
 } as ComponentMeta<typeof Action>;
 
 const Template: ComponentStory<typeof Action> = (args: ActionProps) =>
-	<Layout>
+	<Layout autoDarkMode>
 		<Card className="card-story-primary">
 			<Action {...args} />
 		</Card>
@@ -28,7 +28,7 @@ CardAction.args = {
 };
 
 const CardTemplate: ComponentStory<typeof Card> = (args: CardProps) =>
-	<Layout>
+	<Layout autoDarkMode>
 		<Card {...args}>
 			<CardTitle title="Card Title" />
 			<div style={{ padding: "16px" }}>Card Content</div>

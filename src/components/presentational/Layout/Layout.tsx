@@ -10,7 +10,6 @@ export interface LayoutProps {
 	statusBarStyle?: StatusBarStyle;
 	className?: string;
 	autoDarkMode?: boolean;
-	normalizeCss?: boolean;
 	noGlobalStyles?: boolean;
 	
 	//Deprecated
@@ -50,7 +49,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			{!props.autoDarkMode &&
+			{props.autoDarkMode &&
 				<EmotionGlobal styles={darkMode} />
 			}
 			<div className={className}>

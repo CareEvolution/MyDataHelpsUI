@@ -11,7 +11,7 @@ export default {
     }
 } as ComponentMeta<typeof Calendar>;
 
-const Template: ComponentStory<typeof Calendar> = (args: CalendarProps) => <Layout><Calendar {...args} /></Layout>;
+const Template: ComponentStory<typeof Calendar> = (args: CalendarProps) => <Layout autoDarkMode><Calendar {...args} /></Layout>;
 
 let plainCalendarDay = function (year: number, month: number, day? : number) {
     return (

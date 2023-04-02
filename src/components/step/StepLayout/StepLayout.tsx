@@ -1,17 +1,15 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+import { Layout } from '../../presentational';
 import './StepLayout.css'
 
 export interface StepLayoutProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function (props: StepLayoutProps) {
-  // override the default bundle body style in a way that won't interfere with the views styles
-  document.body.style.backgroundColor = "#FFFFFF";
-
   return (
-      <div className="mdhui-step-container">
-        {props.children}
-      </div>
-    );
+    <Layout className='mdhui-step-container' bodyBackgroundColor="#FFFFFF">
+      {props.children}
+    </Layout>
+  );
 }

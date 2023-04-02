@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof ExternalAccountList>;
 
 const Template: ComponentStory<typeof ExternalAccountList> = (args: ExternalAccountListProps) =>
-    <Layout>
+    <Layout autoDarkMode>
         <ExternalAccountList {...args} />
     </Layout>;
 

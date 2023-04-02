@@ -14,7 +14,7 @@ export type ViewPresentationType = "Modal" | "Push";
 
 export default function (props: SurveyTasksViewProps) {
 	return (
-		<Layout>
+		<Layout autoDarkMode>
 			{props.presentation &&
 				<NavigationBar title={language["tasks"]}
 					showBackButton={props.presentation == "Push"}

@@ -19,7 +19,7 @@ export default function (props: NotificationsViewProps) {
 	}
 
 	return (
-		<Layout>
+		<Layout autoDarkMode>
 			{props.presentation &&
 				<NavigationBar title={language["notifications"]}
 					showBackButton={props.presentation == "Push"}

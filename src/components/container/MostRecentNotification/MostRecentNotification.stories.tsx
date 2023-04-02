@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof MostRecentNotification>;
 
 const Template: ComponentStory<typeof MostRecentNotification> = (args: MostRecentNotificationProps) =>
-	<Layout>
+	<Layout autoDarkMode>
 		<Card>
 			<MostRecentNotification {...args} />
 		</Card>

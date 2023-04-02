@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof FitbitDevices>;
 
 const Template: ComponentStory<typeof FitbitDevices> = (args: FitbitDevicesProps) =>
-	<Layout>
+	<Layout autoDarkMode>
 		<Card>
 			<FitbitDevices {...args} />
 		</Card>

@@ -2,7 +2,7 @@
 {
     border-radius: 32px;
     border: solid 1px var(--mdhui-color-primary);
-    background: #FFF;
+    background: var(--mdhui-background-color-0);
     overflow: hidden;
     padding: 1px;
 }

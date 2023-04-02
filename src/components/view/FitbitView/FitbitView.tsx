@@ -12,7 +12,7 @@ export interface FitbitViewProps {
 
 export default function (props: FitbitViewProps) {
 	return (
-		<Layout>
+		<Layout autoDarkMode>
 			<StatusBarBackground color="var(--main-bg-color)" />
 			<Card>
 				<ConnectFitbit previewState={props.connectPreview} disabledBehavior="displayError" />
