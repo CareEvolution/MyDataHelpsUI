@@ -7,7 +7,7 @@ import language from "../../../helpers/language"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 
 export interface NavigationBarProps {
-	title: string;
+	title?: string;
 	showBackButton?: boolean;
 	showCloseButton?: boolean;
 	children?: React.ReactNode;
