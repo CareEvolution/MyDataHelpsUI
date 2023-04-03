@@ -102,7 +102,6 @@ a {
 
 html {
     font-size: 17px;
-    line-height: 1.3em;
 }
 
 /* this needs to be moved to a component called unstyledButton */
