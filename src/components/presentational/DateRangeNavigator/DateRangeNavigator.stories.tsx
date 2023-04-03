@@ -28,3 +28,10 @@ Week.args = {
 	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
 	intervalType: "Week"
 }
+
+export const Rounded = Template.bind({});
+Rounded.args = {
+	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
+	intervalType: "Week",
+	variant: "rounded"
+}

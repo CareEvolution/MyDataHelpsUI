@@ -12,6 +12,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface DateRangeNavigatorProps {
 	intervalType: "Week" | "Month";
 	intervalStart: Date;
+	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
 }
 
@@ -44,7 +45,7 @@ export default function (props: DateRangeNavigatorProps) {
 	}
 
 	return (
-		<div className="mdhui-date-range-navigator">
+		<div className={"mdhui-date-range-navigator" + (props.variant == "rounded" ? " mdhui-date-range-navigator-rounded" : "")}>
 			<button title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 				<FontAwesomeSvgIcon icon={faChevronLeft} />
 			</button>

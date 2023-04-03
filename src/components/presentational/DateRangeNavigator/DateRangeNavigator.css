@@ -29,3 +29,44 @@
 .mdhui-date-range-navigator>.navigate-next {
     right: 0;
 }
+
+.mdhui-date-range-navigator-rounded {
+    padding: 0;
+    line-height: 40px;
+    border-radius: 32px;
+    background: var(--mdhui-background-color-2);
+    margin: 16px;
+    position: relative;
+    border: none;
+}
+
+.mdhui-date-range-navigator-rounded>.navigator-button {
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-color-primary);
+    border-radius: 31px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button.navigate-previous {
+    left: 2px;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button.navigate-next {
+    right: 2px;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button svg {
+    margin: 0 auto;
+}
+
+.mdhui-navigation-bar .mdhui-date-range-navigator-rounded {
+    margin: 0;
+}

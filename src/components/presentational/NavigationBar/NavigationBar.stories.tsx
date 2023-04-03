@@ -48,3 +48,14 @@ WithDateRangeNavigator.args = {
 			<DateRangeNavigator intervalType="Week" intervalStart={new Date()} onIntervalChange={() => { }}></DateRangeNavigator>
 		</div>
 }
+
+
+export const WithRoundedDateRangeNavigator = Template.bind({});
+WithRoundedDateRangeNavigator.args = {
+	title: "Migraine",
+	showCloseButton: true,
+	children:
+		<div style={{ overflow: "hidden", borderRadius: "16px", marginTop: "16px" }}>
+			<DateRangeNavigator intervalType="Week" intervalStart={new Date()} onIntervalChange={() => { }} variant="rounded"></DateRangeNavigator>
+		</div>
+}
