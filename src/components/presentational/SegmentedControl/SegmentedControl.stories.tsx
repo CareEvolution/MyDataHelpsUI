@@ -32,5 +32,6 @@ Default.args = {
 			title: "Year"
 		}
 	],
-	selectedSegment: "Month"
+	selectedSegment: "Month",
+	color: "--var(--mdhui-color-primary)"
 }
