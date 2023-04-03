@@ -37,3 +37,10 @@ CustomColor.args = {
 	children: "Click Me",
 	color: "red"
 }
+
+export const Loading = Template.bind({});
+Loading.args = {
+	disabled: false,
+	children: "Doing Something...",
+	loading: true
+}
