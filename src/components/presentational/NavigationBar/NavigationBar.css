@@ -2,7 +2,6 @@
     text-align: left;
     padding: 16px;
     padding-top: calc(56px + env(safe-area-inset-top, 0px));
-    font-size: 1.2em;
     box-sizing: border-box;
     padding-bottom: 16px;
     position: -webkit-sticky;
@@ -11,6 +10,10 @@
     top: 0;
     font-weight: bold;
     background: var(--mdhui-background-color-1);
+}
+
+.mdhui-navigation-bar .title {
+    font-size: 1.2em;
 }
 
 .mdhui-navigation-bar.scroll-shadow {
@@ -27,7 +30,6 @@
     right: 16px;
     top: calc(16px + env(safe-area-inset-top, 0px));
     font-weight: normal;
-    font-size: .8em;
     text-decoration: none;
     cursor: pointer;
 }
@@ -37,7 +39,6 @@
     left: 16px;
     top: calc(16px + env(safe-area-inset-top, 0px));
     font-weight: normal;
-    font-size: .8em;
     text-decoration: none;
     cursor: pointer;
 }
