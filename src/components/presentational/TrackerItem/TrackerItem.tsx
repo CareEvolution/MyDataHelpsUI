@@ -9,6 +9,7 @@ export interface TrackerItemProps {
 	bordered?: boolean;
 	badge?: string;
 	onClick?: Function;
+	className?: string;
 }
 
 export default function (props: TrackerItemProps) {
@@ -27,6 +28,10 @@ export default function (props: TrackerItemProps) {
 		classes.push("bordered");
 	}
 
+	if (props.className) {
+		classes.push(props.className);
+	}
+
 	var style = {
 		borderColor: props.color,
 		color: props.color,
@@ -36,7 +41,9 @@ export default function (props: TrackerItemProps) {
 	return (
 		<button className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
 			{props.text}
-			<ShinyOverlay />
+			{props.selected &&
+				<ShinyOverlay />
+			}
 			{props.badge && props.selected &&
 				<div className="badge">
 					{props.badge}
