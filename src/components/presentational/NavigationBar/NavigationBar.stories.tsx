@@ -39,6 +39,16 @@ CustomButtons.args = {
 	closeButtonText: "Done"
 }
 
+
+export const Compressed = Template.bind({});
+Compressed.args = {
+	title: "My Title",
+	showCloseButton: true,
+	showBackButton: true,
+	variant: "compressed"
+}
+
+
 export const WithDateRangeNavigator = Template.bind({});
 WithDateRangeNavigator.args = {
 	title: "Migraine",

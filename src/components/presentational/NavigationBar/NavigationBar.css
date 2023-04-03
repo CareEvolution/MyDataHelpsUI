@@ -10,6 +10,7 @@
     top: 0;
     font-weight: bold;
     background: var(--mdhui-background-color-1);
+    line-height: 1.2em;
 }
 
 .mdhui-navigation-bar .title {
@@ -43,4 +44,11 @@
     font-size: .88em;
     text-decoration: none;
     cursor: pointer;
+}
+
+.mdhui-navigation-bar.mdhui-navigation-bar-compressed {
+    text-align: center;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    font-size: 18px;
+
 }

@@ -14,6 +14,7 @@ export interface NavigationBarProps {
 	closeButtonText?: string;
 	backButtonText?: string;
 	className?: string;
+	variant?: "default" | "compressed";
 }
 
 export default function (props: NavigationBarProps) {
@@ -44,8 +45,16 @@ export default function (props: NavigationBarProps) {
 		}
 	})
 
+	let classes = ["mdhui-navigation-bar"];
+	if (props.className) {
+		classes.push(props.className);
+	}
+	if (props.variant == "compressed") {
+		classes.push("mdhui-navigation-bar-compressed");
+	}
+
 	return (
-		<div className={"mdhui-navigation-bar " + (props.className || "")} ref={navBar}>
+		<div className={classes.join(" ")} ref={navBar}>
 			{props.showBackButton &&
 				<a className="back-button" href="javascript:{}" onClick={() => back()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
