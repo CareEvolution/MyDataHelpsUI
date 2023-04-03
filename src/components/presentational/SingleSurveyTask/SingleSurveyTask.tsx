@@ -15,6 +15,7 @@ import language from '../../../helpers/language'
 import { enUS, es } from 'date-fns/locale'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import UnstyledButton from '../UnstyledButton';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -61,7 +62,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'incomplete') {
 		return (
-			<button className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
+			<UnstyledButton className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
 				<div className="status-icon">
 					{props.task.hasSavedProgress &&
 						<FontAwesomeSvgIcon icon={faCircleHalfStroke} />
@@ -80,7 +81,7 @@ export default function (props: SingleSurveyTaskProps) {
 				<div className="indicator">
 					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</div>
-			</button>
+			</UnstyledButton>
 		);
 	}
 

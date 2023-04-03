@@ -8,6 +8,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import UnstyledButton from '../UnstyledButton';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Week" | "Month";
@@ -55,9 +56,9 @@ export default function (props: DateRangeNavigatorProps) {
 
 	return (
 		<div className={classes.join(" ")}>
-			<button title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
+			<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 				<FontAwesomeSvgIcon icon={faChevronLeft} />
-			</button>
+			</UnstyledButton>
 			{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
 				<div>
 					{getMonthName()} {props.intervalStart.getFullYear()}
@@ -70,9 +71,9 @@ export default function (props: DateRangeNavigatorProps) {
 				</div>
 			}
 			{!isCurrentInterval &&
-				<button title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
+				<UnstyledButton title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
 					<FontAwesomeSvgIcon icon={faChevronRight} />
-				</button>
+				</UnstyledButton>
 			}
 		</div>
 	);

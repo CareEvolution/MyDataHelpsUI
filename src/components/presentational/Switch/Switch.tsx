@@ -1,4 +1,5 @@
 import React from 'react'
+import UnstyledButton from '../UnstyledButton';
 import "./Switch.css"
 
 export interface SwitchProps {
@@ -10,11 +11,11 @@ export interface SwitchProps {
 
 export default function (props: SwitchProps) {
 	return (
-		<button
+		<UnstyledButton
 			onClick={() => props.onValueChanged(!props.isOn)}
 			className={"mdhui-switch" + (props.isOn ? " mdhui-switch-on" : "") + (props.className ? " " + props.className : "")}
 			style={{ backgroundColor: props.isOn ? props.onBackgroundColor : "#eee" }}>
 			<div className="mdhui-switch-circle"></div>
-		</button>
+		</UnstyledButton>
 	)
 }

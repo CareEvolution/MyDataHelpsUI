@@ -104,24 +104,6 @@ html {
     font-size: 17px;
 }
 
-/* this needs to be moved to a component called unstyledButton */
-button {
-    color: inherit;
-    font: inherit;
-    text-align: inherit;
-    line-height: inherit;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-appearance: none;
-    background: none;
-    border: none;
-    display: block;
-    box-sizing: border-box;
-    padding: 0;
-    cursor: pointer;
-    margin: 0;
-}
-
 @@supports (font: -apple-system-body) {
     html {
         font: -apple-system-body;

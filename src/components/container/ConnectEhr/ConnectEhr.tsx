@@ -8,6 +8,7 @@ import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTrian
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import UnstyledButton from '../../presentational/UnstyledButton/UnstyledButton';
 
 export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
@@ -94,7 +95,7 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	return (
-		<button className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
+		<UnstyledButton className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
 			<CardTitle title={language['connect-ehr-title-prefix'] + language['connect-ehr-title-providers'] + language['connect-ehr-title-divider'] + language['connect-ehr-title-health-plans']} />
 			{connected
 				? <div>
@@ -116,6 +117,6 @@ export default function (props: ConnectEhrProps) {
 				<FontAwesomeSvgIcon icon={faChevronRight} />
 			</div>
 			<ShinyOverlay />
-		</button>
+		</UnstyledButton>
 	);
 }

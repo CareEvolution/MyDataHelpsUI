@@ -5,7 +5,7 @@ import face2 from './face-2.svg';
 import face3 from './face-3.svg';
 import face4 from './face-4.svg';
 import face5 from './face-5.svg';
-import { ShinyOverlay } from '..';
+import { ShinyOverlay, UnstyledButton } from '..';
 import { LayoutContext } from '../Layout/Layout';
 
 export interface FaceProps {
@@ -39,10 +39,10 @@ export default function (props: FaceProps) {
 	}
 
 	if (props.onClick) {
-		return <button className={className} onClick={props.onClick}>
+		return <UnstyledButton className={className} onClick={props.onClick}>
 			<img src={getFace()} style={imageStyle} />
 			<ShinyOverlay />
-		</button>
+		</UnstyledButton>
 	}
 
 	return (

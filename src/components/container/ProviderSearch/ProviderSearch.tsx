@@ -1,13 +1,13 @@
-﻿import React, {useEffect, useMemo, useRef, useState} from 'react'
-import MyDataHelps, {ExternalAccount, ExternalAccountProvider} from "@careevolution/mydatahelps-js"
-import {LoadingIndicator} from '../../presentational';
-import {faSearch} from '@fortawesome/free-solid-svg-icons/faSearch'
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
+import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
+import { LoadingIndicator, UnstyledButton } from '../../presentational';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
-import {previewProviders} from './ProviderSearch.previewdata';
+import { previewProviders } from './ProviderSearch.previewdata';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import {FontAwesomeSvgIcon} from 'react-fontawesome-svg-icon';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
@@ -131,29 +131,29 @@ export default function (props: ProviderSearchProps) {
         <div className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
-                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off"/>
-                    <FontAwesomeSvgIcon icon={faSearch}/>
+                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <button key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
+                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
                         {provider.logoUrl &&
-                        <div className="provider-logo" style={{backgroundImage: "url('" + provider.logoUrl + "')"}}></div>
+                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
                         }
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                            <div className="provider-status error-status">{language["reconnect"]}</div>
+                                <div className="provider-status error-status">{language["reconnect"]}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
-                            <div className="provider-status connected-status">{language["connected"]}</div>
+                                <div className="provider-status connected-status">{language["connected"]}</div>
                             }
                         </div>
-                    </button>
+                    </UnstyledButton>
                 )}
                 {searching &&
-                <LoadingIndicator/>
+                    <LoadingIndicator />
                 }
             </div>
             <OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>

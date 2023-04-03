@@ -1,5 +1,6 @@
 import React from 'react';
 import ShinyOverlay from '../ShinyOverlay';
+import UnstyledButton from '../UnstyledButton';
 import "./SegmentedControl.css"
 
 export interface SegmentedControlProps {
@@ -15,7 +16,7 @@ export default function (props: SegmentedControlProps) {
 	return (
 		<div style={{ borderColor: props.color }} className={"mdhui-segmented-control " + (props.className || "")}>
 			{props.segments.map((s) =>
-				<button className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
+				<UnstyledButton className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}
 					onClick={() => props.onSegmentSelected(s.key)}
 					style={{
@@ -27,7 +28,7 @@ export default function (props: SegmentedControlProps) {
 						<ShinyOverlay />
 					}
 					{s.title}
-				</button>
+				</UnstyledButton>
 			)}
 		</div>
 	);
