@@ -44,3 +44,10 @@ Loading.args = {
 	children: "Doing Something...",
 	loading: true
 }
+
+export const SubtleVariant = Template.bind({});
+SubtleVariant.args = {
+	disabled: false,
+	children: "Click Here",
+	variant: "subtle"
+}

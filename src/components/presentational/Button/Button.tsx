@@ -13,12 +13,16 @@ export interface ButtonProps {
 	className?: string;
 	color?: string;
 	loading?: boolean;
+	variant?: "default" | "subtle";
 }
 
 export default function (props: ButtonProps) {
 	let classes = ["mdhui-button"];
 	if (props.className) {
 		classes.push(props.className);
+	}
+	if (props.variant === "subtle") {
+		classes.push("mdhui-button-subtle");
 	}
 
 	return (
