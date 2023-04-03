@@ -4,6 +4,7 @@ import "./DayTrackerSymbol.css"
 export interface DayTrackerSymbolProps {
 	primaryColors: string[]
 	secondaryColors: string[]
+	className?: string
 }
 
 export default function (props: DayTrackerSymbolProps) {

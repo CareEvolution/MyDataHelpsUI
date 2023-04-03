@@ -13,6 +13,7 @@ export interface NavigationBarProps {
 	children?: React.ReactNode;
 	closeButtonText?: string;
 	backButtonText?: string;
+	className?: string;
 }
 
 export default function (props: NavigationBarProps) {
@@ -44,7 +45,7 @@ export default function (props: NavigationBarProps) {
 	})
 
 	return (
-		<div className="mdhui-navigation-bar" ref={navBar}>
+		<div className={"mdhui-navigation-bar " + (props.className || "")} ref={navBar}>
 			{props.showBackButton &&
 				<a className="back-button" href="javascript:{}" onClick={() => back()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />

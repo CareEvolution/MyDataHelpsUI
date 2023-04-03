@@ -9,11 +9,12 @@ export interface ButtonProps {
 	 * */
 	disabled?: boolean;
 	onClick: Function;
+	className?: string;
 }
 
 export default function (props: ButtonProps) {
 	return (
-		<button className="mdhui-button" disabled={props.disabled ?? false} onClick={() => props.onClick()}>
+		<button className={"mdhui-button " + (props.className || "")} disabled={props.disabled ?? false} onClick={() => props.onClick()}>
 			{props.children}
 		</button>
 	);

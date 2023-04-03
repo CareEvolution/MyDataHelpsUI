@@ -3,6 +3,7 @@ import "./Section.css"
 
 export interface SectionProps {
 	children?: React.ReactNode;
+	className?: string;
 }
 
 export default function (props: SectionProps) {
@@ -11,7 +12,7 @@ export default function (props: SectionProps) {
 	}
 
 	return (
-		<div className="mdhui-section">
+		<div className={"mdhui-section " + (props.className || "")}>
 			{props.children}
 		</div>
 	);

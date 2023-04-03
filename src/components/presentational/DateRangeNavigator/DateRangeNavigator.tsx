@@ -14,6 +14,7 @@ export interface DateRangeNavigatorProps {
 	intervalStart: Date;
 	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
+	className?: string;
 }
 
 export default function (props: DateRangeNavigatorProps) {
@@ -44,8 +45,16 @@ export default function (props: DateRangeNavigatorProps) {
 		return capitalizeFirstLetter(format(new Date(props.intervalStart.getFullYear(), props.intervalStart.getMonth(), 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
 	}
 
+	let classes = ["mdhui-date-range-navigator"]
+	if (props.variant == "rounded") {
+		classes.push("mdhui-date-range-navigator-rounded");
+	}
+	if (props.className) {
+		classes.push(props.className);
+	}
+
 	return (
-		<div className={"mdhui-date-range-navigator" + (props.variant == "rounded" ? " mdhui-date-range-navigator-rounded" : "")}>
+		<div className={classes.join(" ")}>
 			<button title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 				<FontAwesomeSvgIcon icon={faChevronLeft} />
 			</button>
