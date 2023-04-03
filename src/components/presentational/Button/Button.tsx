@@ -20,14 +20,11 @@ export default function (props: ButtonProps) {
 	if (props.className) {
 		classes.push(props.className);
 	}
-	if (props.loading) {
-		classes.push("mdhui-button-loading");
-	}
 
 	return (
 		<button style={{ backgroundColor: props.disabled ? undefined : props.color }}
 			className={classes.join(" ")}
-			disabled={props.disabled ?? false}
+			disabled={(props.disabled || props.loading) ?? false}
 			onClick={() => {
 				if (props.disabled || props.loading) {
 					return;

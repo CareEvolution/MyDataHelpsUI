@@ -18,7 +18,3 @@
     background: var(--mdhui-background-color-2);
     cursor: default;
 }
-
-.mdhui-button.mdhui-button-loading {
-    opacity: .8;
-}
