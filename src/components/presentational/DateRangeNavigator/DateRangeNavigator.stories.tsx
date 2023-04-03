@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof DateRangeNavigator>;
 
 const Template: ComponentStory<typeof DateRangeNavigator> = (args: DateRangeNavigatorProps) =>
-	<Layout  colorScheme="light">
+	<Layout  colorScheme="auto">
 		<DateRangeNavigator {...args} />
 	</Layout>;
 

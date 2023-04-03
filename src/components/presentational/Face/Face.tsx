@@ -18,7 +18,7 @@ export interface FaceProps {
 export default function (props: FaceProps) {
 	let layoutContext = useContext(LayoutContext);
 	let imageStyle: React.CSSProperties = {};
-	if (layoutContext.darkMode && !props.selected) {
+	if (layoutContext.colorScheme == "dark" && !props.selected) {
 		imageStyle.filter = "invert(1)";
 	}
 

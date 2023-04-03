@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof RestingHeartRateCalendar>;
 
 const Template: ComponentStory<typeof RestingHeartRateCalendar> = (args: RestingHeartRateCalendarProps) =>
-	<Layout  colorScheme="light">
+	<Layout  colorScheme="auto">
 		<Card>
 			<RestingHeartRateCalendar  {...args} />
 		</Card>

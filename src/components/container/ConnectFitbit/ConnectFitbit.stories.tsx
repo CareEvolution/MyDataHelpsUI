@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof ConnectFitbit>;
 
 const Template: ComponentStory<typeof ConnectFitbit> = (args: ConnectFitbitProps) =>
-	<Layout colorScheme="light">
+	<Layout colorScheme="auto">
 		<Card>
 			<ConnectFitbit {...args} />
 		</Card>

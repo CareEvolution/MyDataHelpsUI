@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof Action>;
 
 const Template: ComponentStory<typeof Action> = (args: ActionProps) =>
-	<Layout  colorScheme="light">
+	<Layout  colorScheme="auto">
 		<Action {...args} />
 	</Layout>;
 

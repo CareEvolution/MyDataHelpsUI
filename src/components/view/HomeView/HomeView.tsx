@@ -41,7 +41,7 @@ export default function (props: HomeViewProps) {
 	}
 
 	return (
-		<Layout  colorScheme="light">
+		<Layout  colorScheme="auto">
 			<StatusBarBackground />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
 			<Card>

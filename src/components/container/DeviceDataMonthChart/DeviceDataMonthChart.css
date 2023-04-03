@@ -47,6 +47,10 @@
     font-size: 11px;
 }
 
+.mdhui-device-data-month-chart .recharts-cartesian-axis-tick-value {
+    fill: var(--mdhui-text-color-2);
+}
+
 .mdhui-device-data-month-chart .graph-tooltip {
     padding: 4px;
     font-size: 12px;

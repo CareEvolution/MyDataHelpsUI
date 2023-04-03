@@ -80,16 +80,16 @@ export const darkColorScheme = css`
     --mdhui-border-color-2: #555;
 
     --mdhui-text-color-0: #FFF;
-    --mdhui-text-color-1: #a6a7ab;
+    --mdhui-text-color-1: #FFF;
     --mdhui-text-color-2: #9e9ea5;
-    --mdhui-text-color-3: #777;
-    --mdhui-text-color-4: #444;
+    --mdhui-text-color-3: #59595d;
+    --mdhui-text-color-4: #59595d;
 
     --mdhui-box-shadow-color-0: #333;
     --mdhui-box-shadow-color-1: #666;
     
-    --mdhui-box-shadow-0: none;
-    --mdhui-box-shadow-1: none;
+    --mdhui-box-shadow-0: 0px 0px 1px 1px var(--mdhui-border-color-0);
+    --mdhui-box-shadow-1: 0px 0px 1px 1px var(--mdhui-border-color-0);
 
     --mdhui-overlay-gradient:linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 11, 15, 0.2) 100%) !important;
 }`;

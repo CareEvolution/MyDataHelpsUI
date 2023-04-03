@@ -13,7 +13,7 @@ export interface LayoutProps {
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
 	/**
- 	* @deprecated
+ 	* @deprecated 
  	*/
 	stylesheetPath?: string;
 }
@@ -44,10 +44,11 @@ export default function (props: LayoutProps) {
 	let colorScheme: "light" | "dark" = "light";
 	if (props.colorScheme === "auto" && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		colorScheme = "dark";
-	} else if (props.colorScheme) {
-		colorScheme = props.colorScheme as "light" | "dark";
+	} else if (props.colorScheme === "dark" || props.colorScheme === "light") {
+		colorScheme = props.colorScheme;
 	}
-
+	console.log(props.colorScheme);
+	console.log(colorScheme);
 	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: props.bodyBackgroundColor || "var(--mdhui-background-color-1)" };
 
 	return (

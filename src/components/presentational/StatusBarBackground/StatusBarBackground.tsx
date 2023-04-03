@@ -17,7 +17,7 @@ export default function (props: StatusBarBackgroundProps) {
 		style = { backgroundColor: props.color };
 	}
 
-	if (!props.color && context.darkMode) {
+	if (!props.color && context.colorScheme === "dark") {
 		MyDataHelps.setStatusBarStyle("lightContent");
 	}
 

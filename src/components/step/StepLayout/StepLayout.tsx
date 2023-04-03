@@ -8,7 +8,7 @@ export interface StepLayoutProps {
 
 export default function (props: StepLayoutProps) {
   return (
-    <Layout className='mdhui-step-container' bodyBackgroundColor="#FFFFFF">
+    <Layout colorScheme='light' className='mdhui-step-container' bodyBackgroundColor="#FFFFFF">
       {props.children}
     </Layout>
   );
