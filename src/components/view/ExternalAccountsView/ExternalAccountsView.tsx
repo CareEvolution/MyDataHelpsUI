@@ -56,7 +56,7 @@ export default function (props: ExternalAccountsViewProps) {
                            showCloseButton={props.presentation == "Modal"}/>
             }
             {!props.presentation &&
-            <StatusBarBackground color="var(--main-bg-color)"/>
+            <StatusBarBackground />
             }
             <ExternalAccountList previewState={props.preview ? "Default" : undefined} externalAccountProviderCategories={externalAccountProviderCategories} onExternalAccountsLoaded={onExternalAccountsLoaded}/>
         </Layout>

@@ -10,7 +10,7 @@ export interface DeviceDataViewProps {
 export default function (props: DeviceDataViewProps) {
 	return (
 		<Layout autoDarkMode>
-			<StatusBarBackground color="var(--main-bg-color)" />
+			<StatusBarBackground />
 			<PlatformSpecificContent platforms={["Android"]}>
 				<Card>
 					<Action title="Google Fit" subtitle={language["google-fit-share"]} onClick={() => MyDataHelps.showGoogleFitSettings()} />

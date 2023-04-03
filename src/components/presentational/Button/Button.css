@@ -2,7 +2,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 16px;
-    background: var(--mdhui-color-theme);
+    background: var(--mdhui-color-primary);
     font-size: 17px;
     line-height: 17px;
     color: #FFF;

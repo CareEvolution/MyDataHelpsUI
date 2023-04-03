@@ -21,7 +21,7 @@ export default function (props: SurveyTasksViewProps) {
 					showCloseButton={props.presentation == "Modal"} />
 			}
 			{!props.presentation &&
-				<StatusBarBackground color="var(--main-bg-color)" />
+				<StatusBarBackground />
 			}
 			{!props.hideIncompleteTasks &&
 				<Card>

@@ -10,7 +10,9 @@ export default interface StatusBarBackgroundProps {
 export default function (props: StatusBarBackgroundProps) {
 	var context = useContext(LayoutContext);
 
-	var style = {};
+	var style = {
+		backgroundColor: context.bodyBackgroundColor
+	};
 	if (props.color) {
 		style = { backgroundColor: props.color };
 	}

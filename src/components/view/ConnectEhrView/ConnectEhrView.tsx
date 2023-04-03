@@ -42,7 +42,7 @@ export default function (props: ConnectEhrViewProps) {
                            showCloseButton={props.presentation == "Modal"}/>
             }
             {!props.presentation &&
-            <StatusBarBackground color="var(--main-bg-color)"/>
+            <StatusBarBackground />
             }
             <TextBlock>
                 {language["ehr-intro"]}

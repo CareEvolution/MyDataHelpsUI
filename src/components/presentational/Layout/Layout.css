@@ -1,6 +1,4 @@
-﻿
-
-.mdhui-layout {
+﻿.mdhui-layout {
     padding-bottom: env(safe-area-inset-bottom);
     color: var(--mdhui-text-color-1);
 }

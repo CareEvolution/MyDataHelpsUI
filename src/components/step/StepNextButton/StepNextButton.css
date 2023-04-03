@@ -1,11 +1,11 @@
 .mdhui-step-container .mdhui-step-next-button {
   margin: 20px;
   padding: 16px;
-  background: var(--mdhui-color-theme);
+  background: var(--mdhui-color-primary);
   font-size: 1em;
   color: #FFF;
   font-weight: bold;
-  border: solid 1px var(--mdhui-color-theme);
+  border: solid 1px var(--mdhui-color-primary);
   border-radius: 5px;
   cursor: pointer;
   width: calc(100% - 40px);

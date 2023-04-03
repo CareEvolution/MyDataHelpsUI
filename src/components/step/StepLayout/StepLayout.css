@@ -29,7 +29,7 @@
 }
 
 .mdhui-step-container a {
-    color: var(--mdhui-color-theme);
+    color: var(--mdhui-color-primary);
     text-decoration: none;
 }
 

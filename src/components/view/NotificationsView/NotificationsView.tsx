@@ -26,7 +26,7 @@ export default function (props: NotificationsViewProps) {
 					showCloseButton={props.presentation == "Modal"} />
 			}
 			{!props.presentation &&
-				<StatusBarBackground color="var(--main-bg-color)" />
+				<StatusBarBackground />
 			}
 			<NotificationList notificationType={notificationType} previewState={props.preview ? "Default" : undefined} />
 		</Layout>
