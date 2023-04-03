@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof Face>;
 
 const Template: ComponentStory<typeof Face> = (args: FaceProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<Face  {...args} />
 	</Layout>;
 

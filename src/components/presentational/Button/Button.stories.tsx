@@ -14,7 +14,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Button> = (args: ButtonProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<Button {...args}>
 		</Button>
 	</Layout>;

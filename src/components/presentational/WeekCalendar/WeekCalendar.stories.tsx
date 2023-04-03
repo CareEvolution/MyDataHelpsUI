@@ -25,7 +25,7 @@ export function Empty() {
 	const [selectedDate, setSelectedDate] = useState(currentDate);
 	const [intervalStartDate, setIntervalStartDate] = useState(initialIntervalStart);
 
-	return <Layout autoDarkMode>
+	return <Layout  colorScheme="light">
 		<WeekCalendar hideDateLabel={false}
 			dayRenderer={() => null}
 			loading={false}
@@ -81,7 +81,7 @@ export function WithNavigator() {
 		return <div style={{ paddingTop: "8px" }}><SparkBarChart averageFillPercent={0.3} bars={bars} /></div>;
 	}
 
-	return <Layout autoDarkMode>
+	return <Layout  colorScheme="light">
 		<DateRangeNavigator intervalStart={intervalStartDate}
 			intervalType="Week"
 			onIntervalChange={(n, _) => setIntervalStartDate(n)} />

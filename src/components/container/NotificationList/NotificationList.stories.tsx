@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof NotificationList>;
 
 const Template: ComponentStory<typeof NotificationList> = (args: NotificationListProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<NotificationList {...args} />
 	</Layout>;
 

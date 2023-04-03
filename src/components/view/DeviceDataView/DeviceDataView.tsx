@@ -9,7 +9,7 @@ export interface DeviceDataViewProps {
 
 export default function (props: DeviceDataViewProps) {
 	return (
-		<Layout autoDarkMode>
+		<Layout  colorScheme="light">
 			<StatusBarBackground />
 			<PlatformSpecificContent platforms={["Android"]}>
 				<Card>

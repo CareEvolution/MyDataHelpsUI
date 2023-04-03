@@ -14,7 +14,7 @@ export default {
 } as ComponentMeta<typeof DeviceDataMonthChart>;
 
 const Template: ComponentStory<typeof DeviceDataMonthChart> = (args: DeviceDataMonthChartProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<Card>
 			<DeviceDataMonthChart {...args} />
 		</Card>

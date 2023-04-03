@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof ExternalAccountsPreview>;
 
 const Template: ComponentStory<typeof ExternalAccountsPreview> = (args: ExternalAccountsPreviewProps) =>
-    <Layout autoDarkMode>
+    <Layout  colorScheme="light">
         <ExternalAccountsPreview {...args} />
     </Layout>;
 

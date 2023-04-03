@@ -71,17 +71,17 @@ export const lightColorScheme = css`
 
 export const darkColorScheme = css`
 :root {
-    --mdhui-background-color-0: #1a1b1e;
-    --mdhui-background-color-1: #141517;
+    --mdhui-background-color-0: #2c2c2d;
+    --mdhui-background-color-1: #1c1c1d;
     --mdhui-background-color-2: #000;
 
-    --mdhui-border-color-0: #333;
+    --mdhui-border-color-0: #444446;
     --mdhui-border-color-1: #444;
     --mdhui-border-color-2: #555;
 
     --mdhui-text-color-0: #FFF;
     --mdhui-text-color-1: #a6a7ab;
-    --mdhui-text-color-2: #aaa;
+    --mdhui-text-color-2: #9e9ea5;
     --mdhui-text-color-3: #777;
     --mdhui-text-color-4: #444;
 

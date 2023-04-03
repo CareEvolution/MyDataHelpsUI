@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof Switch>;
 
 const Template: ComponentStory<typeof Switch> = (args: SwitchProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<Switch  {...args} />
 	</Layout>;
 

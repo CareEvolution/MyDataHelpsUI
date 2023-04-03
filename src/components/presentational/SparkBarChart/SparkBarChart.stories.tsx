@@ -14,7 +14,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof SparkBarChart> = (args: SparkBarChartProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<div style={{ width: "300px" }}>
 			<SparkBarChart {...args} />
 		</div>

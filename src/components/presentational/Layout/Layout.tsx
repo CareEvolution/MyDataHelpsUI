@@ -2,7 +2,7 @@ import React, { createContext } from 'react';
 import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
-import { darkColorScheme, lightColorScheme, global, coreCss } from '../../../helpers/globalCss';
+import { darkColorScheme, lightColorScheme, global, core } from '../../../helpers/globalCss';
 
 export interface LayoutProps {
 	children?: React.ReactNode;
@@ -10,20 +10,20 @@ export interface LayoutProps {
 	primaryColor?: string;
 	statusBarStyle?: StatusBarStyle;
 	className?: string;
-	autoDarkMode?: boolean;
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
-
-	//Deprecated
+	/**
+ 	* @deprecated
+ 	*/
 	stylesheetPath?: string;
 }
 
 export interface LayoutContext {
-	darkMode: boolean;
+	colorScheme: "light" | "dark";
 	bodyBackgroundColor: string;
 }
 
-export const LayoutContext = createContext<LayoutContext>({ darkMode: false, bodyBackgroundColor: "var(--mdhui-background-color-1)" });
+export const LayoutContext = createContext<LayoutContext>({ colorScheme: "light", bodyBackgroundColor: "var(--mdhui-background-color-1)" });
 
 export default function (props: LayoutProps) {
 	let className = "mdhui-layout";
@@ -41,14 +41,18 @@ export default function (props: LayoutProps) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
 
-	let context: LayoutContext = { darkMode: false, bodyBackgroundColor: props.bodyBackgroundColor || "var(--mdhui-background-color-1)" };
-	if (props.autoDarkMode && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		context.darkMode = true;
+	let colorScheme: "light" | "dark" = "light";
+	if (props.colorScheme === "auto" && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		colorScheme = "dark";
+	} else if (props.colorScheme) {
+		colorScheme = props.colorScheme as "light" | "dark";
 	}
+
+	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: props.bodyBackgroundColor || "var(--mdhui-background-color-1)" };
 
 	return (
 		<LayoutContext.Provider value={context}>
-			<EmotionGlobal styles={coreCss} />
+			<EmotionGlobal styles={core} />
 			{props.primaryColor &&
 				<EmotionGlobal styles={css`
 				:root {
@@ -56,10 +60,10 @@ export default function (props: LayoutProps) {
 				}`
 				} />
 			}
-			{context.darkMode &&
+			{context.colorScheme == "dark" &&
 				<EmotionGlobal styles={darkColorScheme} />
 			}
-			{!context.darkMode &&
+			{context.colorScheme == "light" &&
 				<EmotionGlobal styles={lightColorScheme} />
 			}
 			{!props.noGlobalStyles &&

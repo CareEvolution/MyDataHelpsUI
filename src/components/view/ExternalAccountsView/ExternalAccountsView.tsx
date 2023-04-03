@@ -49,7 +49,7 @@ export default function (props: ExternalAccountsViewProps) {
     }
 
     return (
-        <Layout autoDarkMode>
+        <Layout  colorScheme="light">
             {props.presentation &&
             <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}

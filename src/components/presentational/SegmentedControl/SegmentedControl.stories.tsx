@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof SegmentedControl>;
 
 const Template: ComponentStory<typeof SegmentedControl> = (args: SegmentedControlProps) =>
-	<Layout autoDarkMode>
+	<Layout  colorScheme="light">
 		<SegmentedControl  {...args} />
 	</Layout>;
 

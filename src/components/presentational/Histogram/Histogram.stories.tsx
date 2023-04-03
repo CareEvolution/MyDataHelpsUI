@@ -11,7 +11,7 @@ export default {
     }
 } as ComponentMeta<typeof Histogram>;
 
-const Template: ComponentStory<typeof Histogram> = (args: HistogramProps) => <Layout autoDarkMode><Histogram {...args} /></Layout>;
+const Template: ComponentStory<typeof Histogram> = (args: HistogramProps) => <Layout  colorScheme="light"><Histogram {...args} /></Layout>;
 
 export const Default = Template.bind({});
 Default.args = {
