@@ -10,11 +10,15 @@ export interface ButtonProps {
 	disabled?: boolean;
 	onClick: Function;
 	className?: string;
+	color?: string;
 }
 
 export default function (props: ButtonProps) {
 	return (
-		<button className={"mdhui-button " + (props.className || "")} disabled={props.disabled ?? false} onClick={() => props.onClick()}>
+		<button style={{ backgroundColor: props.disabled ? undefined : props.color }}
+			className={"mdhui-button " + (props.className || "")}
+			disabled={props.disabled ?? false}
+			onClick={() => props.onClick()}>
 			{props.children}
 		</button>
 	);
