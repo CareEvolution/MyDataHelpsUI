@@ -30,3 +30,10 @@ Disabled.args = {
 	children: "Click Me",
 	disabled: true
 }
+
+export const CustomColor = Template.bind({});
+CustomColor.args = {
+	disabled: false,
+	children: "Click Me",
+	color: "red"
+}
