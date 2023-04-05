@@ -14,7 +14,7 @@ export default function (props: SwitchProps) {
 		<UnstyledButton
 			onClick={() => props.onValueChanged(!props.isOn)}
 			className={"mdhui-switch" + (props.isOn ? " mdhui-switch-on" : "") + (props.className ? " " + props.className : "")}
-			style={{ backgroundColor: props.isOn ? props.onBackgroundColor : "#eee" }}>
+			style={{ backgroundColor: props.isOn ? props.onBackgroundColor : "var(--mdhui-background-color-2)" }}>
 			<div className="mdhui-switch-circle"></div>
 		</UnstyledButton>
 	)
