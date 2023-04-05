@@ -1,5 +1,6 @@
 import React from 'react';
 import ShinyOverlay from '../ShinyOverlay';
+import UnstyledButton from '../UnstyledButton';
 import "./TrackerItem.css"
 
 export interface TrackerItemProps {
@@ -39,7 +40,7 @@ export default function (props: TrackerItemProps) {
 	};
 
 	return (
-		<button className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+		<UnstyledButton className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
 			{props.text}
 			{props.selected &&
 				<ShinyOverlay />
@@ -49,6 +50,6 @@ export default function (props: TrackerItemProps) {
 					{props.badge}
 				</div>
 			}
-		</button>
+		</UnstyledButton>
 	);
 }
