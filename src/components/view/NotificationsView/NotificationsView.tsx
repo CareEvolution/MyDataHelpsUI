@@ -8,6 +8,7 @@ export interface NotificationsViewProps {
 	notificationType?: NotificationType
 	presentation?: ViewPresentationType
 	preview?: boolean
+	colorScheme?: "auto" | "light" | "dark";
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -19,7 +20,7 @@ export default function (props: NotificationsViewProps) {
 	}
 
 	return (
-		<Layout colorScheme="auto">
+		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			{props.presentation &&
 				<NavigationBar title={language["notifications"]}
 					showBackButton={props.presentation == "Push"}

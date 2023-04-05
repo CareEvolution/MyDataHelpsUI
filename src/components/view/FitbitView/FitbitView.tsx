@@ -8,11 +8,12 @@ export interface FitbitViewProps {
 	connectPreview?: ConnectFitbitPreviewState,
 	devicesPreview?: FitbitDevicesPreviewState,
 	chartsPreview?: FitbitMonthChartsPreviewState
+	colorScheme?: "auto" | "light" | "dark";
 }
 
 export default function (props: FitbitViewProps) {
 	return (
-		<Layout colorScheme="auto">
+		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground />
 			<Card>
 				<ConnectFitbit previewState={props.connectPreview} disabledBehavior="displayError" />

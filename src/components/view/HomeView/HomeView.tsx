@@ -20,6 +20,7 @@ export interface HomeViewProps {
 	notificationsViewUrl?: string
 	tasksViewUrl?: string
 	preview?: boolean;
+	colorScheme?: "auto" | "light" | "dark";
 }
 
 export default function (props: HomeViewProps) {
@@ -41,7 +42,7 @@ export default function (props: HomeViewProps) {
 	}
 
 	return (
-		<Layout colorScheme="auto">
+		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
 			<Card>

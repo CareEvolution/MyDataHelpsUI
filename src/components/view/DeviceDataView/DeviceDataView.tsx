@@ -5,11 +5,12 @@ import language from '../../../helpers/language'
 
 export interface DeviceDataViewProps {
 	preview?: boolean;
+	colorScheme?: "auto" | "light" | "dark";
 }
 
 export default function (props: DeviceDataViewProps) {
 	return (
-		<Layout colorScheme="auto">
+		<Layout  colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground />
 			<PlatformSpecificContent platforms={["Android"]}>
 				<Card>

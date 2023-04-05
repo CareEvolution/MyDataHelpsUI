@@ -6,6 +6,7 @@
     -webkit-font-smoothing: inherit;
     -moz-osx-font-smoothing: inherit;
     -webkit-appearance: none;
+    appearance: none;
     background: none;
     border: none;
     display: block;

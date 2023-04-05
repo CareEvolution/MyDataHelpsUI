@@ -10,6 +10,7 @@ export interface ExternalAccountsViewProps {
     excludeDeviceManufacturers?: boolean;
     presentation?: ViewPresentationType;
     preview?: boolean;
+    colorScheme?: "auto" | "light" | "dark";
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -49,7 +50,7 @@ export default function (props: ExternalAccountsViewProps) {
     }
 
     return (
-        <Layout colorScheme="auto">
+        <Layout colorScheme={props.colorScheme ?? "auto"}>
             {props.presentation &&
             <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}

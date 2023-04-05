@@ -1,9 +1,4 @@
-.mdhui-external-accounts-preview
-{
+.mdhui-external-accounts-preview .external-account-title {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
 }
-
-    .mdhui-external-accounts-preview .external-account-title
-    {
-        font-size:.88em;
-        color:var(--mdhui-text-color-2);
-    }
