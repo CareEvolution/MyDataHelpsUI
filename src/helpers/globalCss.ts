@@ -5,7 +5,7 @@ export const core = css`
     --mdhui-color-primary: #5381c3;
     --mdhui-color-success: #00AE42;
     --mdhui-color-warning: #FF671D;
-    --mdhui-color-danger: #C40D3C;
+    --mdhui-color-danger: #eb5546;
     --mdhui-fadein-animation: fadein 1s;
 }
 
