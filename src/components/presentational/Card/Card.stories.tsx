@@ -16,7 +16,7 @@ export default {
 
 const Template: ComponentStory<typeof Action> = (args: ActionProps) =>
 	<Layout  colorScheme="auto">
-		<Card className="card-story-primary">
+		<Card>
 			<Action {...args} />
 		</Card>
 	</Layout>;
