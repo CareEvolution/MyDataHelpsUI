@@ -29,7 +29,7 @@ export default function (props: ButtonProps) {
 	return (
 		<button style={{ backgroundColor: props.disabled ? undefined : props.color }}
 			className={classes.join(" ")}
-			disabled={(props.disabled || props.loading) ?? false}
+			disabled={(props.disabled || props.loading)}
 			onClick={() => {
 				if (props.disabled || props.loading) {
 					return;

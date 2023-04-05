@@ -47,8 +47,6 @@ export default function (props: LayoutProps) {
 	} else if (props.colorScheme === "dark" || props.colorScheme === "light") {
 		colorScheme = props.colorScheme;
 	}
-	console.log(props.colorScheme);
-	console.log(colorScheme);
 	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: props.bodyBackgroundColor || "var(--mdhui-background-color-1)" };
 
 	return (

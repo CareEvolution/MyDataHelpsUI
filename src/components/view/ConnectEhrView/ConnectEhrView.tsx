@@ -35,7 +35,7 @@ export default function (props: ConnectEhrViewProps) {
     title = language['connect-ehr-title-prefix'] + title;
 
     return (
-        <Layout  colorScheme="auto">
+        <Layout colorScheme="auto">
             {props.presentation &&
             <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}

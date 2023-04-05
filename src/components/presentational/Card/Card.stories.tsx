@@ -15,7 +15,7 @@ export default {
 } as ComponentMeta<typeof Action>;
 
 const Template: ComponentStory<typeof Action> = (args: ActionProps) =>
-	<Layout  colorScheme="auto">
+	<Layout colorScheme="auto">
 		<Card>
 			<Action {...args} />
 		</Card>
@@ -28,7 +28,7 @@ CardAction.args = {
 };
 
 const CardTemplate: ComponentStory<typeof Card> = (args: CardProps) =>
-	<Layout  colorScheme="auto">
+	<Layout colorScheme="auto">
 		<Card {...args}>
 			<CardTitle title="Card Title" />
 			<div style={{ padding: "16px" }}>Card Content</div>

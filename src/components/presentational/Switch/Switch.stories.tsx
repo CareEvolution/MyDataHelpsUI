@@ -26,3 +26,10 @@ export const Default = Template.bind({});
 Default.args = {
 	isOn: false
 }
+
+
+export const CustomBackground = Template.bind({});
+CustomBackground.args = {
+	isOn: true,
+	onBackgroundColor: "green"
+}

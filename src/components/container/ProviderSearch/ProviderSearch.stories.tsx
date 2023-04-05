@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof ProviderSearch>;
 
 const Template: ComponentStory<typeof ProviderSearch> = (args: ProviderSearchProps) =>
-	<Layout  colorScheme="auto">
+	<Layout colorScheme="auto">
 		<Card>
 			<ProviderSearch {...args} />
 		</Card>

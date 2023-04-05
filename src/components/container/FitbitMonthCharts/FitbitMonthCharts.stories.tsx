@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof FitbitMonthCharts>;
 
 const Template: ComponentStory<typeof FitbitMonthCharts> = (args: FitbitMonthChartsProps) =>
-	<Layout  colorScheme="auto">
+	<Layout colorScheme="auto">
 		<Card>
 			<FitbitMonthCharts {...args} />
 		</Card>
