@@ -21,7 +21,7 @@
 
     .mdhui-spark-bar-chart .mdhui-spark-bar-chart-average
     {
-        border-top: dashed 1px #ddd;
+        border-top: dashed 1px var(--mdhui-border-color-1);
         position: absolute;
         left: 0px;
         right: 0px;

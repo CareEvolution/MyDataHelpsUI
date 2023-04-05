@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof SurveyTaskList>;
 
 const Template: ComponentStory<typeof SurveyTaskList> = (args: SurveyTaskListProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<SurveyTaskList {...args} />
 	</Layout>;
 

@@ -1,36 +1,72 @@
-.mdhui-card .mdhui-date-range-navigator:first-child
-{
+.mdhui-card .mdhui-date-range-navigator:first-child {
     border-radius: 5px 5px 0px 0px;
 }
 
-.mdhui-date-range-navigator
-{
+.mdhui-date-range-navigator {
     padding: 16px;
     text-align: center;
     font-weight: bold;
-    border-bottom: solid 1px var(--color-border);
+    border-bottom: solid 1px var(--mdhui-border-color-0);
     position: sticky;
     position: -webkit-sticky;
     top: 0;
-    background: #FFF;
+    background: var(--mdhui-background-color-0);
     z-index: 1;
 }
 
-    .mdhui-date-range-navigator > .navigator-button
-    {
-        position: absolute;
-        top: 0;
-        padding: 16px;
-        color: var(--color-primary);
-        height: 100%;
-    }
+.mdhui-date-range-navigator>.navigator-button {
+    position: absolute;
+    top: 0;
+    padding: 16px;
+    color: var(--mdhui-color-primary);
+    height: 100%;
+}
 
-    .mdhui-date-range-navigator > .navigate-previous
-    {
-        left: 0;
-    }
+.mdhui-date-range-navigator>.navigate-previous {
+    left: 0;
+}
 
-    .mdhui-date-range-navigator > .navigate-next
-    {
-        right: 0;
-    }
+.mdhui-date-range-navigator>.navigate-next {
+    right: 0;
+}
+
+.mdhui-date-range-navigator-rounded {
+    padding: 0;
+    line-height: 40px;
+    border-radius: 32px;
+    background: var(--mdhui-background-color-2);
+    margin: 16px;
+    position: relative;
+    border: none;
+}
+
+.mdhui-date-range-navigator-rounded>.navigator-button {
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-color-primary);
+    border-radius: 31px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button.navigate-previous {
+    left: 2px;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button.navigate-next {
+    right: 2px;
+}
+
+.mdhui-date-range-navigator-rounded .navigator-button svg {
+    margin: 0 auto;
+}
+
+.mdhui-navigation-bar .mdhui-date-range-navigator-rounded {
+    margin: 0;
+}

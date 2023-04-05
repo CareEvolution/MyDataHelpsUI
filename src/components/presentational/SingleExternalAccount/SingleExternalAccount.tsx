@@ -10,6 +10,7 @@ import parseISO from 'date-fns/parseISO'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import UnstyledButton from '../UnstyledButton';
 
 export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
@@ -50,9 +51,9 @@ export default function (props: SingleExternalAccountProps) {
 					<div className="external-account-provider-name">{props.externalAccount.provider.name}</div>
 				}
 				{getStatus() !== "deleting" && getStatus() !== "fetchingData" &&
-					<button className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
+					<UnstyledButton className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
 						<FontAwesomeSvgIcon icon={faTrash} />
-					</button>
+					</UnstyledButton>
 				}
 			</div>
 			<div className="external-account-status">

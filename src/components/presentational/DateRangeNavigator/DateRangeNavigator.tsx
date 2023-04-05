@@ -8,11 +8,14 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import UnstyledButton from '../UnstyledButton';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Week" | "Month";
 	intervalStart: Date;
+	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
+	className?: string;
 }
 
 export default function (props: DateRangeNavigatorProps) {
@@ -43,11 +46,19 @@ export default function (props: DateRangeNavigatorProps) {
 		return capitalizeFirstLetter(format(new Date(props.intervalStart.getFullYear(), props.intervalStart.getMonth(), 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
 	}
 
+	let classes = ["mdhui-date-range-navigator"]
+	if (props.variant == "rounded") {
+		classes.push("mdhui-date-range-navigator-rounded");
+	}
+	if (props.className) {
+		classes.push(props.className);
+	}
+
 	return (
-		<div className="mdhui-date-range-navigator">
-			<button title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
+		<div className={classes.join(" ")}>
+			<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 				<FontAwesomeSvgIcon icon={faChevronLeft} />
-			</button>
+			</UnstyledButton>
 			{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
 				<div>
 					{getMonthName()} {props.intervalStart.getFullYear()}
@@ -60,9 +71,9 @@ export default function (props: DateRangeNavigatorProps) {
 				</div>
 			}
 			{!isCurrentInterval &&
-				<button title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
+				<UnstyledButton title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
 					<FontAwesomeSvgIcon icon={faChevronRight} />
-				</button>
+				</UnstyledButton>
 			}
 		</div>
 	);

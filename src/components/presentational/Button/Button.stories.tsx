@@ -14,7 +14,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Button> = (args: ButtonProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<Button {...args}>
 		</Button>
 	</Layout>;
@@ -29,4 +29,25 @@ export const Disabled = Template.bind({});
 Disabled.args = {
 	children: "Click Me",
 	disabled: true
+}
+
+export const CustomColor = Template.bind({});
+CustomColor.args = {
+	disabled: false,
+	children: "Click Me",
+	color: "red"
+}
+
+export const Loading = Template.bind({});
+Loading.args = {
+	disabled: false,
+	children: "Doing Something...",
+	loading: true
+}
+
+export const SubtleVariant = Template.bind({});
+SubtleVariant.args = {
+	disabled: false,
+	children: "Click Here",
+	variant: "subtle"
 }

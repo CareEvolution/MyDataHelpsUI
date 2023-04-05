@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof ConnectEhr>;
 
 const Template: ComponentStory<typeof ConnectEhr> = (args: ConnectEhrProps) =>
-    <Layout>
+    <Layout colorScheme="auto">
         <Card>
             <ConnectEhr {...args} />
         </Card>

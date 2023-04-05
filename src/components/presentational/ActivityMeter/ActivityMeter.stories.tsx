@@ -6,6 +6,7 @@ import { faShoePrints } from "@fortawesome/free-solid-svg-icons/faShoePrints";
 import { faBed } from "@fortawesome/free-solid-svg-icons/faBed";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import Card from "../Card";
 
 export default {
 	title: "Presentational/ActivityMeter",
@@ -17,10 +18,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ActivityMeter> = (args: ActivityMeterProps) =>
-	<Layout bodyBackgroundColor="#FFF">
-		<div style={{ padding: "16px" }}>
-			<ActivityMeter {...args} />
-		</div>
+	<Layout colorScheme="auto">
+		<Card>
+			<div style={{ padding: "16px" }}>
+				<ActivityMeter {...args} />
+			</div>
+		</Card>
 	</Layout>;
 
 export const Sleep = Template.bind({});

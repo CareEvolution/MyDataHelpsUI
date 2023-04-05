@@ -12,8 +12,16 @@ export default function (props: CardProps) {
 		return null;
 	}
 
+	let classes = ["mdhui-card"];
+	if (props.allowOverflow) {
+		classes.push("allow-overflow");
+	}
+	if (props.className) {
+		classes.push(props.className);
+	}
+
 	return (
-		<div className={(props.allowOverflow ? "allow-overflow " : "") + (props.className || "") + " mdhui-card"}>
+		<div className={classes.join(" ")}>
 			{props.children}
 		</div>
 	);

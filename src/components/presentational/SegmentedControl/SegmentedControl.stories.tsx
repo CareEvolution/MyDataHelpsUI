@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof SegmentedControl>;
 
 const Template: ComponentStory<typeof SegmentedControl> = (args: SegmentedControlProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<SegmentedControl  {...args} />
 	</Layout>;
 
@@ -32,5 +32,6 @@ Default.args = {
 			title: "Year"
 		}
 	],
-	selectedSegment: "Month"
+	selectedSegment: "Month",
+	color: "--var(--mdhui-color-primary)"
 }

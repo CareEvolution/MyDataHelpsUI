@@ -2,8 +2,8 @@
 {
     padding: 16px;
     text-align: center;
-    background: #FFF;
-    border-bottom: solid 1px #ddd;
+    background: var(--mdhui-background-color-0);
+    border-bottom: solid 1px var(--mdhui-border-color-1);
 }
 
     .mdhui-project-header .logo

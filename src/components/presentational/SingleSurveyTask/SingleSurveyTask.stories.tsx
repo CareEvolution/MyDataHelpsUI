@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof SingleSurveyTask>;
 
 const Template: ComponentStory<typeof SingleSurveyTask> = (args: SingleSurveyTaskProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<SingleSurveyTask {...args} />
 	</Layout>;
 
