@@ -1,10 +1,10 @@
 import React from 'react'
+import UnstyledButton from '../UnstyledButton';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
-import "./Action.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import UnstyledButton from '../UnstyledButton';
+import "./Action.css"
 
 export interface ActionProps {
 	title?: string;

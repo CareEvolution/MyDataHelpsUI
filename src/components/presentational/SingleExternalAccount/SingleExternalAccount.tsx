@@ -1,3 +1,4 @@
+import UnstyledButton from '../UnstyledButton';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
 import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
@@ -10,7 +11,6 @@ import parseISO from 'date-fns/parseISO'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import UnstyledButton from '../UnstyledButton';
 
 export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;

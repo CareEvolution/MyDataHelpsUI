@@ -3,12 +3,12 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { format, sub } from 'date-fns';
 import React from 'react';
+import UnstyledButton from '../UnstyledButton';
 import "./DateRangeNavigator.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import UnstyledButton from '../UnstyledButton';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Week" | "Month";
