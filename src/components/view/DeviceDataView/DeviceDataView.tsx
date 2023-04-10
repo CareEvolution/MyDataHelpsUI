@@ -5,12 +5,13 @@ import language from '../../../helpers/language'
 
 export interface DeviceDataViewProps {
 	preview?: boolean;
+	colorScheme?: "auto" | "light" | "dark";
 }
 
 export default function (props: DeviceDataViewProps) {
 	return (
-		<Layout>
-			<StatusBarBackground color="var(--main-bg-color)" />
+		<Layout  colorScheme={props.colorScheme ?? "auto"}>
+			<StatusBarBackground />
 			<PlatformSpecificContent platforms={["Android"]}>
 				<Card>
 					<Action title="Google Fit" subtitle={language["google-fit-share"]} onClick={() => MyDataHelps.showGoogleFitSettings()} />

@@ -12,7 +12,7 @@ export default {
     }
 } as ComponentMeta<typeof SingleExternalAccount>;
 
-const Template: ComponentStory<typeof SingleExternalAccount> = (args: SingleExternalAccountProps) => <Layout><SingleExternalAccount {...args} /></Layout>;
+const Template: ComponentStory<typeof SingleExternalAccount> = (args: SingleExternalAccountProps) => <Layout colorScheme="auto"><SingleExternalAccount {...args} /></Layout>;
 
 export const FetchComplete = Template.bind({});
 FetchComplete.args = {

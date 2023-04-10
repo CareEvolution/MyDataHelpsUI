@@ -1,9 +1,10 @@
 import React from 'react'
+import UnstyledButton from '../UnstyledButton';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
-import "./Action.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import "./Action.css"
 
 export interface ActionProps {
 	title?: string;
@@ -17,7 +18,7 @@ export interface ActionProps {
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<button className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
+		<UnstyledButton className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
 			{props.title &&
 				<div className="title">
 					{props.title}
@@ -32,6 +33,6 @@ export default function (props: ActionProps) {
 			<div className="indicator">
 				<FontAwesomeSvgIcon icon={indicatorIcon} />
 			</div>
-		</button>
+		</UnstyledButton>
 	);
 }

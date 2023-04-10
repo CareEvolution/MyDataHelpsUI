@@ -10,10 +10,11 @@ export interface ActivityMeterProps {
 	averageFillPercent: number;
 	color: string;
 	message?: string;
+	className?: string;
 }
 
 export default function (props: ActivityMeterProps) {
-	return <div className="mdhui-activity-meter">
+	return <div className={"mdhui-activity-meter " + (props.className || "")}>
 		<div className="mdhui-activity-meter-label">
 			{props.label}
 		</div>

@@ -10,6 +10,7 @@ export interface ExternalAccountsViewProps {
     excludeDeviceManufacturers?: boolean;
     presentation?: ViewPresentationType;
     preview?: boolean;
+    colorScheme?: "auto" | "light" | "dark";
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -49,14 +50,14 @@ export default function (props: ExternalAccountsViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme ?? "auto"}>
             {props.presentation &&
             <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}
                            showCloseButton={props.presentation == "Modal"}/>
             }
             {!props.presentation &&
-            <StatusBarBackground color="var(--main-bg-color)"/>
+            <StatusBarBackground />
             }
             <ExternalAccountList previewState={props.preview ? "Default" : undefined} externalAccountProviderCategories={externalAccountProviderCategories} onExternalAccountsLoaded={onExternalAccountsLoaded}/>
         </Layout>

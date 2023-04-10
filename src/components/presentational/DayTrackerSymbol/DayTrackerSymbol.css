@@ -11,7 +11,7 @@
         display: inline-block;
         border-radius: 17px;
         line-height: 30px;
-        background: #eee;
+        background: var(--mdhui-background-color-2);
         position: relative;
     }
 

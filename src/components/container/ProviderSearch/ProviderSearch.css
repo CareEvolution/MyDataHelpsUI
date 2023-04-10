@@ -1,90 +1,76 @@
-﻿.mdhui-provider-search
-{
+﻿.mdhui-provider-search .title {
+    font-weight: bold;
+    padding: 16px;
 }
 
-    .mdhui-provider-search .title
-    {
-        font-weight: bold;
-        padding: 16px;
-    }
+.mdhui-provider-search .search-bar-wrapper {
+    text-align: left;
+    box-sizing: border-box;
+    font-weight: bold;
+    border-bottom: solid 1px var(--mdhui-border-color-1);
+}
 
-    .mdhui-provider-search .search-bar-wrapper
-    {
-        text-align: left;
-        box-sizing: border-box;
-        font-weight: bold;
-        border-bottom: solid 1px #ddd;
-    }
+.mdhui-provider-search .search-bar-wrapper .search-bar {
+    position: relative;
+}
 
-        .mdhui-provider-search .search-bar-wrapper .search-bar
-        {
-            position: relative;
-        }
+.mdhui-provider-search .search-bar-wrapper .search-bar input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 100%;
+    line-height: 1.5em;
+    padding-left: 40px;
+    box-sizing: border-box;
+    font-size: .88em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-text-color-1);
+}
 
-            .mdhui-provider-search .search-bar-wrapper .search-bar input
-            {
-                padding: 0;
-                margin: 0;
-                border: 0;
-                width: 100%;
-                line-height: 1.5em;
-                padding-left: 40px;
-                box-sizing: border-box;
-                font-size: .88em;
-                padding-top: 8px;
-                padding-bottom: 8px;
-                border: none;
-            }
+.mdhui-provider-search .search-bar-wrapper .search-bar .fa-magnifying-glass {
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    color: var(--mdhui-text-color-4);
+    font-size: .8em;
+}
 
-            .mdhui-provider-search .search-bar-wrapper .search-bar .fa-magnifying-glass
-            {
-                position: absolute;
-                left: 16px;
-                top: 12px;
-                color: #bbb;
-                font-size: .8em;
-            }
+.mdhui-provider-search .search-results .provider {
+    border-bottom: solid 1px var(--mdhui-border-color-1);
+    padding: 16px;
+    position: relative;
+    padding-right: 96px;
+    cursor: pointer;
+    font-size: .88em;
+    line-height: 1.25em;
+    width: 100%;
+}
 
-    .mdhui-provider-search .search-results .provider
-    {
-        border-bottom: solid 1px #ddd;
-        padding: 16px;
-        position: relative;
-        padding-right: 96px;
-        cursor: pointer;
-        font-size: .88em;
-        line-height: 1.25em;
-        width: 100%;
-    }
+.mdhui-provider-search .search-results .provider .provider-logo {
+    height: 37px;
+    width: 64px;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:#FFF;
+    border-radius: 4px;
+}
 
-        .mdhui-provider-search .search-results .provider .provider-logo
-        {
-            height: 37px;
-            width: 64px;
-            position: absolute;
-            right: 16px;
-            top: 8px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center center;
-        }
+.mdhui-provider-search .search-results .provider .provider-status {
+    font-size: .88em;
+    font-weight: bold;
+}
 
-        .mdhui-provider-search .search-results .provider .provider-info
-        {
-        }
+.mdhui-provider-search .search-results .provider .provider-status.error-status {
+    color: var(--mdhui-color-danger);
+}
 
-        .mdhui-provider-search .search-results .provider .provider-status
-        {
-            font-size: .88em;
-            font-weight: bold;
-        }
-
-            .mdhui-provider-search .search-results .provider .provider-status.error-status
-            {
-                color: #c4291c;
-            }
-
-            .mdhui-provider-search .search-results .provider .provider-status.connected-status
-            {
-                color: #5db37e;
-            }
+.mdhui-provider-search .search-results .provider .provider-status.connected-status {
+    color: var(--mdhui-color-success);
+}

@@ -14,7 +14,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof NavigationBar> = (args: NavigationBarProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<NavigationBar {...args} />
 	</Layout>;
 
@@ -39,6 +39,16 @@ CustomButtons.args = {
 	closeButtonText: "Done"
 }
 
+
+export const Compressed = Template.bind({});
+Compressed.args = {
+	title: "My Title",
+	showCloseButton: true,
+	showBackButton: true,
+	variant: "compressed"
+}
+
+
 export const WithDateRangeNavigator = Template.bind({});
 WithDateRangeNavigator.args = {
 	title: "Migraine",
@@ -46,5 +56,16 @@ WithDateRangeNavigator.args = {
 	children:
 		<div style={{ overflow: "hidden", borderRadius: "16px", marginTop: "16px" }}>
 			<DateRangeNavigator intervalType="Week" intervalStart={new Date()} onIntervalChange={() => { }}></DateRangeNavigator>
+		</div>
+}
+
+
+export const WithRoundedDateRangeNavigator = Template.bind({});
+WithRoundedDateRangeNavigator.args = {
+	title: "Migraine",
+	showCloseButton: true,
+	children:
+		<div style={{ overflow: "hidden", borderRadius: "16px", marginTop: "16px" }}>
+			<DateRangeNavigator intervalType="Week" intervalStart={new Date()} onIntervalChange={() => { }} variant="rounded"></DateRangeNavigator>
 		</div>
 }

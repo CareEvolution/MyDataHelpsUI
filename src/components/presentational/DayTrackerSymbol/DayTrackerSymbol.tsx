@@ -4,6 +4,7 @@ import "./DayTrackerSymbol.css"
 export interface DayTrackerSymbolProps {
 	primaryColors: string[]
 	secondaryColors: string[]
+	className?: string
 }
 
 export default function (props: DayTrackerSymbolProps) {
@@ -24,7 +25,7 @@ export default function (props: DayTrackerSymbolProps) {
 	var style = { background: background };
 
 	return (
-		<div className="mdhui-day-tracker-symbol">
+		<div className={"mdhui-day-tracker-symbol " + (props.className || "")}>
 			<div className="day-circle" style={style}>
 				{props.secondaryColors.slice(0, 3).map((color, index) =>
 					<div key={index} className="secondary-color" style={{ background: color }}></div>

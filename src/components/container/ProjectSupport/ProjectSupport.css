@@ -1,21 +1,14 @@
-.mdhui-project-support
-{
+.mdhui-project-support>.title {
+    font-weight: bold;
+    padding: 16px;
+    padding-bottom: 0;
 }
 
-    .mdhui-project-support > .title
-    {
-        font-weight: bold;
-        padding: 16px;
-        padding-bottom: 0;
-    }
+.mdhui-project-support .mdhui-action {
+    color: var(--mdhui-color-primary);
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+}
 
-    .mdhui-project-support .mdhui-action
-    {
-        color: var(--color-primary);
-        border-bottom: solid 1px var(--color-border);
-    }
-
-        .mdhui-project-support .mdhui-action .subtitle
-        {
-            color: var(--color-primary);
-        }
+.mdhui-project-support .mdhui-action .subtitle {
+    color: var(--mdhui-color-primary);
+}

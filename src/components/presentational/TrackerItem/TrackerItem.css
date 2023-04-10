@@ -1,9 +1,8 @@
-.mdhui-tracker-item
-{
+.mdhui-tracker-item {
     padding: 8px;
     padding-right: 16px;
     padding-left: 16px;
-    color: #FFF;
+    color: var(--mdhui-background-color-0);
     border-radius: 32px;
     font-size: .88em;
     display: inline-block;
@@ -13,45 +12,43 @@
     user-select: none;
 }
 
-    .mdhui-tracker-item.selectable
-    {
-        cursor: pointer;
-    }
+.mdhui-tracker-item.selectable {
+    cursor: pointer;
+}
 
-    .mdhui-tracker-item.selected
-    {
-        box-shadow: 0px 0px 5px #aaa;
-        color: #FFF !important;
-        background-color: inherit;
-    }
+.mdhui-tracker-item.selected {
+    box-shadow: var(--mdhui-box-shadow-1);
+    color: #FFF !important;
+    background-color: inherit;
+}
 
-    .mdhui-tracker-item.unselected
-    {
-        background-color: #FFFFFF !important;
-    }
+.mdhui-tracker-item.unselected {
+    background-color: var(--mdhui-background-color-0) !important;
+}
 
-    .mdhui-tracker-item.bordered .mdhui-shiny-overlay
-    {
-        left: 1px;
-        right: 1px;
-        bottom: 1px;
-        top: 1px;
-        border: solid 2px #FFF;
-        border-radius: 16px;
-    }
+.mdhui-tracker-item .mdhui-shiny-overlay {
+    border-radius: 32px;
+}
 
-    .mdhui-tracker-item .badge
-    {
-        position: absolute;
-        right: -4px;
-        top: -4px;
-        border-radius: 32px;
-        padding: 3px;
-        background: linear-gradient(to bottom, #555 0%, #888 100%);
-        font-size: .5em;
-        font-weight: bold;
-        text-align: center;
-        min-width: 10px;
-        user-select: none;
-        font-size: .62em;
-    }
+.mdhui-tracker-item.bordered .mdhui-shiny-overlay {
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    top: 1px;
+    border: solid 2px #FFF;
+}
+
+.mdhui-tracker-item .badge {
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    border-radius: 32px;
+    padding: 3px;
+    background: linear-gradient(to bottom, #555 0%, #888 100%);
+    font-size: .5em;
+    font-weight: bold;
+    text-align: center;
+    min-width: 10px;
+    user-select: none;
+    font-size: .62em;
+}

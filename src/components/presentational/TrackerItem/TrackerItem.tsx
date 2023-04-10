@@ -1,5 +1,6 @@
 import React from 'react';
 import ShinyOverlay from '../ShinyOverlay';
+import UnstyledButton from '../UnstyledButton';
 import "./TrackerItem.css"
 
 export interface TrackerItemProps {
@@ -9,6 +10,7 @@ export interface TrackerItemProps {
 	bordered?: boolean;
 	badge?: string;
 	onClick?: Function;
+	className?: string;
 }
 
 export default function (props: TrackerItemProps) {
@@ -27,21 +29,40 @@ export default function (props: TrackerItemProps) {
 		classes.push("bordered");
 	}
 
+	if (props.className) {
+		classes.push(props.className);
+	}
+
 	var style = {
 		borderColor: props.color,
 		color: props.color,
 		backgroundColor: props.color
 	};
 
-	return (
-		<button className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+
+	if (props.onClick) {
+		return <UnstyledButton className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
 			{props.text}
-			<ShinyOverlay />
+			{props.selected &&
+				<ShinyOverlay />
+			}
 			{props.badge && props.selected &&
 				<div className="badge">
 					{props.badge}
 				</div>
 			}
-		</button>
-	);
+		</UnstyledButton>
+	}
+
+	return <div className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+		{props.text}
+		{props.selected &&
+			<ShinyOverlay />
+		}
+		{props.badge && props.selected &&
+			<div className="badge">
+				{props.badge}
+			</div>
+		}
+	</div>;
 }
