@@ -39,8 +39,9 @@ export default function (props: TrackerItemProps) {
 		backgroundColor: props.color
 	};
 
-	return (
-		<UnstyledButton className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+
+	if (props.onClick) {
+		return <UnstyledButton className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
 			{props.text}
 			{props.selected &&
 				<ShinyOverlay />
@@ -51,5 +52,17 @@ export default function (props: TrackerItemProps) {
 				</div>
 			}
 		</UnstyledButton>
-	);
+	}
+
+	return <div className={classes.join(" ")} style={style} onClick={() => props.onClick ? props.onClick() : null}>
+		{props.text}
+		{props.selected &&
+			<ShinyOverlay />
+		}
+		{props.badge && props.selected &&
+			<div className="badge">
+				{props.badge}
+			</div>
+		}
+	</div>;
 }
