@@ -104,7 +104,7 @@ html {
     font-size: 17px;
 }
 
-@@supports (font: -apple-system-body) {
+@supports (font: -apple-system-body) {
     html {
         font: -apple-system-body;
     }
