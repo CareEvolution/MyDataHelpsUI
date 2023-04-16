@@ -106,7 +106,7 @@ html {
 
 @supports (font: -apple-system-body) {
     html {
-        font: -apple-system-body;
+        font: -apple-system-body !important;
     }
 }
 
