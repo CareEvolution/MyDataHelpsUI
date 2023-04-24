@@ -1,0 +1,15 @@
+{
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript][javascriptreact][typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json][jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[css][scss][less]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "html.format.wrapLineLength": 180
+}

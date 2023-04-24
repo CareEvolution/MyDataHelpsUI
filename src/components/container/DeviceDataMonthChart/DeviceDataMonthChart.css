@@ -1,99 +1,94 @@
-.mdhui-device-data-month-chart
-{
+.mdhui-device-data-month-chart {
     position: relative;
 }
 
-    .mdhui-device-data-month-chart .title
-    {
-        padding: 16px;
-        padding-bottom: 0;
-        position: relative;
-        font-weight: bold;
-        float: left;
-    }
+.mdhui-device-data-month-chart .title {
+    padding: 16px;
+    padding-bottom: 0;
+    position: relative;
+    font-weight: bold;
+    float: left;
+}
 
-    .mdhui-device-data-month-chart .average
-    {
-        font-weight: normal;
-        float: right;
-        font-size: .7em;
-        padding: 16px;
-        padding-top: 21px;
-        padding-bottom: 0;
-    }
+.mdhui-device-data-month-chart .average {
+    font-weight: normal;
+    float: right;
+    font-size: .7em;
+    padding: 16px;
+    padding-top: 21px;
+    padding-bottom: 0;
+}
 
-        .mdhui-device-data-month-chart .average .average-value
-        {
-            font-weight: bold;
-        }
+.mdhui-device-data-month-chart .average .average-value {
+    font-weight: bold;
+}
 
 
-    .mdhui-device-data-month-chart .chart-container
-    {
-        padding: 16px;
-        height: 150px;
-        position: relative;
-    }
+.mdhui-device-data-month-chart .chart-container {
+    padding: 16px;
+    height: 150px;
+    position: relative;
+}
 
-    .mdhui-device-data-month-chart .no-data-label,
-    .mdhui-device-data-month-chart .mdhui-loading-indicator
-    {
-        position: absolute;
-        left: 0;
-        top: calc(50% - 40px);
-        text-align: center;
-        width: 100%;
-        font-size: .88em;
-        color: var(--color-muted2);
-        box-sizing: border-box;
-        padding: 16px;
-    }
+.mdhui-device-data-month-chart .no-data-label,
+.mdhui-device-data-month-chart .mdhui-loading-indicator {
+    position: absolute;
+    left: 0;
+    top: calc(50% - 40px);
+    text-align: center;
+    width: 100%;
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+    box-sizing: border-box;
+    padding: 16px;
+}
 
-    .mdhui-device-data-month-chart .recharts-cartesian-axis-tick
-    {
-        font-size: 11px;
-    }
+.mdhui-device-data-month-chart .recharts-cartesian-axis-tick {
+    font-size: 11px;
+}
 
-    .mdhui-device-data-month-chart .graph-tooltip
-    {
-        padding: 4px;
-        font-size: 12px;
-        background: #FFF;
-        border-radius: 5px;
-        box-shadow: 0px 9px 9px #ddd;
-        animation: fadein 1s;
-        -moz-animation: fadein 1s;
-        -webkit-animation: fadein 1s;
-        border: solid 1px var(--color-border);
-    }
+.mdhui-device-data-month-chart .recharts-cartesian-axis-tick-value {
+    fill: var(--mdhui-text-color-2);
+}
 
-        .mdhui-device-data-month-chart .graph-tooltip .graph-date
-        {
-            padding: 4px;
-        }
+.mdhui-device-data-month-chart .graph-tooltip {
+    padding: 4px;
+    font-size: 12px;
+    background: var(--mdhui-background-color-0);
+    border-radius: 5px;
+    box-shadow: var(--mdhui-box-shadow-0);
+    animation: fadein 1s;
+    -moz-animation: fadein 1s;
+    -webkit-animation: fadein 1s;
+    border: solid 1px var(--mdhui-border-color-0);
+}
 
-        .mdhui-device-data-month-chart .graph-tooltip table
-        {
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
+.mdhui-device-data-month-chart .graph-tooltip .graph-date {
+    padding: 4px;
+}
 
-            .mdhui-device-data-month-chart .graph-tooltip table tr:nth-child(odd)
-            {
-                background: #eee;
-            }
+.mdhui-device-data-month-chart .graph-tooltip table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
 
-            .mdhui-device-data-month-chart .graph-tooltip table th
-            {
-                padding: 4px;
-                padding-right: 8px;
-                text-align: left;
-                font-weight: normal;
-            }
+.mdhui-device-data-month-chart .graph-tooltip table tr:nth-child(odd) {
+    background: var(--mdhui-background-color-2);
+}
 
-            .mdhui-device-data-month-chart .graph-tooltip table td
-            {
-                padding: 4px;
-                text-align: left;
-                font-weight: bold;
-            }
+.mdhui-device-data-month-chart .graph-tooltip table th {
+    padding: 4px;
+    padding-right: 8px;
+    text-align: left;
+    font-weight: normal;
+}
+
+.mdhui-device-data-month-chart .graph-tooltip table td {
+    padding: 4px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.mdhui-device-data-month-chart .recharts-cartesian-axis-tick {
+    fill: var(--mdhui-text-color-1);
+}

@@ -15,6 +15,7 @@ import language from '../../../helpers/language'
 import { enUS, es } from 'date-fns/locale'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import UnstyledButton from '../UnstyledButton';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -61,7 +62,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'incomplete') {
 		return (
-			<button className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
+			<UnstyledButton className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
 				<div className="status-icon">
 					{props.task.hasSavedProgress &&
 						<FontAwesomeSvgIcon icon={faCircleHalfStroke} />
@@ -70,15 +71,17 @@ export default function (props: SingleSurveyTaskProps) {
 						<FontAwesomeSvgIcon icon={faCircle} />
 					}
 				</div>
-				<div className="survey-name">{props.task.surveyDisplayName}</div>
-				<div className="survey-description">{props.descriptionIcon} {props.task.surveyDescription}</div>
-				{!props.hideDueDate && dueDateString &&
+				<div>
+					<div className="survey-name">{props.task.surveyDisplayName}</div>
+					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
+					{!props.hideDueDate && dueDateString &&
 					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
-				}
+					}
+				</div>
 				<div className="indicator">
 					<FontAwesomeSvgIcon icon={faChevronRight} />
 				</div>
-			</button>
+			</UnstyledButton>
 		);
 	}
 
@@ -88,8 +91,10 @@ export default function (props: SingleSurveyTaskProps) {
 				<div className="status-icon">
 					<FontAwesomeSvgIcon icon={faCircleCheck} />
 				</div>
-				<div className="survey-name">{props.task.surveyDisplayName}</div>
-				<div className="completed-date">{language["completed"]} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
+				<div>
+					<div className="survey-name">{props.task.surveyDisplayName}</div>
+					<div className="completed-date">{language["completed"]} {formatRelative(parseISO(props.task.endDate), new Date(), {locale: locale})}</div>
+				</div>
 			</div>
 		)
 	}

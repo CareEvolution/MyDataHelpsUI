@@ -9,6 +9,5 @@ module.exports = {
 		"@storybook/addon-interactions",
 		"@storybook/addon-postcss"
 	],
-	staticDirs: ['../public'],
 	"framework": "@storybook/react"
 }

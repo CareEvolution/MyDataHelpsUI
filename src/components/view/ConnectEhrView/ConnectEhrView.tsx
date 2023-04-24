@@ -11,7 +11,8 @@ export interface ConnectEhrViewProps {
     excludeProviders?: boolean,
     excludeHealthPlans?: boolean,
     presentation?: ViewPresentationType,
-    preview?: boolean
+    preview?: boolean,
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -35,14 +36,14 @@ export default function (props: ConnectEhrViewProps) {
     title = language['connect-ehr-title-prefix'] + title;
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme ?? "auto"}>
             {props.presentation &&
             <NavigationBar title={title}
                            showBackButton={props.presentation == "Push"}
                            showCloseButton={props.presentation == "Modal"}/>
             }
             {!props.presentation &&
-            <StatusBarBackground color="var(--main-bg-color)"/>
+            <StatusBarBackground />
             }
             <TextBlock>
                 {language["ehr-intro"]}

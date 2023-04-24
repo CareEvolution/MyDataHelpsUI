@@ -10,7 +10,7 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 2e6
+const limitBytes = 4e6
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return

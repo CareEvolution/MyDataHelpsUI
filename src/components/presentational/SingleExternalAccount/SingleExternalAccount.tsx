@@ -1,3 +1,4 @@
+import UnstyledButton from '../UnstyledButton';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
 import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
@@ -50,9 +51,9 @@ export default function (props: SingleExternalAccountProps) {
 					<div className="external-account-provider-name">{props.externalAccount.provider.name}</div>
 				}
 				{getStatus() !== "deleting" && getStatus() !== "fetchingData" &&
-					<button className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
+					<UnstyledButton className="delete-button" onClick={removeAccount} title={language["external-account-remove"]}>
 						<FontAwesomeSvgIcon icon={faTrash} />
-					</button>
+					</UnstyledButton>
 				}
 			</div>
 			<div className="external-account-status">

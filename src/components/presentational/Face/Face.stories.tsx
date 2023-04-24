@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof Face>;
 
 const Template: ComponentStory<typeof Face> = (args: FaceProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<Face  {...args} />
 	</Layout>;
 
@@ -20,6 +20,12 @@ export const Default = Template.bind({});
 Default.args = {
 	faceValue: 1,
 	selected: true
+}
+
+export const Unselected = Template.bind({});
+Unselected.args = {
+	faceValue: 1,
+	selected: false
 }
 
 export const Clickable = Template.bind({});

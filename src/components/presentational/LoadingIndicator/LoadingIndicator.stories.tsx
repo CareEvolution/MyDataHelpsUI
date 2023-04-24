@@ -11,6 +11,6 @@ export default {
     }
 } as ComponentMeta<typeof LoadingIndicator>;
 
-const Template: ComponentStory<typeof LoadingIndicator> = () => <Layout> <LoadingIndicator/> </Layout>;
+const Template: ComponentStory<typeof LoadingIndicator> = () => <Layout colorScheme="auto"> <LoadingIndicator/> </Layout>;
 
 export const Default = Template.bind({});

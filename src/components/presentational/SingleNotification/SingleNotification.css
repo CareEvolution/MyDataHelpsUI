@@ -1,7 +1,7 @@
 .mdhui-single-notification
 {
     padding: 16px;
-    border-bottom: solid 1px var(--color-border);
+    border-bottom: solid 1px var(--mdhui-border-color-0);
     position: relative;
 }
 
@@ -22,7 +22,7 @@
 
     .mdhui-single-notification > .notification-date
     {
-        color: var(--color-muted1);
+        color: var(--mdhui-text-color-2);
         margin-top: 16px;
         font-size: .75em;
     }

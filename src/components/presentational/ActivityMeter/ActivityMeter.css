@@ -1,69 +1,61 @@
-﻿.mdhui-activity-meter
-{
+﻿.mdhui-activity-meter {
     position: relative;
     box-sizing: border-box;
     padding-bottom: 0;
     vertical-align: top;
 }
 
-    .mdhui-activity-meter .mdhui-activity-meter-icon
-    {
-        position: absolute;
-        line-height: 32px;
-        text-align: center;
-        left: 16px;
-        top: calc(50% - 8px);
-        color: var(--color-primary);
-        font-size: 1em;
-    }
+.mdhui-activity-meter .mdhui-activity-meter-icon {
+    position: absolute;
+    line-height: 32px;
+    text-align: center;
+    left: 16px;
+    top: calc(50% - 8px);
+    color: var(--mdhui-color-primary);
+    font-size: 1em;
+}
 
-    .mdhui-activity-meter .mdhui-activity-meter-value
-    {
-        font-weight: bold;
-        margin-bottom: 4px;
-        margin-top: 4px;
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.mdhui-activity-meter .mdhui-activity-meter-value {
+    font-weight: bold;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .mdhui-activity-meter .mdhui-activity-meter-label
-    {
-        font-size: .7em;
-        color: #555;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        text-transform: uppercase;
-    }
+.mdhui-activity-meter .mdhui-activity-meter-label {
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-transform: uppercase;
+}
 
-    .mdhui-activity-meter .mdhui-activity-meter-meter
-    {
-        border-radius: 8px;
-        background: #f5f5f5;
-        position: relative;
-        height: 16px;
-    }
+.mdhui-activity-meter .mdhui-activity-meter-meter {
+    border-radius: 8px;
+    background: var(--mdhui-background-color-1);
+    position: relative;
+    height: 16px;
+}
 
-        .mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-average-marker
-        {
-            position: absolute;
-            top: -4px;
-            bottom: -4px;
-            border-left: dashed 1px #bbb;
-        }
+.mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-average-marker {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    border-left: dashed 1px var(--mdhui-border-color-2);
+}
 
-        .mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-fill
-        {
-            height: 16px;
-            background: var(--color-primary);
-            position: relative;
-            border-radius: 8px;
-        }
+.mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-fill {
+    height: 16px;
+    background: var(--mdhui-color-primary);
+    position: relative;
+    border-radius: 8px;
+}
 
-    .mdhui-activity-meter .mdhui-activity-meter-message
-    {
-        font-size: .7em;
-        margin-top: 4px;
-    }
+.mdhui-activity-meter .mdhui-activity-meter-message {
+    font-size: .7em;
+    margin-top: 4px;
+}

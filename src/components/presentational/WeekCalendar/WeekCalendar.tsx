@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import "./WeekCalendar.css"
 import { add, format, formatISO } from 'date-fns';
-import { LoadingIndicator } from "..";
+import { LoadingIndicator, UnstyledButton } from "..";
 
 export interface WeekCalendarProps {
 	selectedDate?: Date;
@@ -107,12 +107,12 @@ export default function (props: WeekCalendarProps) {
 		</div>
 		<div className="mdhui-week-calendar-week">
 			{currentWeek.map((d) =>
-				<button key={d.getTime()}
+				<UnstyledButton key={d.getTime()}
 					className={getDayClasses(d).join(" ")}
 					onClick={() => selectDate(d)}>
 					{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), true)}
 					{!props.hideDateLabel && getLabel(d)}
-				</button>
+				</UnstyledButton>
 			)}
 		</div>
 		{add(props.startDate, { days: 7 }) < new Date() &&

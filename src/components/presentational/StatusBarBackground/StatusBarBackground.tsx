@@ -1,4 +1,6 @@
-import React from 'react';
+import MyDataHelps from '@careevolution/mydatahelps-js';
+import React, { useContext } from 'react';
+import { LayoutContext } from '../Layout/Layout';
 import "./StatusBarBackground.css"
 
 export default interface StatusBarBackgroundProps {
@@ -6,9 +8,17 @@ export default interface StatusBarBackgroundProps {
 }
 
 export default function (props: StatusBarBackgroundProps) {
-	var style = {};
+	var context = useContext(LayoutContext);
+
+	var style = {
+		backgroundColor: context.bodyBackgroundColor
+	};
 	if (props.color) {
 		style = { backgroundColor: props.color };
+	}
+
+	if (!props.color && context.colorScheme === "dark") {
+		MyDataHelps.setStatusBarStyle("lightContent");
 	}
 
 	return (

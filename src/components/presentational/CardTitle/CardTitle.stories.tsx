@@ -14,7 +14,7 @@ export default {
 } as ComponentMeta<typeof Action>;
 
 const Template: ComponentStory<typeof CardTitle> = (args: CardTitleProps) =>
-	<Layout>
+	<Layout colorScheme="auto">
 		<Card>
 			<CardTitle {...args} />
 			<div style={{ padding: "16px" }}>Card Content</div>

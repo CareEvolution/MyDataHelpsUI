@@ -3,7 +3,7 @@ import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { format } from 'date-fns'
-import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from './Recharts'
+import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
@@ -248,7 +248,7 @@ export default function (props: DeviceDataMonthChartProps) {
 					<ResponsiveContainer width="100%" height={150}>
 						<LineChart width={400} height={400} data={data} syncId={props.syncId}>
 							{props.lines.map((line) =>
-								<Line key={line.dailyDataType} type="monotone" dataKey={line.dailyDataType} stroke="var(--color-primary)" />
+								<Line key={line.dailyDataType} type="monotone" dataKey={line.dailyDataType} stroke="var(--mdhui-color-primary)" />
 							)}
 							<Tooltip content={<GraphToolTip />} />
 							<CartesianGrid strokeDasharray="3 3" />

@@ -1,6 +1,10 @@
-﻿.mdhui-loading-indicator
-{
+﻿.mdhui-loading-indicator {
     padding: 16px;
-    color: #bbb;
+    color: var(--mdhui-text-color-4);
     text-align: center;
+}
+
+.mdhui-loading-indicator.mdhui-loading-indicator-inline {
+    display: inline;
+    padding: 0;
 }

@@ -1,9 +1,8 @@
-﻿.mdhui-button
-{
+﻿.mdhui-button {
     width: 100%;
     box-sizing: border-box;
     padding: 16px;
-    background: var(--color-theme);
+    background: var(--mdhui-color-primary);
     font-size: 17px;
     line-height: 17px;
     color: #FFF;
@@ -12,11 +11,15 @@
     cursor: pointer;
     font-weight: bold;
     text-align: center;
-    color: #FFF;
 }
 
-    .mdhui-button:disabled
-    {
-        color: #999;
-        background: #ddd;
-    }
+.mdhui-button:disabled {
+    color: var(--mdhui-text-color-3);
+    background: var(--mdhui-background-color-2);
+    cursor: default;
+}
+
+.mdhui-button.mdhui-button-subtle {
+    background: none;
+    color: var(--mdhui-color-primary);
+}

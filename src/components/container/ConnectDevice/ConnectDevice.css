@@ -1,36 +1,26 @@
-﻿.mdhui-connect-device
-{
+.mdhui-connect-device .title {
+    font-weight: bold;
 }
 
-    .mdhui-connect-device .title
-    {
-        font-weight: bold;
-    }
+.mdhui-connect-device .subtitle {
+    font-size: .88em;
+    font-weight: normal;
+    color: var(--mdhui-text-color-2);
+}
 
-    .mdhui-connect-device .subtitle
-    {
-        font-size: .88em;
-        font-weight: normal;
-        color: var(--color-muted1);
-    }
+.mdhui-connect-device .subtitle.reconnect {
+    color: var(--mdhui-color-danger);
+    font-weight: bold;
+}
 
-        .mdhui-connect-device .subtitle.reconnect
-        {
-            color: var(--color-danger);
-            font-weight: bold;
-        }
+.mdhui-connect-device .subtitle.success svg {
+    color: var(--mdhui-color-success);
+}
 
-        .mdhui-connect-device .subtitle.success svg
-        {
-            color: var(--color-success);
-        }
+.mdhui-connect-device .mdhui-button {
+    margin-top: 16px;
+}
 
-    .mdhui-connect-device .mdhui-button
-    {
-        margin-top: 16px;
-    }
-
-    .mdhui-connect-device .content
-    {
-        padding: 16px;
-    }
+.mdhui-connect-device .content {
+    padding: 16px;
+}
