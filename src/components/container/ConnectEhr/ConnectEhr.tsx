@@ -42,7 +42,6 @@ export default function (props: ConnectEhrProps) {
 			setLoading(false);
 			return;
 		}
-
 		MyDataHelps.getDataCollectionSettings().then(function (settings) {
 			setEhrEnabled(settings.ehrEnabled);
 			if (settings.ehrEnabled) {

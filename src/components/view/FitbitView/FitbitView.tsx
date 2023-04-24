@@ -1,12 +1,12 @@
 import React from 'react'
 import { Layout, Card, StatusBarBackground, ConnectFitbit, FitbitDevices, FitbitMonthCharts } from "../.."
 import { ConnectFitbitPreviewState } from "../../container/ConnectFitbit/ConnectFitbit";
-import { FitbitDevicesPreviewState } from "../../container/FitbitDevices/FitbitDevices";
 import { FitbitMonthChartsPreviewState } from "../../container/FitbitMonthCharts/FitbitMonthCharts";
+import { ConnectedDevicesPreviewState } from '../../container/ConnectedDevices/ConnectedDevices';
 
 export interface FitbitViewProps {
 	connectPreview?: ConnectFitbitPreviewState,
-	devicesPreview?: FitbitDevicesPreviewState,
+	devicesPreview?: ConnectedDevicesPreviewState,
 	chartsPreview?: FitbitMonthChartsPreviewState
 }
 

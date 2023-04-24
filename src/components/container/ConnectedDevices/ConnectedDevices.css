@@ -1,8 +1,8 @@
-.mdhui-garmin-devices
+.mdhui-connected-devices
 {
 }
 
-    .mdhui-garmin-devices .garmin-device
+    .mdhui-connected-devices .connected-device
     {
         border-bottom: solid 1px var(--color-border);
         padding: 16px;
@@ -10,12 +10,12 @@
         padding-left: 48px;
     }
 
-        .mdhui-garmin-devices .garmin-device:last-child
+        .mdhui-connected-devices .connected-device:last-child
         {
             border-bottom: none;
         }
 
-        .mdhui-garmin-devices .garmin-device .device-icon
+        .mdhui-connected-devices .connected-device .device-icon
         {
             position: absolute;
             left: 16px;
@@ -24,20 +24,20 @@
             font-size: 16px;
         }
 
-        .mdhui-garmin-devices .garmin-device .device-title
+        .mdhui-connected-devices .connected-device .device-title
         {
             font-weight: bold;
             font-size: .88em;
         }
 
-        .mdhui-garmin-devices .garmin-device .device-sync
+        .mdhui-connected-devices .connected-device .device-sync
         {
             font-size: .88em;
             color: var(--color-muted);
         }
 
 
-        .mdhui-garmin-devices .garmin-device .battery-icon
+        .mdhui-connected-devices .connected-device .battery-icon
         {
             position: absolute;
             font-size: 21px;
@@ -45,18 +45,18 @@
             top: calc(50% - 11px);
         }
 
-            .mdhui-garmin-devices .garmin-device .battery-icon.battery-empty,
-            .mdhui-garmin-devices .garmin-device .battery-icon.battery-low
+            .mdhui-connected-devices .connected-device .battery-icon.battery-empty,
+            .mdhui-connected-devices .connected-device .battery-icon.battery-low
             {
                 color: var(--color-danger);
             }
 
-            .mdhui-garmin-devices .garmin-device .battery-icon.battery-medium
+            .mdhui-connected-devices .connected-device .battery-icon.battery-medium
             {
                 color: var(--color-warning);
             }
 
-            .mdhui-garmin-devices .garmin-device .battery-icon.battery-high
+            .mdhui-connected-devices .connected-device .battery-icon.battery-high
             {
                 color: var(--color-success);
             }

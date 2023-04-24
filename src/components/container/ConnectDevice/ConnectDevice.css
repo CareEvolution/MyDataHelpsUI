@@ -1,36 +1,36 @@
-﻿.mdhui-connect-garmin
+﻿.mdhui-connect-device
 {
 }
 
-    .mdhui-connect-garmin .title
+    .mdhui-connect-device .title
     {
         font-weight: bold;
     }
 
-    .mdhui-connect-garmin .subtitle
+    .mdhui-connect-device .subtitle
     {
         font-size: .88em;
         font-weight: normal;
         color: var(--color-muted1);
     }
 
-        .mdhui-connect-garmin .subtitle.reconnect
+        .mdhui-connect-device .subtitle.reconnect
         {
             color: var(--color-danger);
             font-weight: bold;
         }
 
-        .mdhui-connect-garmin .subtitle.success svg
+        .mdhui-connect-device .subtitle.success svg
         {
             color: var(--color-success);
         }
 
-    .mdhui-connect-garmin .mdhui-button
+    .mdhui-connect-device .mdhui-button
     {
         margin-top: 16px;
     }
 
-    .mdhui-connect-garmin .content
+    .mdhui-connect-device .content
     {
         padding: 16px;
     }

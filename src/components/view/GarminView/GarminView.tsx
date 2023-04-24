@@ -1,13 +1,14 @@
 import React from 'react'
 import { Layout, Card, StatusBarBackground, ConnectGarmin, GarminDevices, GarminMonthCharts } from "../.."
 import { ConnectGarminPreviewState } from "../../container/ConnectGarmin/ConnectGarmin";
-import { GarminDevicesPreviewState } from "../../container/GarminDevices/GarminDevices";
 import { GarminMonthChartsPreviewState } from "../../container/GarminMonthCharts/GarminMonthCharts";
+import { ConnectedDevicesPreviewState } from '../../container/ConnectedDevices/ConnectedDevices';
 
 export interface GarminViewProps {
 	connectPreview?: ConnectGarminPreviewState,
-	devicesPreview?: GarminDevicesPreviewState,
-	chartsPreview?: GarminMonthChartsPreviewState
+	devicesPreview?: ConnectedDevicesPreviewState,
+	chartsPreview?: GarminMonthChartsPreviewState,
+	garminProviderID?: number
 }
 
 export default function (props: GarminViewProps) {
@@ -15,7 +16,7 @@ export default function (props: GarminViewProps) {
 		<Layout>
 			<StatusBarBackground color="var(--main-bg-color)" />
 			<Card>
-				<ConnectGarmin previewState={props.connectPreview} disabledBehavior="displayError" />
+				<ConnectGarmin previewState={props.connectPreview} garminProviderID={props.garminProviderID} disabledBehavior="displayError" />
 			</Card>
 			<Card>
 				<GarminDevices previewState={props.devicesPreview} />
