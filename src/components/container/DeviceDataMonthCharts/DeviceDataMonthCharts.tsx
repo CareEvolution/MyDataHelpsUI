@@ -60,6 +60,28 @@ export default function (props: DeviceDataMonthChartsProps) {
 					previewState={props.previewState == "Default" ? "WithData" : undefined}
 					lines={[{
 						showAverage: true,
+						dailyDataType: DailyDataType.GarminSteps,
+						label: language["steps"]
+					}]}
+					title={"Garmin " + language["steps"]}
+					month={month}
+					year={year}
+					syncId="DeviceDataCharts" />
+				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
+					previewState={props.previewState == "Default" ? "WithData" : undefined}
+					lines={[{
+						showAverage: true,
+						dailyDataType: DailyDataType.GarminRestingHeartRate,
+						label: language["resting-heart-rate"]
+					}]}
+					title={"Garmin " + language["resting-heart-rate"]}
+					month={month}
+					year={year}
+					syncId="DeviceDataCharts" />
+				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
+					previewState={props.previewState == "Default" ? "WithData" : undefined}
+					lines={[{
+						showAverage: true,
 						dailyDataType: DailyDataType.AppleHealthSteps,
 						label: language["steps"]
 					}]}

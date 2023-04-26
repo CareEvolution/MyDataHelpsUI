@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ProjectSupport } from "../../.."
+import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
@@ -64,6 +64,9 @@ export default function (props: HomeViewProps) {
 			</Card>
 			<Card>
 				<ConnectFitbit title="Fitbit" previewState={props.preview ? "notConnected" : undefined} />
+			</Card>
+			<Card>
+				<ConnectGarmin title="Garmin" previewState={props.preview ? "notConnected" : undefined} />
 			</Card>
 			<Card>
 				{props.ehrConnectApplicationUrl &&

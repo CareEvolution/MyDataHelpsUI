@@ -17,6 +17,9 @@
     "connect-fitbit-intro": "Si ya tiene una cuenta Fitbit, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Fitbit:",
     "connect-fitbit-button": "Conectar a Fitbit",
     "received-fitbit-data": "¡Estamos recibiendo su información de Fitbit!",
+    "connect-garmin-intro": "Si ya tiene una cuenta Garmin, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Garmin:",
+    "connect-garmin-button": "Conectar a Garmin",
+    "received-garmin-data": "¡Estamos recibiendo su información de Garmin!",
     "downloading-data": "Descargando datos...",
     "all-tasks-complete": "¡Todas las tareas terminadas!",
     "view-all": "Ver todo",
@@ -54,7 +57,7 @@
     "external-account-reconnect": "Volver a conectar",
     "external-account-refresh": "Actualizar",
     "external-account-remove": "Eliminar",
-    "device-data-no-data": "Si ha conectado Apple Health, Google Fit o Fitbit, vuelva más tarde para ver sus datos.",
+    "device-data-no-data": "Si ha conectado Apple Health, Google Fit, Fitbit o Garmin, vuelva más tarde para ver sus datos.",
     "no-notifications-received": "No se recibieron notificaciones.",
     "next-button-text": "Siguiente"
 };

@@ -1,0 +1,49 @@
+.mdhui-connected-devices .connected-device {
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+    padding: 16px;
+    position: relative;
+    padding-left: 48px;
+}
+
+.mdhui-connected-devices .connected-device:last-child {
+    border-bottom: none;
+}
+
+.mdhui-connected-devices .connected-device .device-icon {
+    position: absolute;
+    left: 16px;
+    top: calc(50% - 8px);
+    color: var(--mdhui-text-color-2);
+    font-size: 16px;
+}
+
+.mdhui-connected-devices .connected-device .device-title {
+    font-weight: bold;
+    font-size: .88em;
+}
+
+.mdhui-connected-devices .connected-device .device-sync {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+}
+
+
+.mdhui-connected-devices .connected-device .battery-icon {
+    position: absolute;
+    font-size: 21px;
+    right: 16px;
+    top: calc(50% - 11px);
+}
+
+.mdhui-connected-devices .connected-device .battery-icon.battery-empty,
+.mdhui-connected-devices .connected-device .battery-icon.battery-low {
+    color: var(--mdhui-color-danger);
+}
+
+.mdhui-connected-devices .connected-device .battery-icon.battery-medium {
+    color: var(--mdhui-color-warning);
+}
+
+.mdhui-connected-devices .connected-device .battery-icon.battery-high {
+    color: var(--mdhui-color-success);
+}

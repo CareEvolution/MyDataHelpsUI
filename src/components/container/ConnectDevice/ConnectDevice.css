@@ -1,26 +1,26 @@
-﻿.mdhui-connect-fitbit .title {
+.mdhui-connect-device .title {
     font-weight: bold;
 }
 
-.mdhui-connect-fitbit .subtitle {
+.mdhui-connect-device .subtitle {
     font-size: .88em;
     font-weight: normal;
     color: var(--mdhui-text-color-2);
 }
 
-.mdhui-connect-fitbit .subtitle.reconnect {
+.mdhui-connect-device .subtitle.reconnect {
     color: var(--mdhui-color-danger);
     font-weight: bold;
 }
 
-.mdhui-connect-fitbit .subtitle.success svg {
+.mdhui-connect-device .subtitle.success svg {
     color: var(--mdhui-color-success);
 }
 
-.mdhui-connect-fitbit .mdhui-button {
+.mdhui-connect-device .mdhui-button {
     margin-top: 16px;
 }
 
-.mdhui-connect-fitbit .content {
+.mdhui-connect-device .content {
     padding: 16px;
 }
