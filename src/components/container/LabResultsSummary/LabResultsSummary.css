@@ -1,0 +1,61 @@
+.mdhui-lab-results-summary {
+    padding: 16px;
+    background: var(--mdhui-background-color-0);
+    position: relative;
+    width: 100%;
+}
+
+.mdhui-lab-results-summary .mdhui-hw-section-header {
+    color: --mdhui-text-color-1;
+    line-height: 1em;
+    padding-left: 24px;
+    position: relative;
+    font-weight: bold;
+}
+
+.mdhui-lab-results-summary .mdhui-hw-section-header .mdhui-hw-section-header-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 15px;
+}
+
+.mdhui-lab-results-summary .mdhui-important-labs {
+    background: var(--mdhui-background-color-0);
+}
+
+.mdhui-hw-section-indicator {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 16px;
+    color: var(--mdhui-text-color-3);
+}
+
+.values-container {
+    margin-left: -16px;
+    margin-right: -16px;
+    overflow-y: hidden;
+    margin-bottom: -16px;
+}
+
+.values-container.no-overflow {
+    overflow-x: hidden;
+}
+
+.values-slider {
+    padding-left: 8px;
+    width: 10000px;
+}
+
+.values-column {
+    width: 13em;
+    min-width: 160px;
+    border-right: solid 1px var(--mdhui-border-color-0);
+    float: left;
+}
+
+
+.values-column:last-child {
+    border: none;
+}

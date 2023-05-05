@@ -1,0 +1,87 @@
+.mdhui-lab-result-with-sparkline {
+    padding: 8px;
+    padding-top: 16px;
+    height: 5.64em;
+    box-sizing: border-box;
+    position: relative;
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-title {
+    text-transform: uppercase;
+    font-size: .7em;
+    color: var(--mdhui-text-color-3);
+    white-space: nowrap;
+    width: calc(100% - 16px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-flex {
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-value {
+    padding-top: 8px;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-quantity {
+    font-size: 1.23em;
+    font-weight: 700;
+    max-width: 3.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-date {
+    font-size: .7em;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-container {
+    position: relative;
+    padding-right: 2em;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-sparkline {
+    width: 70px;
+    height: 40px;
+    padding: 8px;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-sparkline rect {
+    opacity: .1;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-term-info {
+    color: var(--mdhui-color-primary);
+    font-size: 24px;
+    opacity: .8;
+    position: absolute;
+    right: 8px;
+    top: calc(50% - 15px);
+    cursor: pointer;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-acuity {
+    display: inline-block;
+    border-radius: 2px;
+    font-size: 0.7em;
+    color: #FFF;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 18px;
+    vertical-align: middle;
+    line-height: 1.3em;
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-acuity.mdhui-lab-result-with-sparkline-acuity-high {
+    background-color: var(--mdhui-color-danger);
+}
+
+.mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-acuity.mdhui-lab-result-with-sparkline-acuity-low {
+    background-color: var(--mdhui-color-primary);
+}
