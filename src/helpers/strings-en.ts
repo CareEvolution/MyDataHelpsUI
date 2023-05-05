@@ -59,7 +59,14 @@
     "external-account-remove": "Remove",
     "device-data-no-data": "If you have connected Apple Health, Google Fit, Fitbit, or Garmin, check back later to view your data.",
     "no-notifications-received": "No notifications received",
-    "next-button-text": "Next"
+    "next-button-text": "Next",
+    "lab-results-title": "Lab Results",
+	"medications-title": "Medications",
+	"immunizations-title": "Immunizations",
+	"reports-title": "Reports",
+	"allergies-title": "Allergies",
+	"conditions-title": "Conditions",
+	"procedures-title": "Procedures",
 };
 
 export default strings;

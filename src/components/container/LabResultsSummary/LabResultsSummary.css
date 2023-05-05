@@ -5,14 +5,6 @@
     width: 100%;
 }
 
-.mdhui-lab-results-summary .mdhui-hw-section-header {
-    color: --mdhui-text-color-1;
-    line-height: 1em;
-    padding-left: 24px;
-    position: relative;
-    font-weight: bold;
-}
-
 .mdhui-lab-results-summary .mdhui-hw-section-header .mdhui-hw-section-header-icon {
     position: absolute;
     left: 0;
@@ -32,30 +24,29 @@
     color: var(--mdhui-text-color-3);
 }
 
-.values-container {
+.mdhui-lab-results-values-container {
     margin-left: -16px;
     margin-right: -16px;
     overflow-y: hidden;
     margin-bottom: -16px;
 }
 
-.values-container.no-overflow {
+.mdhui-lab-results-values-container.no-overflow {
     overflow-x: hidden;
 }
 
-.values-slider {
+.mdhui-lab-results-values-slider {
     padding-left: 8px;
     width: 10000px;
 }
 
-.values-column {
+.mdhui-lab-results-values-column {
     width: 13em;
     min-width: 160px;
     border-right: solid 1px var(--mdhui-border-color-0);
     float: left;
 }
 
-
-.values-column:last-child {
+.mdhui-lab-results-values-column:last-child {
     border: none;
 }

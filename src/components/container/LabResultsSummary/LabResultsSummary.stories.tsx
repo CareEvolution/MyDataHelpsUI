@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof LabResultsSummary>;
 
 const Template: ComponentStory<typeof LabResultsSummary> = (args: LabResultsSummaryProps) =>
-    <Layout>
+    <Layout colorScheme="auto">
         <LabResultsSummary {...args} />
     </Layout>;
 
