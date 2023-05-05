@@ -17,17 +17,21 @@ const Template: ComponentStory<typeof LabResultsSummary> = (args: LabResultsSumm
         <LabResultsSummary {...args} />
     </Layout>;
 
-export const Default = Template.bind({});
-Default.args = {
-    previewState: "default"
+
+export const ImportantLabs = Template.bind({});
+ImportantLabs.args = {
+    previewState: "ImportantLabs"
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    previewState: "loading"
+export const RecentLabs = Template.bind({});
+RecentLabs.args = {
+    previewState: "RecentLabs"
 };
 
 export const NoData = Template.bind({});
 NoData.args = {
-    previewState: "noData"
+    previewState: "NoData"
 };
+
+export const Live = Template.bind({});
+Live.args = {};

@@ -18,15 +18,17 @@ const Template: ComponentStory<typeof HealthPreviewSection> = (args: HealthPrevi
 
 export const Default = Template.bind({});
 Default.args = {
-    concept: "Medications"
+    concept: "Medications",
+    previewState: "Default"
 };
 
-// export const Loading = Template.bind({});
-// Loading.args = {
-//     previewState: "loading"
-// };
+export const NoData = Template.bind({});
+NoData.args = {
+    concept: "Medications",
+    previewState: "NoData"
+};
 
-// export const NoData = Template.bind({});
-// NoData.args = {
-//     previewState: "noData"
-// };
+export const Live = Template.bind({});
+Live.args = {
+    concept: "Medications"
+};

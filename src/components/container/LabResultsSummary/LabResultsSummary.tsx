@@ -8,9 +8,10 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight
 import LabResultWithSparkline from "../../presentational/LabResultWithSparkline";
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
+import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
 
 export interface LabResultsSummaryProps {
-    previewState: "default" | "loading" | "noData"
+    previewState: "ImportantLabs" | "RecentLabs" | "NoData"
 }
 
 export default function (props: LabResultsSummaryProps) {
@@ -18,6 +19,25 @@ export default function (props: LabResultsSummaryProps) {
     const [noOverflow, setNoOverflow] = useState<boolean>(false);
 
     function getLabResultsSummary() {
+        if (props.previewState == "ImportantLabs") {
+            setModel(importantLabs);
+            return;
+        }
+        if (props.previewState == "RecentLabs") {
+            setModel(recentLabs);
+            return;
+        }
+        if (props.previewState == "NoData") {
+            setModel({
+                ImportantLabs: [],
+                RecentLabs: {
+                    RecentLabReports: []
+                }
+            });
+            return;
+        }
+
+
         var endpoint = 'HealthAndWellnessApi.LabResults';
         return MyDataHelps.invokeCustomApi(endpoint, 'GET', "", true)
             .then(function (response) {
@@ -53,7 +73,11 @@ export default function (props: LabResultsSummaryProps) {
         return width;
     };
 
-    if (model && !model.ImportantLabs.length && !model.RecentLabs.length) {
+    if (!model) {
+        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+    }
+
+    if (model && !model.ImportantLabs.length && !model.RecentLabs?.RecentLabReports.length) {
         return null;
     }
 
@@ -62,18 +86,10 @@ export default function (props: LabResultsSummaryProps) {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }
 
-    if (model && !model.ImportantLabs.length && !model.RecentLabs.length) {
-        return null;
-    }
-
-    if (!model) {
-        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
-    }
-
     return <Action title={language["lab-results-title"]} titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
         onClick={() => drilldown()}
-        indicatorValue={model?.TotalLabReports}
-        indicatorPosition="topRight"
+        indicatorValue={model?.RecentLabs?.TotalLabReports}
+        indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}
         className="mdhui-lab-results-summary mdhui-health-preview-section">
         {!model &&
             <LoadingIndicator />
@@ -95,7 +111,7 @@ export default function (props: LabResultsSummaryProps) {
                 }
                 {!model.ImportantLabs.length &&
                     <div>
-                        {model.RecentLabs.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
+                        {model.RecentLabs.RecentLabReports.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
                     </div>
                 }
             </>

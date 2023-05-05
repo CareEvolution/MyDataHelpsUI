@@ -13,13 +13,35 @@ import "./HealthPreviewSection.css"
 
 export interface HealthPreviewSectionProps {
     concept: "Medications" | "Immunizations" | "Reports" | "Allergies" | "Conditions" | "Procedures";
-    onClick(): void
+    onClick(): void;
+    previewState?: "NoData" | "Default";
 }
 
 export default function (props: HealthPreviewSectionProps) {
     const [model, setModel] = useState<any>();
 
     function loadData() {
+        if (props.previewState == "NoData") {
+            setModel({
+                "PreviewValues": [],
+                "Count": 0
+            });
+            return;
+        }
+
+        if (props.previewState == "Default") {
+            setModel({
+                "PreviewValues": [
+                    "atorvastatin 10 MG Oral Tablet",
+                    "Metformin hydrochloride 500 MG Oral Tablet",
+                    "atorvastatin 40 MG Oral Tablet"
+                ],
+                "Count": 67
+            });
+            return;
+        }
+
+
         var queryString = new URLSearchParams({ View: props.concept }).toString();
         var endpoint = 'HealthAndWellnessApi.PatientEventsPreview';
         return MyDataHelps.invokeCustomApi(endpoint, 'GET', queryString, true)
@@ -74,6 +96,10 @@ export default function (props: HealthPreviewSectionProps) {
 
     if (!model) {
         return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+    }
+
+    if (!model.PreviewValues.length) {
+        return null;
     }
 
     return <Action indicatorValue={model.Count} className="mdhui-health-preview-section" title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
