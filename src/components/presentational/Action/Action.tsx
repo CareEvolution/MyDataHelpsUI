@@ -9,6 +9,7 @@ import "./Action.css"
 export interface ActionProps {
 	title?: string;
 	titleIcon?: ReactElement;
+	icon?: ReactElement
 	subtitle?: string;
 	indicatorIcon?: IconDefinition;
 	onClick: Function;
@@ -21,8 +22,9 @@ export interface ActionProps {
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.indicatorPosition != "topRight" ? " mdhui-action-flex" : "")} onClick={() => props.onClick()}>
-			<div>
+		<UnstyledButton className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
+			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
+			<div className='mdhui-action-body'>
 				{props.title &&
 					<div className="title">
 						{props.titleIcon}

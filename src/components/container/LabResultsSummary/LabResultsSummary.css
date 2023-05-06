@@ -29,6 +29,7 @@
     margin-right: -16px;
     overflow-y: hidden;
     margin-bottom: -16px;
+    max-width: 100vw;
 }
 
 .mdhui-lab-results-values-container.no-overflow {

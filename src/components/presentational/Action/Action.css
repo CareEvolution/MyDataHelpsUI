@@ -4,12 +4,14 @@
     cursor: pointer;
     background: inherit;
     width: 100%;
-}
-
-.mdhui-action-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
+}
+
+.mdhui-action .mdhui-action-body {
+    flex-grow: 1;
 }
 
 .mdhui-action .title {
@@ -24,6 +26,7 @@
 
 .mdhui-action .indicator {
     color: var(--mdhui-text-color-3);
+    white-space: nowrap;
 }
 
 .mdhui-action .mdhui-indicator-topRight {
