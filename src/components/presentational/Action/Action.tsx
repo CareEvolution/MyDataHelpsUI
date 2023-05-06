@@ -21,7 +21,7 @@ export interface ActionProps {
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<UnstyledButton className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
+		<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.indicatorPosition != "topRight" ? " mdhui-action-flex" : "")} onClick={() => props.onClick()}>
 			<div>
 				{props.title &&
 					<div className="title">

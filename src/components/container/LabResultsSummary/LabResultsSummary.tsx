@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational";
 import "./LabResultsSummary.css";
 import icon from './icon-labreport.svg';
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import LabResultWithSparkline from "../../presentational/LabResultWithSparkline";
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
+import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
 
 export interface LabResultsSummaryProps {
-    previewState: "ImportantLabs" | "RecentLabs" | "NoData"
+    previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
+    onClick(): void;
+    onViewTermInfo(termInfo: TermInformation): void
 }
 
 export default function (props: LabResultsSummaryProps) {
@@ -36,7 +37,6 @@ export default function (props: LabResultsSummaryProps) {
             });
             return;
         }
-
 
         var endpoint = 'HealthAndWellnessApi.LabResults';
         return MyDataHelps.invokeCustomApi(endpoint, 'GET', "", true)
@@ -82,11 +82,13 @@ export default function (props: LabResultsSummaryProps) {
     }
 
     function drilldown() {
-        if (!model) return;
-        MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
+        if (!model) { return; }
+        props.onClick();
     }
 
-    return <Action title={language["lab-results-title"]} titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
+    return <Action
+        title={language["lab-results-title"]}
+        titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
         onClick={() => drilldown()}
         indicatorValue={model?.RecentLabs?.TotalLabReports}
         indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}
@@ -102,7 +104,7 @@ export default function (props: LabResultsSummaryProps) {
                             {model.ImportantLabs.map((column: any, index: number) =>
                                 <div key={index} className="mdhui-lab-results-values-column">
                                     {column.map((lab: any, index: number) =>
-                                        <LabResultWithSparkline labResultValue={lab} key={index} />
+                                        <LabResultWithSparkline onViewTermInfo={(t) => props.onViewTermInfo(t)} labResultValue={lab} key={index} />
                                     )}
                                 </div>
                             )}
@@ -115,7 +117,6 @@ export default function (props: LabResultsSummaryProps) {
                     </div>
                 }
             </>
-
         }
     </Action>
 }

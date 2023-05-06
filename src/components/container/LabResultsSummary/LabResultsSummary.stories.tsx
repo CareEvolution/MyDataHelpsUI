@@ -20,12 +20,20 @@ const Template: ComponentStory<typeof LabResultsSummary> = (args: LabResultsSumm
 
 export const ImportantLabs = Template.bind({});
 ImportantLabs.args = {
-    previewState: "ImportantLabs"
+    previewState: "ImportantLabs",
+    onClick: () => alert("Clicked"),
+    onViewTermInfo(termInfo) {
+        console.log(termInfo);
+    },
 };
 
 export const RecentLabs = Template.bind({});
 RecentLabs.args = {
-    previewState: "RecentLabs"
+    previewState: "RecentLabs",
+    onClick: () => alert("Clicked"),
+    onViewTermInfo(termInfo) {
+        console.log(termInfo);
+    },
 };
 
 export const NoData = Template.bind({});

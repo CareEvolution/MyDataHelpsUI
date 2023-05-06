@@ -4,6 +4,9 @@
     cursor: pointer;
     background: inherit;
     width: 100%;
+}
+
+.mdhui-action-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;

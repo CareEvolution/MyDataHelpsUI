@@ -29,6 +29,7 @@ export interface TermInformation {
 
 export interface LabResultWithSparklineProps {
     labResultValue: LabResultValue;
+    onViewTermInfo(termInfo: TermInformation): void;
 }
 
 export default function (props: LabResultWithSparklineProps) {
@@ -42,8 +43,7 @@ export default function (props: LabResultWithSparklineProps) {
     function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformation) {
         e.preventDefault();
         e.stopPropagation();
-        var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
-        MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
+        props.onViewTermInfo(termInfo);
     }
 
     return <div className="mdhui-lab-result-with-sparkline">

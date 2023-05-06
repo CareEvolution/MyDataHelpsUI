@@ -10,9 +10,12 @@ import problemIcon from "./icon-problem.svg";
 import procedureIcon from "./icon-procedure.svg";
 import immunizationIcon from "./icon-immunization.svg";
 import "./HealthPreviewSection.css"
+import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata";
+
+export type HealthPreviewSectionConcept = "Medications" | "Immunizations" | "Reports" | "Allergies" | "Conditions" | "Procedures";
 
 export interface HealthPreviewSectionProps {
-    concept: "Medications" | "Immunizations" | "Reports" | "Allergies" | "Conditions" | "Procedures";
+    concept: HealthPreviewSectionConcept;
     onClick(): void;
     previewState?: "NoData" | "Default";
 }
@@ -30,17 +33,9 @@ export default function (props: HealthPreviewSectionProps) {
         }
 
         if (props.previewState == "Default") {
-            setModel({
-                "PreviewValues": [
-                    "atorvastatin 10 MG Oral Tablet",
-                    "Metformin hydrochloride 500 MG Oral Tablet",
-                    "atorvastatin 40 MG Oral Tablet"
-                ],
-                "Count": 67
-            });
+            setModel(getHealthPreviewSectionData(props.concept));
             return;
         }
-
 
         var queryString = new URLSearchParams({ View: props.concept }).toString();
         var endpoint = 'HealthAndWellnessApi.PatientEventsPreview';
@@ -58,7 +53,7 @@ export default function (props: HealthPreviewSectionProps) {
             MyDataHelps.off("externalAccountSyncComplete", loadData);
             MyDataHelps.off("applicationDidBecomeVisible", loadData);
         }
-    }, []);
+    }, [props.concept]);
 
     function getIconUrl() {
         switch (props.concept) {
