@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { CardTitle, ShinyOverlay } from '../../presentational';
+import { Action, CardTitle, ShinyOverlay } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
@@ -14,6 +14,7 @@ export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
 	previewState?: ConnectEhrPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
+	bottomBorder?: boolean
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -94,10 +95,9 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	return (
-		<UnstyledButton className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
-			<CardTitle title={language['connect-ehr-title-prefix'] + language['connect-ehr-title-providers'] + language['connect-ehr-title-divider'] + language['connect-ehr-title-health-plans']} />
+		<Action bottomBorder={props.bottomBorder} title={language['connect-ehr-title-prefix'] + language['connect-ehr-title-providers'] + language['connect-ehr-title-divider'] + language['connect-ehr-title-health-plans']} className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
 			{connected
-				? <div>
+				? <>
 					<div className="connection-status">
 						{needsAttention
 							? <div className="warning">
@@ -109,13 +109,9 @@ export default function (props: ConnectEhrProps) {
 						}
 					</div>
 					<div className="content">{language["connect-ehr-text-connected"].replace("@@PROJECT_NAME@@", projectName as any)}</div>
-				</div>
+				</>
 				: <div className="content">{language["connect-ehr-text"].replace("@@PROJECT_NAME@@", projectName as any)}</div>
 			}
-			<div className="indicator">
-				<FontAwesomeSvgIcon icon={faChevronRight} />
-			</div>
-			<ShinyOverlay />
-		</UnstyledButton>
+		</Action>
 	);
 }

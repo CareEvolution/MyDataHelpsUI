@@ -1,29 +1,24 @@
 import React from "react"
 import {ComponentMeta, ComponentStory} from "@storybook/react"
-import ExternalAccountStatus, {ExternalAccountStatusProps} from "./ExternalAccountStatus"
+import ExternalAccountsLoadingIndicator, {ExternalAccountsLoadingIndicatorProps} from "./ExternalAccountsLoadingIndicator"
 import Layout from "../../presentational/Layout"
 
 export default {
-    title: "Container/ExternalAccountStatus",
-    component: ExternalAccountStatus,
+    title: "Container/ExternalAccountsLoadingIndicator",
+    component: ExternalAccountsLoadingIndicator,
     parameters: {
         layout: 'fullscreen',
     }
-} as ComponentMeta<typeof ExternalAccountStatus>;
+} as ComponentMeta<typeof ExternalAccountsLoadingIndicator>;
 
-const Template: ComponentStory<typeof ExternalAccountStatus> = (args: ExternalAccountStatusProps) =>
+const Template: ComponentStory<typeof ExternalAccountsLoadingIndicator> = (args: ExternalAccountsLoadingIndicatorProps) =>
     <Layout colorScheme="auto">
-        <ExternalAccountStatus {...args} />
+        <ExternalAccountsLoadingIndicator {...args} />
     </Layout>;
 
 export const ExternalAccountsFetchingData = Template.bind({});
 ExternalAccountsFetchingData.args = {
     previewState: "externalAccountsFetchingData"
-};
-
-export const ExternalAccountsRequireAttention = Template.bind({});
-ExternalAccountsRequireAttention.args = {
-    previewState: "externalAccountsRequireAttention"
 };
 
 export const ExternalAccountsFetchComplete = Template.bind({});

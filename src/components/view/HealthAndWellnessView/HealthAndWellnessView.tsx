@@ -1,13 +1,14 @@
 import React from 'react'
-import { Layout, StatusBarBackground, LabResultsSummary } from "../.."
+import { Layout, StatusBarBackground, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import HealthPreviewSection from '../../container/HealthPreviewSection/HealthPreviewSection';
-import ExternalAccountStatus from '../../container/ExternalAccountStatus';
+import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
 
 export interface HealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
+    connectEhrApplicationUrl: string
     externalAccountsApplicationUrl: string
 }
 
@@ -26,16 +27,22 @@ export default function (props: HealthAndWellnessViewProps) {
     }
 
     return (
-        <Layout bodyBackgroundColor='var(--mdhui-background-color-0)' colorScheme={props.colorScheme ?? "auto"}>
+        <Layout colorScheme={props.colorScheme ?? "auto"}>
             <StatusBarBackground color='var(--mdh-background-color-0)' />
-            <ExternalAccountStatus onClick={() => MyDataHelps.openApplication(props.externalAccountsApplicationUrl)} previewState={props.previewState == "default" ? "externalAccountsFetchingData" : undefined} />
-            <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
-            <HealthPreviewSection concept="Medications" onClick={() => viewHealthSectionDetails("Medications")} previewState={props.previewState == "default" ? "Default" : undefined} />
-            <HealthPreviewSection concept="Immunizations" onClick={() => viewHealthSectionDetails("Immunizations")} previewState={props.previewState == "default" ? "Default" : undefined} />
-            <HealthPreviewSection concept="Reports" onClick={() => viewHealthSectionDetails("Reports")} previewState={props.previewState == "default" ? "Default" : undefined} />
-            <HealthPreviewSection concept="Allergies" onClick={() => viewHealthSectionDetails("Allergies")} previewState={props.previewState == "default" ? "Default" : undefined} />
-            <HealthPreviewSection concept="Conditions" onClick={() => viewHealthSectionDetails("Conditions")} previewState={props.previewState == "default" ? "Default" : undefined} />
-            <HealthPreviewSection concept="Procedures" onClick={() => viewHealthSectionDetails("Procedures")} previewState={props.previewState == "default" ? "Default" : undefined} />
+            <ExternalAccountsLoadingIndicator externalAccountCategories={["Provider", "Health Plan"]} />
+            <Section noTopMargin>
+                <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
+                <HealthPreviewSection concept="Medications" onClick={() => viewHealthSectionDetails("Medications")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <HealthPreviewSection concept="Immunizations" onClick={() => viewHealthSectionDetails("Immunizations")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <HealthPreviewSection concept="Reports" onClick={() => viewHealthSectionDetails("Reports")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <HealthPreviewSection concept="Allergies" onClick={() => viewHealthSectionDetails("Allergies")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <HealthPreviewSection concept="Conditions" onClick={() => viewHealthSectionDetails("Conditions")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <HealthPreviewSection concept="Procedures" onClick={() => viewHealthSectionDetails("Procedures")} previewState={props.previewState == "default" ? "Default" : undefined} />
+                <ExternalAccountsPreview applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
+            </Section>
+            <Card>
+                <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
+            </Card>
         </Layout>
     )
 }

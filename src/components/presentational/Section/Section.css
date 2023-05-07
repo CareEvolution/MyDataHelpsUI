@@ -12,3 +12,7 @@
 .mdhui-section:empty {
     display: none;
 }
+
+.mdhui-section.mdhui-section-no-top-margin {
+    margin-top: 0;
+}

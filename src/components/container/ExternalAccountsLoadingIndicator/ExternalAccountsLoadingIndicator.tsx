@@ -4,14 +4,12 @@ import { add, isAfter } from "date-fns";
 import { parseISO } from "date-fns/esm";
 import { useEffect, useState } from "react";
 import { useInterval } from "../../../hooks";
-import { Action } from "../../presentational";
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faExclamationTriangle, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { LoadingIndicator } from "../../presentational";
+import "./ExternalAccountsLoadingIndicator.css"
 
-export interface ExternalAccountStatusProps {
-    previewState?: "externalAccountsFetchingData" | "externalAccountsRequireAttention" | "externalAccountsLoaded"
+export interface ExternalAccountsLoadingIndicatorProps {
+    previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
     externalAccountCategories?: string[];
-    onClick(): void;
 }
 
 let previewStateAccounts: ExternalAccount[] = [{
@@ -27,11 +25,22 @@ let previewStateAccounts: ExternalAccount[] = [{
     }
 }];
 
-export default function (props: ExternalAccountStatusProps) {
+export default function (props: ExternalAccountsLoadingIndicatorProps) {
     let [isWeb, setIsWeb] = useState<boolean>(false);
     let [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>([]);
 
     function refresh() {
+        if (props.previewState == "externalAccountsFetchingData") {
+            previewStateAccounts[0].status = "fetchingData";
+            setExternalAccounts(previewStateAccounts);
+            return;
+        }
+        if (props.previewState == "externalAccountsLoaded") {
+            previewStateAccounts[0].status = "fetchComplete";
+            setExternalAccounts(previewStateAccounts);
+            return;
+        }
+
         MyDataHelps.getExternalAccounts().then(function (accounts) {
             if (!!props.externalAccountCategories) {
                 accounts = accounts.filter(account => props.externalAccountCategories!.includes(account.provider.category));
@@ -54,22 +63,6 @@ export default function (props: ExternalAccountStatusProps) {
         }).finally(function () {
             refresh();
         });
-
-        if (props.previewState == "externalAccountsFetchingData") {
-            previewStateAccounts[0].status = "fetchingData";
-            setExternalAccounts(previewStateAccounts);
-            return;
-        }
-        if (props.previewState == "externalAccountsRequireAttention") {
-            previewStateAccounts[0].status = "unauthorized";
-            setExternalAccounts(previewStateAccounts);
-            return;
-        }
-        if (props.previewState == "externalAccountsLoaded") {
-            previewStateAccounts[0].status = "fetchComplete";
-            setExternalAccounts(previewStateAccounts);
-            return;
-        }
     }
 
     useEffect(function () {
@@ -84,15 +77,14 @@ export default function (props: ExternalAccountStatusProps) {
     }, []);
 
     let anyRefreshingAccounts = !!externalAccounts.find(e => e.status == "fetchingData");
-    let anyErroredAccounts = !!externalAccounts.find(e => e.status == "error" || e.status == "unauthorized");
     useInterval(() => {
         refresh();
     }, (isWeb && anyRefreshingAccounts) ? 5000 : null);
 
-    console.log(externalAccounts);
-    if (!anyRefreshingAccounts && !anyErroredAccounts) return null;
+    if (!anyRefreshingAccounts) return null;
 
-    return <Action bottomBorder subtitle={anyRefreshingAccounts ? "Retrieving data..." : "One of your accounts requires attention"} onClick={() => props.onClick()}
-        icon={anyRefreshingAccounts ? <FontAwesomeSvgIcon color="var(--mdhui-text-color-4)" icon={faRefresh} spin /> : <FontAwesomeSvgIcon color="var(--mdhui-color-danger)" icon={faExclamationTriangle} />}>
-    </Action>
+    return <div className="mdhui-external-accounts-loading-indicator">
+        <LoadingIndicator variant="inline" />
+        <span className="mdhui-external-accounts-loading-indicator-message">Retrieving data...</span>
+    </div>
 }
