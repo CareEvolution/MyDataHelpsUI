@@ -17,12 +17,13 @@ export interface ActionProps {
 	className?: string;
 	indicatorValue?: string;
 	indicatorPosition?: "default" | "topRight";
+	bottomBorder?: boolean;
 }
 
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<UnstyledButton className={(props.className || "") + " mdhui-action"} onClick={() => props.onClick()}>
+		<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => props.onClick()}>
 			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
 			<div className='mdhui-action-body'>
 				{props.title &&

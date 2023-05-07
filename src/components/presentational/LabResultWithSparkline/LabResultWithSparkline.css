@@ -4,6 +4,9 @@
     height: 5.64em;
     box-sizing: border-box;
     position: relative;
+}
+
+.mdhui-lab-result-with-sparkline:first-child {
     border-bottom: solid 1px var(--mdhui-border-color-0);
 }
 

@@ -3,10 +3,12 @@ import { Layout, StatusBarBackground, LabResultsSummary } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import HealthPreviewSection from '../../container/HealthPreviewSection/HealthPreviewSection';
+import ExternalAccountStatus from '../../container/ExternalAccountStatus';
 
 export interface HealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
+    externalAccountsApplicationUrl: string
 }
 
 export default function (props: HealthAndWellnessViewProps) {
@@ -24,8 +26,9 @@ export default function (props: HealthAndWellnessViewProps) {
     }
 
     return (
-        <Layout bodyBackgroundColor='var(--mdh-background-color-0)' colorScheme={props.colorScheme ?? "auto"}>
+        <Layout bodyBackgroundColor='var(--mdhui-background-color-0)' colorScheme={props.colorScheme ?? "auto"}>
             <StatusBarBackground color='var(--mdh-background-color-0)' />
+            <ExternalAccountStatus onClick={() => MyDataHelps.openApplication(props.externalAccountsApplicationUrl)} previewState={props.previewState == "default" ? "externalAccountsFetchingData" : undefined} />
             <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
             <HealthPreviewSection concept="Medications" onClick={() => viewHealthSectionDetails("Medications")} previewState={props.previewState == "default" ? "Default" : undefined} />
             <HealthPreviewSection concept="Immunizations" onClick={() => viewHealthSectionDetails("Immunizations")} previewState={props.previewState == "default" ? "Default" : undefined} />

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import MyDataHelps,  { Guid, Notification, NotificationQueryParameters, NotificationType } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, SingleNotification, Card, TextBlock } from '../../presentational'
-import useInterval from '../../../hooks/UseInterval'
 import { previewNotifications } from './NotificationList.previewdata'
 import language from '../../../helpers/language';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger'

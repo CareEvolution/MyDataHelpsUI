@@ -87,6 +87,7 @@ export default function (props: LabResultsSummaryProps) {
     }
 
     return <Action
+        bottomBorder
         title={language["lab-results-title"]}
         titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
         onClick={() => drilldown()}

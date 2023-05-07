@@ -1,8 +1,3 @@
-.mdhui-health-preview-section {
-    background: var(--mdhui-background-color-0);
-    border-bottom: solid 1px var(--mdhui-border-color-0);
-}
-
 .mdhui-health-preview-section .mdhui-health-preview-icon {
     width: 15px;
     height: 15px;
