@@ -60,13 +60,13 @@
     "device-data-no-data": "Si ha conectado Apple Health, Google Fit, Fitbit o Garmin, vuelva más tarde para ver sus datos.",
     "no-notifications-received": "No se recibieron notificaciones.",
     "next-button-text": "Siguiente",
-	"lab-results-title": "Resultados de laboratorio",
-	"medications-title": "Medicamentos",
-	"immunizations-title": "Vacunas",
-	"reports-title": "Informes",
-	"allergies-title": "Alergias",
-	"conditions-title": "Enfermedades",
-	"procedures-title": "Procedimientos",
+    "lab-results-title": "Resultados de laboratorio",
+    "medications-title": "Medicamentos",
+    "immunizations-title": "Vacunas",
+    "reports-title": "Informes",
+    "allergies-title": "Alergias",
+    "conditions-title": "Enfermedades",
+    "procedures-title": "Procedimientos",
 };
 
 export default strings;

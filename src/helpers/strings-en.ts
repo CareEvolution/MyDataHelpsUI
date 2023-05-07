@@ -61,12 +61,12 @@
     "no-notifications-received": "No notifications received",
     "next-button-text": "Next",
     "lab-results-title": "Lab Results",
-	"medications-title": "Medications",
-	"immunizations-title": "Immunizations",
-	"reports-title": "Reports",
-	"allergies-title": "Allergies",
-	"conditions-title": "Conditions",
-	"procedures-title": "Procedures",
+    "medications-title": "Medications",
+    "immunizations-title": "Immunizations",
+    "reports-title": "Reports",
+    "allergies-title": "Allergies",
+    "conditions-title": "Conditions",
+    "procedures-title": "Procedures",
 };
 
 export default strings;
