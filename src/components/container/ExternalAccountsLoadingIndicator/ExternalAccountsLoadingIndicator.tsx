@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useInterval } from "../../../hooks";
 import { LoadingIndicator } from "../../presentational";
 import "./ExternalAccountsLoadingIndicator.css"
+import language from "../../../helpers/language";
 
 export interface ExternalAccountsLoadingIndicatorProps {
     previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
@@ -85,6 +86,6 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
 
     return <div className="mdhui-external-accounts-loading-indicator">
         <LoadingIndicator variant="inline" />
-        <span className="mdhui-external-accounts-loading-indicator-message">Retrieving data...</span>
+        <span className="mdhui-external-accounts-loading-indicator-message">{language["external-account-fetching-data"]}</span>
     </div>
 }
