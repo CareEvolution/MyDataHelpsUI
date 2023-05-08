@@ -1,0 +1,11 @@
+.mdhui-relative-activity-today .mdhui-relative-activity-today-meter {
+    margin: 16px;
+}
+
+.mdhui-relative-activity-today .mdhui-relative-activity-average-marker {
+    text-align: center;
+    margin: 16px;
+    font-size: .7em;
+    margin-bottom: 16px;
+    color: var(--mdhui-text-color-2);
+}
