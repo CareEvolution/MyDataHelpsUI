@@ -24,6 +24,7 @@ const Template: ComponentStory<typeof RelativeActivityToday> = (args: RelativeAc
 
 export const Default = Template.bind({});
 Default.args = {
+    title: "Activity Today",
     previewState: "Default",
     dataTypes: [{
         dailyDataType: DailyDataType.Steps,
@@ -86,6 +87,7 @@ Default.args = {
 
 export const Live = Template.bind({});
 Live.args = {
+    title: "Activity Today",
     dataTypes: [{
         dailyDataType: DailyDataType.Steps,
         label: "Steps",
