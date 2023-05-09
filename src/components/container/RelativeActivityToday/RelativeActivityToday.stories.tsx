@@ -24,6 +24,68 @@ const Template: ComponentStory<typeof RelativeActivityToday> = (args: RelativeAc
 
 export const Default = Template.bind({});
 Default.args = {
+    previewState: "Default",
+    dataTypes: [{
+        dailyDataType: DailyDataType.Steps,
+        label: "Steps",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        color: "rgba(255, 166, 102, 1)",
+        formatter: function (number: number) {
+            return Math.floor(number).toLocaleString()
+        }
+    }, {
+        dailyDataType: DailyDataType.FitbitActiveMinutes,
+        label: "Active Minutes",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        color: "rgba(255, 166, 102, 1)",
+        formatter: function (number: number) {
+            return Math.floor(number).toString() + " minutes";
+        }
+    },
+    {
+        dailyDataType: DailyDataType.AppleHealthSleepMinutes,
+        label: "Sleep Time",
+        icon: <FontAwesomeSvgIcon icon={faBed} />,
+        color: "rgba(74, 144, 226, 1)",
+        formatter: function (number: number) {
+            var hours = Math.floor(number / 60);
+            var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
+            return displayValue;
+        }
+    },
+    {
+        dailyDataType: DailyDataType.FitbitSleepMinutes,
+        label: "Sleep Time",
+        icon: <FontAwesomeSvgIcon icon={faBed} />,
+        color: "rgba(74, 144, 226, 1)",
+        formatter: function (number: number) {
+            var hours = Math.floor(number / 60);
+            var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
+            return displayValue;
+        }
+    },
+    {
+        dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
+        label: "Max Heart Rate",
+        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        color: "rgba(239, 132, 129, 1)",
+        formatter: function (number: number) {
+            return Math.floor(number).toString() + " bpm";
+        }
+    },
+    {
+        dailyDataType: DailyDataType.FitbitElevatedHeartRateMinutes,
+        label: "Elevated Heart Rate Time",
+        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        color: "rgba(239, 132, 129, 1)",
+        formatter: function (number: number) {
+            return Math.floor(number).toString() + " minutes";
+        }
+    }]
+}
+
+export const Live = Template.bind({});
+Live.args = {
     dataTypes: [{
         dailyDataType: DailyDataType.Steps,
         label: "Steps",

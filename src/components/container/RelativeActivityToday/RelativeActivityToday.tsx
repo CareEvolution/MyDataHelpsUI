@@ -11,6 +11,7 @@ import "./RelativeActivityToday.css"
 
 export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];
+    previewState?: "Default";
 }
 
 export interface RelativeActivityDataType {
@@ -25,6 +26,10 @@ export default function (props: RelativeActivityTodayProps) {
     let [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
 
     function loadData() {
+        if (props.previewState === "Default") {
+            setDailyData({});
+            return;
+        };
         let today = new Date();
         let startDate = add(new Date(), { days: -31 });
         let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, startDate, add(today, { days: 1 })));
@@ -58,7 +63,7 @@ export default function (props: RelativeActivityTodayProps) {
     let todayKey = getDayKey(new Date());
     props.dataTypes.forEach(dataType => {
         let data = dailyData![dataType.dailyDataType];
-        if (!data[todayKey]) {
+        if (!data || !data[todayKey]) {
             return;
         }
 
@@ -85,6 +90,26 @@ export default function (props: RelativeActivityTodayProps) {
             value: dataType.formatter(data[todayKey])
         });
     });
+
+    if (props.previewState === "Default") {
+        computedResults = [
+            {
+                dailyDataType: DailyDataType.Steps,
+                fillPercent: 0.7,
+                value: "3,995"
+            },
+            {
+                dailyDataType: DailyDataType.AppleHealthSleepMinutes,
+                fillPercent: 0.55,
+                value: "8h 12m"
+            },
+            {
+                dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
+                fillPercent: 0.42,
+                value: "90 bpm"
+            }
+        ]
+    }
 
     if (!computedResults.length) {
         return null;
