@@ -18,6 +18,7 @@ export interface HealthPreviewSectionProps {
     concept: HealthPreviewSectionConcept;
     onClick(): void;
     previewState?: "NoData" | "Default";
+    indicatorPosition?: "default" | "topRight";
 }
 
 export default function (props: HealthPreviewSectionProps) {
@@ -97,7 +98,7 @@ export default function (props: HealthPreviewSectionProps) {
         return null;
     }
 
-    return <Action bottomBorder indicatorValue={model.Count} className="mdhui-health-preview-section" title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
+    return <Action indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} className="mdhui-health-preview-section" title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
         <div>
             {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
         </div>

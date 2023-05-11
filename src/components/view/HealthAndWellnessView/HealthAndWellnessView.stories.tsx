@@ -15,5 +15,8 @@ const Template: ComponentStory<typeof HealthAndWellnessView> = (args: HealthAndW
 export const Default = Template.bind({});
 Default.args = { previewState: "default" };
 
+export const CardBased = Template.bind({});
+CardBased.args = { previewState: "default", variant: "cardBased" };
+
 export const Live = Template.bind({});
 Live.args = {};
