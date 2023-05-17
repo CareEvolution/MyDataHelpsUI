@@ -1,0 +1,13 @@
+.mdhui-health-element-list .mdhui-health-element {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+    font-weight: bold;
+}
+
+.mdhui-health-element-list .mdhui-health-element .mdhui-health-element-info {
+    color: var(--mdhui-color-primary);
+    font-size: 1.1em;
+}
