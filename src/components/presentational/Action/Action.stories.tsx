@@ -34,11 +34,18 @@ WithClass.args = {
 	onClick: () => alert("Clicked")
 }
 
-
 export const WithIcon = Template.bind({});
 WithIcon.args = {
 	title: "Baseline Survey",
 	subtitle: "Tap here to start your baseline survey",
 	icon: <FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />,
+	onClick: () => alert("Clicked")
+}
+
+export const WithTitleIcon = Template.bind({});
+WithTitleIcon.args = {
+	titleIcon: <span><FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />&nbsp;</span>,
+	title: "Baseline Survey",
+	subtitle: "Tap here to start your baseline survey",
 	onClick: () => alert("Clicked")
 }

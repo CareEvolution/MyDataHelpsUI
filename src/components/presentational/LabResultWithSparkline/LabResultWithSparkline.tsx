@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { format, parseISO } from "date-fns";
 import "./LabResultWithSparkline.css"
@@ -33,13 +33,20 @@ export interface LabResultWithSparklineProps {
 }
 
 export default function (props: LabResultWithSparklineProps) {
+    let [sparklineXRange, setSparklineXRange] = useState(0);
+    let [sparklineYRange, setSparklineYRange] = useState(0);
+    let sparklineSvg = useRef<SVGSVGElement>(null);
+
     function formatDate(d: any) {
         return format(parseISO(d), "MM/dd/yy");
     }
 
-    let sparklineXRange = 70;
-    let sparklineYRange = 40;
-
+    useEffect(() => {
+        setSparklineXRange(sparklineSvg.current?.getBoundingClientRect().width || 0);
+        setSparklineYRange(sparklineSvg.current?.getBoundingClientRect().height || 0);
+        console.log(sparklineSvg.current);
+    });
+    
     function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformation) {
         e.preventDefault();
         e.stopPropagation();
@@ -64,7 +71,7 @@ export default function (props: LabResultWithSparklineProps) {
             </div>
             <div className="mdhui-lab-result-with-sparkline-container">
                 {!!props.labResultValue.SparklinePoints.length &&
-                    <svg className="mdhui-lab-result-with-sparkline-sparkline">
+                    <svg ref={sparklineSvg} className="mdhui-lab-result-with-sparkline-sparkline">
                         {props.labResultValue.NormalRangeTopY &&
                             <rect x="0"
                                 y="0"

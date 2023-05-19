@@ -21,6 +21,9 @@ const Template: ComponentStory<typeof LabResultWithSparkline> = (args: LabResult
 
 export const Default = Template.bind({});
 Default.args = {
+    onViewTermInfo(termInfo) {
+        console.log(termInfo);
+    },
     labResultValue: {
         "Type": "Cholesterol",
         "MostRecentValue": "135.0",

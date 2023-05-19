@@ -46,13 +46,13 @@
 
 .mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-container {
     position: relative;
-    padding-right: calc(2em - 8px);
+    padding: 8px;
+    padding-right: 2em;
 }
 
 .mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-sparkline {
     width: 70px;
     height: 40px;
-    padding: 8px;
 }
 
 .mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-sparkline rect {

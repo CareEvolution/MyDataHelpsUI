@@ -1,7 +1,6 @@
 import React from "react"
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import LabResultsSummary, { LabResultsSummaryProps } from "./LabResultsSummary"
-import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 
 export default {
