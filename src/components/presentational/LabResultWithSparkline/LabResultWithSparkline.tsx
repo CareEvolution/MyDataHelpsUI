@@ -46,7 +46,7 @@ export default function (props: LabResultWithSparklineProps) {
         setSparklineYRange(sparklineSvg.current?.getBoundingClientRect().height || 0);
         console.log(sparklineSvg.current);
     });
-    
+
     function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformation) {
         e.preventDefault();
         e.stopPropagation();
@@ -94,12 +94,12 @@ export default function (props: LabResultWithSparklineProps) {
                                 y1={point.Y * sparklineYRange}
                                 x2={props.labResultValue.SparklinePoints[index + 1].X * sparklineXRange}
                                 y2={props.labResultValue.SparklinePoints[index + 1].Y * sparklineYRange}
-                                style={{ stroke: "rgb(0,0,0)", strokeWidth: 1 }} />
+                                style={{ stroke: "var(--mdhui-border-color-2)", strokeWidth: 2 }} />
                         )}
                         <circle cx={props.labResultValue.SparklinePoints[props.labResultValue.SparklinePoints.length - 1].X * sparklineXRange}
                             cy={props.labResultValue.SparklinePoints[props.labResultValue.SparklinePoints.length - 1].Y * sparklineYRange}
                             r="3"
-                            fill="#2e6e9e" />
+                            fill="var(--mdhui-color-primary)" />
                     </svg>
                 }
                 {!!props.labResultValue.TermInformation &&
