@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, StatusBarBackground, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
-import HealthPreviewSection from '../../container/HealthPreviewSection/HealthPreviewSection';
+import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
 
 export interface HealthAndWellnessViewProps {
@@ -23,12 +23,12 @@ export default function (props: HealthAndWellnessViewProps) {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }
 
-    function viewHealthSectionDetails(concept: string) {
+    function viewHealthSectionDetails(concept: HealthPreviewSectionConcept) {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/" + concept + ".html");
     }
 
     let variant = props.variant ?? "default";
-    function getHealthPreviewSection(concept: string) {
+    function getHealthPreviewSection(concept: HealthPreviewSectionConcept) {
         var buildSection = function () {
             return <HealthPreviewSection concept={concept as any}
                 onClick={() => viewHealthSectionDetails(concept)}
