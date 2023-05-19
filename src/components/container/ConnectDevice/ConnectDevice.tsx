@@ -57,7 +57,7 @@ export default function (props: ConnectDeviceProps) {
 			return;
 		}
 		
-		MyDataHelps.getDataCollectionSettings().then(function (settings) {
+		MyDataHelps.getDataCollectionSettings().then(function (settings:any) {
 			setDeviceEnabled(settings[props.dataCollectionProperty]);
 			if (settings[props.dataCollectionProperty]) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {

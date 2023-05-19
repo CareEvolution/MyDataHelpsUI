@@ -1,0 +1,21 @@
+.mdhui-health-preview-section .mdhui-health-preview-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+}
+
+.mdhui-health-preview-section .mdhui-health-preview-item {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    font-size: .82em;
+    color: var(--mdhui-text-color-2);
+    box-sizing: border-box;
+}
+
+.mdhui-health-preview-section .mdhui-health-preview-item:first-child {
+    margin-top: 4px;
+}

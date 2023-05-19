@@ -1,29 +1,46 @@
-﻿.mdhui-action
-{
-    padding: 16px 32px 16px 16px;
+﻿.mdhui-action {
+    padding: 16px;
     position: relative;
     cursor: pointer;
     background: inherit;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
-    .mdhui-action .title
-    {
-        font-size: 1em;
-        font-weight: bold;
-    }
+.mdhui-action .mdhui-action-body {
+    flex-grow: 1;
+    max-width: 100%;
+}
 
-    .mdhui-action .subtitle
-    {
-        font-size: .88em;
-        color: var(--mdhui-text-color-2);
-    }
+.mdhui-action .title {
+    font-size: 1em;
+    font-weight: bold;
+}
 
-    .mdhui-action .indicator
-    {
-        position: absolute;
-        top: calc(50% - 9px);
-        right: 16px;
-        font-size: 16px;
-        color: var(--mdhui-text-color-3);
-    }
+.mdhui-action .subtitle {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-action .indicator {
+    color: var(--mdhui-text-color-3);
+    white-space: nowrap;
+}
+
+.mdhui-action .mdhui-indicator-topRight {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.mdhui-action .mdhui-action-indicator-value {
+    color: var(--mdhui-color-primary);
+    font-weight: bold;
+}
+
+.mdhui-action.mdhui-action-bottom-border {
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+}

@@ -3,6 +3,8 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Action, { ActionProps } from "./Action";
 import Layout from "../Layout"
 import './Action.stories.css';
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 
 export default {
 	title: "Presentational/Action",
@@ -24,10 +26,26 @@ StartSurvey.args = {
 	onClick: () => alert("Clicked")
 }
 
-export const ActionWithClass = Template.bind({});
-ActionWithClass.args = {
+export const WithClass = Template.bind({});
+WithClass.args = {
 	title: "Baseline Survey",
 	subtitle: "Tap here to start your baseline survey",
 	className: "action-story-primary",
+	onClick: () => alert("Clicked")
+}
+
+export const WithIcon = Template.bind({});
+WithIcon.args = {
+	title: "Baseline Survey",
+	subtitle: "Tap here to start your baseline survey",
+	icon: <FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />,
+	onClick: () => alert("Clicked")
+}
+
+export const WithTitleIcon = Template.bind({});
+WithTitleIcon.args = {
+	titleIcon: <span><FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />&nbsp;</span>,
+	title: "Baseline Survey",
+	subtitle: "Tap here to start your baseline survey",
 	onClick: () => alert("Clicked")
 }
