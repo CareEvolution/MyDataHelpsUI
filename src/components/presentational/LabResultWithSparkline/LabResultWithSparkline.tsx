@@ -44,7 +44,6 @@ export default function (props: LabResultWithSparklineProps) {
     useEffect(() => {
         setSparklineXRange(sparklineSvg.current?.getBoundingClientRect().width || 0);
         setSparklineYRange(sparklineSvg.current?.getBoundingClientRect().height || 0);
-        console.log(sparklineSvg.current);
     });
 
     function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformation) {
