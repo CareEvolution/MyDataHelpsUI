@@ -46,7 +46,7 @@ export default function (props: HealthAndWellnessViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <StatusBarBackground color='var(--mdh-background-color-0)' />
-            <ExternalAccountsLoadingIndicator externalAccountCategories={["Provider", "Health Plan"]} />
+            <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
@@ -56,6 +56,7 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Allergies")}
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
+                    <ExternalAccountsPreview applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
                 </Section>
             }
             {variant == "cardBased" &&
