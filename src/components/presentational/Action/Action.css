@@ -13,6 +13,7 @@
 .mdhui-action .mdhui-action-body {
     flex-grow: 1;
     max-width: 100%;
+    min-width: 0;
 }
 
 .mdhui-action .title {
