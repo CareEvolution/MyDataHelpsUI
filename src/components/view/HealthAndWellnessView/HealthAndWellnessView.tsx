@@ -56,7 +56,7 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Allergies")}
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
-                    <ExternalAccountsPreview applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
+                    <ExternalAccountsPreview excludeDeviceManufacturers applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
                 </Section>
             }
             {variant == "cardBased" &&
@@ -71,7 +71,7 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
                     <Card>
-                        <ExternalAccountsPreview applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
+                        <ExternalAccountsPreview excludeDeviceManufacturers applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
                     </Card>
                 </>
             }
