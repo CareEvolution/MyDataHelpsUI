@@ -12,7 +12,8 @@ export interface ConnectEhrViewProps {
     excludeHealthPlans?: boolean,
     presentation?: ViewPresentationType,
     preview?: boolean,
-    colorScheme?: "auto" | "light" | "dark"
+    colorScheme?: "auto" | "light" | "dark",
+    openNewWindow?: boolean
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -52,7 +53,7 @@ export default function (props: ConnectEhrViewProps) {
                 <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true}/>
             </Card>
             <Card>
-                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories}/>
+                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} openNewWindow={props.openNewWindow}/>
             </Card>
         </Layout>
     )

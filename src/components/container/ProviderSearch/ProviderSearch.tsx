@@ -12,6 +12,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    openNewWindow?: boolean;
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -95,7 +96,10 @@ export default function (props: ProviderSearchProps) {
 
     function connectToProvider(providerID: number) {
         if (!(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID);
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow || false })
+                .then(function() {
+                    MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
+                });
         }
     }
 
