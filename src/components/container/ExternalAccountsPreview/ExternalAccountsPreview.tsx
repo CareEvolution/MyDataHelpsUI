@@ -62,6 +62,8 @@ export default function (props: ExternalAccountsPreviewProps) {
     function manageExternalAccounts() {
         if (props.applicationUrl == "preview") {
             console.log("PREVIEW: Opening the external accounts application.");
+        } else if (props.applicationUrl == "completeSurveyStep") {
+            MyDataHelps.completeStep(null);
         } else {
             MyDataHelps.openApplication(props.applicationUrl);
         }
