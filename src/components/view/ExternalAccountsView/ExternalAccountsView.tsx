@@ -13,7 +13,7 @@ export interface ExternalAccountsViewProps {
     colorScheme?: "auto" | "light" | "dark";
 }
 
-export type ViewPresentationType = "Modal" | "Push";
+export type ViewPresentationType = "Modal" | "Push" | "Survey";
 
 export default function (props: ExternalAccountsViewProps) {
 
@@ -41,7 +41,9 @@ export default function (props: ExternalAccountsViewProps) {
 
     function onExternalAccountsLoaded(accounts: ExternalAccount[]) {
         if (accounts.length === 0) {
-            if (props.presentation === "Modal") {
+            if (props.presentation === "Survey") {
+                MyDataHelps.completeStep("noExternalAccounts");
+            } else if (props.presentation === "Modal") {
                 MyDataHelps.dismiss()
             } else {
                 MyDataHelps.back();

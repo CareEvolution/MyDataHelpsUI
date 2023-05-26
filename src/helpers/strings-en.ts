@@ -43,6 +43,8 @@
     "last-sync": "Last synced",
     "completed": "Completed",
     "ehr-intro": "Your electronic health records (EHR) are an important source of information. If you help us gather your EHR, researchers will use this data to make discoveries.",
+    "ehr-complete-survey-title": "Done Adding Providers",
+    "ehr-complete-survey-subtitle": "Dismiss this screen and mark task as complete",
     "external-accounts-title-divider": " / ",
     "external-accounts-title-providers": "Providers",
     "external-accounts-title-health-plans": "Health Plans",

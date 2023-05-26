@@ -1,10 +1,11 @@
 import React from 'react'
-import {Card, Layout, NavigationBar, StatusBarBackground} from "../.."
+import {Action, Card, Layout, NavigationBar, StatusBarBackground} from "../.."
 import language from '../../../helpers/language'
 import {ProviderSearch} from '../../container'
 import {TextBlock} from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
 import {ExternalAccountsApplicationUrl} from "../../container/ExternalAccountsPreview/ExternalAccountsPreview";
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export interface ConnectEhrViewProps {
     externalAccountsApplicationUrl: ExternalAccountsApplicationUrl,
@@ -13,10 +14,11 @@ export interface ConnectEhrViewProps {
     presentation?: ViewPresentationType,
     preview?: boolean,
     colorScheme?: "auto" | "light" | "dark",
-    openNewWindow?: boolean
+    openNewWindow?: boolean,
+    showCompleteSurveyAction?: boolean
 }
 
-export type ViewPresentationType = "Modal" | "Push";
+export type ViewPresentationType = "Modal" | "Push" | "Survey";
 
 export default function (props: ConnectEhrViewProps) {
 
@@ -52,8 +54,13 @@ export default function (props: ConnectEhrViewProps) {
             <Card>
                 <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true}/>
             </Card>
+            {props.showCompleteSurveyAction &&
             <Card>
-                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} openNewWindow={props.openNewWindow}/>
+                <Action title={language["ehr-complete-survey-title"]} subtitle={language["ehr-complete-survey-subtitle"]} onClick={() => MyDataHelps.completeStep("completeSurvey")} />
+            </Card>    
+            }
+            <Card>
+                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} openNewWindow={props.presentation === "Survey" || props.openNewWindow}/>
             </Card>
         </Layout>
     )

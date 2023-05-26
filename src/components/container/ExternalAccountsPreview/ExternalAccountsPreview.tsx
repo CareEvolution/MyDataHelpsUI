@@ -13,7 +13,7 @@ export interface ExternalAccountsPreviewProps {
     previewState?: ExternalAccountsPreviewPreviewState;
 }
 
-export type ExternalAccountsApplicationUrl = "preview" | string;
+export type ExternalAccountsApplicationUrl = "preview" | "survey" | string;
 export type ExternalAccountsPreviewPreviewState = "Default";
 
 export default function (props: ExternalAccountsPreviewProps) {
@@ -62,8 +62,8 @@ export default function (props: ExternalAccountsPreviewProps) {
     function manageExternalAccounts() {
         if (props.applicationUrl == "preview") {
             console.log("PREVIEW: Opening the external accounts application.");
-        } else if (props.applicationUrl == "completeSurveyStep") {
-            MyDataHelps.completeStep(null);
+        } else if (props.applicationUrl == "survey") {
+            MyDataHelps.completeStep("manageExternalAccounts");
         } else {
             MyDataHelps.openApplication(props.applicationUrl);
         }
