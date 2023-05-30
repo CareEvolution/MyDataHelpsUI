@@ -12,6 +12,8 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    requireSearch?: boolean;
+    searchPlaceholder?: string;
     openNewWindow?: boolean;
 }
 
@@ -58,6 +60,11 @@ export default function (props: ProviderSearchProps) {
     }
 
     function performSearch(search: string) {
+        if (props.requireSearch && !search) {
+            setSearching(false);
+            return;
+        }
+        
         setSearching(true);
         let requestID = ++currentRequestID;
 
@@ -135,7 +142,7 @@ export default function (props: ProviderSearchProps) {
         <div className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
-                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={props.searchPlaceholder || language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
                     <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </div>

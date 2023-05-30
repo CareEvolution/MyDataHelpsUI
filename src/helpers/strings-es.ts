@@ -43,8 +43,6 @@
     "last-sync": "Última sincronización",
     "completed": "Completadas",
     "ehr-intro": "Sus registros de salud electrónicos son fuentes importantes de información. Pueden ayudar a investigadores hacer nuevos descubrimientos.",
-    "ehr-complete-survey-title": "Completar",
-    "ehr-complete-survey-subtitle": "",
     "external-accounts-title-divider": " / ",
     "external-accounts-title-providers": "Proveedores",
     "external-accounts-title-health-plans": "Planes de Salud",
