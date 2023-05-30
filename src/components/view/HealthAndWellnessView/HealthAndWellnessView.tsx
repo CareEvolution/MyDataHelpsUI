@@ -45,7 +45,7 @@ export default function (props: HealthAndWellnessViewProps) {
 
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
-            <StatusBarBackground color='var(--mdh-background-color-0)' />
+            <StatusBarBackground />
             <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
             {variant == "default" &&
                 <Section noTopMargin>

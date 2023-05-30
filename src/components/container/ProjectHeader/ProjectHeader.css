@@ -2,7 +2,7 @@
 {
     padding: 16px;
     text-align: center;
-    background: var(--mdhui-background-color-0);
+    background: #FFF;
     border-bottom: solid 1px var(--mdhui-border-color-1);
 }
 
@@ -37,4 +37,5 @@
         .mdhui-project-header .project-info .organization-name
         {
             max-width: 100%;
+            color: #333;
         }
