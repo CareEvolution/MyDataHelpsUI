@@ -1,0 +1,19 @@
+﻿.mdhui-app-download {
+}
+
+.mdhui-app-download-title {
+    padding: 16px 0 0 16px;
+    font-weight: bold;
+}
+
+.mdhui-app-download-subtitle {
+    margin-bottom: 16px;
+}
+
+.mdhui-app-download-links a:first-child {
+    margin-right: 12px;
+}
+
+.mdhui-app-download-link img {
+    height: 44px;
+}

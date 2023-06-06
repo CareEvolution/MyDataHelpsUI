@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import React, { useEffect, useState } from 'react';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface PlatformSpecificContentProps {
 	platforms: string[];
 	children?: React.ReactNode;
+	previewDevicePlatform?: string;
 }
 
 export default function (props: PlatformSpecificContentProps) {
-	const [platform, setPlatform] = useState("");
-
-	function initialize() {
-		MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-			if (deviceInfo) {
-				setPlatform((deviceInfo as any).platform);
-			}
-		});
-	}
+	const [platform, setPlatform] = useState<string>('');
 
 	useEffect(() => {
-		initialize();
+		if (props.previewDevicePlatform) {
+			setPlatform(props.previewDevicePlatform);
+			return;
+		}
+		MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
+			if (deviceInfo) {
+				setPlatform(deviceInfo.platform);
+			}
+		});
 	}, []);
 
-	if (props.platforms.indexOf(platform) == -1) {
+	if (!props.platforms.includes(platform)) {
 		return null;
 	}
 
