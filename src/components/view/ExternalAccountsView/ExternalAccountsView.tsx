@@ -11,6 +11,7 @@ export interface ExternalAccountsViewProps {
     presentation?: ViewPresentationType;
     preview?: boolean;
     colorScheme?: "auto" | "light" | "dark";
+    onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
 }
 
 export type ViewPresentationType = "Modal" | "Push" | "Survey";
@@ -48,6 +49,9 @@ export default function (props: ExternalAccountsViewProps) {
             } else {
                 MyDataHelps.back();
             }
+        }
+        if (props.onExternalAccountsLoaded) {
+            props.onExternalAccountsLoaded(accounts);
         }
     }
 
