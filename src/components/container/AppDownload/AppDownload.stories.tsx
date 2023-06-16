@@ -1,5 +1,5 @@
 ﻿import React from 'react'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import Layout from '../../presentational/Layout'
 import AppDownload, { AppDownloadProps } from './AppDownload';
 
@@ -9,9 +9,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	}
-} as ComponentMeta<typeof AppDownload>;
+} as Meta<typeof AppDownload>;
 
-const Template: ComponentStory<typeof AppDownload> = (args: AppDownloadProps) =>
+const Template: StoryFn<typeof AppDownload> = (args: AppDownloadProps) =>
 	<Layout colorScheme="auto">
 		<AppDownload {...args} />
 	</Layout>;
