@@ -9,7 +9,6 @@ import TextBlock from '../../presentational/TextBlock';
 import googlePlayDownload from '../../../assets/google-play-download.svg';
 import appStoreDownload from '../../../assets/app-store-download.svg';
 import language from "../../../helpers/language";
-import LocalizedString from "../../presentational/LocalizedString";
 
 export interface AppDownloadProps {
 	previewProjectPlatforms?: string[]
@@ -39,9 +38,7 @@ export default function (props: AppDownloadProps) {
 		<div className="mdhui-app-download">
 			<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform}>
 				<Card>
-					<div className="mdhui-app-download-title">
-						<LocalizedString stringName="app-download-title"/>
-					</div>
+					<div className="mdhui-app-download-title">{language['app-download-title']}</div>
 					<TextBlock>
 						<div className="mdhui-app-download-subtitle">
 							{language['app-download-subtitle'].replace("@@PROJECT_NAME@@", projectInfo.name)}
