@@ -4,6 +4,7 @@ import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
 import { ConnectEhrApplicationUrl } from "../../container/ConnectEhr/ConnectEhr";
+import AppDownload from "../../container/AppDownload";
 
 export interface HomeViewProps {
 	/** 
@@ -45,6 +46,7 @@ export default function (props: HomeViewProps) {
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground color='#FFFFFF'  />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
+			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined}/>
 			<Card>
 				<MostRecentNotification
 					notificationType={notificationType}

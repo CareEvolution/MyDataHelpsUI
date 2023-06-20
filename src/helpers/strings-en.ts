@@ -67,6 +67,10 @@
     "allergies-title": "Allergies",
     "conditions-title": "Conditions",
     "procedures-title": "Procedures",
+    "app-download-title": "Next: Download the App",
+    "app-download-subtitle": "Downloading the MyDataHelps app makes it even easier to participate in @@PROJECT_NAME@@.",
+    "app-download-google-play-link-alt": "Download on the Google Play Store",
+    "app-download-app-store-link-alt": "Download on the Apple App Store"
 };
 
 export default strings;
