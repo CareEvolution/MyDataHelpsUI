@@ -1,7 +1,6 @@
 ﻿import MyDataHelps, { EventName } from '@careevolution/mydatahelps-js';
 import { DependencyList, useEffect } from 'react';
-
-const debounce = require('lodash.debounce');
+import { debounce } from 'lodash';
 
 export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
     useEffect(() => {
