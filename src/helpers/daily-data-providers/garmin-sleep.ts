@@ -39,7 +39,7 @@ export function totalSleepMinutes(startDate: Date, endDate: Date) {
 }
 
 export function remSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("RemSleepDurationInSeconds", startDate, endDate, true, 60);
+    return querySleep("RemSleepInSeconds", startDate, endDate, true, 60);
 }
 
 export function deepSleepMinutes(startDate: Date, endDate: Date) {

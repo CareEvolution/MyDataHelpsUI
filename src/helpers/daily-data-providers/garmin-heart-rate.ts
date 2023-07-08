@@ -13,5 +13,5 @@ export function maxHeartRate(startDate: Date, endDate: Date) {
 }
 
 export function averageHeartRate(startDate: Date, endDate: Date) {
-	return queryGarminSingleDailyValue("MaxHeartRateInBeatsPerMinute", startDate, endDate);
+	return queryGarminSingleDailyValue("AverageHeartRateInBeatsPerMinute", startDate, endDate);
 }
