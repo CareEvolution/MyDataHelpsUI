@@ -1,5 +1,5 @@
 import queryGarminSingleDailyValue from "./query-garmin-single-daily-value";
 
 export default function (startDate: Date, endDate: Date) {
-	return queryGarminSingleDailyValue("RestingHeartRateInBeatsPerMinute", startDate, endDate);
+	return queryGarminSingleDailyValue("DistanceInMeters", startDate, endDate);
 }
