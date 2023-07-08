@@ -1,6 +1,6 @@
 ﻿import MyDataHelps, { DeviceDataNamespace, DeviceDataPointQuery } from "@careevolution/mydatahelps-js";
 import { add } from "date-fns";
-import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider, garminStepsDataProvider, garminRestingHeartRateDataProvider, garminFloorsDataProvider } from "./daily-data-providers";
+import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider, garminStepsDataProvider, garminRestingHeartRateDataProvider, garminFloorsDataProvider, garminDistanceDataProvider, garminActiveMinutesDataProvider, garminMinHeartRateDataProvider, garminMaxHeartRateDataProvider, garminAverageHeartRateDataProvider, garminTotalStressMinutesDataProvider, garminAverageStressLevelDataProvider, garminMaxStressLevelDataProvider, garminLowStressMinutesDataProvider, garminMediumStressMinutesDataProvider, garminHighStressMinutesDataProvider, garminRemSleepMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminLightSleepMinutesDataProvider, garminAwakeMinutesDataProvider, garminSleepScoreDataProvider } from "./daily-data-providers";
 import combinedRestingHeartRate from "./daily-data-providers/combined-resting-heart-rate";
 import getDayKey from "./get-day-key";
 
@@ -36,19 +36,6 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 }
 
 function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | string[]) {
-	if (namespace == "Garmin") {
-		return function (modifiedAfter?: Date) {
-			var parameters: DeviceDataPointQuery = { namespace: "Garmin", type: "Daily", limit: 1 };
-			if (modifiedAfter) {
-				parameters.modifiedAfter = modifiedAfter.toISOString();
-			}
-			return MyDataHelps.queryDeviceData(parameters).then(function (result) {
-				return result.deviceDataPoints.length > 0;
-			}).catch(function () {
-				return false;
-			});
-		}
-	} else {
 	return function (modifiedAfter?: Date) {
 		var parameters: DeviceDataPointQuery = { namespace: namespace, type: type, limit: 1 };
 		if (modifiedAfter) {
@@ -59,7 +46,6 @@ function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | 
 		}).catch(function () {
 			return false;
 		});
-	}
 	}
 }
 
@@ -94,9 +80,26 @@ export enum DailyDataType {
 	FitbitDeepSleepMinutes = "FitbitDeepSleepMinutes",
 	FitbitSpO2 = "FitbitSpO2",
 	FitbitSteps = "FitbitSteps",
-	GarminFloors = "GarminFloors",
-	GarminRestingHeartRate = "GarminRestingHeartRate",
 	GarminSteps = "GarminSteps",
+	GarminDistance = "GarminDistance",
+	GarminFloors = "GarminFloors",
+	GarminActiveMinutes = "GarminActiveMinutes",
+	GarminRestingHeartRate = "GarminRestingHeartRate",
+	GarminMinHeartRate = "GarminMinHeartRate",
+	GarminMaxHeartRate = "GarminMaxHeartRate",
+	GarminAverageHeartRate = "GarminAverageHeartRate",
+	GarminMaxStressLevel = "GarminMaxStressLevel",
+	GarminAverageStressLevel = "GarminAverageStressLevel",
+	GarminTotalStressMinutes = "GarminTotalStressMinutes",
+	GarminLowStressMinutes = "GarminLowStressMinutes",
+	GarminMediumStressMinutes = "GarminMediumStressMinutes",
+	GarminHighStressMinutes = "GarminHighStressMinutes",
+	GarminTotalSleepMinutes = "GarminTotalSleepMinutes",
+	GarminLightSleepMinutes = "GarminLightSleepMinutes",
+	GarminDeepSleepMinutes = "GarminDeepSleepMinutes",
+	GarminRemSleepMinutes = "GarminRemSleepMinutes",
+	GarminAwakeMinutes = "GarminAwakeMinutes",
+	GarminSleepScore = "GarminSleepScore",
 	GoogleFitSteps = "GoogleFitSteps",
 	Steps = "Steps",
 	RestingHeartRate = "RestingHeartRate"
@@ -132,10 +135,27 @@ registerDailyDataProvider(DailyDataType.FitbitRemSleepMinutes, fitbitRemSleepMin
 registerDailyDataProvider(DailyDataType.FitbitDeepSleepMinutes, fitbitDeepSleepMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["SleepLevelDeep"]));
 registerDailyDataProvider(DailyDataType.FitbitSpO2, fitbitSpO2DataProvider, simpleAvailabilityCheck("Fitbit", ["SpO2"]));
 registerDailyDataProvider(DailyDataType.FitbitSteps, fitbitStepsDataProvider, simpleAvailabilityCheck("Fitbit", ["Steps"]));
-registerDailyDataProvider(DailyDataType.GarminSteps, garminStepsDataProvider, simpleAvailabilityCheck("Garmin", ["Steps"]));
-registerDailyDataProvider(DailyDataType.GarminRestingHeartRate, garminRestingHeartRateDataProvider, simpleAvailabilityCheck("Garmin", ["RestingHeartRateInBeatsPerMinute"]));
-registerDailyDataProvider(DailyDataType.GarminFloors, garminFloorsDataProvider, simpleAvailabilityCheck("Garmin", ["FloorsClimbed"]));
 registerDailyDataProvider(DailyDataType.GoogleFitSteps, googleFitStepsDataProvider, simpleAvailabilityCheck("GoogleFit", ["Steps"]));
+registerDailyDataProvider(DailyDataType.GarminSteps, garminStepsDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminDistance, garminDistanceDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminFloors, garminFloorsDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminActiveMinutes, garminActiveMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminRestingHeartRate, garminRestingHeartRateDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminMinHeartRate, garminMinHeartRateDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminMaxHeartRate, garminMaxHeartRateDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminAverageHeartRate, garminAverageHeartRateDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminMaxStressLevel, garminMaxStressLevelDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminAverageStressLevel, garminAverageStressLevelDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminTotalStressMinutes, garminTotalStressMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminLowStressMinutes, garminLowStressMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminMediumStressMinutes, garminMediumStressMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminHighStressMinutes, garminHighStressMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Daily"]));
+registerDailyDataProvider(DailyDataType.GarminTotalSleepMinutes, garminTotalStressMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
+registerDailyDataProvider(DailyDataType.GarminRemSleepMinutes, garminRemSleepMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
+registerDailyDataProvider(DailyDataType.GarminDeepSleepMinutes, garminDeepSleepMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
+registerDailyDataProvider(DailyDataType.GarminLightSleepMinutes, garminLightSleepMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
+registerDailyDataProvider(DailyDataType.GarminAwakeMinutes, garminAwakeMinutesDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
+registerDailyDataProvider(DailyDataType.GarminSleepScore, garminSleepScoreDataProvider, simpleAvailabilityCheck("Garmin", ["Sleep"]));
 
 //Currently combined RHR does not include google fit
 registerDailyDataProvider(DailyDataType.RestingHeartRate, combinedRestingHeartRate, function (modifiedAfter?: Date) {
