@@ -14,7 +14,7 @@ export interface ButtonProps {
 	className?: string;
 	color?: string;
 	loading?: boolean;
-	variant?: "default" | "subtle";
+	variant?: "default" | "subtle" | "inverted";
 }
 
 export default function (props: ButtonProps) {
@@ -26,8 +26,16 @@ export default function (props: ButtonProps) {
 		classes.push("mdhui-button-subtle");
 	}
 
+	let backgroundColor = props.color;
+	let textColor = "#FFF";
+
+	if (props.variant === "inverted") {
+		backgroundColor = "var(--mdhui-background-color-1)";
+		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
+	}
+
 	return (
-		<button style={{ backgroundColor: props.disabled ? undefined : props.color }}
+		<button style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
 			onClick={() => {

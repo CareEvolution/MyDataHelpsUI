@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./SurveyTaskList.css"
 import MyDataHelps, { Guid, SurveyTask, SurveyTaskQueryParameters, SurveyTaskStatus } from "@careevolution/mydatahelps-js"
-import { CardTitle, LoadingIndicator, SingleSurveyTask } from '../../presentational'
+import { Card, CardTitle, LoadingIndicator, SingleSurveyTask } from '../../presentational'
 import parseISO from 'date-fns/parseISO'
 import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.previewdata'
 import language from '../../../helpers/language'
@@ -13,6 +13,7 @@ export interface SurveyTaskListProps {
 	onDetailLinkClick?: Function,
 	hideDueDate?: boolean,
 	previewState?: SurveyTaskListListPreviewState
+	embedTasksInCards?: boolean
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
@@ -85,6 +86,10 @@ export default function (props: SurveyTaskListProps) {
 		return null;
 	}
 
+	function getSurveyTaskElement(task: SurveyTask) {
+		return <SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} hideDueDate={props.hideDueDate} />
+	}
+
 	return (
 		<div className="mdhui-survey-task-list">
 			{props.title &&
@@ -97,7 +102,7 @@ export default function (props: SurveyTaskListProps) {
 				<div className="empty-message">{language["all-tasks-complete"]}</div>
 			}
 			{tasks?.slice(0, props.limit).map((task) =>
-				<SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} hideDueDate={props.hideDueDate} />
+				props.embedTasksInCards ? <Card>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
 			)}
 		</div>
 	);

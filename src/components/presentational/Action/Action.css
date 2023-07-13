@@ -1,4 +1,5 @@
-﻿.mdhui-action {
+﻿.mdhui-action,
+.mdhui-unstyled-button.mdhui-action {
     padding: 16px;
     position: relative;
     cursor: pointer;
