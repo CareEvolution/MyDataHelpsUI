@@ -1,5 +1,7 @@
+export { default as ConnectAppleHealth } from "./ConnectAppleHealth"
 export { default as ConnectEhr } from "./ConnectEhr"
 export { default as ConnectFitbit } from "./ConnectFitbit"
+export { default as ConnectGoogleFit } from "./ConnectGoogleFit"
 export { default as ConnectGarmin } from "./ConnectGarmin"
 export { default as DeviceDataMonthChart, DeviceDataChartLine } from "./DeviceDataMonthChart"
 export { default as DeviceDataMonthCharts } from "./DeviceDataMonthCharts"

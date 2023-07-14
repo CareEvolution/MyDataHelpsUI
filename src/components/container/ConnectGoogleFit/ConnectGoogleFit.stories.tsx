@@ -1,10 +1,11 @@
 import React from "react";
 import ConnectGoogleFit, { ConnectGoogleFitProps } from "./ConnectGoogleFit";
-import Layout from "../Layout";
+import Layout from "../../presentational/Layout";
+import { Card } from "../../presentational";
 
-export default { title: "Presentational/ConnectGoogleFit", component: ConnectGoogleFit, parameters: { layout: 'fullscreen' } };
+export default { title: "Container/ConnectGoogleFit", component: ConnectGoogleFit, parameters: { layout: 'fullscreen' } };
 
-let render = (args: ConnectGoogleFitProps) => <Layout colorScheme="auto"><ConnectGoogleFit {...args} /></Layout>
+let render = (args: ConnectGoogleFitProps) => <Layout colorScheme="auto"><Card><ConnectGoogleFit {...args} /></Card></Layout>
 
 export const AndroidEnabled = {
     name: "Android Enabled",
