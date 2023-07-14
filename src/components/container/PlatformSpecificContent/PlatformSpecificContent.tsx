@@ -27,8 +27,8 @@ export default function (props: PlatformSpecificContentProps) {
 	}
 
 	return (
-		<div>
+		<>
 			{props.children}
-		</div>
+		</>
 	);
 }
