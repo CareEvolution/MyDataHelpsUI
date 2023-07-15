@@ -20,22 +20,13 @@ const Template: ComponentStory<typeof ConnectFitbit> = (args: ConnectFitbitProps
 	</Layout>;
 
 export const NotConnected = Template.bind({});
-NotConnected.args = { previewState: "notConnected", title: "Fitbit" };
+NotConnected.args = { previewState: "notConnected" };
 
 export const Unauthorized = Template.bind({});
-Unauthorized.args = { previewState: "unauthorized", title: "Fitbit" };
+Unauthorized.args = { previewState: "unauthorized" };
 
 export const FetchComplete = Template.bind({});
-FetchComplete.args = { previewState: "fetchComplete", title: "Fitbit" };
+FetchComplete.args = { previewState: "fetchComplete" };
 
 export const FetchingData = Template.bind({});
-FetchingData.args = { previewState: "fetchingData", title: "Fitbit" };
-
-export const NotEnabledDefault = Template.bind({});
-NotEnabledDefault.args = { previewState: "notEnabled", title: "Fitbit" };
-
-export const NotEnabledHide = Template.bind({});
-NotEnabledHide.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "hide" };
-
-export const NotEnabledDisplayError = Template.bind({});
-NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "displayError" };
+FetchingData.args = { previewState: "fetchingData" };

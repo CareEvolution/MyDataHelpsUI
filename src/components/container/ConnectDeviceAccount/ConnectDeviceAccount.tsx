@@ -4,7 +4,7 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, Button, CardTitle } from '../../presentational';
-import "./ConnectDevice.css"
+import "./ConnectDeviceAccount.css"
 import language from "../../../helpers/language"
 import add from 'date-fns/add'
 import parseISO from 'date-fns/parseISO'
@@ -12,20 +12,18 @@ import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
-export interface ConnectDeviceProps {
+export interface ConnectDeviceAccountProps {
 	title?: string,
 	providerName: string,
-	providerIDCallback: ()=>number,
+	providerIDCallback: () => number,
 	previewState?: ConnectDevicePreviewState,
-	disabledBehavior?: 'hide' | 'displayError',
-	dataCollectionProperty:	string 
+	dataCollectionProperty: string
 }
 
-export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected";
 
-export default function (props: ConnectDeviceProps) {
+export default function (props: ConnectDeviceAccountProps) {
 	const [loading, setLoading] = useState(true);
-	const [deviceEnabled, setDeviceEnabled] = useState(false);
 	const [deviceExternalAccount, setDeviceExternalAccount] = useState<ExternalAccount | null>(null);
 
 	function buildLanguageKey(key: string) {
@@ -33,11 +31,6 @@ export default function (props: ConnectDeviceProps) {
 	}
 	function initialize() {
 		if (props.previewState) {
-			if (props.previewState == "notEnabled") {
-				setLoading(false);
-				return;
-			}
-			setDeviceEnabled(true);
 			if (props.previewState == "notConnected") {
 				setLoading(false);
 				return;
@@ -56,21 +49,14 @@ export default function (props: ConnectDeviceProps) {
 			setLoading(false);
 			return;
 		}
-		
-		MyDataHelps.getDataCollectionSettings().then(function (settings:any) {
-			setDeviceEnabled(settings[props.dataCollectionProperty]);
-			if (settings[props.dataCollectionProperty]) {
-				MyDataHelps.getExternalAccounts().then(function (accounts) {
-					for (let i = 0; i < accounts.length; i++) {
-						if (accounts[i].provider.id == props.providerIDCallback()) {
-							setDeviceExternalAccount(accounts[i]);
-						}
-					}
-					setLoading(false);
-				});
-			} else {
-				setLoading(false);
+
+		MyDataHelps.getExternalAccounts().then(function (accounts) {
+			for (let i = 0; i < accounts.length; i++) {
+				if (accounts[i].provider.id == props.providerIDCallback()) {
+					setDeviceExternalAccount(accounts[i]);
+				}
 			}
+			setLoading(false);
 		});
 	}
 
@@ -88,7 +74,6 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}, []);
 
-
 	var deviceAccountStatus: ExternalAccountStatus | undefined = deviceExternalAccount?.status;
 	if (deviceExternalAccount?.status == "fetchComplete") {
 		var fetchDate = parseISO(deviceExternalAccount.lastRefreshDate);
@@ -96,18 +81,6 @@ export default function (props: ConnectDeviceProps) {
 		if (isAfter(new Date(), threshold)) {
 			MyDataHelps.refreshExternalAccount(deviceExternalAccount.id);
 			deviceAccountStatus = "fetchingData";
-		}
-	}
-
-	if (!deviceEnabled) {
-		if (props.disabledBehavior == 'displayError' && !loading) {
-			return (
-				<div className="mdhui-connect-device">
-					<div className="content">{props.title} is not enabled for this project.</div>
-				</div>
-			);
-		} else {
-			return null;
 		}
 	}
 

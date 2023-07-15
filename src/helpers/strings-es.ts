@@ -85,6 +85,8 @@
     "google-fit-start-sharing": "Pulse a continuación para empezar a compartir sus datos de Google Fit.",
     "google-fit-share": "Compartir datos de Google Fit",
     "update-sharing-settings": "Actualizar configuración de uso compartido",
+    "connect-devices-title": "Conectar aparatos",
+    "connect-devices-subtitle": "Comparta datos de sus dispositivos portátiles, aplicaciones y otros aparatos.",
 };
 
 export default strings;

@@ -5,7 +5,6 @@ import language from '../../../helpers/language';
 export interface SurveyTasksViewProps {
 	hideCompleteTasks?: boolean
 	hideIncompleteTasks?: boolean
-	hideDueDate?: boolean
 	presentation?: ViewPresentationType
 	preview?: boolean
 	colorScheme?: "auto" | "light" | "dark"
@@ -29,7 +28,6 @@ export default function (props: SurveyTasksViewProps) {
 					embedTasksInCards
 					title={language["incomplete-tasks"]}
 					status="incomplete"
-					hideDueDate={props.hideDueDate}
 					previewState={props.preview ? "IncompleteTasks" : undefined} />
 			}
 			{!props.hideCompleteTasks &&
@@ -37,7 +35,6 @@ export default function (props: SurveyTasksViewProps) {
 					embedTasksInCards
 					title={language["completed-tasks"]}
 					status="complete"
-					hideDueDate={props.hideDueDate}
 					previewState={props.preview ? "CompleteTasks" : undefined} />
 			}
 		</Layout>

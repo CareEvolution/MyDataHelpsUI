@@ -1,10 +1,11 @@
 import React from 'react'
-import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport} from "../../.."
+import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
 import { ConnectEhrApplicationUrl } from "../../container/ConnectEhr/ConnectEhr";
 import AppDownload from "../../container/AppDownload";
+import ConnectDevices from '../../container/ConnectDevices';
 
 export interface HomeViewProps {
 	/** 
@@ -14,11 +15,10 @@ export interface HomeViewProps {
 	notificationType?: "Sms" | "Push";
 	/** Hides the most recent notification after a certain number of hours of it being sent */
 	notificationHideAfterHours?: number
-	/** Hide the task due date on displayed tasks */
-	hideTaskDueDate?: boolean
 	/** When present, causes the EHR connect widget to display. */
 	ehrConnectApplicationUrl?: ConnectEhrApplicationUrl
 	notificationsViewUrl?: string
+	connectDevicesViewUrl?: string
 	tasksViewUrl?: string
 	preview?: boolean;
 	colorScheme?: "auto" | "light" | "dark";
@@ -44,9 +44,9 @@ export default function (props: HomeViewProps) {
 
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
-			<StatusBarBackground color='#FFFFFF'  />
+			<StatusBarBackground color='#FFFFFF' />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
-			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined}/>
+			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined} />
 			<Card>
 				<MostRecentNotification
 					notificationType={notificationType}
@@ -60,15 +60,11 @@ export default function (props: HomeViewProps) {
 					limit={3}
 					title={language["tasks"]}
 					onDetailLinkClick={props.tasksViewUrl ? () => viewAllTasks() : undefined}
-					hideDueDate={props.hideTaskDueDate}
 					previewState={props.preview ? "IncompleteTasks" : undefined}
 				/>
 			</Card>
 			<Card>
-				<ConnectFitbit title="Fitbit" previewState={props.preview ? "notConnected" : undefined} />
-			</Card>
-			<Card>
-				<ConnectGarmin title="Garmin" previewState={props.preview ? "notConnected" : undefined} />
+				<ConnectDevices connectDevicesViewUrl={props.connectDevicesViewUrl} previewState={props.preview ? "AllDevices" : undefined} />
 			</Card>
 			<Card>
 				{props.ehrConnectApplicationUrl &&

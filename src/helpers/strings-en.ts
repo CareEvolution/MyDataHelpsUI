@@ -85,6 +85,8 @@
     "google-fit-start-sharing": "Tap below to start sharing your Google Fit data.",
     "google-fit-share": "Share Google Fit Data",
     "update-sharing-settings": "Update Sharing Settings",
+    "connect-devices-title": "Connect Devices",
+	"connect-devices-subtitle": "Share data from your wearables, apps, and other devices.",
 };
 
 export default strings;

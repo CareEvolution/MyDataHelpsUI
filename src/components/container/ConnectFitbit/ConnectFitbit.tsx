@@ -1,15 +1,13 @@
-﻿import ConnectDevice from '../ConnectDevice';
+﻿import ConnectDeviceAccount from '../ConnectDeviceAccount';
 import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
 import React from "react";
 
 export interface ConnectFitbitProps {
-	title?: string,
 	fitbitProviderID?: number,
-	previewState?: ConnectFitbitPreviewState,
-	disabledBehavior?: 'hide' | 'displayError'
+	previewState?: ConnectFitbitPreviewState
 }
 
-export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected";
 
 export default function(props: ConnectFitbitProps) {
 	function getFitbitProviderID() {
@@ -23,6 +21,6 @@ export default function(props: ConnectFitbitProps) {
 		return fitbitProviderID;
 	}
 	
-	return (<ConnectDevice title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDeviceAccount title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getFitbitProviderID} previewState={props.previewState} />);
   }
 

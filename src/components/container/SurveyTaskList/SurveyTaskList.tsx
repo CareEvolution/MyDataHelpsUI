@@ -11,7 +11,6 @@ export interface SurveyTaskListProps {
 	limit?: number,
 	title?: string,
 	onDetailLinkClick?: Function,
-	hideDueDate?: boolean,
 	previewState?: SurveyTaskListListPreviewState
 	embedTasksInCards?: boolean
 }
@@ -87,7 +86,7 @@ export default function (props: SurveyTaskListProps) {
 	}
 
 	function getSurveyTaskElement(task: SurveyTask) {
-		return <SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} hideDueDate={props.hideDueDate} />
+		return <SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} />
 	}
 
 	return (

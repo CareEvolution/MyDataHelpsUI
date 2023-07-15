@@ -17,7 +17,6 @@ import Button from '../Button';
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
-	hideDueDate?: boolean,
 	disableClick?: boolean
 }
 
@@ -63,7 +62,7 @@ export default function (props: SingleSurveyTaskProps) {
 				<div>
 					<div className="survey-name">{props.task.surveyDisplayName}</div>
 					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
-					{!props.hideDueDate && dueDateString &&
+					{dueDateString &&
 						<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
 					}
 				</div>

@@ -1,17 +1,15 @@
 ﻿import React from 'react'
 import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import ConnectDevice from '../ConnectDevice';
+import ConnectDeviceAccount from '../ConnectDeviceAccount';
 
 export interface ConnectGarminProps {
-	title?: string,
 	garminProviderID?: number,
-	previewState?: ConnectGarminPreviewState,
-	disabledBehavior?: 'hide' | 'displayError'
+	previewState?: ConnectGarminPreviewState
 }
 
-export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected";
 
-export default function(props: ConnectGarminProps) {
+export default function (props: ConnectGarminProps) {
 	function getGarminProviderID() {
 		var garminProviderID = 6327;
 		if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
@@ -22,6 +20,6 @@ export default function(props: ConnectGarminProps) {
 		}
 		return garminProviderID;
 	}
-	
-	return (<ConnectDevice title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
-  }
+
+	return (<ConnectDeviceAccount title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} />);
+}
