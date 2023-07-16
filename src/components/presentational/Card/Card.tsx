@@ -5,10 +5,12 @@ export interface CardProps {
 	className?: string;
 	children?: React.ReactNode;
 	allowOverflow?: boolean;
+	ref?: React.Ref<HTMLDivElement>;
+	autoHide?: boolean;
 }
 
 export default function (props: CardProps) {
-	if (!props.children) {
+	if (!props.children && (props.autoHide == undefined || props.autoHide)) {
 		return null;
 	}
 
@@ -21,7 +23,7 @@ export default function (props: CardProps) {
 	}
 
 	return (
-		<div className={classes.join(" ")}>
+		<div ref={props.ref} className={classes.join(" ")}>
 			{props.children}
 		</div>
 	);

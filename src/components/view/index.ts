@@ -1,3 +1,4 @@
+export { default as BlankView } from "./DeviceDataView"
 export { default as ConnectEhrView } from "./ConnectEhrView"
 export { default as DeviceDataView } from "./DeviceDataView"
 export { default as ExternalAccountsView } from "./ExternalAccountsView"
