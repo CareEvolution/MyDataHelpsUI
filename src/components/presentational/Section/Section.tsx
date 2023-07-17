@@ -5,7 +5,7 @@ export interface SectionProps {
 	children?: React.ReactNode;
 	className?: string;
 	noTopMargin?: boolean;
-	ref?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 	autoHide?: boolean;
 }
 
@@ -15,7 +15,7 @@ export default function (props: SectionProps) {
 	}
 
 	return (
-		<div ref={props.ref} className={"mdhui-section " + (props.className || "") + (props.noTopMargin ? " mdhui-section-no-top-margin" : "")}>
+		<div ref={props.innerRef} className={"mdhui-section " + (props.className || "") + (props.noTopMargin ? " mdhui-section-no-top-margin" : "")}>
 			{props.children}
 		</div>
 	);

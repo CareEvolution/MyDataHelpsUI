@@ -5,7 +5,7 @@ export interface CardProps {
 	className?: string;
 	children?: React.ReactNode;
 	allowOverflow?: boolean;
-	ref?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 	autoHide?: boolean;
 }
 
@@ -23,7 +23,7 @@ export default function (props: CardProps) {
 	}
 
 	return (
-		<div ref={props.ref} className={classes.join(" ")}>
+		<div ref={props.innerRef} className={classes.join(" ")}>
 			{props.children}
 		</div>
 	);
