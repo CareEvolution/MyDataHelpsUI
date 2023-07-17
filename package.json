@@ -68,6 +68,7 @@
     "html-react-parser": "^3.0.8",
     "lodash": "^4.17.21",
     "markdown-it": "^13.0.1",
+    "mathjs": "^11.8.2",
     "react-feather": "^2.0.9",
     "react-fontawesome-svg-icon": "^1.1.2",
     "recharts": "^2.5.0"

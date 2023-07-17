@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
+import CelebrationStep, { NumericCalculationStepProps } from "./NumericCalculationStep";
 import NumericCalculationStep from "./NumericCalculationStep";
 
 export default {
@@ -10,8 +11,13 @@ export default {
     }
 } as Meta<typeof NumericCalculationStep>;
 
-const Template: StoryFn<typeof NumericCalculationStep> = () =>
-    <NumericCalculationStep />
+const Template: StoryFn<typeof CelebrationStep> = (args: NumericCalculationStepProps) =>
+    <NumericCalculationStep {...args} />
 
-export const NumericCalculationStepContainerDefault = Template.bind({});
-NumericCalculationStepContainerDefault.args = {}
+export const NumericCalculationStepDefault = Template.bind({});
+NumericCalculationStepDefault.args = {
+    calculationReady: false,
+    calculationResult: "0"
+}
+
+export const CelebrationStepCustomStyling = Template.bind({});
