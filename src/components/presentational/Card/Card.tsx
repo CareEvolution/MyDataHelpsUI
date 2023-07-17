@@ -10,13 +10,17 @@ export interface CardProps {
 }
 
 export default function (props: CardProps) {
-	if (!props.children && (props.autoHide == undefined || props.autoHide)) {
+	let autoHide = (props.autoHide == undefined || props.autoHide);
+	if (!props.children && autoHide) {
 		return null;
 	}
 
 	let classes = ["mdhui-card"];
 	if (props.allowOverflow) {
 		classes.push("allow-overflow");
+	}
+	if (autoHide) {
+		classes.push("mdhui-card-auto-hide");
 	}
 	if (props.className) {
 		classes.push(props.className);

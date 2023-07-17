@@ -7,9 +7,10 @@
     -moz-animation: var(--mdhui-fadein-animation);
     -webkit-animation: var(--mdhui-fadein-animation);
     position: relative;
+    min-height: 32px;
 }
 
-.mdhui-section:empty {
+.mdhui-section.mdhui-section-auto-hide:empty {
     display: none;
 }
 

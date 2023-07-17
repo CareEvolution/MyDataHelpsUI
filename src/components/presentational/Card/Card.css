@@ -11,7 +11,7 @@
 
 }
 
-.mdhui-card:empty {
+.mdhui-card.mdhui-card-auto-hide:empty {
     display: none;
 }
 
