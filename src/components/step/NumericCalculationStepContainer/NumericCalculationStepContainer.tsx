@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
 import NumericCalculationStep from '../NumericCalculationStep/NumericCalculationStep';
 import { CurrentSurveyAnswer } from '@careevolution/mydatahelps-js';
+import StepLayout from '../StepLayout'
+import { LoadingIndicator } from '../../presentational';
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 import { create, all } from 'mathjs'
 
 export default function () {
@@ -73,11 +76,10 @@ export default function () {
             })!.answers[0]));
     }
 
-
     return (
-        <NumericCalculationStep
-            calculationReady={calculationReady}
-            calculationResult={calculationResult}
-        />
+        <StepLayout>
+            <LoadingIndicator/>
+            <OnVisibleTrigger enabled={calculationReady} onTrigger={() => {MyDataHelps.completeStep(calculationResult)}}/>
+        </StepLayout>
     );
 }
