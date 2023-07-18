@@ -8,6 +8,8 @@
     -webkit-animation: var(--mdhui-fadein-animation);
     position: relative;
     min-height: 32px;
+    display: flow-root;
+
 }
 
 .mdhui-section.mdhui-section-auto-hide:empty {
