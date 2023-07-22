@@ -26,12 +26,12 @@ export default function (props: ButtonProps) {
 	let backgroundColor = props.color;
 	let textColor = "#FFF";
 	if (props.variant === "subtle") {
-		textColor = props.color ?? "var(--mdhui-color-primary)";
+		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
 		backgroundColor = "transparent";
 	}
 
 	if (props.variant === "light") {
-		textColor = props.color ?? "var(--mdhui-color-primary)";
+		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
 		backgroundColor = "var(--mdhui-background-color-1)";
 	}
 
