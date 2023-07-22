@@ -14,7 +14,7 @@ export interface ButtonProps {
 	className?: string;
 	color?: string;
 	loading?: boolean;
-	variant?: "default" | "subtle";
+	variant?: "default" | "subtle" | "light";
 }
 
 export default function (props: ButtonProps) {
@@ -22,12 +22,21 @@ export default function (props: ButtonProps) {
 	if (props.className) {
 		classes.push(props.className);
 	}
+
+	let backgroundColor = props.color;
+	let textColor = "#FFF";
 	if (props.variant === "subtle") {
-		classes.push("mdhui-button-subtle");
+		textColor = props.color ?? "var(--mdhui-color-primary)";
+		backgroundColor = "transparent";
+	}
+
+	if (props.variant === "light") {
+		textColor = props.color ?? "var(--mdhui-color-primary)";
+		backgroundColor = "var(--mdhui-background-color-1)";
 	}
 
 	return (
-		<button style={{ backgroundColor: props.disabled ? undefined : props.color }}
+		<button style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
 			onClick={() => {
