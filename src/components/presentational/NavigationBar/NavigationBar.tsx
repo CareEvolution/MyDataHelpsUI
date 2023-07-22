@@ -8,7 +8,6 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 
 export interface NavigationBarProps {
 	title?: string;
-	subtitle?: string;
 	showBackButton?: boolean;
 	showCloseButton?: boolean;
 	children?: React.ReactNode;
@@ -65,11 +64,6 @@ export default function (props: NavigationBarProps) {
 			{props.title &&
 				<div className="title">
 					<span>{props.title}</span>
-				</div>
-			}
-			{props.subtitle &&
-				<div className="subtitle">
-					<span>{props.subtitle}</span>
 				</div>
 			}
 			{props.showCloseButton &&

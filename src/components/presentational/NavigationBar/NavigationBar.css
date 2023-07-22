@@ -17,13 +17,6 @@
     font-size: 1.2em;
 }
 
-.mdhui-navigation-bar .subtitle {
-    font-size: 1em;
-    font-weight: 500;
-    color: var(--mdhui-text-color-2);
-    margin-top: 8px;
-}
-
 .mdhui-navigation-bar.scroll-shadow {
     box-shadow: var(--mdhui-box-shadow-1);
 }

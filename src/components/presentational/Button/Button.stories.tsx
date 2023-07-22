@@ -2,8 +2,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Button, { ButtonProps } from "./Button";
 import Layout from "../Layout"
-import TextBlock from "../TextBlock";
-import Section from "../Section";
 
 export default {
 	title: "Presentational/Button",
@@ -17,11 +15,8 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Button> = (args: ButtonProps) =>
 	<Layout colorScheme="auto">
-		<Section>
-			<TextBlock>
-				<Button {...args} />
-			</TextBlock>
-		</Section>
+		<Button {...args}>
+		</Button>
 	</Layout>;
 
 export const Enabled = Template.bind({});
@@ -55,11 +50,4 @@ SubtleVariant.args = {
 	disabled: false,
 	children: "Click Here",
 	variant: "subtle"
-}
-
-export const LightVariant = Template.bind({});
-LightVariant.args = {
-	disabled: false,
-	children: "Click Here",
-	variant: "light"
 }

@@ -117,5 +117,4 @@ body {
     background: var(--mdhui-background-color-1);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.2em;
 }`;
