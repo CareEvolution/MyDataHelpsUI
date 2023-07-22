@@ -8,7 +8,7 @@
     -webkit-animation: var(--mdhui-fadein-animation);
     position: relative;
     overflow: hidden;
-
+    display: flow-root;
 }
 
 .mdhui-card:empty {
@@ -17,5 +17,4 @@
 
 .mdhui-card.allow-overflow {
     overflow: visible;
-    display: flow-root;
 }
