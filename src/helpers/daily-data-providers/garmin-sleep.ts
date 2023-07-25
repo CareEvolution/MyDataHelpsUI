@@ -1,7 +1,7 @@
 import { add, formatISO, parseISO } from "date-fns";
 import queryAllDeviceData from "./query-all-device-data";
 
-function querySleep(property: string, startDate: Date, endDate: Date, sumValues: boolean, divideBy?: number) {
+function querySleep(property: string, startDate: Date, endDate: Date, divideBy?: number) {
     return queryAllDeviceData({
         namespace: "Garmin",
         type: "Sleep",
@@ -24,10 +24,8 @@ function querySleep(property: string, startDate: Date, endDate: Date, sumValues:
                 value = value / divideBy;
             }
 
-            if (!data[dataKey]) {
+            if (!data[dataKey] || data[dataKey] > value) {
                 data[dataKey] = value;
-            } else if (sumValues) {
-                data[dataKey] += parseFloat(d.properties[property]);
             }
         });
         return data;
@@ -35,25 +33,25 @@ function querySleep(property: string, startDate: Date, endDate: Date, sumValues:
 }
 
 export function totalSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("DurationInSeconds", startDate, endDate, true, 60);
+    return querySleep("DurationInSeconds", startDate, endDate, 60);
 }
 
 export function remSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("RemSleepInSeconds", startDate, endDate, true, 60);
+    return querySleep("RemSleepInSeconds", startDate, endDate, 60);
 }
 
 export function deepSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("DeepSleepDurationInSeconds", startDate, endDate, true, 60);
+    return querySleep("DeepSleepDurationInSeconds", startDate, endDate, 60);
 }
 
 export function lightSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("LightSleepDurationInSeconds", startDate, endDate, true, 60);
+    return querySleep("LightSleepDurationInSeconds", startDate, endDate, 60);
 }
 
 export function awakeSleepMinutes(startDate: Date, endDate: Date) {
-    return querySleep("AwakeDurationInSeconds", startDate, endDate, true, 60);
+    return querySleep("AwakeDurationInSeconds", startDate, endDate, 60);
 }
 
 export function sleepScore(startDate: Date, endDate: Date) {
-    return querySleep("OverallSleepScore.Value", startDate, endDate, false);
+    return querySleep("OverallSleepScore.Value", startDate, endDate);
 }

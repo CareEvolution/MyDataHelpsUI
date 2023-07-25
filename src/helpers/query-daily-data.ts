@@ -22,8 +22,6 @@ export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
 
 export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	var dailyDataType = dailyDataTypes[type];
-	console.log(type);
-	console.log(dailyDataType);
 	return dailyDataType.provider(startDate, endDate).then(function (data) {
 		var result: DailyDataQueryResult = {};
 		while (startDate < endDate) {
