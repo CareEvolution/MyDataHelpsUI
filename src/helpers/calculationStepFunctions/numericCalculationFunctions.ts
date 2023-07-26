@@ -1,54 +1,40 @@
-import { create, all } from 'mathjs'
+import { create, all, string } from 'mathjs'
 import { CurrentSurveyAnswer } from '@careevolution/mydatahelps-js'
 
 export const calculateValue = (calcString :string, surveyAnswers: CurrentSurveyAnswer[]) => {
   const config = { }
   const math = create(all, config)
 
-  let replacedString = replaceVariables(calcString, surveyAnswers);
-  replacedString = replacedString.replace("/{/g", "");
-  replacedString = replacedString.replace("/}/g", "");
-
-  if (replacedString.includes('Unmatched Variable')) {
-    return("Calculation Error - Unmatched Variable") 
-  }
-
-  return(math.evaluate(replacedString).toString());
-}
-
-function replaceVariables(expression: string, surveyAnswers: CurrentSurveyAnswer[]): string {
-  //find variables
-  const regex = /\{(.*?)\}/g;
-
-  //replace variables with numeric values and convert number to string
-  let replacedExpression = expression.toString().replace(regex, (match, variable) => {
-    const value = getValue(variable!, surveyAnswers);
-
-    if (typeof value === 'number' && !isNaN(value)) {
-      return value.toString();
-    }
-
-    return "Unmatched Variable";
-  });
-
-  return replacedExpression;
-}
-
-const getValue = (lookUpString :string, surveyAnswers :CurrentSurveyAnswer[]) => {
-  const splitString = lookUpString.split(",");
-  const stepIdentifier = splitString[0].trim()
-  const resultIdentifier = splitString.length > 1 ? splitString[1].trim() : undefined;
-
   try {
-    return (resultIdentifier != undefined ? 
-        parseFloat(surveyAnswers.find((answer) => {
-            return(answer.stepIdentifier == stepIdentifier && answer.resultIdentifier == resultIdentifier);
-        })!.answers[0])
-        : parseFloat(surveyAnswers.find((answer) => {
-            return (answer.stepIdentifier == stepIdentifier);
-        })!.answers[0]));
+    let answerDict: {[id: string] : number} = createScope(surveyAnswers);
+    try {
+      return(math.evaluate(calcString, answerDict)._data[0].toString());
+    }
+    catch {
+      return("Calculation Error - Unmatched Variable") 
+    }
   }
-  catch {
-    return "Unmatched Variable"
+  catch(error: unknown) {
+    if (error instanceof Error) {
+      return(error.message);
+    }
   }
+}
+
+const createScope = (surveyAnswers: CurrentSurveyAnswer[]) => {
+  let answerDict: {[id: string] : number} = {};
+  surveyAnswers.map((answer) => {
+    if (answer.answers.length > 1) {
+      throw new Error(`Calculation Error - Calculation not available for multiple-select text choice questions (${answer.resultIdentifier})`)
+    }
+    if (answer.resultIdentifier.includes('.')) {
+      throw new Error(`Calculation Error - QuestionIdentifier "${answer.resultIdentifier}" cannot have a "."`)
+    }
+    const value = parseFloat(answer.answers[0]);
+    if (isNaN(value)){
+      throw new Error(`Calculation Error - Answer not a number (${answer.resultIdentifier})`)
+    }
+    answerDict[answer.resultIdentifier] = parseFloat(answer.answers[0]);
+  })
+  return answerDict;
 }
