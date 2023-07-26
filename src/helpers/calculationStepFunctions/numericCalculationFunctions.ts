@@ -34,7 +34,7 @@ const createScope = (surveyAnswers: CurrentSurveyAnswer[]) => {
     if (isNaN(value)){
       throw new Error(`Calculation Error - Answer not a number (${answer.resultIdentifier})`)
     }
-    answerDict[answer.resultIdentifier] = parseFloat(answer.answers[0]);
+    answerDict[answer.resultIdentifier] = value;
   })
   return answerDict;
 }
