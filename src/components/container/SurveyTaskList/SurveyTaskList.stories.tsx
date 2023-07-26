@@ -22,7 +22,8 @@ Incomplete.args = {
 	limit: 3,
 	status: 'incomplete',
 	title: 'Incomplete Tasks',
-	previewState: "IncompleteTasks"
+	previewState: "IncompleteTasks",
+	variant: "singleCard"
 }
 
 export const Complete = Template.bind({});
@@ -30,5 +31,15 @@ Complete.args = {
 	limit: 3,
 	status: 'complete',
 	title: 'Completed Tasks',
-	previewState: "CompleteTasks"
+	previewState: "CompleteTasks",
+	variant: "singleCard"
+}
+
+export const Multicard = Template.bind({});
+Multicard.args = {
+	limit: 3,
+	status: 'incomplete',
+	title: 'Incomplete Tasks',
+	previewState: "IncompleteTasks",
+	variant: "multiCard"
 }

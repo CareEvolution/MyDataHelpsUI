@@ -25,22 +25,20 @@ export default function (props: SurveyTasksViewProps) {
 				<StatusBarBackground />
 			}
 			{!props.hideIncompleteTasks &&
-				<Card>
-					<SurveyTaskList
-						title={language["incomplete-tasks"]}
-						status="incomplete"
-						hideDueDate={props.hideDueDate}
-						previewState={props.preview ? "IncompleteTasks" : undefined} />
-				</Card>
+				<SurveyTaskList
+					variant='multiCard'
+					title={language["incomplete-tasks"]}
+					status="incomplete"
+					hideDueDate={props.hideDueDate}
+					previewState={props.preview ? "IncompleteTasks" : undefined} />
 			}
 			{!props.hideCompleteTasks &&
-				<Card>
-					<SurveyTaskList
-						title={language["completed-tasks"]}
-						status="complete"
-						hideDueDate={props.hideDueDate}
-						previewState={props.preview ? "CompleteTasks" : undefined} />
-				</Card>
+				<SurveyTaskList
+					variant='multiCard'
+					title={language["completed-tasks"]}
+					status="complete"
+					hideDueDate={props.hideDueDate}
+					previewState={props.preview ? "CompleteTasks" : undefined} />
 			}
 		</Layout>
 	)

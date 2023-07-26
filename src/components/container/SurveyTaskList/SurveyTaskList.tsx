@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./SurveyTaskList.css"
 import MyDataHelps, { Guid, SurveyTask, SurveyTaskQueryParameters, SurveyTaskStatus } from "@careevolution/mydatahelps-js"
-import { CardTitle, LoadingIndicator, SingleSurveyTask } from '../../presentational'
+import { Card, CardTitle, LoadingIndicator, SingleSurveyTask } from '../../presentational'
 import parseISO from 'date-fns/parseISO'
 import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.previewdata'
 import language from '../../../helpers/language'
@@ -13,6 +13,7 @@ export interface SurveyTaskListProps {
 	onDetailLinkClick?: Function,
 	hideDueDate?: boolean,
 	previewState?: SurveyTaskListListPreviewState
+	variant?: "noCard" | "singleCard" | "multiCard"
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
@@ -28,6 +29,10 @@ export default function (props: SurveyTaskListProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 		}
 	}, []);
+
+	function getSurveyTaskElement(task: SurveyTask) {
+		return <SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} />
+	}
 
 	function initialize() {
 		if (props.previewState == "IncompleteTasks") {
@@ -85,20 +90,27 @@ export default function (props: SurveyTaskListProps) {
 		return null;
 	}
 
+	let variant = props.variant ?? "noCard";
 	return (
-		<div className="mdhui-survey-task-list">
-			{props.title &&
-				<CardTitle title={props.title} detailLinkText={props.onDetailLinkClick ? language["view-all"] + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
-			}
-			{loading && !tasks &&
-				<LoadingIndicator />
-			}
-			{!tasks?.length && !loading &&
-				<div className="empty-message">{language["all-tasks-complete"]}</div>
-			}
-			{tasks?.slice(0, props.limit).map((task) =>
-				<SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} hideDueDate={props.hideDueDate} />
-			)}
-		</div>
+		<TaskListWrapper card={variant == "singleCard"}>
+			<div className="mdhui-survey-task-list">
+				{props.title &&
+					<CardTitle title={props.title} detailLinkText={props.onDetailLinkClick ? language["view-all"] + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
+				}
+				{loading && !tasks &&
+					<LoadingIndicator />
+				}
+				{!tasks?.length && !loading &&
+					<div className="empty-message">{language["all-tasks-complete"]}</div>
+				}
+				{tasks?.slice(0, props.limit).map((task) =>
+					variant == "multiCard" ? <Card>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
+				)}
+			</div>
+		</TaskListWrapper>
 	);
+}
+
+function TaskListWrapper(props: { children?: React.ReactNode, card: boolean }) {
+	return props.card ? <Card>{props.children}</Card> : <>{props.children}</>;
 }

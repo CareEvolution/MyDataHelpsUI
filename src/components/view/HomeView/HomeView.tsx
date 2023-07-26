@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport} from "../../.."
+import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
@@ -44,9 +44,9 @@ export default function (props: HomeViewProps) {
 
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
-			<StatusBarBackground color='#FFFFFF'  />
+			<StatusBarBackground color='#FFFFFF' />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
-			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined}/>
+			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined} />
 			<Card>
 				<MostRecentNotification
 					notificationType={notificationType}
@@ -54,16 +54,15 @@ export default function (props: HomeViewProps) {
 					previewState={props.preview ? "Default" : undefined}
 					hideAfterHours={props.notificationHideAfterHours} />
 			</Card>
-			<Card>
-				<SurveyTaskList
-					status="incomplete"
-					limit={3}
-					title={language["tasks"]}
-					onDetailLinkClick={props.tasksViewUrl ? () => viewAllTasks() : undefined}
-					hideDueDate={props.hideTaskDueDate}
-					previewState={props.preview ? "IncompleteTasks" : undefined}
-				/>
-			</Card>
+			<SurveyTaskList
+				variant='singleCard'
+				status="incomplete"
+				limit={3}
+				title={language["tasks"]}
+				onDetailLinkClick={props.tasksViewUrl ? () => viewAllTasks() : undefined}
+				hideDueDate={props.hideTaskDueDate}
+				previewState={props.preview ? "IncompleteTasks" : undefined}
+			/>
 			<Card>
 				<ConnectFitbit title="Fitbit" previewState={props.preview ? "notConnected" : undefined} />
 			</Card>
