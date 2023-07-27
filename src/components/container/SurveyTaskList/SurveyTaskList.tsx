@@ -12,7 +12,6 @@ export interface SurveyTaskListProps {
 	title?: string,
 	surveys?: string[],
 	onDetailLinkClick?: Function,
-	hideDueDate?: boolean,
 	previewState?: SurveyTaskListListPreviewState
 	variant?: "noCard" | "singleCard" | "multiCard"
 }
@@ -29,7 +28,7 @@ export default function (props: SurveyTaskListProps) {
 		return () => {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 		}
-	}, []);
+	}, [props.previewState]);
 
 	function getSurveyTaskElement(task: SurveyTask) {
 		return <SingleSurveyTask key={task.id.toString()} task={task} disableClick={loading} />
@@ -105,7 +104,7 @@ export default function (props: SurveyTaskListProps) {
 					<div className="empty-message">{language["all-tasks-complete"]}</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
-					variant == "multiCard" ? <Card>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
+					variant == "multiCard" ? <Card key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
 				)}
 			</div>
 		</TaskListWrapper>
