@@ -10,6 +10,7 @@ export interface SurveyTaskListProps {
 	status: SurveyTaskStatus,
 	limit?: number,
 	title?: string,
+	surveys?: string[],
 	onDetailLinkClick?: Function,
 	hideDueDate?: boolean,
 	previewState?: SurveyTaskListListPreviewState
@@ -47,7 +48,7 @@ export default function (props: SurveyTaskListProps) {
 		var loadData = function () {
 			var allTasks: SurveyTask[] = [];
 			var makeRequest = function (pageID: Guid | null) {
-				var parameters: SurveyTaskQueryParameters = { status: props.status }
+				var parameters: SurveyTaskQueryParameters = { status: props.status, surveyName: props.surveys }
 				if (pageID) {
 					parameters.pageID = pageID;
 				}
