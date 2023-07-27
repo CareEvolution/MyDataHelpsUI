@@ -24,7 +24,7 @@ export var previewIncompleteTasks: SurveyTask[] =
 			"surveyDisplayName": "Pregnancy: Followup",
 			"surveyDescription": "3 minutes",
 			"status": "incomplete",
-			"hasSavedProgress": false,
+			"hasSavedProgress": true,
 			"dueDate": add(new Date(), { days: 0 }).toISOString(),
 			"insertedDate": "2022-03-14T19:13:48.283Z",
 			"modifiedDate": "2022-03-14T19:13:48.283Z",

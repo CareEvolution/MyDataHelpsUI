@@ -68,7 +68,7 @@ export default function (props: SingleSurveyTaskProps) {
 				</div>
 				<div>
 					<Button variant="light" onClick={() => { }}>
-						{!props.task.hasSavedProgress ? language["start"] : language["result"]}
+						{!props.task.hasSavedProgress ? language["start"] : language["resume"]}
 					</Button>
 				</div>
 			</div>
