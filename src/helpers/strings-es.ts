@@ -70,7 +70,9 @@
     "app-download-title": "Siguiente: Descarga la aplicación",
     "app-download-subtitle": "La descarga de la aplicación MyDataHelps hace que sea aún más fácil participar en @@PROJECT_NAME@@.",
     "app-download-google-play-link-alt": "Descargar en Google Play Store",
-    "app-download-app-store-link-alt": "Descargar en la tienda de aplicaciones de Apple"
+    "app-download-app-store-link-alt": "Descargar en la tienda de aplicaciones de Apple",
+    "start": "Inicio",
+    "resume": "Continuar"
 };
 
 export default strings;
