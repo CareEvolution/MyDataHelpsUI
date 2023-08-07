@@ -1,0 +1,92 @@
+.incentive-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+	margin: 0 10px;
+	width: 100%;
+	max-width: 500px;
+	--star_size: 16px;
+	--star_border_width: 2px;
+	--green: #00A862;
+	--lt_green: #BFE9D8;
+}
+
+.incentive-bar-earned {
+    position: absolute;
+    height: calc( var(--star_size) + 4px);
+	top:0;
+}
+
+.incentive-bar .incentive-bar-background {
+    flex-shrink: 0;
+    border-radius: 500px;
+	border-width: var(--star_border_width) ;
+	border-style: solid;
+    background: #fff;
+	overflow: hidden;
+	width: 100%;
+	position: relative;
+	height:calc( var(--star_size) + 4px);
+}
+
+.incentive-bar .incentive-text{
+	font-size: 0.65em;
+	line-height: inherit !important;
+}
+
+.incentive-bar .reward-earned {
+	color: #fff;
+	line-height: inherit !important;
+}
+
+.incentive-bar .reward-waiting {
+	background-color: #fff;
+	line-height: inherit !important;
+}
+
+.incentive-bar .incentive-stars {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	position: relative;
+	z-index: 2;
+	height: var(--star_size);
+}
+
+.incentive-bar .incentive-star {
+	display: none;
+}
+	
+@media (min-width: 350px) {
+	.incentive-bar {
+		--star_size: 28px;
+	}
+	.incentive-bar .incentive-star {
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		width:var(--star_size);
+		text-align: center;
+		border-radius: 50%;
+		border-width: var(--star_border_width);
+		border-style: solid;
+		vertical-align: top;
+		line-height: inherit !important;
+		height: var(--star_size);
+		margin: -1px 0;
+		position: relative;
+		top: 1px;
+	}
+	.incentive-bar .incentive-star span {
+		font-size: 13px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.incentive-bar .incentive-star.incentive-text span {
+		font-size: 12px;
+	}
+}
