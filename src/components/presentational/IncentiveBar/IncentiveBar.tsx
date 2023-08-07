@@ -43,7 +43,6 @@ export default function IncentiveBar(props: IncentiveBarProps) {
 		const earned = props.earned / props.increments;
 		const starWidthStr = containerRef != null ? window.getComputedStyle(containerRef!.current!).getPropertyValue('--star_size') : "0px";
 		const starWidth = parseInt(starWidthStr.substring(0, starWidthStr.length - 2));
-		console.log("starWidth", starWidthStr);
 		const spaceBetweenStars = (500 - (totalStars * starWidth)) / (totalStars - 1);
 		setCalculatedWidth((earned * (spaceBetweenStars + starWidth) + starWidth / 2) + "px");
 	}, [props.totalAvailable, props.increments, props.earned]);
