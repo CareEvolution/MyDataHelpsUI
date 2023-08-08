@@ -35,15 +35,20 @@ export default function IncentiveBar(props: IncentiveBarProps) {
 		}
 	}, [props.primaryColorString, props.secondaryColorString]);
 
+	function getWidthStyle(style: string) {
+		const starWidthStr = containerRef != null ? window.getComputedStyle(containerRef!.current!).getPropertyValue(style) : "0px";
+		return parseInt(starWidthStr.substring(0, starWidthStr.length - 2));		
+	}
+
 	useEffect(() => {
 		if (props.totalAvailable % props.increments != 0) {
 			console.error("IncentiveBar increments must be a factor of totalAvailable");
 		}
 		const totalStars = props.totalAvailable / props.increments + 1;
 		const earned = props.earned / props.increments;
-		const starWidthStr = containerRef != null ? window.getComputedStyle(containerRef!.current!).getPropertyValue('--star_size') : "0px";
-		const starWidth = parseInt(starWidthStr.substring(0, starWidthStr.length - 2));
-		const spaceBetweenStars = (500 - (totalStars * starWidth)) / (totalStars - 1);
+		const starWidth = getWidthStyle('--star_size');
+		const containerWidth = getWidthStyle('width');
+		const spaceBetweenStars = (containerWidth - (totalStars * starWidth)) / (totalStars - 1);
 		setCalculatedWidth((earned * (spaceBetweenStars + starWidth) + starWidth / 2) + "px");
 	}, [props.totalAvailable, props.increments, props.earned]);
 
