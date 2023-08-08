@@ -13,3 +13,9 @@
   text-align: center;
   display: inline-block;
 }
+
+.mdhui-step-container .mdhui-step-next-button:disabled,
+.mdhui-step-container .mdhui-step-next-button[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

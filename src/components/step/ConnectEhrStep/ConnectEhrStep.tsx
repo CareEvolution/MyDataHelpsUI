@@ -15,35 +15,38 @@ export interface ConnectEhrStepProps {
 }
 
 export default function (props: ConnectEhrStepProps) {
+    const [disabled, setDisabled] = React.useState(true);
     return (
         <StepLayout>
             <StepTitle
-            text={props.title}
-            textAlign={props.styles.titleAlignment}
-            color={props.styles.titleColor}
-            fontSize={props.styles.titleFontSize}
-            fontWeight={props.styles.titleFontWeight}
+                text={props.title}
+                textAlign={props.styles.titleAlignment}
+                color={props.styles.titleColor}
+                fontSize={props.styles.titleFontSize}
+                fontWeight={props.styles.titleFontWeight}
             />
             <StepText
-            text={props.text}
-            textAlign={props.styles.textAlignment}
-            color={props.styles.textColor}
-            fontSize={props.styles.textFontSize}
-            fontWeight={props.styles.textFontWeight}
+                text={props.text}
+                textAlign={props.styles.textAlignment}
+                color={props.styles.textColor}
+                fontSize={props.styles.textFontSize}
+                fontWeight={props.styles.textFontWeight}
             />
             <ProviderSearch
-            previewState={props.preview ? "Default" : undefined}
-            providerCategories={["Provider", "Health Plan"]}
+                previewState={props.preview ? "Default" : undefined}
+                providerCategories={["Provider", "Health Plan"]}
+                onProviderSelected={(provider) => {setDisabled(false)}}
             />
             <StepNextButton
-            text={props.nextButtonText}
-            color={props.styles.nextButtonTextColor}
-            fontWeight={props.styles.nextButtonFontWeight}
-            backgroundColor={props.styles.nextButtonBackgroundColor}
-            letterSpacing={props.styles.nextButtonLetterSpacing}
-            textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
-            gradient={props.styles.nextButtonBackgroundGradient}
-            onClick={() => MyDataHelps.completeStep("")}
+                text={props.nextButtonText}
+                disabled={disabled}
+                color={props.styles.nextButtonTextColor}
+                fontWeight={props.styles.nextButtonFontWeight}
+                backgroundColor={props.styles.nextButtonBackgroundColor}
+                letterSpacing={props.styles.nextButtonLetterSpacing}
+                textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
+                gradient={props.styles.nextButtonBackgroundGradient}
+                onClick={() => MyDataHelps.completeStep("")}
             />
         </StepLayout>
     );

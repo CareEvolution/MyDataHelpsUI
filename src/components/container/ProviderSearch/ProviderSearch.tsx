@@ -12,6 +12,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    onProviderSelected?: (provider: ExternalAccountProvider) => void;
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -93,9 +94,13 @@ export default function (props: ProviderSearchProps) {
         debouncedPerformSearch(event.target.value);
     }
 
-    function connectToProvider(providerID: number) {
+    function connectToProvider(provider: ExternalAccountProvider) {
+        const providerID = provider.id;
         if (!(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID);
+        }
+        if (props.onProviderSelected) {
+            props.onProviderSelected(provider);
         }
     }
 
@@ -137,7 +142,7 @@ export default function (props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
+                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider)}>
                         {provider.logoUrl &&
                             <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
                         }
