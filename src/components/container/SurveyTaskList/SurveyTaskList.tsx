@@ -47,7 +47,10 @@ export default function (props: SurveyTaskListProps) {
 		var loadData = function () {
 			var allTasks: SurveyTask[] = [];
 			var makeRequest = function (pageID: Guid | null) {
-				var parameters: SurveyTaskQueryParameters = { status: props.status, surveyName: props.surveys }
+				var parameters: SurveyTaskQueryParameters = { status: props.status }
+				if (props.surveys) {
+					parameters.surveyName = props.surveys;
+				}
 				if (pageID) {
 					parameters.pageID = pageID;
 				}
