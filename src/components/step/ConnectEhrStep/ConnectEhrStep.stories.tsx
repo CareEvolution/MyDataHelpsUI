@@ -25,7 +25,7 @@ ConnectEhrStepDefault.args = {
 };
 
 export const ConnectEhrStepDisabled = Template.bind({});
-ConnectEhrStepDefault.args = {
+ConnectEhrStepDisabled.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
     previewState: true,
