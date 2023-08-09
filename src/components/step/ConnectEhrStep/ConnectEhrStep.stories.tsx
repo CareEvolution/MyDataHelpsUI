@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ConnectEhrStep, { ConnectEhrStepProps } from "./ConnectEhrStep";
+import { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 
 export default {
     title: "SurveyStep/ConnectEhrStep",
@@ -18,46 +19,68 @@ export const ConnectEhrStepDefault = Template.bind({});
 ConnectEhrStepDefault.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    preview: true,
+    previewState: true,
     styles: {},
+    onProviderSelected: () => {},
+};
+
+export const ConnectEhrStepDisabled = Template.bind({});
+ConnectEhrStepDefault.args = {
+    title: "MyDataHelps",
+    text: "Connect to EHR",
+    previewState: true,
+    nextButtonDisabled: true,
+    styles: {},
+    onProviderSelected: () => {},
 };
 
 export const ConnectEhrStepCustomStyling = Template.bind({});
 ConnectEhrStepCustomStyling.args = {
     title: "_MyDataHelps™_",
     text: "Connect to EHR",
-    preview: true,
+    previewState: true,
     nextButtonText: "Forward",
     styles: {
-    detailTextAlignment: "Left",
-    detailTextColor: "#0000FF",
-    detailTextFontSize: "12",
-    detailTextFontWeight: "100",
-    nextButtonBackgroundColor: "#000000",
-    nextButtonBackgroundGradient: {
-        direction: "LeftToRight",
-        endColor: "#0000FF",
-        startColor: "#FFFFFF",
+        detailTextAlignment: "Left",
+        detailTextColor: "#0000FF",
+        detailTextFontSize: "12",
+        detailTextFontWeight: "100",
+        nextButtonBackgroundColor: "#000000",
+        nextButtonBackgroundGradient: {
+            direction: "LeftToRight",
+            endColor: "#0000FF",
+            startColor: "#FFFFFF",
+        },
+        nextButtonLetterSpacing: 10,
+        nextButtonTextColor: "#0000FF",
+        nextButtonTextTransform: "Uppercase",
+        nextButtonFontWeight: "900",
+        textAlignment: "Left",
+        textColor: "#0000FF",
+        textFontSize: "18",
+        textFontWeight: "300",
+        titleAlignment: "Left",
+        titleColor: "#0000FF",
+        titleFontSize: "36",
+        titleFontWeight: "900",
     },
-    nextButtonLetterSpacing: 10,
-    nextButtonTextColor: "#0000FF",
-    nextButtonTextTransform: "Uppercase",
-    nextButtonFontWeight: "900",
-    textAlignment: "Left",
-    textColor: "#0000FF",
-    textFontSize: "18",
-    textFontWeight: "300",
-    titleAlignment: "Left",
-    titleColor: "#0000FF",
-    titleFontSize: "36",
-    titleFontWeight: "900",
-    },
+    onProviderSelected: () => {},
+};
+
+export const ConnectEhrStepOnProviderSelected = Template.bind({});
+ConnectEhrStepOnProviderSelected.args = {
+    title: "MyDataHelps",
+    text: "Connect to EHR",
+    previewState: true,
+    styles: {},
+    onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
 };
 
 export const ConnectEhrStepLive = Template.bind({});
 ConnectEhrStepLive.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    preview: false,
+    previewState: false,
     styles: {},
+    onProviderSelected: () => {},
 };

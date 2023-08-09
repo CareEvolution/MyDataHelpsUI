@@ -4,18 +4,19 @@ import StepLayout from "../StepLayout";
 import StepNextButton from "../StepNextButton";
 import StepText from "../StepText";
 import StepTitle from "../StepTitle";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 
 export interface ConnectEhrStepProps {
     title?: string;
     text?: string;
     nextButtonText?: string;
-    preview?: boolean;
+    nextButtonDisabled?: boolean;
+    previewState?: boolean;
+    onProviderSelected: (provider: ExternalAccountProvider) => void;
     styles: { [key: string]: any };
 }
 
 export default function (props: ConnectEhrStepProps) {
-    const [disabled, setDisabled] = React.useState(true);
     return (
         <StepLayout>
             <StepTitle
@@ -33,13 +34,13 @@ export default function (props: ConnectEhrStepProps) {
                 fontWeight={props.styles.textFontWeight}
             />
             <ProviderSearch
-                previewState={props.preview ? "Default" : undefined}
+                previewState={props.previewState ? "Default" : undefined}
                 providerCategories={["Provider", "Health Plan"]}
-                onProviderSelected={(provider) => {setDisabled(false)}}
+                onProviderSelected={props.onProviderSelected}
             />
             <StepNextButton
                 text={props.nextButtonText}
-                disabled={disabled}
+                disabled={props.nextButtonDisabled}
                 color={props.styles.nextButtonTextColor}
                 fontWeight={props.styles.nextButtonFontWeight}
                 backgroundColor={props.styles.nextButtonBackgroundColor}

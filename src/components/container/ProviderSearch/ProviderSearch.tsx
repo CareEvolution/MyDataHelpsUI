@@ -96,7 +96,7 @@ export default function (props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (!(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID);
         }
         if (props.onProviderSelected) {

@@ -1,6 +1,7 @@
 export { default as CelebrationStep } from "./CelebrationStep"
 export { default as CelebrationStepContainer } from "./CelebrationStepContainer"
 export { default as ConnectEhrStep } from "./ConnectEhrStep"
+export { default as ConnectEhrStepContainer } from "./ConnectEhrStepContainer"
 export { default as StepDetailText} from "./StepDetailText"
 export { default as StepImageIcon} from "./StepImageIcon"
 export { default as StepImage} from "./StepImage"
