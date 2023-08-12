@@ -15,7 +15,7 @@ export function getPreviewData(dailyDataType: string, year: number, month: numbe
 		return getPreviewGarminRestingHeartRates(year, month);
 	}
 	if (dailyDataType == "AppleHealthSteps") {
-		return getPreviewFitbitRestingHeartRates(year, month);
+		return getPreviewAppleHealthSteps(year, month);
 	}
 	if (dailyDataType == "AppleHealthDistanceRunningWalking") {
 		return getPreviewAppleHealthDistance(year, month);
@@ -76,7 +76,7 @@ function getPreviewAppleHealthSteps(year: number, month: number) {
 	var monthEnd = add(date, { months: 1 });
 	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
-		result[getDayKey(date)] = (Math.floor(Math.random() * 500));
+		result[getDayKey(date)] = (3000 + Math.floor(Math.random() * 10000));
 		date = add(date, { hours: 1 });
 	}
 	return result;
