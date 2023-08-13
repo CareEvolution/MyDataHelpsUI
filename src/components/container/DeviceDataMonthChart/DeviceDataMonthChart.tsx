@@ -54,6 +54,10 @@ export default function (props: DeviceDataMonthChartProps) {
 	if (props.year != undefined && props.month != undefined) {
 		monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
 	}
+	if (!monthStart) {
+		let currentDate = new Date();
+		monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
+	}
 
 	var monthEnd = add(monthStart, { months: 1 });
 
@@ -147,7 +151,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		data.push(dataDay);
 		var dayKey = getDayKey(currentDate);
 		props.lines.forEach((line) => {
-			if (dailyData) {
+			if (dailyData && dailyData[line.dailyDataType] && dailyData[line.dailyDataType][dayKey]) {
 				dataDay[line.dailyDataType] = dailyData[line.dailyDataType][dayKey];
 				if (line.valueConverter) {
 					dataDay[line.dailyDataType] = line.valueConverter(dataDay[line.dailyDataType]);
