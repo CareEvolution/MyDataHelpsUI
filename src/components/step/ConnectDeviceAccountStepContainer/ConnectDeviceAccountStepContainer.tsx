@@ -44,7 +44,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
     }, []);
 
     useEffect(() => {
-        if (!providerName || connected) return;
+        if (!providerName || providerName.length === 0 || connected) return;
 
         const interval = setInterval(async () => {
             const accounts = await MyDataHelps.getExternalAccounts();
