@@ -40,19 +40,19 @@ export default function (props: SingleSurveyTaskProps) {
 	if (props.task.dueDate) {
 		let dueDate = parseISO(props.task.dueDate);
 		if (datesAreOnSameDay(dueDate, tomorrow)) {
-			dueDateString = language["due-tomorrow"];
+			dueDateString = language("due-tomorrow");
 			dueDateIntent = "warning";
 		} else if (datesAreOnSameDay(dueDate, today)) {
-			dueDateString = language["due-today"];
+			dueDateString = language("due-today");
 			dueDateIntent = "warning";
 		} else if (isAfter(today, dueDate)) {
-			dueDateString = language["overdue"];
+			dueDateString = language("overdue");
 			dueDateIntent = "danger";
 		} else {
 			let timeDifference;
 			let dueDateFormatted = new Date(props.task.dueDate);
 			timeDifference = formatDistanceToNow(dueDateFormatted, { locale: locale });
-			dueDateString = language["due-in"] + " " + timeDifference;
+			dueDateString = language("due-in") + " " + timeDifference;
 		}
 	}
 
@@ -68,7 +68,7 @@ export default function (props: SingleSurveyTaskProps) {
 				</div>
 				<div>
 					<Button variant="light" onClick={() => { }}>
-						{!props.task.hasSavedProgress ? language["start"] : language["resume"]}
+						{!props.task.hasSavedProgress ? language("start") : language("resume")}
 					</Button>
 				</div>
 			</div>
@@ -80,7 +80,7 @@ export default function (props: SingleSurveyTaskProps) {
 			<div className="mdhui-single-survey-task complete">
 				<div>
 					<div className="survey-name">{props.task.surveyDisplayName}</div>
-					<div className="completed-date">{language["completed"]} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
+					<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
 				</div>
 				<div className="status-icon">
 					<FontAwesomeSvgIcon icon={faCircleCheck} />

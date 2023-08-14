@@ -17,7 +17,7 @@ export default function (props: SurveyTasksViewProps) {
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			{props.presentation &&
-				<NavigationBar title={language["tasks"]}
+				<NavigationBar title={language("tasks")}
 					showBackButton={props.presentation == "Push"}
 					showCloseButton={props.presentation == "Modal"} />
 			}
@@ -27,17 +27,15 @@ export default function (props: SurveyTasksViewProps) {
 			{!props.hideIncompleteTasks &&
 				<SurveyTaskList
 					variant='multiCard'
-					title={language["incomplete-tasks"]}
+					title={language("incomplete-tasks")}
 					status="incomplete"
-					hideDueDate={props.hideDueDate}
 					previewState={props.preview ? "IncompleteTasks" : undefined} />
 			}
 			{!props.hideCompleteTasks &&
 				<SurveyTaskList
 					variant='multiCard'
-					title={language["completed-tasks"]}
+					title={language("completed-tasks")}
 					status="complete"
-					hideDueDate={props.hideDueDate}
 					previewState={props.preview ? "CompleteTasks" : undefined} />
 			}
 		</Layout>

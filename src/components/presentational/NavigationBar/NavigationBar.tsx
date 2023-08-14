@@ -59,7 +59,7 @@ export default function (props: NavigationBarProps) {
 			{props.showBackButton &&
 				<a className="back-button" href="javascript:{}" onClick={() => back()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
-					{props.backButtonText ? props.backButtonText : language["back"]}
+					{props.backButtonText ? props.backButtonText : language("back")}
 				</a>
 			}
 			{props.title &&
@@ -74,7 +74,7 @@ export default function (props: NavigationBarProps) {
 			}
 			{props.showCloseButton &&
 				<a className="close-button" href="javascript:{}" onClick={() => close()}>
-					{props.closeButtonText ? props.closeButtonText : language["close"]}
+					{props.closeButtonText ? props.closeButtonText : language("close")}
 				</a>
 			}
 			{props.children}

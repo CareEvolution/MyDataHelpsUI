@@ -131,7 +131,7 @@ export default function (props: ProviderSearchProps) {
         <div className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
-                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <input title={language("search")} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
                     <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </div>
@@ -144,10 +144,10 @@ export default function (props: ProviderSearchProps) {
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language["reconnect"]}</div>
+                                <div className="provider-status error-status">{language("reconnect")}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
-                                <div className="provider-status connected-status">{language["connected"]}</div>
+                                <div className="provider-status connected-status">{language("connected")}</div>
                             }
                         </div>
                     </UnstyledButton>

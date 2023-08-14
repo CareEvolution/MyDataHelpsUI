@@ -98,13 +98,13 @@ export default function (props: SurveyTaskListProps) {
 		<TaskListWrapper card={variant == "singleCard"}>
 			<div className="mdhui-survey-task-list">
 				{props.title &&
-					<CardTitle title={props.title} detailLinkText={props.onDetailLinkClick ? language["view-all"] + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
+					<CardTitle title={props.title} detailLinkText={props.onDetailLinkClick ? language("view-all") + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
 				}
 				{loading && !tasks &&
 					<LoadingIndicator />
 				}
 				{!tasks?.length && !loading &&
-					<div className="empty-message">{language["all-tasks-complete"]}</div>
+					<div className="empty-message">{language("all-tasks-complete")}</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
 					variant == "multiCard" ? <Card key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)

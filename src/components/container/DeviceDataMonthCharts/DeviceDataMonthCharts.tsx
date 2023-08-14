@@ -29,7 +29,7 @@ export default function (props: DeviceDataMonthChartsProps) {
 		<>
 			{!visible &&
 				<TextBlock>
-					{language["device-data-no-data"]}
+					{language("device-data-no-data")}
 				</TextBlock>
 			}
 			<div style={{ display: visible ? "block" : "none" }}>
@@ -39,9 +39,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.FitbitSteps,
-						label: language["steps"]
+						label: language("steps")
 					}]}
-					title={"Fitbit " + language["steps"]}
+					title={"Fitbit " + language("steps")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -50,9 +50,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.FitbitRestingHeartRate,
-						label: language["resting-heart-rate"]
+						label: language("resting-heart-rate")
 					}]}
-					title={"Fitbit " + language["resting-heart-rate"]}
+					title={"Fitbit " + language("resting-heart-rate")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -61,9 +61,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.GarminSteps,
-						label: language["steps"]
+						label: language("steps")
 					}]}
-					title={"Garmin " + language["steps"]}
+					title={"Garmin " + language("steps")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -72,9 +72,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.GarminRestingHeartRate,
-						label: language["resting-heart-rate"]
+						label: language("resting-heart-rate")
 					}]}
-					title={"Garmin " + language["resting-heart-rate"]}
+					title={"Garmin " + language("resting-heart-rate")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -83,9 +83,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.AppleHealthSteps,
-						label: language["steps"]
+						label: language("steps")
 					}]}
-					title={"Apple Health " + language["steps"]}
+					title={"Apple Health " + language("steps")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -94,12 +94,12 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.AppleHealthDistanceWalkingRunning,
-						label: language["distance-traveled"],
+						label: language("distance-traveled"),
 						valueConverter: function (dataPoint: number) {
 							return dataPoint * 0.000621371;
 						}
 					}]}
-					title={"Apple Health " + language["distance-traveled"] + " (Miles)"}
+					title={"Apple Health " + language("distance-traveled") + " (Miles)"}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
@@ -108,9 +108,9 @@ export default function (props: DeviceDataMonthChartsProps) {
 					lines={[{
 						showAverage: true,
 						dailyDataType: DailyDataType.GoogleFitSteps,
-						label: language["steps"]
+						label: language("steps")
 					}]}
-					title={"Google Fit " + language["steps"]}
+					title={"Google Fit " + language("steps")}
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />

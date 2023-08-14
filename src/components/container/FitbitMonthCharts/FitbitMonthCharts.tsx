@@ -17,18 +17,18 @@ export default function (props: FitbitMonthChartsProps) {
 					lines: [{
 						showAverage: true,
 						dailyDataType: DailyDataType.FitbitSteps,
-						label: language["steps"]
+						label: language("steps")
 					}],
-					title: language["steps"],
+					title: language("steps"),
 					syncId: "fitbit"
 				},
 				{
 					lines: [{
 						showAverage: true,
 						dailyDataType: DailyDataType.FitbitRestingHeartRate,
-						label: language["resting-heart-rate"]
+						label: language("resting-heart-rate")
 					}],
-					title: language["resting-heart-rate"],
+					title: language("resting-heart-rate"),
 					syncId: "DeviceDataCharts"
 				}
 			]}

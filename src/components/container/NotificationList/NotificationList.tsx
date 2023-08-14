@@ -79,7 +79,7 @@ export default function (props: NotificationListProps) {
 			{!loading && finishedLoading && notifications.length == 0 &&
 				<Card>
 					<TextBlock>
-						{language["no-notifications-received"]}
+						{language("no-notifications-received")}
 					</TextBlock>
 				</Card>
 			}

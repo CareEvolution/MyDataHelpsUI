@@ -58,9 +58,8 @@ export default function (props: HomeViewProps) {
 				variant='singleCard'
 				status="incomplete"
 				limit={3}
-				title={language["tasks"]}
+				title={language("tasks")}
 				onDetailLinkClick={props.tasksViewUrl ? () => viewAllTasks() : undefined}
-				hideDueDate={props.hideTaskDueDate}
 				previewState={props.preview ? "IncompleteTasks" : undefined}
 			/>
 			<Card>

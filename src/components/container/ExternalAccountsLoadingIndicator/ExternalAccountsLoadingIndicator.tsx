@@ -86,6 +86,6 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
 
     return <div className="mdhui-external-accounts-loading-indicator">
         <LoadingIndicator variant="inline" />
-        <span className="mdhui-external-accounts-loading-indicator-message">{language["external-account-fetching-data"]}</span>
+        <span className="mdhui-external-accounts-loading-indicator-message">{language("external-account-fetching-data")}</span>
     </div>
 }

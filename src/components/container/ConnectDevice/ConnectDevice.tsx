@@ -123,26 +123,26 @@ export default function (props: ConnectDeviceProps) {
 				<div className="content">
 					{!deviceExternalAccount &&
 						<div>
-							<div className="subtitle">{language[buildLanguageKey("connect-{device}-intro")]}</div>
-							<Button onClick={() => connectToDevice()}>{language[buildLanguageKey("connect-{device}-button")]}</Button>
+							<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
+							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 						</div>
 					}
 					{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
 						<div className="subtitle success">
-							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language[buildLanguageKey("received-{device}-data")]}
+							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language(buildLanguageKey("received-{device}-data"))}
 						</div>
 					}
 					{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
 						<div className="subtitle downloading">
-							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language["downloading-data"]}
+							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language("downloading-data")}
 						</div>
 					}
 					{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
 						<div>
 							<div className="subtitle reconnect">
-								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language["reconnect"]}
+								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("reconnect")}
 							</div>
-							<Button onClick={() => connectToDevice()}>{language[buildLanguageKey("connect-{device}-button")]}</Button>
+							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 						</div>
 					}
 				</div>

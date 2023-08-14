@@ -49,7 +49,7 @@ export default function (props: ProjectSupportProps) {
 
 	return (
 		<div className="mdhui-project-support">
-			<div className="title">{language["support"]}</div>
+			<div className="title">{language("support")}</div>
 			{loading &&
 				<LoadingIndicator />
 			}
