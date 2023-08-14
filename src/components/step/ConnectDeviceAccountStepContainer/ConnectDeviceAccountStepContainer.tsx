@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 
-export default function () {
+export interface ConnectDeviceAccountStepContainerProps {
+    providerName?: string;
+}
+
+export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
     const [deviceType, setDeviceType] = useState<string>("");
-    const [providerName, setProviderName] = useState<string>("");
+    const [providerName, setProviderName] = useState<string>(props.providerName ?? "");
     const [connected, setConnected] = useState<boolean>();
 
     useEffect(() => {
@@ -57,6 +61,7 @@ export default function () {
 
     useEffect(() => {
         if (connected) {
+            console.log("Connected to", providerName);
             MyDataHelps.completeStep("");
         }
     }, [connected]);
