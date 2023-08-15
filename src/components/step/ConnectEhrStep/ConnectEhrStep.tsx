@@ -5,13 +5,14 @@ import StepNextButton from "../StepNextButton";
 import StepText from "../StepText";
 import StepTitle from "../StepTitle";
 import MyDataHelps, { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
+import { ProviderSearchPreviewState } from "../../container/ProviderSearch/ProviderSearch";
 
 export interface ConnectEhrStepProps {
     title?: string;
     text?: string;
     nextButtonText?: string;
     nextButtonDisabled?: boolean;
-    previewState?: boolean;
+    previewState?: ProviderSearchPreviewState;
     onProviderSelected: (provider: ExternalAccountProvider) => void;
     styles: { [key: string]: any };
 }
@@ -34,7 +35,7 @@ export default function (props: ConnectEhrStepProps) {
                 fontWeight={props.styles.textFontWeight}
             />
             <ProviderSearch
-                previewState={props.previewState ? "Default" : undefined}
+                previewState={props.previewState}
                 providerCategories={["Provider", "Health Plan"]}
                 openNewWindow={true}
                 onProviderSelected={props.onProviderSelected}

@@ -19,7 +19,7 @@ export const ConnectEhrStepDefault = Template.bind({});
 ConnectEhrStepDefault.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    previewState: true,
+    previewState: "Default",
     styles: {},
     onProviderSelected: () => {},
 };
@@ -28,7 +28,7 @@ export const ConnectEhrStepDisabled = Template.bind({});
 ConnectEhrStepDisabled.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    previewState: true,
+    previewState: "Default",
     nextButtonDisabled: true,
     styles: {},
     onProviderSelected: () => {},
@@ -38,7 +38,7 @@ export const ConnectEhrStepCustomStyling = Template.bind({});
 ConnectEhrStepCustomStyling.args = {
     title: "_MyDataHelps™_",
     text: "Connect to EHR",
-    previewState: true,
+    previewState: "Default",
     nextButtonText: "Forward",
     styles: {
         nextButtonBackgroundColor: "#000000",
@@ -67,7 +67,7 @@ export const ConnectEhrStepOnProviderSelected = Template.bind({});
 ConnectEhrStepOnProviderSelected.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    previewState: true,
+    previewState: "Default",
     styles: {},
     onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
 };
@@ -76,7 +76,6 @@ export const ConnectEhrStepLive = Template.bind({});
 ConnectEhrStepLive.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
-    previewState: false,
     styles: {},
     onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
 };
