@@ -27,7 +27,6 @@ export default function (props: ProviderSearchProps) {
     const [searchString, _setSearchString] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
-    const [providerSelected, setProviderSelected] = useState<boolean>(false);
 
     const searchStringRef = useRef(searchString);
     const setSearchString = (data: string) => {
@@ -101,7 +100,6 @@ export default function (props: ProviderSearchProps) {
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow ?? false });
         }
-        setProviderSelected(true);
         if (props.onProviderSelected) {
             props.onProviderSelected(provider);
         }
@@ -164,7 +162,7 @@ export default function (props: ProviderSearchProps) {
                     <LoadingIndicator />
                 }
             </div>
-            {!providerSelected && <OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>}
+            <OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>
         </div>
     );
 }
