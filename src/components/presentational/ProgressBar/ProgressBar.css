@@ -1,0 +1,60 @@
+.progress-bar {
+	margin: 0 10px;
+	width: 100%;
+	max-width: 500px;
+	--star_size: 16px;
+	--star_border_width: 2px;
+	--green: #00A862;
+	--lt_green: #BFE9D8;
+}
+
+.progress-bar-fill {
+    position: absolute;
+    height: calc( var(--star_size) + 4px);
+	top:0;
+	border-radius: var(--star_size);
+}
+
+.progress-bar .progress-bar-background {
+    border-radius: 500px;
+	border-width: var(--star_border_width) ;
+	border-style: solid;
+    background: #fff;
+	overflow: hidden;
+	width: 100%;
+	position: relative;
+	height:calc( var(--star_size) + 4px);
+}
+
+.progress-bar .progress-steps {
+	width: 100%;
+	position: relative;
+	z-index: 2;
+	height: var(--star_size);
+}
+	
+@media (min-width: 350px) {
+	.progress-bar {
+		--star_size: 28px;
+	}
+	.progress-bar .step-icon {
+		display: inline-block;
+		font-weight: 600;
+		width:var(--star_size);
+		text-align: center;
+		vertical-align: top;
+		line-height: inherit !important;
+		height: var(--star_size);
+		position: absolute;
+		margin: 4px 0;
+	}
+	.progress-bar .step-icon span {
+		font-size: 13px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.progress-bar .step-icon.step-label span {
+		font-size: 12px;
+	}
+}
