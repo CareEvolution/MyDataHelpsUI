@@ -17,6 +17,4 @@ const Template: ComponentStory<typeof ConnectEhrStepContainer> = (
 ) => <ConnectEhrStepContainer {...args} />;
 
 export const ConnectEhrStepContainerDefault = Template.bind({});
-ConnectEhrStepContainerDefault.args = {
-    previewState: true,
-};
+ConnectEhrStepContainerDefault.args = {};

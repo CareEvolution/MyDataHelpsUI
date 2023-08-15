@@ -41,10 +41,6 @@ ConnectEhrStepCustomStyling.args = {
     previewState: true,
     nextButtonText: "Forward",
     styles: {
-        detailTextAlignment: "Left",
-        detailTextColor: "#0000FF",
-        detailTextFontSize: "12",
-        detailTextFontWeight: "100",
         nextButtonBackgroundColor: "#000000",
         nextButtonBackgroundGradient: {
             direction: "LeftToRight",
@@ -82,5 +78,5 @@ ConnectEhrStepLive.args = {
     text: "Connect to EHR",
     previewState: false,
     styles: {},
-    onProviderSelected: () => {},
+    onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
 };

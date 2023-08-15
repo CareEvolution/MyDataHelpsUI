@@ -6,11 +6,7 @@ import MyDataHelps, {
 import ConnectEhrStep from "../ConnectEhrStep/ConnectEhrStep";
 import React from "react";
 
-export interface ConnectEhrStepContainerProps {
-    previewState?: boolean;
-}
-
-export default function (props: ConnectEhrStepContainerProps) {
+export default function () {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [nextButtonText, setNextButtonText] = useState<string>();
@@ -35,13 +31,6 @@ export default function (props: ConnectEhrStepContainerProps) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (props.previewState) {
-                if (provider && nextButtonDisabled) {
-                    setNextButtonDisabled(false);
-                }
-                return;
-            }
-
             if (!provider || !nextButtonDisabled) {
                 return;
             }
@@ -62,7 +51,6 @@ export default function (props: ConnectEhrStepContainerProps) {
             text={text}
             nextButtonText={nextButtonText}
             nextButtonDisabled={nextButtonDisabled}
-            previewState={props.previewState}
             styles={styles}
             onProviderSelected={setProvider}
         />

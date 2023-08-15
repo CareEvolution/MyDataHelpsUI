@@ -12,6 +12,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    openNewWindow?: boolean;
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
 }
 
@@ -26,6 +27,7 @@ export default function (props: ProviderSearchProps) {
     const [searchString, _setSearchString] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
+    const [providerSelected, setProviderSelected] = useState<boolean>(false);
 
     const searchStringRef = useRef(searchString);
     const setSearchString = (data: string) => {
@@ -97,8 +99,9 @@ export default function (props: ProviderSearchProps) {
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID);
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow ?? false });
         }
+        setProviderSelected(true);
         if (props.onProviderSelected) {
             props.onProviderSelected(provider);
         }
@@ -161,7 +164,7 @@ export default function (props: ProviderSearchProps) {
                     <LoadingIndicator />
                 }
             </div>
-            <OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>
+            {!providerSelected && <OnVisibleTrigger onTrigger={loadNextPage} enabled={canLoadNextPage()}></OnVisibleTrigger>}
         </div>
     );
 }
