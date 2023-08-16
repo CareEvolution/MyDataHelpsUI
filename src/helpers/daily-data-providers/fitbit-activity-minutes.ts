@@ -21,6 +21,10 @@ function queryActivity(startDate: Date, endDate: Date, types: string[]) {
 	});
 }
 
+export function sedentaryMinutes(startDate: Date, endDate: Date) {
+	return queryActivity(startDate, endDate, ["MinutesSedentary"]);
+}
+
 export function totalActiveMinutes(startDate: Date, endDate: Date) {
 	return queryActivity(startDate, endDate, ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]);
 }

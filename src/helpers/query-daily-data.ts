@@ -1,6 +1,6 @@
 ﻿import MyDataHelps, { DeviceDataNamespace, DeviceDataPointQuery } from "@careevolution/mydatahelps-js";
 import { add } from "date-fns";
-import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider, garminStepsDataProvider, garminRestingHeartRateDataProvider, garminFloorsDataProvider, garminDistanceDataProvider, garminActiveMinutesDataProvider, garminMinHeartRateDataProvider, garminMaxHeartRateDataProvider, garminAverageHeartRateDataProvider, garminTotalStressMinutesDataProvider, garminAverageStressLevelDataProvider, garminMaxStressLevelDataProvider, garminLowStressMinutesDataProvider, garminMediumStressMinutesDataProvider, garminHighStressMinutesDataProvider, garminRemSleepMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminLightSleepMinutesDataProvider, garminAwakeMinutesDataProvider, garminSleepScoreDataProvider, garminTotalSleepMinutesDataProvider } from "./daily-data-providers";
+import { appleHealthWalkingHeartRateAverageDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, combinedStepsDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitSedentaryMinutesDataProvider, fitbitCaloriesBurnedDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitCardioMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitRestingHeartRateDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitLightSleepMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, appleHealthDistanceDataProvider, googleFitStepsDataProvider, fitbitBreathingRateDataProvider, garminStepsDataProvider, garminRestingHeartRateDataProvider, garminFloorsDataProvider, garminDistanceDataProvider, garminActiveMinutesDataProvider, garminMinHeartRateDataProvider, garminMaxHeartRateDataProvider, garminAverageHeartRateDataProvider, garminTotalStressMinutesDataProvider, garminAverageStressLevelDataProvider, garminMaxStressLevelDataProvider, garminLowStressMinutesDataProvider, garminMediumStressMinutesDataProvider, garminHighStressMinutesDataProvider, garminRemSleepMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminLightSleepMinutesDataProvider, garminAwakeMinutesDataProvider, garminSleepScoreDataProvider, garminTotalSleepMinutesDataProvider } from "./daily-data-providers";
 import combinedRestingHeartRate from "./daily-data-providers/combined-resting-heart-rate";
 import getDayKey from "./get-day-key";
 
@@ -22,8 +22,6 @@ export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
 
 export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	var dailyDataType = dailyDataTypes[type];
-	console.log(type);
-	console.log(dailyDataType);
 	return dailyDataType.provider(startDate, endDate).then(function (data) {
 		var result: DailyDataQueryResult = {};
 		while (startDate < endDate) {
@@ -63,6 +61,7 @@ export enum DailyDataType {
 	AppleHealthStandMinutes = "AppleHealthStandMinutes",
 	AppleHealthSteps = "AppleHealthSteps",
 	AppleHealthWalkingHeartRateAverage = "AppleHealthWalkingHeartRateAverage",
+	FitbitSedentaryMinutes = "FitbitSedentaryMinutes",
 	FitbitActiveMinutes = "FitbitActiveMinutes",
 	FitbitLightlyActiveMinutes = "FitbitLightlyActiveMinutes",
 	FitbitFairlyActiveMinutes = "FitbitFairlyActiveMinutes",
@@ -118,6 +117,7 @@ registerDailyDataProvider(DailyDataType.AppleHealthInBedMinutes, appleHealthInBe
 registerDailyDataProvider(DailyDataType.AppleHealthStandMinutes, appleHealthStandTimeDataProvider, simpleAvailabilityCheck("AppleHealth", ["AppleStandTime"]));
 registerDailyDataProvider(DailyDataType.AppleHealthSteps, appleHealthStepsDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
 registerDailyDataProvider(DailyDataType.AppleHealthWalkingHeartRateAverage, appleHealthWalkingHeartRateAverageDataProvider, simpleAvailabilityCheck("AppleHealth", ["WalkingHeartRateAverage"]));
+registerDailyDataProvider(DailyDataType.FitbitSedentaryMinutes, fitbitSedentaryMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesSedentary"]));
 registerDailyDataProvider(DailyDataType.FitbitActiveMinutes, fitbitTotalActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]));
 registerDailyDataProvider(DailyDataType.FitbitLightlyActiveMinutes, fitbitLightlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesLightlyActive"]));
 registerDailyDataProvider(DailyDataType.FitbitFairlyActiveMinutes, fitbitFairlyActiveMinutesDataProvider, simpleAvailabilityCheck("Fitbit", ["MinutesFairlyActive"]));

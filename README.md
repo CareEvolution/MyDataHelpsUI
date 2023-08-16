@@ -49,9 +49,10 @@ To run Storybook previews with data from one of your test MyDataHelps participan
 -----
 PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
 ```
-4. Run `npm run storybook` to view the storybook.
+4. Run `npm ci` to install dependencies.
+5. Run `npm run storybook` to view the storybook.
 
-If you have issues getting storybook to run, particuarly around the NODE_OPTIONS being used, try upgrading Node to the latest version.
+If you have issues getting storybook to run, particularly around the NODE_OPTIONS being used, try upgrading Node to the latest version.
 
 ## Components
 
@@ -63,7 +64,7 @@ Presentational components do NOT fetch data to populate themselves.  They are th
 
 ### Container Components
 
-Container components fetch data via the MyDataHelps.js SDK.  These components will only function if used in a view inside MyDataHelps or via manually setting an access token into the SDK.  
+Container components fetch data via the MyDataHelps.js SDK.  These components will only function if used in a view inside MyDataHelps or via manually passing an access token to the SDK.  
 
 ### Views
 
