@@ -11,7 +11,7 @@ import { AxisDomain } from 'recharts/types/util/types'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
 
 export interface DailyDataChartProps {
-    title: string
+    title?: string
     intervalType?: "Week" | "Month"
     weekStartsOn?: WeekStartsOn
     dailyDataType: string

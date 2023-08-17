@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-interval-start";
@@ -29,6 +29,11 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
         intervalStart: intervalStart,
         intervalType: props.intervalType
     }
+
+    //reset the interval if the interval type changes
+    useEffect(() => {
+        setIntervalStart(initialIntervalStart);
+    }, [props.intervalType, props.weekStartsOn]);
 
     return <DateRangeContext.Provider value={context}>
         <DateRangeNavigator
