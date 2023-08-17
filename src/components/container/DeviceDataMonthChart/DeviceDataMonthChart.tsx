@@ -49,7 +49,7 @@ export default function (props: DeviceDataMonthChartProps) {
 	const [loading, setLoading] = useState(false);
 	const [hasData, setHasData] = useState(false);
 
-	const dateRangeContext = useContext<DateRangeContext>(DateRangeContext);
+	const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
 	let monthStart = dateRangeContext?.intervalStart;
 	if (props.year != undefined && props.month != undefined) {
 		monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
@@ -91,7 +91,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		if (props.previewState == "WithData") {
 			var previewData: { [key: string]: { [key: string]: number } } = {};
 			props.lines.forEach((l) => {
-				var newData = getPreviewData(l.dailyDataType, monthStart.getFullYear(), monthStart.getMonth());
+				var newData = getPreviewData(l.dailyDataType, monthStart!.getFullYear(), monthStart!.getMonth());
 				previewData[l.dailyDataType] = newData;
 			})
 			setDailyData(previewData);
@@ -113,7 +113,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		var initialization = currentInitialization.current ?? 0;
 		setLoading(true);
 		var loadData = function () {
-			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd));
+			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart!, monthEnd));
 			Promise.all(dataRequests).then(function (data) {
 				if (initialization != currentInitialization.current) {
 					return;
@@ -166,7 +166,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 	const GraphToolTip = ({ active, payload, label }: any) => {
 		if (active && payload && payload.length) {
-			var date = new Date(monthStart.getFullYear(), monthStart.getMonth(), payload[0].payload.day);
+			var date = new Date(monthStart!.getFullYear(), monthStart!.getMonth(), payload[0].payload.day);
 			var labelLookup: { [key: string]: string } = {};
 			props.lines.forEach(function (line) {
 				labelLookup[line.dailyDataType] = line.label;

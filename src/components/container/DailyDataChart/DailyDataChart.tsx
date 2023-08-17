@@ -4,8 +4,9 @@ import { DailyDataProvider, DailyDataQueryResult, DailyDataType, queryDailyData 
 import { add, format } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { LoadingIndicator } from '../../presentational'
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import getDayKey from '../../../helpers/get-day-key'
+import "./DailyDataChart.css"
 
 export interface DailyDataChartProps {
     title: string
@@ -33,7 +34,7 @@ function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: 
 
 export default function DailyDataChart(props: DailyDataChartProps) {
     let [currentData, setCurrentData] = useState<DailyDataQueryResult | null>(null);
-    const dateRangeContext = useContext<DateRangeContext>(DateRangeContext);
+    const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
     let intervalStart: Date = new Date();
 
@@ -46,10 +47,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) : add(intervalStart, { months: 1 });
-
     function loadCurrentInterval() {
         setCurrentData(null);
-        console.log(props);
         if (props.previewDataProvider) {
             props.previewDataProvider(intervalStart, intervalEnd)
                 .then((data) => {
@@ -73,7 +72,6 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             MyDataHelps.off("externalAccountSyncComplete", loadCurrentInterval);
         }
     }, [props.intervalType, props.weekStartsOn, dateRangeContext]);
-
 
     var currentDate = intervalStart;
     var data: any[] = [];
@@ -113,9 +111,25 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
-        return (
-            <text x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>
-        );
+        if (intervalType == "Month") {
+            return <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
+        } else {
+            let currentDate = intervalStart;
+            let dayOfWeek = format(currentDate, "E").substr(0, 1);
+            let month = currentDate.getMonth();
+            for (let i = 0; i < 7; i++) {
+                if(currentDate.getDate() == value){
+                    month = currentDate.getMonth();
+                    dayOfWeek = format(currentDate, "E").substr(0, 1);
+                }
+                currentDate = add(currentDate, { days: 1 });
+            }
+            month++;
+            return <>
+            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
+            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
+            </>;
+        }
     }
 
     function tickFormatter(args: any) {
@@ -125,7 +139,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return args;
     }
 
-    return <div className="mdhui-device-data-month-chart">
+    return <div className="mdhui-daily-data-chart">
         {props.title &&
             <div className="title">
                 {props.title}
@@ -149,7 +163,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     </ResponsiveContainer>
                 </div>
             }
-            {graphHasData &&
+            {graphHasData && props.chartType == "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={data} syncId="DailyDataChart">
                         <Line key="line" type="monotone" dataKey="value" stroke="var(--mdhui-color-primary)" />
@@ -158,6 +172,17 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                         <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} />
                         <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
                     </LineChart>
+                </ResponsiveContainer>
+            }
+            {graphHasData && props.chartType == "Bar" &&
+                <ResponsiveContainer width="100%" height={150}>
+                    <BarChart width={400} height={400} data={data} syncId="DailyDataChart">
+                        <CartesianGrid vertical={false} strokeDasharray="2 4" />
+                        <Tooltip content={<GraphToolTip />} />
+                        <Bar key="bar" type="monotone" dataKey="value" fill="var(--mdhui-color-primary)" stroke="var(--mdhui-color-primary)" />
+                        <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} />
+                        <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : 0} />
+                    </BarChart>
                 </ResponsiveContainer>
             }
         </div>

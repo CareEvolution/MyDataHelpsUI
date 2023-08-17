@@ -15,9 +15,7 @@ export interface DateRangeContext {
     intervalStart: Date;
 }
 
-var currentDate = new Date();
-
-export const DateRangeContext = createContext<DateRangeContext>({ intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0), intervalType: "Month" });
+export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
 export default function DateRangeNavigatorContext(props: DateRangeCoordinatorProps) {
     var currentDate = new Date();
@@ -25,6 +23,7 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
     if (props.intervalType === "Week") {
         var initialIntervalStart = currentDate;
         while (initialIntervalStart.getDay() != 0) {
+            //incorporate WeekStartsOn
             initialIntervalStart = add(initialIntervalStart, { days: -1 });
         }
     }

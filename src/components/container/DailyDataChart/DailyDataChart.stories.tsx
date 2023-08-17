@@ -6,14 +6,14 @@ import getDayKey from "../../../helpers/get-day-key";
 import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
-let render = (args: DailyDataChartProps) => <Layout><DailyDataChart {...args} /></Layout>
-export const steps2 = {
+let render = (args: DailyDataChartProps) => <Layout><Card><DailyDataChart {...args} /></Card></Layout>
+export const steps = {
     args: {
         title: "Steps",
-        intervalType: "Month",
+        intervalType: "Week",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => value.toFixed(0),
-        chartType: "Line",
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar",
         previewDataProvider: (start: Date, end: Date) => {
             let data: DailyDataQueryResult = {};
             let currentDate = new Date(start);
