@@ -10,7 +10,8 @@ export default function () {
         MyDataHelps.getStepConfiguration().then((config: StepConfiguration) => {
             if (!config) return; // allows test mode to work
             MyDataHelps.getCurrentSurveyAnswers().then((surveyAnswers) => {
-                MyDataHelps.completeStep(calculateValue(config.properties.calculation, surveyAnswers).toString());
+                let calculatedValue = calculateValue(config.properties.calculation, surveyAnswers).toString();
+                MyDataHelps.completeStep(calculatedValue);
             });
         });
     }, []);
