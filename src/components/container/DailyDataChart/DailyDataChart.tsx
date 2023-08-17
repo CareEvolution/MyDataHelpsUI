@@ -135,7 +135,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getDate() == value) {
                     month = currentDate.getMonth();
-                    dayOfWeek = format(currentDate, "E").substr(0, 1);
+                    dayOfWeek = format(currentDate, "E").substr(0, 2);
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -171,6 +171,16 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         }
 
         return <>
+            <defs>
+                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0}/>
+                    <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7}/>
+                </linearGradient>
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5}/>
+                    <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2}/>
+                </linearGradient>
+            </defs>
             {chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<GraphToolTip />} />
             }
@@ -204,15 +214,15 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        <Line strokeWidth={2} key="line" type="monotone" dataKey="value" stroke="var(--mdhui-color-primary)" />
+                        <Line strokeWidth={2} key="line" type="monotone" dataKey="value" stroke={(props.options as LineChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                     </LineChart>
                 </ResponsiveContainer>
             }
             {chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={data} syncId="DailyDataChart">
+                    <BarChart width={400} height={400} data={data} syncId="DailyDataChart" >
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill="var(--mdhui-color-primary)" stroke="var(--mdhui-color-primary)" />
+                        <Bar key="bar" type="monotone" dataKey="value" fill="url(#barGradient)" radius={[2, 2, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             }
@@ -220,7 +230,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fill="var(--mdhui-color-primary)" stroke="var(--mdhui-color-primary)" />
+                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} fill="url(#areaGradient)" stroke="var(--mdhui-color-primary)" />
                     </AreaChart>
                 </ResponsiveContainer>
             }
