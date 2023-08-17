@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { createContext } from "react";
 import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
-import { add } from "date-fns";
+import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-interval-start";
 
 export interface DateRangeCoordinatorProps {
     intervalType: "Week" | "Month";
-    weekStartsOn?: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "7DaysAgo" | "8DaysAgo";
+    weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
     children: React.ReactNode;
 }
@@ -18,14 +18,9 @@ export interface DateRangeContext {
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
 export default function DateRangeNavigatorContext(props: DateRangeCoordinatorProps) {
-    var currentDate = new Date();
-    var initialIntervalStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
+    let initialIntervalStart = getMonthStart();
     if (props.intervalType === "Week") {
-        var initialIntervalStart = currentDate;
-        while (initialIntervalStart.getDay() != 0) {
-            //incorporate WeekStartsOn
-            initialIntervalStart = add(initialIntervalStart, { days: -1 });
-        }
+        initialIntervalStart = getWeekStart(props.weekStartsOn);
     }
 
     const [intervalStart, setIntervalStart] = useState(initialIntervalStart);

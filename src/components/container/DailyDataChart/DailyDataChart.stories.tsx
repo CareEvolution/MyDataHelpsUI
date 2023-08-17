@@ -10,19 +10,37 @@ let render = (args: DailyDataChartProps) => <Layout><Card><DailyDataChart {...ar
 export const steps = {
     args: {
         title: "Steps",
+        options: {
+            domainMin:0
+        },
         intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
-        chartType: "Bar",
+        chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             let data: DailyDataQueryResult = {};
             let currentDate = new Date(start);
             while (currentDate < end) {
                 let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 25000;
+                data[dayKey] = Math.random() * 10000 + 3000;
                 currentDate = add(currentDate, { days: 1 });
             }
             return Promise.resolve(data);
+        }
+    },
+    render: render
+};
+
+export const noData = {
+    args: {
+        title: "Steps",
+        intervalType: "Week",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewDataProvider: (start: Date, end: Date) => {
+            return Promise.resolve({});
         }
     },
     render: render

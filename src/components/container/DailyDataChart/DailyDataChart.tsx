@@ -1,33 +1,47 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { DailyDataProvider, DailyDataQueryResult, DailyDataType, queryDailyData } from '../../../helpers/query-daily-data'
-import { add, format } from 'date-fns'
+import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
-import { LoadingIndicator } from '../../presentational'
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { CardTitle, LoadingIndicator } from '../../presentational'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import getDayKey from '../../../helpers/get-day-key'
 import "./DailyDataChart.css"
+import { AxisDomain } from 'recharts/types/util/types'
+import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
 
 export interface DailyDataChartProps {
     title: string
     intervalType?: "Week" | "Month"
-    weekStartsOn?: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "7DaysAgo" | "8DaysAgo"
+    weekStartsOn?: WeekStartsOn
     dailyDataType: string
     valueConverter?(value: number): number
     valueFormatter?(value: number): string
-    chartType: "Line" | "Bar"
+    chartType: "Line" | "Bar" | "Area"
+    options?: LineChartOptions | BarChartOptions | AreaChartOptions
     previewDataProvider?: DailyDataProvider
 }
 
-function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "7DaysAgo" | "8DaysAgo") {
+export interface LineChartOptions {
+    lineColor?: string
+    domainMin?: number | "Auto"
+}
+
+export interface BarChartOptions {
+    barColor?: string
+}
+
+export interface AreaChartOptions {
+    lineColor?: string
+    areaColor?: string
+}
+
+function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
     let intervalStart = new Date();
     if (intervalType === "Week") {
-        //TODO Incorporate weekStartsOn
-        while (intervalStart.getDay() != 0) {
-            intervalStart = add(intervalStart, { days: -1 });
-        }
+        intervalStart = getWeekStart(weekStartsOn);
     } else {
-        intervalStart = new Date(intervalStart.getFullYear(), intervalStart.getMonth(), 1, 0, 0, 0, 0);
+        intervalStart = getMonthStart();
     }
     return intervalStart;
 }
@@ -75,7 +89,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     var currentDate = intervalStart;
     var data: any[] = [];
-    var graphHasData: boolean = false;
+    var chartHasData: boolean = false;
     if (currentData) {
         while (currentDate < intervalEnd) {
             var dataDay: any = {
@@ -88,7 +102,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
                 }
-                graphHasData = true;
+                chartHasData = true;
             }
             currentDate = add(currentDate, { days: 1 });
         }
@@ -98,11 +112,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         if (active && payload && payload.length) {
             var date = new Date(intervalStart.getFullYear(), intervalStart.getMonth(), payload[0].payload.day);
             return (
-                <div className="graph-tooltip">
-                    <div className="graph-date">{format(date, 'MM/dd/yyyy')}</div>
-                    <div className="graph-value">
+                <div className="mdhui-daily-data-tooltip">
+                    <div className="mdhui-daily-data-tooltip-value">
                         {props.valueFormatter ? props.valueFormatter(payload[0].value) : payload[0].value}
                     </div>
+                    <div className="mdhui-daily-data-tooltip-date">{format(date, 'MM/dd/yyyy')}</div>
                 </div>
             );
         }
@@ -112,22 +126,24 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
         if (intervalType == "Month") {
-            return <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
+            let currentDate = new Date( intervalStart.getFullYear(), intervalStart.getMonth(), value);
+            return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         } else {
             let currentDate = intervalStart;
             let dayOfWeek = format(currentDate, "E").substr(0, 1);
             let month = currentDate.getMonth();
             for (let i = 0; i < 7; i++) {
-                if(currentDate.getDate() == value){
+                if (currentDate.getDate() == value) {
                     month = currentDate.getMonth();
                     dayOfWeek = format(currentDate, "E").substr(0, 1);
+                    break;
                 }
                 currentDate = add(currentDate, { days: 1 });
             }
             month++;
             return <>
-            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
-            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
             </>;
         }
     }
@@ -135,18 +151,41 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     function tickFormatter(args: any) {
         if (args >= 10000) {
             return Number((args / 1000).toFixed(1)) + 'K';
+        } else {
+            return Number(args.toFixed(0));
         }
         return args;
     }
 
+    function standardChartComponents() {
+        let domain: AxisDomain | undefined = undefined;
+        if (props.options) {
+            if (props.chartType == "Line") {
+                let domainMin = (props.options as LineChartOptions).domainMin;
+                if (domainMin == "Auto") {
+                    domain = ["auto", "auto"];
+                } else if (domainMin != undefined) {
+                    domain = [domainMin, "auto"];
+                }
+            }
+        }
+
+        return <>
+            {chartHasData &&
+                <Tooltip wrapperStyle={{ outline: "none" }} active content={<GraphToolTip />} />
+            }
+            <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
+            <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
+            <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : "preserveStartEnd"} />
+        </>
+    }
+
     return <div className="mdhui-daily-data-chart">
         {props.title &&
-            <div className="title">
-                {props.title}
-            </div>
+            <CardTitle title={props.title}></CardTitle>
         }
         <div className="chart-container">
-            {(!graphHasData) &&
+            {(!chartHasData) &&
                 <div>
                     {currentData &&
                         <div className="no-data-label">No Data</div>
@@ -156,33 +195,33 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     }
                     <ResponsiveContainer width="100%" height={150}>
                         <LineChart width={400} height={400} data={data} syncId="DailyDataChart">
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <YAxis axisLine={false} interval={0} tickLine={false} width={32} scale="linear" />
-                            <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
+                            {standardChartComponents()}
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
             }
-            {graphHasData && props.chartType == "Line" &&
+            {chartHasData && props.chartType == "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={data} syncId="DailyDataChart">
-                        <Line key="line" type="monotone" dataKey="value" stroke="var(--mdhui-color-primary)" />
-                        <Tooltip content={<GraphToolTip />} />
-                        <CartesianGrid strokeDasharray="2 4" />
-                        <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} />
-                        <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={1} />
+                        {standardChartComponents()}
+                        <Line strokeWidth={2} key="line" type="monotone" dataKey="value" stroke="var(--mdhui-color-primary)" />
                     </LineChart>
                 </ResponsiveContainer>
             }
-            {graphHasData && props.chartType == "Bar" &&
+            {chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={data} syncId="DailyDataChart">
-                        <CartesianGrid vertical={false} strokeDasharray="2 4" />
-                        <Tooltip content={<GraphToolTip />} />
+                        {standardChartComponents()}
                         <Bar key="bar" type="monotone" dataKey="value" fill="var(--mdhui-color-primary)" stroke="var(--mdhui-color-primary)" />
-                        <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} />
-                        <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : 0} />
                     </BarChart>
+                </ResponsiveContainer>
+            }
+            {chartHasData && props.chartType == "Area" &&
+                <ResponsiveContainer width="100%" height={150}>
+                    <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
+                        {standardChartComponents()}
+                        <Area key="area" type="monotone" dataKey="value" fill="var(--mdhui-color-primary)" stroke="var(--mdhui-color-primary)" />
+                    </AreaChart>
                 </ResponsiveContainer>
             }
         </div>
