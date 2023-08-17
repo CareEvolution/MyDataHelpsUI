@@ -6,12 +6,27 @@ export const calculateValue = (calcString :string, surveyAnswers: CurrentSurveyA
   const math = create(all, config)
 
   try {
-    let answerDict: {[id: string] : number} = createScope(surveyAnswers);
+    // const answerDict: {[id: string] : number} = createScope(surveyAnswers);
+    const [answerDict, brokenIdentifiers] = createScope(surveyAnswers);
     try {
-      return(math.evaluate(calcString, answerDict)._data[0].toString());
+      let calculation = math.evaluate(calcString, answerDict)._data[0].toString();
+      if (calculation == "NaN"){
+        let nonNumberIdentifier = Object.keys(answerDict).find(key => isNaN(answerDict[key]));
+        throw Error(`Calculation Error: Answer not a number (${nonNumberIdentifier})`);
+      }
+      return(calculation);
     }
-    catch {
-      return("Calculation Error - Unmatched Variable") 
+    catch(error: unknown) {
+      if (error instanceof Error){
+        if(!error.message.startsWith("Calculation Error:")) {
+          const errorIdentifierMessage = brokenIdentifiers.length ? brokenIdentifiers : error.message;
+          return("Calculation Error: Numeric Calculation Steps do not support StepIdentifier or ResultIdentifiers that have spaces, periods, or multiple-select (" + errorIdentifierMessage + ").");
+        }
+        else{
+          return(error.message);
+        }
+      }
+      return(error);
     }
   }
   catch(error: unknown) {
@@ -23,18 +38,14 @@ export const calculateValue = (calcString :string, surveyAnswers: CurrentSurveyA
 
 const createScope = (surveyAnswers: CurrentSurveyAnswer[]) => {
   let answerDict: {[id: string] : number} = {};
+  let issueIdentifier: string[] = [];
   surveyAnswers.map((answer) => {
-    if (answer.answers.length > 1) {
-      throw new Error(`Calculation Error - Calculation not available for multiple-select text choice questions (${answer.resultIdentifier})`)
-    }
-    if (answer.resultIdentifier.includes('.')) {
-      throw new Error(`Calculation Error - QuestionIdentifier "${answer.resultIdentifier}" cannot have a "."`)
-    }
     const value = parseFloat(answer.answers[0]);
-    if (isNaN(value)){
-      throw new Error(`Calculation Error - Answer not a number (${answer.resultIdentifier})`)
+    if (answer.answers.length > 1 || answer.resultIdentifier.includes('.')) {
+      issueIdentifier.push(answer.resultIdentifier);
+      return
     }
     answerDict[answer.resultIdentifier] = value;
   })
-  return answerDict;
+  return [answerDict, issueIdentifier] as const;
 }
