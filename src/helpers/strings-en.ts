@@ -72,7 +72,8 @@
     "app-download-google-play-link-alt": "Download on the Google Play Store",
     "app-download-app-store-link-alt": "Download on the Apple App Store",
     "start": "Start",
-    "resume": "Resume"
+    "resume": "Resume",
+    "30-day-average": "30 Day Average",
 };
 
 export default strings;
