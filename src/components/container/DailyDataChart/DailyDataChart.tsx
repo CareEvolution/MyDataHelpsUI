@@ -170,6 +170,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return args;
     }
 
+    //ensures that gradients are unique for each chart
+    let barGradientKey = `barGradient_${Math.random()}`;
+    let areaGradientKey = `areaGradient_${Math.random()}`;
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
@@ -185,11 +188,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
         return <>
             <defs>
-                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id={barGradientKey} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
                     <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                 </linearGradient>
-                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id={areaGradientKey} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
                     <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
                 </linearGradient>
@@ -239,7 +242,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={data} syncId="DailyDataChart" >
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill="url(#barGradient)" radius={[2, 2, 0, 0]} />
+                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${barGradientKey})`} radius={[2, 2, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             }
@@ -247,7 +250,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill="url(#areaGradient)" stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${areaGradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                     </AreaChart>
                 </ResponsiveContainer>
             }
