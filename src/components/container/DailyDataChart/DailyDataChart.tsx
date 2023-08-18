@@ -80,6 +80,10 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     useEffect(() => {
+        if (props.previewDataProvider) {
+            setHasAnyData(true);
+            return;
+        }
         checkDailyDataAvailability(props.dailyDataType).then(function (hasData) {
             setHasAnyData(hasData);
         });
