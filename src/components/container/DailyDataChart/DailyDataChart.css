@@ -27,10 +27,6 @@
     padding: 16px;
 }
 
-.mdhui-daily-data-chart .recharts-cartesian-axis-tick {
-    font-size: 11px;
-}
-
 .mdhui-daily-data-chart .mdhui-daily-data-tooltip {
     padding: 8px;
     background: var(--mdhui-background-color-0);
@@ -50,15 +46,15 @@
 
 .mdhui-daily-data-chart .mdhui-daily-data-tooltip .mdhui-daily-data-tooltip-date {
     font-size: .7em;
-    color: var(--mdhui-text-color-3);
+    color: var(--mdhui-text-color-2);
     line-height: 1em;
 }
 
-.mdhui-daily-data-chart .recharts-cartesian-axis-tick {
+.mdhui-daily-data-chart .recharts-cartesian-axis-tick text {
     fill: var(--mdhui-text-color-1);
+    font-size: 11px;
 }
 
-.mdhui-daily-data-chart .today
-{
+.mdhui-daily-data-chart .today {
     font-weight: bold;
 }

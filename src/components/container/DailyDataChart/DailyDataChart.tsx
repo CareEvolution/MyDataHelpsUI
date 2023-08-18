@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { DailyDataProvider, DailyDataQueryResult, DailyDataType, queryDailyData } from '../../../helpers/query-daily-data'
+import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, queryDailyData } from '../../../helpers/query-daily-data'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LoadingIndicator } from '../../presentational'
@@ -19,6 +19,7 @@ export interface DailyDataChartProps {
     valueFormatter?(value: number): string
     chartType: "Line" | "Bar" | "Area"
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
+    hideIfNoData?: boolean
     previewDataProvider?: DailyDataProvider
 }
 
@@ -48,6 +49,8 @@ function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: 
 
 export default function DailyDataChart(props: DailyDataChartProps) {
     let [currentData, setCurrentData] = useState<DailyDataQueryResult | null>(null);
+    let [hasAnyData, setHasAnyData] = useState(false);
+
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
     let intervalStart: Date = new Date();
@@ -75,6 +78,12 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 setCurrentData(data);
             });
     }
+
+    useEffect(() => {
+        checkDailyDataAvailability(props.dailyDataType).then(function (hasData) {
+            setHasAnyData(hasData);
+        });
+    }, [props.dailyDataType]);
 
     useEffect(() => {
         loadCurrentInterval();
@@ -126,7 +135,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
         if (intervalType == "Month") {
-            let currentDate = new Date( intervalStart.getFullYear(), intervalStart.getMonth(), value);
+            let currentDate = new Date(intervalStart.getFullYear(), intervalStart.getMonth(), value);
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         } else {
             let currentDate = intervalStart;
@@ -173,12 +182,12 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return <>
             <defs>
                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0}/>
-                    <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7}/>
+                    <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
+                    <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                 </linearGradient>
                 <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5}/>
-                    <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2}/>
+                    <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
+                    <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
                 </linearGradient>
             </defs>
             {chartHasData &&
@@ -188,6 +197,10 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : "preserveStartEnd"} />
         </>
+    }
+
+    if (!hasAnyData && props.hideIfNoData) {
+        return false;
     }
 
     return <div className="mdhui-daily-data-chart">
@@ -230,7 +243,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} fill="url(#areaGradient)" stroke="var(--mdhui-color-primary)" />
+                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill="url(#areaGradient)" stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                     </AreaChart>
                 </ResponsiveContainer>
             }

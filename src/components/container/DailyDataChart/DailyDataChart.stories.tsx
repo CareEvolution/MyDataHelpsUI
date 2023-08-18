@@ -6,13 +6,13 @@ import getDayKey from "../../../helpers/get-day-key";
 import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
-let render = (args: DailyDataChartProps) => <Layout><Card><DailyDataChart {...args} /></Card></Layout>
+let render = (args: DailyDataChartProps) => <Layout colorScheme="auto"><Card><DailyDataChart {...args} /></Card></Layout>
 export const stepsLineChart = {
     args: {
         title: "Steps",
         options: {
-            domainMin:0,
-            lineColor:"red"
+            domainMin: 0,
+            lineColor: "red"
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
@@ -37,7 +37,7 @@ export const stepsBarChart = {
     args: {
         title: "Steps",
         options: {
-            
+
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
@@ -62,7 +62,8 @@ export const stepsAreaChart = {
     args: {
         title: "Steps",
         options: {
-            
+            areaColor: "red",
+            lineColor: "green"
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
