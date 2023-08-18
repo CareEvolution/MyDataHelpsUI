@@ -12,7 +12,7 @@ export interface ConnectEhrStepProps {
     text?: string;
     nextButtonText?: string;
     nextButtonDisabled?: boolean;
-    previewState?: ProviderSearchPreviewState;
+    previewState?: ProviderSearchPreviewState; // For Storybook only
     onProviderSelected: (provider: ExternalAccountProvider) => void;
     styles: { [key: string]: any };
 }
