@@ -200,7 +200,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     if (!hasAnyData && props.hideIfNoData) {
-        return false;
+        return null;
     }
 
     return <div className="mdhui-daily-data-chart">
