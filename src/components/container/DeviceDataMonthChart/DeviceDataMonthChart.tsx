@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
@@ -8,12 +8,11 @@ import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
-import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
-	month?: number,
-	year?: number,
+	month: number,
+	year: number,
 	syncId?: string,
 	title?: string,
 	previewState?: DeviceDataMonthChartPreviewState,
@@ -49,19 +48,10 @@ export default function (props: DeviceDataMonthChartProps) {
 	const [loading, setLoading] = useState(false);
 	const [hasData, setHasData] = useState(false);
 
-	const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
-	let monthStart = dateRangeContext?.intervalStart;
-	if (props.year != undefined && props.month != undefined) {
-		monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
-	}
-	if (!monthStart) {
-		let currentDate = new Date();
-		monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
-	}
-
-	var monthEnd = add(monthStart, { months: 1 });
-
 	var currentInitialization = useRef<number>();
+
+	var monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
+	var monthEnd = add(monthStart, { months: 1 });
 
 	function checkForAnyData() {
 		if (!hasData) {
@@ -91,7 +81,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		if (props.previewState == "WithData") {
 			var previewData: { [key: string]: { [key: string]: number } } = {};
 			props.lines.forEach((l) => {
-				var newData = getPreviewData(l.dailyDataType, monthStart!.getFullYear(), monthStart!.getMonth());
+				var newData = getPreviewData(l.dailyDataType, props.year, props.month);
 				previewData[l.dailyDataType] = newData;
 			})
 			setDailyData(previewData);
@@ -113,7 +103,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		var initialization = currentInitialization.current ?? 0;
 		setLoading(true);
 		var loadData = function () {
-			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart!, monthEnd));
+			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd));
 			Promise.all(dataRequests).then(function (data) {
 				if (initialization != currentInitialization.current) {
 					return;
@@ -139,7 +129,7 @@ export default function (props: DeviceDataMonthChartProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
-	}, [props, dateRangeContext]);
+	}, [props]);
 
 	var data: any[] = [];
 	var currentDate = monthStart;
@@ -151,7 +141,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		data.push(dataDay);
 		var dayKey = getDayKey(currentDate);
 		props.lines.forEach((line) => {
-			if (dailyData && dailyData[line.dailyDataType] && dailyData[line.dailyDataType][dayKey]) {
+			if (dailyData) {
 				dataDay[line.dailyDataType] = dailyData[line.dailyDataType][dayKey];
 				if (line.valueConverter) {
 					dataDay[line.dailyDataType] = line.valueConverter(dataDay[line.dailyDataType]);
@@ -166,7 +156,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 	const GraphToolTip = ({ active, payload, label }: any) => {
 		if (active && payload && payload.length) {
-			var date = new Date(monthStart!.getFullYear(), monthStart!.getMonth(), payload[0].payload.day);
+			var date = new Date(props.year, props.month, payload[0].payload.day);
 			var labelLookup: { [key: string]: string } = {};
 			props.lines.forEach(function (line) {
 				labelLookup[line.dailyDataType] = line.label;
