@@ -23,23 +23,21 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
         initialIntervalStart = getWeekStart(props.weekStartsOn);
     }
 
-    const [intervalStart, setIntervalStart] = useState(initialIntervalStart);
-
-    let context: DateRangeContext = {
-        intervalStart: intervalStart,
+    const [currentContext, setCurrentContext] = useState<DateRangeContext>({
+        intervalStart: initialIntervalStart,
         intervalType: props.intervalType
-    }
+    });
 
     //reset the interval if the interval type changes
     useEffect(() => {
-        setIntervalStart(initialIntervalStart);
+        setCurrentContext({ intervalType:props.intervalType, intervalStart: initialIntervalStart });
     }, [props.intervalType, props.weekStartsOn]);
 
-    return <DateRangeContext.Provider value={context}>
+    return <DateRangeContext.Provider value={currentContext}>
         <DateRangeNavigator
             intervalType={props.intervalType}
-            intervalStart={intervalStart}
-            onIntervalChange={(d) => setIntervalStart(d)}
+            intervalStart={currentContext.intervalStart}
+            onIntervalChange={(d) => setCurrentContext({...currentContext, intervalStart: d})}
             variant={props.variant} />
         {props.children}
     </DateRangeContext.Provider>
