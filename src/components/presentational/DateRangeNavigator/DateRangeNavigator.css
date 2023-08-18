@@ -14,7 +14,7 @@
     z-index: 1;
 }
 
-.mdhui-date-range-navigator>.navigator-button {
+.mdhui-date-range-navigator .navigator-button {
     position: absolute;
     top: 0;
     padding: 16px;
@@ -22,25 +22,28 @@
     height: 100%;
 }
 
-.mdhui-date-range-navigator>.navigate-previous {
+.mdhui-date-range-navigator .navigate-previous {
     left: 0;
 }
 
-.mdhui-date-range-navigator>.navigate-next {
+.mdhui-date-range-navigator .navigate-next {
     right: 0;
 }
 
 .mdhui-date-range-navigator-rounded {
-    padding: 0;
+    padding: 16px;
+    border: none;
+    background: var(--mdhui-background-color-1);
+}
+
+.mdhui-date-range-navigator-rounded .mdhui-date-range-navigator-inner {
     line-height: 40px;
     border-radius: 32px;
     background: var(--mdhui-background-color-2);
-    margin: 16px;
     position: relative;
-    border: none;
 }
 
-.mdhui-date-range-navigator-rounded>.navigator-button {
+.mdhui-date-range-navigator-rounded .navigator-button {
     padding: 0;
     width: 36px;
     height: 36px;

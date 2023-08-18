@@ -24,6 +24,51 @@ let children = <Card><DailyDataChart title="Steps"
 			currentDate = add(currentDate, { days: 1 });
 		}
 		return Promise.resolve(data);
+	}} /><DailyDataChart title="Steps"
+	intervalType="Week"
+	weekStartsOn="6DaysAgo"
+	dailyDataType="DailyDataType.Steps"
+	valueFormatter={(value: number) => Number(value.toFixed(0)).toLocaleString()}
+	chartType="Line"
+	previewDataProvider={(start: Date, end: Date) => {
+		let data: DailyDataQueryResult = {};
+		let currentDate = new Date(start);
+		while (currentDate < end) {
+			let dayKey = getDayKey(currentDate);
+			data[dayKey] = Math.random() * 100;
+			currentDate = add(currentDate, { days: 1 });
+		}
+		return Promise.resolve(data);
+	}} /><DailyDataChart title="Steps"
+	intervalType="Week"
+	weekStartsOn="6DaysAgo"
+	dailyDataType="DailyDataType.Steps"
+	valueFormatter={(value: number) => Number(value.toFixed(0)).toLocaleString()}
+	chartType="Line"
+	previewDataProvider={(start: Date, end: Date) => {
+		let data: DailyDataQueryResult = {};
+		let currentDate = new Date(start);
+		while (currentDate < end) {
+			let dayKey = getDayKey(currentDate);
+			data[dayKey] = Math.random() * 100;
+			currentDate = add(currentDate, { days: 1 });
+		}
+		return Promise.resolve(data);
+	}} /><DailyDataChart title="Steps"
+	intervalType="Week"
+	weekStartsOn="6DaysAgo"
+	dailyDataType="DailyDataType.Steps"
+	valueFormatter={(value: number) => Number(value.toFixed(0)).toLocaleString()}
+	chartType="Line"
+	previewDataProvider={(start: Date, end: Date) => {
+		let data: DailyDataQueryResult = {};
+		let currentDate = new Date(start);
+		while (currentDate < end) {
+			let dayKey = getDayKey(currentDate);
+			data[dayKey] = Math.random() * 100;
+			currentDate = add(currentDate, { days: 1 });
+		}
+		return Promise.resolve(data);
 	}} /></Card>;
 
 export const month = {
@@ -47,7 +92,7 @@ export const weekStartsSunday = {
 
 export const weekStarts6DaysAgo = {
 	args: {
-		variant: "rounded",
+		variant: "default",
 		intervalType: "Week",
 		weekStartsOn: "6DaysAgo",
 		children: children

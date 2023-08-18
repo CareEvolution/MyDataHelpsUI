@@ -56,25 +56,27 @@ export default function (props: DateRangeNavigatorProps) {
 
 	return (
 		<div className={classes.join(" ")}>
-			<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
-				<FontAwesomeSvgIcon icon={faChevronLeft} />
-			</UnstyledButton>
-			{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
-				<div>
-					{getMonthName()} {props.intervalStart.getFullYear()}
-				</div>
-			}
-			{(props.intervalType == "Week" || props.intervalStart.getDate() != 1) &&
-				<div>
-					{format(props.intervalStart, "MM/dd/yyyy")}&nbsp;-&nbsp;
-					{format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}
-				</div>
-			}
-			{!isCurrentInterval &&
-				<UnstyledButton title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
-					<FontAwesomeSvgIcon icon={faChevronRight} />
+			<div className="mdhui-date-range-navigator-inner">
+				<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
+					<FontAwesomeSvgIcon icon={faChevronLeft} />
 				</UnstyledButton>
-			}
+				{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
+					<div>
+						{getMonthName()} {props.intervalStart.getFullYear()}
+					</div>
+				}
+				{(props.intervalType == "Week" || props.intervalStart.getDate() != 1) &&
+					<div>
+						{format(props.intervalStart, "MM/dd/yyyy")}&nbsp;-&nbsp;
+						{format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}
+					</div>
+				}
+				{!isCurrentInterval &&
+					<UnstyledButton title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
+						<FontAwesomeSvgIcon icon={faChevronRight} />
+					</UnstyledButton>
+				}
+			</div>
 		</div>
 	);
 }
