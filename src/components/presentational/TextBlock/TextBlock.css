@@ -1,6 +1,13 @@
-.mdhui-text-block
-{
+.mdhui-text-block {
     margin: 16px;
     font-size: .88em;
     line-height: 1.3em;
+}
+
+.mdhui-text-block * {
+    line-height: 1.3em;
+}
+
+.mdhui-text-block img {
+    max-width: 100%;
 }
