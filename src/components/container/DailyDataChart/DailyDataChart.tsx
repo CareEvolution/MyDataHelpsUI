@@ -176,7 +176,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         if (args >= 10000) {
             return Number((args / 1000).toFixed(1)) + 'K';
         } else {
-            return Number(args.toFixed(0));
+            return Number(args.toFixed(1));
         }
         return args;
     }

@@ -92,7 +92,6 @@ export const sleepBarChart = {
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.FitbitSleepMinutes,
         valueFormatter: (value: number) => {
-            console.log(value);
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";
             displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
@@ -107,7 +106,7 @@ export const sleepBarChart = {
             let currentDate = new Date(start);
             while (currentDate < end) {
                 let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 500 + 300;
+                data[dayKey] = Math.random() * 50 + 100;
                 currentDate = add(currentDate, { days: 1 });
             }
             return Promise.resolve(data);
