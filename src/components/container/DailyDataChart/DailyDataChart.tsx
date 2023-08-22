@@ -80,13 +80,22 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     useEffect(() => {
-        if (props.previewDataProvider) {
-            setHasAnyData(true);
-            return;
+        function checkAvailability(){
+            if (props.previewDataProvider) {
+                setHasAnyData(true);
+                return;
+            }
+            checkDailyDataAvailability(props.dailyDataType).then(function (hasData) {
+                setHasAnyData(hasData);
+            });
         }
-        checkDailyDataAvailability(props.dailyDataType).then(function (hasData) {
-            setHasAnyData(hasData);
-        });
+        checkAvailability();
+        MyDataHelps.on("applicationDidBecomeVisible", checkAvailability);
+        MyDataHelps.on("externalAccountSyncComplete", checkAvailability);
+        return () => {
+            MyDataHelps.off("applicationDidBecomeVisible", checkAvailability);
+            MyDataHelps.off("externalAccountSyncComplete", checkAvailability);
+        }
     }, [props.dailyDataType]);
 
     useEffect(() => {
