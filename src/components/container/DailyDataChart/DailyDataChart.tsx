@@ -112,6 +112,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             var dayKey = getDayKey(currentDate);
             if (currentData[dayKey] != undefined && currentData[dayKey] != null) {
                 dataDay.value = currentData[dayKey];
+                dataDay.rawValue = dataDay.value;
+                dataDay.date = currentDate;
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
                 }
@@ -123,11 +125,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     const GraphToolTip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
-            var date = new Date(intervalStart.getFullYear(), intervalStart.getMonth(), payload[0].payload.day);
+            var date = payload[0].payload.date;
             return (
                 <div className="mdhui-daily-data-tooltip">
                     <div className="mdhui-daily-data-tooltip-value">
-                        {props.valueFormatter ? props.valueFormatter(payload[0].value) : payload[0].value}
+                        {props.valueFormatter ? props.valueFormatter(payload[0].payload.rawValue) : payload[0].payload.value}
                     </div>
                     <div className="mdhui-daily-data-tooltip-date">{format(date, 'MM/dd/yyyy')}</div>
                 </div>
