@@ -1,6 +1,5 @@
 import "./ProgressBar.css";
-import React from "react";
-import ProgressBarStepIcon from "./ProgressBarStepIcon/ProgressBarStepIcon";
+import React, { ReactElement, useEffect } from "react";
 
 export interface ProgressBarProps {
 	background?: string;
@@ -9,39 +8,33 @@ export interface ProgressBarProps {
 	steps?: [
 		{
 			stepPercent: number;
-			stepIcon: React.ReactNode;
+			stepIcon: ReactElement;
 		}
 	]
 }
 
 ProgressBar.defaultProps = {
-	background: "#00A862",
-	fill: "#BFE9D8",
-	fillPercent: 0,
+	background: "#d3d3d3",
+	fill: "#00A862",
+	fillPercent: 0
 }
 
 export default function ProgressBar(props: ProgressBarProps) {
-
 	return (
 		<div className="progress-bar">
 			<div className="progress-bar-background" style={{ background: props.background }}>
-				<div className="progress-steps">
-					{props.steps &&
-						<>
-							{props.steps.map((step, i) =>
-								<div key={`${i}-step`} className="step-icon" style={{ left: step.stepPercent + "%" }}>
-									{step.stepIcon}
-								</div>
-							)}
-						</>
-					}
-					{!props.steps &&
-						<span>&nbsp;</span>
-					}
-				</div>
-				<div className="progress-bar-fill" style={{ width: props.fillPercent + "%", background: props.fill }}>
-					&nbsp;
-				</div>
+				<div className="progress-bar-fill" style={{ width: props.fillPercent + "%", background: props.fill }} />
+			</div>
+			<div className="progress-steps">
+				{props.steps &&
+					<>
+						{props.steps.map((step, i) =>
+							<div key={`${i}-step`} className="step-icon" style={{ left: step.stepPercent + "%" }}>
+								{step.stepIcon}
+							</div>
+						)}
+					</>
+				}
 			</div>
 		</div>
 	);
