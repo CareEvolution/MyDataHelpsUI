@@ -26,3 +26,12 @@ Default.args = {
 Default.parameters = {
 	externalAccounts: []
 }
+
+export const onProviderSelected = Template.bind({});
+onProviderSelected.args = {
+	previewState: "Default",
+	onProviderSelected: (provider) => alert(`You selected ${provider.name}`)
+}
+onProviderSelected.parameters = {
+	externalAccounts: []
+}
