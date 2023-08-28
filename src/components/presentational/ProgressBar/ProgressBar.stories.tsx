@@ -98,23 +98,5 @@ LabelSteps.args = {
 	})
 } as ProgressBarProps
 
-export const SectionSteps = Template.bind({});
-SectionSteps.args = {
-	fillPercent: 75,
-	fill: "rgb(34, 115, 209, 0.5)",
-	steps: [
-		{
-			stepPercent: 25,
-			stepIcon: <svg>
-				<line x1="20" y1="20" x2="20" y2="130"></line>
-			</svg>
-		},
-		{
-			stepPercent: 35,
-			stepIcon: <svg>
-				<line x1="20" y1="20" x2="20" y2="130"></line>
-			</svg>
-		}
-	]
-} as ProgressBarProps;
+
 
