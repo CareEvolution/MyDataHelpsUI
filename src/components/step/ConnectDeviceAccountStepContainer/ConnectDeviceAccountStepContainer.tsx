@@ -21,24 +21,18 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             if (!config) return; // allows test mode to work
 
             setTitle(config.properties.title);
+
             setText(config.properties.text);
             if (!config.properties.deviceType) {
                 throw new Error("deviceType is required");
             }
-            if (
-                config.properties.deviceType !== "Fitbit" &&
-                config.properties.deviceType !== "Garmin" &&
-                config.properties.deviceType !== "Omron"
-            ) {
-                throw new Error(
-                    `Invalid deviceType: use "Fitbit", "Garmin", or "Omron" instead of ${config.properties.deviceType}`
-                );
-            }
             setDeviceType(config.properties.deviceType);
+
             if (!config.properties.providerName) {
                 throw new Error("providerName is required");
             }
             setProviderName(config.properties.providerName);
+
             setStyles(config.styles ?? {});
         });
     }, []);
