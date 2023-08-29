@@ -1,6 +1,6 @@
 .progress-bar {
 	display:inline-block;
-	margin: 10PX 10px;
+	margin: 10px 0px;
 	width: 100%;
 	max-width: 500px;
 	--icon_size: 24px;
@@ -30,7 +30,7 @@
 
 .progress-bar .progress-steps {
 	top:0;
-	margin: 10px 10px;
+	margin: 10px 0px;
 	width: 100%;
 	max-width: 500px;
 	position: absolute;

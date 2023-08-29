@@ -32,7 +32,7 @@ GradientFill75TargetStep.args = {
 	fillPercent: 75,
 	fill: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
-		stepPercent: 99,
+		stepPercent: 100,
 		stepIcon:
 			<span style={{ borderRadius: "24px", height: "24px", width: "24px", marginTop: "-2px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgba(148, 148, 148, 1)", padding: "4px 4px" }}>
 				<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "#fcfcfc", marginTop: "-3px" }} />
@@ -45,7 +45,7 @@ GradientFill100TargetStep.args = {
 	fillPercent: 100,
 	fill: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
-		stepPercent: 99,
+		stepPercent: 100,
 		stepIcon:
 			<span style={{ border: "2px solid gold", borderRadius: "24px", height: "24px", width: "24px", marginTop: "-3px", color: "rgba(148, 148, 148, 1)", backgroundColor: "#EA6B54", padding: "4px 4px" }}>
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "gold", marginTop: "-3px" }} />
@@ -67,7 +67,7 @@ GradientFillIconSteps.args = {
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
 			</span>;
 		return {
-			stepPercent: Math.trunc(value) - 2,
+			stepPercent: Math.trunc(value),
 			stepIcon: icon
 		}
 	})
@@ -92,7 +92,7 @@ LabelSteps.args = {
 				</span>
 			);
 		return {
-			stepPercent: Math.trunc(100 * amount / 175) - 2,
+			stepPercent: Math.trunc(100 * amount / 175),
 			stepIcon: icon
 		}
 	})
