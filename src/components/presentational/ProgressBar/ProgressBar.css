@@ -1,5 +1,6 @@
 .progress-bar {
-	display:inline-block;
+	display:flex;
+	position : relative;
 	margin: 10PX 10px;
 	width: 100%;
 	max-width: 500px;
@@ -23,24 +24,26 @@
     background: #fff;
 	overflow: hidden;
 	width: 100%;
-	position: relative;
+	position: absolute;
 	height:calc( var(--icon_size) + 4px);
 	z-index:1;
 }
 
 .progress-bar .progress-steps {
 	top:0;
-	margin: 10px 10px;
+	/* margin: 10px 10px; */
+	height:calc( var(--icon_size));
 	width: 100%;
 	max-width: 500px;
-	position: absolute;
+	position: relative;
 	z-index: 2;
-	display:inline-block;
+	display:flex;
 }
 
 .progress-bar .step-icon {
 	position: absolute;
-	transform: translate(-100%, 0)
+	top: 0;
+	/* transform: translate(-100%, 0) */
 }
 
 .progress-bar .step-icon span {

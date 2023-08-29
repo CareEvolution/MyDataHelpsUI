@@ -29,7 +29,7 @@ export default function ProgressBar(props: ProgressBarProps) {
 				{props.steps &&
 					<>
 						{props.steps.map((step, i) =>
-							<div key={`${i}-step`} className="step-icon" style={{ left: step.stepPercent + "%" }}>
+							<div key={`${i}-step`} className="step-icon" style={{ left: "calc(" + step.stepPercent + "%" + " - " + step.iconOffset + "px)" }}>
 								{step.stepIcon}
 							</div>
 						)}

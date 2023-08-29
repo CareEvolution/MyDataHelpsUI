@@ -33,6 +33,7 @@ GradientFill75TargetStep.args = {
 	fill: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
 		stepPercent: 99,
+		iconOffset: 25,
 		stepIcon:
 			<span style={{ borderRadius: "24px", height: "24px", width: "24px", marginTop: "-2px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgba(148, 148, 148, 1)", padding: "4px 4px" }}>
 				<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "#fcfcfc", marginTop: "-3px" }} />
@@ -46,6 +47,7 @@ GradientFill100TargetStep.args = {
 	fill: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
 		stepPercent: 99,
+		iconOffset: 25,
 		stepIcon:
 			<span style={{ border: "2px solid gold", borderRadius: "24px", height: "24px", width: "24px", marginTop: "-3px", color: "rgba(148, 148, 148, 1)", backgroundColor: "#EA6B54", padding: "4px 4px" }}>
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "gold", marginTop: "-3px" }} />
@@ -59,6 +61,7 @@ GradientFillIconSteps.args = {
 	fill: "linear-gradient(270deg, #F0CA68 0%, #E5917F 100%)",
 	steps: [...Array(4)].map((_e, i) => {
 		let value = (i + 1) * 25;
+		let iconWidth = 30;
 		let icon = (value <= 50) ?
 			<span style={{ border: "2px solid gold", borderRadius: "16px", height: "16px", width: "16px", color: "rgba(148, 148, 148, 1)", backgroundColor: "#EA6B54", padding: "4px 4px" }}>
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
@@ -68,7 +71,8 @@ GradientFillIconSteps.args = {
 			</span>;
 		return {
 			stepPercent: Math.trunc(value) - 2,
-			stepIcon: icon
+			stepIcon: icon,
+			iconOffset: (iconWidth/2)
 		}
 	})
 } as ProgressBarProps;
@@ -79,6 +83,7 @@ LabelSteps.args = {
 	fill: "rgb(34, 115, 209, 0.5)",
 	steps: [...Array(7)].map((_e, i) => {
 		let amount = (i + 1) * 25;
+		let iconWidth = 27;
 		let icon = (amount == 75) ?
 			<span style={{ border: "2px solid white", borderRadius: "14px", height: "14px", width: "14px", color: "white", backgroundColor: "rgb(34, 115, 209)", padding: "4px 4px", fontSize: "0.8em", marginTop: "1px" }}>
 				75
@@ -93,6 +98,7 @@ LabelSteps.args = {
 			);
 		return {
 			stepPercent: Math.trunc(100 * amount / 175) - 2,
+			iconOffset: (iconWidth/2),
 			stepIcon: icon
 		}
 	})
