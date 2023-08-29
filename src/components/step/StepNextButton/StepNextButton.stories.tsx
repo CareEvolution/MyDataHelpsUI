@@ -46,3 +46,9 @@ StepNextButtonGradient.args = {
     },
     onClick: () => alert("You clicked the pretty button")
 }
+
+export const StepNextButtonDisabled = Template.bind({});
+StepNextButtonDisabled.args = {
+    disabled: true,
+    onClick: () => alert("You shall not pass!")
+}

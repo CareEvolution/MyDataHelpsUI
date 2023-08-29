@@ -1,0 +1,72 @@
+import React, { useState, useEffect } from "react";
+import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
+import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
+
+export interface ConnectDeviceAccountStepContainerProps {
+    providerName?: string;
+}
+
+export default function (props: ConnectDeviceAccountStepContainerProps) {
+    const [title, setTitle] = useState<string>();
+    const [text, setText] = useState<string>();
+    const [styles, setStyles] = useState<any>({});
+    const [deviceType, setDeviceType] = useState<string>("");
+    const [providerName, setProviderName] = useState<string>(props.providerName ?? "");
+    const [connected, setConnected] = useState<boolean>();
+
+    useEffect(() => {
+        MyDataHelps.getStepConfiguration().then(function (
+            config: StepConfiguration
+        ) {
+            if (!config) return; // allows test mode to work
+
+            setTitle(config.properties.title);
+
+            setText(config.properties.text);
+            if (!config.properties.deviceType) {
+                throw new Error("deviceType is required");
+            }
+            setDeviceType(config.properties.deviceType);
+
+            if (!config.properties.providerName) {
+                throw new Error("providerName is required");
+            }
+            setProviderName(config.properties.providerName);
+
+            setStyles(config.styles ?? {});
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!providerName || providerName.length === 0 || connected) return;
+
+        const interval = setInterval(async () => {
+            const accounts = await MyDataHelps.getExternalAccounts();
+            const containProviderName = accounts.some(
+                (acc) => acc.provider.name === providerName
+            );
+            if (!connected && containProviderName) {
+                setConnected(containProviderName);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [providerName, connected]);
+
+    useEffect(() => {
+        if (connected) {
+            console.log("Connected to", providerName);
+            MyDataHelps.completeStep("");
+        }
+    }, [connected]);
+
+    return (
+        <ConnectDeviceAccountStep
+            title={title}
+            text={text}
+            deviceType={deviceType}
+            providerName={providerName}
+            styles={styles}
+        />
+    );
+}
