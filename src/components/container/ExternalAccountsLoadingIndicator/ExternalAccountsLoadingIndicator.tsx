@@ -59,6 +59,7 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
     function initialize() {
         if (props.previewState) {
             setIsWeb(true);
+            refresh();
             return;
         }
         MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
