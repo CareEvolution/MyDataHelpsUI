@@ -18,7 +18,6 @@ export function getWeekStart(weekStartsOn?: WeekStartsOn) {
     }
     let today = new Date();
     if (weekStartsOn === "6DaysAgo" || weekStartsOn === "7DaysAgo") {
-        let today = new Date();
         let startDate = add(today, { days: weekStartsOn === "6DaysAgo" ? -6 : -7 });
         return startDate;
     } else {

@@ -53,7 +53,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
-    let intervalStart: Date = new Date();
+    let intervalStart: Date;
 
     if (dateRangeContext) {
         intervalType = dateRangeContext.intervalType;
@@ -154,17 +154,14 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         } else {
             let currentDate = intervalStart;
-            let dayOfWeek = format(currentDate, "E").substr(0, 1);
-            let month = currentDate.getMonth();
+            let dayOfWeek:string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getDate() == value) {
-                    month = currentDate.getMonth();
-                    dayOfWeek = format(currentDate, "E").substr(0, 2);
+                    dayOfWeek = format(currentDate, "EEEEEE");
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
             }
-            month++;
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
@@ -182,8 +179,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     //ensures that gradients are unique for each chart
-    let barGradientKey = `barGradient_${Math.random()}`;
-    let areaGradientKey = `areaGradient_${Math.random()}`;
+    let gradientKey = `gradient_${Math.random()}`;
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
@@ -198,16 +194,6 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         }
 
         return <>
-            <defs>
-                <linearGradient id={barGradientKey} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
-                    <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
-                </linearGradient>
-                <linearGradient id={areaGradientKey} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
-                    <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
-                </linearGradient>
-            </defs>
             {chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<GraphToolTip />} />
             }
@@ -252,16 +238,28 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             {chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={data} syncId="DailyDataChart" >
+                        <defs>
+                            <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
+                                <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
+                            </linearGradient>
+                        </defs>
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${barGradientKey})`} radius={[2, 2, 0, 0]} />
+                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             }
             {chartHasData && props.chartType == "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
+                        <defs>
+                            <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
+                                <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
+                            </linearGradient>
+                        </defs>
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${areaGradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                     </AreaChart>
                 </ResponsiveContainer>
             }

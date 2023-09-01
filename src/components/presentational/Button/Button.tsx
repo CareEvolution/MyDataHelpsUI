@@ -1,6 +1,5 @@
 import React from 'react';
 import LoadingIndicator from '../LoadingIndicator';
-import UnstyledButton from '../UnstyledButton';
 import "./Button.css"
 
 export interface ButtonProps {
@@ -29,8 +28,7 @@ export default function (props: ButtonProps) {
 		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
 		backgroundColor = "transparent";
 	}
-
-	if (props.variant === "light") {
+	else if (props.variant === "light") {
 		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
 		backgroundColor = "var(--mdhui-background-color-1)";
 	}
