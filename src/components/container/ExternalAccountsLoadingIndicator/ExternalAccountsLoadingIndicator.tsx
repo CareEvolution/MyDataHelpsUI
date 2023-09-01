@@ -57,6 +57,10 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
     }
 
     function initialize() {
+        if (props.previewState) {
+            setIsWeb(true);
+            return;
+        }
         MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
             setIsWeb(deviceInfo.platform == "Web");
         }).catch(function () {
