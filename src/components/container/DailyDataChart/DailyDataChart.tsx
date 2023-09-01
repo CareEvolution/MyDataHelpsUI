@@ -38,7 +38,7 @@ export interface AreaChartOptions {
 }
 
 function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
-    let intervalStart = new Date();
+    let intervalStart:Date;
     if (intervalType === "Week") {
         intervalStart = getWeekStart(weekStartsOn);
     } else {
