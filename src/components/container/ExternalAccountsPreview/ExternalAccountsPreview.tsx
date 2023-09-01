@@ -24,21 +24,21 @@ export default function (props: ExternalAccountsPreviewProps) {
 
     if (!props.excludeProviders) {
         externalAccountProviderCategories.push('Provider');
-        title += language['external-accounts-title-providers'];
+        title += language('external-accounts-title-providers');
     }
     if (!props.excludeHealthPlans) {
         externalAccountProviderCategories.push('Health Plan');
         if (title.length > 0) {
-            title += language['external-accounts-title-divider'];
+            title += language('external-accounts-title-divider');
         }
-        title += language['external-accounts-title-health-plans'];
+        title += language('external-accounts-title-health-plans');
     }
     if (!props.excludeDeviceManufacturers) {
         externalAccountProviderCategories.push('Device Manufacturer');
         if (title.length > 0) {
-            title += language['external-accounts-title-divider'];
+            title += language('external-accounts-title-divider');
         }
-        title += language['external-accounts-title-devices'];
+        title += language('external-accounts-title-devices');
     }
 
     function initialize() {

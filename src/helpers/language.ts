@@ -2,12 +2,16 @@
 import englishStrings from "./strings-en"
 import spanishStrings from "./strings-es"
 
-var getLanguageStrings = function () {
+export function language(key: string) {
 	if (!MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es")) {
-		return englishStrings;
+		return englishStrings[key];
 	} else {
-		return spanishStrings;
+		if (spanishStrings[key] != null) {
+			return spanishStrings[key];
+		} else {
+			return englishStrings[key];
+		}
 	}
 }
 
-export default getLanguageStrings();
+export default language;

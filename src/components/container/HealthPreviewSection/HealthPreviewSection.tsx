@@ -76,17 +76,17 @@ export default function (props: HealthPreviewSectionProps) {
     function getTitle() {
         switch (props.concept) {
             case "Medications":
-                return language["medications-title"];
+                return language("medications-title");
             case "Immunizations":
-                return language["immunizations-title"];
+                return language("immunizations-title");
             case "Reports":
-                return language["reports-title"];
+                return language("reports-title");
             case "Allergies":
-                return language["allergies-title"];
+                return language("allergies-title");
             case "Conditions":
-                return language["conditions-title"];
+                return language("conditions-title");
             case "Procedures":
-                return language["procedures-title"];
+                return language("procedures-title");
         }
     }
 

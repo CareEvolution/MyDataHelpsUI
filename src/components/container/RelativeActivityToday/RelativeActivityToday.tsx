@@ -8,6 +8,7 @@ import getDayKey from "../../../helpers/get-day-key";
 import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
 import { ActivityMeter, CardTitle } from "../../presentational";
 import "./RelativeActivityToday.css"
+import language from "../../../helpers/language";
 
 export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];
@@ -126,7 +127,8 @@ export default function (props: RelativeActivityTodayProps) {
             <div>
                 <FontAwesomeSvgIcon icon={faChevronUp} />
             </div>
-            30 day average
+            {language("30-day-average")}
+            
         </div>
     </div>
 }

@@ -57,6 +57,11 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
     }
 
     function initialize() {
+        if (props.previewState) {
+            setIsWeb(true);
+            refresh();
+            return;
+        }
         MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
             setIsWeb(deviceInfo.platform == "Web");
         }).catch(function () {
@@ -86,6 +91,6 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
 
     return <div className="mdhui-external-accounts-loading-indicator">
         <LoadingIndicator variant="inline" />
-        <span className="mdhui-external-accounts-loading-indicator-message">{language["external-account-fetching-data"]}</span>
+        <span className="mdhui-external-accounts-loading-indicator-message">{language("external-account-fetching-data")}</span>
     </div>
 }

@@ -8,6 +8,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 
 export interface NavigationBarProps {
 	title?: string;
+	subtitle?: string;
 	showBackButton?: boolean;
 	showCloseButton?: boolean;
 	children?: React.ReactNode;
@@ -58,7 +59,7 @@ export default function (props: NavigationBarProps) {
 			{props.showBackButton &&
 				<a className="back-button" href="javascript:{}" onClick={() => back()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
-					{props.backButtonText ? props.backButtonText : language["back"]}
+					{props.backButtonText ? props.backButtonText : language("back")}
 				</a>
 			}
 			{props.title &&
@@ -66,9 +67,14 @@ export default function (props: NavigationBarProps) {
 					<span>{props.title}</span>
 				</div>
 			}
+			{props.subtitle &&
+				<div className="subtitle">
+					<span>{props.subtitle}</span>
+				</div>
+			}
 			{props.showCloseButton &&
 				<a className="close-button" href="javascript:{}" onClick={() => close()}>
-					{props.closeButtonText ? props.closeButtonText : language["close"]}
+					{props.closeButtonText ? props.closeButtonText : language("close")}
 				</a>
 			}
 			{props.children}

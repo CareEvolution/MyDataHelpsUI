@@ -60,7 +60,7 @@ export default function (props: MostRecentNotificationProps) {
 		<div className="mdhui-most-recent-notification">
 			<SingleNotification notification={notification} />
 			{props.onViewMore &&
-				<Action subtitle={language["all-notifications"]} onClick={props.onViewMore} />
+				<Action subtitle={language("all-notifications")} onClick={props.onViewMore} />
 			}
 		</div>
 	);

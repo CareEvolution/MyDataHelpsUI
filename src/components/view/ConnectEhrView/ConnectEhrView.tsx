@@ -24,16 +24,16 @@ export default function (props: ConnectEhrViewProps) {
 
     if (!props.excludeProviders) {
         providerCategories.push('Provider');
-        title += language['connect-ehr-title-providers'];
+        title += language('connect-ehr-title-providers');
     }
     if (!props.excludeHealthPlans) {
         providerCategories.push('Health Plan');
         if (title.length > 0) {
-            title += language['connect-ehr-title-divider'];
+            title += language('connect-ehr-title-divider');
         }
-        title += language['connect-ehr-title-health-plans'];
+        title += language('connect-ehr-title-health-plans');
     }
-    title = language['connect-ehr-title-prefix'] + title;
+    title = language('connect-ehr-title-prefix') + title;
 
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
@@ -46,7 +46,7 @@ export default function (props: ConnectEhrViewProps) {
             <StatusBarBackground />
             }
             <TextBlock>
-                {language["ehr-intro"]}
+                {language("ehr-intro")}
             </TextBlock>
             <Card>
                 <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true}/>

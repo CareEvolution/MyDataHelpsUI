@@ -14,7 +14,7 @@ export default function (props: DeviceDataViewProps) {
 			<StatusBarBackground />
 			<PlatformSpecificContent platforms={["Android"]}>
 				<Card>
-					<Action title="Google Fit" subtitle={language["google-fit-share"]} onClick={() => MyDataHelps.showGoogleFitSettings()} />
+					<Action title="Google Fit" subtitle={language("google-fit-share")} onClick={() => MyDataHelps.showGoogleFitSettings()} />
 				</Card>
 			</PlatformSpecificContent>
 			<Card>

@@ -64,7 +64,7 @@ export default function (props: ConnectedDevicesProps) {
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	return (
 		<div className="mdhui-connected-devices">
-			<CardTitle title={props.providerName+ " " + language["devices"]} />
+			<CardTitle title={props.providerName+ " " + language("devices")} />
 			{connectedDevices.map((device) =>
 				<div key={device.id.toString()} className="connected-device">
 					{device.properties?.Type == 'TRACKER' &&
@@ -83,7 +83,7 @@ export default function (props: ConnectedDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-								{language["last-sync"]} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
+								{language("last-sync")} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
 							</div>
 						}
 					</div>

@@ -82,7 +82,7 @@ export default function (props: ConnectEhrProps) {
 		if (props.disabledBehavior == 'displayError') {
 			return (
 				<div className="mdhui-connect-ehr">
-					<div className="error-content">{language["connect-ehr-not-enabled"]}</div>
+					<div className="error-content">{language("connect-ehr-not-enabled")}</div>
 				</div>
 			);
 		} else {
@@ -95,22 +95,22 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	return (
-		<Action bottomBorder={props.bottomBorder} title={language['connect-ehr-title-prefix'] + language['connect-ehr-title-providers'] + language['connect-ehr-title-divider'] + language['connect-ehr-title-health-plans']} className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
+		<Action bottomBorder={props.bottomBorder} title={language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans')} className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
 			{connected
 				? <>
 					<div className="connection-status">
 						{needsAttention
 							? <div className="warning">
-								<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language["connect-ehr-needs-attention"]}
+								<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language("connect-ehr-needs-attention")}
 							</div>
 							: <div className="success">
-								<FontAwesomeSvgIcon icon={faCheckCircle} /> {language["connect-ehr-connected"]}
+								<FontAwesomeSvgIcon icon={faCheckCircle} /> {language("connect-ehr-connected")}
 							</div>
 						}
 					</div>
-					<div className="content">{language["connect-ehr-text-connected"].replace("@@PROJECT_NAME@@", projectName as any)}</div>
+					<div className="content">{language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any)}</div>
 				</>
-				: <div className="content">{language["connect-ehr-text"].replace("@@PROJECT_NAME@@", projectName as any)}</div>
+				: <div className="content">{language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any)}</div>
 			}
 		</Action>
 	);

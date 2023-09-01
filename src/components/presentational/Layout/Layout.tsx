@@ -13,8 +13,8 @@ export interface LayoutProps {
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
 	/**
- 	* @deprecated 
- 	*/
+	  * @deprecated 
+	  */
 	stylesheetPath?: string;
 }
 
