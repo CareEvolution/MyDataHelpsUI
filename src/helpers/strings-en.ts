@@ -74,6 +74,11 @@
     "start": "Start",
     "resume": "Resume",
     "30-day-average": "30 Day Average",
+    "new-points-title": "Well Done!",
+    "new-points-text": "You've been awarded points for the following:",
+    "new-points-next-reward-prefix": "You now need ",
+    "new-points-next-reward-suffix": " points to unlock your next reward.",
+    "new-points-done-button-text": "DONE"
 };
 
 export default strings;
