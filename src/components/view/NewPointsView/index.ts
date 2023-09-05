@@ -1,0 +1,1 @@
+export { default, NewPointsViewProps, NewPointsEntry, showNewPoints } from './NewPointsView';
