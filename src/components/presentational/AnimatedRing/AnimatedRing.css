@@ -1,0 +1,51 @@
+﻿@keyframes mdhui-animated-ring-progress {
+    0% {
+        stroke-dashoffset: 630;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.mdhui-animated-ring {
+    position: relative;
+    margin: 0 auto 0 auto;
+    width: 220px;
+    height: 220px;
+}
+
+.mdhui-animated-ring svg {
+    width: 220px;
+    height: 220px;
+    transform: rotate(-90deg);
+}
+
+.mdhui-animated-ring circle {
+    margin: 0 auto;
+    fill: none;
+    stroke-width: 20;
+    stroke-dasharray: 630;
+    stroke-linecap: round;
+}
+
+.mdhui-animated-ring circle:nth-child(2) {
+    stroke-dashoffset: 630;
+    stroke: var(--mdhui-color-primary);
+    animation: mdhui-animated-ring-progress 750ms ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.mdhui-animated-ring-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadein 500ms ease-in-out;
+    animation-delay: 500ms;
+    animation-fill-mode: forwards;
+}
