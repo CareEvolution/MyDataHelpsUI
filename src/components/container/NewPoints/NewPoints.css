@@ -73,3 +73,11 @@
     color: #ffcc5b;
     font-weight: bold;
 }
+
+.mdhui-new-points-button-panel {
+    margin: 20px 0 36px 0;
+    opacity: 0;
+    animation: fadein 750ms ease-in-out;
+    animation-delay: 750ms;
+    animation-fill-mode: forwards;
+}

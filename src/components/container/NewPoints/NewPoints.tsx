@@ -1,6 +1,8 @@
 import React from 'react';
 import './NewPoints.css';
 import AnimatedRing from '../../presentational/AnimatedRing';
+import Button from "../../presentational/Button";
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export interface NewPointsEntry {
     name: string;
@@ -12,6 +14,7 @@ export interface NewPointsEntry {
 export interface NewPointsProps {
     entries: NewPointsEntry[];
     pointsToNextReward?: number;
+    doneButtonText?: string;
 }
 
 export default function (props: NewPointsProps) {
@@ -62,6 +65,9 @@ export default function (props: NewPointsProps) {
                 {props.pointsToNextReward &&
                 <div className="mdhui-new-points-next-reward">You now need <span className="mdhui-new-points-next-reward-points">{props.pointsToNextReward}</span> points to unlock your next reward.</div>
                 }
+            </div>
+            <div className="mdhui-new-points-button-panel">
+                <Button className="" onClick={() => MyDataHelps.dismiss()}>{props.doneButtonText || 'DONE'}</Button>
             </div>
         </div>
     );
