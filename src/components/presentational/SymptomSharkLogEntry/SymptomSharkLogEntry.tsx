@@ -3,7 +3,6 @@ import "./SymptomSharkLogEntry.css"
 import language from "../../../helpers/language";
 import { DailyLogEntry, SymptomSharkConfiguration } from "../../../helpers/symptom-shark-data";
 import Card from "../Card";
-import UnstyledButton from "../UnstyledButton";
 import ShinyOverlay from "../ShinyOverlay";
 import Face from "../Face";
 import TrackerItem from "../TrackerItem";
@@ -47,13 +46,13 @@ export default function (props: SymptomSharkLogEntryProps) {
 
     if (emptyLogEntry) {
         return <Card variant={highlight ? "highlight" : "subtle"} className="mdhui-symptom-shark-log-entry">
-            <Action className={"no-log-entry" + (highlight ? ' today-highlight' : "")}
+            <Action
                 title={title}
                 subtitle={subtitle}
                 onClick={() => startEditing()}
                 indicatorIcon={faPlus}>
                 {!!props.noDataMessage &&
-                    <div className="mdhui-symptom-shark-log-entry-no-data">{props.noDataMessage}</div>
+                    <div className="mdhui-symptom-shark-log-entry-section">{props.noDataMessage}</div>
                 }
                 <ShinyOverlay />
             </Action>
@@ -65,11 +64,10 @@ export default function (props: SymptomSharkLogEntryProps) {
             title={title}
             subtitle={subtitle}
             onClick={() => startEditing()}
+            indicatorPosition="topRight"
             indicator={<>{props.logEntry?.overallFeeling &&
                 <Face faceValue={props.logEntry?.overallFeeling} selected />
             }</>}>
-        </Action>
-        <UnstyledButton onClick={() => startEditing()} style={{ width: "100%" }}>
             <LogEntrySymptomsAndTreatments
                 configuration={props.configuration}
                 logEntry={props.logEntry}
@@ -81,7 +79,7 @@ export default function (props: SymptomSharkLogEntryProps) {
                     <div className="mdhui-symptom-shark-notes-content">{props.logEntry!.notes}</div>
                 </div>
             }
-        </UnstyledButton>
+        </Action>
     </Card>;
 }
 
@@ -164,19 +162,19 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
     return <div className="mdhui-symptom-shark-log-entry-section">
         <div className="mdhui-symptom-shark-section-header">Symptoms & Treatments</div>
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
-            <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
+            <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
         )}
         {treatments.filter((s) => highlightedTreatments.indexOf(s.id) != -1).map((s) =>
-            <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} key={s.id} text={s.name} bordered={true} />
+            <TrackerItem noBoxShadow selected={true} color={s.color} key={s.id} text={s.name} bordered={true} />
         )}
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) == -1).map((s) =>
             <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
-                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} text={s.name} />
+                <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} text={s.name} />
             </span>
         )}
         {treatments.filter((s) => highlightedTreatments.indexOf(s.id) == -1).map((s) =>
             <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
-                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} text={s.name} bordered={true} />
+                <TrackerItem noBoxShadow selected={true} color={s.color} text={s.name} bordered={true} />
             </span>
         )}
     </div>;

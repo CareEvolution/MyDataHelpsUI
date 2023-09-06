@@ -73,7 +73,13 @@
     "app-download-app-store-link-alt": "Descargar en la tienda de aplicaciones de Apple",
     "start": "Inicio",
     "resume": "Continuar",
-    "30-day-average": "Promedio de 30 días"
+    "30-day-average": "Promedio de 30 días",
+    "mild": "Leve",
+	"moderate": "Moderado",
+	"severe": "Grave",
+	"severe-shortened": "graves",
+	"moderate-shortened": "mod",
+	"mild-shortened": "leves",
 };
 
 export default strings;

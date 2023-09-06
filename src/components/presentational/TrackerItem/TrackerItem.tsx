@@ -11,6 +11,7 @@ export interface TrackerItemProps {
 	badge?: string;
 	onClick?: Function;
 	className?: string;
+	noBoxShadow?: boolean;
 }
 
 export default function (props: TrackerItemProps) {
@@ -31,6 +32,10 @@ export default function (props: TrackerItemProps) {
 
 	if (props.className) {
 		classes.push(props.className);
+	}
+
+	if (props.noBoxShadow) {
+		classes.push("mdhui-tracker-item-no-box-shadow");
 	}
 
 	var style = {

@@ -77,6 +77,12 @@
 	"today": "Today",
 	"yesterday": "Yesterday",
 	"tap-to-log": "Tap here to log your symptoms or treatments!",
+	"mild": "Mild",
+	"moderate": "Moderate",
+	"severe": "Severe",
+	"severe-shortened": "sev",
+	"moderate-shortened": "mod",
+	"mild-shortened": "mild",
 };
 
 export default strings;
