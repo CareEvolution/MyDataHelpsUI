@@ -6,23 +6,30 @@ import getDayKey from '../../../helpers/get-day-key';
 import { getDayOfWeek } from '../../../helpers/date-helpers';
 import language from '../../../helpers/language';
 import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../../helpers/symptom-shark-data';
-import { Button, DayTrackerSymbol, Face, LoadingIndicator, NotesInput, ShinyOverlay, TrackerItem, UnstyledButton } from '../../presentational';
-import { debounce } from 'lodash';
+import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, ShinyOverlay, TrackerItem, UnstyledButton } from '../../presentational';
+import { debounce, set } from 'lodash';
+import { previewConfiguration, previewLogEntry } from '../SymptomSharkLogToday/SymptomSharkLogToday.previewData';
 
-export interface LogEntryEditProps {
+export interface SymptomSharkLogEntryEditProps {
     date: Date;
     promptForReviewAfterDays?: number;
+    previewState: "default";
 }
 
-export default function (props: LogEntryEditProps) {
+export default function (props: SymptomSharkLogEntryEditProps) {
     const [logEntry, setLogEntry] = useState<DailyLogEntry | null>(null);
     const [promptForReview, setPromptForReview] = useState<boolean>(false);
     const [configuration, setConfiguration] = useState<SymptomSharkConfiguration | null>(null);
     const [saving, setSaving] = useState<boolean>(false);
-    const [showIconSelector, setShowIconSelector] = useState<boolean>(false);
     const [selectedSymptom, setSelectedSymptom] = useState<SymptomConfiguration | null>(null);
 
     function initialize() {
+        if (props.previewState == "default") {
+            setConfiguration(previewConfiguration);
+            setLogEntry(previewLogEntry);
+            return;
+        }
+
         var start = add(props.date, { days: -14 });
         var end = add(props.date, { days: 1 });
 
@@ -96,20 +103,11 @@ export default function (props: LogEntryEditProps) {
 
     function saveLogEntry(newLogEntry: DailyLogEntry) {
         setLogEntry(newLogEntry);
+        if (props.previewState == "default") { return; }
         setSaving(true);
         symptomSharkData.saveDailyLogEntry(getDayKey(props.date), newLogEntry).then(function () {
             setSaving(false);
         });
-    }
-
-    function updateIcon(icon: string) {
-        var newEntry = { ...logEntry! };
-        newEntry.icon = icon;
-        if (icon == 'star-o') {
-            newEntry.icon = "";
-        }
-        saveLogEntry(newEntry);
-        setShowIconSelector(false);
     }
 
     function updateFace(face: number) {
@@ -175,119 +173,109 @@ export default function (props: LogEntryEditProps) {
     }
 
     return (
-        <div className="log-entry-edit">
-            <div className="log-entry-edit-header">
-                <div className="nav-wrapper">
-                    <a href="javascript:{}" onClick={() => back()} className="back-button"><i className="fa fa-chevron-left"></i> {language("back")}</a>
-                    {dateLabel}
-                    {logEntry &&
-                        <div className={"icon" + (showIconSelector ? " highlight" : "")}>
-                            <UnstyledButton className="icon-wrapper" onClick={() => setShowIconSelector(!showIconSelector)}>
-                                <i className={"day-icon fa fa-" + (logEntry.icon ? logEntry.icon : 'star-o')}></i>
-                            </UnstyledButton>
-                        </div>
-                    }
-                </div>
-            </div>
-            {!logEntry &&
-                <LoadingIndicator />
-            }
-            {!!logEntry && !!configuration &&
-                <>
-                    <div className="day-edit-body" style={{ paddingTop: "8px" }}>
-                        <div style={{ width: "100%", overflow: "hidden" }}>
-                            {getDayTracker(logEntry)}
-                        </div>
-                        {isSameDay(new Date(), props.date) &&
-                            <h3>{language("symptoms-experiencing-today")}</h3>
-                        }
-                        {!isSameDay(new Date(), props.date) &&
-                            <h3>{language("symptoms-experiencing-previous")}</h3>
-                        }
-                        <div className="items">
-                            {configuration?.symptoms.filter(s => !s.inactive).map(s =>
-                                <TrackerItem className="item" selected={!!logEntry.symptoms.find(s2 => s2.id == s.id)}
-                                    color={s.color}
-                                    text={s.name}
-                                    key={s.id}
-                                    onClick={() => toggleSymptom(s)}
-                                    badge={getSeverity(s)} />
-                            )}
-                        </div>
-                        {configuration.treatments.length > 0 &&
-                            <div>
-                                {isSameDay(new Date(), props.date) &&
-                                    <h3>{language("treatments-experiencing-today")}</h3>
-                                }
-                                {!isSameDay(new Date(), props.date) &&
-                                    <h3>{language("treatments-experiencing-previous")}</h3>
-                                }
-                                <div className="items">
-                                    {configuration?.treatments.filter(s => !s.inactive).map(s =>
-                                        <TrackerItem className="item" selected={!!logEntry.treatments.find(s2 => s2.id == s.id)}
-                                            color={s.color}
-                                            text={s.name}
-                                            key={s.id}
-                                            onClick={() => toggleTreatment(s)}
-                                            bordered={true} />
-                                    )}
-                                </div>
+        <>
+            <NavigationBar title={dateLabel} showBackButton={true} variant="compressed" />
+            <div className="log-entry-edit">
+                {!logEntry &&
+                    <LoadingIndicator />
+                }
+                {!!logEntry && !!configuration &&
+                    <>
+                        <div className="day-edit-body" style={{ paddingTop: "8px" }}>
+                            <div style={{ width: "100%", overflow: "hidden" }}>
+                                {getDayTracker(logEntry)}
                             </div>
-                        }
-                        <div>
                             {isSameDay(new Date(), props.date) &&
-                                <h3>{language("feeling-overall-today")}</h3>
+                                <h3>{language("symptoms-experiencing-today")}</h3>
                             }
                             {!isSameDay(new Date(), props.date) &&
-                                <h3>{language("feeling-overall-previous")}</h3>
+                                <h3>{language("symptoms-experiencing-previous")}</h3>
                             }
-                            <div className="faces">
-                                <Face className="ss-face" faceValue={5} selected={logEntry.overallFeeling == 5} onClick={() => updateFace(5)} />
-                                <Face className="ss-face" faceValue={4} selected={logEntry.overallFeeling == 4} onClick={() => updateFace(4)} />
-                                <Face className="ss-face" faceValue={3} selected={logEntry.overallFeeling == 3} onClick={() => updateFace(3)} />
-                                <Face className="ss-face" faceValue={2} selected={logEntry.overallFeeling == 2} onClick={() => updateFace(2)} />
-                                <Face className="ss-face" faceValue={1} selected={logEntry.overallFeeling == 1} onClick={() => updateFace(1)} />
+                            <div className="items">
+                                {configuration?.symptoms.filter(s => !s.inactive).map(s =>
+                                    <TrackerItem className="item" selected={!!logEntry.symptoms.find(s2 => s2.id == s.id)}
+                                        color={s.color}
+                                        text={s.name}
+                                        key={s.id}
+                                        onClick={() => toggleSymptom(s)}
+                                        badge={getSeverity(s)} />
+                                )}
                             </div>
-                        </div>
-                        <h3 style={{ marginBottom: "16px" }}>{language("additional-notes")}</h3>
-                        <NotesInput placeholder={language("add-notes")} autoTimestamp={isSameDay(new Date(), props.date)} onChange={(v) => updateNotes(v)} value={logEntry.notes} />
-                    </div>
-                    <Button onClick={() => back()}>{language("done")}</Button>
-                    {selectedSymptom &&
-                        <div className="symptom-edit-modal">
-                            <div className="symptom-edit-padder">
-                                <div className="symptom-edit-container">
-                                    <h3 style={{ marginTop: "0", marginBottom: "16px" }}>{isSameDay(new Date(), props.date) ? language("how-severe-is") : language("how-severe-was")} {selectedSymptom.name}?</h3>
-                                    {selectedSymptom.severityTracking == "3PointScale" &&
-                                        <div className="option-select-vertical">
-                                            <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("mild-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 2)}>
-                                                {language("mild")} <ShinyOverlay />
-                                            </UnstyledButton>
-                                            <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("moderate-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 5)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 5}">
-                                                {language("moderate")} <ShinyOverlay />
-                                            </UnstyledButton>
-                                            <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("severe-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 10)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 10}">
-                                                {language("severe")} <ShinyOverlay />
-                                            </UnstyledButton>
-                                        </div>
+                            {configuration.treatments.length > 0 &&
+                                <div>
+                                    {isSameDay(new Date(), props.date) &&
+                                        <h3>{language("treatments-experiencing-today")}</h3>
                                     }
-                                    {selectedSymptom.severityTracking == "10PointScale" &&
-                                        <div className="option-select-vertical">
-                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i =>
-                                                <UnstyledButton key={i} onClick={() => setSeverity(selectedSymptom, i)} className={"option" + (getSeverity(selectedSymptom) == i.toString() ? " selected" : "")}>
-                                                    {i}
-                                                    <ShinyOverlay />
-                                                </UnstyledButton>
-                                            )}
-                                        </div>
+                                    {!isSameDay(new Date(), props.date) &&
+                                        <h3>{language("treatments-experiencing-previous")}</h3>
                                     }
-                                    <UnstyledButton className="clear-symptom" onClick={() => setSeverity(selectedSymptom, null)}>{language("clear-symptom")}</UnstyledButton>
+                                    <div className="items">
+                                        {configuration?.treatments.filter(s => !s.inactive).map(s =>
+                                            <TrackerItem className="item" selected={!!logEntry.treatments.find(s2 => s2.id == s.id)}
+                                                color={s.color}
+                                                text={s.name}
+                                                key={s.id}
+                                                onClick={() => toggleTreatment(s)}
+                                                bordered={true} />
+                                        )}
+                                    </div>
+                                </div>
+                            }
+                            <div>
+                                {isSameDay(new Date(), props.date) &&
+                                    <h3>{language("feeling-overall-today")}</h3>
+                                }
+                                {!isSameDay(new Date(), props.date) &&
+                                    <h3>{language("feeling-overall-previous")}</h3>
+                                }
+                                <div className="faces">
+                                    <Face className="ss-face" faceValue={5} selected={logEntry.overallFeeling == 5} onClick={() => updateFace(5)} />
+                                    <Face className="ss-face" faceValue={4} selected={logEntry.overallFeeling == 4} onClick={() => updateFace(4)} />
+                                    <Face className="ss-face" faceValue={3} selected={logEntry.overallFeeling == 3} onClick={() => updateFace(3)} />
+                                    <Face className="ss-face" faceValue={2} selected={logEntry.overallFeeling == 2} onClick={() => updateFace(2)} />
+                                    <Face className="ss-face" faceValue={1} selected={logEntry.overallFeeling == 1} onClick={() => updateFace(1)} />
                                 </div>
                             </div>
+                            <h3 style={{ marginBottom: "16px" }}>{language("additional-notes")}</h3>
+                            <NotesInput placeholder={language("add-notes")} autoTimestamp={isSameDay(new Date(), props.date)} onChange={(v) => updateNotes(v)} value={logEntry.notes} />
                         </div>
-                    }
-                </>
-            }
-        </div>
+                        <Button onClick={() => back()}>{language("done")}</Button>
+                        {selectedSymptom &&
+                            <div className="symptom-edit-modal">
+                                <div className="symptom-edit-padder">
+                                    <div className="symptom-edit-container">
+                                        <h3 style={{ marginTop: "0", marginBottom: "16px" }}>{isSameDay(new Date(), props.date) ? language("how-severe-is") : language("how-severe-was")} {selectedSymptom.name}?</h3>
+                                        {selectedSymptom.severityTracking == "3PointScale" &&
+                                            <div className="option-select-vertical">
+                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("mild-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 2)}>
+                                                    {language("mild")} <ShinyOverlay />
+                                                </UnstyledButton>
+                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("moderate-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 5)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 5}">
+                                                    {language("moderate")} <ShinyOverlay />
+                                                </UnstyledButton>
+                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("severe-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 10)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 10}">
+                                                    {language("severe")} <ShinyOverlay />
+                                                </UnstyledButton>
+                                            </div>
+                                        }
+                                        {selectedSymptom.severityTracking == "10PointScale" &&
+                                            <div className="option-select-vertical">
+                                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i =>
+                                                    <UnstyledButton key={i} onClick={() => setSeverity(selectedSymptom, i)} className={"option" + (getSeverity(selectedSymptom) == i.toString() ? " selected" : "")}>
+                                                        {i}
+                                                        <ShinyOverlay />
+                                                    </UnstyledButton>
+                                                )}
+                                            </div>
+                                        }
+                                        <UnstyledButton className="clear-symptom" onClick={() => setSeverity(selectedSymptom, null)}>{language("clear-symptom")}</UnstyledButton>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </>
+                }
+            </div>
+        </>
     );
 }

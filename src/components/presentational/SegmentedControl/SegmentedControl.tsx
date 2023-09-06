@@ -9,12 +9,25 @@ export interface SegmentedControlProps {
 	onSegmentSelected: Function;
 	className?: string;
 	color?: string;
+	variant?: "default" | "optionsHorizontal" | "optionsVertical";
 }
 
 export default function (props: SegmentedControlProps) {
 	var width = 100 / props.segments.length;
+
+	let classes = ["mdhui-segmented-control"];
+	if (props.className) {
+		classes.push(props.className);
+	}
+	if (props.variant == "optionsHorizontal") {
+		classes.push("mdhui-segmented-control-options-horizontal");
+	}
+	if (props.variant == "optionsVertical") {
+		classes.push("mdhui-segmented-control-options-vertical");
+	}
+
 	return (
-		<div style={{ borderColor: props.color }} className={"mdhui-segmented-control " + (props.className || "")}>
+		<div style={{ borderColor: props.color }} className={classes.join(" ")}>
 			{props.segments.map((s) =>
 				<UnstyledButton className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}

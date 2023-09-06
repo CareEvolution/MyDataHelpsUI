@@ -10,6 +10,7 @@ export const core = css`
 
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
+    --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
 }
 
 @media (prefers-reduced-motion) {

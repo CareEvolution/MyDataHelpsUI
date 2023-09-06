@@ -1,0 +1,92 @@
+.log-entry-edit {
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    position: relative;
+    /*Prevents keyboard from covering notes on Android devices*/
+    padding-bottom: 300px;
+}
+
+.log-entry-edit h3 {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.log-entry-edit .log-entry-edit-body {
+    overflow-x: hidden;
+    width: 100%;
+    margin-bottom: 16px;
+    padding-top: 8px;
+}
+
+.log-entry-edit .items {
+    padding-top: 8px;
+    padding-bottom: 16px;
+    text-align: center;
+}
+
+.log-entry-edit .items .item {
+    margin: 4px;
+}
+
+.log-entry-edit .faces {
+    padding-top: 8px;
+    padding-bottom: 16px;
+    text-align: center;
+}
+
+.log-entry-edit .faces .ss-face {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.log-entry-edit .scaled-up-tracker {
+    transform: scale(2);
+    padding-top: 32px;
+    padding-bottom: 22px;
+}
+
+.log-entry-edit .symptom-edit-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--mdhui-modal-overlay-color);
+    overflow: auto;
+    z-index: 999;
+}
+
+.log-entry-edit .symptom-edit-modal .symptom-edit-padder {
+    padding-bottom: 16px;
+    position: absolute;
+    padding-top: 48px;
+    top: env(safe-area-inset-top);
+    left: 48px;
+    right: 48px;
+}
+
+.log-entry-edit .symptom-edit-modal .symptom-edit-container {
+    border-radius: 5px;
+    background: var(--mdhui-background-color-0);
+    padding: 16px;
+}
+
+.log-entry-edit .symptom-edit-modal .symptom-edit-container .option .fa-circle {
+    color: var(--ss-primary-theme-color);
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.log-entry-edit .symptom-edit-modal .symptom-edit-container .option.selected .fa-circle {
+    color: var(--mdhui-background-color-0);
+}
+
+.log-entry-edit .symptom-edit-modal .symptom-edit-container .clear-symptom {
+    color: var(--ss-primary-theme-color);
+    margin-top: 16px;
+    text-align: center;
+    font-size: 15px;
+    width: 100%;
+}
