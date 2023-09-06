@@ -5,8 +5,8 @@ import "./SegmentedControl.css"
 
 export interface SegmentedControlProps {
 	segments: { key: string, title: string }[];
-	selectedSegment: string;
-	onSegmentSelected: Function;
+	selectedSegment?: string;
+	onSegmentSelected(segmentKey: string): void;
 	className?: string;
 	color?: string;
 	variant?: "default" | "optionsHorizontal" | "optionsVertical";

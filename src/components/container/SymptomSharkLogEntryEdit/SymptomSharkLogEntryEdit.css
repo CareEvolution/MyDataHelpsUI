@@ -68,7 +68,7 @@
 }
 
 .log-entry-edit .symptom-edit-modal .symptom-edit-container {
-    border-radius: 5px;
+    border-radius: var(--mdhui-card-border-radius);
     background: var(--mdhui-background-color-0);
     padding: 16px;
 }

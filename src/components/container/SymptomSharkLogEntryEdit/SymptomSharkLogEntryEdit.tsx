@@ -6,7 +6,7 @@ import getDayKey from '../../../helpers/get-day-key';
 import { getDayOfWeek } from '../../../helpers/date-helpers';
 import language from '../../../helpers/language';
 import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../../helpers/symptom-shark-data';
-import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, ShinyOverlay, TrackerItem, UnstyledButton } from '../../presentational';
+import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, ShinyOverlay, TrackerItem, UnstyledButton } from '../../presentational';
 import { debounce, set } from 'lodash';
 import { previewConfiguration, previewLogEntry } from '../SymptomSharkLogToday/SymptomSharkLogToday.previewData';
 
@@ -56,14 +56,22 @@ export default function (props: SymptomSharkLogEntryEditProps) {
         initialize();
     }, []);
 
-    function setSeverity(item: SymptomConfiguration, severity: number | null) {
+    function setSeverity(item: SymptomConfiguration, severity: number | string | null) {
+        if (severity == language("mild-shortened")) {
+            severity = 2;
+        } else if (severity == language("moderate-shortened")) {
+            severity = 5;
+        } else if (severity == language("severe-shortened")) {
+            severity = 8;
+        }
+
         var newEntry = { ...logEntry! };
         var newItems = [...newEntry.symptoms];
         if (newItems.find(t => t.id == item.id)) {
             newItems.splice(newItems.findIndex(t => t.id == item.id), 1);
         }
         if (severity) {
-            newItems.push({ id: item.id, severity: severity });
+            newItems.push({ id: item.id, severity: severity as number });
         }
         newEntry.symptoms = newItems;
         saveLogEntry(newEntry);
@@ -246,29 +254,18 @@ export default function (props: SymptomSharkLogEntryEditProps) {
                                     <div className="symptom-edit-container">
                                         <h3 style={{ marginTop: "0", marginBottom: "16px" }}>{isSameDay(new Date(), props.date) ? language("how-severe-is") : language("how-severe-was")} {selectedSymptom.name}?</h3>
                                         {selectedSymptom.severityTracking == "3PointScale" &&
-                                            <div className="option-select-vertical">
-                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("mild-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 2)}>
-                                                    {language("mild")} <ShinyOverlay />
-                                                </UnstyledButton>
-                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("moderate-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 5)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 5}">
-                                                    {language("moderate")} <ShinyOverlay />
-                                                </UnstyledButton>
-                                                <UnstyledButton className={"option" + (getSeverity(selectedSymptom) == language("severe-shortened") ? " selected" : "")} onClick={() => setSeverity(selectedSymptom, 10)} ng-class="{selected:$ctrl.symptomSeverity($ctrl.selectedSymptom) == 10}">
-                                                    {language("severe")} <ShinyOverlay />
-                                                </UnstyledButton>
-                                            </div>
+                                            <SegmentedControl variant="optionsVertical" segments={
+                                                [{ key: language("mild-shortened"), title: language("mild") },
+                                                { key: language("moderate-shortened"), title: language("moderate") },
+                                                { key: language("severe-shortened"), title: language("severe") }]
+                                            } selectedSegment={getSeverity(selectedSymptom)} onSegmentSelected={(s) => setSeverity(selectedSymptom, s)} />
                                         }
                                         {selectedSymptom.severityTracking == "10PointScale" &&
-                                            <div className="option-select-vertical">
-                                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i =>
-                                                    <UnstyledButton key={i} onClick={() => setSeverity(selectedSymptom, i)} className={"option" + (getSeverity(selectedSymptom) == i.toString() ? " selected" : "")}>
-                                                        {i}
-                                                        <ShinyOverlay />
-                                                    </UnstyledButton>
-                                                )}
-                                            </div>
+                                            <SegmentedControl variant="optionsVertical" segments={
+                                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => { return { key: i.toString(), title: i.toString() } })
+                                            } selectedSegment={getSeverity(selectedSymptom)} onSegmentSelected={(s) => setSeverity(selectedSymptom, parseInt(s))} />
                                         }
-                                        <UnstyledButton className="clear-symptom" onClick={() => setSeverity(selectedSymptom, null)}>{language("clear-symptom")}</UnstyledButton>
+                                        <Button className='mdhui-symptom-log-clear-symptom' variant="subtle" onClick={() => setSeverity(selectedSymptom, null)}>{language("clear-symptom")}</Button>
                                     </div>
                                 </div>
                             </div>
