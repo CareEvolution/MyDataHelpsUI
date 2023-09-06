@@ -1,0 +1,20 @@
+.notes-input {
+    margin: 16px;
+    width: calc(100% - 32px);
+    text-align: left;
+    border: 0;
+    font-size: .88em;
+    border: none;
+    font-family: Helvetica, Arial, sans-serif;
+    padding-top: 16px;
+    resize: none;
+    background: var(--mdhui-background-color-2);
+    border-radius: 5px;
+    padding: 16px;
+    box-sizing: border-box;
+    border: solid 1px var(--mdhui-color-primary);
+    overflow: hidden;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+    color: var(--mdhui-text-color-1);
+}

@@ -1,5 +1,6 @@
 ﻿let strings: { [key: string]: string } = {
     "back": "Back",
+	"done": "Done",
     "close": "Close",
     "connect-ehr-title-prefix": "Connect ",
     "connect-ehr-title-divider": " or ",
@@ -83,6 +84,22 @@
 	"severe-shortened": "sev",
 	"moderate-shortened": "mod",
 	"mild-shortened": "mild",
+    "log-todays-symptoms": "Log Today's Symptoms",
+    "todays-log": "Today's Log",
+	"symptoms": "Symptoms",
+	"treatments": "Treatments",
+	"symptoms-experiencing-today": "What symptoms are you experiencing?",
+	"symptoms-experiencing-previous": "What symptoms were you experiencing?",
+	"treatments-experiencing-today": "What treatments have you performed?",
+	"treatments-experiencing-previous": "What treatments did you perform?",
+	"feeling-overall-today": "How are you feeling overall?",
+	"feeling-overall-previous": "How were you feeling overall?",
+	"additional-notes": "Any additional notes?",
+	"how-severe-is": "How severe is your",
+	"how-severe-was": "How severe was your",
+	"clear-symptom": "Clear Symptom",
+	"add-notes": "Add notes",
+	"notes": "Notes",
 };
 
 export default strings;

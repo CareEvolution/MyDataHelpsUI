@@ -9,6 +9,7 @@ export const core = css`
     --mdhui-fadein-animation: fadein 1s;
 
     --mdhui-card-border-radius: 12px;
+    --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
 }
 
 @media (prefers-reduced-motion) {
@@ -115,7 +116,7 @@ html {
 body {
     padding: 0;
     margin: 0;
-    font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
+    font-family: var(--mdhui-font-family);
     background: var(--mdhui-background-color-1);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
