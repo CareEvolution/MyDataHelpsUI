@@ -12,6 +12,7 @@ export interface ActionProps {
 	icon?: ReactElement
 	subtitle?: string;
 	indicatorIcon?: IconDefinition;
+	indicator?: ReactElement;
 	onClick: Function;
 	children?: React.ReactNode;
 	className?: string;
@@ -45,7 +46,10 @@ export default function (props: ActionProps) {
 						{props.indicatorValue}&nbsp;
 					</span>
 				}
-				<FontAwesomeSvgIcon icon={indicatorIcon} />
+				{props.indicator}
+				{!props.indicator &&
+					<FontAwesomeSvgIcon icon={indicatorIcon} />
+				}
 			</div>
 		</UnstyledButton>
 	);

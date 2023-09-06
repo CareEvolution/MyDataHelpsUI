@@ -74,6 +74,9 @@
     "start": "Start",
     "resume": "Resume",
     "30-day-average": "30 Day Average",
+	"today": "Today",
+	"yesterday": "Yesterday",
+	"tap-to-log": "Tap here to log your symptoms or treatments!",
 };
 
 export default strings;

@@ -13,7 +13,8 @@ export interface SurveyTaskListProps {
 	surveys?: string[],
 	onDetailLinkClick?: Function,
 	previewState?: SurveyTaskListListPreviewState
-	variant?: "noCard" | "singleCard" | "multiCard"
+	variant?: "noCard" | "singleCard" | "multiCard",
+	hideIfNoTasks?: boolean
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
