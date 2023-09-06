@@ -89,6 +89,25 @@ export const NoLogEntryLastWeek = {
 	render: render
 };
 
+
+export const NoSymptomsTreatments = {
+	args: {
+		title: "Today's Log",
+		date: new Date(),
+		configuration: configuration,
+		logEntry: {
+			symptoms: [
+			],
+			treatments: [
+			],
+			overallFeeling: 5,
+			notes: "My notes\nLorem ipsum"
+		},
+		titleVariant: "today"
+	},
+	render: render
+};
+
 export const CustomTitleWithLogEntry = {
 	args: {
 		title: "Today's Log",

@@ -38,4 +38,5 @@
 
 .mdhui-symptom-shark-log-entry .mdhui-symptom-shark-notes-content {
     font-size: .88em;
+    white-space: pre-wrap;
 }

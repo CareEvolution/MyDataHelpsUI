@@ -157,27 +157,28 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
         highlightedTreatments = props.highlightedTreatments;
     }
 
+    if (props.logEntry.symptoms.length == 0 || props.logEntry.treatments.length == 0) {
+        return null;
+    }
+
     return <div className="mdhui-symptom-shark-log-entry-section">
         <div className="mdhui-symptom-shark-section-header">Symptoms & Treatments</div>
-        {(props.logEntry.symptoms.length > 0 || props.logEntry.treatments.length > 0) && <>
-            {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
-                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
-            )}
-            {treatments.filter((s) => highlightedTreatments.indexOf(s.id) != -1).map((s) =>
-                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} key={s.id} text={s.name} bordered={true} />
-            )}
-            {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) == -1).map((s) =>
-                <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
-                    <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} text={s.name} />
-                </span>
-            )}
-            {treatments.filter((s) => highlightedTreatments.indexOf(s.id) == -1).map((s) =>
-                <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
-                    <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} text={s.name} bordered={true} />
-                </span>
-            )}
-        </>
-        }
+        {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
+            <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
+        )}
+        {treatments.filter((s) => highlightedTreatments.indexOf(s.id) != -1).map((s) =>
+            <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} key={s.id} text={s.name} bordered={true} />
+        )}
+        {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) == -1).map((s) =>
+            <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
+                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} badge={s.severity} text={s.name} />
+            </span>
+        )}
+        {treatments.filter((s) => highlightedTreatments.indexOf(s.id) == -1).map((s) =>
+            <span key={s.id} style={{ opacity: highlightedSymptoms.length > 0 || highlightedTreatments.length > 0 ? .5 : 1 }}>
+                <TrackerItem className="mdhui-symptom-shark-log-entry-item" selected={true} color={s.color} text={s.name} bordered={true} />
+            </span>
+        )}
     </div>;
 
 }
