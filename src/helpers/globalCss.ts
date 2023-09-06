@@ -7,6 +7,8 @@ export const core = css`
     --mdhui-color-warning: #FF671D;
     --mdhui-color-danger: #eb5546;
     --mdhui-fadein-animation: fadein 1s;
+
+    --mdhui-card-border-radius: 12px;
 }
 
 @media (prefers-reduced-motion) {
@@ -59,10 +61,10 @@ export const lightColorScheme = css`
     --mdhui-text-color-3: #999;
     --mdhui-text-color-4: #bbb;
 
-    --mdhui-box-shadow-color-0: #ddd;
+    --mdhui-box-shadow-color-0: rgba(0, 0, 0, 0.05);
     --mdhui-box-shadow-color-1: #aaa;
 
-    --mdhui-box-shadow-0: 0px 9px 9px 0px var(--mdhui-box-shadow-color-0);
+    --mdhui-box-shadow-0: 0px 4px 4px 0px var(--mdhui-box-shadow-color-0);
     --mdhui-box-shadow-1: 0px 0px 5px 0px var(--mdhui-box-shadow-color-1);
 
     --mdhui-overlay-gradient:linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 240, 0.2) 100%);

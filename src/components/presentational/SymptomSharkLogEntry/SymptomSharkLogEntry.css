@@ -2,75 +2,8 @@
     cursor: pointer;
 }
 
-.mdhui-symptom-shark-log-entry.no-shadow {
-    box-shadow: none;
-    background: none !important;
-    border: solid 1px var(--mdhui-border-color-1);
-}
-
-.mdhui-symptom-shark-log-entry .day-header {
-    width: 100%;
-    font-size: 17px;
-    font-weight: bold;
-    padding: 16px;
-    position: relative;
-    border-bottom: solid 1px var(--mdhui-border-color-1);
-}
-
-.mdhui-symptom-shark-log-entry .day-header .day-subtitle {
-    font-size: 14px;
-    font-weight: normal;
-    display: block;
-    color: var(--mdhui-text-color-2);
-}
-
-.mdhui-symptom-shark-log-entry .day-header .message {
-    font-size: 17px;
-    padding-top: 16px;
-    font-weight: normal;
-}
-
-.mdhui-symptom-shark-log-entry .day-header.no-log-entry {
-    border: none;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry .day-title {
-    color: var(--mdhui-text-color-2);
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry .day-subtitle {
-    color: var(--mdhui-text-color-3);
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight {
-    background: var(--mdhui-color-primary);
-    color: #FFF;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight .day-title {
-    color: #FFF;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight .day-options i {
-    color: #FFF !important;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight .subtitle {
-    color: #FFF;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight .indicator {
-    color: #FFF;
-}
-
-.mdhui-symptom-shark-log-entry .mdhui-action.no-log-entry.today-highlight .message {
+.mdhui-symptom-shark-log-entry .mdhui-symptom-shark-log-entry-no-data {
     margin-top: 16px;
-}
-
-.mdhui-symptom-shark-log-entry .day-options {
-    position: absolute;
-    right: 16px;
-    top: calc(50% - 10px);
 }
 
 .mdhui-symptom-shark-log-entry .mdhui-face {
@@ -79,50 +12,16 @@
     border-radius: 9px;
 }
 
-.mdhui-symptom-shark-log-entry .day-options .fa {
-    font-size: 21px;
-    margin-left: 16px;
-}
-
-.mdhui-symptom-shark-log-entry .day-options .fa-chevron-right {
+.mdhui-symptom-shark-log-entry .mdhui-symptom-shark-section-header {
+    font-size: .88em;
+    font-weight: 500;
     color: var(--mdhui-text-color-3);
-    font-size: 17px;
+    margin-bottom: 4px;
 }
-
-.mdhui-symptom-shark-log-entry .log-entry-content {
-    position: relative;
-}
-
-.mdhui-symptom-shark-log-entry .log-entry-content .items-group {
-    margin: 16px;
-    margin-top: 0;
-}
-
-.mdhui-symptom-shark-log-entry .log-entry-content .items-group .items {
-    text-align: left;
-}
-
-.mdhui-symptom-shark-log-entry .log-entry-content .icon .fa {
-    color: var(--mdhui-text-color-4);
-    font-size: 15px;
-}
-
-.mdhui-symptom-shark-log-entry .log-entry-content .items {
-    text-align: left;
-    padding-bottom: 0;
-}
-
-.mdhui-symptom-shark-log-entry .log-entry-content .items .item {
-    box-shadow: none;
-    margin-left: 0;
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-
 
 .mdhui-symptom-shark-log-entry .mdhui-symptom-shark-log-entry-section {
     margin: 16px;
-    margin-top:0;
+    margin-top: 0;
 }
 
 .mdhui-symptom-shark-log-entry .mdhui-symptom-shark-notes-preview {
@@ -132,17 +31,11 @@
     margin-top: 0;
 }
 
-.mdhui-symptom-shark-log-entry .mdhui-tracker-item
-{
+.mdhui-symptom-shark-log-entry .mdhui-tracker-item {
     margin-left: 0;
     margin-top: 0;
 }
 
-.mdhui-symptom-shark-log-entry .mdhui-symptom-shark-section-header
-{
-    
+.mdhui-symptom-shark-log-entry .mdhui-symptom-shark-notes-content {
     font-size: .88em;
-    font-weight: 500;
-    color:var(--mdhui-text-color-3);
-    margin-bottom:8px;
 }

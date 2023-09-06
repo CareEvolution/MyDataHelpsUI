@@ -42,10 +42,11 @@ let configuration: SymptomSharkConfiguration = {
 	]
 };
 
-export const ListVariant = {
+export const WithLogEntry = {
 	args: {
 		date: new Date(),
 		configuration: configuration,
+		noDataMessage: "Tap to log your symptoms and treatments",
 		logEntry: {
 			symptoms: [
 				{
@@ -71,26 +72,26 @@ export const ListVariant = {
 	render: render
 };
 
-export const ListVariantNoLogEntryToday = {
+export const NoLogEntryToday = {
 	args: {
 		date: new Date(),
 		configuration: configuration,
-		variant: "list"
+		noDataMessage: "Tap to log your symptoms and treatments!",
 	},
 	render: render
 };
 
-export const ListVariantNoLogEntryLastWeek = {
+export const NoLogEntryLastWeek = {
 	args: {
 		date: add(new Date(), { weeks: -1 }),
-		configuration: configuration,
-		variant: "list"
+		configuration: configuration
 	},
 	render: render
 };
 
-export const TodayVariant = {
+export const CustomTitleWithLogEntry = {
 	args: {
+		title: "Today's Log",
 		date: new Date(),
 		configuration: configuration,
 		logEntry: {
@@ -114,17 +115,16 @@ export const TodayVariant = {
 			overallFeeling: 5,
 			notes: "My notes"
 		},
-		variant: "today"
+		titleVariant: "today"
 	},
 	render: render
 };
 
-
-export const TodayVariantNoLogEntry = {
+export const CustomTitleNoLogEntry = {
 	args: {
 		date: new Date(),
 		configuration: configuration,
-		variant: "today"
+		title: "Log Symptoms"
 	},
 	render: render
 };
