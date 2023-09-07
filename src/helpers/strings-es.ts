@@ -98,6 +98,8 @@
 	"how-severe-is": "¿Cuál es la gravedad de su",
 	"how-severe-was": "¿Cuál era la gravedad de su",
 	"clear-symptom": "Eliminar síntomas",
+	"add-notes": "Agregar notas",
+	"notes": "Notas",
 };
 
 export default strings;
