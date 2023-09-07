@@ -2,6 +2,7 @@
     "back": "Back",
 	"done": "Done",
     "close": "Close",
+	"add": "Add",
     "connect-ehr-title-prefix": "Connect ",
     "connect-ehr-title-divider": " or ",
     "connect-ehr-title-providers": "Provider",
@@ -100,6 +101,17 @@
 	"clear-symptom": "Clear Symptom",
 	"add-notes": "Add notes",
 	"notes": "Notes",
+	"enter-symptom-name": "Enter Symptom Name",
+	"enter-treatment-name": "Enter Treatment Name",
+	"severity-tracking-none": "Don't Track Severity",
+	"severity-tracking-3point": "Mild / Moderate / Severe Rating",
+	"severity-tracking-10point": "1 - 10 Point Rating",
+	"muted": "Muted",
+	"not-muted": "Not Muted",
+	"delete": "Delete",
+	"severity": "Severity",
+    "item-delete-warning": "Warning: Continuing will permanently delete the below items and all the associated data from your logs.  If you would not like to delete these items, select \"Cancel\".",
+	"unsaved-changes": "Unsaved Changes",
 };
 
 export default strings;

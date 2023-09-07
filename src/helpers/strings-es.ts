@@ -2,6 +2,7 @@
     "back": "Atrás",
 	"done": "Aceptar",
     "close": "Cerrar",
+	"add": "Agregar",
     "connect-ehr-title-prefix": "Conectar ",
     "connect-ehr-title-divider": " o ",
     "connect-ehr-title-providers": "proveedor",
@@ -99,7 +100,18 @@
 	"how-severe-was": "¿Cuál era la gravedad de su",
 	"clear-symptom": "Eliminar síntomas",
 	"add-notes": "Agregar notas",
-	"notes": "Notas",
+	"notes": "Notas",	
+    "enter-symptom-name": "Ingresar el nombre del síntoma",
+	"enter-treatment-name": "Ingresar el nombre del tratamiento",
+	"severity-tracking-none": "No hacer un seguimiento de la gravedad",
+	"severity-tracking-3point": "Calificación leve/moderado/grave",
+	"severity-tracking-10point": "Calificación de 1 a 10 puntos",
+	"muted": "Silenciado",
+	"not-muted": "No silenciado",
+	"delete": "Eliminar",
+	"severity": "Gravedad",
+    "item-delete-warning": "Advertencia: Si continúa, se eliminarán de forma permanente los siguientes elementos y todos los datos asociados de sus registros. Si no desea eliminar estos elementos, seleccione \"Cancelar\".",
+	"unsaved-changes": "Cambios no guardados"
 };
 
 export default strings;
