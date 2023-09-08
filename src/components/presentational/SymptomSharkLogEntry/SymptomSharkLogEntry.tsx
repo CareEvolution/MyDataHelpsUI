@@ -43,7 +43,7 @@ export default function (props: SymptomSharkLogEntryProps) {
     let title: string = props.title ?? getDayOfWeek(props.date);
     let highlight = props.highlight ?? isToday(props.date);
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
-
+    
     if (emptyLogEntry) {
         return <Card variant={highlight ? "highlight" : "subtle"} className="mdhui-symptom-shark-log-entry">
             <Action

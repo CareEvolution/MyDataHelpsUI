@@ -78,7 +78,7 @@
     "30-day-average": "30 Day Average",
 	"today": "Today",
 	"yesterday": "Yesterday",
-	"tap-to-log": "Tap here to log your symptoms or treatments!",
+	"tap-to-log-today": "Tap here to log your symptoms or treatments!",
 	"mild": "Mild",
 	"moderate": "Moderate",
 	"severe": "Severe",

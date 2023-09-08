@@ -1,7 +1,7 @@
 
 import React from "react";
-import SymptomSharkLogToday, { SymptomSharkLogTodayProps } from "./SymptomSharkLogToday";
 import { Layout } from "../../presentational";
+import SymptomSharkLogToday, { SymptomSharkLogTodayProps } from "./SymptomSharkLogToday";
 
 export default { title: "Container/SymptomSharkLogToday", component: SymptomSharkLogToday, parameters: { layout: 'fullscreen' } };
 let render = (args: SymptomSharkLogTodayProps) => <Layout colorScheme="auto"><SymptomSharkLogToday {...args} /></Layout>
