@@ -1,4 +1,4 @@
-import { DailyLogEntry, SymptomSharkConfiguration } from "../../../helpers/symptom-shark-data";
+import { DailyLogEntry, SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
 
 export let previewConfiguration: SymptomSharkConfiguration = {
     "symptoms": [

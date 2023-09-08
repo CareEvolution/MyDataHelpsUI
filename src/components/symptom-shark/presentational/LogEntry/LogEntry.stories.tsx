@@ -1,10 +1,10 @@
 import React from "react";
-import { Layout } from "..";
-import SymptomSharkLogEntry, { SymptomSharkLogEntryProps } from "./SymptomSharkLogEntry";
+import { default as SymptomSharkLogEntry, SymptomSharkLogEntryProps } from "./LogEntry";
 import { add } from "date-fns";
-import { SymptomSharkConfiguration } from "../../../helpers/symptom-shark-data";
+import { SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
+import { Layout } from "../../../presentational";
 
-export default { title: "Presentational/SymptomSharkLogEntry", component: SymptomSharkLogEntry, parameters: { layout: 'fullscreen' } };
+export default { title: "SymptomShark/Presentational/LogEntry", component: SymptomSharkLogEntry, parameters: { layout: 'fullscreen' } };
 let render = (args: SymptomSharkLogEntryProps) => <Layout><SymptomSharkLogEntry {...args} /></Layout>
 
 let configuration: SymptomSharkConfiguration = {

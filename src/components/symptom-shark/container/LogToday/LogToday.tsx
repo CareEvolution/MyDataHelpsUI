@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from '../../../helpers/symptom-shark-data';
-import getDayKey from '../../../helpers/get-day-key';
 import { add } from 'date-fns';
 import { SymptomSharkLogEntry } from '../../presentational';
-import { previewConfiguration, previewLogEntry } from './SymptomSharkLogToday.previewData';
-import language from '../../../helpers/language';
+import { previewConfiguration, previewLogEntry } from './LogToday.previewData';
+import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from '../../helpers/symptom-shark-data';
+import getDayKey from '../../../../helpers/get-day-key';
+import language from '../../../../helpers/language';
 
 export interface SymptomSharkLogTodayProps {
     previewState?: "withLog" | "noLog";

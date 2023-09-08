@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { isSameDay, format, add, formatISO } from 'date-fns';
-import "./SymptomSharkLogEntryEdit.css"
-import getDayKey from '../../../helpers/get-day-key';
-import { getDayOfWeek } from '../../../helpers/date-helpers';
-import language from '../../../helpers/language';
-import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../../helpers/symptom-shark-data';
-import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../presentational';
+import "./LogEntryEdit.css"
+import getDayKey from '../../../../helpers/get-day-key';
+import { getDayOfWeek } from '../../../../helpers/date-helpers';
+import language from '../../../../helpers/language';
+import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../helpers/symptom-shark-data';
+import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
 import { debounce, set } from 'lodash';
-import { previewConfiguration, previewLogEntry } from '../SymptomSharkLogToday/SymptomSharkLogToday.previewData';
+import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
 
 export interface SymptomSharkLogEntryEditProps {
     date: Date;

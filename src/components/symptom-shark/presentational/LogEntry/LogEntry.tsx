@@ -1,15 +1,11 @@
 import React from "react";
-import "./SymptomSharkLogEntry.css"
-import language from "../../../helpers/language";
-import { DailyLogEntry, SymptomSharkConfiguration } from "../../../helpers/symptom-shark-data";
-import Card from "../Card";
-import ShinyOverlay from "../ShinyOverlay";
-import Face from "../Face";
-import TrackerItem from "../TrackerItem";
-import { getDayOfWeek, getFullDateString } from "../../../helpers/date-helpers";
+import "./LogEntry.css"
 import { isToday } from "date-fns";
-import Action from "../Action";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { DailyLogEntry, SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
+import { getDayOfWeek, getFullDateString } from "../../../../helpers/date-helpers";
+import { Action, Card, Face, ShinyOverlay, TrackerItem } from "../../../presentational";
+import language from "../../../../helpers/language";
 
 export interface SymptomSharkLogEntryProps {
     date: Date;
@@ -45,21 +41,21 @@ export default function (props: SymptomSharkLogEntryProps) {
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
     
     if (emptyLogEntry) {
-        return <Card variant={highlight ? "highlight" : "subtle"} className="mdhui-symptom-shark-log-entry">
+        return <Card variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
             <Action
                 title={title}
                 subtitle={subtitle}
                 onClick={() => startEditing()}
                 indicatorIcon={faPlus}>
                 {!!props.noDataMessage &&
-                    <div className="mdhui-symptom-shark-log-entry-section">{props.noDataMessage}</div>
+                    <div className="mdhui-ss-log-entry-section">{props.noDataMessage}</div>
                 }
                 <ShinyOverlay />
             </Action>
         </Card>;
     }
 
-    return <Card className="mdhui-symptom-shark-log-entry">
+    return <Card className="mdhui-ss-log-entry">
         <Action
             title={title}
             subtitle={subtitle}
@@ -74,9 +70,9 @@ export default function (props: SymptomSharkLogEntryProps) {
                 highlightedSymptoms={props.highlightedSymptoms}
                 highlightedTreatments={props.highlightedTreatments} />
             {props.logEntry!.notes &&
-                <div className="mdhui-symptom-shark-log-entry-section">
-                    <div className="mdhui-symptom-shark-section-header">Notes</div>
-                    <div className="mdhui-symptom-shark-notes-content">{props.logEntry!.notes}</div>
+                <div className="mdhui-ss-log-entry-section">
+                    <div className="mdhui-ss-section-header">Notes</div>
+                    <div className="mdhui-ss-notes-content">{props.logEntry!.notes}</div>
                 </div>
             }
         </Action>
@@ -159,8 +155,8 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
         return null;
     }
 
-    return <div className="mdhui-symptom-shark-log-entry-section">
-        <div className="mdhui-symptom-shark-section-header">Symptoms & Treatments</div>
+    return <div className="mdhui-ss-log-entry-section">
+        <div className="mdhui-ss-section-header">Symptoms & Treatments</div>
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
             <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
         )}

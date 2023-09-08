@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import getDayKey from "../../../helpers/get-day-key";
 import { add } from "date-fns";
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from "../../../helpers/symptom-shark-data";
-import { LoadingIndicator, SymptomSharkLogEntry } from "../../presentational";
-import OnVisibleTrigger from "../../presentational/OnVisibleTrigger";
-import { set } from "lodash";
-import { previewConfiguration, previewLogEntry } from "../SymptomSharkLogToday/SymptomSharkLogToday.previewData";
-import language from "../../../helpers/language";
+import { previewConfiguration, previewLogEntry } from "../LogToday/LogToday.previewData";
+import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
+import getDayKey from "../../../../helpers/get-day-key";
+import { SymptomSharkLogEntry } from "../../presentational";
+import OnVisibleTrigger from "../../../presentational/OnVisibleTrigger";
+import { LoadingIndicator } from "../../../presentational";
+import language from "../../../../helpers/language";
 
 export interface SymptomSharkLogEntryListProps {
     onDaySelected(d: Date): void;
