@@ -1,10 +1,11 @@
-name: Publish to npmjs
+name: Publish to npmjs and ProGet (releases)
 
 on:
   workflow_dispatch:
   push:
     tags:
       - '*.*.*'
+      - "!*-*"
 
 permissions:
   id-token: write
