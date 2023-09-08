@@ -1,1 +1,1 @@
-export { default } from './NewPoints';
+export { default, NewPointsProps, NewPointsEntry } from './NewPoints';
