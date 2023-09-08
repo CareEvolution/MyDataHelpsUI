@@ -111,7 +111,9 @@
 	"delete": "Eliminar",
 	"severity": "Gravedad",
     "item-delete-warning": "Advertencia: Si continúa, se eliminarán de forma permanente los siguientes elementos y todos los datos asociados de sus registros. Si no desea eliminar estos elementos, seleccione \"Cancelar\".",
-	"unsaved-changes": "Cambios no guardados"
+	"unsaved-changes": "Cambios no guardados",
+	"daily-overall-experience": "Experiencia general diaria",
+	"average": "Promedio",
 };
 
 export default strings;

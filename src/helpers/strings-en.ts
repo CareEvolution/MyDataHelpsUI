@@ -112,6 +112,8 @@
 	"severity": "Severity",
     "item-delete-warning": "Warning: Continuing will permanently delete the below items and all the associated data from your logs.  If you would not like to delete these items, select \"Cancel\".",
 	"unsaved-changes": "Unsaved Changes",
+	"daily-overall-experience": "Daily Overall Experience",
+	"average": "Average",
 };
 
 export default strings;
