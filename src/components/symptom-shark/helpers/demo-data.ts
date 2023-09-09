@@ -1,5 +1,5 @@
 import { DailyLogEntry, SymptomConfiguration, TreatmentConfiguration } from "../..";
-import { add } from 'date-fns';
+import { add, startOfMonth } from 'date-fns';
 import getDayKey from "../../../helpers/get-day-key";
 
 export var demoSymptoms: SymptomConfiguration[] = [
@@ -76,7 +76,7 @@ export var demoTreatments: TreatmentConfiguration[] = [
 ];
 
 export var demoLogEntries: { [key: string]: DailyLogEntry } = {};
-var currentDate = new Date(2022, 10, 1, 0, 0, 0, 0);
+var currentDate = startOfMonth(new Date());
 
 function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: number, icon?: string, notes?: boolean) {
 	demoLogEntries[getDayKey(currentDate)] = {

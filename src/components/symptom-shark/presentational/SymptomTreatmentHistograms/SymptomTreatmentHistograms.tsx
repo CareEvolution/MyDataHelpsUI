@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import "./SymptomTreatmentHistograms.css"
-import { add } from 'date-fns';
-import { DailyLogEntry, Histogram, SymptomConfiguration, Title, TreatmentConfiguration, getDayKey, language } from '../../../..';
+import { add, startOfMonth } from 'date-fns';
+import { Histogram, TextBlock, Title, getDayKey, language } from '../../../..';
+import { SymptomSharkVisualizationContext } from '../../container/VisualizationCoordinator/VisualizationCoordinator';
+import { DateRangeContext } from '../../../presentational/DateRangeCoordinator/DateRangeCoordinator';
 
 export interface SymptomTreatmentHistogramsProps {
-    symptoms: SymptomConfiguration[];
-    treatments: TreatmentConfiguration[];
-    logEntries: { [key: string]: DailyLogEntry };
-    currentMonth: number;
-    currentYear: number;
+    intervalStart?: Date;
     onSymptomSelected(symptom: string): void;
 }
 
 export default function (props: SymptomTreatmentHistogramsProps) {
+    let visualizationContext = useContext(SymptomSharkVisualizationContext);
+    if (!visualizationContext) {
+        return <TextBlock>Error: Symptom Treatment Histograms must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+    }
+    let { symptoms, treatments, logEntries } = visualizationContext;
+
+    let dateRangeContext = useContext(DateRangeContext);
+    let intervalStart = props.intervalStart || startOfMonth(new Date());
+    if (dateRangeContext) {
+        intervalStart = dateRangeContext.intervalStart;
+    }
+
     var symptomHistogram: {
         label: string;
         color: string;
@@ -20,11 +30,11 @@ export default function (props: SymptomTreatmentHistogramsProps) {
         onSelect?(): void;
     }[] = [];
 
-    props.symptoms.filter(s => !s.inactive).forEach((s) => {
+    symptoms.forEach((s) => {
         var value = 0;
-        var startDate = new Date(props.currentYear, props.currentMonth, 1);
-        while (startDate.getMonth() == props.currentMonth) {
-            var logEntry = props.logEntries[getDayKey(startDate)];
+        var startDate = intervalStart;
+        while (startDate.getMonth() == intervalStart.getMonth()) {
+            var logEntry = logEntries[getDayKey(startDate)];
             if (logEntry && logEntry.symptoms.find((s2) => s2.id == s.id)) {
                 value++;
             }
@@ -52,11 +62,11 @@ export default function (props: SymptomTreatmentHistogramsProps) {
         onSelect?(): void;
     }[] = [];
 
-    props.treatments.filter(s => !s.inactive).forEach((t) => {
+    treatments.forEach((t) => {
         var value = 0;
-        var startDate = new Date(props.currentYear, props.currentMonth, 1);
-        while (startDate.getMonth() == props.currentMonth) {
-            var logEntry = props.logEntries[getDayKey(startDate)];
+        var startDate = intervalStart;
+        while (startDate.getMonth() == intervalStart.getMonth()) {
+            var logEntry = logEntries[getDayKey(startDate)];
             if (logEntry && logEntry.treatments.find((t2) => t2.id == t.id)) {
                 value++;
             }
