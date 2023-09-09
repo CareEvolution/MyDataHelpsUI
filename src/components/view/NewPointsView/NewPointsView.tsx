@@ -84,6 +84,6 @@ export function showNewPoints(props: NewPointsViewProps, url?: string): void {
         value: JSON.stringify(props)
     };
     MyDataHelps.persistDeviceData([newPointsDataPoint]).then(() => {
-        MyDataHelps.openApplication(url || 'https://viewlibrary.careevolutionapps.dev/newpoints', {modal: true});
+        MyDataHelps.openApplication(url || 'https://viewlibrary.careevolutionapps.com/newpoints', {modal: true});
     });
 }
