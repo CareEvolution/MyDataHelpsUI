@@ -8,8 +8,6 @@ import { demoLogEntries, demoSymptoms, demoTreatments } from "../../helpers/demo
 export default { title: "SymptomShark/Presentational/SymptomTreatmentHistograms", component: SymptomTreatmentHistograms, parameters: { layout: 'fullscreen' } };
 let render = (args: SymptomTreatmentHistogramsProps) => <Layout><SymptomTreatmentHistograms {...args} /></Layout>
 
-let configuration: SymptomSharkConfiguration = previewConfiguration;
-
 let defaultProps: SymptomTreatmentHistogramsProps = {
     symptoms: demoSymptoms,
     treatments: demoTreatments,

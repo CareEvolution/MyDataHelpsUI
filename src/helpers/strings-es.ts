@@ -114,6 +114,10 @@
 	"unsaved-changes": "Cambios no guardados",
 	"daily-overall-experience": "Experiencia general diaria",
 	"average": "Promedio",
+	"include-symptoms": "Incluir síntomas",
+	"select-symptoms": "Seleccionar síntomas",
+	"include-treatments": "Incluir tratamientos",
+	"select-treatments": "Seleccionar tratamientos",
 };
 
 export default strings;

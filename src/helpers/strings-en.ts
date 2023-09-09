@@ -114,6 +114,10 @@
 	"unsaved-changes": "Unsaved Changes",
 	"daily-overall-experience": "Daily Overall Experience",
 	"average": "Average",
+	"include-symptoms": "Include Symptoms",
+	"select-symptoms": "Select Symptoms",
+	"include-treatments": "Include Treatments",
+	"select-treatments": "Select Treatments",
 };
 
 export default strings;

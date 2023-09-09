@@ -1,0 +1,30 @@
+.mdhui-ss-symptom-treatment-filters .mdhui-ss-symptom-treatment-filter-dropdown-button {
+    width: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 16px;
+    background: var(--mdhui-color-primary);
+    text-align: center;
+    font-size: .88em;
+    cursor: pointer;
+    color: #FFF;
+    position: relative;
+    white-space: nowrap;
+}
+
+.mdhui-ss-symptom-treatment-filters .mdhui-ss-symptom-treatment-filter-dropdown-button:first-child {
+    border-right: solid 1px var(--mdhui-border-color-1);
+}
+
+.mdhui-ss-symptom-treatment-filters .mdhui-ss-symptom-treatment-filter-items-list {
+    background: var(--mdhui-background-color-0);
+    text-align: center;
+    padding: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: solid 4px var(--ss-primary-theme-color);
+}
+
+.mdhui-ss-symptom-treatment-filters .mdhui-ss-symptom-treatment-filter-item {
+    margin: 4px;
+}
