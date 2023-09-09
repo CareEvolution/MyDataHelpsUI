@@ -51,8 +51,8 @@ export default function (props: NewPointsViewProps) {
                         <div className="mdhui-new-points-title">Well Done!</div>
                         <div className="mdhui-new-points-text">You've been awarded points for the following:</div>
                         <div className="mdhui-new-points-entries">
-                            {props.entries.map((entry) =>
-                                <div className="mdhui-new-points-entry">
+                            {props.entries.map((entry, index) =>
+                                <div key={index} className="mdhui-new-points-entry">
                                     <div className="mdhui-new-points-entry-name">{entry.name}</div>
                                     <div className="mdhui-new-points-entry-points">+{entry.points}</div>
                                 </div>
