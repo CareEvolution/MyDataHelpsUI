@@ -4,13 +4,13 @@ import getDayKey from "../../../helpers/get-day-key";
 
 export var demoSymptoms: SymptomConfiguration[] = [
 	{
-		severityTracking: "None",
+		severityTracking: "10PointScale",
 		color: "#c4291c",
 		name: "Headache",
 		id: "Headache"
 	},
 	{
-		severityTracking: "None",
+		severityTracking: "3PointScale",
 		color: "#e35c33",
 		name: "Fatigue",
 		id: "Fatigue"
@@ -82,7 +82,8 @@ function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: n
 	demoLogEntries[getDayKey(currentDate)] = {
 		symptoms: symptoms.map(s => {
 			return {
-				id: s
+				id: s,
+                severity: Math.floor(Math.random() * 10) + 1
 			}
 		}),
 		treatments: treatments.map(s => {
