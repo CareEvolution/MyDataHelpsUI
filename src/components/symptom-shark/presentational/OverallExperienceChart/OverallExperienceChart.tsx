@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./OverallExperienceChart.css"
-import { CardTitle, DailyLogEntry, Face, getDayKey, language } from "../../../..";
+import { CardTitle, Face, TextBlock, getDayKey, language } from "../../../..";
 import { getDatesForMonth } from "../../../../helpers/date-helpers";
+import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
+import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/DateRangeCoordinator";
+import { startOfMonth } from "date-fns";
 
 export interface OverallExperienceChartProps {
-    logEntries: { [key: string]: DailyLogEntry };
-    currentMonth: number;
-    currentYear: number;
+    intervalStart?: Date;
     showAllDays?: boolean;
 }
 
 export default function (props: OverallExperienceChartProps) {
-    var monthDays = getDatesForMonth(props.currentYear, props.currentMonth);
+    let visualizationContext = useContext(SymptomSharkVisualizationContext);
+    if (!visualizationContext) {
+        return <TextBlock>Error: Symptom Severity Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+    }
+    let { logEntries } = visualizationContext;
+
+    let dateRangeContext = useContext(DateRangeContext);
+    let intervalStart = props.intervalStart || startOfMonth(new Date());
+    if (dateRangeContext) {
+        intervalStart = dateRangeContext.intervalStart;
+    }
+
+    var monthDays = getDatesForMonth(intervalStart.getFullYear(), intervalStart.getMonth());
 
     function daysWithOverallFeeling(faceValue?: number) {
         return monthDays.filter((m) => {
-            if (props.logEntries[getDayKey(m)] &&
-                props.logEntries[getDayKey(m)].overallFeeling &&
-                (!faceValue || props.logEntries[getDayKey(m)].overallFeeling == faceValue)) {
+            if (logEntries[getDayKey(m)] &&
+                logEntries[getDayKey(m)].overallFeeling &&
+                (!faceValue || logEntries[getDayKey(m)].overallFeeling == faceValue)) {
                 return true;
             }
         });
@@ -30,7 +43,7 @@ export default function (props: OverallExperienceChartProps) {
             return null;
         }
         for (var i = 0; i < overallFeelingDays.length; i++) {
-            total += props.logEntries[getDayKey(overallFeelingDays[i])].overallFeeling!;
+            total += logEntries[getDayKey(overallFeelingDays[i])].overallFeeling!;
         }
         return (total / overallFeelingDays.length);
     }
@@ -48,8 +61,8 @@ export default function (props: OverallExperienceChartProps) {
     for (var i = 0; i < daysWithScore.length - 1; i++) {
         var currentDay = daysWithScore[i];
         var nextDay = daysWithScore[i + 1];
-        var currentDayFeeling = props.logEntries[getDayKey(currentDay)].overallFeeling!;
-        var nextDayFeeling = props.logEntries[getDayKey(nextDay)].overallFeeling!;
+        var currentDayFeeling = logEntries[getDayKey(currentDay)].overallFeeling!;
+        var nextDayFeeling = logEntries[getDayKey(nextDay)].overallFeeling!;
         var color = "#429bdf"
 
         lines.push({
@@ -114,8 +127,8 @@ export default function (props: OverallExperienceChartProps) {
                                 {m.getDate()}
                             </div>
                         }
-                        {props.logEntries[getDayKey(m)]?.overallFeeling &&
-                            <div className="mdhui-ss-oe-chart-dot" style={{ bottom: ((props.logEntries[getDayKey(m)].overallFeeling! * 24) - 16) + 'px' }}></div>
+                        {logEntries[getDayKey(m)]?.overallFeeling &&
+                            <div className="mdhui-ss-oe-chart-dot" style={{ bottom: ((logEntries[getDayKey(m)].overallFeeling! * 24) - 16) + 'px' }}></div>
                         }
                     </div>
                 )}

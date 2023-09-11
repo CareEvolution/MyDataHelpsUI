@@ -76,7 +76,7 @@ export var demoTreatments: TreatmentConfiguration[] = [
 ];
 
 export var demoLogEntries: { [key: string]: DailyLogEntry } = {};
-var currentDate = startOfMonth(new Date());
+var currentDate = add(new Date(), {days:-29});
 
 function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: number, icon?: string, notes?: boolean) {
 	demoLogEntries[getDayKey(currentDate)] = {

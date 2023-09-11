@@ -1,29 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./SymptomSeverityChart.css"
-import { CardTitle, DailyLogEntry, ShinyOverlay, SymptomConfiguration, getDayKey, language } from "../../../..";
+import { CardTitle, ShinyOverlay, SymptomConfiguration, TextBlock, getDayKey, language } from "../../../..";
 import { getDatesForMonth } from "../../../../helpers/date-helpers";
+import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
+import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/DateRangeCoordinator";
+import { startOfMonth } from "date-fns";
 
 export interface SymptomSeverityChartProps {
+    intervalStart: any;
     symptom: SymptomConfiguration;
-    logEntries: { [key: string]: DailyLogEntry };
-    currentMonth: number;
-    currentYear: number;
     showAllDays?: boolean;
 }
 
 export default function (props: SymptomSeverityChartProps) {
-    var monthDays = getDatesForMonth(props.currentYear, props.currentMonth);
+    let visualizationContext = useContext(SymptomSharkVisualizationContext);
+    if (!visualizationContext) {
+        return <TextBlock>Error: Symptom Severity Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+    }
+    let { logEntries } = visualizationContext;
 
-    console.log(props.logEntries);
-    console.log(props.symptom);
+    let dateRangeContext = useContext(DateRangeContext);
+    let intervalStart = props.intervalStart || startOfMonth(new Date());
+    if (dateRangeContext) {
+        intervalStart = dateRangeContext.intervalStart;
+    }
+
+    var monthDays = getDatesForMonth(intervalStart.getFullYear(), intervalStart.getMonth());
+
     var symptomAverage = function () {
         var total = 0;
 
         var relevantEntries = [];
         for (var i = 0; i < monthDays.length; i++) {
             var day = getDayKey(monthDays[i]);
-            if (props.logEntries[day]) {
-                var matchingSymptom = props.logEntries[day].symptoms.find((s) => s.id == props.symptom.id);
+            if (logEntries[day]) {
+                var matchingSymptom = logEntries[day].symptoms.find((s) => s.id == props.symptom.id);
                 if (matchingSymptom && matchingSymptom.severity) {
                     relevantEntries.push(matchingSymptom);
                 }
@@ -45,8 +56,8 @@ export default function (props: SymptomSeverityChartProps) {
 
     var symptomSeverity = function (date: Date) {
         var day = getDayKey(date);
-        if (props.logEntries[day]) {
-            var matchingSymptom = props.logEntries[day].symptoms.find((s) => props.symptom.id == s.id);
+        if (logEntries[day]) {
+            var matchingSymptom = logEntries[day].symptoms.find((s) => props.symptom.id == s.id);
             if (matchingSymptom && matchingSymptom.severity) {
                 if (props.symptom.severityTracking == '3PointScale') {
                     if (matchingSymptom.severity < 4) { return 1; }
