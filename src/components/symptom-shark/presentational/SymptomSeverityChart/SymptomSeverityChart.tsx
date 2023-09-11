@@ -7,7 +7,7 @@ import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/D
 import { startOfMonth } from "date-fns";
 
 export interface SymptomSeverityChartProps {
-    intervalStart: any;
+    intervalStart?: Date;
     symptom: SymptomConfiguration;
     showAllDays?: boolean;
 }

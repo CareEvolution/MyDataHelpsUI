@@ -75,6 +75,10 @@ export var demoTreatments: TreatmentConfiguration[] = [
 	}
 ];
 
+demoSymptoms.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+demoTreatments.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+	
+
 export var demoLogEntries: { [key: string]: DailyLogEntry } = {};
 var currentDate = add(new Date(), {days:-29});
 

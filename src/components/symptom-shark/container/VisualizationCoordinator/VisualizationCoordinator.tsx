@@ -15,6 +15,7 @@ export interface SymptomSharkVisualizationContext {
     symptoms: SymptomConfiguration[];
     treatments: TreatmentConfiguration[];
     logEntries: { [key: string]: DailyLogEntry }
+    hasFilteredSymptoms: boolean;
 }
 
 export const SymptomSharkVisualizationContext = createContext<SymptomSharkVisualizationContext | null>(null);
@@ -29,14 +30,14 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
     function load() {
         if (props.previewState == "default") {
             setConfiguration({ symptoms: demoSymptoms, treatments: demoTreatments });
-            setCurrentContext({ symptoms: demoSymptoms, treatments: demoTreatments, logEntries: demoLogEntries });
+            setCurrentContext({ symptoms: demoSymptoms, treatments: demoTreatments, logEntries: demoLogEntries, hasFilteredSymptoms: false });
             return;
         }
 
         symptomSharkData.getConfiguration().then(function (info) {
             symptomSharkData.getDailyLogEntries().then(function (logEntries) {
                 setConfiguration(info);
-                setCurrentContext({ symptoms: filterSymptoms(selectedSymptoms), treatments: filterTreatments(selectedTreatments), logEntries: logEntries });
+                setCurrentContext({ symptoms: filterSymptoms(selectedSymptoms), treatments: filterTreatments(selectedTreatments), logEntries: logEntries, hasFilteredSymptoms: false });
             })
         })
     }
@@ -50,7 +51,7 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
     }
 
     function updateSelectedSymptoms(selectedSymptoms: string[]) {
-        setCurrentContext({ ...currentContext!, symptoms: filterSymptoms(selectedSymptoms) });
+        setCurrentContext({ ...currentContext!, symptoms: filterSymptoms(selectedSymptoms), hasFilteredSymptoms: !!selectedSymptoms.length });
         setSelectedSymptoms(selectedSymptoms);
     }
 

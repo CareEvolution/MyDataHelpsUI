@@ -7,7 +7,7 @@ import { DateRangeContext } from '../../../presentational/DateRangeCoordinator/D
 
 export interface SymptomTreatmentHistogramsProps {
     intervalStart?: Date;
-    onSymptomSelected(symptom: string): void;
+    onSymptomSelected(symptom: string, intervalStart: Date): void;
 }
 
 export default function (props: SymptomTreatmentHistogramsProps) {
@@ -42,7 +42,7 @@ export default function (props: SymptomTreatmentHistogramsProps) {
         }
 
         var onSelect = s.severityTracking && s.severityTracking != "None" ? function () {
-            props.onSymptomSelected(s.id);
+            props.onSymptomSelected(s.id, intervalStart);
         } : undefined;
 
         if (value > 0) {

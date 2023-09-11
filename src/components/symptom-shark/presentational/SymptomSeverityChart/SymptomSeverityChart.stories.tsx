@@ -7,7 +7,7 @@ import { SymptomSharkLogVisualizationCoordinator } from "../../container";
 export default { title: "SymptomShark/Presentational/SymptomSeverityChart", component: SymptomSeverityChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SymptomSeverityChartProps) => <Layout>
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
-        <SymptomSharkLogVisualizationCoordinator previewState="default" showFilters>
+        <SymptomSharkLogVisualizationCoordinator previewState="default">
             <Section><SymptomSeverityChart {...args} /></Section>
         </SymptomSharkLogVisualizationCoordinator>
     </DateRangeCoordinator>
@@ -15,14 +15,14 @@ let render = (args: SymptomSeverityChartProps) => <Layout>
 
 export const TenPointScale = {
     args: {
-        symptom: demoSymptoms[0]
+        symptom: demoSymptoms.find(s=>s.name == "Headache")
     },
     render: render
 };
 
 export const ThreePointScale = {
     args: {
-        symptom: demoSymptoms[1]
+        symptom: demoSymptoms.find(s=>s.name == "Fatigue")
     },
     render: render
 };
