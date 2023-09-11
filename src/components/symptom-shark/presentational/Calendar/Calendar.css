@@ -1,0 +1,38 @@
+.mdhui-ss-calendar .calendar-day {
+    width: 100%;
+}
+
+.mdhui-ss-calendar .calendar-day .day-label {
+    font-size: 12px;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-ss-calendar .calendar-day .day-label svg {
+    font-size: 12px;
+}
+
+.mdhui-ss-calendar .calendar-day .day-label.future {
+    opacity: .5;
+}
+
+.mdhui-ss-calendar .notes-icon {
+    color: var(--mdhui-color-primary);
+    position: absolute;
+    right: calc(50% - 19px);
+    bottom: 2px;
+}
+
+
+.mdhui-ss-calendar .mdhui-ss-calendar .calendar-day .day-label svg.visible {
+    opacity: 1;
+}
+
+.mdhui-ss-calendar .calendar-day .day-tracker {
+    padding-bottom: 2px;
+    padding-top: 8px;
+}
+
+.mdhui-ss-calendar .calendar-day.future {
+    opacity: .5;
+    cursor: default;
+}
