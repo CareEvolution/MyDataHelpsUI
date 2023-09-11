@@ -73,21 +73,21 @@ interface CalendarDayProps {
 function CalendarDay(props: CalendarDayProps) {
     function getDayTracker() {
         if (!props.logEntry) {
-            return <DayTrackerSymbol className='day-tracker' primaryColors={[]} secondaryColors={[]} />;
+            return <DayTrackerSymbol className='mdhui-ss-day-tracker' primaryColors={[]} secondaryColors={[]} />;
         }
         var primaryColors = props.symptomConfigurations.filter(t => !t.inactive && props.logEntry.symptoms.find(s => s.id == t.id)).map(t => t.color);
         var secondaryColors = props.treatmentConfigurations.filter(t => !t.inactive && props.logEntry.treatments.find(s => s.id == t.id)).map(t => t.color);
-        if (primaryColors.length === 0 && secondaryColors.length === 0) { return <DayTrackerSymbol className='day-tracker' primaryColors={[]} secondaryColors={[]} />; }
-        return <DayTrackerSymbol className='day-tracker' key={Math.random()} primaryColors={primaryColors} secondaryColors={secondaryColors} />
+        if (primaryColors.length === 0 && secondaryColors.length === 0) { return <DayTrackerSymbol className='mdhui-ss-day-tracker' primaryColors={[]} secondaryColors={[]} />; }
+        return <DayTrackerSymbol className='mdhui-ss-day-tracker' key={Math.random()} primaryColors={primaryColors} secondaryColors={secondaryColors} />
     }
 
     return (
-        <UnstyledButton className={"calendar-day" + (props.future ? " future" : "")} onClick={() => props.onClick(props.day)}>
+        <UnstyledButton className={"mdhui-ss-calendar-day" + (props.future ? " future" : "")} onClick={() => props.onClick(props.day)}>
             {getDayTracker()}
             <div className="day-label">
                 &nbsp;{props.day}&nbsp;
                 {props.logEntry?.notes.length > 0 &&
-                    <FontAwesomeIcon icon={faFileAlt} className="notes-icon" />
+                    <FontAwesomeIcon icon={faFileAlt} className="mdhui-ss-notes-icon" />
                 }
             </div>
         </UnstyledButton>
