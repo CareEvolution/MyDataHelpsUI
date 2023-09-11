@@ -2,14 +2,14 @@ import React from "react";
 import { DateRangeCoordinator, Layout, Section } from "../../../presentational";
 import SymptomSeverityChart, { SymptomSeverityChartProps } from "./SymptomSeverityChart";
 import { demoSymptoms } from "../../helpers/demo-data";
-import { SymptomSharkLogVisualizationCoordinator } from "../../container";
+import { SymptomSharkVisualizationCoordinator } from "../../container";
 
 export default { title: "SymptomShark/Presentational/SymptomSeverityChart", component: SymptomSeverityChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SymptomSeverityChartProps) => <Layout>
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
-        <SymptomSharkLogVisualizationCoordinator previewState="default">
+        <SymptomSharkVisualizationCoordinator previewState="default">
             <Section><SymptomSeverityChart {...args} /></Section>
-        </SymptomSharkLogVisualizationCoordinator>
+        </SymptomSharkVisualizationCoordinator>
     </DateRangeCoordinator>
 </Layout>
 

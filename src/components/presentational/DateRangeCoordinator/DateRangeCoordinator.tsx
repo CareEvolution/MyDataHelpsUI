@@ -4,6 +4,7 @@ import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-interval-start";
 
 export interface DateRangeCoordinatorProps {
+    initialIntervalStart?: Date;
     intervalType: "Week" | "Month";
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
@@ -18,7 +19,7 @@ export interface DateRangeContext {
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
 export default function DateRangeNavigatorContext(props: DateRangeCoordinatorProps) {
-    let initialIntervalStart = getMonthStart();
+    let initialIntervalStart = props.initialIntervalStart || getMonthStart();
     if (props.intervalType === "Week") {
         initialIntervalStart = getWeekStart(props.weekStartsOn);
     }
@@ -30,14 +31,14 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
 
     //reset the interval if the interval type changes
     useEffect(() => {
-        setCurrentContext({ intervalType:props.intervalType, intervalStart: initialIntervalStart });
+        setCurrentContext({ intervalType: props.intervalType, intervalStart: initialIntervalStart });
     }, [props.intervalType, props.weekStartsOn]);
 
     return <DateRangeContext.Provider value={currentContext}>
         <DateRangeNavigator
             intervalType={props.intervalType}
             intervalStart={currentContext.intervalStart}
-            onIntervalChange={(d) => setCurrentContext({...currentContext, intervalStart: d})}
+            onIntervalChange={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
             variant={props.variant} />
         {props.children}
     </DateRangeContext.Provider>

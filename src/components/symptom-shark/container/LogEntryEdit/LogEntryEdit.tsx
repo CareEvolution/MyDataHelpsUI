@@ -7,13 +7,13 @@ import { getDayOfWeek } from '../../../../helpers/date-helpers';
 import language from '../../../../helpers/language';
 import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../helpers/symptom-shark-data';
 import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
-import { debounce, set } from 'lodash';
+import { debounce } from 'lodash';
 import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
 
 export interface SymptomSharkLogEntryEditProps {
     date: Date;
     promptForReviewAfterDays?: number;
-    previewState: "default";
+    previewState?: "default";
 }
 
 export default function (props: SymptomSharkLogEntryEditProps) {

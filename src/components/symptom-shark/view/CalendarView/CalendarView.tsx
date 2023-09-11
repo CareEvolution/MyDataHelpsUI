@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { DateRangeCoordinator, Layout, Section, TextBlock } from '../../../presentational';
-import { SymptomSharkLogVisualizationCoordinator } from '../../container';
+import { SymptomSharkVisualizationCoordinator } from '../../container';
 import { SymptomSharkCalendar, SymptomSharkOverallExperienceChart, SymptomSharkSymptomSeverityChart, SymptomSharkSymptomTreatmentHistograms } from '../../presentational';
 import { SymptomSharkVisualizationContext } from '../../container/VisualizationCoordinator/VisualizationCoordinator';
 
@@ -16,7 +16,7 @@ export default function (props: CalendarViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "light"}>
             <DateRangeCoordinator variant='rounded' intervalType='Month'>
-                <SymptomSharkLogVisualizationCoordinator showFilters previewState={props.previewState}>
+                <SymptomSharkVisualizationCoordinator showFilters previewState={props.previewState}>
                     <Section>
                         <SymptomSharkCalendar onDaySelected={props.onDaySelected} />
                     </Section>
@@ -27,7 +27,7 @@ export default function (props: CalendarViewProps) {
                         <SymptomSharkOverallExperienceChart />
                     </Section>
                     <CalendarSeverityCharts />
-                </SymptomSharkLogVisualizationCoordinator>
+                </SymptomSharkVisualizationCoordinator>
             </DateRangeCoordinator>
         </Layout>
     )
