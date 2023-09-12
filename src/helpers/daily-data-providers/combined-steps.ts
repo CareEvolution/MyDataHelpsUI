@@ -17,6 +17,10 @@ export default function (startDate: Date, endDate: Date) {
 			providers.push(appleHealthStepsDataProvider(startDate, endDate));
 		}
 
+		if (!providers.length) {
+			return {};
+		}
+
 		return Promise.all(providers).then((values) => {
 			var data: { [key: string]: number } = {};
 			while (startDate < endDate) {
