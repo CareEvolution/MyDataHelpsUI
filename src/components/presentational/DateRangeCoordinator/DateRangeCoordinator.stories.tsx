@@ -1,5 +1,5 @@
 import React from "react";
-import { DailyDataQueryResult, DailyDataType } from "../../../helpers/query-daily-data";
+import { DailyDataQueryResult } from "../../../helpers/query-daily-data";
 import { Card, Layout } from "../../presentational";
 import DateRangeCoordinator, { DateRangeCoordinatorProps } from "./DateRangeCoordinator";
 import DailyDataChart from "../../container/DailyDataChart/DailyDataChart";
@@ -12,9 +12,19 @@ let render = (args: DateRangeCoordinatorProps) => <Layout><DateRangeCoordinator 
 let children = <Card><DailyDataChart title="Steps"
 	intervalType="Week"
 	weekStartsOn="6DaysAgo"
-	dailyDataType={DailyDataType.Steps}
+	dailyDataType="DailyDataType.Steps"
 	valueFormatter={(value: number) => Number(value.toFixed(0)).toLocaleString()}
-	chartType="Bar" /><DailyDataChart title="Steps"
+	chartType="Line"
+	previewDataProvider={(start: Date, end: Date) => {
+		let data: DailyDataQueryResult = {};
+		let currentDate = new Date(start);
+		while (currentDate < end) {
+			let dayKey = getDayKey(currentDate);
+			data[dayKey] = Math.random() * 100;
+			currentDate = add(currentDate, { days: 1 });
+		}
+		return Promise.resolve(data);
+	}} /><DailyDataChart title="Steps"
 	intervalType="Week"
 	weekStartsOn="6DaysAgo"
 	dailyDataType="DailyDataType.Steps"
