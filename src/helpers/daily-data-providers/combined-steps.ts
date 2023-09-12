@@ -39,6 +39,4 @@ export default function (startDate: Date, endDate: Date) {
 			return data;
 		});
 	});
-
-
 }
