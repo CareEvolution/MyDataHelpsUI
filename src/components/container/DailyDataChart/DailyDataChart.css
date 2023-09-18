@@ -30,7 +30,7 @@
 .mdhui-daily-data-chart .mdhui-daily-data-tooltip {
     padding: 8px;
     background: var(--mdhui-background-color-0);
-    border-radius: 5px;
+    border-radius: var(--mdhui-card-border-radius);
     box-shadow: var(--mdhui-box-shadow-1);
     animation: fadein 1s;
     -moz-animation: fadein 1s;

@@ -1,5 +1,5 @@
 ﻿.mdhui-card {
-    border-radius: 5px;
+    border-radius: var(--mdhui-card-border-radius);
     margin: 16px;
     background: var(--mdhui-background-color-0);
     box-shadow: var(--mdhui-box-shadow-0);

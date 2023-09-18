@@ -1,4 +1,4 @@
-﻿import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, Guid,  } from '@careevolution/mydatahelps-js';
+﻿import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, Guid, } from '@careevolution/mydatahelps-js';
 
 export default function queryAllDeviceData(parameters: DeviceDataPointQuery) {
 	var allDeviceDataPoints: DeviceDataPoint[] = [];
@@ -14,6 +14,8 @@ export default function queryAllDeviceData(parameters: DeviceDataPointQuery) {
 			} else {
 				return allDeviceDataPoints;
 			}
+		}).catch(function (error) {
+			return allDeviceDataPoints;
 		});
 	}
 	return queryPage();
