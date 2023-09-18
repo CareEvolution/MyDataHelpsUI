@@ -11,7 +11,7 @@ import language from "../../../helpers/language";
 export interface ExternalAccountsLoadingIndicatorProps {
     previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
     externalAccountCategories?: string[];
-	innerRef?: React.Ref<HTMLDivElement>
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 let previewStateAccounts: ExternalAccount[] = [{

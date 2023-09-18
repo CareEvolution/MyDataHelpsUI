@@ -8,7 +8,7 @@ export interface LoadingIndicatorProps {
 	variant?: "default" | "inline";
 	color?: string;
 	className?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 function LoadingIndicator(props: LoadingIndicatorProps) {

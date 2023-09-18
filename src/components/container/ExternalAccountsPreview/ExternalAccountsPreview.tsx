@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import "./ExternalAccountsPreview.css"
-import MyDataHelps, {ExternalAccount} from "@careevolution/mydatahelps-js"
-import {Action} from '../../presentational'
+import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js"
+import { Action } from '../../presentational'
 import language from '../../../helpers/language'
-import {previewAccounts} from './ExternalAccountsPreview.previewdata'
+import { previewAccounts } from './ExternalAccountsPreview.previewdata'
 
 export interface ExternalAccountsPreviewProps {
     excludeProviders?: boolean;
@@ -11,7 +11,7 @@ export interface ExternalAccountsPreviewProps {
     excludeDeviceManufacturers?: boolean;
     applicationUrl: ExternalAccountsApplicationUrl;
     previewState?: ExternalAccountsPreviewPreviewState;
-	innerRef?: React.Ref<HTMLDivElement>
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ExternalAccountsApplicationUrl = "preview" | string;

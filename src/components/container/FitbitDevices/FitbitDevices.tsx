@@ -10,5 +10,5 @@ export interface FitbitDevicesProps {
 }
 
 export default function (props: FitbitDevicesProps) {
-	return (<ConnectedDevices innerRef={props.innerRef} providerName="Fitbit" providerNamespace="Fitbit" previewData={fitbitDevicePreviewData} previewState={props.previewState}/>);
+	return (<ConnectedDevices innerRef={props.innerRef} providerName="Fitbit" providerNamespace="Fitbit" previewData={fitbitDevicePreviewData} previewState={props.previewState} />);
 }

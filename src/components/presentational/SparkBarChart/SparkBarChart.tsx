@@ -5,7 +5,7 @@ import "./SparkBarChart.css"
 export interface SparkBarChartProps {
 	averageFillPercent: number;
 	bars: SparkBarChartBar[];
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface SparkBarChartBar {

@@ -13,7 +13,7 @@ export interface FaceProps {
 	selected?: boolean;
 	onClick?: MouseEventHandler;
 	className?: string;
-    innerRef?: React.Ref<HTMLButtonElement>;
+	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: FaceProps) {

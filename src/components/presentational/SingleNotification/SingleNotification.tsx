@@ -7,7 +7,7 @@ import { enUS, es } from 'date-fns/locale'
 
 export interface SingleNotificationProps {
 	notification: Notification
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleNotificationProps) {

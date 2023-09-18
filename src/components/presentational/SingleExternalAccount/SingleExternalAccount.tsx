@@ -16,7 +16,7 @@ export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
 	onAccountRemoved: (account: ExternalAccount) => void;
 	onReconnectAccount: (account: ExternalAccount) => void;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleExternalAccountProps) {

@@ -4,7 +4,7 @@ import "./TextBlock.css"
 export interface TextBlockProps {
 	children?: React.ReactNode;
 	className?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: TextBlockProps) {

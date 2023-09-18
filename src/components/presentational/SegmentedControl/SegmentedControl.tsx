@@ -9,7 +9,7 @@ export interface SegmentedControlProps {
 	onSegmentSelected: Function;
 	className?: string;
 	color?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SegmentedControlProps) {

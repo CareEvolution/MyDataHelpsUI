@@ -10,7 +10,7 @@ export interface HistogramProps {
 		onSelect?(): void;
 	}[];
 	className?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: HistogramProps) {

@@ -16,7 +16,7 @@ export interface DateRangeNavigatorProps {
 	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
 	className?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: DateRangeNavigatorProps) {

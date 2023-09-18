@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react'
-import MyDataHelps, {ExternalAccount} from '@careevolution/mydatahelps-js';
-import {Card, LoadingIndicator, SingleExternalAccount} from '../../presentational'
-import {previewExternalAccounts} from './ExternalAccountList.previewdata'
+import React, { useEffect, useState } from 'react'
+import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
+import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
 export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
     previewState?: NotificationListPreviewState;
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
-	innerRef?: React.Ref<HTMLDivElement>
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type NotificationListPreviewState = "Default"
@@ -68,11 +68,11 @@ export default function (props: ExternalAccountListProps) {
                     <SingleExternalAccount
                         externalAccount={externalAccount}
                         onAccountRemoved={(account: ExternalAccount) => onAccountRemoved(account)}
-                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)}/>
+                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)} />
                 </Card>
             )}
             {loading &&
-            <LoadingIndicator/>
+                <LoadingIndicator />
             }
         </div>
     );

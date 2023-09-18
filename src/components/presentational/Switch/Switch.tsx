@@ -7,7 +7,7 @@ export interface SwitchProps {
 	onBackgroundColor?: string;
 	onValueChanged(value: boolean): void;
 	className?: string;
-    innerRef?: React.Ref<HTMLButtonElement>;
+	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: SwitchProps) {

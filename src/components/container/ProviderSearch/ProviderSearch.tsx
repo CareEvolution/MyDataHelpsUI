@@ -14,7 +14,7 @@ export interface ProviderSearchProps {
     providerCategories?: string[];
     openNewWindow?: boolean;
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
-	innerRef?: React.Ref<HTMLDivElement>
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ProviderSearchPreviewState = "Default"

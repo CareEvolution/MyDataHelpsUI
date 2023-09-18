@@ -5,7 +5,7 @@ export interface DayTrackerSymbolProps {
 	primaryColors: string[]
 	secondaryColors: string[]
 	className?: string
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: DayTrackerSymbolProps) {

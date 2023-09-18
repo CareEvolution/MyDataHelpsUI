@@ -5,7 +5,7 @@ import "./StatusBarBackground.css"
 
 export default interface StatusBarBackgroundProps {
 	color?: string
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: StatusBarBackgroundProps) {

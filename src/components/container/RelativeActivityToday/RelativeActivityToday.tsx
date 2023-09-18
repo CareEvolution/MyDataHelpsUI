@@ -14,7 +14,7 @@ export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "Default";
     title?: string;
-	innerRef?: React.Ref<HTMLDivElement>
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface RelativeActivityDataType {
@@ -129,7 +129,7 @@ export default function (props: RelativeActivityTodayProps) {
                 <FontAwesomeSvgIcon icon={faChevronUp} />
             </div>
             {language("30-day-average")}
-            
+
         </div>
     </div>
 }

@@ -13,7 +13,7 @@ export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
     onClick(): void;
     onViewTermInfo(termInfo: TermInformation): void
-	innerRef?: React.Ref<HTMLButtonElement>
+    innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export default function (props: LabResultsSummaryProps) {

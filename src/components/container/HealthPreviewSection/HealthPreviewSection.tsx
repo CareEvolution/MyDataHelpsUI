@@ -19,7 +19,7 @@ export interface HealthPreviewSectionProps {
     onClick(): void;
     previewState?: "NoData" | "Default";
     indicatorPosition?: "default" | "topRight";
-	innerRef?: React.Ref<HTMLButtonElement>
+    innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export default function (props: HealthPreviewSectionProps) {

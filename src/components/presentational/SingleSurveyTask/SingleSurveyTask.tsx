@@ -18,7 +18,7 @@ export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
 	disableClick?: boolean
-    innerRef?: React.Ref<HTMLDivElement>;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleSurveyTaskProps) {
