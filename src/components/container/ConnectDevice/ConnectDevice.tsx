@@ -19,6 +19,7 @@ export interface ConnectDeviceProps {
 	previewState?: ConnectDevicePreviewState,
 	disabledBehavior?: 'hide' | 'displayError',
 	dataCollectionProperty:	string 
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -112,7 +113,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	return (
-		<div className="mdhui-connect-device">
+		<div className="mdhui-connect-device" ref={props.innerRef}>
 			{props.title &&
 				<CardTitle title={props.title} />
 			}

@@ -4,6 +4,7 @@ import "./TextBlock.css"
 export interface TextBlockProps {
 	children?: React.ReactNode;
 	className?: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: TextBlockProps) {
@@ -12,7 +13,7 @@ export default function (props: TextBlockProps) {
 	}
 
 	return (
-		<div className={"mdhui-text-block " + (props.className || "")}>
+		<div ref={props.innerRef} className={"mdhui-text-block " + (props.className || "")}>
 			{props.children}
 		</div>
 	);

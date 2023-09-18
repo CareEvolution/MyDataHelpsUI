@@ -7,6 +7,7 @@ export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
     previewState?: NotificationListPreviewState;
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type NotificationListPreviewState = "Default"
@@ -61,7 +62,7 @@ export default function (props: ExternalAccountListProps) {
     }, []);
 
     return (
-        <div className="mdhui-external-account-list">
+        <div ref={props.innerRef} className="mdhui-external-account-list">
             {externalAccounts && externalAccounts.map((externalAccount) =>
                 <Card key={externalAccount.id.toString() + externalAccount.lastRefreshDate}>
                     <SingleExternalAccount

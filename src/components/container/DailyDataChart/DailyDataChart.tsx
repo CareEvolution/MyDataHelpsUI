@@ -21,6 +21,7 @@ export interface DailyDataChartProps {
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
     hideIfNoData?: boolean
     previewDataProvider?: DailyDataProvider
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface LineChartOptions {
@@ -207,7 +208,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
-    return <div className="mdhui-daily-data-chart">
+    return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
         }

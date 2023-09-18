@@ -11,6 +11,7 @@ export interface ExternalAccountsPreviewProps {
     excludeDeviceManufacturers?: boolean;
     applicationUrl: ExternalAccountsApplicationUrl;
     previewState?: ExternalAccountsPreviewPreviewState;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ExternalAccountsApplicationUrl = "preview" | string;
@@ -80,7 +81,7 @@ export default function (props: ExternalAccountsPreviewProps) {
     }
 
     return (
-        <div className="mdhui-external-accounts-preview">
+        <div ref={props.innerRef} className="mdhui-external-accounts-preview">
             <Action title={title} onClick={() => manageExternalAccounts()}>
                 {externalAccounts.map((account) =>
                     <div key={account.id} className="external-account-title">{account.provider.name}</div>

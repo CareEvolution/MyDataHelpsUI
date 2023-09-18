@@ -14,6 +14,7 @@ export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "Default";
     title?: string;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface RelativeActivityDataType {
@@ -117,7 +118,7 @@ export default function (props: RelativeActivityTodayProps) {
         return null;
     }
 
-    return <div className="mdhui-relative-activity-today">
+    return <div ref={props.innerRef} className="mdhui-relative-activity-today">
         {props.title && <CardTitle title={props.title} />}
         {computedResults.map(c => {
             let dataType = props.dataTypes.find(dt => dt.dailyDataType === c.dailyDataType)!;

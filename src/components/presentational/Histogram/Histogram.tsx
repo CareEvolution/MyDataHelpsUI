@@ -10,6 +10,7 @@ export interface HistogramProps {
 		onSelect?(): void;
 	}[];
 	className?: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: HistogramProps) {
@@ -23,7 +24,7 @@ export default function (props: HistogramProps) {
 	var sortedEntries = [...props.entries].sort((a, b) => b.value - a.value || ((a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0)));
 
 	return (
-		<div className={"mdhui-histogram " + (props.className || "")}>
+		<div ref={props.innerRef} className={"mdhui-histogram " + (props.className || "")}>
 			{sortedEntries.map((entry, index) => {
 				return <div className={"mdhui-histogram-entry" + (entry.onSelect ? " mdhui-histogram-entry-clickable" : "")} key={index} onClick={() => entry.onSelect?.()}>
 					<div className="mdhui-histogram-entry-bar-wrapper">

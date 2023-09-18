@@ -13,6 +13,7 @@ import language from "../../../helpers/language";
 export interface AppDownloadProps {
 	previewProjectPlatforms?: string[]
 	previewDevicePlatform?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AppDownloadProps) {
@@ -35,7 +36,7 @@ export default function (props: AppDownloadProps) {
 	}
 
 	return (
-		<div className="mdhui-app-download">
+		<div className="mdhui-app-download" ref={props.innerRef}>
 			<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform}>
 				<Card>
 					<div className="mdhui-app-download-title">{language('app-download-title')}</div>

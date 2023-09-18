@@ -15,6 +15,7 @@ export interface ConnectEhrProps {
 	previewState?: ConnectEhrPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
+	innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -95,7 +96,7 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	return (
-		<Action bottomBorder={props.bottomBorder} title={language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans')} className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
+		<Action innerRef={props.innerRef} bottomBorder={props.bottomBorder} title={language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans')} className="mdhui-connect-ehr" onClick={() => connectToEhr()}>
 			{connected
 				? <>
 					<div className="connection-status">

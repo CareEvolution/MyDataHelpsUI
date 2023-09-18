@@ -13,6 +13,7 @@ export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
     onClick(): void;
     onViewTermInfo(termInfo: TermInformation): void
+	innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export default function (props: LabResultsSummaryProps) {
@@ -87,6 +88,7 @@ export default function (props: LabResultsSummaryProps) {
     }
 
     return <Action
+        innerRef={props.innerRef}
         bottomBorder
         title={language("lab-results-title")}
         titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}

@@ -5,6 +5,7 @@ import "./StatusBarBackground.css"
 
 export default interface StatusBarBackgroundProps {
 	color?: string
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: StatusBarBackgroundProps) {
@@ -22,7 +23,7 @@ export default function (props: StatusBarBackgroundProps) {
 	}
 
 	return (
-		<div className="mdhui-status-bar-background" style={style}>
+		<div ref={props.innerRef} className="mdhui-status-bar-background" style={style}>
 		</div>
 	);
 }

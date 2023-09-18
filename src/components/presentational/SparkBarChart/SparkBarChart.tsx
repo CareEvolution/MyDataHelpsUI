@@ -5,6 +5,7 @@ import "./SparkBarChart.css"
 export interface SparkBarChartProps {
 	averageFillPercent: number;
 	bars: SparkBarChartBar[];
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface SparkBarChartBar {
@@ -15,7 +16,7 @@ export interface SparkBarChartBar {
 export default function (props: SparkBarChartProps) {
 	var width = (100 / props.bars.length);
 
-	return <div className="mdhui-spark-bar-chart">
+	return <div ref={props.innerRef} className="mdhui-spark-bar-chart">
 		<div className="mdhui-spark-bar-chart-average" style={{ bottom: props.averageFillPercent * 100 + "%" }}></div>
 		<div className="mdhui-spark-bar-chart-bars">
 			{props.bars.map((b, index) =>

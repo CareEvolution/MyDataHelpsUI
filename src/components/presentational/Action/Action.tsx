@@ -18,12 +18,13 @@ export interface ActionProps {
 	indicatorValue?: string;
 	indicatorPosition?: "default" | "topRight";
 	bottomBorder?: boolean;
+	innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 	return (
-		<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => props.onClick()}>
+		<UnstyledButton innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => props.onClick()}>
 			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
 			<div className='mdhui-action-body'>
 				{props.title &&
