@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 
-export interface ConnectDeviceAccountStepContainerProps {
-    providerName?: string;
-}
-
-export default function (props: ConnectDeviceAccountStepContainerProps) {
+export default function () {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
     const [deviceType, setDeviceType] = useState<string>("");
-    const [providerName, setProviderName] = useState<string>(props.providerName ?? "");
+    const [providerID, setProviderID] = useState<number>();
     const [connected, setConnected] = useState<boolean>();
 
     useEffect(() => {
+        // Get the step configuration from MyDataHelps.
         MyDataHelps.getStepConfiguration().then(function (
             config: StepConfiguration
         ) {
@@ -28,44 +25,46 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             }
             setDeviceType(config.properties.deviceType);
 
-            if (!config.properties.providerName) {
-                throw new Error("providerName is required");
+            if (!config.properties.providerID) {
+                throw new Error("providerID is required");
             }
-            setProviderName(config.properties.providerName);
+            setProviderID(config.properties.providerID);
 
             setStyles(config.styles ?? {});
         });
     }, []);
 
     useEffect(() => {
-        if (!providerName || providerName.length === 0 || connected) return;
+        // Start polling for connected status after a providerID is selected.
+        if (!providerID || connected) return;
 
         const interval = setInterval(async () => {
             const accounts = await MyDataHelps.getExternalAccounts();
-            const containProviderName = accounts.some(
-                (acc) => acc.provider.name === providerName
+            const containProvider = accounts.some(
+                (acc) => acc.provider.id === providerID
             );
-            if (!connected && containProviderName) {
-                setConnected(containProviderName);
+            if (!connected && containProvider) {
+                setConnected(containProvider);
             }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [providerName, connected]);
+    }, [providerID, connected]);
 
     useEffect(() => {
+        // Complete the step when connected.
         if (connected) {
-            console.log("Connected to", providerName);
+            console.log("Connected to provider ID ", providerID);
             MyDataHelps.completeStep("");
         }
     }, [connected]);
 
-    return (
+    return providerID && (
         <ConnectDeviceAccountStep
             title={title}
             text={text}
             deviceType={deviceType}
-            providerName={providerName}
+            providerID={providerID}
             styles={styles}
         />
     );

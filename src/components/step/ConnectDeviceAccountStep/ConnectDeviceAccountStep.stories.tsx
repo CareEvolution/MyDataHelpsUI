@@ -21,7 +21,7 @@ ConnectDeviceAccountStepGarminDefault.args = {
     title: "Connect Garmin",
     text: "Connect your Garmin account to MyDataHelps to share your activity data.",
     deviceType: "Garmin",
-    providerName: "Garmin QA",
+    providerID: 1,
     styles: {}
 };
 
@@ -30,7 +30,7 @@ ConnectDeviceAccountStepGarminCustom.args = {
     title: "Connect Garmin",
     text: "Connect your Garmin account to MyDataHelps to share your activity data.",
     deviceType: "Garmin",
-    providerName: "Garmin QA",
+    providerID: 1,
     styles: {
         "nextButtonBackgroundColor": "#000000",
         "nextButtonBackgroundGradient": {
@@ -58,7 +58,7 @@ ConnectDeviceAccountStepFitbitDefault.args = {
     title: "Connect Fitbit",
     text: "Connect your Fitbit account to MyDataHelps to share your activity data.",
     deviceType: "Fitbit",
-    providerName: "Fitbit Staging",
+    providerID: 2,
     styles: {}
 };
 
@@ -67,6 +67,6 @@ ConnectDeviceAccountStepOmronDefault.args = {
     title: "Connect Omron",
     text: "Connect your Omron account to MyDataHelps to share your activity data.",
     deviceType: "Omron",
-    providerName: "Omron QA",
+    providerID: 3,
     styles: {}
 };
