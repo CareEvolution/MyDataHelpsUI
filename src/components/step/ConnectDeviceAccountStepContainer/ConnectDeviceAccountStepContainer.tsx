@@ -36,7 +36,7 @@ export default function () {
 
     useEffect(() => {
         // Start polling for connected status after a providerID is selected.
-        if (!providerID || connected) return;
+        if (!providerID || connected || !MyDataHelps.token) return;
 
         const interval = setInterval(async () => {
             const accounts = await MyDataHelps.getExternalAccounts();
