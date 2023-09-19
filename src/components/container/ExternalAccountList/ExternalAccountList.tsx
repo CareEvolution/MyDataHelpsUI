@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react'
-import MyDataHelps, {ExternalAccount} from '@careevolution/mydatahelps-js';
-import {Card, LoadingIndicator, SingleExternalAccount} from '../../presentational'
-import {previewExternalAccounts} from './ExternalAccountList.previewdata'
+import React, { useEffect, useState } from 'react'
+import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
+import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
 export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
     previewState?: NotificationListPreviewState;
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type NotificationListPreviewState = "Default"
@@ -61,17 +62,17 @@ export default function (props: ExternalAccountListProps) {
     }, []);
 
     return (
-        <div className="mdhui-external-account-list">
+        <div ref={props.innerRef} className="mdhui-external-account-list">
             {externalAccounts && externalAccounts.map((externalAccount) =>
                 <Card key={externalAccount.id.toString() + externalAccount.lastRefreshDate}>
                     <SingleExternalAccount
                         externalAccount={externalAccount}
                         onAccountRemoved={(account: ExternalAccount) => onAccountRemoved(account)}
-                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)}/>
+                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)} />
                 </Card>
             )}
             {loading &&
-            <LoadingIndicator/>
+                <LoadingIndicator />
             }
         </div>
     );

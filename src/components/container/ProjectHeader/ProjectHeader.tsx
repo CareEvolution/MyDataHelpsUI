@@ -5,6 +5,7 @@ import { LoadingIndicator } from '../../presentational';
 
 export interface ProjectHeaderProps {
 	previewState?: ProjectHeaderPropsPreviewState
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ProjectHeaderPropsPreviewState = "Default";
@@ -49,7 +50,7 @@ export default function (props: ProjectHeaderProps) {
 	}
 
 	return (
-		<div className="mdhui-project-header">
+		<div ref={props.innerRef} className="mdhui-project-header">
 			{loading &&
 				<LoadingIndicator />
 			}

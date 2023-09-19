@@ -5,6 +5,7 @@ export interface PlatformSpecificContentProps {
 	platforms: string[];
 	children?: React.ReactNode;
 	previewDevicePlatform?: string;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: PlatformSpecificContentProps) {
@@ -27,7 +28,7 @@ export default function (props: PlatformSpecificContentProps) {
 	}
 
 	return (
-		<div>
+		<div ref={props.innerRef}>
 			{props.children}
 		</div>
 	);

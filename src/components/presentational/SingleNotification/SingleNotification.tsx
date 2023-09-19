@@ -7,6 +7,7 @@ import { enUS, es } from 'date-fns/locale'
 
 export interface SingleNotificationProps {
 	notification: Notification
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleNotificationProps) {
@@ -16,7 +17,7 @@ export default function (props: SingleNotificationProps) {
 
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	return (
-		<div className="mdhui-single-notification">
+		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
 				<div className="notification-title">{props.notification.content.title}</div>
 			}

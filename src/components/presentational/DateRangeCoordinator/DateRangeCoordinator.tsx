@@ -8,6 +8,7 @@ export interface DateRangeCoordinatorProps {
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
     children: React.ReactNode;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface DateRangeContext {
@@ -30,15 +31,16 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
 
     //reset the interval if the interval type changes
     useEffect(() => {
-        setCurrentContext({ intervalType:props.intervalType, intervalStart: initialIntervalStart });
+        setCurrentContext({ intervalType: props.intervalType, intervalStart: initialIntervalStart });
     }, [props.intervalType, props.weekStartsOn]);
 
-    return <DateRangeContext.Provider value={currentContext}>
+    return <div ref={props.innerRef}> <DateRangeContext.Provider value={currentContext}>
         <DateRangeNavigator
             intervalType={props.intervalType}
             intervalStart={currentContext.intervalStart}
-            onIntervalChange={(d) => setCurrentContext({...currentContext, intervalStart: d})}
+            onIntervalChange={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
             variant={props.variant} />
         {props.children}
     </DateRangeContext.Provider>
+    </div>
 }

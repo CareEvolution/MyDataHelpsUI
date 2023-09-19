@@ -8,11 +8,13 @@ export interface UnstyledButtonProps {
     title?: string;
     style?: React.CSSProperties;
     disabled?: boolean;
+    innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: UnstyledButtonProps) {
     return (
         <button
+            ref={props.innerRef}
             title={props.title}
             className={"mdhui-unstyled-button " + (props.className || "")}
             onClick={props.onClick}

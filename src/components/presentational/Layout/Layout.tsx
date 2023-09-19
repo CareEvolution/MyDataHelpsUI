@@ -16,6 +16,7 @@ export interface LayoutProps {
 	  * @deprecated 
 	  */
 	stylesheetPath?: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface LayoutContext {
@@ -68,7 +69,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div className={className}>
+			<div ref={props.innerRef} className={className}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}

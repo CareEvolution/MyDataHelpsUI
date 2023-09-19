@@ -17,6 +17,7 @@ export interface DeviceDataMonthChartProps {
 	title?: string,
 	previewState?: DeviceDataMonthChartPreviewState,
 	onDataDetected?: Function
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface DeviceDataChartLine {
@@ -214,7 +215,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 	var average = calculateAverage();
 	return (
-		<div className="mdhui-device-data-month-chart">
+		<div className="mdhui-device-data-month-chart" ref={props.innerRef}>
 			{props.title &&
 				<div className="title">
 					{props.title}

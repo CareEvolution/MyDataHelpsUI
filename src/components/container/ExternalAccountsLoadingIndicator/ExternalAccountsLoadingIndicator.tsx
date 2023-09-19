@@ -11,6 +11,7 @@ import language from "../../../helpers/language";
 export interface ExternalAccountsLoadingIndicatorProps {
     previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
     externalAccountCategories?: string[];
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 let previewStateAccounts: ExternalAccount[] = [{
@@ -89,7 +90,7 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
 
     if (!anyRefreshingAccounts) return null;
 
-    return <div className="mdhui-external-accounts-loading-indicator">
+    return <div ref={props.innerRef} className="mdhui-external-accounts-loading-indicator">
         <LoadingIndicator variant="inline" />
         <span className="mdhui-external-accounts-loading-indicator-message">{language("external-account-fetching-data")}</span>
     </div>

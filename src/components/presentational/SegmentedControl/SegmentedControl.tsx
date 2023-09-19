@@ -9,12 +9,13 @@ export interface SegmentedControlProps {
 	onSegmentSelected: Function;
 	className?: string;
 	color?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SegmentedControlProps) {
 	var width = 100 / props.segments.length;
 	return (
-		<div style={{ borderColor: props.color }} className={"mdhui-segmented-control " + (props.className || "")}>
+		<div ref={props.innerRef} style={{ borderColor: props.color }} className={"mdhui-segmented-control " + (props.className || "")}>
 			{props.segments.map((s) =>
 				<UnstyledButton className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}

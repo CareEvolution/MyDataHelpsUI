@@ -7,6 +7,7 @@ export interface ConnectGarminProps {
 	garminProviderID?: number,
 	previewState?: ConnectGarminPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -23,5 +24,5 @@ export default function(props: ConnectGarminProps) {
 		return garminProviderID;
 	}
 	
-	return (<ConnectDevice title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice innerRef={props.innerRef} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
   }

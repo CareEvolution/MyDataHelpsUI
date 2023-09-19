@@ -7,6 +7,7 @@ export interface ConnectFitbitProps {
 	fitbitProviderID?: number,
 	previewState?: ConnectFitbitPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -23,6 +24,6 @@ export default function(props: ConnectFitbitProps) {
 		return fitbitProviderID;
 	}
 	
-	return (<ConnectDevice title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice innerRef={props.innerRef} title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
   }
 
