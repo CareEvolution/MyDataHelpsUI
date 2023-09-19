@@ -7,10 +7,11 @@ export default function () {
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
     const [deviceType, setDeviceType] = useState<string>("");
-    const [providerID, setProviderID] = useState<number>(0);
+    const [providerID, setProviderID] = useState<number>();
     const [connected, setConnected] = useState<boolean>();
 
     useEffect(() => {
+        // Get the step configuration from MyDataHelps.
         MyDataHelps.getStepConfiguration().then(function (
             config: StepConfiguration
         ) {
@@ -34,6 +35,7 @@ export default function () {
     }, []);
 
     useEffect(() => {
+        // Start polling for connected status after a providerID is selected.
         if (!providerID || connected) return;
 
         const interval = setInterval(async () => {
@@ -50,13 +52,14 @@ export default function () {
     }, [providerID, connected]);
 
     useEffect(() => {
+        // Complete the step when connected.
         if (connected) {
             console.log("Connected to provider ID ", providerID);
             MyDataHelps.completeStep("");
         }
     }, [connected]);
 
-    return (
+    return providerID && (
         <ConnectDeviceAccountStep
             title={title}
             text={text}
