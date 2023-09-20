@@ -1,7 +1,6 @@
 ﻿import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ConnectDeviceAccountStepContainer, {
-} from "./ConnectDeviceAccountStepContainer";
+import ConnectDeviceAccountStepContainer from "./ConnectDeviceAccountStepContainer";
 
 export default {
     title: "SurveyStep/ConnectDeviceAccountStepContainer",
@@ -15,3 +14,4 @@ const Template: ComponentStory<typeof ConnectDeviceAccountStepContainer> = (
 ) => <ConnectDeviceAccountStepContainer />;
 
 export const ConnectDeviceAccountStepContainerDefault = Template.bind({});
+

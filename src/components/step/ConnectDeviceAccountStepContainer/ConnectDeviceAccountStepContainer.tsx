@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 
-export default function () {
+export interface ConnectDeviceAccountStepContainerProps {
+    designMode?: boolean;
+}
+
+export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
@@ -35,8 +39,11 @@ export default function () {
     }, []);
 
     useEffect(() => {
+        // Disable auto polling in design mode due to absent token.
+        if (props.designMode) return;
+
         // Start polling for connected status after a providerID is selected.
-        if (!providerID || connected || !MyDataHelps.token) return;
+        if (!providerID || connected) return;
 
         const interval = setInterval(async () => {
             const accounts = await MyDataHelps.getExternalAccounts();
@@ -59,7 +66,9 @@ export default function () {
         }
     }, [connected]);
 
-    return providerID && (
+    if (!providerID) return <></>;
+
+    return (
         <ConnectDeviceAccountStep
             title={title}
             text={text}
@@ -67,5 +76,5 @@ export default function () {
             providerID={providerID}
             styles={styles}
         />
-    );
+    )
 }
