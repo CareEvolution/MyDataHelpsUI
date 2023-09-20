@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ConnectDeviceAccountStepContainer from "./ConnectDeviceAccountStepContainer";
+import ConnectDeviceAccountStepContainer, { ConnectDeviceAccountStepContainerProps } from "./ConnectDeviceAccountStepContainer";
 
 export default {
     title: "SurveyStep/ConnectDeviceAccountStepContainer",
@@ -11,7 +11,14 @@ export default {
 } as ComponentMeta<typeof ConnectDeviceAccountStepContainer>;
 
 const Template: ComponentStory<typeof ConnectDeviceAccountStepContainer> = (
-) => <ConnectDeviceAccountStepContainer />;
+    args: ConnectDeviceAccountStepContainerProps
+) => <ConnectDeviceAccountStepContainer {...args}/>;
 
 export const ConnectDeviceAccountStepContainerDefault = Template.bind({});
+
+export const ConnectDeviceAccountStepContainerGarmin = Template.bind({});
+ConnectDeviceAccountStepContainerGarmin.args = {
+    providerID: 1384, // "Garmin QA" on QA
+    deviceType: "Garmin"
+};
 

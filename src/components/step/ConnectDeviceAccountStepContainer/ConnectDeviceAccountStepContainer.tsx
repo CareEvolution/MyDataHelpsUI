@@ -3,16 +3,25 @@ import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 
 export interface ConnectDeviceAccountStepContainerProps {
-    designMode?: boolean;
+    deviceType?: string;
+    providerID?: number;
 }
 
 export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
-    const [deviceType, setDeviceType] = useState<string>("");
-    const [providerID, setProviderID] = useState<number>();
-    const [connected, setConnected] = useState<boolean>();
+    const [deviceType, setDeviceType] = useState<string>(props.deviceType ?? "");
+    const [providerID, setProviderID] = useState<number>(props.providerID ?? 0);
+
+    function onConnect() {
+        MyDataHelps.connectExternalAccount(providerID, {
+            openNewWindow: true,
+        }).then(function() {
+            console.log("Completing step. Connected to provider ID", providerID);
+            MyDataHelps.completeStep("")
+        });
+    }
 
     useEffect(() => {
         // Get the step configuration from MyDataHelps.
@@ -32,39 +41,25 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             if (!config.properties.providerID) {
                 throw new Error("providerID is required");
             }
-            setProviderID(config.properties.providerID);
+
+            setProviderID(config.properties.providerID as number);
 
             setStyles(config.styles ?? {});
-        });
+        })
     }, []);
 
     useEffect(() => {
-        // Disable auto polling in design mode due to absent token.
-        if (props.designMode) return;
+        // Check connect status once providerID is set.
+        if (!providerID) return;
 
-        // Start polling for connected status after a providerID is selected.
-        if (!providerID || connected) return;
-
-        const interval = setInterval(async () => {
-            const accounts = await MyDataHelps.getExternalAccounts();
-            const containProvider = accounts.some(
-                (acc) => acc.provider.id === providerID
-            );
-            if (!connected && containProvider) {
-                setConnected(containProvider);
+        MyDataHelps.getExternalAccounts().then(function(accounts) {
+            const connected = accounts.some((acc) => acc.provider.id === providerID);
+            if (connected) {
+                console.log("Completing step. Already connected to provider ID", providerID);
+                MyDataHelps.completeStep("");
             }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [providerID, connected]);
-
-    useEffect(() => {
-        // Complete the step when connected.
-        if (connected) {
-            console.log("Connected to provider ID ", providerID);
-            MyDataHelps.completeStep("");
-        }
-    }, [connected]);
+        })
+    }, [providerID]);
 
     if (!providerID) return <></>;
 
@@ -75,6 +70,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             deviceType={deviceType}
             providerID={providerID}
             styles={styles}
+            onConnect={onConnect}
         />
-    )
+    );
 }
