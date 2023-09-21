@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ConnectEhrStep, { ConnectEhrStepProps } from "./ConnectEhrStep";
-import { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 
 export default {
     title: "SurveyStep/ConnectEhrStep",
@@ -21,7 +20,8 @@ ConnectEhrStepDefault.args = {
     text: "Connect to EHR",
     previewState: "Default",
     styles: {},
-    onProviderSelected: () => {},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
 };
 
 export const ConnectEhrStepDisabled = Template.bind({});
@@ -31,7 +31,8 @@ ConnectEhrStepDisabled.args = {
     previewState: "Default",
     nextButtonDisabled: true,
     styles: {},
-    onProviderSelected: () => {},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
 };
 
 export const ConnectEhrStepCustomStyling = Template.bind({});
@@ -60,7 +61,8 @@ ConnectEhrStepCustomStyling.args = {
         titleFontSize: "36",
         titleFontWeight: "900",
     },
-    onProviderSelected: () => {},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
 };
 
 export const ConnectEhrStepOnProviderSelected = Template.bind({});
@@ -69,7 +71,8 @@ ConnectEhrStepOnProviderSelected.args = {
     text: "Connect to EHR",
     previewState: "Default",
     styles: {},
-    onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
 };
 
 export const ConnectEhrStepLive = Template.bind({});
@@ -77,5 +80,6 @@ ConnectEhrStepLive.args = {
     title: "MyDataHelps",
     text: "Connect to EHR",
     styles: {},
-    onProviderSelected: (provider: ExternalAccountProvider) => {alert(`You have selected ${provider.name} as your provider.`)},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
 };

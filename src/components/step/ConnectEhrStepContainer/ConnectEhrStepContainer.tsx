@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyDataHelps, {
-    StepConfiguration,
     ExternalAccountProvider,
+    StepConfiguration,
 } from "@careevolution/mydatahelps-js";
 import ConnectEhrStep from "../ConnectEhrStep/ConnectEhrStep";
 import React from "react";
@@ -12,9 +12,11 @@ export default function () {
     const [nextButtonText, setNextButtonText] = useState<string>();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
     const [styles, setStyles] = useState<any>({});
-    const [provider, setProvider] = useState<
-        ExternalAccountProvider | undefined
-    >(undefined);
+
+    function onProviderConnected(provider: ExternalAccountProvider) {
+        console.log("Connected to provider ID ", provider.id);
+        setNextButtonDisabled(false);
+    }
 
     useEffect(() => {
         MyDataHelps.getStepConfiguration().then(function (
@@ -29,22 +31,6 @@ export default function () {
         });
     }, []);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (!provider || !nextButtonDisabled) {
-                return;
-            }
-
-            MyDataHelps.getExternalAccounts().then((accounts) => {
-                if (accounts.some((a) => a.provider.id === provider.id)) {
-                    setNextButtonDisabled(false);
-                }
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [provider, nextButtonDisabled]);
-
     return (
         <ConnectEhrStep
             title={title}
@@ -52,7 +38,8 @@ export default function () {
             nextButtonText={nextButtonText}
             nextButtonDisabled={nextButtonDisabled}
             styles={styles}
-            onProviderSelected={setProvider}
+            onProviderConnected={onProviderConnected}
+            onNextButtonClick={() => MyDataHelps.completeStep("")}
         />
     );
 }
