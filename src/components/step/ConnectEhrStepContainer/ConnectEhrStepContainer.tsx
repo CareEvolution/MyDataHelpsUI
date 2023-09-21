@@ -14,7 +14,6 @@ export default function () {
     const [styles, setStyles] = useState<any>({});
 
     function onProviderConnected(provider: ExternalAccountProvider) {
-        console.log("Connected to provider ID ", provider.id);
         setNextButtonDisabled(false);
     }
 
