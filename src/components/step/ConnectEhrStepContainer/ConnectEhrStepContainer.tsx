@@ -12,8 +12,10 @@ export default function () {
     const [nextButtonText, setNextButtonText] = useState<string>();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
     const [styles, setStyles] = useState<any>({});
+    const [providerIDs, setProviderIDs] = useState<number[]>([]);
 
     function onProviderConnected(provider: ExternalAccountProvider) {
+        setProviderIDs((ids) => [...ids, provider.id]);
         setNextButtonDisabled(false);
     }
 
@@ -38,7 +40,7 @@ export default function () {
             nextButtonDisabled={nextButtonDisabled}
             styles={styles}
             onProviderConnected={onProviderConnected}
-            onNextButtonClick={() => MyDataHelps.completeStep("")}
+            onNextButtonClick={() => MyDataHelps.completeStep(providerIDs.toString())}
         />
     );
 }
