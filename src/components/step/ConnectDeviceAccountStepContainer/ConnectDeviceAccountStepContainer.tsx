@@ -18,7 +18,6 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         MyDataHelps.connectExternalAccount(providerID, {
             openNewWindow: true,
         }).then(function() {
-            console.log("Completing step. Connected to provider ID", providerID);
             MyDataHelps.completeStep("")
         });
     }
@@ -55,7 +54,6 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         MyDataHelps.getExternalAccounts().then(function(accounts) {
             const connected = accounts.some((acc) => acc.provider.id === providerID);
             if (connected) {
-                console.log("Completing step. Already connected to provider ID", providerID);
                 MyDataHelps.completeStep("");
             }
         })
