@@ -65,16 +65,6 @@ ConnectEhrStepCustomStyling.args = {
     onNextButtonClick: () => {}
 };
 
-export const ConnectEhrStepOnProviderSelected = Template.bind({});
-ConnectEhrStepOnProviderSelected.args = {
-    title: "MyDataHelps",
-    text: "Connect to EHR",
-    previewState: "Default",
-    styles: {},
-    onProviderConnected: () => {},
-    onNextButtonClick: () => {}
-};
-
 export const ConnectEhrStepLive = Template.bind({});
 ConnectEhrStepLive.args = {
     title: "MyDataHelps",
