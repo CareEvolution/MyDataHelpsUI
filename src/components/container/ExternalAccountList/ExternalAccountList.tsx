@@ -48,7 +48,7 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id)
+        MyDataHelps.connectExternalAccount(account.provider.id, {openNewWindow: true});
     }
 
     useEffect(() => {
