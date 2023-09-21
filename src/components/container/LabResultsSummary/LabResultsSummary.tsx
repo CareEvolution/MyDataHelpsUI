@@ -87,15 +87,15 @@ export default function (props: LabResultsSummaryProps) {
         props.onClick();
     }
 
-    return <div ref={props.innerRef} className="mdhui-lab-results-summary mdhui-health-preview-section">
+    return <div ref={props.innerRef}>
         <Action
+            className="mdhui-lab-results-summary mdhui-health-preview-section"
             bottomBorder
             title={language("lab-results-title")}
             titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
             onClick={() => drilldown()}
             indicatorValue={model?.RecentLabs?.TotalLabReports}
-            indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}
-            className="mdhui-lab-results-summary mdhui-health-preview-section">
+            indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}>
             {!model &&
                 <LoadingIndicator />
             }
