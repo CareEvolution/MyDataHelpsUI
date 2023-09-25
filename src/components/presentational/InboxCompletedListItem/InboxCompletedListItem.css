@@ -1,0 +1,22 @@
+.mdhui-inbox-completed-list-item {
+    background: var(--mdhui-background-color-0);
+    border-radius: 12px;
+    margin: 12px 0;
+}
+
+.mdhui-inbox-completed-list-item .mdhui-action, .mdhui-inbox-completed-list-item .mdhui-card {
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+}
+
+.mdhui-inbox-completed-list-item .mdhui-acqtion .title, .mdhui-inbox-completed-list-item-name {
+    font-weight: bold;
+    font-size: 1.05em;
+}
+
+.mdhui-inbox-completed-list-item .mdhui-action .subtitle, .mdhui-inbox-completed-list-item-status {
+    color: var(--mdhui-text-color-2);
+    font-size: 0.7em;
+    margin-top: 4px;
+}
