@@ -1,3 +1,7 @@
+.mdhui-single-survey-task {
+    border-radius: inherit;
+}
+
 .mdhui-single-survey-task.incomplete-expanded {
     padding: 16px;
     width: 100%;
@@ -15,7 +19,7 @@
 }
 
 .mdhui-single-survey-task.incomplete-expanded .survey-name {
-    font-size: 1.4em;
+    font-size: 1.3em;
 }
 
 .mdhui-single-survey-task .survey-description {
