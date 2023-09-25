@@ -1,0 +1,11 @@
+.mdhui-inbox-message {
+    padding: calc(env(safe-area-inset-top, 0px)) 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+}
+
+.mdhui-inbox-message-content {
+    margin: 16px 0;
+}
+
+.mdhui-inbox-message-related-resources {
+    margin-top: 20px;
+}

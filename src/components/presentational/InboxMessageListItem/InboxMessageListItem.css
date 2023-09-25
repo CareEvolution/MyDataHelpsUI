@@ -1,0 +1,9 @@
+.mdhui-inbox-message-list-item {
+    background: var(--mdhui-background-color-0);
+    border-radius: 12px;
+    margin: 12px 0;
+}
+
+.mdhui-inbox-message-list-item .mdhui-action .title {
+    font-size: 1.15em;
+}

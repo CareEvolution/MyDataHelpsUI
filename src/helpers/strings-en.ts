@@ -144,10 +144,25 @@
     "new-points-next-reward-prefix": "You now need ",
     "new-points-next-reward-suffix": " points to unlock your next reward.",
     "new-points-done-button-text": "Done",
-    "systolic-average" : "Systolic Average",
-    "diastolic-average" : "Diastolic Average",
-    "highest-systolic" : "Highest Systolic",
-    "lowest-diastolic" : "Lowest Diastolic"
+    "systolic-average": "Systolic Average",
+    "diastolic-average": "Diastolic Average",
+    "highest-systolic": "Highest Systolic",
+    "lowest-diastolic": "Lowest Diastolic",
+    "inbox-message-completed-status": "VIEWED",
+    "inbox-resource-default-button-text": "Open",
+    "inbox-resource-completed-status": "VIEWED",
+    "inbox-survey-completed-status": "COMPLETED",
+    "inbox-history-view-title": "Inbox History",
+    "inbox-history-view-empty-text": "You have no items in your inbox history.",
+    "inbox-message-view-related-resources-title": "Related",
+    "inbox-view-title": "Inbox",
+    "inbox-view-empty-text": "You have no new items in your inbox.",
+    "inbox-view-messages-title": "Messages",
+    "inbox-view-surveys-title": "Surveys",
+    "inbox-view-resources-title": "Resources",
+    "inbox-view-recently-completed-title": "Recent",
+    "inbox-view-recently-completed-empty-text": "You have no recently completed items in your inbox.",
+    "inbox-view-history-button-text": "View inbox history"
 };
 
 export default strings;
