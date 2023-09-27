@@ -1,0 +1,128 @@
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-average-wrapper {
+    font-size: 17px;
+    padding: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-average-wrapper .mdhui-ss-severity-chart-average {
+    font-weight: bold;
+    display: inline;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-inner {
+    position: relative;
+    height: 304px;
+    padding: 16px;
+    box-sizing: border-box;
+    padding-left: 64px;
+    page-break-inside: avoid;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-inner .mdhui-ss-severity-chart-x-axis-line {
+    position: absolute;
+    width: calc(100% - 64px);
+    height: 1px;
+
+    /* Default color for PDF Rendering, since evopdf does not support CSS variables */
+    background: #eee;
+
+    background: var(--mdhui-background-color-1);
+    left: 64px;
+    top: 24px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-lines {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0.5px;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-y-axis {
+    position: absolute;
+    left: 0;
+    top: 16px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-value {
+    height: 16px;
+    margin-bottom: 8px;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    width: 56px;
+    font-size: 9px;
+    white-space: nowrap;
+    position: relative;
+    line-height: 16px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-value .mdhui-ss-severity-chart-value-label {
+    border-radius: 32px;
+    padding: 3px;
+    font-size: 9px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 10px;
+    display: inline-block;
+    color: var(--mdhui-text-color-1);
+    line-height: 10px;
+    background: #eec04c;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-value .mdhui-ss-severity-chart-total {
+    position: absolute;
+    right: 24px;
+    top: 0;
+    font-size: 15px;
+}
+
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-day-wrapper {
+    position: relative;
+    float: left;
+    height: 260px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-day-wrapper .mdhui-ss-severity-chart-day-marker {
+    position: absolute;
+    left: 0;
+    bottom: -16px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-day-wrapper .mdhui-ss-severity-chart-day-star {
+    position: absolute;
+    left: 0;
+    bottom: -32px;
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+    color: var(--ss-tertiary-theme-color);
+    display: none;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-day-wrapper .mdhui-ss-severity-chart-bar {
+    position: absolute;
+    width: 7px;
+    background: var(--ss-bar-graph-bar-color);
+    left: 0;
+    width: 100%;
+    bottom: 12px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-three-point-scale {
+    height: 136px;
+}
+
+.mdhui-ss-severity-chart .mdhui-ss-severity-chart-three-point-scale .mdhui-ss-severity-chart-day-wrapper {
+    height: 92px;
+}

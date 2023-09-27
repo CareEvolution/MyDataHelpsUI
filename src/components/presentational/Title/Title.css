@@ -1,0 +1,28 @@
+.mdhui-title {
+    margin: 0;
+    padding: 0;
+}
+
+h1.mdhui-title {
+    font-size: 2em;
+}
+
+h2.mdhui-title {
+    font-size: 1.5em;
+}
+
+h3.mdhui-title {
+    font-size: 1.17em;
+}
+
+h4.mdhui-title {
+    font-size: 1em;
+}
+
+h5.mdhui-title {
+    font-size: 0.83em;
+}
+
+h6.mdhui-title {
+    font-size: 0.67em;
+}

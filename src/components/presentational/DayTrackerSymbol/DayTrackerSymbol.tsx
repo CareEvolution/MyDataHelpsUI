@@ -5,7 +5,8 @@ export interface DayTrackerSymbolProps {
 	primaryColors: string[]
 	secondaryColors: string[]
 	className?: string
-	innerRef?: React.Ref<HTMLDivElement>;
+	size?: "small" | "large"
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: DayTrackerSymbolProps) {
@@ -25,8 +26,16 @@ export default function (props: DayTrackerSymbolProps) {
 
 	var style = { background: background };
 
+	let classes = ["mdhui-day-tracker-symbol"];
+	if (props.className) {
+		classes.push(props.className);
+	}
+	if (props.size == "large") {
+		classes.push("mdhui-day-tracker-symbol-large");
+	}
+
 	return (
-		<div ref={props.innerRef} className={"mdhui-day-tracker-symbol " + (props.className || "")}>
+		<div ref={props.innerRef} className={classes.join(" ")}>
 			<div className="day-circle" style={style}>
 				{props.secondaryColors.slice(0, 3).map((color, index) =>
 					<div key={index} className="secondary-color" style={{ background: color }}></div>

@@ -7,7 +7,6 @@ export const core = css`
     --mdhui-color-warning: #FF671D;
     --mdhui-color-danger: #eb5546;
     --mdhui-fadein-animation: fadein 1s;
-    
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
     --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
