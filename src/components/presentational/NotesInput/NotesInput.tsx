@@ -5,13 +5,14 @@ import language from '../../../helpers/language';
 
 export interface NotesInputProps {
 	autoTimestamp?: boolean;
-    placeholder?: string;
+	placeholder?: string;
 	onChange(value: string): void;
 	value: string;
 }
 
 export default function (props: NotesInputProps) {
 	const [clickedNotes, setClickedNotes] = useState<boolean>(false);
+	const textArea = useRef<HTMLTextAreaElement>(null);
 
 	function refreshHeight() {
 		textArea.current!.style.height = "1px";
@@ -22,13 +23,12 @@ export default function (props: NotesInputProps) {
 		refreshHeight();
 	}, [props.value]);
 
-	const textArea = useRef<HTMLTextAreaElement>(null);
 	function startEditingNotes(e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>) {
 		if (!clickedNotes && props.autoTimestamp) {
 			setClickedNotes(true);
 			var newValue = "";
 			if (props.value.length) {
-				var newValue = props.value + "\n\n";
+				newValue = props.value + "\n\n";
 			}
 			newValue += "-- " + format(new Date(), "h:mm a") + " --\n";
 			props.onChange(newValue);
@@ -37,11 +37,11 @@ export default function (props: NotesInputProps) {
 		}
 	}
 
-	return <textarea title={language("add-notes")} 
-        ref={textArea} 
-        onClick={(e) => startEditingNotes(e)} 
-        onChange={(e) => props.onChange(e.target.value)} 
-        className="notes-input" 
-        placeholder={props.placeholder} 
-        value={props.value}></textarea>
+	return <textarea title={language("add-notes")}
+		ref={textArea}
+		onClick={(e) => startEditingNotes(e)}
+		onChange={(e) => props.onChange(e.target.value)}
+		className="notes-input"
+		placeholder={props.placeholder}
+		value={props.value}></textarea>
 }
