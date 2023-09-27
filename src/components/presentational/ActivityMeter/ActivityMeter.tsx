@@ -11,10 +11,11 @@ export interface ActivityMeterProps {
 	color: string;
 	message?: string;
 	className?: string;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: ActivityMeterProps) {
-	return <div className={"mdhui-activity-meter " + (props.className || "")}>
+	return <div ref={props.innerRef} className={"mdhui-activity-meter " + (props.className || "")}>
 		<div className="mdhui-activity-meter-label">
 			{props.label}
 		</div>

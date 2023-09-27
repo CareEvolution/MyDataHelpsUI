@@ -5,11 +5,12 @@ export interface CardTitleProps {
 	title: string;
 	onDetailClick?: Function;
 	detailLinkText?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: CardTitleProps) {
 	return (
-		<div className="mdhui-card-title">
+		<div ref={props.innerRef} className="mdhui-card-title">
 			{props.title}
 			{props.onDetailClick && props.detailLinkText &&
 				<a className="detail-link" onClick={() => props.onDetailClick ? props.onDetailClick() : null}>

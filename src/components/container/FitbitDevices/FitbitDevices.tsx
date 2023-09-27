@@ -6,8 +6,9 @@ import { ConnectedDevicesPreviewState } from '../ConnectedDevices/ConnectedDevic
 
 export interface FitbitDevicesProps {
 	previewState?: ConnectedDevicesPreviewState;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: FitbitDevicesProps) {
-	return (<ConnectedDevices providerName="Fitbit" providerNamespace="Fitbit" previewData={fitbitDevicePreviewData} previewState={props.previewState}/>);
+	return (<ConnectedDevices innerRef={props.innerRef} providerName="Fitbit" providerNamespace="Fitbit" previewData={fitbitDevicePreviewData} previewState={props.previewState} />);
 }

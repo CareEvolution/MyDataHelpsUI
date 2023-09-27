@@ -6,6 +6,7 @@ export interface DayTrackerSymbolProps {
 	secondaryColors: string[]
 	className?: string
 	size?: "small" | "large"
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: DayTrackerSymbolProps) {
@@ -34,7 +35,7 @@ export default function (props: DayTrackerSymbolProps) {
 	}
 
 	return (
-		<div className={classes.join(" ")}>
+		<div ref={props.innerRef} className={classes.join(" ")}>
 			<div className="day-circle" style={style}>
 				{props.secondaryColors.slice(0, 3).map((color, index) =>
 					<div key={index} className="secondary-color" style={{ background: color }}></div>

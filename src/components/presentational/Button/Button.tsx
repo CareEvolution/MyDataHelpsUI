@@ -14,6 +14,7 @@ export interface ButtonProps {
 	color?: string;
 	loading?: boolean;
 	variant?: "default" | "subtle" | "light";
+	innerRef?: React.Ref<HTMLButtonElement>
 }
 
 export default function (props: ButtonProps) {
@@ -34,7 +35,7 @@ export default function (props: ButtonProps) {
 	}
 
 	return (
-		<button style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
+		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
 			onClick={() => {

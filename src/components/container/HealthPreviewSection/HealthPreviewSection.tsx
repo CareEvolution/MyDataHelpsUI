@@ -19,6 +19,7 @@ export interface HealthPreviewSectionProps {
     onClick(): void;
     previewState?: "NoData" | "Default";
     indicatorPosition?: "default" | "topRight";
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: HealthPreviewSectionProps) {
@@ -91,16 +92,18 @@ export default function (props: HealthPreviewSectionProps) {
     }
 
     if (!model) {
-        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+        return <div ref={props.innerRef} className="mdhui-health-preview-section"><LoadingIndicator /></div>
     }
 
     if (!model.PreviewValues.length) {
         return null;
     }
 
-    return <Action indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} className="mdhui-health-preview-section" title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
-        <div>
-            {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
-        </div>
-    </Action>
+    return <div ref={props.innerRef}>
+        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
+            <div>
+                {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
+            </div>
+        </Action>
+    </div>
 }

@@ -59,6 +59,22 @@ export const stepsBarChart = {
     render: render
 };
 
+
+export const stepsLiveBarChart = {
+    args: {
+        title: "Steps",
+        options: {
+
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar"
+    },
+    render: render
+};
+
 export const stepsAreaChart = {
     args: {
         title: "Steps",

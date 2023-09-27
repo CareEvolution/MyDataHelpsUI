@@ -20,6 +20,7 @@ export interface ConnectedDevicesProps {
 	providerNamespace: DeviceDataNamespace;
 	previewState?: ConnectedDevicesPreviewState;
 	previewData: DeviceDataPoint[]
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ConnectedDevicesPreviewState = "notEnabled" | "notConnected" | "connected";
@@ -63,7 +64,7 @@ export default function (props: ConnectedDevicesProps) {
 
 	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 	return (
-		<div className="mdhui-connected-devices">
+		<div className="mdhui-connected-devices" ref={props.innerRef}>
 			<CardTitle title={props.providerName+ " " + language("devices")} />
 			{connectedDevices.map((device) =>
 				<div key={device.id.toString()} className="connected-device">

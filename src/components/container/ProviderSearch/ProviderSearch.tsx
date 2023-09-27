@@ -14,6 +14,7 @@ export interface ProviderSearchProps {
     providerCategories?: string[];
     openNewWindow?: boolean;
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -134,7 +135,7 @@ export default function (props: ProviderSearchProps) {
     }, [currentPage]);
 
     return (
-        <div className="mdhui-provider-search">
+        <div ref={props.innerRef} className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
                     <input title={language("search")} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />

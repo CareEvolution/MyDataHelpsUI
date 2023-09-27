@@ -18,6 +18,7 @@ export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
 	disableClick?: boolean
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleSurveyTaskProps) {
@@ -58,7 +59,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'incomplete') {
 		return (
-			<div className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
+			<div ref={props.innerRef} className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
 				<div>
 					<div className="survey-name">{props.task.surveyDisplayName}</div>
 					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
@@ -77,7 +78,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'complete' && props.task.endDate) {
 		return (
-			<div className="mdhui-single-survey-task complete">
+			<div ref={props.innerRef} className="mdhui-single-survey-task complete">
 				<div>
 					<div className="survey-name">{props.task.surveyDisplayName}</div>
 					<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>

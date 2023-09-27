@@ -13,8 +13,8 @@ export interface SurveyTaskListProps {
 	surveys?: string[],
 	onDetailLinkClick?: Function,
 	previewState?: SurveyTaskListListPreviewState
-	variant?: "noCard" | "singleCard" | "multiCard",
-	hideIfNoTasks?: boolean
+	variant?: "noCard" | "singleCard" | "multiCard"
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
@@ -96,7 +96,7 @@ export default function (props: SurveyTaskListProps) {
 
 	let variant = props.variant ?? "noCard";
 	return (
-		<TaskListWrapper card={variant == "singleCard"}>
+		<TaskListWrapper innerRef={props.innerRef} card={variant == "singleCard"}>
 			<div className="mdhui-survey-task-list">
 				{props.title &&
 					<CardTitle title={props.title} detailLinkText={props.onDetailLinkClick ? language("view-all") + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
@@ -115,6 +115,6 @@ export default function (props: SurveyTaskListProps) {
 	);
 }
 
-function TaskListWrapper(props: { children?: React.ReactNode, card: boolean }) {
-	return props.card ? <Card>{props.children}</Card> : <>{props.children}</>;
+function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement> }) {
+	return props.card ? <Card innerRef={props.innerRef}>{props.children}</Card> : <div ref={props.innerRef}>{props.children}</div>;
 }

@@ -21,6 +21,7 @@ export interface DailyDataChartProps {
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
     hideIfNoData?: boolean
     previewDataProvider?: DailyDataProvider
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface LineChartOptions {
@@ -38,7 +39,7 @@ export interface AreaChartOptions {
 }
 
 function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
-    let intervalStart:Date;
+    let intervalStart: Date;
     if (intervalType === "Week") {
         intervalStart = getWeekStart(weekStartsOn);
     } else {
@@ -80,7 +81,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     }
 
     useEffect(() => {
-        function checkAvailability(){
+        function checkAvailability() {
             if (props.previewDataProvider) {
                 setHasAnyData(true);
                 return;
@@ -154,7 +155,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         } else {
             let currentDate = intervalStart;
-            let dayOfWeek:string = "";
+            let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getDate() == value) {
                     dayOfWeek = format(currentDate, "EEEEEE");
@@ -207,7 +208,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
-    return <div className="mdhui-daily-data-chart">
+    return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
         }

@@ -9,6 +9,7 @@ import language from '../../../helpers/language';
 
 export interface ProjectSupportProps {
 	previewState?: ProjectSupportPropsPreviewState
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ProjectSupportPropsPreviewState = "Default";
@@ -48,7 +49,7 @@ export default function (props: ProjectSupportProps) {
 	}
 
 	return (
-		<div className="mdhui-project-support">
+		<div ref={props.innerRef} className="mdhui-project-support">
 			<div className="title">{language("support")}</div>
 			{loading &&
 				<LoadingIndicator />

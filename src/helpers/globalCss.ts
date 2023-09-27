@@ -7,7 +7,6 @@ export const core = css`
     --mdhui-color-warning: #FF671D;
     --mdhui-color-danger: #eb5546;
     --mdhui-fadein-animation: fadein 1s;
-
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
     --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
@@ -70,6 +69,7 @@ export const lightColorScheme = css`
     --mdhui-box-shadow-1: 0px 0px 5px 0px var(--mdhui-box-shadow-color-1);
 
     --mdhui-overlay-gradient:linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 240, 0.2) 100%);
+    
 }
 `
 

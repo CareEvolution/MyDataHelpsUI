@@ -16,6 +16,7 @@ export interface DateRangeNavigatorProps {
 	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
 	className?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: DateRangeNavigatorProps) {
@@ -55,7 +56,7 @@ export default function (props: DateRangeNavigatorProps) {
 	}
 
 	return (
-		<div className={classes.join(" ")}>
+		<div ref={props.innerRef} className={classes.join(" ")}>
 			<div className="mdhui-date-range-navigator-inner">
 				<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />

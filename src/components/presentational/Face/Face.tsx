@@ -13,6 +13,7 @@ export interface FaceProps {
 	selected?: boolean;
 	onClick?: MouseEventHandler;
 	className?: string;
+	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: FaceProps) {
@@ -39,7 +40,7 @@ export default function (props: FaceProps) {
 	}
 
 	if (props.onClick) {
-		return <UnstyledButton className={className} onClick={props.onClick}>
+		return <UnstyledButton innerRef={props.innerRef} className={className} onClick={props.onClick}>
 			<img src={getFace()} style={imageStyle} />
 			<ShinyOverlay />
 		</UnstyledButton>

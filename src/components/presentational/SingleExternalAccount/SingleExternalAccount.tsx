@@ -16,6 +16,7 @@ export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
 	onAccountRemoved: (account: ExternalAccount) => void;
 	onReconnectAccount: (account: ExternalAccount) => void;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleExternalAccountProps) {
@@ -42,7 +43,7 @@ export default function (props: SingleExternalAccountProps) {
 	}
 
 	return (
-		<div className="mdhui-single-external-account">
+		<div ref={props.innerRef} className="mdhui-single-external-account">
 			<div className="external-account-header">
 				{props.externalAccount.provider.logoUrl &&
 					<img alt={props.externalAccount.provider.name} src={props.externalAccount.provider.logoUrl} className="external-account-provider-logo" />
