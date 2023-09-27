@@ -4,7 +4,6 @@ import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 
 export interface ConnectDeviceAccountStepContainerProps {
     deviceType?: string;
-    providerID?: number;
 }
 
 export default function (props: ConnectDeviceAccountStepContainerProps) {
@@ -12,11 +11,12 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
     const [deviceType, setDeviceType] = useState<string>(
-        props.deviceType ?? ""
+        props.deviceType || ''
     );
-    const [providerID, setProviderID] = useState<number>(props.providerID ?? 0);
+    const [loading, setLoading] = useState<boolean>(true);
 
     function onConnect() {
+        const providerID = convertToProviderID(deviceType);
         MyDataHelps.connectExternalAccount(providerID, {
             openNewWindow: true,
         }).then(function () {
@@ -24,11 +24,39 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         });
     }
 
-    function isProd() {
+    function isTest() {
         return (
-            window.location.host.endsWith(".com") ||
-            window.location.host.endsWith(".org")
+            !MyDataHelps.baseUrl ||
+            MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev") ||
+            MyDataHelps.baseUrl.startsWith("https://mydatahelps.dev")
         );
+    }
+
+    function convertToProviderID(deviceType: string) {
+        switch (deviceType) {
+            case "Fitbit":
+                return isTest() ? 18 : 564; // 'Fitbit prod' or 'Fitbit'
+            case "Omron":
+                return isTest() ? 171 : 1466; // 'Omron prod' or 'Omron'
+            case "Garmin":
+                return isTest() ? 1384 : 6327; // 'Garmin QA' or 'Garmin'
+            default:
+                throw Error("Unsupported device type " + deviceType);
+        }
+    }
+
+    async function completeStepIfConnected(deviceType: string) {
+        const accounts = await MyDataHelps.getExternalAccounts();
+
+        const providerID = convertToProviderID(deviceType);
+        const connected = accounts.some(
+            (acc) => acc.provider.id === providerID
+        );
+        if (connected) {
+            MyDataHelps.completeStep(providerID);
+        }
+
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -36,7 +64,13 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         MyDataHelps.getStepConfiguration().then(function (
             config: StepConfiguration
         ) {
-            if (!config) return; // allows test mode to work
+            if (!config) {
+
+                setLoading(false);
+                completeStepIfConnected(deviceType);
+
+                return; // allows test mode to work
+            }
 
             setTitle(config.properties.title);
 
@@ -46,55 +80,20 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             }
             setDeviceType(config.properties.deviceType);
 
-            switch (config.properties.deviceType) {
-                case "Fitbit":
-                    setProviderID(
-                        isProd() ? 564 : 18 // 'Fitbit' or 'Fitbit prod'
-                    );
-                    break;
-                case "Omron":
-                    setProviderID(
-                        isProd() ? 1466 : 171 // 'Omron' or 'Omron prod'
-                    );
-                    break;
-                case "Garmin":
-                    setProviderID(
-                        isProd() ? 6327 : 1384 // 'Garmin' or 'Garmin QA'
-                    );
-                    break;
-                default:
-                    throw Error(
-                        "Unsupported device type " +
-                            config.properties.deviceType
-                    );
-            }
-
             setStyles(config.styles ?? {});
+
+            completeStepIfConnected(config.properties.deviceType);
         });
     }, []);
 
-    useEffect(() => {
-        // Check connect status once providerID is set.
-        if (!providerID) return;
-
-        MyDataHelps.getExternalAccounts().then(function (accounts) {
-            const connected = accounts.some(
-                (acc) => acc.provider.id === providerID
-            );
-            if (connected) {
-                MyDataHelps.completeStep(providerID);
-            }
-        });
-    }, [providerID]);
-
-    if (!providerID) return <></>;
+    if (loading) return <></>;
 
     return (
         <ConnectDeviceAccountStep
             title={title}
             text={text}
             deviceType={deviceType}
-            providerID={providerID}
+            providerID={convertToProviderID(deviceType)}
             styles={styles}
             onConnect={onConnect}
         />
