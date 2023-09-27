@@ -8,6 +8,7 @@ import { DateRangeContext } from '../../../presentational/DateRangeCoordinator/D
 export interface SymptomTreatmentHistogramsProps {
     intervalStart?: Date;
     onSymptomSelected(symptom: string, intervalStart: Date): void;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomTreatmentHistogramsProps) {
@@ -87,7 +88,7 @@ export default function (props: SymptomTreatmentHistogramsProps) {
     }
 
     return (
-        <div className="mdhui-ss-histograms">
+        <div ref={props.innerRef} className="mdhui-ss-histograms">
             <div className="mdhui-ss-histogram">
                 <Title className="mdhui-ss-histogram-title" order={4}>{language("symptoms")}</Title>
                 <Histogram className='ss-histogram' entries={symptomHistogram} />

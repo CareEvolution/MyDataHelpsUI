@@ -9,6 +9,7 @@ export interface SymptomSharkVisualizationCoordinatorProps {
     children: React.ReactNode;
     showFilters?: boolean;
     previewState?: "default";
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface SymptomSharkVisualizationContext {
@@ -72,17 +73,19 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
         return <LoadingIndicator />;
     }
 
-    return <SymptomSharkVisualizationContext.Provider value={currentContext} >
-        {props.showFilters && <Section noTopMargin>
-            <SymptomTreatmentFilters configuration={configuration}
-                selectedSymptoms={selectedSymptoms}
-                onSymptomsSelectionChange={(s) => updateSelectedSymptoms(s)}
-                selectedTreatments={selectedTreatments}
-                onTreatmentsSelectionChange={(s) => updateSelectedTreatments(s)}
-                expandedDropdown={expandedDropdown}
-                onExpandedDropdownChange={(d) => setExpandedDropdown(d)} />
-        </Section>
-        }
-        {props.children}
-    </SymptomSharkVisualizationContext.Provider >
+    return <div ref={props.innerRef}>
+        <SymptomSharkVisualizationContext.Provider value={currentContext}>
+            {props.showFilters && <Section noTopMargin>
+                <SymptomTreatmentFilters configuration={configuration}
+                    selectedSymptoms={selectedSymptoms}
+                    onSymptomsSelectionChange={(s) => updateSelectedSymptoms(s)}
+                    selectedTreatments={selectedTreatments}
+                    onTreatmentsSelectionChange={(s) => updateSelectedTreatments(s)}
+                    expandedDropdown={expandedDropdown}
+                    onExpandedDropdownChange={(d) => setExpandedDropdown(d)} />
+            </Section>
+            }
+            {props.children}
+        </SymptomSharkVisualizationContext.Provider>
+    </div>
 }

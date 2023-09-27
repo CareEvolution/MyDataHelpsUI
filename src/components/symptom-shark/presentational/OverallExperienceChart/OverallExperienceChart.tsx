@@ -9,6 +9,7 @@ import { startOfMonth } from "date-fns";
 export interface OverallExperienceChartProps {
     intervalStart?: Date;
     showAllDays?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: OverallExperienceChartProps) {
@@ -74,7 +75,7 @@ export default function (props: OverallExperienceChartProps) {
         });
     }
 
-    return <div className="mdhui-ss-oe-chart">
+    return <div ref={props.innerRef} className="mdhui-ss-oe-chart">
         <CardTitle title={language("daily-overall-experience")} />
         <div className="mdhui-ss-oe-chart-inner">
             <div className="mdhui-ss-oe-chart-y-axis">

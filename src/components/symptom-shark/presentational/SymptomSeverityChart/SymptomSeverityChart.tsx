@@ -10,6 +10,7 @@ export interface SymptomSeverityChartProps {
     intervalStart?: Date;
     symptom: SymptomConfiguration;
     showAllDays?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomSeverityChartProps) {
@@ -86,7 +87,7 @@ export default function (props: SymptomSeverityChartProps) {
         return null;
     }
 
-    return <div className="mdhui-ss-severity-chart">
+    return <div ref={props.innerRef} className="mdhui-ss-severity-chart">
         <CardTitle title={props.symptom.name + " " + language("severity")} />
         {props.symptom.severityTracking == "3PointScale" &&
             <>

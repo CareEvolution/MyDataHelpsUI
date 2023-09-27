@@ -12,6 +12,7 @@ import language from "../../../../helpers/language";
 export interface SymptomSharkLogEntryListProps {
     onDaySelected(d: Date): void;
     previewState?: "default";
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomSharkLogEntryListProps) {
@@ -57,7 +58,7 @@ export default function (props: SymptomSharkLogEntryListProps) {
         }
     }, []);
 
-    return <div className="log-entry-list">
+    return <div ref={props.innerRef} className="log-entry-list">
         {configuration && days.map(d =>
             <SymptomSharkLogEntry noDataMessage={getDayKey(d) == getDayKey(new Date()) ? language("tap-to-log-today") : undefined} key={getDayKey(d)} date={d} configuration={configuration} logEntry={logEntries[getDayKey(d)]} onClick={() => props.onDaySelected(d)} />
         )}

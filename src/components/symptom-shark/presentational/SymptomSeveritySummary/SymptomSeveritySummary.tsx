@@ -12,6 +12,7 @@ import language from "../../../../helpers/language";
 export interface SymptomSeveritySummaryProps {
     symptom: SymptomConfiguration;
     intervalStart?: Date;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomSeveritySummaryProps) {
@@ -55,7 +56,7 @@ export default function (props: SymptomSeveritySummaryProps) {
         return null;
     }
 
-    return <div className="mdhui-ss-symptom-severity-summaries">
+    return <div ref={props.innerRef} className="mdhui-ss-symptom-severity-summaries">
         <div className="mdhui-ss-symptom-severity-summary">
             <div className="mdhui-ss-symptom-severity-summary-label">{language("severe")}</div>
             <div className="mdhui-ss-symptom-severity-summary-count">{daysMatchingScore(8, 10)}</div>

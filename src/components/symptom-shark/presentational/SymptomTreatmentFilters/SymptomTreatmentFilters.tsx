@@ -12,6 +12,7 @@ export interface SymptomTreatmentFiltersProps {
     configuration: SymptomSharkConfiguration;
     onSymptomsSelectionChange(symptoms: string[]): void;
     onTreatmentsSelectionChange(treatments: string[]): void;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomTreatmentFiltersProps) {
@@ -36,7 +37,7 @@ export default function (props: SymptomTreatmentFiltersProps) {
         props.onTreatmentsSelectionChange(newSelectedItems);
     }
 
-    return <div className="mdhui-ss-symptom-treatment-filters">
+    return <div ref={props.innerRef} className="mdhui-ss-symptom-treatment-filters">
         <UnstyledButton className="mdhui-ss-symptom-treatment-filter-dropdown-button" onClick={() => props.expandedDropdown == "Symptoms" ? props.onExpandedDropdownChange(null) : props.onExpandedDropdownChange("Symptoms")}
             style={{ fontWeight: props.selectedSymptoms.length > 0 ? "bold" : "" }}>
             {language("select-symptoms")} <FontAwesomeIcon icon={props.expandedDropdown == "Symptoms" ? faCaretUp : faCaretDown} />

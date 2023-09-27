@@ -13,6 +13,7 @@ import "./Calendar.css"
 export interface SymptomSharkCalendarProps {
     intervalStart?: Date;
     onDaySelected(day: Date): void;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomSharkCalendarProps) {
@@ -56,7 +57,7 @@ export default function (props: SymptomSharkCalendarProps) {
             future={future} />;
     }
 
-    return <Calendar className="mdhui-ss-calendar" month={intervalStart.getMonth()}
+    return <Calendar innerRef={props.innerRef} className="mdhui-ss-calendar" month={intervalStart.getMonth()}
         year={intervalStart.getFullYear()}
         dayRenderer={renderDay} />
 }

@@ -18,6 +18,7 @@ export interface SymptomSharkLogEntryProps {
     noDataMessage?: string;
     highlightedSymptoms?: string[];
     highlightedTreatments?: string[];
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SymptomSharkLogEntryProps) {
@@ -41,7 +42,7 @@ export default function (props: SymptomSharkLogEntryProps) {
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
     
     if (emptyLogEntry) {
-        return <Card variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
+        return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
             <Action
                 title={title}
                 subtitle={subtitle}
@@ -55,7 +56,7 @@ export default function (props: SymptomSharkLogEntryProps) {
         </Card>;
     }
 
-    return <Card className="mdhui-ss-log-entry">
+    return <Card innerRef={props.innerRef} className="mdhui-ss-log-entry">
         <Action
             title={title}
             subtitle={subtitle}
