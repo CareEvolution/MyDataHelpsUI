@@ -37,7 +37,7 @@ export default function (props: OverallExperienceChartProps) {
         });
     }
 
-    function overallFeelingAverage() {
+    function calculateOverallFeelingAverage() {
         var total = 0;
         var overallFeelingDays = daysWithOverallFeeling();
         if (overallFeelingDays.length == 0) {
@@ -74,6 +74,8 @@ export default function (props: OverallExperienceChartProps) {
             color: color
         });
     }
+
+    let overallFeelingAverage = calculateOverallFeelingAverage();
 
     return <div ref={props.innerRef} className="mdhui-ss-oe-chart">
         <CardTitle title={language("daily-overall-experience")} />
@@ -135,11 +137,11 @@ export default function (props: OverallExperienceChartProps) {
                 )}
             </div>
         </div>
-        {overallFeelingAverage() &&
+        {overallFeelingAverage &&
             <div className="mdhui-ss-oe-chart-average-wrapper">
                 {language("average")}: <div className="mdhui-ss-oe-chart-average">
-                    {overallFeelingAverage()!.toFixed(1)}
-                    <Face className="mdhui-ss-oe-chart-face" selected={true} faceValue={parseInt(overallFeelingAverage()!.toFixed(0))} />
+                    {overallFeelingAverage!.toFixed(1)}
+                    <Face className="mdhui-ss-oe-chart-face" selected={true} faceValue={parseInt(overallFeelingAverage!.toFixed(0))} />
                 </div>
             </div>
         }

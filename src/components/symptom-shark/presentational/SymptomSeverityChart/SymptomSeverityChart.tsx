@@ -26,9 +26,9 @@ export default function (props: SymptomSeverityChartProps) {
         intervalStart = dateRangeContext.intervalStart;
     }
 
-    var monthDays = getDatesForMonth(intervalStart.getFullYear(), intervalStart.getMonth());
+    let monthDays = getDatesForMonth(intervalStart.getFullYear(), intervalStart.getMonth());
 
-    var symptomAverage = function () {
+    let calculateSymptomAverage = function () {
         var total = 0;
 
         var relevantEntries = [];
@@ -55,7 +55,7 @@ export default function (props: SymptomSeverityChartProps) {
         return total / relevantEntries.length;
     }
 
-    var symptomSeverity = function (date: Date) {
+    let symptomSeverity = function (date: Date) {
         var day = getDayKey(date);
         if (logEntries[day]) {
             var matchingSymptom = logEntries[day].symptoms.find((s) => props.symptom.id == s.id);
@@ -72,7 +72,7 @@ export default function (props: SymptomSeverityChartProps) {
         return 0;
     }
 
-    var daysMatchingScore = function (score: number) {
+    let daysMatchingScore = function (score: number) {
         var result = 0;
         for (var i = 0; i < monthDays.length; i++) {
             var severity = symptomSeverity(monthDays[i]);
@@ -83,7 +83,9 @@ export default function (props: SymptomSeverityChartProps) {
         return result;
     }
 
-    if (isNaN(symptomAverage())) {
+    let symptomAverage = calculateSymptomAverage();
+
+    if (isNaN(symptomAverage)) {
         return null;
     }
 
@@ -125,10 +127,10 @@ export default function (props: SymptomSeverityChartProps) {
                         )}
                     </div>
                 </div>
-                {symptomAverage() &&
+                {symptomAverage &&
                     <div className="mdhui-ss-severity-chart-average-wrapper">
                         {language("average")} <div className="mdhui-ss-severity-chart-average">
-                            {symptomAverage().toFixed(1)} / 3
+                            {symptomAverage.toFixed(1)} / 3
                         </div>
                     </div>
                 }
@@ -166,10 +168,10 @@ export default function (props: SymptomSeverityChartProps) {
                     </div>
                 </div>
 
-                {symptomAverage() &&
+                {symptomAverage &&
                     <div className="mdhui-ss-severity-chart-average-wrapper">
                         {language("average")} <div className="mdhui-ss-severity-chart-average">
-                            {symptomAverage().toFixed(1)} / 10
+                            {symptomAverage.toFixed(1)} / 10
                         </div>
                     </div>
                 }
