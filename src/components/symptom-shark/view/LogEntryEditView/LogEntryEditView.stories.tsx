@@ -4,7 +4,7 @@ import SymptomSharkLogEntryEditView, { LogEntryEditViewProps } from "./LogEntryE
 import { Layout } from "../../../presentational";
 
 export default { title: "SymptomShark/View/LogEntryEditView", component: SymptomSharkLogEntryEditView, parameters: { layout: 'fullscreen' } };
-let render = (args: LogEntryEditViewProps) => <Layout colorScheme="auto"><SymptomSharkLogEntryEditView {...args} /></Layout>
+let render = (args: LogEntryEditViewProps) => <SymptomSharkLogEntryEditView {...args} />
 
 export const Default = {
     args: {
