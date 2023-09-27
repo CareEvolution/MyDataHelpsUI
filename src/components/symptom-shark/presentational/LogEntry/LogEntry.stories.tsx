@@ -5,7 +5,7 @@ import { SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
 import { Layout } from "../../../presentational";
 
 export default { title: "SymptomShark/Presentational/LogEntry", component: SymptomSharkLogEntry, parameters: { layout: 'fullscreen' } };
-let render = (args: SymptomSharkLogEntryProps) => <Layout><SymptomSharkLogEntry {...args} /></Layout>
+let render = (args: SymptomSharkLogEntryProps) => <Layout colorScheme="auto"><SymptomSharkLogEntry {...args} /></Layout>
 
 let configuration: SymptomSharkConfiguration = {
 	symptoms: [

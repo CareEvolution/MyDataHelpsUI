@@ -5,7 +5,7 @@ import { SymptomSharkVisualizationCoordinator } from "../../container";
 import { demoSymptoms } from "../../helpers/demo-data";
 
 export default { title: "SymptomShark/Presentational/SymptomSeveritySummary", component: SymptomSeveritySummary, parameters: { layout: 'fullscreen' } };
-let render = (args: SymptomSeveritySummaryProps) => <Layout>
+let render = (args: SymptomSeveritySummaryProps) => <Layout colorScheme="auto">
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
         <SymptomSharkVisualizationCoordinator previewState="default">
             <SymptomSeveritySummary {...args} />

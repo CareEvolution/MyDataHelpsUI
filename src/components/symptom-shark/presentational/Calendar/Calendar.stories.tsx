@@ -4,7 +4,7 @@ import SymptomSharkCalendar, { SymptomSharkCalendarProps } from "./Calendar";
 import { SymptomSharkVisualizationCoordinator } from "../../container";
 
 export default { title: "SymptomShark/Presentational/Calendar", component: SymptomSharkCalendar, parameters: { layout: 'fullscreen' } };
-let render = (args: SymptomSharkCalendarProps) => <Layout>
+let render = (args: SymptomSharkCalendarProps) => <Layout colorScheme="auto">
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
         <SymptomSharkVisualizationCoordinator previewState="default" showFilters>
             <Section>

@@ -4,7 +4,7 @@ import SymptomTreatmentHistograms, { SymptomTreatmentHistogramsProps } from "./S
 import { SymptomSharkVisualizationCoordinator } from "../../container";
 
 export default { title: "SymptomShark/Presentational/SymptomTreatmentHistograms", component: SymptomTreatmentHistograms, parameters: { layout: 'fullscreen' } };
-let render = (args: SymptomTreatmentHistogramsProps) => <Layout>
+let render = (args: SymptomTreatmentHistogramsProps) => <Layout colorScheme="auto">
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
         <SymptomSharkVisualizationCoordinator previewState="default" showFilters>
             <SymptomTreatmentHistograms {...args} />

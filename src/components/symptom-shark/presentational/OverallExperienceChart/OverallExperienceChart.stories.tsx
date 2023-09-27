@@ -4,7 +4,7 @@ import OverallExperienceChart, { OverallExperienceChartProps } from "./OverallEx
 import { SymptomSharkVisualizationCoordinator } from "../../container";
 
 export default { title: "SymptomShark/Presentational/OverallExperienceChart", component: OverallExperienceChart, parameters: { layout: 'fullscreen' } };
-let render = (args: OverallExperienceChartProps) => <Layout>
+let render = (args: OverallExperienceChartProps) => <Layout colorScheme="auto">
     <DateRangeCoordinator intervalType={"Month"} variant="rounded">
         <SymptomSharkVisualizationCoordinator previewState="default" showFilters>
             <Section><OverallExperienceChart {...args} /></Section>
