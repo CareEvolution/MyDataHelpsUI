@@ -9,8 +9,9 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
+const render = (args: AnimatedRingProps) => <Layout colorScheme="auto"><AnimatedRing {...args} /></Layout>
+
 const children = <div className="animated-ring-story">Great Job!</div>;
-const render = (args: AnimatedRingProps) => <Layout><AnimatedRing {...args} /></Layout>
 
 export const Default = {
     args: {
