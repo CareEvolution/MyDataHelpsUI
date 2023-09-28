@@ -35,3 +35,10 @@ onProviderSelected.args = {
 onProviderSelected.parameters = {
 	externalAccounts: []
 }
+
+export const Live = Template.bind({});
+Default.args = {
+}
+Default.parameters = {
+	externalAccounts: []
+}
