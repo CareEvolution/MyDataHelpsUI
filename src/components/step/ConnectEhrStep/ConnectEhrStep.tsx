@@ -37,7 +37,6 @@ export default function (props: ConnectEhrStepProps) {
             <ProviderSearch
                 previewState={props.previewState}
                 providerCategories={["Provider", "Health Plan"]}
-                openNewWindow={true}
                 onProviderSelected={props.onProviderSelected}
             />
             <StepNextButton
