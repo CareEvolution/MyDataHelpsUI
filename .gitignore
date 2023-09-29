@@ -356,3 +356,5 @@ dist/
 .env
 
 storybook-static/
+
+**/.DS_Store

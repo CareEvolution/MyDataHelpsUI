@@ -5,7 +5,6 @@
 .mdhui-connect-device .subtitle {
     font-size: .88em;
     font-weight: normal;
-    color: var(--mdhui-text-color-2);
 }
 
 .mdhui-connect-device .subtitle.reconnect {
@@ -18,9 +17,43 @@
 }
 
 .mdhui-connect-device .mdhui-button {
-    margin-top: 16px;
+    margin-top: 12px;
 }
 
 .mdhui-connect-device .content {
     padding: 16px;
+    padding-top: 8px;
+}
+
+.mdhui-connect-device .mdhui-connect-device-title-wrapper {
+    padding: 16px;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mdhui-connect-device .mdhui-connect-device-action {
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-connect-device .mdhui-connect-device-title {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.mdhui-connect-device-large .mdhui-connect-device-title {
+    display: block;
+}
+
+.mdhui-connect-device-large .mdhui-connect-device-title img {
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+
+.mdhui-connect-device-small {
+    font-size: 0.83em;
+    display: flex;
 }

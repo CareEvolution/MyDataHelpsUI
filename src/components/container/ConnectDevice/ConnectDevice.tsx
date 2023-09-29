@@ -1,9 +1,9 @@
-﻿import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect, ReactElement } from 'react'
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, Button, CardTitle } from '../../presentational';
+import { LoadingIndicator, Button, CardTitle, Title, Action, TextBlock } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
 import add from 'date-fns/add'
@@ -11,27 +11,58 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import fitbit from './fitbit.svg';
+import garmin from './garmin.svg';
+import smartwatch from './smartwatch.svg';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export interface ConnectDeviceProps {
-	title?: string,
-	providerName: string,
-	providerIDCallback: ()=>number,
-	previewState?: ConnectDevicePreviewState,
-	disabledBehavior?: 'hide' | 'displayError',
-	dataCollectionProperty:	string 
+	language: ConnectDeviceLanguage
+	hideWhenConnected?: boolean
+	provider: "Fitbit" | "Garmin"
+	previewState?: ConnectDevicePreviewState
+	disabledBehavior?: 'hide' | 'displayError'
 	innerRef?: React.Ref<HTMLDivElement>
+	variant: "small" | "medium" | "large"
+}
+
+export interface ConnectDeviceLanguage {
+	notConnectedTitle?: string
+	notConnectedMessage?: string
+	fetchCompleteTitle?: string
+	fetchCompleteMessage?: string
+	fetchingDataTitle?: string
+	fetchingDataMessage?: string
+	unauthorizedTitle?: string
+	unauthorizedMessage?: string
+	connectButtonText?: string
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+
+function getFitbitProviderID() {
+	var fitbitProviderID = 564;
+	if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
+		fitbitProviderID = 2;
+	}
+	return fitbitProviderID;
+}
+
+function getGarminProviderID() {
+	var garminProviderID = 6327;
+	if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
+		garminProviderID = 1384;
+	}
+	return garminProviderID;
+}
 
 export default function (props: ConnectDeviceProps) {
 	const [loading, setLoading] = useState(true);
 	const [deviceEnabled, setDeviceEnabled] = useState(false);
 	const [deviceExternalAccount, setDeviceExternalAccount] = useState<ExternalAccount | null>(null);
 
-	function buildLanguageKey(key: string) {
-		return key.replace("{device}", props.providerName.toLowerCase());
-	}
+	let providerID = props.provider == "Fitbit" ? getFitbitProviderID() : getGarminProviderID();
+
 	function initialize() {
 		if (props.previewState) {
 			if (props.previewState == "notEnabled") {
@@ -48,22 +79,23 @@ export default function (props: ConnectDeviceProps) {
 				lastRefreshDate: formatISO(add(new Date(), { hours: -1 })),
 				status: props.previewState,
 				provider: {
-					name: props.providerName,
+					name: props.provider,
 					category: "Device Manufacturer",
-					id: props.providerIDCallback(),
+					id: providerID,
 					logoUrl: ""
 				}
 			});
 			setLoading(false);
 			return;
 		}
-		
-		MyDataHelps.getDataCollectionSettings().then(function (settings:any) {
-			setDeviceEnabled(settings[props.dataCollectionProperty]);
-			if (settings[props.dataCollectionProperty]) {
+
+		MyDataHelps.getDataCollectionSettings().then(function (settings: any) {
+			let enabled = props.provider == "Fitbit" ? settings.fitbitEnabled : settings.garminEnabled;
+			setDeviceEnabled(enabled);
+			if (enabled) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {
 					for (let i = 0; i < accounts.length; i++) {
-						if (accounts[i].provider.id == props.providerIDCallback()) {
+						if (accounts[i].provider.id == providerID) {
 							setDeviceExternalAccount(accounts[i]);
 						}
 					}
@@ -76,7 +108,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerIDCallback());
+		MyDataHelps.connectExternalAccount(providerID);
 	}
 
 	useEffect(() => {
@@ -88,7 +120,6 @@ export default function (props: ConnectDeviceProps) {
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
 	}, []);
-
 
 	var deviceAccountStatus: ExternalAccountStatus | undefined = deviceExternalAccount?.status;
 	if (deviceExternalAccount?.status == "fetchComplete") {
@@ -104,7 +135,7 @@ export default function (props: ConnectDeviceProps) {
 		if (props.disabledBehavior == 'displayError' && !loading) {
 			return (
 				<div className="mdhui-connect-device" ref={props.innerRef}>
-					<div className="content">{props.title} is not enabled for this project.</div>
+					<TextBlock>{props.provider} is not enabled for this project.</TextBlock>
 				</div>
 			);
 		} else {
@@ -112,39 +143,79 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}
 
+	let title = props.language.notConnectedTitle;
+	let message = props.language.notConnectedMessage;
+	let image = providerID == getFitbitProviderID() ? fitbit : garmin;
+	let icon: ReactElement | null = null;
+
+	if (props.hideWhenConnected && deviceAccountStatus != 'unauthorized') {
+		return null;
+	}
+	if (deviceAccountStatus == 'fetchComplete') {
+		title = props.language.fetchCompleteTitle;
+		message = props.language.fetchCompleteMessage;
+		icon = <FontAwesomeSvgIcon icon={faCheckCircle} className="mdhui-connect-device-icon mdhui-color-success" />;
+	}
+	if (deviceAccountStatus == 'fetchingData') {
+		title = props.language.fetchingDataTitle;
+		message = props.language.fetchingDataMessage;
+		icon = <FontAwesomeSvgIcon icon={faRefresh} spin className="mdhui-connect-device-icon mdhui-color-muted" />;
+	}
+	if (deviceAccountStatus == 'unauthorized') {
+		title = props.language.unauthorizedTitle;
+		message = props.language.unauthorizedMessage;
+		icon = <FontAwesomeSvgIcon icon={faExclamationTriangle} className="mdhui-connect-device-icon mdhui-color-danger" />;
+	}
+
+	let classNames = ["mdhui-connect-device"];
+	classNames.push("mdhui-connect-device-" + props.variant);
+
+	if (props.variant == "small") {
+		return <Action onClick={() => { }} className="mdhui-connect-device mdhui-connect-device-small" indicator={<div className="mdhui-connect-device-action">Add Account</div>}>
+			<div className="mdhui-connect-device-title">
+				<img src={image} />
+				<Title order={4}>{props.provider}</Title>
+			</div>
+		</Action>
+	}
+
+	if (deviceAccountStatus == 'fetchingData') {
+		return <Action onClick={() => { }} className="mdhui-connect-device mdhui-connect-device-small" indicator={<>Downloading Data&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin className="mdhui-connect-device-icon mdhui-color-muted" /></>}>
+			<div className="mdhui-connect-device-title">
+				<img src={image} />
+				<Title order={4}>{props.provider}</Title>
+			</div>
+		</Action>
+	}
+
+	if (deviceAccountStatus == 'fetchComplete') {
+		return <Action onClick={() => { }} className="mdhui-connect-device mdhui-connect-device-small" indicator={<>Connected</>}>
+			<div className="mdhui-connect-device-title">
+				<img src={image} />
+				<Title order={4}>{props.provider}</Title>
+			</div>
+		</Action>
+	}
+
 	return (
-		<div className="mdhui-connect-device" ref={props.innerRef}>
-			{props.title &&
-				<CardTitle title={props.title} />
-			}
+		<div className={classNames.join(" ")} ref={props.innerRef}>
+			<div className="mdhui-connect-device-title-wrapper">
+				<div className="mdhui-connect-device-title">
+					<img src={image} />
+					<Title order={3}>{title}</Title>
+				</div>
+				{icon}
+			</div>
 			{loading &&
 				<LoadingIndicator />
 			}
 			{!loading &&
 				<div className="content">
-					{!deviceExternalAccount &&
-						<div>
-							<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
-							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
-						<div className="subtitle success">
-							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language(buildLanguageKey("received-{device}-data"))}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
-						<div className="subtitle downloading">
-							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language("downloading-data")}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
-						<div>
-							<div className="subtitle reconnect">
-								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("reconnect")}
-							</div>
-							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
-						</div>
+					<div className="subtitle">
+						{message}
+					</div>
+					{(!deviceExternalAccount || deviceAccountStatus == 'unauthorized') &&
+						<Button onClick={() => connectToDevice()}><img style={{ verticalAlign: "middle" }} src={smartwatch} /> <span style={{ verticalAlign: "middle" }}>{props.language.connectButtonText}</span></Button>
 					}
 				</div>
 			}

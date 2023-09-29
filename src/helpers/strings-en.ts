@@ -16,6 +16,7 @@
     "reconnect": "Connection expired.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
+    "connect-fitbit-title": "Connect Fitbit",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",
     "connect-fitbit-button": "Connect Fitbit",
     "received-fitbit-data": "We are receiving your Fitbit data!",

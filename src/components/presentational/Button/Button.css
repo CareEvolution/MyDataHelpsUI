@@ -1,13 +1,13 @@
 ﻿.mdhui-button {
     width: 100%;
     box-sizing: border-box;
-    padding: 16px;
+    padding: 12px;
     background: var(--mdhui-color-primary);
-    font-size: 17px;
-    line-height: 17px;
+    font-size: 1em;
+    line-height: 1em;
     color: #FFF;
     border: none;
-    border-radius: var(--mdhui-card-border-radius);
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
     text-align: center;

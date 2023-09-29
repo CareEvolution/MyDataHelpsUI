@@ -19,8 +19,14 @@ const Template: ComponentStory<typeof ConnectFitbit> = (args: ConnectFitbitProps
 		</Card>
 	</Layout>;
 
+export const Small = Template.bind({});
+Small.args = { previewState: "notConnected", variant: "small" };
+
 export const NotConnected = Template.bind({});
 NotConnected.args = { previewState: "notConnected", title: "Fitbit" };
+
+export const Large = Template.bind({});
+Large.args = { previewState: "notConnected", variant: "large" };
 
 export const Unauthorized = Template.bind({});
 Unauthorized.args = { previewState: "unauthorized", title: "Fitbit" };
