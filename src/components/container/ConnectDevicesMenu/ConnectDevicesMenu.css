@@ -29,3 +29,11 @@
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device-title {
     display: flex;
 }
+
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-connect {
+    color:var(--mdhui-color-primary);
+}
+
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-reconnect {
+    color:var(--mdhui-color-danger);
+}

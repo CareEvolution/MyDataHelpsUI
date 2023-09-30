@@ -11,3 +11,11 @@ export const Web = {
     },
     render: render
 };
+
+
+export const Connected = {
+    args: {
+        previewState: "Connected"
+    },
+    render: render
+};
