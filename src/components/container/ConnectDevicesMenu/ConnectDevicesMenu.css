@@ -44,6 +44,9 @@
     padding-top:0;
 }
 
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device .mdhui-connect-devices-menu-connected { 
+    color:var(--mdhui-text-color-2);
+}
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device img {
     width: 24px;

@@ -164,16 +164,12 @@ export default function (props: ConnectDevicesMenuProps) {
 
         if (externalAccount) {
             //TODO: Refactor out the action "row" style into a separate component
-            if (externalAccount.status == "fetchComplete") {
-                indicator = <>Connected</>;
-                action = undefined;
-            }
-            if (externalAccount.status == "fetchingData") {
-                indicator = <>Downloading Data&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin /></>;
+            if (externalAccount.status == "fetchComplete" || externalAccount.status == "fetchingData") {
+                indicator = <div className="mdhui-connect-devices-menu-connected">Connected</div>;
                 action = undefined;
             }
             if (externalAccount.status == "unauthorized") {
-                indicator = <><div className="mdhui-connect-devices-menu-reconnect">Reconnect </div></>;
+                indicator = <div className="mdhui-connect-devices-menu-reconnect">Reconnect </div>;
             }
         }
 
