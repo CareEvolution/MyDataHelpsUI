@@ -46,3 +46,8 @@
 .mdhui-action.mdhui-action-bottom-border {
     border-bottom: solid 1px var(--mdhui-border-color-0);
 }
+
+.mdhui-action .mdhui-action-icon {
+    display: flex;
+    align-items: center;
+}

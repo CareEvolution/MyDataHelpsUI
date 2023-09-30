@@ -11,10 +11,11 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import fitbit from './fitbit.svg';
-import garmin from './garmin.svg';
-import smartwatch from './smartwatch.svg';
+import fitbit from '../../../assets/fitbit.svg';
+import garmin from '../../../assets/garmin.svg';
+import smartwatch from '../../../assets/smartwatch.svg';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { getFitbitProviderID, getGarminProviderID } from '../../../helpers/providerIDs';
 
 export interface ConnectDeviceProps {
 	language: ConnectDeviceLanguage
@@ -39,22 +40,6 @@ export interface ConnectDeviceLanguage {
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
-
-function getFitbitProviderID() {
-	var fitbitProviderID = 564;
-	if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
-		fitbitProviderID = 2;
-	}
-	return fitbitProviderID;
-}
-
-function getGarminProviderID() {
-	var garminProviderID = 6327;
-	if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
-		garminProviderID = 1384;
-	}
-	return garminProviderID;
-}
 
 export default function (props: ConnectDeviceProps) {
 	const [loading, setLoading] = useState(true);
