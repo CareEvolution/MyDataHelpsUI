@@ -214,8 +214,8 @@ export default function (props: ConnectDevicesMenuProps) {
         <div className="mdhui-connect-devices-menu-text">Share your steps, sleep, heart rate and more from your apps or wearable devices.</div>
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
-            {getAppleHealthMenuItem()}
             {getGarminMenuItem()}
+            {getAppleHealthMenuItem()}
             {getGoogleFitMenuItem()}
             {getOmronMenuItem()}
         </div>
