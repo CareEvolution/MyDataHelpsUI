@@ -43,3 +43,8 @@
     padding: var(--mdhui-padding-md);
     padding-top:0;
 }
+
+
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device img {
+    width: 24px;
+}

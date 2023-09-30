@@ -4,7 +4,8 @@ import ConnectDevicesIcon from '../../../assets/connectdevices.svg';
 import FitbitIcon from '../../../assets/fitbit.svg';
 import GarminIcon from '../../../assets/garmin.svg';
 import AppleHealthIcon from '../../../assets/appleHealth.svg';
-import { Action, TextBlock, Title } from '../../presentational';
+import GoogleFitIcon from '../../../assets/googleFit.svg';
+import { Action, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
@@ -63,11 +64,9 @@ export default function (props: ConnectDevicesMenuProps) {
                     }
                 ]);
             }
-
+            setPlatform("Web");
             if (props.previewState == "iOS") {
                 setPlatform("iOS");
-            } else if (props.previewState == "Web") {
-                setPlatform("Web");
             } else if (props.previewState == "Android") {
                 setPlatform("Android");
             }
@@ -153,12 +152,31 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getAppleHealthMenuItem() {
-        if (!accountTypes.includes("appleHealth") || platform == "Android") {
+        if (!accountTypes.includes("appleHealth")) {
             return null;
         }
 
         return <AppleHealthMenuItem platform={platform!} />;
+    }
 
+    function getGoogleFitMenuItem() {
+        if (!accountTypes.includes("googleFit") || platform == "iOS") {
+            return null;
+        }
+
+        let action = () => MyDataHelps.showGoogleFitSettings();
+        let indicator = <div className="mdhui-connect-devices-menu-connect">Settings</div>;
+    
+        if (platform == "Web") {
+            action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
+            indicator = <div className="mdhui-connect-devices-menu-connect">Download MyDataHelps</div>;
+        }
+
+        return <div className="mdhui-connect-devices-menu-device">
+            <Action icon={<img src={GoogleFitIcon} />} onClick={action} indicator={indicator}>
+                <Title order={4}>Google Fit</Title>
+            </Action>
+        </div>;
     }
 
     return <div className="mdhui-connect-devices-menu">
@@ -167,8 +185,9 @@ export default function (props: ConnectDevicesMenuProps) {
         <div className="mdhui-connect-devices-menu-text">Share your steps, sleep, heart rate and more from your apps or wearable devices.</div>
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
-            {getGarminMenuItem()}
             {getAppleHealthMenuItem()}
+            {getGarminMenuItem()}
+            {getGoogleFitMenuItem()}
         </div>
     </div>
 }
@@ -195,7 +214,6 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     return <div className="mdhui-connect-devices-menu-device">
         <Action icon={<img src={AppleHealthIcon} />} onClick={action} indicator={indicator}>
             <Title order={4}>Apple Health</Title>
-
         </Action>
         {expanded &&
             <div className="mdhui-connect-devices-menu-help">

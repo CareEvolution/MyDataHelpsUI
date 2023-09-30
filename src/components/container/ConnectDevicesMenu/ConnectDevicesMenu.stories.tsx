@@ -20,6 +20,14 @@ export const iOS = {
     render: render
 };
 
+export const Android = {
+    name:"Android",
+    args: {
+        previewState: "Android"
+    },
+    render: render
+};
+
 export const Connected = {
     args: {
         previewState: "Connected"
