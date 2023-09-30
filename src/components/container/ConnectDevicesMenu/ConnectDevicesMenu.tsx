@@ -5,20 +5,21 @@ import FitbitIcon from '../../../assets/fitbit.svg';
 import GarminIcon from '../../../assets/garmin.svg';
 import AppleHealthIcon from '../../../assets/appleHealth.svg';
 import GoogleFitIcon from '../../../assets/googleFit.svg';
+import OmronIcon from '../../../assets/omron.png';
 import { Action, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
-import { getFitbitProviderID } from '../../../helpers/providerIDs';
+import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 
-export type DeviceAccountType = "fitbit" | "garmin" | "appleHealth" | "googleFit" | "omron";
+export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
     accountTypes?: DeviceAccountType[]
     title?: string
     text?: string
-    previewState?: "iOS" | "Android" | "Web" | "Connected" | "Error"
+    previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -49,7 +50,7 @@ export default function (props: ConnectDevicesMenuProps) {
             });
             setDeviceExternalAccounts([]);
 
-            if (props.previewState == "Connected") {
+            if (props.previewState == "ConnectedStates") {
                 setDeviceExternalAccounts([
                     {
                         id: 1,
@@ -96,40 +97,49 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     //Omron excluded by default
-    let accountTypes = props.accountTypes || ["fitbit", "garmin", "appleHealth", "googleFit"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "AppleHealth", "GoogleFit"];
     if (!settings?.fitbitEnabled) {
-        accountTypes = accountTypes.filter(a => a != "fitbit");
+        accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
     if (!settings?.garminEnabled) {
-        accountTypes = accountTypes.filter(a => a != "garmin");
+        accountTypes = accountTypes.filter(a => a != "Garmin");
     }
     if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth")) {
-        accountTypes = accountTypes.filter(a => a != "appleHealth");
+        accountTypes = accountTypes.filter(a => a != "AppleHealth");
     }
     if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
-        accountTypes = accountTypes.filter(a => a != "googleFit");
+        accountTypes = accountTypes.filter(a => a != "GoogleFit");
     }
 
     function getFitbitMenuItem() {
-        if (!accountTypes.includes("fitbit")) {
+        if (!accountTypes.includes("Fitbit")) {
             return null;
         }
-        return getExternalAccountMenuItem("Fitbit", <img src={FitbitIcon} />);
+        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), <img src={FitbitIcon} />);
     }
 
     function getGarminMenuItem() {
-        if (!accountTypes.includes("garmin")) {
+        if (!accountTypes.includes("Garmin")) {
             return null;
         }
-        return getExternalAccountMenuItem("Garmin", <img src={GarminIcon} />);
+        return getExternalAccountMenuItem("Garmin", getGarminProviderID(), <img src={GarminIcon} />);
     }
 
-    function getExternalAccountMenuItem(providerName: string, icon: ReactElement) {
-        let externalAccount = deviceExternalAccounts?.find(a => a.provider.name == providerName);
+    function getOmronMenuItem() {
+        if (!accountTypes.includes("Omron")) {
+            return null;
+        }
+        return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img style={{ borderRadius: "2px" }} src={OmronIcon} />);
+    }
+
+    function getExternalAccountMenuItem(providerName: string, providerID: number, icon: ReactElement) {
+        let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
+
         let indicator = <div className="mdhui-connect-devices-menu-connect">Connect</div>;
         let action = () => {
-            MyDataHelps.connectExternalAccount(getFitbitProviderID())
+            MyDataHelps.connectExternalAccount(providerID)
         };
+
         if (externalAccount) {
             if (externalAccount.status == "fetchComplete") {
                 indicator = <>Connected</>;
@@ -152,7 +162,7 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getAppleHealthMenuItem() {
-        if (!accountTypes.includes("appleHealth")) {
+        if (!accountTypes.includes("AppleHealth")) {
             return null;
         }
 
@@ -160,13 +170,13 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getGoogleFitMenuItem() {
-        if (!accountTypes.includes("googleFit") || platform == "iOS") {
+        if (!accountTypes.includes("GoogleFit") || platform == "iOS") {
             return null;
         }
 
         let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">Settings</div>;
-    
+
         if (platform == "Web") {
             action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
             indicator = <div className="mdhui-connect-devices-menu-connect">Download MyDataHelps</div>;
@@ -188,6 +198,7 @@ export default function (props: ConnectDevicesMenuProps) {
             {getAppleHealthMenuItem()}
             {getGarminMenuItem()}
             {getGoogleFitMenuItem()}
+            {getOmronMenuItem()}
         </div>
     </div>
 }

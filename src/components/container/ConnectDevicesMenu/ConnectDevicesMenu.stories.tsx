@@ -34,3 +34,13 @@ export const Connected = {
     },
     render: render
 };
+
+
+
+export const IncludeOmron = {
+    args: {
+        previewState: "Connected",
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin"]
+    },
+    render: render
+};
