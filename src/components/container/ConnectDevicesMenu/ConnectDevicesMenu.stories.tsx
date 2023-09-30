@@ -12,6 +12,13 @@ export const Web = {
     render: render
 };
 
+export const iOS = {
+    name:"iOS",
+    args: {
+        previewState: "iOS"
+    },
+    render: render
+};
 
 export const Connected = {
     args: {

@@ -24,5 +24,5 @@ export default function(props: ConnectGarminProps) {
 		return garminProviderID;
 	}
 	
-	return (<ConnectDevice innerRef={props.innerRef} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return null;//(<ConnectDevice innerRef={props.innerRef} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
   }

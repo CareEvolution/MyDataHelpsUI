@@ -16,13 +16,13 @@
     margin-top:16px;
 }
 
-.mdhui-connect-devices-menu .mdhui-action.mdhui-connect-devices-menu-device {
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device {
     border-bottom:solid 1px #ddd;
     font-size: 0.83em;
     background: none;
 }
 
-.mdhui-connect-devices-menu .mdhui-action.mdhui-connect-devices-menu-device:last-child {
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device:last-child {
     border-bottom:none;
 }
 
@@ -36,4 +36,10 @@
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-reconnect {
     color:var(--mdhui-color-danger);
+}
+
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device .mdhui-connect-devices-menu-help
+{
+    padding: var(--mdhui-padding-md);
+    padding-top:0;
 }

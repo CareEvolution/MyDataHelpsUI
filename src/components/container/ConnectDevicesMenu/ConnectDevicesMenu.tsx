@@ -3,12 +3,12 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import ConnectDevicesIcon from '../../../assets/connectdevices.svg';
 import FitbitIcon from '../../../assets/fitbit.svg';
 import GarminIcon from '../../../assets/garmin.svg';
-import { Action, Title } from '../../presentational';
+import AppleHealthIcon from '../../../assets/appleHealth.svg';
+import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faChevronRight, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { getFitbitProviderID } from '../../../helpers/providerIDs';
-import { set } from 'lodash';
 
 export type DeviceAccountType = "fitbit" | "garmin" | "appleHealth" | "googleFit" | "omron";
 
@@ -17,8 +17,6 @@ export interface ConnectDevicesMenuProps {
     accountTypes?: DeviceAccountType[]
     title?: string
     text?: string
-    enableAppleHealthSurvey?: string
-    enableGoogleFitSurvey?: string
     previewState?: "iOS" | "Android" | "Web" | "Connected" | "Error"
 }
 
@@ -50,10 +48,10 @@ export default function (props: ConnectDevicesMenuProps) {
             });
             setDeviceExternalAccounts([]);
 
-            if(props.previewState == "Connected") {
+            if (props.previewState == "Connected") {
                 setDeviceExternalAccounts([
                     {
-                        id:1,
+                        id: 1,
                         lastRefreshDate: "",
                         provider: {
                             category: "Device Manufacturer",
@@ -68,6 +66,10 @@ export default function (props: ConnectDevicesMenuProps) {
 
             if (props.previewState == "iOS") {
                 setPlatform("iOS");
+            } else if (props.previewState == "Web") {
+                setPlatform("Web");
+            } else if (props.previewState == "Android") {
+                setPlatform("Android");
             }
             setLoading(false);
             return;
@@ -143,18 +145,69 @@ export default function (props: ConnectDevicesMenuProps) {
             }
         }
 
-        return <Action icon={icon} onClick={action} className="mdhui-connect-devices-menu-device" indicator={indicator}>
-            <Title order={4}>{providerName}</Title>
-        </Action>;
+        return <div className="mdhui-connect-devices-menu-device">
+            <Action icon={icon} onClick={action} indicator={indicator}>
+                <Title order={4}>{providerName}</Title>
+            </Action>
+        </div>;
+    }
+
+    function getAppleHealthMenuItem() {
+        if (!accountTypes.includes("appleHealth") || platform == "Android") {
+            return null;
+        }
+
+        return <AppleHealthMenuItem platform={platform!} />;
+
     }
 
     return <div className="mdhui-connect-devices-menu">
         <img src={ConnectDevicesIcon} />
         <Title className="mdhui-connect-devices-menu-title" order={3}>Connect Devices</Title>
-        <div className="mdhui-connect-devices-menu-text">Share xyour steps, sleep, heart rate and more from your apps or wearable devices.</div>
+        <div className="mdhui-connect-devices-menu-text">Share your steps, sleep, heart rate and more from your apps or wearable devices.</div>
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
+            {getAppleHealthMenuItem()}
         </div>
     </div>
+}
+
+interface AppleHealthMenuItemProps {
+    platform: string
+}
+
+function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
+    let [expanded, setExpanded] = useState(false);
+
+    if (props.platform == "Android") {
+        return null;
+    }
+
+    let action = () => setExpanded(!expanded);
+    let indicator = <div className="mdhui-connect-devices-menu-connect">Help</div>;
+
+    if (props.platform == "Web") {
+        action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
+        indicator = <div className="mdhui-connect-devices-menu-connect">Download MyDataHelps</div>;
+    }
+
+    return <div className="mdhui-connect-devices-menu-device">
+        <Action icon={<img src={AppleHealthIcon} />} onClick={action} indicator={indicator}>
+            <Title order={4}>Apple Health</Title>
+
+        </Action>
+        {expanded &&
+            <div className="mdhui-connect-devices-menu-help">
+                <p>If you did not approve or have disabled sharing of your Apple Health data and would like to enable it, follow these steps:</p>
+                <ol>
+                    <li>Open the "Settings" app</li>
+                    <li>Select "Privacy"</li>
+                    <li>Select "Health"</li>
+                    <li>Select "MyDataHelps"</li>
+                    <li>Enable the categories of data you would like to share</li>
+                </ol>
+            </div>
+        }
+    </div>;
 }
