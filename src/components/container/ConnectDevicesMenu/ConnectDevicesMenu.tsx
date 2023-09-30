@@ -57,11 +57,33 @@ export default function (props: ConnectDevicesMenuProps) {
                         lastRefreshDate: "",
                         provider: {
                             category: "Device Manufacturer",
-                            id: 2,
+                            id: getFitbitProviderID(),
                             name: "Fitbit",
                             logoUrl: "",
                         },
                         status: "fetchingData"
+                    },
+                    {
+                        id: 2,
+                        lastRefreshDate: "",
+                        provider: {
+                            category: "Device Manufacturer",
+                            id: getGarminProviderID(),
+                            name: "Garmin",
+                            logoUrl: "",
+                        },
+                        status: "unauthorized"
+                    },
+                    {
+                        id: 3,
+                        lastRefreshDate: "",
+                        provider: {
+                            category: "Device Manufacturer",
+                            id: getOmronProviderID(),
+                            name: "Fitbit",
+                            logoUrl: "",
+                        },
+                        status: "fetchComplete"
                     }
                 ]);
             }
@@ -136,18 +158,19 @@ export default function (props: ConnectDevicesMenuProps) {
         let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">Connect</div>;
-        let action = () => {
+        let action: (() => void) | undefined = () => {
             MyDataHelps.connectExternalAccount(providerID)
         };
 
         if (externalAccount) {
+            //TODO: Refactor out the action "row" style into a separate component
             if (externalAccount.status == "fetchComplete") {
                 indicator = <>Connected</>;
-                action = () => { };
+                action = undefined;
             }
             if (externalAccount.status == "fetchingData") {
                 indicator = <>Downloading Data&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin /></>;
-                action = () => { };
+                action = undefined;
             }
             if (externalAccount.status == "unauthorized") {
                 indicator = <><div className="mdhui-connect-devices-menu-reconnect">Reconnect </div></>;

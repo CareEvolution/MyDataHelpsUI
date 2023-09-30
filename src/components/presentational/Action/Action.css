@@ -2,7 +2,6 @@
 .mdhui-unstyled-button.mdhui-action {
     padding: 16px;
     position: relative;
-    cursor: pointer;
     background: inherit;
     width: 100%;
     display: flex;

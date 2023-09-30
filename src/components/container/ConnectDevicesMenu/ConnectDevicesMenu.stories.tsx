@@ -28,18 +28,9 @@ export const Android = {
     render: render
 };
 
-export const Connected = {
+export const ConnectedStates = {
     args: {
-        previewState: "Connected"
-    },
-    render: render
-};
-
-
-
-export const IncludeOmron = {
-    args: {
-        previewState: "Connected",
+        previewState: "ConnectedStates",
         accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin"]
     },
     render: render
