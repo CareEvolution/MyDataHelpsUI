@@ -127,7 +127,7 @@
     "select-treatments": "Select Treatments",
     "download-mydatahelps": "Download MyDataHelps",
     "connect-devices-title": "Connect Devices",
-	"connect-devices-text": "Share data from your wearables, apps, and other devices.",
+    "connect-devices-text": "Share data from your wearables, apps, and other devices.",
     "apple-health-troubleshooting-intro": "If you did not approve or have disabled sharing of your Apple Health data and would like to enable it, follow these steps:",
     "apple-health-troubleshooting-li-1": "Open the \"Settings\" app",
     "apple-health-troubleshooting-li-2": "Select \"Privacy\"",
