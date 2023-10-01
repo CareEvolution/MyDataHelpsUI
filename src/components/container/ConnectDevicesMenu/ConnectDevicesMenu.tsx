@@ -11,6 +11,7 @@ import "./ConnectDevicesMenu.css"
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
+import { previewAccounts } from './ConnectDevicesMenu.previewdata';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -30,63 +31,13 @@ export default function (props: ConnectDevicesMenuProps) {
 
     function initialize() {
         if (props.previewState) {
-            setSettings({
-                fitbitEnabled: true,
-                garminEnabled: true,
-                queryableDeviceDataTypes: [
-                    {
-                        namespace: "AppleHealth",
-                        type: "Steps"
-                    },
-                    {
-                        namespace: "GoogleFit",
-                        type: "Steps"
-                    }
-                ],
-                airQualityEnabled: true,
-                weatherEnabled: true,
-                ehrEnabled: true,
-                sensorDataCollectionEndDate: ""
-            });
-            setDeviceExternalAccounts([]);
+            setSettings();
 
+            setDeviceExternalAccounts([]);
             if (props.previewState == "ConnectedStates") {
-                setDeviceExternalAccounts([
-                    {
-                        id: 1,
-                        lastRefreshDate: "",
-                        provider: {
-                            category: "Device Manufacturer",
-                            id: getFitbitProviderID(),
-                            name: "Fitbit",
-                            logoUrl: "",
-                        },
-                        status: "fetchingData"
-                    },
-                    {
-                        id: 2,
-                        lastRefreshDate: "",
-                        provider: {
-                            category: "Device Manufacturer",
-                            id: getGarminProviderID(),
-                            name: "Garmin",
-                            logoUrl: "",
-                        },
-                        status: "unauthorized"
-                    },
-                    {
-                        id: 3,
-                        lastRefreshDate: "",
-                        provider: {
-                            category: "Device Manufacturer",
-                            id: getOmronProviderID(),
-                            name: "Fitbit",
-                            logoUrl: "",
-                        },
-                        status: "fetchComplete"
-                    }
-                ]);
+                setDeviceExternalAccounts(previewAccounts);
             }
+
             setPlatform("Web");
             if (props.previewState == "iOS") {
                 setPlatform("iOS");

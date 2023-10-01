@@ -1,7 +1,7 @@
 ﻿.mdhui-button {
     width: 100%;
     box-sizing: border-box;
-    padding: 12px;
+    padding: 16px;
     background: var(--mdhui-color-primary);
     font-size: 1em;
     line-height: 1em;

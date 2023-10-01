@@ -3,9 +3,8 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExcla
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, Button, CardTitle, Title, Action, TextBlock } from '../../presentational';
+import { LoadingIndicator, Button, Title, Action, TextBlock } from '../../presentational';
 import "./ConnectDevice.css"
-import language from "../../../helpers/language"
 import add from 'date-fns/add'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
@@ -14,7 +13,6 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import fitbit from '../../../assets/fitbit.svg';
 import garmin from '../../../assets/garmin.svg';
 import smartwatch from '../../../assets/smartwatch.svg';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { getFitbitProviderID, getGarminProviderID } from '../../../helpers/providerIDs';
 
 export interface ConnectDeviceProps {
