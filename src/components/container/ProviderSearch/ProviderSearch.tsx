@@ -151,7 +151,7 @@ export default function (props: ProviderSearchProps) {
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language("reconnect")}</div>
+                                <div className="provider-status error-status">{language("provider-search-reconnect")}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>

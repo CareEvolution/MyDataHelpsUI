@@ -12,6 +12,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
+import language from '../../../helpers/language';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -108,22 +109,22 @@ export default function (props: ConnectDevicesMenuProps) {
     function getExternalAccountMenuItem(providerName: string, providerID: number, icon: ReactElement) {
         let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
 
-        let indicator = <div className="mdhui-connect-devices-menu-connect">Connect</div>;
+        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         let action: (() => void) | undefined = () => {
             MyDataHelps.connectExternalAccount(providerID)
         };
 
         if (externalAccount) {
             if (externalAccount.status == "fetchComplete" || externalAccount.status == "fetchingData") {
-                indicator = <div className="mdhui-connect-devices-menu-connected">Connected</div>;
+                indicator = <div className="mdhui-connect-devices-menu-connected">{language("connected")}</div>;
                 action = undefined;
             }
             if (externalAccount.status == "fetchingData") {
-                indicator = <div className="mdhui-connect-devices-menu-connected">Downloading Data&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin /></div>;
+                indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin /></div>;
                 action = undefined;
             }
             if (externalAccount.status == "unauthorized") {
-                indicator = <div className="mdhui-connect-devices-menu-reconnect">Reconnect </div>;
+                indicator = <div className="mdhui-connect-devices-menu-reconnect">{language("reconnect")} </div>;
             }
         }
 
@@ -148,11 +149,11 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         let action = () => MyDataHelps.showGoogleFitSettings();
-        let indicator = <div className="mdhui-connect-devices-menu-connect">Settings</div>;
+        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
         if (platform == "Web") {
             action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
-            indicator = <div className="mdhui-connect-devices-menu-connect">Download MyDataHelps</div>;
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
         }
 
         return <div className="mdhui-connect-devices-menu-device">
@@ -162,10 +163,13 @@ export default function (props: ConnectDevicesMenuProps) {
         </div>;
     }
 
-    return <div className="mdhui-connect-devices-menu">
+    let title = props.title || language("connect-devices-title");
+    let text = props.text || language("connect-devices-text");
+
+    return <div ref={props.innerRef} className="mdhui-connect-devices-menu">
         <img src={ConnectDevicesIcon} />
-        <Title className="mdhui-connect-devices-menu-title" order={3}>Connect Devices</Title>
-        <div className="mdhui-connect-devices-menu-text">Share your steps, sleep, heart rate and more from your apps or wearable devices.</div>
+        <Title className="mdhui-connect-devices-menu-title" order={3}>{title}</Title>
+        <div className="mdhui-connect-devices-menu-text">{text}</div>
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
@@ -192,7 +196,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
 
     if (props.platform == "Web") {
         action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
-        indicator = <div className="mdhui-connect-devices-menu-connect">Download MyDataHelps</div>;
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
     }
 
     return <div className="mdhui-connect-devices-menu-device">
@@ -201,13 +205,13 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
         </Action>
         {expanded &&
             <div className="mdhui-connect-devices-menu-help">
-                <p>If you did not approve or have disabled sharing of your Apple Health data and would like to enable it, follow these steps:</p>
+                <p>{language("apple-health-troubleshooting-intro")}</p>
                 <ol>
-                    <li>Open the "Settings" app</li>
-                    <li>Select "Privacy"</li>
-                    <li>Select "Health"</li>
-                    <li>Select "MyDataHelps"</li>
-                    <li>Enable the categories of data you would like to share</li>
+                    <li>{language("apple-health-troubleshooting-li-1")}</li>
+                    <li>{language("apple-health-troubleshooting-li-2")}</li>
+                    <li>{language("apple-health-troubleshooting-li-3")}</li>
+                    <li>{language("apple-health-troubleshooting-li-4")}</li>
+                    <li>{language("apple-health-troubleshooting-li-5")}</li>
                 </ol>
             </div>
         }
