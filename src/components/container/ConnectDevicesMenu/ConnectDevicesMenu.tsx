@@ -22,6 +22,7 @@ export interface ConnectDevicesMenuProps {
     title?: string
     text?: string
     previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
+    headerVariant?: "large" | "medium"
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -165,11 +166,17 @@ export default function (props: ConnectDevicesMenuProps) {
 
     let title = props.title || language("connect-devices-title");
     let text = props.text || language("connect-devices-text");
+    let headerVariant = props.headerVariant || "large";
+    let headerClasses = ["mdhui-connect-devices-menu-header", `mdhui-connect-devices-menu-header-${headerVariant}`];
 
     return <div ref={props.innerRef} className="mdhui-connect-devices-menu">
-        <img src={ConnectDevicesIcon} />
-        <Title className="mdhui-connect-devices-menu-title" order={3}>{title}</Title>
-        <div className="mdhui-connect-devices-menu-text">{text}</div>
+        <div className={headerClasses.join(" ")}>
+            <div className="mdhui-connect-devices-menu-header-flex">
+                <img src={ConnectDevicesIcon} />
+                <Title className="mdhui-connect-devices-menu-title" order={headerVariant == "large" ? 2 : 3}>{title}</Title>
+            </div>
+            <div className="mdhui-connect-devices-menu-text">{text}</div>
+        </div>
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
