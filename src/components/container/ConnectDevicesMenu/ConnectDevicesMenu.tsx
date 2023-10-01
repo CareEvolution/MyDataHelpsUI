@@ -85,6 +85,9 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
     }
+    if(!accountTypes.length){
+        return null;
+    }
 
     function getFitbitMenuItem() {
         if (!accountTypes.includes("Fitbit")) {
