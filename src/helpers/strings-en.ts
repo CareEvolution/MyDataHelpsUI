@@ -19,7 +19,7 @@
     "connect-ehr-text-connected": "Thank you for sharing your EHR data with @@PROJECT_NAME@@. Connect another provider to share more data or manage your EHR connections.",
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
-    "provider-search-reconnect": "Connection expired.  Please reconnect.",
+    "expired-reconnect": "Connection expired.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",

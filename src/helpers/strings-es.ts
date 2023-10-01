@@ -19,7 +19,7 @@
     "connect-ehr-text-connected": "Gracias por compartir tus datos de EHR con @@PROJECT_NAME@@. Conecta a otro proveedor para compartir más datos o administrar tus conexiones de EHR.",
     "connect-ehr-not-enabled": "EHR enlacando no está habilitado para este proyecto.",
     "search-for-provider": "Encontrar a mi Proveedor",
-    "provider-search-reconnect": "Volver a conectar",
+    "expired-reconnect": "Volver a conectar",
     "connected": "Conectado",
     "search": "Buscar",
     "connect-fitbit-intro": "Si ya tiene una cuenta Fitbit, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Fitbit:",
