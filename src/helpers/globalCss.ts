@@ -2,14 +2,20 @@ import { css } from '@emotion/react';
 
 export const core = css`
 :root {
-    --mdhui-color-primary: #5381c3;
+    --mdhui-color-primary: rgba(0, 127, 249, 1);
     --mdhui-color-success: #00AE42;
-    --mdhui-color-warning: #FF671D;
-    --mdhui-color-danger: #eb5546;
+    --mdhui-color-warning: rgb(232, 124, 0);
+    --mdhui-color-danger: rgb(239, 55, 36);
     --mdhui-fadein-animation: fadein 1s;
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
     --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
+    
+    --mdhui-padding-xxs: 4px;
+    --mdhui-padding-xs: 8px;
+    --mdhui-padding-sm: 12px;
+    --mdhui-padding-md: 16px;
+    --mdhui-padding-lg: 24px;
 }
 
 @media (prefers-reduced-motion) {
@@ -121,5 +127,5 @@ body {
     background: var(--mdhui-background-color-1);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.2;
+    line-height: 1.3;
 }`;
