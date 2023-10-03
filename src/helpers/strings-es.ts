@@ -134,6 +134,7 @@
     "apple-health-troubleshooting-li-5": "Habilite las categorías de datos que le gustaría compartir",
     "connect-devices-title": "Conectar aparatos",
     "connect-devices-subtitle": "Comparta datos de sus dispositivos portátiles, aplicaciones y otros aparatos.",
+    "how-to-enable": "Cómo activar"
 };
 
 export default strings;

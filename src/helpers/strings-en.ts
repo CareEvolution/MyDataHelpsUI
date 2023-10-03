@@ -134,6 +134,7 @@
     "apple-health-troubleshooting-li-3": "Select \"Health\"",
     "apple-health-troubleshooting-li-4": "Select \"MyDataHelps\"",
     "apple-health-troubleshooting-li-5": "Enable the categories of data you would like to share",
+    "how-to-enable": "How to enable"
 };
 
 export default strings;

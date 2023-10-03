@@ -52,7 +52,7 @@ export default function (props: ConnectDevicesMenuProps) {
             .then(([settings, accounts, deviceInfo]) => {
                 setSettings(settings);
                 setDeviceExternalAccounts(accounts);
-                if(deviceInfo){
+                if (deviceInfo) {
                     setPlatform(deviceInfo.platform);
                 } else {
                     setPlatform("Web");
@@ -64,7 +64,7 @@ export default function (props: ConnectDevicesMenuProps) {
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", initialize);
-		MyDataHelps.on("externalAccountSyncComplete", initialize);
+        MyDataHelps.on("externalAccountSyncComplete", initialize);
         return () => {
             MyDataHelps.off("applicationDidBecomeVisible", initialize);
             MyDataHelps.off("externalAccountSyncComplete", initialize);
@@ -89,7 +89,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
     }
-    if(!accountTypes.length){
+    if (!accountTypes.length) {
         return null;
     }
 
@@ -119,7 +119,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         let action: (() => void) | undefined = () => {
-            MyDataHelps.connectExternalAccount(providerID, {openNewWindow: true});
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true });
         };
 
         if (externalAccount) {
@@ -206,7 +206,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     }
 
     let action = () => setExpanded(!expanded);
-    let indicator = <div className="mdhui-connect-devices-menu-connect">Help</div>;
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enabled")}</div>;
 
     if (props.platform == "Web") {
         action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
