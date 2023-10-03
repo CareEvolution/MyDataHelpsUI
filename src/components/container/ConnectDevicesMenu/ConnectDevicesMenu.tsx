@@ -54,7 +54,11 @@ export default function (props: ConnectDevicesMenuProps) {
             .then(([settings, accounts, deviceInfo]) => {
                 setSettings(settings);
                 setDeviceExternalAccounts(accounts);
-                setPlatform(deviceInfo.platform);
+                if(deviceInfo){
+                    setPlatform(deviceInfo.platform);
+                } else {
+                    setPlatform("Web");
+                }
                 setLoading(false);
             });
     }
@@ -115,11 +119,11 @@ export default function (props: ConnectDevicesMenuProps) {
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         let action: (() => void) | undefined = () => {
-            MyDataHelps.connectExternalAccount(providerID)
+            MyDataHelps.connectExternalAccount(providerID, {openNewWindow: true});
         };
 
         if (externalAccount) {
-            if (externalAccount.status == "fetchComplete" || externalAccount.status == "fetchingData") {
+            if (externalAccount.status == "fetchComplete") {
                 indicator = <div className="mdhui-connect-devices-menu-connected">{language("connected")}</div>;
                 action = undefined;
             }

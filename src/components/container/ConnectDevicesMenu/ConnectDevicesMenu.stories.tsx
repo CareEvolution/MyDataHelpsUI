@@ -52,3 +52,10 @@ export const MediumHeader = {
     },
     render: render
 };
+
+
+export const Live = {
+    args: {
+    },
+    render: render
+};
