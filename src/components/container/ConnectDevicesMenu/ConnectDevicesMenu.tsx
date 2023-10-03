@@ -8,8 +8,6 @@ import GoogleFitIcon from '../../../assets/googleFit.svg';
 import OmronIcon from '../../../assets/omron.png';
 import { Action, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
@@ -66,8 +64,10 @@ export default function (props: ConnectDevicesMenuProps) {
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", initialize);
+		MyDataHelps.on("externalAccountSyncComplete", initialize);
         return () => {
             MyDataHelps.off("applicationDidBecomeVisible", initialize);
+            MyDataHelps.off("externalAccountSyncComplete", initialize);
         }
     }, []);
 
@@ -128,7 +128,7 @@ export default function (props: ConnectDevicesMenuProps) {
                 action = undefined;
             }
             if (externalAccount.status == "fetchingData") {
-                indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}&nbsp;&nbsp;<FontAwesomeSvgIcon icon={faRefresh} spin /></div>;
+                indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}</div>;
                 action = undefined;
             }
             if (externalAccount.status == "unauthorized") {

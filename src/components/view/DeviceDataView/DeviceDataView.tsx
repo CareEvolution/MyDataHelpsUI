@@ -1,7 +1,5 @@
 import React from 'react'
-import MyDataHelps from "@careevolution/mydatahelps-js"
-import { PlatformSpecificContent, Layout, Card, StatusBarBackground, ConnectFitbit, FitbitDevices, DeviceDataMonthCharts, Action, ConnectGarmin, GarminDevices, ConnectDevicesMenu } from "../.."
-import language from '../../../helpers/language'
+import { Layout, Card, StatusBarBackground, FitbitDevices, DeviceDataMonthCharts, GarminDevices, ConnectDevicesMenu } from "../.."
 
 export interface DeviceDataViewProps {
 	preview?: boolean;
