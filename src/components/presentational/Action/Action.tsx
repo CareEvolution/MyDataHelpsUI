@@ -13,7 +13,7 @@ export interface ActionProps {
 	subtitle?: string;
 	indicatorIcon?: IconDefinition;
 	indicator?: ReactElement;
-	onClick: Function;
+	onClick?: Function;
 	children?: React.ReactNode;
 	className?: string;
 	indicatorValue?: string;
@@ -24,8 +24,11 @@ export interface ActionProps {
 
 export default function (props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
+
+	let onClick = props.onClick ?? (() => { });
+
 	return (
-		<UnstyledButton innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => props.onClick()}>
+		<UnstyledButton disabled={!props.onClick} innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")}  onClick={() => onClick()}>
 			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
 			<div className='mdhui-action-body'>
 				{props.title &&

@@ -10,7 +10,6 @@
     top: 0;
     font-weight: bold;
     background: var(--mdhui-background-color-1);
-    line-height: 1.2em;
 }
 
 .mdhui-navigation-bar .title {
