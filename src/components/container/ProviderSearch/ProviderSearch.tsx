@@ -12,7 +12,6 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
-    openNewWindow?: boolean;
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
 }
@@ -99,7 +98,7 @@ export default function (props: ProviderSearchProps) {
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow ?? false });
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true });
         }
         if (props.onProviderSelected) {
             props.onProviderSelected(provider);
