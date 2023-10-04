@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
+import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
 export interface ConnectDeviceAccountStepContainerProps {
     deviceType?: string;
@@ -24,22 +25,14 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         });
     }
 
-    function isTest() {
-        return (
-            !MyDataHelps.baseUrl ||
-            MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev") ||
-            MyDataHelps.baseUrl.startsWith("https://mydatahelps.dev")
-        );
-    }
-
     function convertToProviderID(deviceType: string) {
         switch (deviceType) {
             case "Fitbit":
-                return isTest() ? 18 : 564; // 'Fitbit prod' or 'Fitbit'
+                return getFitbitProviderID();
             case "Omron":
-                return isTest() ? 171 : 1466; // 'Omron prod' or 'Omron'
+                return getOmronProviderID();
             case "Garmin":
-                return isTest() ? 1384 : 6327; // 'Garmin QA' or 'Garmin'
+                return getGarminProviderID();
             default:
                 throw Error("Unsupported device type " + deviceType);
         }
