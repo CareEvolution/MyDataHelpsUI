@@ -4,7 +4,7 @@ import StepLayout from "../StepLayout";
 import StepNextButton from "../StepNextButton";
 import StepText from "../StepText";
 import StepTitle from "../StepTitle";
-import MyDataHelps, { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
+import { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 import { ProviderSearchPreviewState } from "../../container/ProviderSearch/ProviderSearch";
 
 export interface ConnectEhrStepProps {
@@ -13,7 +13,8 @@ export interface ConnectEhrStepProps {
     nextButtonText?: string;
     nextButtonDisabled?: boolean;
     previewState?: ProviderSearchPreviewState; // For Storybook only
-    onProviderSelected: (provider: ExternalAccountProvider) => void;
+    onProviderConnected: (provider: ExternalAccountProvider) => void;
+    onNextButtonClick: () => void;
     styles: { [key: string]: any };
 }
 
@@ -37,7 +38,7 @@ export default function (props: ConnectEhrStepProps) {
             <ProviderSearch
                 previewState={props.previewState}
                 providerCategories={["Provider", "Health Plan"]}
-                onProviderSelected={props.onProviderSelected}
+                onProviderConnected={props.onProviderConnected}
             />
             <StepNextButton
                 text={props.nextButtonText}
@@ -48,7 +49,7 @@ export default function (props: ConnectEhrStepProps) {
                 letterSpacing={props.styles.nextButtonLetterSpacing}
                 textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
                 gradient={props.styles.nextButtonBackgroundGradient}
-                onClick={() => MyDataHelps.completeStep("")}
+                onClick={props.onNextButtonClick}
             />
         </StepLayout>
     );
