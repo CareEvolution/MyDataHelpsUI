@@ -3,7 +3,6 @@ import StepLayout from "../StepLayout";
 import StepTitle from "../StepTitle";
 import StepText from "../StepText";
 import StepNextButton from "../StepNextButton";
-import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export interface ConnectDeviceAccountStepProps {
     title?: string;
@@ -11,16 +10,11 @@ export interface ConnectDeviceAccountStepProps {
     deviceType: string; // "Fitbit" | "Garmin" | "Omron";
     providerID: number;
     styles: { [key: string]: any };
+    onConnect: () => void;
 }
 
 export default function (props: ConnectDeviceAccountStepProps) {
     const nextButtonText = `Connect to ${props.deviceType}`;
-
-    function handleClick() {
-        return MyDataHelps.connectExternalAccount(props.providerID, {
-            openNewWindow: true,
-        });
-    }
 
     return (
         <StepLayout>
@@ -46,7 +40,7 @@ export default function (props: ConnectDeviceAccountStepProps) {
                 letterSpacing={props.styles.nextButtonLetterSpacing}
                 textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
                 gradient={props.styles.nextButtonBackgroundGradient}
-                onClick={handleClick}
+                onClick={props.onConnect}
             />
         </StepLayout>
     );

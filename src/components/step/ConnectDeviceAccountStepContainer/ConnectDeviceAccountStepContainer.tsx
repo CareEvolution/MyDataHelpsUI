@@ -1,21 +1,69 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
+import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
-export default function () {
+export interface ConnectDeviceAccountStepContainerProps {
+    deviceType?: string;
+}
+
+export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
-    const [deviceType, setDeviceType] = useState<string>("");
-    const [providerID, setProviderID] = useState<number>();
-    const [connected, setConnected] = useState<boolean>();
+    const [deviceType, setDeviceType] = useState<string>(
+        props.deviceType || ''
+    );
+    const [loading, setLoading] = useState<boolean>(true);
+
+    function onConnect() {
+        const providerID = convertToProviderID(deviceType);
+        MyDataHelps.connectExternalAccount(providerID, {
+            openNewWindow: true,
+        }).then(function () {
+            MyDataHelps.completeStep(providerID);
+        });
+    }
+
+    function convertToProviderID(deviceType: string) {
+        switch (deviceType) {
+            case "Fitbit":
+                return getFitbitProviderID();
+            case "Omron":
+                return getOmronProviderID();
+            case "Garmin":
+                return getGarminProviderID();
+            default:
+                throw Error("Unsupported device type " + deviceType);
+        }
+    }
+
+    async function completeStepIfConnected(deviceType: string) {
+        const accounts = await MyDataHelps.getExternalAccounts();
+
+        const providerID = convertToProviderID(deviceType);
+        const connected = accounts.some(
+            (acc) => acc.provider.id === providerID
+        );
+        if (connected) {
+            MyDataHelps.completeStep(providerID);
+        }
+
+        setLoading(false);
+    }
 
     useEffect(() => {
         // Get the step configuration from MyDataHelps.
         MyDataHelps.getStepConfiguration().then(function (
             config: StepConfiguration
         ) {
-            if (!config) return; // allows test mode to work
+            if (!config) {
+
+                setLoading(false);
+                completeStepIfConnected(deviceType);
+
+                return; // allows test mode to work
+            }
 
             setTitle(config.properties.title);
 
@@ -25,47 +73,22 @@ export default function () {
             }
             setDeviceType(config.properties.deviceType);
 
-            if (!config.properties.providerID) {
-                throw new Error("providerID is required");
-            }
-            setProviderID(config.properties.providerID);
-
             setStyles(config.styles ?? {});
+
+            completeStepIfConnected(config.properties.deviceType);
         });
     }, []);
 
-    useEffect(() => {
-        // Start polling for connected status after a providerID is selected.
-        if (!providerID || connected) return;
+    if (loading) return <></>;
 
-        const interval = setInterval(async () => {
-            const accounts = await MyDataHelps.getExternalAccounts();
-            const containProvider = accounts.some(
-                (acc) => acc.provider.id === providerID
-            );
-            if (!connected && containProvider) {
-                setConnected(containProvider);
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [providerID, connected]);
-
-    useEffect(() => {
-        // Complete the step when connected.
-        if (connected) {
-            console.log("Connected to provider ID ", providerID);
-            MyDataHelps.completeStep("");
-        }
-    }, [connected]);
-
-    return providerID && (
+    return (
         <ConnectDeviceAccountStep
             title={title}
             text={text}
             deviceType={deviceType}
-            providerID={providerID}
+            providerID={convertToProviderID(deviceType)}
             styles={styles}
+            onConnect={onConnect}
         />
     );
 }

@@ -22,7 +22,8 @@ ConnectDeviceAccountStepGarminDefault.args = {
     text: "Connect your Garmin account to MyDataHelps to share your activity data.",
     deviceType: "Garmin",
     providerID: 1,
-    styles: {}
+    styles: {},
+    onConnect: () => {}
 };
 
 export const ConnectDeviceAccountStepGarminCustom = Template.bind({});
@@ -50,7 +51,8 @@ ConnectDeviceAccountStepGarminCustom.args = {
         "titleColor": "#0000FF",
         "titleFontSize": "36",
         "titleFontWeight": "900"
-    }
+    },
+    onConnect: () => {}
 };
 
 export const ConnectDeviceAccountStepFitbitDefault = Template.bind({});
@@ -59,7 +61,8 @@ ConnectDeviceAccountStepFitbitDefault.args = {
     text: "Connect your Fitbit account to MyDataHelps to share your activity data.",
     deviceType: "Fitbit",
     providerID: 2,
-    styles: {}
+    styles: {},
+    onConnect: () => {}
 };
 
 export const ConnectDeviceAccountStepOmronDefault = Template.bind({});
@@ -68,5 +71,6 @@ ConnectDeviceAccountStepOmronDefault.args = {
     text: "Connect your Omron account to MyDataHelps to share your activity data.",
     deviceType: "Omron",
     providerID: 3,
-    styles: {}
+    styles: {},
+    onConnect: () => {}
 };
