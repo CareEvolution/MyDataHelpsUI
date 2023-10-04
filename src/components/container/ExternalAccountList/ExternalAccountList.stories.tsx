@@ -57,3 +57,8 @@ HealthPlansAndDeviceManufacturers.args = {
     previewState: "Default",
     externalAccountProviderCategories: ["Health Plan", "Device Manufacturer"]
 };
+
+export const Live = Template.bind({});
+Default.args = {
+    externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
+};

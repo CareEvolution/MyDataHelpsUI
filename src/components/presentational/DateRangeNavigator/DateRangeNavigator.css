@@ -1,5 +1,5 @@
 .mdhui-card .mdhui-date-range-navigator:first-child {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: var(--mdhui-card-border-radius) var(--mdhui-card-border-radius) 0px 0px;
 }
 
 .mdhui-date-range-navigator {

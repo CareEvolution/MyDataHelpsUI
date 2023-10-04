@@ -12,7 +12,6 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
-    openNewWindow?: boolean;
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
 }
@@ -99,7 +98,7 @@ export default function (props: ProviderSearchProps) {
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow ?? false })
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true })
                 .then(function() {
                     if (props.onProviderConnected) {
                         props.onProviderConnected(provider);
@@ -153,7 +152,7 @@ export default function (props: ProviderSearchProps) {
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language("reconnect")}</div>
+                                <div className="provider-status error-status">{language("provider-search-reconnect")}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>

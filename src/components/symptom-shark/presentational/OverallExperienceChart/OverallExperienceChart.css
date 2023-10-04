@@ -1,0 +1,104 @@
+.mdhui-ss-oe-chart {
+    position: relative;
+}
+
+.mdhui-ss-oe-chart .mdhui-ss-oe-chart-face {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    vertical-align: text-top;
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-y-axis .mdhui-ss-oe-chart-face-total {
+    height: 16px;
+    margin-bottom: 8px;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    width: 56px;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.mdhui-ss-oe-chart .mdhui-ss-oe-chart-face-total .mdhui-ss-oe-chart-total {
+    vertical-align: text-top;
+}
+
+.mdhui-ss-oe-chart .mdhui-ss-oe-chart-average-wrapper {
+    font-size: 17px;
+    padding: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.mdhui-ss-oe-chart .mdhui-ss-oe-chart-average-wrapper .mdhui-ss-oe-chart-average {
+    font-weight: bold;
+    display: inline;
+}
+
+.mdhui-ss-oe-chart-inner {
+    position: relative;
+    height: 160px;
+    padding: 16px;
+    box-sizing: border-box;
+    padding-left: 64px;
+    page-break-inside: avoid;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-x-axis-line {
+    position: absolute;
+    width: calc(100% - 64px);
+    height: 1px;
+    /*Default color because evopdf doesn't support css variables*/
+    background: #eee;
+    background: var(--mdhui-background-color-1);
+    left: 64px;
+    top: 24px;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-lines {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0.5px;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-y-axis {
+    position: absolute;
+    left: 0;
+    top: 16px;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-day-wrapper {
+    position: relative;
+    float: left;
+    height: 116px;
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-day-wrapper .mdhui-ss-oe-chart-day-marker {
+    position: absolute;
+    left: 0;
+    bottom: -16px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-day-wrapper .mdhui-ss-oe-chart-dot {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    /*Default color because evopdf doesn't support css variables*/
+    background: #666;
+    background: var(--mdhui-text-color-2);
+    border-radius: 3.5px;
+    left: calc(50% - 3px);
+}

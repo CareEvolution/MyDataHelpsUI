@@ -10,6 +10,7 @@
     position: relative;
     border: solid 1px #000;
     user-select: none;
+    line-height: 1.1em;
 }
 
 .mdhui-tracker-item.selectable {
@@ -45,10 +46,14 @@
     border-radius: 32px;
     padding: 3px;
     background: linear-gradient(to bottom, #555 0%, #888 100%);
-    font-size: .5em;
     font-weight: bold;
     text-align: center;
     min-width: 10px;
     user-select: none;
     font-size: .62em;
+    line-height: 10px;
+}
+
+.mdhui-tracker-item.mdhui-tracker-item-no-box-shadow {
+    box-shadow: none;
 }

@@ -1,6 +1,7 @@
 ﻿import ConnectDevice from '../ConnectDevice';
 import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
 import React from "react";
+import { getFitbitProviderID } from '../../../helpers/providerIDs';
 
 export interface ConnectFitbitProps {
 	title?: string,
@@ -13,17 +14,10 @@ export interface ConnectFitbitProps {
 export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
 export default function(props: ConnectFitbitProps) {
-	function getFitbitProviderID() {
-		var fitbitProviderID = 564;
-		if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
-			fitbitProviderID = 2;
-		}
-		if (props.fitbitProviderID) {
-			fitbitProviderID = props.fitbitProviderID;
-		}
-		return fitbitProviderID;
+	function getInternalFitbitProviderID() {
+		return props.fitbitProviderID || getFitbitProviderID();
 	}
 	
-	return (<ConnectDevice innerRef={props.innerRef} title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice innerRef={props.innerRef} title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getInternalFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
   }
 
