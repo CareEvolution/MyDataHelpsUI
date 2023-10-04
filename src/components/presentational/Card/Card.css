@@ -18,3 +18,20 @@
 .mdhui-card.allow-overflow {
     overflow: visible;
 }
+
+.mdhui-card-subtle {
+    box-shadow: none;
+    background: none !important;
+    border: solid 1px var(--mdhui-border-color-1);
+}
+
+.mdhui-card-highlight
+{
+    background: var(--mdhui-color-primary);
+    color: #FFF;
+    --mdhui-text-color-0: #FFF;
+    --mdhui-text-color-1: #FFF;
+    --mdhui-text-color-2: #FFF;
+    --mdhui-text-color-3: #FFF;
+    --mdhui-text-color-4: #FFF;
+}

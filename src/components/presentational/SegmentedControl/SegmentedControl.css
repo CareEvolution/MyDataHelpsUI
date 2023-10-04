@@ -1,5 +1,4 @@
-.mdhui-segmented-control
-{
+.mdhui-segmented-control {
     border-radius: 32px;
     border: solid 1px var(--mdhui-color-primary);
     background: var(--mdhui-background-color-0);
@@ -7,31 +6,58 @@
     padding: 1px;
 }
 
-    .mdhui-segmented-control .mdhui-segment
-    {
-        display: inline-block;
-        font-size: .7em;
-        cursor: pointer;
-        text-align: center;
-        padding: 8px;
-        box-sizing: border-box;
-        font-weight: bold;
-        color: var(--mdhui-color-primary);
-        position: relative;
-        border-radius: 32px;
-        overflow: hidden;
-        vertical-align: top;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+.mdhui-segmented-control .mdhui-segment {
+    display: inline-block;
+    font-size: .7em;
+    cursor: pointer;
+    text-align: center;
+    padding: 8px;
+    box-sizing: border-box;
+    font-weight: bold;
+    color: var(--mdhui-color-primary);
+    position: relative;
+    border-radius: 32px;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1em;
+}
 
-        .mdhui-segmented-control .mdhui-segment:last-child
-        {
-            border: none;
-        }
+.mdhui-segmented-control .mdhui-segment:last-child {
+    border: none;
+}
 
-        .mdhui-segmented-control .mdhui-segment.mdhui-segment-selected
-        {
-            background: var(--mdhui-color-primary);
-            color: #FFF;
-        }
+.mdhui-segmented-control .mdhui-segment.mdhui-segment-selected {
+    background: var(--mdhui-color-primary);
+    color: #FFF;
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-options-horizontal,
+.mdhui-segmented-control.mdhui-segmented-control-options-vertical {
+    font-size: .88em;
+    padding: 0;
+    border-radius: var(--mdhui-card-border-radius);
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-options-horizontal .mdhui-segment,
+.mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment {
+    font-size: .88em;
+    border-radius: 0;
+    font-weight: normal;
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-options-horizontal .mdhui-segment.mdhui-segment-selected,
+.mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment.mdhui-segment-selected {
+    background: var(--mdhui-color-primary);
+    color: #FFF;
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment {
+    width: 100% !important;
+    border-bottom: solid 1px var(--mdhui-color-primary);
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment:last-child {
+    border: none;
+}

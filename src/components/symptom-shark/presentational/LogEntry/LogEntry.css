@@ -1,0 +1,33 @@
+.mdhui-ss-log-entry .mdhui-face {
+    height: 18px;
+    width: 18px;
+    border-radius: 9px;
+}
+
+.mdhui-ss-log-entry .mdhui-ss-log-entry-section {
+    margin-top: 16px;
+}
+
+.mdhui-ss-log-entry .mdhui-ss-section-header {
+    font-size: .88em;
+    font-weight: 500;
+    color: var(--mdhui-text-color-3);
+    margin-bottom: 4px;
+}
+
+.mdhui-ss-log-entry .mdhui-ss-notes-preview {
+    font-size: .88em;
+    white-space: pre-wrap;
+    margin: 16px;
+    margin-top: 0;
+}
+
+.mdhui-ss-log-entry .mdhui-tracker-item {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.mdhui-ss-log-entry .mdhui-ss-notes-content {
+    font-size: .88em;
+    white-space: pre-wrap;
+}

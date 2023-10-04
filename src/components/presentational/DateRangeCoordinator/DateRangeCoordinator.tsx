@@ -4,6 +4,7 @@ import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-interval-start";
 
 export interface DateRangeCoordinatorProps {
+    initialIntervalStart?: Date;
     intervalType: "Week" | "Month";
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
@@ -19,7 +20,7 @@ export interface DateRangeContext {
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
 export default function DateRangeNavigatorContext(props: DateRangeCoordinatorProps) {
-    let initialIntervalStart = getMonthStart();
+    let initialIntervalStart = props.initialIntervalStart || getMonthStart();
     if (props.intervalType === "Week") {
         initialIntervalStart = getWeekStart(props.weekStartsOn);
     }

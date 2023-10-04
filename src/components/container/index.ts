@@ -1,4 +1,5 @@
 export { default as AppDownload } from "./AppDownload"
+export { default as ConnectDevicesMenu } from "./ConnectDevicesMenu"
 export { default as ConnectEhr } from "./ConnectEhr"
 export { default as ConnectFitbit } from "./ConnectFitbit"
 export { default as ConnectGarmin } from "./ConnectGarmin"

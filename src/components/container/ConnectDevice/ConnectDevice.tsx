@@ -76,7 +76,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerIDCallback());
+		MyDataHelps.connectExternalAccount(props.providerIDCallback(), { openNewWindow: true });
 	}
 
 	useEffect(() => {

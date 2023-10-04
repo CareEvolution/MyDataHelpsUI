@@ -7,7 +7,7 @@
     line-height: 17px;
     color: #FFF;
     border: none;
-    border-radius: var(--mdhui-card-border-radius);
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
     text-align: center;
