@@ -1,11 +1,16 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import "./Title.css";
+import LibraryImage, { LibraryImageKey } from "../LibraryImage/LibraryImage";
+import image from "@rollup/plugin-image";
 
 export interface TitleProps {
     order?: 1 | 2 | 3 | 4 | 5 | 6;
     children?: React.ReactNode;
     style?: React.CSSProperties;
     className?: string;
+    libraryImage?: LibraryImageKey;
+    image?: ReactNode;
+    imageAlignment?: "top" | "left"
 }
 
 export default function (props: TitleProps) {
@@ -14,5 +19,36 @@ export default function (props: TitleProps) {
     if (props.className) {
         classes.push(props.className);
     }
-    return <Tag className={classes.join(" ")} style={props.style}>{props.children}</Tag>
+    if (props.imageAlignment === "top") {
+        classes.push("mdhui-title-image-top");
+    }
+
+    let imageWidth = 24;
+    switch (props.order) {
+        case 1:
+            imageWidth = 40;
+            break;
+        case 2:
+            imageWidth = 30;
+            break;
+        case 3:
+            imageWidth = 24;
+            break;
+        case 4:
+            imageWidth = 20;
+            break;
+        case 5:
+            imageWidth = 16;
+            break;
+        case 6:
+            imageWidth = 12;
+            break;
+    }
+
+    return <div className={classes.join(" ")}>
+        {props.libraryImage &&
+            <LibraryImage width={imageWidth} image={props.libraryImage} />
+        }
+        <Tag style={props.style}>{props.children}</Tag>
+    </div>
 }

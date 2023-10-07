@@ -5,6 +5,28 @@ import Title, { TitleProps } from "./Title";
 export default { title: "Presentational/Title", component: Title, parameters: { layout: 'fullscreen' } };
 let render = (args: TitleProps) => <Layout><Title {...args} /></Layout>
 
+
+export const ImageLeft = {
+    args: {
+        children: "H1 Title",
+        order: 1,
+        libraryImage: "FitbitLogo"
+    },
+    render: render
+};
+
+
+export const ImageTop = {
+    args: {
+        children: "H1 Title",
+        order: 1,
+        libraryImage: "FitbitLogo",
+        imageAlignment: "top"
+    },
+    render: render
+};
+
+
 export const H1 = {
     args: {
         children: "H1 Title",
