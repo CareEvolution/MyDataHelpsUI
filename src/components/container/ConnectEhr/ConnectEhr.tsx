@@ -8,7 +8,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import connectEhrImage from "../../../assets/connect-ehr.svg";
-import CallToActionHeader from '../../presentational/CallToActionHeader';
+import CallToActionHeader from '../../presentational/CallToAction';
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 
 export interface ConnectEhrProps {

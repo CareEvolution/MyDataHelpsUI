@@ -3,7 +3,7 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExcla
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, Button, CardTitle } from '../../presentational';
+import { Button } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
 import add from 'date-fns/add'
@@ -11,7 +11,7 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import CallToActionHeader from '../../presentational/CallToActionHeader';
+import CallToAction from '../../presentational/CallToAction';
 
 export interface ConnectDeviceProps {
 	title: string,
@@ -116,7 +116,7 @@ export default function (props: ConnectDeviceProps) {
 
 	return (
 		<div className="mdhui-connect-device" ref={props.innerRef}>
-			<CallToActionHeader title={props.title} variant='medium' image={props.headerImage}>
+			<CallToAction title={props.title} variant='medium' image={props.headerImage}>
 				{!deviceExternalAccount &&
 					<div>
 						<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
@@ -141,7 +141,7 @@ export default function (props: ConnectDeviceProps) {
 						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 					</div>
 				}
-			</CallToActionHeader>
+			</CallToAction>
 		</div>
 	);
 }

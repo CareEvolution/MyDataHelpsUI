@@ -2,7 +2,6 @@
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-inner {
     background: var(--mdhui-background-color-1);
     border-radius: 6px;
-    margin: 16px;
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device {

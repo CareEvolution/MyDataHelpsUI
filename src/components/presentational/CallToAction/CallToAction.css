@@ -1,0 +1,22 @@
+
+.mdhui-cta .mdhui-cta-text {
+    margin-top: var(--mdhui-padding-md);
+}
+
+.mdhui-cta-header {
+    margin: var(--mdhui-padding-md);
+}
+
+.mdhui-cta.mdhui-cta-medium .mdhui-cta-header {
+    display: flex;
+    gap: var(--mdhui-padding-sm);
+    align-items: center;
+}
+
+.mdhui-cta .mdhui-cta-body {
+    font-size: .88em;
+}
+
+.mdhui-cta.mdhui-cta-large .mdhui-cta-title {
+    margin-top: var(--mdhui-padding-md);
+}
