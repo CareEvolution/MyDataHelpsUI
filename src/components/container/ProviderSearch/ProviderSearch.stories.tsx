@@ -14,9 +14,7 @@ export default {
 
 const Template: ComponentStory<typeof ProviderSearch> = (args: ProviderSearchProps) =>
 	<Layout colorScheme="auto">
-		<Card>
-			<ProviderSearch {...args} />
-		</Card>
+		<ProviderSearch {...args} />
 	</Layout>;
 
 export const Default = Template.bind({});
@@ -37,8 +35,9 @@ onProviderSelected.parameters = {
 }
 
 export const Live = Template.bind({});
-Default.args = {
+Live.args = {
+	providerCategories: ["Health Plan"]
 }
-Default.parameters = {
+Live.parameters = {
 	externalAccounts: []
 }

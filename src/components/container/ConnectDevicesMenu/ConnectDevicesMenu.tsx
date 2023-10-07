@@ -11,6 +11,7 @@ import "./ConnectDevicesMenu.css"
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
+import CallToActionHeader from '../../presentational/CallToActionHeader';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -177,14 +178,8 @@ export default function (props: ConnectDevicesMenuProps) {
     let headerClasses = ["mdhui-connect-devices-menu-header", `mdhui-connect-devices-menu-header-${headerVariant}`];
 
     return <div ref={props.innerRef} className="mdhui-connect-devices-menu">
-        <div className={headerClasses.join(" ")}>
-            <div className="mdhui-connect-devices-menu-header-flex">
-                <img src={ConnectDevicesIcon} />
-                <Title className="mdhui-connect-devices-menu-title" order={headerVariant == "large" ? 2 : 3}>{title}</Title>
-            </div>
-            <div className="mdhui-connect-devices-menu-text">{text}</div>
-        </div>
-        <div className="mdhui-connect-devices-menu-inner">
+        <CallToActionHeader title={title} image={<img width={headerVariant == "medium" ? 30 : 60} src={ConnectDevicesIcon} />} variant={headerVariant}>{text}</CallToActionHeader>
+        <div className="mdhui-connect-devices-menu-inner"> 
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
             {getAppleHealthMenuItem()}

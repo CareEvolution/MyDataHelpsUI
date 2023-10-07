@@ -1,14 +1,15 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { Action, CardTitle, ShinyOverlay } from '../../presentational';
+import { Button } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import UnstyledButton from '../../presentational/UnstyledButton/UnstyledButton';
+import connectEhrImage from "../../../assets/connect-ehr.svg";
+import CallToActionHeader from '../../presentational/CallToActionHeader';
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 
 export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
@@ -16,6 +17,9 @@ export interface ConnectEhrProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
 	innerRef?: React.Ref<HTMLDivElement>
+	headerVariant?: "large" | "medium"
+	title?: string
+	text?: string
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -95,9 +99,14 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
+	let title = props.title || (language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans'));
+	let text = props.text || (connected ? language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any) : language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any));
+
+	let headerVariant = props.headerVariant || "large";
+
 	return (
 		<div ref={props.innerRef} className="mdhui-connect-ehr">
-			<Action bottomBorder={props.bottomBorder} title={language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans')} onClick={() => connectToEhr()}>
+			<CallToActionHeader image={<img width={headerVariant == "medium" ? 30 : 60} src={connectEhrImage} />} title={title}>
 				{connected
 					? <>
 						<div className="connection-status">
@@ -110,11 +119,14 @@ export default function (props: ConnectEhrProps) {
 								</div>
 							}
 						</div>
-						<div className="content">{language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any)}</div>
+						<div className="content">{text}</div>
 					</>
-					: <div className="content">{language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any)}</div>
+					: <div className="content">{text}</div>
 				}
-			</Action>
+			</CallToActionHeader>
+			<div className="mdhui-connect-ehr-button">
+				<Button onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; Connect your health records</Button>
+			</div>
 		</div>
 	);
 }
