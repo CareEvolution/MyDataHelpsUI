@@ -11,15 +11,17 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import CallToActionHeader from '../../presentational/CallToActionHeader';
 
 export interface ConnectDeviceProps {
-	title?: string,
+	title: string,
 	providerName: string,
-	providerIDCallback: ()=>number,
+	providerID: number,
 	previewState?: ConnectDevicePreviewState,
 	disabledBehavior?: 'hide' | 'displayError',
-	dataCollectionProperty:	string 
+	dataCollectionProperty: string
 	innerRef?: React.Ref<HTMLDivElement>
+	headerImage?: React.ReactNode
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -50,20 +52,20 @@ export default function (props: ConnectDeviceProps) {
 				provider: {
 					name: props.providerName,
 					category: "Device Manufacturer",
-					id: props.providerIDCallback(),
+					id: props.providerID,
 					logoUrl: ""
 				}
 			});
 			setLoading(false);
 			return;
 		}
-		
-		MyDataHelps.getDataCollectionSettings().then(function (settings:any) {
+
+		MyDataHelps.getDataCollectionSettings().then(function (settings: any) {
 			setDeviceEnabled(settings[props.dataCollectionProperty]);
 			if (settings[props.dataCollectionProperty]) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {
 					for (let i = 0; i < accounts.length; i++) {
-						if (accounts[i].provider.id == props.providerIDCallback()) {
+						if (accounts[i].provider.id == props.providerID) {
 							setDeviceExternalAccount(accounts[i]);
 						}
 					}
@@ -76,7 +78,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerIDCallback(), { openNewWindow: true });
+		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true });
 	}
 
 	useEffect(() => {
@@ -114,40 +116,32 @@ export default function (props: ConnectDeviceProps) {
 
 	return (
 		<div className="mdhui-connect-device" ref={props.innerRef}>
-			{props.title &&
-				<CardTitle title={props.title} />
-			}
-			{loading &&
-				<LoadingIndicator />
-			}
-			{!loading &&
-				<div className="content">
-					{!deviceExternalAccount &&
-						<div>
-							<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
-							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+			<CallToActionHeader title={props.title} variant='medium' image={props.headerImage}>
+				{!deviceExternalAccount &&
+					<div>
+						<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
+					<div className="subtitle success">
+						<FontAwesomeSvgIcon icon={faCheckCircle} /> {language(buildLanguageKey("received-{device}-data"))}
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
+					<div className="subtitle downloading">
+						<FontAwesomeSvgIcon icon={faRefresh} spin /> {language("downloading-data")}
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
+					<div>
+						<div className="subtitle reconnect">
+							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("expired-reconnect")}
 						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
-						<div className="subtitle success">
-							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language(buildLanguageKey("received-{device}-data"))}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
-						<div className="subtitle downloading">
-							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language("downloading-data")}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
-						<div>
-							<div className="subtitle reconnect">
-								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("reconnect")}
-							</div>
-							<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
-						</div>
-					}
-				</div>
-			}
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+			</CallToActionHeader>
 		</div>
 	);
 }

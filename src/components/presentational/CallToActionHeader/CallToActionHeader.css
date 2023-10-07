@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-.mdhui-cta-header.mdhui-cta-header-medium .mdhui-cta-header-text {
+.mdhui-cta-header .mdhui-cta-header-text {
     font-size: .88em;
 }
 

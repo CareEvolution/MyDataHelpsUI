@@ -1,6 +1,7 @@
 ﻿import React from 'react'
 import { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
+import GarmiIcon from '../../../assets/garmin.svg';
 import { getGarminProviderID } from '../../../helpers/providerIDs';
 
 export interface ConnectGarminProps {
@@ -18,5 +19,5 @@ export default function(props: ConnectGarminProps) {
 		return props.garminProviderID || getGarminProviderID();
 	}
 	
-	return (<ConnectDevice innerRef={props.innerRef} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getInternalGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice innerRef={props.innerRef}  headerImage={<img src={GarmiIcon} width={30} />} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerID={getInternalGarminProviderID()} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
   }

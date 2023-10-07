@@ -1,7 +1,8 @@
 ﻿import ConnectDevice from '../ConnectDevice';
-import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
+import { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
 import React from "react";
 import { getFitbitProviderID } from '../../../helpers/providerIDs';
+import FitbitIcon from '../../../assets/fitbit.svg';
 
 export interface ConnectFitbitProps {
 	title?: string,
@@ -18,6 +19,14 @@ export default function (props: ConnectFitbitProps) {
 		return props.fitbitProviderID || getFitbitProviderID();
 	}
 
-	return (<ConnectDevice innerRef={props.innerRef} title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getInternalFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice 
+		innerRef={props.innerRef} 
+		headerImage={<img src={FitbitIcon} 
+		width={30} />} 
+		title="Fitbit" 
+		providerName="Fitbit" 
+		dataCollectionProperty='fitbitEnabled' 
+		providerID={getInternalFitbitProviderID()} 
+		previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
 }
 
