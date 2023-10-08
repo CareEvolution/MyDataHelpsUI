@@ -36,6 +36,22 @@ export const ConnectedStates = {
     render: render
 };
 
+export const CustomLanguage = {
+    args: {
+        previewState: "Web",
+        title: "Custom title",
+        text: "Custom text"
+    },
+    render: render
+};
+
+export const MediumHeader = {
+    args: {
+        previewState: "Web",
+        headerVariant: "medium"
+    },
+    render: render
+};
 
 export const Live = {
     args: {

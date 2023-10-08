@@ -1,6 +1,6 @@
 import MyDataHelps, { DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
 import React, { useEffect, useState } from 'react';
-import { Action, Title } from '../../presentational';
+import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
@@ -12,7 +12,10 @@ export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
     accountTypes?: DeviceAccountType[]
+    title?: string
+    text?: string
     previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
+    headerVariant?: "large" | "medium"
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -129,7 +132,7 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         return <div className="mdhui-connect-devices-menu-device">
-            <Action  onClick={action} indicator={indicator}>
+            <Action onClick={action} indicator={indicator}>
                 <Title order={4} libraryImage={libraryImage}>{providerName}</Title>
             </Action>
         </div>;
@@ -163,12 +166,22 @@ export default function (props: ConnectDevicesMenuProps) {
         </div>;
     }
 
-    return <div className="mdhui-connect-devices-menu">
-        {getFitbitMenuItem()}
-        {getGarminMenuItem()}
-        {getAppleHealthMenuItem()}
-        {getGoogleFitMenuItem()}
-        {getOmronMenuItem()}
+    let title = props.title || language("connect-devices-title");
+    let text = props.text || language("connect-devices-text");
+    let headerVariant = props.headerVariant || "large";
+
+    return <div ref={props.innerRef} className="mdhui-connect-devices-menu">
+        <Title defaultMargin order={headerVariant == "large" ? 2 : 3} libraryImage="FitnessWearable" imageAlignment={headerVariant == "large" ? "top" : "left"}>{title}</Title>
+        <TextBlock>
+            {text}
+        </TextBlock>
+        <div className="mdhui-connect-devices-menu-inner">
+            {getFitbitMenuItem()}
+            {getGarminMenuItem()}
+            {getAppleHealthMenuItem()}
+            {getGoogleFitMenuItem()}
+            {getOmronMenuItem()}
+        </div>
     </div>
 }
 

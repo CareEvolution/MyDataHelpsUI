@@ -5,7 +5,6 @@ import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
 import { ConnectEhrApplicationUrl } from "../../container/ConnectEhr/ConnectEhr";
 import AppDownload from "../../container/AppDownload";
-import ConnectDevicesCTA from '../../container/ConnectDevicesCTA/ConnectDevicesCTA';
 
 export interface HomeViewProps {
 	/** 
@@ -64,7 +63,7 @@ export default function (props: HomeViewProps) {
 				previewState={props.preview ? "IncompleteTasks" : undefined}
 			/>
 			<Card>
-				<ConnectDevicesCTA headerVariant='medium' previewState={props.preview ? "Web" : undefined} />
+				<ConnectDevicesMenu headerVariant='medium' previewState={props.preview ? "Web" : undefined} />
 			</Card>
 			<Card>
 				{props.ehrConnectApplicationUrl &&
