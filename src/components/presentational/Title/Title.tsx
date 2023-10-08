@@ -11,6 +11,7 @@ export interface TitleProps {
     libraryImage?: LibraryImageKey;
     image?: ReactNode;
     imageAlignment?: "top" | "left"
+    defaultMargin?: boolean
 }
 
 export default function (props: TitleProps) {
@@ -21,6 +22,9 @@ export default function (props: TitleProps) {
     }
     if (props.imageAlignment === "top") {
         classes.push("mdhui-title-image-top");
+    }
+    if (props.defaultMargin) {
+        classes.push("mdhui-title-default-margin");
     }
 
     let imageWidth = 24;
@@ -43,6 +47,10 @@ export default function (props: TitleProps) {
         case 6:
             imageWidth = 12;
             break;
+    }
+
+    if(props.imageAlignment == "top"){
+        imageWidth = imageWidth * 2;
     }
 
     return <div className={classes.join(" ")}>

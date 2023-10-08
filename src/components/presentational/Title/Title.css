@@ -4,11 +4,16 @@
     gap: var(--mdhui-padding-md);
 }
 
-.mdhui-title.mdhui-title-image-top{
+.mdhui-title.mdhui-title-default-margin {
+    margin: var(--mdhui-padding-md);
+}
+
+
+.mdhui-title.mdhui-title-image-top {
     display: block;
 }
 
-.mdhui-title h1, 
+.mdhui-title h1,
 .mdhui-title h2,
 .mdhui-title h3,
 .mdhui-title h4,
