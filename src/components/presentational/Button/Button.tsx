@@ -11,12 +11,17 @@ export interface ButtonProps {
 	loading?: boolean;
 	variant?: "default" | "subtle" | "light";
 	innerRef?: React.Ref<HTMLButtonElement>
+	defaultMargin?: boolean;
 }
 
 export default function (props: ButtonProps) {
 	let classes = ["mdhui-button"];
 	if (props.className) {
 		classes.push(props.className);
+	}
+
+	if (props.defaultMargin) {
+		classes.push("mdhui-button-default-margin");
 	}
 
 	let backgroundColor = props.color;

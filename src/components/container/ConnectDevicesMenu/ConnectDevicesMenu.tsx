@@ -1,11 +1,11 @@
 import MyDataHelps, { DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Action, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
-import LibraryImage, { LibraryImageKey } from '../../presentational/LibraryImage/LibraryImage';
+import { LibraryImageKey } from '../../presentational/LibraryImage/LibraryImage';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -184,7 +184,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     }
 
     let action = () => setExpanded(!expanded);
-    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enabled")}</div>;
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enable")}</div>;
 
     if (props.platform == "Web") {
         action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");

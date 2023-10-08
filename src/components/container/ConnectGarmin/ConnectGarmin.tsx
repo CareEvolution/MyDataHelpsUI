@@ -19,5 +19,12 @@ export default function(props: ConnectGarminProps) {
 		return props.garminProviderID || getGarminProviderID();
 	}
 	
-	return (<ConnectDevice innerRef={props.innerRef}  headerImage={<LibraryImage image="GarminLogo" width={30} />} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerID={getInternalGarminProviderID()} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
+	return (<ConnectDevice innerRef={props.innerRef} 
+		headerImage="GarminLogo" 
+		title="Garmin" 
+		providerName="Garmin" 
+		dataCollectionProperty='garminEnabled' 
+		providerID={getInternalGarminProviderID()} 
+		previewState={props.previewState} 
+		disabledBehavior={props.disabledBehavior} />);
   }

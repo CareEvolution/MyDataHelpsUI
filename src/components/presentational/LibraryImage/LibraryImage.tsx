@@ -4,9 +4,8 @@ import GarminLogo from '../../../assets/garmin-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import IDCard from "../../../assets/id-card.svg";
 import "./LibraryImage.css"
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import React from 'react';
 
 export type LibraryImageKey =
@@ -16,7 +15,7 @@ export type LibraryImageKey =
     "AppleHealthLogo" | 
     "GoogleFitLogo" | 
     "OmronLogo" | 
-    IconDefinition;
+    "IDCard";
 
 var iconLookup: { [key: string]: string } = {
     "FitnessWearable": FitnessWearable,
@@ -24,7 +23,8 @@ var iconLookup: { [key: string]: string } = {
     "GarminLogo": GarminLogo,
     "AppleHealthLogo": AppleHealthLogo,
     "GoogleFitLogo": GoogleFitLogo,
-    "OmronLogo": OmronLogo
+    "OmronLogo": OmronLogo,
+    "IDCard" : IDCard 
 }
 
 export interface LibraryImageProps {
@@ -34,14 +34,7 @@ export interface LibraryImageProps {
 }
 
 export default function (props: LibraryImageProps) {
-    function getImage(){
-        if(iconLookup[props.image as string]){
-            return <img width={props.width} src={iconLookup[props.image as string]} />
-        }
-        return <FontAwesomeSvgIcon icon={props.image as IconDefinition} />
-    }
-
     return <div className="mdhui-library-image">
-        {getImage()}
+        <img width={props.width} src={iconLookup[props.image as string]} />
     </div>
 }

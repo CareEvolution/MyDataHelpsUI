@@ -14,6 +14,7 @@
     color: var(--mdhui-color-danger);
 }
 
-.mdhui-connect-ehr .mdhui-connect-ehr-button {
-    margin: 16px;
+.mdhui-connect-ehr .mdhui-connect-ehr-action {
+    padding: 0;
+    padding-right:var(--mdhui-padding-md);
 }

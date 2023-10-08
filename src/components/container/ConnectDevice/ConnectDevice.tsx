@@ -3,7 +3,7 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExcla
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import { Button } from '../../presentational';
+import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
 import add from 'date-fns/add'
@@ -11,7 +11,7 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import CallToAction from '../../presentational/CallToAction';
+import { LibraryImageKey } from '../../presentational/LibraryImage/LibraryImage';
 
 export interface ConnectDeviceProps {
 	title: string,
@@ -21,7 +21,7 @@ export interface ConnectDeviceProps {
 	disabledBehavior?: 'hide' | 'displayError',
 	dataCollectionProperty: string
 	innerRef?: React.Ref<HTMLDivElement>
-	headerImage?: React.ReactNode
+	headerImage: LibraryImageKey
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -116,7 +116,8 @@ export default function (props: ConnectDeviceProps) {
 
 	return (
 		<div className="mdhui-connect-device" ref={props.innerRef}>
-			<CallToAction title={props.title} variant='medium' image={props.headerImage}>
+			<Title defaultMargin order={3} libraryImage={props.headerImage}>{props.title}</Title>
+			<TextBlock>
 				{!deviceExternalAccount &&
 					<div>
 						<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
@@ -141,7 +142,7 @@ export default function (props: ConnectDeviceProps) {
 						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 					</div>
 				}
-			</CallToAction>
+			</TextBlock>
 		</div>
 	);
 }

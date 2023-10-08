@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { Button } from '../../presentational';
+import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
@@ -7,8 +7,6 @@ import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTrian
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import connectEhrImage from "../../../assets/connect-ehr.svg";
-import CallToActionHeader from '../../presentational/CallToAction';
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 
 export interface ConnectEhrProps {
@@ -17,7 +15,7 @@ export interface ConnectEhrProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
 	innerRef?: React.Ref<HTMLDivElement>
-	headerVariant?: "large" | "medium"
+	variant?: "large" | "medium" | "small"
 	title?: string
 	text?: string
 }
@@ -99,14 +97,15 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
-	let title = props.title || (language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans'));
+	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
+	let title = props.title || defaultTitle;
 	let text = props.text || (connected ? language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any) : language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any));
 
-	let headerVariant = props.headerVariant || "large";
+	let headerVariant = props.variant || "large";
 
-	return (
-		<div ref={props.innerRef} className="mdhui-connect-ehr">
-			<CallToActionHeader image={<img width={headerVariant == "medium" ? 30 : 60} src={connectEhrImage} />} title={title}>
+	let content = <>
+			<Title defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} libraryImage="IDCard">{title}</Title>
+			<TextBlock>
 				{connected
 					? <>
 						<div className="connection-status">
@@ -123,10 +122,21 @@ export default function (props: ConnectEhrProps) {
 					</>
 					: <div className="content">{text}</div>
 				}
-			</CallToActionHeader>
-			<div className="mdhui-connect-ehr-button">
-				<Button onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; Connect your health records</Button>
-			</div>
+			</TextBlock>
+		</>;
+
+	return (
+		<div ref={props.innerRef} className="mdhui-connect-ehr">
+			{props.variant == "small" && 
+			<Action className="mdhui-connect-ehr-action" onClick={() => connectToEhr()}>
+				{content}
+			</Action>
+			}
+			{props.variant != "small" &&
+				<>{content}
+				<Button defaultMargin onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; {defaultTitle}</Button>
+				</>
+			}
 		</div>
 	);
 }

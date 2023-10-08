@@ -18,3 +18,9 @@
     background: var(--mdhui-background-color-2);
     cursor: default;
 }
+
+.mdhui-button.mdhui-button-default-margin {
+    margin: 16px;
+    width: calc(100% - 32px);
+    display: block;
+}
