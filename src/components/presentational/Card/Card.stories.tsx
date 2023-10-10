@@ -16,12 +16,10 @@ let render = (args: CardProps) => <Layout><Card {...args} /></Layout>
 
 export const CardAction = {
 	args: {
-		backgroundColor:"blue",
 		children: <Action onClick={() => {}} title="Baseline Survey" subtitle="Tap here to start your baseline survey" />
 	},
 	render: render
 };
-
 
 export const CardWithClass = {
 	args: {
