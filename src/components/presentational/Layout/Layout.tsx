@@ -58,7 +58,7 @@ export default function (props: LayoutProps) {
 			{props.primaryColor &&
 				<EmotionGlobal styles={css`
 				:root {
-					--mdhui-color-primary: ${props.primaryColor};
+					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
 				}`
 				} />
 			}
