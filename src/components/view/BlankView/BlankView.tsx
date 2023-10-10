@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout, NavigationBar, StatusBarBackground, ViewHeader } from "../.."
+import { ColorDefinition } from '../../../helpers/colors'
 
 export interface BlankViewProps {
     children?: React.ReactNode
@@ -8,7 +9,7 @@ export interface BlankViewProps {
     showCloseButton?: boolean
     showBackButton?: boolean
     colorScheme?: "auto" | "light" | "dark"
-    primaryColor?: string
+    primaryColor?: ColorDefinition
 }
 
 export default function (props: BlankViewProps) {
