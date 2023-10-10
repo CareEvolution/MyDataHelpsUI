@@ -32,7 +32,7 @@ export default function (props: CardProps) {
 	}
 
 	let layoutContext = useContext(LayoutContext);
-	let backgroundColor = resolveColor(layoutContext.colorScheme, props.backgroundColor);
+	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
 
 	return (
 		<div style={{backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>

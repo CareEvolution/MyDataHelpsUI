@@ -17,7 +17,7 @@ export default function (props: SectionProps) {
 	}
 
 	let layoutContext = useContext(LayoutContext);
-	let backgroundColor = resolveColor(layoutContext.colorScheme, props.backgroundColor);
+	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
 	return (
 		<div ref={props.innerRef}
 			style={{ backgroundColor: backgroundColor }}

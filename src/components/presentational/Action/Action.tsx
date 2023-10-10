@@ -31,8 +31,8 @@ export default function (props: ActionProps) {
 
 	let onClick = props.onClick ?? (() => { });
 	let layoutContext = useContext(LayoutContext);
-	let titleColor = resolveColor(layoutContext.colorScheme, props.titleColor);
-	let subtitleColor = resolveColor(layoutContext.colorScheme, props.subtitleColor);
+	let titleColor = resolveColor(layoutContext?.colorScheme, props.titleColor);
+	let subtitleColor = resolveColor(layoutContext?.colorScheme, props.subtitleColor);
 
 	return (
 		<UnstyledButton disabled={!props.onClick} innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")}  onClick={() => onClick()}>
