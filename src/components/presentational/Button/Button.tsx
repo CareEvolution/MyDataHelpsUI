@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
 import "./Button.css"
+import { LayoutContext } from '../Layout';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
 export interface ButtonProps {
 	children?: React.ReactNode;
 	disabled?: boolean;
 	onClick: Function;
 	className?: string;
-	color?: string;
+	color?: ColorDefinition;
 	loading?: boolean;
 	variant?: "default" | "subtle" | "light";
 	innerRef?: React.Ref<HTMLButtonElement>
@@ -19,14 +21,16 @@ export default function (props: ButtonProps) {
 		classes.push(props.className);
 	}
 
-	let backgroundColor = props.color;
+	let context = useContext(LayoutContext);
+
+	let backgroundColor = resolveColor(context?.colorScheme, props.color);
 	let textColor = "#FFF";
 	if (props.variant === "subtle") {
-		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
 		backgroundColor = "transparent";
 	}
 	else if (props.variant === "light") {
-		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
 		backgroundColor = "var(--mdhui-background-color-1)";
 	}
 
