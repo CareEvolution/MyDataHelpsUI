@@ -19,6 +19,7 @@ export interface ConnectEhrProps {
 	title?: string
 	notConnectedText?: string
 	connectedText?: string
+	hideWhenConnected?: boolean
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -98,11 +99,15 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
+	if (props.hideWhenConnected && connected) {
+		return null;
+	}
+
 	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
 	let title = props.title || defaultTitle;
 	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName || "");
 	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName || "");
-	let text =  (connected ? connectedText : notConnectedText);
+	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";
 

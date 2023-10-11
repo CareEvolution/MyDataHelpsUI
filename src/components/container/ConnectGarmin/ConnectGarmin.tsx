@@ -10,21 +10,23 @@ export interface ConnectGarminProps {
 	previewState?: ConnectGarminPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	innerRef?: React.Ref<HTMLDivElement>
+	hideWhenConnected?: boolean
 }
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
-export default function(props: ConnectGarminProps) {
+export default function (props: ConnectGarminProps) {
 	function getInternalGarminProviderID() {
 		return props.garminProviderID || getGarminProviderID();
 	}
-	
-	return (<ConnectDevice innerRef={props.innerRef} 
-		headerImage="GarminLogo" 
-		title="Garmin" 
-		providerName="Garmin" 
-		dataCollectionProperty='garminEnabled' 
-		providerID={getInternalGarminProviderID()} 
-		previewState={props.previewState} 
-		disabledBehavior={props.disabledBehavior} />);
-  }
+
+	return (<ConnectDevice innerRef={props.innerRef}
+		headerImage="GarminLogo"
+		title="Garmin"
+		providerName="Garmin"
+		dataCollectionProperty='garminEnabled'
+		providerID={getInternalGarminProviderID()}
+		previewState={props.previewState}
+		disabledBehavior={props.disabledBehavior}
+		hideWhenConnected={props.hideWhenConnected} />);
+}

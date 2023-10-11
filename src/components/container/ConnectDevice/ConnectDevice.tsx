@@ -22,6 +22,7 @@ export interface ConnectDeviceProps {
 	dataCollectionProperty: string
 	innerRef?: React.Ref<HTMLDivElement>
 	headerImage: LibraryImageKey
+	hideWhenConnected?: boolean
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -112,6 +113,10 @@ export default function (props: ConnectDeviceProps) {
 		} else {
 			return null;
 		}
+	}
+
+	if (props.hideWhenConnected && deviceExternalAccount) {
+		return null;
 	}
 
 	return (

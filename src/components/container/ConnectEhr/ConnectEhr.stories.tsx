@@ -70,3 +70,14 @@ export const Live = {
     args: { disabledBehavior: "displayError", applicationUrl: "preview" },
     render: render
 };
+
+export const CustomConnectedText = {
+    args: { previewState: "enabledConnected", applicationUrl: "preview", title:"Custom title", connectedText: "Thanks for connecting your EHR!" },
+    render: render
+};
+
+export const CustomConnectText = {
+    args: { previewState: "enabled", applicationUrl: "preview", title:"Custom title", connectedText: "Connect your EHR title" },
+    render: render
+};
+
