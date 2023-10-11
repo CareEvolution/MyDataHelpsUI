@@ -1,13 +1,13 @@
 .mdhui-single-survey-task
 {
     padding: 16px;
-    display: grid;
     grid-template-columns: max-content auto max-content;
     grid-column-gap: 16px;
     align-items: center;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    gap: 2px;
     box-sizing: border-box;
 }
 
@@ -25,6 +25,7 @@
     {
         font-size: .88em;
         font-weight: bold;
+        width: 180px;
     }
 
     .mdhui-single-survey-task .survey-description,
@@ -62,3 +63,13 @@
     {
         cursor: pointer;
     }
+
+.button{
+    width: 90px;
+}
+
+.taskDetail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
