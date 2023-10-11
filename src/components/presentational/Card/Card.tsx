@@ -10,7 +10,8 @@ export interface CardProps {
 	allowOverflow?: boolean;
 	innerRef?: React.Ref<HTMLDivElement>;
 	variant?: "default" | "subtle" | "highlight";
-	backgroundColor?: ColorDefinition
+	backgroundColor?: ColorDefinition;
+	style?: React.CSSProperties;
 }
 
 export default function (props: CardProps) {
@@ -35,7 +36,7 @@ export default function (props: CardProps) {
 	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
 
 	return (
-		<div style={{backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>
+		<div style={{...props.style, backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>
 			{props.children}
 			{props.children && variant === "highlight" && <ShinyOverlay />}
 		</div>

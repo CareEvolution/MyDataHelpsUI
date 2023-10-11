@@ -9,6 +9,7 @@ export interface SectionProps {
 	noTopMargin?: boolean;
 	innerRef?: React.Ref<HTMLDivElement>;
 	backgroundColor?: ColorDefinition;
+	style?: React.CSSProperties;
 }
 
 export default function (props: SectionProps) {
@@ -20,7 +21,7 @@ export default function (props: SectionProps) {
 	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
 	return (
 		<div ref={props.innerRef}
-			style={{ backgroundColor: backgroundColor }}
+			style={{ ...props.style, backgroundColor: backgroundColor }}
 			className={"mdhui-section " + (props.className || "") + (props.noTopMargin ? " mdhui-section-no-top-margin" : "")}>
 			{props.children}
 		</div>

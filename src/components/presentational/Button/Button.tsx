@@ -12,13 +12,21 @@ export interface ButtonProps {
 	color?: ColorDefinition;
 	loading?: boolean;
 	variant?: "default" | "subtle" | "light";
-	innerRef?: React.Ref<HTMLButtonElement>
+	innerRef?: React.Ref<HTMLButtonElement>;
+	defaultMargin?: boolean;
+	fullWidth?: boolean;
 }
 
 export default function (props: ButtonProps) {
 	let classes = ["mdhui-button"];
 	if (props.className) {
 		classes.push(props.className);
+	}
+	if(props.fullWidth ?? true){
+		classes.push("mdhui-button-full-width");
+	}
+	if (props.defaultMargin) {
+		classes.push("mdhui-button-default-margin");
 	}
 
 	let context = useContext(LayoutContext);
