@@ -17,7 +17,8 @@ export interface ConnectEhrProps {
 	innerRef?: React.Ref<HTMLDivElement>
 	variant?: "large" | "medium" | "small"
 	title?: string
-	text?: string
+	notConnectedText?: string
+	connectedText?: string
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -99,42 +100,44 @@ export default function (props: ConnectEhrProps) {
 
 	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
 	let title = props.title || defaultTitle;
-	let text = props.text || (connected ? language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any) : language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any));
+	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName || "");
+	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName || "");
+	let text =  (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";
 
 	let content = <>
-			<Title defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} libraryImage="IDCard">{title}</Title>
-			<TextBlock>
-				{connected
-					? <>
-						<div className="connection-status">
-							{needsAttention
-								? <div className="warning">
-									<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language("connect-ehr-needs-attention")}
-								</div>
-								: <div className="success">
-									<FontAwesomeSvgIcon icon={faCheckCircle} /> {language("connect-ehr-connected")}
-								</div>
-							}
-						</div>
-						<div className="content">{text}</div>
-					</>
-					: <div className="content">{text}</div>
-				}
-			</TextBlock>
-		</>;
+		<Title defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} libraryImage="IDCard">{title}</Title>
+		<TextBlock>
+			{connected
+				? <>
+					<div className="connection-status">
+						{needsAttention
+							? <div className="warning">
+								<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language("connect-ehr-needs-attention")}
+							</div>
+							: <div className="success">
+								<FontAwesomeSvgIcon icon={faCheckCircle} /> {language("connect-ehr-connected")}
+							</div>
+						}
+					</div>
+					<div className="content">{text}</div>
+				</>
+				: <div className="content">{text}</div>
+			}
+		</TextBlock>
+	</>;
 
 	return (
 		<div ref={props.innerRef} className="mdhui-connect-ehr">
-			{props.variant == "small" && 
-			<Action className="mdhui-connect-ehr-action" onClick={() => connectToEhr()}>
-				{content}
-			</Action>
+			{props.variant == "small" &&
+				<Action className="mdhui-connect-ehr-action" onClick={() => connectToEhr()}>
+					{content}
+				</Action>
 			}
 			{props.variant != "small" &&
 				<>{content}
-				<Button defaultMargin onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; {defaultTitle}</Button>
+					<Button defaultMargin onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; {defaultTitle}</Button>
 				</>
 			}
 		</div>
