@@ -43,13 +43,6 @@ export default function (props: ProviderSearchProps) {
             return;
         }
 
-
-        navigator.geolocation.getCurrentPosition((pos) => {
-            console.log(pos);
-        }, (e) => {
-            console.log(e);
-        });
-
         loadExternalAccounts().then(function () {
             performSearch("");
         });
@@ -79,7 +72,6 @@ export default function (props: ProviderSearchProps) {
     }
 
     function updateSearchResults(providers: ExternalAccountProvider[]) {
-        console.log(props.providerCategories);
         setSearchResults(searchResults.concat(providers.filter(a => props.providerCategories?.indexOf(a.category) != -1)));
     }
 
