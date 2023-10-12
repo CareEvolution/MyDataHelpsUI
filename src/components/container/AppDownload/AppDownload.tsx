@@ -43,7 +43,7 @@ export default function (props: AppDownloadProps) {
 		<div className="mdhui-app-download" ref={props.innerRef}>
 			<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform}>
 				<CardTitle title={title} />
-				<TextBlock>Í
+				<TextBlock>
 					<div className="mdhui-app-download-subtitle">
 						{text}
 					</div>
