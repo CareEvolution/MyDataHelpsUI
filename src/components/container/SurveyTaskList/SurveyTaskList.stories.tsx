@@ -43,3 +43,19 @@ Multicard.args = {
 	previewState: "IncompleteTasks",
 	variant: "multiCard"
 }
+
+export const CustomStyle = Template.bind({});
+CustomStyle.args = {
+	limit: 3,
+	status: 'incomplete',
+	title: 'Incomplete Tasks',
+	previewState: "IncompleteTasks",
+	variant: "multiCard",
+	titleColor: "red",
+	cardBackgoundColor: "#eee",
+	cardStyle: {
+		boxShadow:"none"
+	},
+	buttonVariant: "default",
+	buttonColor: "blue"
+}

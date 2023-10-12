@@ -4,6 +4,8 @@ import "./Button.css"
 import { LayoutContext } from '../Layout';
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
+export type ButtonVariant = "default" | "subtle" | "light";
+
 export interface ButtonProps {
 	children?: React.ReactNode;
 	disabled?: boolean;
@@ -11,7 +13,7 @@ export interface ButtonProps {
 	className?: string;
 	color?: ColorDefinition;
 	loading?: boolean;
-	variant?: "default" | "subtle" | "light";
+	variant?: ButtonVariant;
 	innerRef?: React.Ref<HTMLButtonElement>;
 	defaultMargin?: boolean;
 	fullWidth?: boolean;

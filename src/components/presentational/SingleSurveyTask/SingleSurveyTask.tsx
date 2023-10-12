@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
@@ -13,15 +13,22 @@ import { enUS, es } from 'date-fns/locale'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
+import { LayoutContext } from '../Layout';
+import { ColorDefinition } from '../../../helpers/colors';
+import { ButtonVariant } from '../Button/Button';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
 	disableClick?: boolean
 	innerRef?: React.Ref<HTMLDivElement>;
+	buttonColor?: ColorDefinition;
+	buttonVariant?: ButtonVariant;
 }
 
 export default function (props: SingleSurveyTaskProps) {
+	const context = useContext(LayoutContext);
+
 	function startSurvey(survey: string) {
 		if (!props.disableClick) {
 			MyDataHelps.startSurvey(survey);
@@ -56,6 +63,7 @@ export default function (props: SingleSurveyTaskProps) {
 			dueDateString = language("due-in") + " " + timeDifference;
 		}
 	}
+	
 
 	if (props.task.status == 'incomplete') {
 		return (
@@ -68,7 +76,7 @@ export default function (props: SingleSurveyTaskProps) {
 					}
 				</div>
 				<div>
-					<Button variant="light" onClick={() => { }}>
+					<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => { }}>
 						{!props.task.hasSavedProgress ? language("start") : language("resume")}
 					</Button>
 				</div>
