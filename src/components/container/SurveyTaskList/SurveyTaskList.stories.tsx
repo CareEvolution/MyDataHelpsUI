@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import SurveyTaskList, { SurveyTaskListProps } from "./SurveyTaskList"
 import Layout from "../../presentational/Layout"
 
-
 export default {
 	title: "Container/SurveyTaskList",
 	component: SurveyTaskList,

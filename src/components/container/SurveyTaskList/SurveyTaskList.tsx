@@ -104,7 +104,7 @@ export default function (props: SurveyTaskListProps) {
 
 	let variant = props.variant ?? "noCard";
 	return (
-		<TaskListWrapper innerRef={props.innerRef} card={variant == "singleCard"}>
+		<TaskListWrapper cardStyle={props.cardStyle} cardBackroundColor={props.cardBackgoundColor} innerRef={props.innerRef} card={variant == "singleCard"}>
 			<div className="mdhui-survey-task-list">
 				{props.title &&
 					<CardTitle color={props.titleColor} title={props.title} detailLinkText={props.onDetailLinkClick ? language("view-all") + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
@@ -123,7 +123,7 @@ export default function (props: SurveyTaskListProps) {
 	);
 }
 
-function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement>, cardStyle?: React.CSSProperties, cardBackroundColor?: string }) {
+function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement>, cardStyle?: React.CSSProperties, cardBackroundColor?: ColorDefinition }) {
 	const context = useContext(LayoutContext);
 	return props.card ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackroundColor)} innerRef={props.innerRef}>{props.children}</Card> : <div ref={props.innerRef}>{props.children}</div>;
 }
