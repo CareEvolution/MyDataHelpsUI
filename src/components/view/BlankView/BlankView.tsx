@@ -11,9 +11,9 @@ export interface BlankViewProps {
     colorScheme?: "auto" | "light" | "dark"
     primaryColor?: ColorDefinition
     bodyBackgroundColor?: ColorDefinition
-	titleColor?: ColorDefinition;
-	subtitleColor?: ColorDefinition;
-	navigationBarButtonColor?: ColorDefinition;
+    titleColor?: ColorDefinition;
+    subtitleColor?: ColorDefinition;
+    navigationBarButtonColor?: ColorDefinition;
 }
 
 export default function (props: BlankViewProps) {
@@ -30,7 +30,7 @@ export default function (props: BlankViewProps) {
             {!(props.showBackButton || props.showCloseButton) &&
                 <>
                     <StatusBarBackground />
-                    <ViewHeader title={props.title} subtitle={props.subtitle} />
+                    <ViewHeader title={props.title} subtitle={props.subtitle} titleColor={props.titleColor} subtitleColor={props.subtitleColor} />
                 </>
             }
             {props.children}
