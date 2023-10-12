@@ -35,17 +35,17 @@ export default function (props: ActionProps) {
 	let subtitleColor = resolveColor(layoutContext?.colorScheme, props.subtitleColor);
 
 	return (
-		<UnstyledButton disabled={!props.onClick} innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")}  onClick={() => onClick()}>
+		<UnstyledButton disabled={!props.onClick} innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => onClick()}>
 			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
 			<div className='mdhui-action-body'>
 				{props.title &&
-					<div className="title" style={{color:titleColor}}>
+					<div className="title" style={{ color: titleColor }}>
 						{props.titleIcon}
 						{props.title}
 					</div>
 				}
 				{props.subtitle &&
-					<div className="subtitle" style={{color:subtitleColor}}>
+					<div className="subtitle" style={{ color: subtitleColor }}>
 						{props.subtitle}
 					</div>
 				}
