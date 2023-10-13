@@ -17,6 +17,7 @@ export interface DateRangeNavigatorProps {
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
 	className?: string;
 	innerRef?: React.Ref<HTMLDivElement>;
+	sticky?: boolean;
 }
 
 export default function (props: DateRangeNavigatorProps) {
@@ -50,6 +51,9 @@ export default function (props: DateRangeNavigatorProps) {
 	let classes = ["mdhui-date-range-navigator"]
 	if (props.variant == "rounded") {
 		classes.push("mdhui-date-range-navigator-rounded");
+	}
+	if (props.sticky) {
+		classes.push("mdhui-date-range-navigator-sticky");
 	}
 	if (props.className) {
 		classes.push(props.className);

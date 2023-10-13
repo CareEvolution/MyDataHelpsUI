@@ -15,7 +15,7 @@ export default function (props: CalendarViewProps) {
 
     return (
         <Layout colorScheme={props.colorScheme ?? "light"}>
-            <DateRangeCoordinator variant='rounded' intervalType='Month'>
+            <DateRangeCoordinator variant='rounded' intervalType='Month' sticky>
                 <SymptomSharkVisualizationCoordinator showFilters previewState={props.previewState}>
                     <Section>
                         <SymptomSharkCalendar onDaySelected={props.onDaySelected} />
