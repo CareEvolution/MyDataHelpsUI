@@ -206,7 +206,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     }
 
     let action = () => setExpanded(!expanded);
-    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enabled")}</div>;
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enable")}</div>;
 
     if (props.platform == "Web") {
         action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
