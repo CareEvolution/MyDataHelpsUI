@@ -26,7 +26,7 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
     const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
     const [selectedTreatments, setSelectedTreatments] = useState<string[]>([]);
     const [expandedDropdown, setExpandedDropdown] = useState<"Symptoms" | "Treatments" | null>(null);
-    const [configuration, setConfiguration] = useState<SymptomSharkConfiguration | null>(null);
+    let [configuration, setConfiguration] = useState<SymptomSharkConfiguration | null>(null);
 
     function load() {
         if (props.previewState == "default") {
@@ -38,6 +38,7 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
         symptomSharkData.getConfiguration().then(function (info) {
             symptomSharkData.getDailyLogEntries().then(function (logEntries) {
                 setConfiguration(info);
+                configuration = info;
                 setCurrentContext({ symptoms: filterSymptoms(selectedSymptoms), treatments: filterTreatments(selectedTreatments), logEntries: logEntries, hasFilteredSymptoms: false });
             })
         })
