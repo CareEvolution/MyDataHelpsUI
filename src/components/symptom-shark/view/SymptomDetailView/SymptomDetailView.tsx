@@ -37,7 +37,7 @@ function SymptomDetailViewInner(props: SymptomDetailViewProps) {
 
     return <>
         <NavigationBar title={symptom.name} showCloseButton={true} />
-        <DateRangeCoordinator sticky initialIntervalStart={initialIntervalStart} intervalType='Month' variant="rounded" >
+        <DateRangeCoordinator initialIntervalStart={initialIntervalStart} intervalType='Month' variant="rounded" >
             <Section noTopMargin>
                 <SymptomSharkSymptomSeveritySummary symptom={symptom} />
             </Section>
