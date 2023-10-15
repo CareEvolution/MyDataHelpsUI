@@ -16,7 +16,7 @@ export interface SymptomSeverityChartProps {
 export default function (props: SymptomSeverityChartProps) {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock>Error: Symptom Severity Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock innerRef={props.innerRef}>Error: Symptom Severity Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
     let { logEntries } = visualizationContext;
 
