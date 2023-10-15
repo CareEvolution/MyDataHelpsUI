@@ -2,6 +2,7 @@
 import { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
 import React from "react";
 import { getFitbitProviderID } from '../../../helpers/providerIDs';
+import FitbitLogo from '../../../assets/fitbit-logo.svg';
 
 export interface ConnectFitbitProps {
 	title?: string,
@@ -21,8 +22,8 @@ export default function (props: ConnectFitbitProps) {
 
 	return (<ConnectDevice 
 		innerRef={props.innerRef} 
-		headerImage="FitbitLogo"
 		title="Fitbit" 
+		titleImage={<img src={FitbitLogo} />}
 		providerName="Fitbit" 
 		dataCollectionProperty='fitbitEnabled' 
 		providerID={getInternalFitbitProviderID()} 

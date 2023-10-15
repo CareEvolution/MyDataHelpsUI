@@ -2,7 +2,7 @@
 import { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
 import { getGarminProviderID } from '../../../helpers/providerIDs';
-import LibraryImage from '../../presentational/LibraryImage/LibraryImage';
+import GarminLogo from '../../../assets/garmin-logo.svg';
 
 export interface ConnectGarminProps {
 	title?: string,
@@ -21,8 +21,8 @@ export default function (props: ConnectGarminProps) {
 	}
 
 	return (<ConnectDevice innerRef={props.innerRef}
-		headerImage="GarminLogo"
 		title="Garmin"
+		titleImage={<img src={GarminLogo} />}
 		providerName="Garmin"
 		dataCollectionProperty='garminEnabled'
 		providerID={getInternalGarminProviderID()}

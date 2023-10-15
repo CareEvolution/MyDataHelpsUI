@@ -1,16 +1,17 @@
 import React from "react";
 import { Layout } from "../../presentational";
 import Title, { TitleProps } from "./Title";
+import FitbitLogo from '../../../assets/fitbit-logo.svg';
 
 export default { title: "Presentational/Title", component: Title, parameters: { layout: 'fullscreen' } };
 let render = (args: TitleProps) => <Layout><Title {...args} /></Layout>
-
 
 export const ImageLeft = {
     args: {
         children: "H1 Title",
         order: 1,
-        libraryImage: "FitbitLogo"
+        autosizeImage: true,
+        image: <img src={FitbitLogo} />,
     },
     render: render
 };
@@ -20,12 +21,12 @@ export const ImageTop = {
     args: {
         children: "H1 Title",
         order: 1,
-        libraryImage: "FitbitLogo",
+        image: <img src={FitbitLogo} />,
+        autosizeImage: true,
         imageAlignment: "top"
     },
     render: render
 };
-
 
 export const H1 = {
     args: {

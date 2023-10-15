@@ -8,6 +8,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import IDCard from "../../../assets/id-card.svg";
 
 export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
@@ -15,7 +16,7 @@ export interface ConnectEhrProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
 	innerRef?: React.Ref<HTMLDivElement>
-	variant?: "large" | "medium" | "small"
+	variant?: "large" | "medium" | "small" | "xlarge"
 	title?: string
 	notConnectedText?: string
 	connectedText?: string
@@ -112,7 +113,7 @@ export default function (props: ConnectEhrProps) {
 	let headerVariant = props.variant || "large";
 
 	let content = <>
-		<Title defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} libraryImage="IDCard">{title}</Title>
+		<Title autosizeImage defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} image={<img src={IDCard}/>}>{title}</Title>
 		<TextBlock>
 			{connected
 				? <>

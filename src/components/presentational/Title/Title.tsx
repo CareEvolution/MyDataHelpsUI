@@ -1,15 +1,13 @@
 import React, { ReactNode } from "react";
 import "./Title.css";
-import LibraryImage, { LibraryImageKey } from "../LibraryImage/LibraryImage";
-import image from "@rollup/plugin-image";
 
 export interface TitleProps {
     order?: 1 | 2 | 3 | 4 | 5 | 6;
     children?: React.ReactNode;
     style?: React.CSSProperties;
     className?: string;
-    libraryImage?: LibraryImageKey;
     image?: ReactNode;
+    autosizeImage?: boolean;
     imageAlignment?: "top" | "left"
     defaultMargin?: boolean
 }
@@ -27,35 +25,39 @@ export default function (props: TitleProps) {
         classes.push("mdhui-title-default-margin");
     }
 
-    let imageWidth = 24;
-    switch (props.order) {
-        case 1:
-            imageWidth = 40;
-            break;
-        case 2:
-            imageWidth = 30;
-            break;
-        case 3:
-            imageWidth = 24;
-            break;
-        case 4:
-            imageWidth = 20;
-            break;
-        case 5:
-            imageWidth = 16;
-            break;
-        case 6:
-            imageWidth = 12;
-            break;
-    }
-
-    if(props.imageAlignment == "top"){
-        imageWidth = imageWidth * 2;
+    let imageWidth: number | null = null;
+    if (props.image && props.autosizeImage) {
+        imageWidth = 24;
+        switch (props.order) {
+            case 1:
+                imageWidth = 40;
+                break;
+            case 2:
+                imageWidth = 30;
+                break;
+            case 3:
+                imageWidth = 24;
+                break;
+            case 4:
+                imageWidth = 20;
+                break;
+            case 5:
+                imageWidth = 16;
+                break;
+            case 6:
+                imageWidth = 12;
+                break;
+        }
+        if (props.imageAlignment == "top") {
+            imageWidth = imageWidth * 2;
+        }
     }
 
     return <div className={classes.join(" ")}>
-        {props.libraryImage &&
-            <LibraryImage width={imageWidth} image={props.libraryImage} />
+        {props.image &&
+            <div className={"mdhui-title-image " + (props.autosizeImage ? "mdhui-title-image-autosize" : "")} style={{ width: imageWidth + "px" }}>
+                {props.image}
+            </div>
         }
         <Tag style={props.style}>{props.children}</Tag>
     </div>

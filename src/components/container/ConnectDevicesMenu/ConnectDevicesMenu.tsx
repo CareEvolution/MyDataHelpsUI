@@ -1,11 +1,16 @@
 import MyDataHelps, { DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
-import { LibraryImageKey } from '../../presentational/LibraryImage/LibraryImage';
+import FitnessWearable from '../../../assets/fitness-wearable.svg';
+import FitbitLogo from '../../../assets/fitbit-logo.svg';
+import GarminLogo from '../../../assets/garmin-logo.svg';
+import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
+import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
+import OmronLogo from '../../../assets/omron-logo.png';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -92,24 +97,24 @@ export default function (props: ConnectDevicesMenuProps) {
         if (!accountTypes.includes("Fitbit")) {
             return null;
         }
-        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), "FitbitLogo");
+        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), <img src={FitbitLogo}/>);
     }
 
     function getGarminMenuItem() {
         if (!accountTypes.includes("Garmin")) {
             return null;
         }
-        return getExternalAccountMenuItem("Garmin", getGarminProviderID(), "GarminLogo");
+        return getExternalAccountMenuItem("Garmin", getGarminProviderID(), <img src={GarminLogo}/>);
     }
 
     function getOmronMenuItem() {
         if (!accountTypes.includes("Omron")) {
             return null;
         }
-        return getExternalAccountMenuItem("Omron", getOmronProviderID(), "OmronLogo");
+        return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img src={OmronLogo}/>);
     }
 
-    function getExternalAccountMenuItem(providerName: string, providerID: number, libraryImage: LibraryImageKey) {
+    function getExternalAccountMenuItem(providerName: string, providerID: number, image: ReactNode) {
         let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
@@ -133,7 +138,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
         return <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title order={4} libraryImage={libraryImage}>{providerName}</Title>
+                <Title autosizeImage order={4} image={image}>{providerName}</Title>
             </Action>
         </div>;
     }
@@ -161,7 +166,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
         return <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title libraryImage="GoogleFitLogo" order={4}>Google Fit</Title>
+                <Title autosizeImage image={<img src={GoogleFitLogo} />} order={4}>Google Fit</Title>
             </Action>
         </div>;
     }
@@ -171,7 +176,7 @@ export default function (props: ConnectDevicesMenuProps) {
     let headerVariant = props.headerVariant || "large";
 
     return <div ref={props.innerRef} className="mdhui-connect-devices-menu">
-        <Title defaultMargin order={headerVariant == "large" ? 2 : 3} libraryImage="FitnessWearable" imageAlignment={headerVariant == "large" ? "top" : "left"}>{title}</Title>
+        <Title autosizeImage defaultMargin order={headerVariant == "large" ? 2 : 3} image={<img src={FitnessWearable} />} imageAlignment={headerVariant == "large" ? "top" : "left"}>{title}</Title>
         <TextBlock>
             {text}
         </TextBlock>
@@ -206,7 +211,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
 
     return <div className="mdhui-connect-devices-menu-device">
         <Action onClick={action} indicator={indicator}>
-            <Title libraryImage="AppleHealthLogo" order={4}>Apple Health</Title>
+            <Title autosizeImage image={<img src={AppleHealthLogo} />}  order={4}>Apple Health</Title>
         </Action>
         {expanded &&
             <div className="mdhui-connect-devices-menu-help">

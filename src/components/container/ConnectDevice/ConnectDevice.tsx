@@ -11,7 +11,6 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { LibraryImageKey } from '../../presentational/LibraryImage/LibraryImage';
 
 export interface ConnectDeviceProps {
 	title: string,
@@ -21,7 +20,7 @@ export interface ConnectDeviceProps {
 	disabledBehavior?: 'hide' | 'displayError',
 	dataCollectionProperty: string
 	innerRef?: React.Ref<HTMLDivElement>
-	headerImage: LibraryImageKey
+	titleImage: React.ReactNode
 	hideWhenConnected?: boolean
 }
 
@@ -121,7 +120,7 @@ export default function (props: ConnectDeviceProps) {
 
 	return (
 		<div className="mdhui-connect-device" ref={props.innerRef}>
-			<Title defaultMargin order={3} libraryImage={props.headerImage}>{props.title}</Title>
+			<Title defaultMargin autosizeImage order={3} image={props.titleImage}>{props.title}</Title>
 			<TextBlock>
 				{!deviceExternalAccount &&
 					<div>

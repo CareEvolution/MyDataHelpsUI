@@ -8,9 +8,17 @@
     margin: var(--mdhui-padding-md);
 }
 
-
 .mdhui-title.mdhui-title-image-top {
     display: block;
+}
+
+.mdhui-title .mdhui-title-image
+{
+    display: flex;
+}
+
+.mdhui-title .mdhui-title-image-autosize img {
+    width: 100%;
 }
 
 .mdhui-title h1,
