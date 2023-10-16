@@ -14,7 +14,7 @@ export interface SymptomTreatmentHistogramsProps {
 export default function (props: SymptomTreatmentHistogramsProps) {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock>Error: Symptom Treatment Histograms must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock innerRef={props.innerRef}>Error: Symptom Treatment Histograms must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
     let { symptoms, treatments, logEntries } = visualizationContext;
 
