@@ -2,7 +2,6 @@ import React from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons/faCircleCheck'
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import parseISO from 'date-fns/parseISO'
@@ -13,6 +12,7 @@ import { enUS, es } from 'date-fns/locale'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
+import checkMark from '../../../assets/greenCheck.svg';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -84,7 +84,7 @@ export default function (props: SingleSurveyTaskProps) {
 					<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
 				</div>
 				<div className="status-icon">
-					<FontAwesomeSvgIcon icon={faCircleCheck} />
+					<img src={checkMark}></img>
 				</div>
 			</div>
 		)

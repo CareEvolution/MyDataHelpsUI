@@ -36,7 +36,17 @@ export default function (props: SurveyTaskListProps) {
 	}
 
 	function initialize() {
+
+		var sortIncomplete = function (a : any, b : any){
+			if (!a.dueDate) { return 1; }
+			if (!b.dueDate) { return -1; }
+			if (parseISO(a.dueDate) > parseISO(b.dueDate)) { return 1; }
+			if (parseISO(a.dueDate) < parseISO(b.dueDate)) { return -1; }
+			return 0;
+		}
+
 		if (props.previewState == "IncompleteTasks") {
+			previewIncompleteTasks.sort(sortIncomplete);
 			setTasks(previewIncompleteTasks);
 			return;
 		}
@@ -56,18 +66,14 @@ export default function (props: SurveyTaskListProps) {
 					parameters.pageID = pageID;
 				}
 
-				return MyDataHelps.querySurveyTasks(parameters).then(function (result) {
+				return MyDataHelps.querySurveyTasks(parameters).then(function (result : any) {
 					allTasks = allTasks.concat((result as any).surveyTasks);
 					if (result.nextPageID) {
 						makeRequest(result.nextPageID);
 					} else {
 						//sort by due date for incomplete tasks
 						if (props.status == "incomplete") {
-							allTasks.sort((a, b) => {
-								if (parseISO(a.dueDate) > parseISO(b.dueDate)) { return 1; }
-								if (parseISO(a.dueDate) < parseISO(b.dueDate)) { return -1; }
-								return 0;
-							});
+							allTasks.sort(sortIncomplete);
 						}
 
 						//sort by completed date for complete tasks
