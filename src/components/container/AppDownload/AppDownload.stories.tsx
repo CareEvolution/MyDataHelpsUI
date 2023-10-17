@@ -2,6 +2,7 @@
 import { Meta, StoryFn } from '@storybook/react'
 import Layout from '../../presentational/Layout'
 import AppDownload, { AppDownloadProps } from './AppDownload';
+import { Card } from '../../presentational';
 
 export default {
 	title: 'Container/AppDownload',
@@ -13,7 +14,7 @@ export default {
 
 const Template: StoryFn<typeof AppDownload> = (args: AppDownloadProps) =>
 	<Layout colorScheme="auto">
-		<AppDownload {...args} />
+		<Card><AppDownload {...args} /></Card>
 	</Layout>;
 
 export const WebBoth = Template.bind({});
