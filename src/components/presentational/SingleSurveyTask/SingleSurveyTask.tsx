@@ -60,14 +60,14 @@ export default function (props: SingleSurveyTaskProps) {
 	if (props.task.status == 'incomplete') {
 		return (
 			<div ref={props.innerRef} className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
-				<div className="taskDetail">
+				<div>
 					<div className="survey-name">{props.task.surveyDisplayName}</div>
 					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
 					{dueDateString &&
 						<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
 					}
 				</div>
-				<div className='button'>
+				<div>
 					<Button variant="light" onClick={() => { }}>
 						{!props.task.hasSavedProgress ? language("start") : language("resume")}
 					</Button>

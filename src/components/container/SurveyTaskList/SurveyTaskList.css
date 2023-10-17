@@ -1,7 +1,3 @@
-.mdhui-survey-task-list{
-    background: var(--bg-secondary, #F2F2F7);
-}
-
 .mdhui-survey-task-list .mdhui-single-survey-task {
     border-bottom: solid 1px var(--mdhui-border-color-0);
 }
@@ -14,10 +10,6 @@
     font-weight: bold;
     padding: 16px;
     padding-bottom: 0;
-}
-
-.mdhui-card-title {
-    color: rgba(60, 60, 67, 0.60)!important;
 }
 
 .mdhui-survey-task-list .empty-message {
