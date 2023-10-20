@@ -10,6 +10,7 @@ export interface DateRangeCoordinatorProps {
     variant?: "default" | "rounded";
     children: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
+    sticky?: boolean;
 }
 
 export interface DateRangeContext {
@@ -37,6 +38,7 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
 
     return <div ref={props.innerRef}> <DateRangeContext.Provider value={currentContext}>
         <DateRangeNavigator
+            sticky={props.sticky}
             intervalType={props.intervalType}
             intervalStart={currentContext.intervalStart}
             onIntervalChange={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}

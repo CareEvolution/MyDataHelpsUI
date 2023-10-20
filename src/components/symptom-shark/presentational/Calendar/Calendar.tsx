@@ -19,7 +19,7 @@ export interface SymptomSharkCalendarProps {
 export default function (props: SymptomSharkCalendarProps) {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock>Error: Symptom Calendar must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock innerRef={props.innerRef}>Error: Symptom Calendar must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
     let { symptoms, treatments, logEntries } = visualizationContext;
 

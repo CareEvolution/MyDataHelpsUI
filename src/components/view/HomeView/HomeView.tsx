@@ -46,7 +46,9 @@ export default function (props: HomeViewProps) {
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground color='#FFFFFF' />
 			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
-			<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined} />
+			<Card>
+				<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined} />
+			</Card>
 			<Card>
 				<MostRecentNotification
 					notificationType={notificationType}
