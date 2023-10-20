@@ -51,7 +51,7 @@ CustomStyle.args = {
 	previewState: "IncompleteTasks",
 	variant: "multiCard",
 	titleColor: "red",
-	cardBackgoundColor: "#eee",
+	cardBackgroundColor: "#eee",
 	cardStyle: {
 		boxShadow:"none"
 	},

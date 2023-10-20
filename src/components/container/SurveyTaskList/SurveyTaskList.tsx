@@ -18,7 +18,7 @@ export interface SurveyTaskListProps {
 	variant?: "noCard" | "singleCard" | "multiCard"
 	innerRef?: React.Ref<HTMLDivElement>
 	titleColor?: ColorDefinition
-	cardBackgoundColor?: ColorDefinition
+	cardBackgroundColor?: ColorDefinition
 	cardStyle?: React.CSSProperties
 	buttonVariant?: ButtonVariant
 	buttonColor?: ColorDefinition
@@ -104,7 +104,7 @@ export default function (props: SurveyTaskListProps) {
 
 	let variant = props.variant ?? "noCard";
 	return (
-		<TaskListWrapper cardStyle={props.cardStyle} cardBackroundColor={props.cardBackgoundColor} innerRef={props.innerRef} card={variant == "singleCard"}>
+		<TaskListWrapper cardStyle={props.cardStyle} cardBackgroundColor={props.cardBackgroundColor} innerRef={props.innerRef} card={variant == "singleCard"}>
 			<div className="mdhui-survey-task-list">
 				{props.title &&
 					<CardTitle color={props.titleColor} title={props.title} detailLinkText={props.onDetailLinkClick ? language("view-all") + " (" + (tasks?.length ?? 0) + ")" : undefined} onDetailClick={props.onDetailLinkClick} />
@@ -116,14 +116,14 @@ export default function (props: SurveyTaskListProps) {
 					<div className="empty-message">{language("all-tasks-complete")}</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
-					variant == "multiCard" ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgoundColor)} key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
+					variant == "multiCard" ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgroundColor)} key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
 				)}
 			</div>
 		</TaskListWrapper>
 	);
 }
 
-function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement>, cardStyle?: React.CSSProperties, cardBackroundColor?: ColorDefinition }) {
+function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement>, cardStyle?: React.CSSProperties, cardBackgroundColor?: ColorDefinition }) {
 	const context = useContext(LayoutContext);
-	return props.card ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackroundColor)} innerRef={props.innerRef}>{props.children}</Card> : <div ref={props.innerRef}>{props.children}</div>;
+	return props.card ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgroundColor)} innerRef={props.innerRef}>{props.children}</Card> : <div ref={props.innerRef}>{props.children}</div>;
 }
