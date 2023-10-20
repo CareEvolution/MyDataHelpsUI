@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import "./Card.css"
 import ShinyOverlay from '../ShinyOverlay/ShinyOverlay';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { LayoutContext } from '../Layout';
 
 export interface CardProps {
 	className?: string;
@@ -8,6 +10,8 @@ export interface CardProps {
 	allowOverflow?: boolean;
 	innerRef?: React.Ref<HTMLDivElement>;
 	variant?: "default" | "subtle" | "highlight";
+	backgroundColor?: ColorDefinition;
+	style?: React.CSSProperties;
 }
 
 export default function (props: CardProps) {
@@ -24,12 +28,15 @@ export default function (props: CardProps) {
 	}
 	let variant = props.variant || "default";
 	classes.push(`mdhui-card-${variant}`);
-	if(variant == "highlight"){
+	if (variant == "highlight") {
 		classes.push("mdhui-color-scheme-dark");
 	}
 
+	let layoutContext = useContext(LayoutContext);
+	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
+
 	return (
-		<div ref={props.innerRef} className={classes.join(" ")}>
+		<div style={{...props.style, backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>
 			{props.children}
 			{props.children && variant === "highlight" && <ShinyOverlay />}
 		</div>
