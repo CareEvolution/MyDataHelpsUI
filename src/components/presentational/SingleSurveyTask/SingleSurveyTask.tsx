@@ -65,14 +65,15 @@ export default function (props: SingleSurveyTaskProps) {
 	}
 
 	if (props.task.status == 'incomplete') {
+		const indicator = <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
+			{!props.task.hasSavedProgress ? language("start") : language("resume")}
+		</Button>;
 		return (
 			<Action renderAs='div'
 				innerRef={props.innerRef}
 				onClick={() => startSurvey(props.task.surveyName!)}
 				className="mdhui-single-survey-task incomplete"
-				indicator={<Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
-					{!props.task.hasSavedProgress ? language("start") : language("resume")}
-				</Button>}>
+				indicator={indicator}>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
 				{dueDateString &&
