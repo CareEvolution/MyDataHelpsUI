@@ -11,7 +11,6 @@ export interface ViewEhrProps {
     previewState?: "default";
 }
 
-
 export default function (props: ViewEhrProps) {
     const [ehrAccounts, setEhrAccounts] = useState<ExternalAccount[] | null>(null);
 
@@ -47,7 +46,7 @@ export default function (props: ViewEhrProps) {
     }
 
     return (
-        <Action indicator={<Button variant='light' onClick={() => props.onClick()}>View</Button>}>
+        <Action renderAs='div' onClick={() => props.onClick()} indicator={<Button variant='light' onClick={() => { }}>View</Button>}>
             <Title order={3}>Health Records</Title>
         </Action>
     );

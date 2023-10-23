@@ -64,12 +64,13 @@ export default function (props: SingleSurveyTaskProps) {
 		}
 	}
 
-
 	if (props.task.status == 'incomplete') {
 		return (
-			<Action innerRef={props.innerRef}
+			<Action renderAs='div'
+				innerRef={props.innerRef}
+				onClick={() => startSurvey(props.task.surveyName!)}
 				className="mdhui-single-survey-task incomplete"
-				indicator={<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => startSurvey(props.task.surveyName!)}>
+				indicator={<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => { }}>
 					{!props.task.hasSavedProgress ? language("start") : language("resume")}
 				</Button>}>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
@@ -83,7 +84,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'complete' && props.task.endDate) {
 		return (
-			<Action indicator={<img src={checkMark}></img>} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
+			<Action renderAs='div' indicator={<img src={checkMark}></img>} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
 			</Action>

@@ -24,6 +24,7 @@ export interface ActionProps {
 	innerRef?: React.Ref<HTMLDivElement>
 	titleColor?: ColorDefinition;
 	subtitleColor?: ColorDefinition;
+	renderAs?: "div" | "button";
 }
 
 export default function (props: ActionProps) {
@@ -63,7 +64,13 @@ export default function (props: ActionProps) {
 		</div>
 	</>;
 
-	if (props.onClick) {
+	if (props.renderAs == "div") {
+		return (
+			<div className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} ref={props.innerRef} onClick={() => onClick()}>
+				{innerContent}
+			</div>
+		)
+	} else {
 		return (
 			<div ref={props.innerRef}>
 				<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => onClick()}>
@@ -71,11 +78,5 @@ export default function (props: ActionProps) {
 				</UnstyledButton>
 			</div>
 		);
-	} else {
-		return (
-			<div className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} ref={props.innerRef}>
-				{innerContent}
-			</div>
-		)
 	}
 }
