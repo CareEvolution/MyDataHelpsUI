@@ -15,7 +15,7 @@ let render = (args: ViewEhrProps) => <Layout colorScheme="auto"><Card><ViewEhr {
 
 export const Default = {
     args: {
-        previewState: "default"
+        previewState: "fetchingData"
     },
     render: render
 };

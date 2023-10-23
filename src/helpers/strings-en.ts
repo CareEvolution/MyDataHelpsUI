@@ -9,6 +9,8 @@
     "refresh": "Refresh",
     "remove": "Remove",
     "help": "Help",
+    "view": "View",
+    "health-records": "Health Records",
     "connect-ehr-title-prefix": "Connect ",
     "connect-ehr-title-divider": " or ",
     "connect-ehr-title-providers": "Provider",

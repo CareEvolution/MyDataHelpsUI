@@ -67,6 +67,6 @@ export default function (props: TitleProps) {
                 {props.image}
             </div>
         }
-        <Tag className={classes.join(" ")} style={{ ...props.style, color: color }}>{props.children}</Tag>
+        <Tag style={{ ...props.style, color: color }}>{props.children}</Tag>
     </div>
 }

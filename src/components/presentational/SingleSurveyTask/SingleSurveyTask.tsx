@@ -12,7 +12,7 @@ import { enUS, es } from 'date-fns/locale'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition } from '../../../helpers/colors';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
@@ -70,7 +70,7 @@ export default function (props: SingleSurveyTaskProps) {
 				innerRef={props.innerRef}
 				onClick={() => startSurvey(props.task.surveyName!)}
 				className="mdhui-single-survey-task incomplete"
-				indicator={<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => { }}>
+				indicator={<Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
 					{!props.task.hasSavedProgress ? language("start") : language("resume")}
 				</Button>}>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
