@@ -1,7 +1,6 @@
 import React from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons/faCircleCheck'
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
@@ -13,6 +12,8 @@ import { enUS, es } from 'date-fns/locale'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
+import Action from '../Action';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -59,34 +60,25 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'incomplete') {
 		return (
-			<div ref={props.innerRef} className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
-				<div>
-					<div className="survey-name">{props.task.surveyDisplayName}</div>
-					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
-					{dueDateString &&
-						<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
-					}
-				</div>
-				<div>
-					<Button variant="light" onClick={() => { }}>
-						{!props.task.hasSavedProgress ? language("start") : language("resume")}
-					</Button>
-				</div>
-			</div>
+			<Action innerRef={props.innerRef} className="mdhui-single-survey-task incomplete"
+				indicator={<Button variant="light" onClick={() => startSurvey(props.task.surveyName!)}>
+					{!props.task.hasSavedProgress ? language("start") : language("resume")}
+				</Button>}>
+				<div className="survey-name">{props.task.surveyDisplayName}</div>
+				<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
+				{dueDateString &&
+					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
+				}
+			</Action>
 		);
 	}
 
 	if (props.task.status == 'complete' && props.task.endDate) {
 		return (
-			<div ref={props.innerRef} className="mdhui-single-survey-task complete">
-				<div>
-					<div className="survey-name">{props.task.surveyDisplayName}</div>
-					<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
-				</div>
-				<div className="status-icon">
-					<FontAwesomeSvgIcon icon={faCircleCheck} />
-				</div>
-			</div>
+			<Action indicator={<FontAwesomeSvgIcon icon={faCircleCheck} />} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
+				<div className="survey-name">{props.task.surveyDisplayName}</div>
+				<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
+			</Action>
 		)
 	}
 	return null;
