@@ -9,6 +9,7 @@ import language from '../../../../helpers/language';
 export interface SymptomSharkLogTodayProps {
     previewState?: "withLog" | "noLog";
     innerRef?: React.Ref<HTMLDivElement>;
+    onClick(d: Date): void;
 }
 
 export default function (props: SymptomSharkLogTodayProps) {
@@ -43,5 +44,5 @@ export default function (props: SymptomSharkLogTodayProps) {
         return null;
     }
 
-    return <SymptomSharkLogEntry innerRef={props.innerRef} title={!symptomLogEntry ? language("log-todays-symptoms") : language("todays-log")} date={currentDate} logEntry={symptomLogEntry} configuration={configuration!} />;
+    return <SymptomSharkLogEntry onClick={(d) => props.onClick(d)} innerRef={props.innerRef} title={!symptomLogEntry ? language("log-todays-symptoms") : language("todays-log")} date={currentDate} logEntry={symptomLogEntry} configuration={configuration!} />;
 }

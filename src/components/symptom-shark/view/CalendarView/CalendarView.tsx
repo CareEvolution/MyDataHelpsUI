@@ -15,7 +15,7 @@ export default function (props: CalendarViewProps) {
 
     return (
         <Layout colorScheme={props.colorScheme ?? "light"}>
-            <DateRangeCoordinator variant='rounded' intervalType='Month'>
+            <DateRangeCoordinator variant='rounded' intervalType='Month' sticky>
                 <SymptomSharkVisualizationCoordinator showFilters previewState={props.previewState}>
                     <Section>
                         <SymptomSharkCalendar onDaySelected={props.onDaySelected} />
@@ -36,7 +36,7 @@ export default function (props: CalendarViewProps) {
 function CalendarSeverityCharts() {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock>Error: Symptom Treatment Histograms must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock>Error: Calendar severity charts must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
     let { hasFilteredSymptoms, symptoms } = visualizationContext;
 

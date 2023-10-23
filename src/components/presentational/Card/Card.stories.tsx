@@ -21,7 +21,6 @@ export const CardAction = {
 	render: render
 };
 
-
 export const CardWithClass = {
 	args: {
 		className: "card-story-primary",

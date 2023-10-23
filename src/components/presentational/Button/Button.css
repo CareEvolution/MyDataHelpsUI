@@ -1,5 +1,4 @@
 ﻿.mdhui-button {
-    width: 100%;
     box-sizing: border-box;
     padding: 16px;
     background: var(--mdhui-color-primary);
@@ -21,6 +20,15 @@
 
 .mdhui-button.mdhui-button-default-margin {
     margin: 16px;
-    width: calc(100% - 32px);
     display: block;
+}
+
+.mdhui-button.mdhui-button-full-width {
+    width: 100%;
+    display: block;
+}
+
+.mdhui-button.mdhui-button-default-margin.mdhui-button-full-width
+{
+    width: calc(100% - 32px);
 }

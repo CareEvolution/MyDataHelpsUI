@@ -1,7 +1,10 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import "./Title.css";
+import { LayoutContext } from "../Layout";
+import { ColorDefinition, resolveColor } from "../../../helpers/colors";
 
 export interface TitleProps {
+    color?: ColorDefinition
     order?: 1 | 2 | 3 | 4 | 5 | 6;
     children?: React.ReactNode;
     style?: React.CSSProperties;
@@ -18,6 +21,11 @@ export default function (props: TitleProps) {
     if (props.className) {
         classes.push(props.className);
     }
+
+
+    let context = useContext(LayoutContext);
+    let color = resolveColor(context?.colorScheme, props.color);
+
     if (props.imageAlignment === "top") {
         classes.push("mdhui-title-image-top");
     }
@@ -59,6 +67,6 @@ export default function (props: TitleProps) {
                 {props.image}
             </div>
         }
-        <Tag style={props.style}>{props.children}</Tag>
+        <Tag className={classes.join(" ")} style={{ ...props.style, color: color }}>{props.children}</Tag>
     </div>
 }

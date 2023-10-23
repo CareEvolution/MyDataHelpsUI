@@ -1,7 +1,6 @@
 .mdhui-single-survey-task
 {
     padding: 16px;
-    display: grid;
     grid-template-columns: max-content auto max-content;
     grid-column-gap: 16px;
     align-items: center;

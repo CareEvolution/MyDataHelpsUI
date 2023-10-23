@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons/faCircleCheck'
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import parseISO from 'date-fns/parseISO'
@@ -9,20 +9,26 @@ import add from 'date-fns/add'
 import { isAfter } from 'date-fns'
 import language from '../../../helpers/language'
 import { enUS, es } from 'date-fns/locale'
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
+import { LayoutContext } from '../Layout';
+import { ColorDefinition } from '../../../helpers/colors';
+import { ButtonVariant } from '../Button/Button';
+import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
 	disableClick?: boolean
 	innerRef?: React.Ref<HTMLDivElement>;
+	buttonColor?: ColorDefinition;
+	buttonVariant?: ButtonVariant;
 }
 
 export default function (props: SingleSurveyTaskProps) {
+	const context = useContext(LayoutContext);
+
 	function startSurvey(survey: string) {
 		if (!props.disableClick) {
 			MyDataHelps.startSurvey(survey);
@@ -58,10 +64,12 @@ export default function (props: SingleSurveyTaskProps) {
 		}
 	}
 
+
 	if (props.task.status == 'incomplete') {
 		return (
-			<Action innerRef={props.innerRef} className="mdhui-single-survey-task incomplete"
-				indicator={<Button variant="light" onClick={() => startSurvey(props.task.surveyName!)}>
+			<Action innerRef={props.innerRef}
+				className="mdhui-single-survey-task incomplete"
+				indicator={<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => startSurvey(props.task.surveyName!)}>
 					{!props.task.hasSavedProgress ? language("start") : language("resume")}
 				</Button>}>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
@@ -75,7 +83,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	if (props.task.status == 'complete' && props.task.endDate) {
 		return (
-			<Action indicator={<FontAwesomeSvgIcon icon={faCircleCheck} />} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
+			<Action indicator={<img src={checkMark}></img>} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
 			</Action>
