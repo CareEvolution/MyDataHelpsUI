@@ -8,7 +8,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
-import IDCard from "../../../assets/id-card.svg";
+import ConnectEHR from "../../../assets/connect-ehr.svg";
 
 export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
@@ -113,7 +113,7 @@ export default function (props: ConnectEhrProps) {
 	let headerVariant = props.variant || "large";
 
 	let content = <>
-		<Title autosizeImage defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} image={<img src={IDCard}/>}>{title}</Title>
+		<Title autosizeImage defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} image={<img src={ConnectEHR}/>}>{title}</Title>
 		<TextBlock>
 			{connected
 				? <>
