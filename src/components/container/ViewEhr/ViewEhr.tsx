@@ -5,7 +5,7 @@ import language from '../../../helpers/language'
 import { previewAccounts } from '../ExternalAccountsPreview/ExternalAccountsPreview.previewdata'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 import { faRefresh } from '@fortawesome/free-solid-svg-icons'
-import { ColorDefinition, resolveColor } from '../../../helpers/colors'
+import { ColorDefinition } from '../../../helpers/colors'
 import "./ViewEhr.css"
 import { ButtonVariant } from '../../presentational/Button/Button'
 
@@ -53,7 +53,7 @@ export default function (props: ViewEhrProps) {
         return null;
     }
 
-    const indicator = <Button color={props.buttonColor} variant='light' onClick={() => { }}>{language("view")}</Button>;
+    const indicator = <Button color={props.buttonColor} variant={props.buttonVariant || 'light'} onClick={() => { }}>{language("view")}</Button>;
     return (
         <Action innerRef={props.innerRef} className="mdhui-view-ehr" renderAs='div' onClick={() => props.onClick()} indicator={indicator}>
             <Title order={3}>{props.title || language("health-records")}</Title>
