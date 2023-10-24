@@ -13,17 +13,18 @@ export interface ActionProps {
 	titleIcon?: ReactElement;
 	icon?: ReactElement
 	subtitle?: string;
-	indicatorIcon?: IconDefinition;
-	indicator?: ReactElement;
 	onClick?: Function;
 	children?: React.ReactNode;
 	className?: string;
+	indicatorIcon?: IconDefinition;
+	indicator?: ReactElement;
 	indicatorValue?: string;
 	indicatorPosition?: "default" | "topRight";
 	bottomBorder?: boolean;
-	innerRef?: React.Ref<HTMLButtonElement>;
+	innerRef?: React.Ref<HTMLDivElement>
 	titleColor?: ColorDefinition;
 	subtitleColor?: ColorDefinition;
+	renderAs?: "div" | "button";
 }
 
 export default function (props: ActionProps) {
@@ -34,34 +35,48 @@ export default function (props: ActionProps) {
 	let titleColor = resolveColor(layoutContext?.colorScheme, props.titleColor);
 	let subtitleColor = resolveColor(layoutContext?.colorScheme, props.subtitleColor);
 
-	return (
-		<UnstyledButton disabled={!props.onClick} innerRef={props.innerRef} className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => onClick()}>
-			{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
-			<div className='mdhui-action-body'>
-				{props.title &&
-					<div className="title" style={{ color: titleColor }}>
-						{props.titleIcon}
-						{props.title}
-					</div>
-				}
-				{props.subtitle &&
-					<div className="subtitle" style={{ color: subtitleColor }}>
-						{props.subtitle}
-					</div>
-				}
-				{props.children}
+	let innerContent = <>
+		{props.icon && <div className="mdhui-action-icon">{props.icon}</div>}
+		<div className='mdhui-action-body'>
+			{props.title &&
+				<div className="title" style={{ color: titleColor }}>
+					{props.titleIcon}
+					{props.title}
+				</div>
+			}
+			{props.subtitle &&
+				<div className="subtitle" style={{ color: subtitleColor }}>
+					{props.subtitle}
+				</div>
+			}
+			{props.children}
+		</div>
+		<div className={"indicator" + (props.indicatorPosition ? " mdhui-indicator-" + props.indicatorPosition : "")}>
+			{!!props.indicatorValue &&
+				<span className="mdhui-action-indicator-value">
+					{props.indicatorValue}&nbsp;
+				</span>
+			}
+			{props.indicator}
+			{!props.indicator &&
+				<FontAwesomeSvgIcon icon={indicatorIcon} />
+			}
+		</div>
+	</>;
+
+	if (props.renderAs == "div") {
+		return (
+			<div className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} ref={props.innerRef} onClick={() => onClick()}>
+				{innerContent}
 			</div>
-			<div className={"indicator" + (props.indicatorPosition ? " mdhui-indicator-" + props.indicatorPosition : "")}>
-				{!!props.indicatorValue &&
-					<span className="mdhui-action-indicator-value">
-						{props.indicatorValue}&nbsp;
-					</span>
-				}
-				{props.indicator}
-				{!props.indicator &&
-					<FontAwesomeSvgIcon icon={indicatorIcon} />
-				}
+		)
+	} else {
+		return (
+			<div ref={props.innerRef}>
+				<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => onClick()}>
+					{innerContent}
+				</UnstyledButton>
 			</div>
-		</UnstyledButton>
-	);
+		);
+	}
 }

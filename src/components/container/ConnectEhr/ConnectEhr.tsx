@@ -1,14 +1,15 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { Action, CardTitle, ShinyOverlay } from '../../presentational';
+import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import UnstyledButton from '../../presentational/UnstyledButton/UnstyledButton';
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import ConnectEHR from "../../../assets/connect-ehr.svg";
+import { ColorDefinition } from '../../../helpers/colors';
 
 export interface ConnectEhrProps {
 	applicationUrl: ConnectEhrApplicationUrl,
@@ -16,6 +17,12 @@ export interface ConnectEhrProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
 	innerRef?: React.Ref<HTMLDivElement>
+	variant?: "large" | "medium" | "small"
+	title?: string
+	notConnectedText?: string
+	connectedText?: string
+	hideWhenConnected?: boolean
+	buttonColor?: ColorDefinition
 }
 
 export type ConnectEhrApplicationUrl = "preview" | string;
@@ -95,26 +102,54 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
+	if (props.hideWhenConnected && connected) {
+		return null;
+	}
+
+	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
+	let title = props.title || defaultTitle;
+
+	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
+	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
+	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
+	let text = (connected ? connectedText : notConnectedText);
+
+	let headerVariant = props.variant || "large";
+
+	let content = <>
+		<Title autosizeImage defaultMargin order={headerVariant == "large" ? 2 : 3} imageAlignment={headerVariant == "large" ? "top" : "left"} image={<img src={ConnectEHR} />}>{title}</Title>
+		<TextBlock>
+			{connected
+				? <>
+					<div className="connection-status">
+						{needsAttention
+							? <div className="warning">
+								<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language("connect-ehr-needs-attention")}
+							</div>
+							: <div className="success">
+								<FontAwesomeSvgIcon icon={faCheckCircle} /> {language("connect-ehr-connected")}
+							</div>
+						}
+					</div>
+					<div className="content">{text}</div>
+				</>
+				: <div className="content">{text}</div>
+			}
+		</TextBlock>
+	</>;
+
 	return (
 		<div ref={props.innerRef} className="mdhui-connect-ehr">
-			<Action bottomBorder={props.bottomBorder} title={language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans')} onClick={() => connectToEhr()}>
-				{connected
-					? <>
-						<div className="connection-status">
-							{needsAttention
-								? <div className="warning">
-									<FontAwesomeSvgIcon icon={faTriangleExclamation} /> {language("connect-ehr-needs-attention")}
-								</div>
-								: <div className="success">
-									<FontAwesomeSvgIcon icon={faCheckCircle} /> {language("connect-ehr-connected")}
-								</div>
-							}
-						</div>
-						<div className="content">{language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName as any)}</div>
-					</>
-					: <div className="content">{language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName as any)}</div>
-				}
-			</Action>
+			{props.variant == "small" &&
+				<Action className="mdhui-connect-ehr-action" onClick={() => connectToEhr()}>
+					{content}
+				</Action>
+			}
+			{props.variant != "small" &&
+				<>{content}
+					<Button color={props.buttonColor} defaultMargin onClick={() => connectToEhr()}><FontAwesomeSvgIcon icon={faAddressCard} />&nbsp;&nbsp; {defaultTitle}</Button>
+				</>
+			}
 		</div>
 	);
 }

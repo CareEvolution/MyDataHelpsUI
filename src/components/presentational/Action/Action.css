@@ -2,13 +2,14 @@
 .mdhui-unstyled-button.mdhui-action {
     padding: 16px;
     position: relative;
-    cursor: pointer;
     background: inherit;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 .mdhui-action .mdhui-action-body {

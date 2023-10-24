@@ -1,7 +1,8 @@
 ﻿import ConnectDevice from '../ConnectDevice';
-import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
+import { ExternalAccountStatus } from "@careevolution/mydatahelps-js";
 import React from "react";
 import { getFitbitProviderID } from '../../../helpers/providerIDs';
+import FitbitLogo from '../../../assets/fitbit-logo.svg';
 
 export interface ConnectFitbitProps {
 	title?: string,
@@ -9,15 +10,24 @@ export interface ConnectFitbitProps {
 	previewState?: ConnectFitbitPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	innerRef?: React.Ref<HTMLDivElement>
+	hideWhenConnected?: boolean
 }
 
 export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
-export default function(props: ConnectFitbitProps) {
+export default function (props: ConnectFitbitProps) {
 	function getInternalFitbitProviderID() {
 		return props.fitbitProviderID || getFitbitProviderID();
 	}
-	
-	return (<ConnectDevice innerRef={props.innerRef} title="Fitbit" providerName="Fitbit" dataCollectionProperty='fitbitEnabled' providerIDCallback={getInternalFitbitProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
-  }
+
+	return (<ConnectDevice 
+		innerRef={props.innerRef} 
+		title="Fitbit" 
+		titleImage={<img src={FitbitLogo} />}
+		providerName="Fitbit" 
+		dataCollectionProperty='fitbitEnabled' 
+		providerID={getInternalFitbitProviderID()} 
+		previewState={props.previewState} disabledBehavior={props.disabledBehavior}
+		hideWhenConnected={props.hideWhenConnected} />);
+}
 

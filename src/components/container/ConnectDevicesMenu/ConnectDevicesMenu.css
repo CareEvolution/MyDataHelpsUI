@@ -1,41 +1,11 @@
-.mdhui-connect-devices-menu {
-    padding: var(--mdhui-padding-md);
-}
-
-.mdhui-connect-devices-menu .mdhui-connect-devices-menu-title {
-    width: 100%;
-}
-
-.mdhui-connect-devices-menu .mdhui-connect-devices-menu-text {
-    margin-top: var(--mdhui-padding-md);
-}
-
-.mdhui-connect-devices-menu-header-medium .mdhui-connect-devices-menu-header-flex {
-    display: flex;
-    gap:var(--mdhui-padding-sm);
-    align-items: center;
-}
-
-.mdhui-connect-devices-menu-header-medium .mdhui-connect-devices-menu-text {
-    font-size: .88em;
-}
-
-.mdhui-connect-devices-menu-header-large .mdhui-connect-devices-menu-title {
-    margin-top: var(--mdhui-padding-md);
-}
-
-.mdhui-connect-devices-menu-header-medium img {
-    width: 24px;
-}
-
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-inner {
     background: var(--mdhui-background-color-1);
     border-radius: 6px;
-    margin-top: 16px;
+    margin: var(--mdhui-padding-md);
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device {
-    border-bottom: solid 1px #ddd;
+    border-bottom: solid 1px var(--mdhui-border-color-1);
     font-size: 0.83em;
     background: none;
 }
@@ -62,7 +32,7 @@
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device .mdhui-connect-devices-menu-help p {
-    margin-top:0;
+    margin-top: 0;
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device .mdhui-connect-devices-menu-help ol {

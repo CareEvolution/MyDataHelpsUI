@@ -2,6 +2,7 @@
 import { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
 import { getGarminProviderID } from '../../../helpers/providerIDs';
+import GarminLogo from '../../../assets/garmin-logo.svg';
 
 export interface ConnectGarminProps {
 	title?: string,
@@ -9,14 +10,23 @@ export interface ConnectGarminProps {
 	previewState?: ConnectGarminPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	innerRef?: React.Ref<HTMLDivElement>
+	hideWhenConnected?: boolean
 }
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
-export default function(props: ConnectGarminProps) {
+export default function (props: ConnectGarminProps) {
 	function getInternalGarminProviderID() {
 		return props.garminProviderID || getGarminProviderID();
 	}
-	
-	return (<ConnectDevice innerRef={props.innerRef} title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getInternalGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
-  }
+
+	return (<ConnectDevice innerRef={props.innerRef}
+		title="Garmin"
+		titleImage={<img src={GarminLogo} />}
+		providerName="Garmin"
+		dataCollectionProperty='garminEnabled'
+		providerID={getInternalGarminProviderID()}
+		previewState={props.previewState}
+		disabledBehavior={props.disabledBehavior}
+		hideWhenConnected={props.hideWhenConnected} />);
+}

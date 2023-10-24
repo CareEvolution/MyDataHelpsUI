@@ -9,6 +9,8 @@
     "refresh": "Actualizar",
     "remove": "Eliminar",
     "help": "Ayuda",
+    "view": "Ver",
+    "health-records": "Registros de salud",
     "connect-ehr-title-prefix": "Conectar ",
     "connect-ehr-title-divider": " o ",
     "connect-ehr-title-providers": "proveedor",

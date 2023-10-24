@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { ReactNode, useContext } from "react";
 import "./Title.css";
 import { LayoutContext } from "../Layout";
 import { ColorDefinition, resolveColor } from "../../../helpers/colors";
@@ -9,6 +9,10 @@ export interface TitleProps {
     children?: React.ReactNode;
     style?: React.CSSProperties;
     className?: string;
+    image?: ReactNode;
+    autosizeImage?: boolean;
+    imageAlignment?: "top" | "left"
+    defaultMargin?: boolean
 }
 
 export default function (props: TitleProps) {
@@ -18,7 +22,51 @@ export default function (props: TitleProps) {
         classes.push(props.className);
     }
 
+
     let context = useContext(LayoutContext);
     let color = resolveColor(context?.colorScheme, props.color);
-    return <Tag className={classes.join(" ")} style={{...props.style, color:color}}>{props.children}</Tag>
+
+    if (props.imageAlignment === "top") {
+        classes.push("mdhui-title-image-top");
+    }
+    if (props.defaultMargin) {
+        classes.push("mdhui-title-default-margin");
+    }
+
+    let imageWidth: number | null = null;
+    if (props.image && props.autosizeImage) {
+        imageWidth = 24;
+        switch (props.order) {
+            case 1:
+                imageWidth = 40;
+                break;
+            case 2:
+                imageWidth = 30;
+                break;
+            case 3:
+                imageWidth = 24;
+                break;
+            case 4:
+                imageWidth = 20;
+                break;
+            case 5:
+                imageWidth = 16;
+                break;
+            case 6:
+                imageWidth = 12;
+                break;
+        }
+        if (props.imageAlignment == "top") {
+            imageWidth = imageWidth * 2;
+        }
+    }
+
+    return <div className={classes.join(" ")}>
+        {props.image &&
+            <div className={"mdhui-title-image " + (props.autosizeImage ? "mdhui-title-image-autosize" : "")} style={{ width: imageWidth + "px" }}>
+                {props.image}
+            </div>
+        }
+        <Tag style={{ ...props.style, color: color }}>{props.children}</Tag>
+    </div>
 }

@@ -65,11 +65,11 @@ export default function (props: HomeViewProps) {
 				previewState={props.preview ? "IncompleteTasks" : undefined}
 			/>
 			<Card>
-				<ConnectDevicesMenu previewState={props.preview ? "Web" : undefined} />
+				<ConnectDevicesMenu headerVariant='medium' previewState={props.preview ? "Web" : undefined} />
 			</Card>
 			<Card>
 				{props.ehrConnectApplicationUrl &&
-					<ConnectEhr previewState={props.preview ? "enabled" : undefined} applicationUrl={props.ehrConnectApplicationUrl} />
+					<ConnectEhr variant="medium" previewState={props.preview ? "enabled" : undefined} applicationUrl={props.ehrConnectApplicationUrl} />
 				}
 			</Card>
 			<Card>

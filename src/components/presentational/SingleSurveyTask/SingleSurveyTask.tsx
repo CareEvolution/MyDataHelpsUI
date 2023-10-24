@@ -12,9 +12,10 @@ import { enUS, es } from 'date-fns/locale'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition } from '../../../helpers/colors';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
+import Action from '../Action';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
@@ -62,38 +63,32 @@ export default function (props: SingleSurveyTaskProps) {
 			dueDateString = language("due-in") + " " + timeDifference;
 		}
 	}
-	
 
 	if (props.task.status == 'incomplete') {
+		const indicator = <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
+			{!props.task.hasSavedProgress ? language("start") : language("resume")}
+		</Button>;
 		return (
-			<div ref={props.innerRef} className="mdhui-single-survey-task incomplete" onClick={() => startSurvey(props.task.surveyName!)}>
-				<div>
-					<div className="survey-name">{props.task.surveyDisplayName}</div>
-					<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
-					{dueDateString &&
-						<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
-					}
-				</div>
-				<div>
-					<Button color={props.buttonColor} variant={props.buttonVariant || "light"} onClick={() => { }}>
-						{!props.task.hasSavedProgress ? language("start") : language("resume")}
-					</Button>
-				</div>
-			</div>
+			<Action renderAs='div'
+				innerRef={props.innerRef}
+				onClick={() => startSurvey(props.task.surveyName!)}
+				className="mdhui-single-survey-task incomplete"
+				indicator={indicator}>
+				<div className="survey-name">{props.task.surveyDisplayName}</div>
+				<div className="survey-description"><>{props.descriptionIcon} {props.task.surveyDescription}</></div>
+				{dueDateString &&
+					<div className={"due-date " + dueDateIntent}>{dueDateString}</div>
+				}
+			</Action>
 		);
 	}
 
 	if (props.task.status == 'complete' && props.task.endDate) {
 		return (
-			<div ref={props.innerRef} className="mdhui-single-survey-task complete">
-				<div>
-					<div className="survey-name">{props.task.surveyDisplayName}</div>
-					<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
-				</div>
-				<div className="status-icon">
-					<img src={checkMark}></img>
-				</div>
-			</div>
+			<Action renderAs='div' indicator={<img src={checkMark}></img>} innerRef={props.innerRef} className="mdhui-single-survey-task complete">
+				<div className="survey-name">{props.task.surveyDisplayName}</div>
+				<div className="completed-date">{language("completed")} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: locale })}</div>
+			</Action>
 		)
 	}
 	return null;

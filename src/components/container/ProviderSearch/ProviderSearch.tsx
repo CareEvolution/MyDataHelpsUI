@@ -62,7 +62,7 @@ export default function (props: ProviderSearchProps) {
         setSearching(true);
         let requestID = ++currentRequestID;
 
-        MyDataHelps.getExternalAccountProviders(search, null, pageSize, currentPage).then(function (searchResultsResponse) {
+        MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
             if (requestID == currentRequestID) {
                 updateSearchResults(searchResultsResponse.externalAccountProviders);
                 setTotalResults(searchResultsResponse.totalExternalAccountProviders);
@@ -99,7 +99,7 @@ export default function (props: ProviderSearchProps) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true })
-                .then(function() {
+                .then(function () {
                     if (props.onProviderConnected) {
                         props.onProviderConnected(provider);
                     }

@@ -31,6 +31,7 @@ export default function (props: ButtonProps) {
 		classes.push("mdhui-button-default-margin");
 	}
 
+
 	let context = useContext(LayoutContext);
 
 	let backgroundColor = resolveColor(context?.colorScheme, props.color);
