@@ -5,7 +5,7 @@
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device {
-    border-bottom: solid 1px #ddd;
+    border-bottom: solid 1px var(--mdhui-border-color-1);
     font-size: 0.83em;
     background: none;
 }

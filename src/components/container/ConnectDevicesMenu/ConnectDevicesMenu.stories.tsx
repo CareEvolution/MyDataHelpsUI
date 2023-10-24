@@ -3,7 +3,7 @@ import { Card, Layout } from "../../presentational";
 import ConnectDevicesMenu, { ConnectDevicesMenuProps } from "./ConnectDevicesMenu";
 
 export default { title: "Container/ConnectDevicesMenu", component: ConnectDevicesMenu, parameters: { layout: 'fullscreen' } };
-let render = (args: ConnectDevicesMenuProps) => <Layout><Card><ConnectDevicesMenu {...args} /></Card></Layout>
+let render = (args: ConnectDevicesMenuProps) => <Layout colorScheme="auto"><Card><ConnectDevicesMenu {...args} /></Card></Layout>
 
 export const Web = {
     args: {
