@@ -1,5 +1,5 @@
-﻿import React, { useContext, useEffect, useState } from 'react'
-import { Action, Button, LayoutContext, TextBlock, Title } from '../../presentational';
+﻿import React, { useEffect, useState } from 'react'
+import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
@@ -17,7 +17,7 @@ export interface ConnectEhrProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
 	innerRef?: React.Ref<HTMLDivElement>
-	variant?: "large" | "medium" | "small" | "xlarge"
+	variant?: "large" | "medium" | "small"
 	title?: string
 	notConnectedText?: string
 	connectedText?: string
@@ -108,8 +108,10 @@ export default function (props: ConnectEhrProps) {
 
 	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
 	let title = props.title || defaultTitle;
-	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace("@@PROJECT_NAME@@", projectName || "");
-	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace("@@PROJECT_NAME@@", projectName || "");
+
+	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
+	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
+	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";
