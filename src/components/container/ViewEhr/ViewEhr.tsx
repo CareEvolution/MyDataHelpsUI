@@ -12,7 +12,7 @@ import { ButtonVariant } from '../../presentational/Button/Button'
 export interface ViewEhrProps {
     onClick(): void;
     title?: string;
-    innerRef?: React.Ref<HTMLButtonElement>;
+    innerRef?: React.Ref<HTMLDivElement>;
     previewState?: "fetchComplete" | "fetchingData";
     buttonColor?: ColorDefinition;
     buttonVariant?: ButtonVariant;
@@ -55,7 +55,7 @@ export default function (props: ViewEhrProps) {
 
     const indicator = <Button color={props.buttonColor} variant='light' onClick={() => { }}>{language("view")}</Button>;
     return (
-        <Action className="mdhui-view-ehr" renderAs='div' onClick={() => props.onClick()} indicator={indicator}>
+        <Action innerRef={props.innerRef} className="mdhui-view-ehr" renderAs='div' onClick={() => props.onClick()} indicator={indicator}>
             <Title order={3}>{props.title || language("health-records")}</Title>
             {ehrAccounts.find(e => e.status == "fetchingData") && <div className="mdhui-view-ehr-status"><FontAwesomeSvgIcon icon={faRefresh} spin /> {language("external-account-fetching-data")}</div>}
         </Action>
