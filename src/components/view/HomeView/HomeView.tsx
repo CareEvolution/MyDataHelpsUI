@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, ProjectHeader, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu } from "../../.."
+import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
@@ -45,7 +45,6 @@ export default function (props: HomeViewProps) {
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground color='#FFFFFF' />
-			<ProjectHeader previewState={props.preview ? "Default" : undefined} />
 			<Card>
 				<AppDownload previewDevicePlatform={props.preview ? 'Web' : undefined} previewProjectPlatforms={props.preview ? ['Web', 'Android', 'iOS'] : undefined} />
 			</Card>
