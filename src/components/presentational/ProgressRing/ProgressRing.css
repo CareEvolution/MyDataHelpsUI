@@ -1,26 +1,28 @@
-﻿@keyframes mdhui-animated-ring-progress {
+﻿@keyframes mdhui-progress-ring {
     0% {
-        stroke-dashoffset: 630;
+        stroke-dashoffset: var(--mdhui-progress-ring-animation-start);
     }
     100% {
-        stroke-dashoffset: 0;
+        stroke-dashoffset: var(--mdhui-progress-ring-animation-end);
     }
 }
 
-.mdhui-animated-ring {
+.mdhui-progress-ring {
     position: relative;
     margin: 0 auto 0 auto;
     width: 220px;
     height: 220px;
+    --mdhui-progress-ring-animation-start: 630;
+    --mdhui-progress-ring-animation-end: 0;
 }
 
-.mdhui-animated-ring svg {
+.mdhui-progress-ring svg {
     width: 220px;
     height: 220px;
     transform: rotate(-90deg);
 }
 
-.mdhui-animated-ring circle {
+.mdhui-progress-ring circle {
     margin: 0 auto;
     fill: none;
     stroke-width: 20;
@@ -28,14 +30,12 @@
     stroke-linecap: round;
 }
 
-.mdhui-animated-ring circle:nth-child(2) {
-    stroke-dashoffset: 630;
+.mdhui-progress-ring circle:nth-child(2) {
     stroke: var(--mdhui-color-primary);
-    animation: mdhui-animated-ring-progress 750ms ease-in-out;
     animation-fill-mode: forwards;
 }
 
-.mdhui-animated-ring-content {
+.mdhui-progress-ring-content {
     position: absolute;
     left: 0;
     right: 0;
@@ -44,8 +44,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    animation: fadein 500ms ease-in-out;
-    animation-delay: 500ms;
-    animation-fill-mode: forwards;
 }

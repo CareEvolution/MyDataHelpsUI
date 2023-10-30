@@ -1,10 +1,10 @@
 import React from 'react'
-import { Layout } from '../../..'
-import AnimatedRing from '../../presentational/AnimatedRing/AnimatedRing';
-import Button from '../../presentational/Button/Button';
+import Layout from '../../presentational/Layout'
+import Button from '../../presentational/Button';
 import MyDataHelps, { PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
 import './NewPointsView.css';
-import language from "../../../helpers/language"
+import language from '../../../helpers/language'
+import ProgressRing from '../../presentational/ProgressRing';
 
 export interface NewPointsEntry {
     name: string;
@@ -34,41 +34,41 @@ export default function (props: NewPointsViewProps) {
     return (
         <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
             <div className="mdhui-new-points">
-                <AnimatedRing>
+                <ProgressRing animate={true}>
                     <div className="mdhui-new-points-total">
                         <div className="mdhui-new-points-total-points">+{totalPoints}</div>
                         <div className="mdhui-new-points-total-points-label">points</div>
                     </div>
-                </AnimatedRing>
+                </ProgressRing>
                 <div className="mdhui-new-points-content">
                     {props.entries.length == 1 && props.entries[0].message && totalBonusPoints === 0 &&
-                    <div>
-                        <div className="mdhui-new-points-title">{props.entries[0].message.title}</div>
-                        <div className="mdhui-new-points-text">{props.entries[0].message.text}</div>
-                    </div>
+                        <div>
+                            <div className="mdhui-new-points-title">{props.entries[0].message.title}</div>
+                            <div className="mdhui-new-points-text">{props.entries[0].message.text}</div>
+                        </div>
                     }
                     {(props.entries.length > 1 || !props.entries[0].message || totalBonusPoints > 0) &&
-                    <div>
-                        <div className="mdhui-new-points-title">{language('new-points-title')}</div>
-                        <div className="mdhui-new-points-text">{language('new-points-text')}</div>
-                        <div className="mdhui-new-points-entries">
-                            {props.entries.map((entry, index) =>
-                                <div key={index} className="mdhui-new-points-entry">
-                                    <div className="mdhui-new-points-entry-name">{entry.name}</div>
-                                    <div className="mdhui-new-points-entry-points">+{entry.points}</div>
-                                </div>
-                            )}
-                            {totalBonusPoints > 0 &&
-                            <div className="mdhui-new-points-entry">
-                                <div className="mdhui-new-points-entry-name bonus">Bonus</div>
-                                <div className="mdhui-new-points-entry-points bonus">+{totalBonusPoints}</div>
+                        <div>
+                            <div className="mdhui-new-points-title">{language('new-points-title')}</div>
+                            <div className="mdhui-new-points-text">{language('new-points-text')}</div>
+                            <div className="mdhui-new-points-entries">
+                                {props.entries.map((entry, index) =>
+                                    <div key={index} className="mdhui-new-points-entry">
+                                        <div className="mdhui-new-points-entry-name">{entry.name}</div>
+                                        <div className="mdhui-new-points-entry-points">+{entry.points}</div>
+                                    </div>
+                                )}
+                                {totalBonusPoints > 0 &&
+                                    <div className="mdhui-new-points-entry">
+                                        <div className="mdhui-new-points-entry-name bonus">Bonus</div>
+                                        <div className="mdhui-new-points-entry-points bonus">+{totalBonusPoints}</div>
+                                    </div>
+                                }
                             </div>
-                            }
                         </div>
-                    </div>
                     }
                     {props.pointsToNextReward &&
-                    <div className="mdhui-new-points-next-reward">{language('new-points-next-reward-prefix')}<span className="mdhui-new-points-next-reward-points">{props.pointsToNextReward}</span>{language('new-points-next-reward-suffix')}</div>
+                        <div className="mdhui-new-points-next-reward">{language('new-points-next-reward-prefix')}<span className="mdhui-new-points-next-reward-points">{props.pointsToNextReward}</span>{language('new-points-next-reward-suffix')}</div>
                     }
                 </div>
                 <div className="mdhui-new-points-button-panel">
