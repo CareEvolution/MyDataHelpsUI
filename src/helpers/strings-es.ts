@@ -136,7 +136,12 @@
     "apple-health-troubleshooting-li-5": "Habilite las categorías de datos que le gustaría compartir",
     "connect-devices-title": "Conectar aparatos",
     "connect-devices-subtitle": "Comparta datos de sus dispositivos portátiles, aplicaciones y otros aparatos.",
-    "how-to-enable": "Cómo activar"
+    "how-to-enable": "Cómo activar",
+    "new-points-title": "¡Bien hecho!",
+    "new-points-text": "Se le han otorgado puntos por lo siguiente:",
+    "new-points-next-reward-prefix": "Ahora necesitas ",
+    "new-points-next-reward-suffix": " puntos para desbloquear tu próxima recompensa.",
+    "new-points-done-button-text": "Hecho"
 };
 
 export default strings;
