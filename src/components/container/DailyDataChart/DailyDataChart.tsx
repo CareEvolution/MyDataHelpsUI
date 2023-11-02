@@ -3,7 +3,7 @@ import { DateRangeContext } from '../../presentational/DateRangeCoordinator/Date
 import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, queryDailyData } from '../../../helpers/query-daily-data'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
-import { CardTitle, LoadingIndicator } from '../../presentational'
+import { CardTitle, LoadingIndicator, Title } from '../../presentational'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import getDayKey from '../../../helpers/get-day-key'
 import "./DailyDataChart.css"
@@ -12,6 +12,7 @@ import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-
 
 export interface DailyDataChartProps {
     title?: string
+    subtitle?: string
     intervalType?: "Week" | "Month"
     weekStartsOn?: WeekStartsOn
     dailyDataType: string
@@ -210,7 +211,10 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
-            <CardTitle title={props.title}></CardTitle>
+            <div className="mdhui-daily-data-chart-title">{props.title}</div>
+        }
+        {props.subtitle &&
+            <div className="mdhui-daily-data-chart-subtitle">{props.subtitle}</div>
         }
         <div className="chart-container">
             {(!chartHasData) &&
