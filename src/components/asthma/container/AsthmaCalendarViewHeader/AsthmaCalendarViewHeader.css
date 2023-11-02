@@ -1,0 +1,4 @@
+.mdhui-asthma-calendar-view-header {
+    padding: calc(env(safe-area-inset-top, 0px)) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: white;
+}

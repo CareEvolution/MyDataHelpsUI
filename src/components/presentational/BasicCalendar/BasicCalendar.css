@@ -1,0 +1,32 @@
+.mdhui-basic-calendar {
+    background: #fff;
+}
+
+.mdhui-basic-calendar-day {
+    display: inline-block;
+    width: 100%;
+}
+
+.mdhui-basic-calendar-day-streak-left {
+    background: linear-gradient(90deg, var(--mdhui-basic-calendar-streak-color) 50%, transparent 50%);
+}
+
+.mdhui-basic-calendar-day-streak-right {
+    background: linear-gradient(90deg, transparent 50%, var(--mdhui-basic-calendar-streak-color) 50%);
+}
+
+.mdhui-basic-calendar-day-streak-both {
+    background-color: var(--mdhui-basic-calendar-streak-color);
+}
+
+.mdhui-basic-calendar-day-value {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;
+    font-size: 15px;
+    font-weight: bold;
+}
