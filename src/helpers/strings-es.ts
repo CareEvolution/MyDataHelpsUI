@@ -2,6 +2,7 @@
     "back": "Atrás",
     "done": "Aceptar",
     "close": "Cerrar",
+    "save": "Ahorrar",
     "add": "Agregar",
     "settings": "Configuración",
     "connect": "Conectar",
