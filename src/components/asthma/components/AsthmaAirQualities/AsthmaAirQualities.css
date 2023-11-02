@@ -1,0 +1,53 @@
+.mdhui-asthma-air-qualities {
+    padding: 16px;
+}
+
+.mdhui-asthma-air-qualities-header {
+    display: grid;
+    grid-template-columns: auto max-content;
+}
+
+.mdhui-asthma-air-qualities-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-air-qualities-settings {
+    width: 48px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    font-size: 20px;
+    color: var(--mdhui-color-primary);
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-air-qualities-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
+
+.mdhui-asthma-air-qualities-setup {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    min-height: 60px;
+}
+
+.mdhui-asthma-air-qualities-setup-button {
+    font-size: 1.3em;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-asthma-air-qualities-setup-label {
+    font-size: 0.7em;
+    font-weight: bold;
+}

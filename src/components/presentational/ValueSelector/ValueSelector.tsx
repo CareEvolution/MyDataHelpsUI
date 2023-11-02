@@ -5,6 +5,7 @@ import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { LayoutContext } from '../Layout';
+import UnstyledButton from '../UnstyledButton';
 
 export interface ValueSelectorProps {
 	title?: string;
@@ -78,15 +79,17 @@ export default function (props: ValueSelectorProps) {
 				} else {
 					classes.push('mdhui-value-selector-value-button');
 				}
-				return <div key={index} className={classes.join(' ')} onClick={() => onClick(value)}>
-					<div className="mdhui-value-selector-value-text">{value}</div>
-					{props.variant === 'checkboxes' && selectedValues.includes(value) &&
-						<FontAwesomeIcon className="mdhui-value-selector-value-checkbox-icon mdhui-value-selector-value-checkbox-icon-selected" icon={faCheckCircle}/>
-					}
-					{props.variant === 'checkboxes' && !selectedValues.includes(value) &&
-						<FontAwesomeIcon className="mdhui-value-selector-value-checkbox-icon" icon={faCircle}/>
-					}
-				</div>;
+				return <UnstyledButton key={index} onClick={() => onClick(value)}>
+					<div className={classes.join(' ')}>
+						<div className="mdhui-value-selector-value-text">{value}</div>
+						{props.variant === 'checkboxes' && selectedValues.includes(value) &&
+							<FontAwesomeIcon className="mdhui-value-selector-value-checkbox-icon mdhui-value-selector-value-checkbox-icon-selected" icon={faCheckCircle}/>
+						}
+						{props.variant === 'checkboxes' && !selectedValues.includes(value) &&
+							<FontAwesomeIcon className="mdhui-value-selector-value-checkbox-icon" icon={faCircle}/>
+						}
+					</div>
+				</UnstyledButton>;
 			})}
 		</div>
 	</div>;

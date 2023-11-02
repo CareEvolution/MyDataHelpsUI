@@ -15,6 +15,7 @@ export interface ResourceProps {
     imageAlignment?: ResourceImageAlignment;
     buttonText?: string;
     onClick: () => void;
+    hideButton?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -28,7 +29,7 @@ export default function (props: ResourceProps) {
             }
             <div className="mdhui-resource-title">{props.title}</div>
             <div className="mdhui-resource-subtitle">{props.subTitle}</div>
-            <Button onClick={noop}>{props.buttonText || language('resource-default-button-text')}</Button>
+            {!props.hideButton && <Button onClick={noop}>{props.buttonText || language('resource-default-button-text')}</Button>}
         </UnstyledButton>
     </div>;
 }

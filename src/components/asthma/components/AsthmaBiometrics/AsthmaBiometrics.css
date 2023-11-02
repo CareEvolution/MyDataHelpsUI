@@ -1,0 +1,17 @@
+.mdhui-asthma-biometrics {
+    padding: 16px;
+}
+
+.mdhui-asthma-biometrics-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-biometrics-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
