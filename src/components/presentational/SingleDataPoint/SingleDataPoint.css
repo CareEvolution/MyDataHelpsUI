@@ -1,0 +1,42 @@
+.mdhui-single-data-point {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    min-height: 60px;
+}
+
+.mdhui-single-data-point-value-units {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: baseline;
+    grid-column-gap: 2px;
+}
+
+.mdhui-single-data-point-setup {
+    font-size: 1.3em;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-single-data-point-value {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.mdhui-single-data-point-units {
+    color: var(--mdhui-text-color-3);
+    font-size: 0.8em;
+}
+
+.mdhui-single-data-point-label {
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.mdhui-single-data-point-status {
+    font-size: 0.7em;
+    font-weight: bold;
+}

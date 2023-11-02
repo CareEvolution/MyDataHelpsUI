@@ -1,0 +1,50 @@
+.mdhui-asthma-bar-chart {
+    position: relative;
+    margin-bottom: 48px;
+}
+
+.mdhui-asthma-bar-chart-title {
+    padding: 0 16px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.mdhui-asthma-bar-chart-subtitle {
+    padding: 0 16px;
+    margin-top: 2px;
+    font-size: 0.95em;
+}
+
+.mdhui-asthma-bar-chart-container {
+    position: relative;
+    margin: 16px 16px 32px;
+    padding: 0;
+    background: var(--mdhui-background-color-1);
+    border-radius: 12px;
+    height: 200px;
+}
+
+.mdhui-asthma-bar-chart .recharts-surface {
+    height: 270px !important;
+    overflow: visible;
+}
+
+.mdhui-asthma-bar-chart-no-data-label, .mdhui-asthma-bar-chart .mdhui-loading-indicator {
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    left: calc(50% - 56px);
+    top: calc(50% - 26px);
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    color: var(--mdhui-text-color-4);
+    z-index: 5000;
+}
+
+.mdhui-asthma-bar-chart .recharts-cartesian-grid-horizontal line:first-child {
+    display: none;
+}
