@@ -1,0 +1,9 @@
+.mdhui-asthma-library-categories {
+    padding: 0;
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-library-categories-empty-text {
+    color: var(--mdhui-text-color-3);
+    padding: 16px;
+}
