@@ -1,0 +1,1 @@
+export { default, RotatingTextEntry } from './RotatingText';
