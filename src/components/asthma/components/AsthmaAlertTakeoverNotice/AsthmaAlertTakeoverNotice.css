@@ -1,0 +1,22 @@
+.mdhui-asthma-alert-takeover-notice {
+    padding: 16px;
+    text-align: center;
+}
+
+.mdhui-asthma-alert-takeover-notice-message {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin: 16px 0;
+}
+
+.mdhui-asthma-alert-takeover-notice-instructions {
+    font-size: 1.2em;
+}
+
+.mdhui-asthma-alert-takeover-notice-buttons {
+    margin-top: 32px;
+}
+
+.mdhui-asthma-alert-takeover-notice-button {
+    margin: 12px 0;
+}
