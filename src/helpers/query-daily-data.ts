@@ -35,7 +35,7 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	});
 }
 
-function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | string[]) {
+export function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | string[]) {
 	return function (modifiedAfter?: Date) {
 		var parameters: DeviceDataPointQuery = { namespace: namespace, type: type, limit: 1 };
 		if (modifiedAfter) {

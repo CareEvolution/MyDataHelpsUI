@@ -1,0 +1,49 @@
+.mdhui-asthma-control-calendar-log-entry-components {
+    display: grid;
+    grid-template-columns: max-content max-content max-content auto;
+    grid-column-gap: 8px;
+    align-items: center;
+    padding: 0 16px 16px;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    padding: 0 8px;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-symptoms {
+    background: #E87C0040;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-impacts {
+    background: #9D5BED40;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-triggers {
+    background: #00000040;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-symptoms .mdhui-asthma-control-calendar-log-entry-component-icon {
+    background: #E87C00;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-impacts .mdhui-asthma-control-calendar-log-entry-component-icon {
+    background: #9D5BED;
+}
+
+.mdhui-asthma-control-calendar-log-entry-component-triggers .mdhui-asthma-control-calendar-log-entry-component-icon {
+    background: #000000;
+}
