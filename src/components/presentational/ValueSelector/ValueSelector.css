@@ -1,0 +1,68 @@
+.mdhui-value-selector {
+    padding: 16px;
+}
+
+.mdhui-value-selector-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.mdhui-value-selector-subtitle {
+    font-size: 12px;
+    color: var(--mdhui-text-color-3);
+    margin-bottom: 12px;
+}
+
+.mdhui-value-selector-value {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #fff;
+    padding: 0 16px;
+    margin: 8px 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.mdhui-value-selector-value:last-child {
+    margin-bottom: 0;
+}
+
+.mdhui-value-selector-value-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mdhui-value-selector-value-button {
+    text-align: center;
+}
+
+.mdhui-value-selector-value-button.mdhui-value-selector-value-selected {
+    background: #369CFF;
+    border: 1px solid var(--mdhui-color-primary);
+    color: #fff;
+}
+
+.mdhui-value-selector-value-checkbox {
+    padding-right: 0;
+}
+
+.mdhui-value-selector-value-checkbox-icon-selected {
+    width: 48px;
+    font-size: 16px;
+    justify-self: center;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-value-selector-value-checkbox-icon {
+    width: 48px;
+    font-size: 16px;
+    justify-self: center;
+    color: var(--mdhui-text-color-4);
+}
