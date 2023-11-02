@@ -1,0 +1,23 @@
+.mdhui-asthma-air-qualities {
+    padding: 16px;
+}
+
+.mdhui-asthma-air-qualities-header {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mdhui-asthma-air-qualities-header-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.mdhui-asthma-air-qualities-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
