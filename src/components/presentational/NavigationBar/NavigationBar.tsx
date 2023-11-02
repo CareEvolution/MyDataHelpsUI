@@ -23,6 +23,7 @@ export interface NavigationBarProps {
 	buttonColor?: ColorDefinition;
 	navigationBarLeft?: React.ReactNode;
 	navigationBarRight?: React.ReactNode;
+	backgroundColor?: ColorDefinition;
 }
 
 export default function (props: NavigationBarProps) {
@@ -64,7 +65,7 @@ export default function (props: NavigationBarProps) {
 	let layoutContext = useContext(LayoutContext);
 
 	return (
-		<div className={classes.join(' ')} ref={navBar}>
+		<div className={classes.join(' ')} ref={navBar} style={{background: resolveColor(layoutContext?.colorScheme, props.backgroundColor)}}>
 			{props.showBackButton &&
 				<div className="button back-button" onClick={() => back()} style={{color: resolveColor(layoutContext?.colorScheme, props.buttonColor)}}>
 					<FontAwesomeSvgIcon icon={faChevronLeft}/>

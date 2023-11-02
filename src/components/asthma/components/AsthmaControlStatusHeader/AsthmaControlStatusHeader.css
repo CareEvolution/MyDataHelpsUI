@@ -1,0 +1,60 @@
+.mdhui-asthma-control-status-header {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-control-status-header p:first-child {
+    margin-top: 0;
+}
+
+.mdhui-asthma-control-status-header p:last-child {
+    margin-bottom: 0;
+}
+
+.mdhui-asthma-control-status-header-text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mdhui-asthma-control-status-header-controlled {
+    color: #03dbcc;
+}
+
+.mdhui-asthma-control-status-header-not-controlled {
+    color: #fc6666;
+}
+
+.mdhui-asthma-control-status-header-not-controlled-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.mdhui-asthma-control-status-header-not-controlled-stat {
+    display: grid;
+    grid-template-columns: max-content max-content auto;
+    align-items: center;
+    grid-column-gap: 8px;
+    font-size: 14px;
+}
+
+.mdhui-asthma-control-status-header-not-controlled-stat-value {
+    padding: 2px;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background: #fc6666;
+}
+
+.mdhui-asthma-control-status-header-not-controlled-stat-label {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.mdhui-asthma-control-status-header-data-out-of-range {
+    color: #9D5BED;
+}
