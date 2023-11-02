@@ -1,9 +1,9 @@
 ﻿.mdhui-navigation-bar {
     text-align: left;
-    padding: 16px;
-    padding-top: calc(56px + env(safe-area-inset-top, 0px));
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px;
+    min-height: 56px;
+    margin-bottom: 8px;
     box-sizing: border-box;
-    padding-bottom: 16px;
     position: -webkit-sticky;
     position: sticky;
     z-index: 2;
@@ -12,8 +12,20 @@
     background: var(--mdhui-background-color-1);
 }
 
+.mdhui-navigation-bar.mdhui-navigation-bar-compressed {
+    text-align: center;
+    font-size: 18px;
+}
+
 .mdhui-navigation-bar .title {
+    margin-top: 44px;
+    height: 32px;
+    line-height: 32px;
     font-size: 1.2em;
+}
+
+.mdhui-navigation-bar.mdhui-navigation-bar-compressed .title {
+    margin-top: 6px;
 }
 
 .mdhui-navigation-bar .subtitle {
@@ -32,29 +44,15 @@
     vertical-align: middle;
 }
 
-.mdhui-navigation-bar .close-button {
+.mdhui-navigation-bar .button {
     position: absolute;
-    right: 16px;
-    top: calc(16px + env(safe-area-inset-top, 0px));
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    height: 32px;
+    line-height: 32px;
+    padding: 0 16px;
+    border-radius: 16px;
     font-weight: normal;
     font-size: .88em;
-    text-decoration: none;
     cursor: pointer;
-}
-
-.mdhui-navigation-bar .back-button {
-    position: absolute;
-    left: 16px;
-    top: calc(16px + env(safe-area-inset-top, 0px));
-    font-weight: normal;
-    font-size: .88em;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.mdhui-navigation-bar.mdhui-navigation-bar-compressed {
-    text-align: center;
-    padding-top: calc(16px + env(safe-area-inset-top, 0px));
-    font-size: 18px;
-
+    color: var(--mdhui-color-primary);
 }
