@@ -1,0 +1,62 @@
+.mdhui-asthma-data-summary {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--mdhui-border-color-1);
+    background: #FFF;
+    min-height: 60px;
+}
+
+.mdhui-asthma-data-summary-value-units {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: baseline;
+    grid-column-gap: 2px;
+}
+
+.mdhui-asthma-data-summary-setup {
+    font-size: 1.3em;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-asthma-data-summary-value {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.mdhui-asthma-data-summary-units {
+    color: var(--mdhui-text-color-3);
+    font-size: 0.8em;
+}
+
+.mdhui-asthma-data-summary-label {
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.mdhui-asthma-data-summary-status {
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.mdhui-asthma-data-summary-status-establishing {
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-asthma-data-summary-status-not-found {
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-asthma-data-summary-status-offline {
+    color: var(--mdhui-color-warning);
+}
+
+.mdhui-asthma-data-summary-status-in-range {
+    color: #188A83;
+}
+
+.mdhui-asthma-data-summary-status-out-of-range {
+    color: #9D5BED;
+}
