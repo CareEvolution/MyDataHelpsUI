@@ -1,0 +1,64 @@
+.mdhui-asthma-action-plan-manager {
+    padding: 16px;
+}
+
+.mdhui-asthma-action-plan-manager-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-action-plan-manager-instructions {
+    margin-bottom: 16px;
+}
+
+.mdhui-asthma-action-plan-manager-learn-more {
+    font-size: 0.8em;
+    color: var(--mdhui-color-primary);
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.mdhui-asthma-action-plan-manager-thumbnail-wrapper {
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    margin: 12px auto 4px auto;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.mdhui-asthma-action-plan-manager-thumbnail {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mdhui-asthma-action-plan-manager-not-found {
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    margin: 12px auto;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.mdhui-asthma-action-plan-manager-not-found-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--mdhui-color-primary);
+    font-weight: bold;
+}
+
+.mdhui-asthma-action-plan-manager-button-panel {
+    margin-top: 16px;
+}
