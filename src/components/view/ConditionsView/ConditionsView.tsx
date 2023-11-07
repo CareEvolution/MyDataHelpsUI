@@ -2,7 +2,8 @@ import React from 'react'
 import { Layout, Card, NavigationBar, Title, ConditionsList } from "../.."
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import medicationIcon from "../../../assets/icon-medication.svg";
+import conditionIcon from "../../../assets/icon-problem.svg";
+import language from '../../../helpers/language';
 
 export interface ConditionsViewProps {
     presentation?: "Push" | "Modal"
@@ -20,7 +21,7 @@ export default function (props: ConditionsViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">Medications</Title>
+                <Title order={2} autosizeImage image={<img src={conditionIcon} />} imageAlignment="left">{language("conditions")}</Title>
             </NavigationBar>
             <Card>
                 <ConditionsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />

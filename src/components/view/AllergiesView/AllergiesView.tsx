@@ -2,7 +2,8 @@ import React from 'react'
 import { Layout, Card, NavigationBar, AllergiesList, Title } from "../.."
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import medicationIcon from "../../../assets/icon-medication.svg";
+import allergiesIcon from "../../../assets/icon-allergies.png";
+import language from '../../../helpers/language';
 
 export interface AllergiesViewProps {
     presentation?: "Push" | "Modal"
@@ -20,7 +21,7 @@ export default function (props: AllergiesViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">Medications</Title>
+                <Title order={2} autosizeImage image={<img src={allergiesIcon} />} imageAlignment="left">{language("allergies")}</Title>
             </NavigationBar>
             <Card>
                 <AllergiesList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />

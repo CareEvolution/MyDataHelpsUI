@@ -3,6 +3,7 @@ import { Layout, Card, NavigationBar, MedicationsList, Title } from "../.."
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import medicationIcon from "../../../assets/icon-medication.svg";
+import language from '../../../helpers/language';
 
 export interface MedicationsViewProps {
     presentation?: "Push" | "Modal"
@@ -20,7 +21,7 @@ export default function (props: MedicationsViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">Medications</Title>
+                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">{language("medications")}</Title>
             </NavigationBar>
             <Card>
                 <MedicationsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />
