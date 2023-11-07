@@ -1,4 +1,6 @@
+export { default as AllergiesList } from "./AllergiesList"
 export { default as AppDownload } from "./AppDownload"
+export { default as ConditionsList } from "./ConnectDevicesMenu"
 export { default as ConnectDevicesMenu } from "./ConnectDevicesMenu"
 export { default as ConnectEhr } from "./ConnectEhr"
 export { default as ConnectFitbit } from "./ConnectFitbit"

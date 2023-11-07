@@ -6,53 +6,60 @@ import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
 
-export interface ConditionsListProps {
+export interface AllergiesListProps {
     previewState?: "default"
     onViewTermInfo(termInfo: TermInformation): void
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-interface Condition {
-    DisplayName: string;
+interface Allergy {
+    Substance: string;
     TermInformation?: TermInformation;
+    Reactions: string[];
 }
 
-export default function (props: ConditionsListProps) {
-    const [conditions, setConditions] = useState<Condition[] | null>(null);
+export default function (props: AllergiesListProps) {
+    const [allergies, setAllergies] = useState<Allergy[] | null>(null);
 
     function load() {
         if (props.previewState == "default") {
-            setConditions([
+            setAllergies([
                 {
-                    DisplayName: "Asthma",
-                    TermInformation: {
+                    "Substance": "COVID-19 VACCINE, MRNA, BNT162B2, LNP-S (PFIZER)",
+                    "Reactions": [
+                        "Anaphylaxis"
+                    ],
+                    "TermInformation": {
                         TermCode: "195967001",
                         TermNamespace: "SNOMED",
                         TermFamily: "Problem"
                     }
                 },
                 {
-                    DisplayName: "Diabetes"
+                    "Substance": "EGGS",
+                    "Reactions": [
+                        "Coughing", "Rash"
+                    ]
                 },
                 {
-                    DisplayName: "Influenza"
-                },
-            ]);
+                    "Substance": "IBUPROFEN",
+                    "Reactions": []
+                }]);
             return;
         }
 
-        MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Conditions", "GET", "", true).then(function (response) {
-            setConditions(response);
+        MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Allergies", "GET", "", true).then(function (response) {
+            setAllergies(response);
         });
     }
 
     useMyDataHelps(load, ["externalAccountSyncComplete", "applicationDidBecomeVisible"]);
 
     return <div ref={props.innerRef}>
-        {!conditions &&
+        {!allergies &&
             <LoadingIndicator />
         }
-        {conditions && conditions.map(c => <Action key={c.DisplayName} renderAs="div" bottomBorder title={c.DisplayName} indicator={
+        {allergies && allergies.map(c => <Action key={c.Substance} subtitle={c.Reactions.length > 0 ? `Reactions: ${c.Reactions.join(", ")}` : undefined} renderAs="div" bottomBorder title={c.Substance} indicator={
             c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
         } />)}
     </div>
