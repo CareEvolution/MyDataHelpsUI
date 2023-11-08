@@ -1,6 +1,6 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { formatISO } from "date-fns";
-import { EhrNewsFeedPageModel } from "./EhrNewsFeedTypes";
+import { EhrNewsFeedPageModel } from "./types";
 
 export function getNewsFeedPage(feed: string, pageID?: string, pageDate?: string): Promise<EhrNewsFeedPageModel> {
     var params: any = { Feed: feed, ClientLocalTime: formatISO(new Date()) };

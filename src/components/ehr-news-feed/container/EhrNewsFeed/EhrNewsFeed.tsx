@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import OnVisibleTrigger from '../../../presentational/OnVisibleTrigger';
-import { getNewsFeedPage } from '../../helpers/NewsFeedData';
-import { EhrNewsFeedEventModel } from '../../helpers/EhrNewsFeedTypes';
+import { getNewsFeedPage } from '../../helpers/dataService';
+import { EhrNewsFeedEventModel } from '../../helpers/types';
 import { format, parseISO } from 'date-fns';
 import { Card, LoadingIndicator, Title } from '../../../presentational';
-import ProcedureGroupListItem from '../../presentational/ProcedureGroupListItem';
+import NewsFeedListItem from '../../presentational/NewsFeedListItem';
 
 export interface EhrNewsFeedProps {
     feed: string
@@ -57,7 +57,7 @@ export default function (props: EhrNewsFeedProps) {
                 <Card key={bucket.day}>
                     <Title style={{ margin:"var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
                     {bucket.items.map((item) =>
-                        <ProcedureGroupListItem event={item} onClick={() => { }} />
+                        <NewsFeedListItem key={item.ID} event={item} onClick={() => { }} />
                     )}
                 </Card>
             )}

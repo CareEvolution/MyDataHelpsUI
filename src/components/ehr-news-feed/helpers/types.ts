@@ -231,5 +231,5 @@ export interface EhrNewsFeedClaimProcedureModel {
 export interface EhrNewsFeedImmunizationModel {
     ID: string
     Date?: string
-    MedicationName?: string
+    MedicationName: string
 }

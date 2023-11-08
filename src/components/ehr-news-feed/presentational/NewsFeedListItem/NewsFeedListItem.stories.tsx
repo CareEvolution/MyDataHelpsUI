@@ -1,14 +1,14 @@
 import React from "react";
 import { Card, Layout } from "../../../presentational";
-import ProcedureGroupListItem, { ProcedureGroupListItemProps } from "./ProcedureGroupListItem";
+import NewsFeedListItem, { NewsFeedListItemProps } from "./NewsFeedListItem";
 
-export default { title: "EhrNewsFeed/Presentational/ProcedureGroupListItem", component: ProcedureGroupListItem, parameters: { layout: 'fullscreen' } };
-let render = (args: ProcedureGroupListItemProps) => <Layout colorScheme="auto">
-    <Card><ProcedureGroupListItem {...args} /></Card>
+export default { title: "EhrNewsFeed/Presentational/NewsFeedListItem", component: NewsFeedListItem, parameters: { layout: 'fullscreen' } };
+let render = (args: NewsFeedListItemProps) => <Layout colorScheme="auto">
+    <Card><NewsFeedListItem {...args} /></Card>
 </Layout>
 
-let props: ProcedureGroupListItemProps = {
-    event:         {
+let props: NewsFeedListItemProps = {
+    event: {
         "Type": "ProcedureGroup",
         "Category": "Procedure",
         "ID": "fe14a3dc-2efe-ed11-aac9-0afb9334277d",
@@ -55,6 +55,6 @@ export const Default = {
 
 
 export const ShowIcon = {
-    args: {...props, showIcon: true},
+    args: { ...props, showIcon: true },
     render: render
 };

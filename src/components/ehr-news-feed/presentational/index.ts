@@ -1,1 +1,1 @@
-export { default as EhrNewsFeedProcedureGroupListItem } from "./ProcedureGroupListItem"
+export { default as EhrNewsFeedProcedureGroupListItem } from "./NewsFeedListItem"
