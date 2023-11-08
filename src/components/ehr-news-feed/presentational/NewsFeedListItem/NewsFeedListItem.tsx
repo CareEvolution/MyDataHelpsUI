@@ -1,22 +1,26 @@
 import React from "react";
-import { EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedProcedureModel } from "../../helpers/types";
+import { EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "../../helpers/types";
 import { Action } from "../../../presentational";
 import { format, parseISO } from "date-fns";
 import getIcon from "../../helpers/icons";
+import StatBlock from "../../../presentational/StatBlock";
 
 export interface NewsFeedListItemProps {
     event: EhrNewsFeedEventModel
     showIcon?: boolean
-    onClick?(event: EhrNewsFeedEventModel): void
+    onClick(event: EhrNewsFeedEventModel): void
 }
 
 export default function (props: NewsFeedListItemProps) {
-    return <Action
+    return <Action bottomBorder
         icon={props.showIcon ? <img src={getIcon(props.event)} width={24} /> : undefined}
-        onClick={props.onClick}
+        onClick={isClickable(props.event) ? () => props.onClick!(props.event) : undefined}
+        indicator={isClickable(props.event) ? undefined : <></>}
         title={getTitle(props.event)}
-        subtitle={`${format(parseISO(props.event.Date), "h:mm a")} • ${props.event.Patient.RecordAuthority}`}
-    />;
+    >
+        {getChildren(props.event)}
+        <div className="mdhui-news-feed-list-item-date">{`${format(parseISO(props.event.Date), "h:mm a")} • ${props.event.Patient.RecordAuthority}`}</div>
+    </Action>;
 }
 
 function getTitle(event: EhrNewsFeedEventModel) {
@@ -29,4 +33,28 @@ function getTitle(event: EhrNewsFeedEventModel) {
         let immunizationEvent = event.Event as EhrNewsFeedImmunizationModel;
         return immunizationEvent.MedicationName;
     }
+    if (event.Type == "Report") {
+        return (event.Event as EhrNewsFeedReportModel).Type;
+    }
+    if (event.Type == "LabReport") {
+        return (event.Event as EhrNewsFeedLabReportModel).Service;
+    }
+}
+
+function getChildren(event: EhrNewsFeedEventModel) {
+    if (event.Type == "LabReport") {
+        let labReport = event.Event as EhrNewsFeedLabReportModel;
+        return <StatBlock stats={labReport.LabObservations.map((observation) => {
+            return { label: observation.Type, value: observation.Value };
+        })} />
+    }
+
+    return null;
+}
+
+function isClickable(event: EhrNewsFeedEventModel) {
+    if (event.Type == "Immunization") {
+        return false;
+    }
+    return true;
 }

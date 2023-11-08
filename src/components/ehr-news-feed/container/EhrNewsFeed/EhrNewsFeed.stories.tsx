@@ -14,10 +14,23 @@ export const Procedures = {
     render: render
 };
 
-
 export const Immunizations = {
     args: {
         feed: "Immunizations"
+    },
+    render: render
+};
+
+export const Reports = {
+    args: {
+        feed: "Reports"
+    },
+    render: render
+};
+
+export const LabReports = {
+    args: {
+        feed: "LabReports"
     },
     render: render
 };
