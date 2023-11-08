@@ -21,7 +21,7 @@ export default function (props: AllergiesViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={allergiesIcon} />} imageAlignment="left">{language("allergies")}</Title>
+                <Title order={2} autosizeImage image={<img src={allergiesIcon} />} imageAlignment="left">{language("allergies-title")}</Title>
             </NavigationBar>
             <Card>
                 <AllergiesList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />

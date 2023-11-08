@@ -21,7 +21,7 @@ export default function (props: ConditionsViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={conditionIcon} />} imageAlignment="left">{language("conditions")}</Title>
+                <Title order={2} autosizeImage image={<img src={conditionIcon} />} imageAlignment="left">{language("conditions-title")}</Title>
             </NavigationBar>
             <Card>
                 <ConditionsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />

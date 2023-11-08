@@ -21,7 +21,7 @@ export default function (props: MedicationsViewProps) {
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">{language("medications")}</Title>
+                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">{language("medications-title")}</Title>
             </NavigationBar>
             <Card>
                 <MedicationsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />
