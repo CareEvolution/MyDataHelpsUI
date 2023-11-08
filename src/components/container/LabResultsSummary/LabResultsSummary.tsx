@@ -2,7 +2,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 import React, { useEffect, useState } from "react";
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational";
 import "./LabResultsSummary.css";
-import icon from './icon-labreport.svg';
+import icon from '../../../assets/icon-labreport.svg';
 import LabResultWithSparkline from "../../presentational/LabResultWithSparkline";
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";

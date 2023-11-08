@@ -1,6 +1,9 @@
 .mdhui-stat-block {
-    width: 100%;
     font-size: .7em;
+} 
+
+.mdhui-stat-block table {
+    width: 100%;
 }
 
 .mdhui-stat-block th {
@@ -9,7 +12,7 @@
     white-space: nowrap;
     padding-right: var(--mdhui-padding-xs);
     padding-bottom: var(--mdhui-padding-xs);
-
+    font-weight: normal;
 }
 
 .mdhui-stat-block td {
@@ -25,6 +28,22 @@
 .mdhui-stat-block tr:last-child td {
     padding-bottom: 0;
 }
+
+.mdhui-stat-block.mdhui-stat-block-alternating tr:nth-child(odd) {
+    background-color: var(--mdhui-background-color-1);
+}
+
+.mdhui-stat-block.mdhui-stat-block-alternating th,
+.mdhui-stat-block.mdhui-stat-block-alternating td {
+    padding: var(--mdhui-padding-xxs);
+}
+
+
+.mdhui-stat-block.mdhui-stat-block-alternating tr:last-child th,
+.mdhui-stat-block.mdhui-stat-block-alternating tr:last-child td {
+    padding-bottom: var(--mdhui-padding-xxs);
+}
+
 
 .mdhui-stat-block.mdhui-stat-block-default-margin {
     margin: var(--mdhui-padding-md);

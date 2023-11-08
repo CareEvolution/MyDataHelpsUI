@@ -4,6 +4,7 @@ import { Action } from "../../../presentational";
 import { format, parseISO } from "date-fns";
 import getIcon from "../../helpers/icons";
 import StatBlock from "../../../presentational/StatBlock";
+import "./NewsFeedListItem.css"
 
 export interface NewsFeedListItemProps {
     event: EhrNewsFeedEventModel
@@ -12,12 +13,14 @@ export interface NewsFeedListItemProps {
 }
 
 export default function (props: NewsFeedListItemProps) {
-    return <Action bottomBorder
+    return <Action
+        className="mdhui-news-feed-list-item"
+        bottomBorder
         icon={props.showIcon ? <img src={getIcon(props.event)} width={24} /> : undefined}
         onClick={isClickable(props.event) ? () => props.onClick!(props.event) : undefined}
         indicator={isClickable(props.event) ? undefined : <></>}
-        title={getTitle(props.event)}
     >
+        <div className="mdhui-news-feed-list-item-title">{getTitle(props.event)}</div>
         {getChildren(props.event)}
         <div className="mdhui-news-feed-list-item-date">{`${format(parseISO(props.event.Date), "h:mm a")} • ${props.event.Patient.RecordAuthority}`}</div>
     </Action>;
@@ -44,7 +47,7 @@ function getTitle(event: EhrNewsFeedEventModel) {
 function getChildren(event: EhrNewsFeedEventModel) {
     if (event.Type == "LabReport") {
         let labReport = event.Event as EhrNewsFeedLabReportModel;
-        return <StatBlock stats={labReport.LabObservations.map((observation) => {
+        return <StatBlock labelWidth="50%" style={{marginTop:"8px", marginBottom:"8px", marginLeft:"calc(var(--mdhui-padding-xxs) * -1)"}} alternating stats={labReport.LabObservations.map((observation) => {
             return { label: observation.Type, value: observation.Value };
         })} />
     }

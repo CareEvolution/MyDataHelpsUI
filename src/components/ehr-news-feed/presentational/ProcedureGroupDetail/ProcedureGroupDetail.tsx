@@ -2,7 +2,7 @@ import React from "react";
 import { EhrNewsFeedEventModel, EhrNewsFeedProcedureModel } from "../../helpers/types"
 import { format, parseISO } from "date-fns";
 import { Action, Card, Title } from "../../../presentational";
-import procedureIcon from "./icon-procedure.svg";
+import procedureIcon from "../../../../assets/icon-procedure.svg";
 import StatBlock from "../../../presentational/StatBlock";
 
 export interface ProcedureGroupDetailProps {

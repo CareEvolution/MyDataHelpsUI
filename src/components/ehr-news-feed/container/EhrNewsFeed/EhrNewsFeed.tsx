@@ -57,7 +57,7 @@ export default function (props: EhrNewsFeedProps) {
                 <Card key={bucket.day}>
                     <Title style={{ margin:"var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
                     {bucket.items.map((item) =>
-                        <NewsFeedListItem key={item.ID} event={item} onClick={() => { }} />
+                        <NewsFeedListItem showIcon key={item.ID} event={item} onClick={() => { }} />
                     )}
                 </Card>
             )}
