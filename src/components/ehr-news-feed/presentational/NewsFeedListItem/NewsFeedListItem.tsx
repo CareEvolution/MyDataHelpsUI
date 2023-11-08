@@ -1,5 +1,5 @@
-import React from "react";
-import { EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "../../helpers/types";
+import React, { ReactNode } from "react";
+import { EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedLabObservationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "../../helpers/types";
 import { Action } from "../../../presentational";
 import { format, parseISO } from "date-fns";
 import getIcon from "../../helpers/icons";
@@ -45,10 +45,27 @@ function getTitle(event: EhrNewsFeedEventModel) {
 }
 
 function getChildren(event: EhrNewsFeedEventModel) {
+
+    function getLabObservationValue(labObservation: EhrNewsFeedLabObservationModel) {
+        let style: React.CSSProperties = {};
+        let acuityElement: ReactNode | undefined;
+        if (labObservation.AcuityHighlight === "High") {
+            style.fontWeight = "bold";
+            style.color = "var(--mdhui-color-danger)";
+            acuityElement = <div style={{ backgroundColor: "var(--mdhui-color-danger)" }} className="mdhui-news-feed-list-item-acuity">H</div>;
+        }
+        if (labObservation.AcuityHighlight === "Low") {
+            style.fontWeight = "bold";
+            style.color = "var(--mdhui-color-primary)";
+            acuityElement = <div style={{ backgroundColor: "var(--mdhui-color-primary)" }} className="mdhui-news-feed-list-item-acuity">L</div>;
+        }
+        return <div style={style}>{labObservation.Value} {labObservation.Units} {acuityElement}</div>
+    }
+
     if (event.Type == "LabReport") {
         let labReport = event.Event as EhrNewsFeedLabReportModel;
-        return <StatBlock labelWidth="50%" style={{marginTop:"8px", marginBottom:"8px", marginLeft:"calc(var(--mdhui-padding-xxs) * -1)"}} alternating stats={labReport.LabObservations.map((observation) => {
-            return { label: observation.Type, value: observation.Value };
+        return <StatBlock labelWidth="50%" style={{ marginTop: "4px", marginBottom: "4px", marginLeft: "calc(var(--mdhui-padding-xxs) * -1)" }} alternating stats={labReport.LabObservations.map((observation) => {
+            return { label: observation.Type, value: getLabObservationValue(observation) };
         })} />
     }
 

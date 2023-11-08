@@ -52,7 +52,7 @@ export default function (props: EhrNewsFeedProps) {
     }
 
     return (
-        <div>
+        <div style={{paddingBottom:"48px"}}>
             {dayBuckets.map((bucket) =>
                 <Card key={bucket.day}>
                     <Title style={{ margin:"var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
