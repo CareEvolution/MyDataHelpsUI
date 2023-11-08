@@ -21,7 +21,7 @@ export default function (props: StatBlockProps) {
             <col style={{ width: props.labelWidth || "1%" }} />
         </colgroup>
         <tbody>
-            {stats.map((stat, index) => <tr><th>{stat.label}</th><td>{stat.value}</td></tr>)}
+            {stats.map((stat, index) => <tr key={index}><th>{stat.label}</th><td>{stat.value}</td></tr>)}
         </tbody>
     </table>
 }

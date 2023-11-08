@@ -1,6 +1,7 @@
 export interface EhrNewsFeedPageModel {
     NextPageID?: string
     NextPageDate?: string
+    Events: EhrNewsFeedEventModel[]
 }
 
 export type EhrNewsFeedEvent =
@@ -10,7 +11,7 @@ export type EhrNewsFeedEvent =
     EhrNewsFeedLabReportModel
 
 export interface EhrNewsFeedEventModel {
-    Type: "ProcedureGroup" | "Report" | "Immunization" | "LabReport"
+    Type: "ProcedureGroup" | "Report" | "Immunization" | "LabReport" | "ClaimProcedureGroup" | "ClaimServiceGroup"
     Category?: string
     ID: string
     Date: string
