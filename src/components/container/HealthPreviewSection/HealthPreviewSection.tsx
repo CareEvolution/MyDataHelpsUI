@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import language from "../../../helpers/language";
 import { LoadingIndicator } from "../../presentational";
 import Action from "../../presentational/Action";
-import allergiesIcon from "./icon-allergies.png";
-import medicationIcon from "./icon-medication.svg";
-import reportIcon from "./icon-report.svg";
-import problemIcon from "./icon-problem.svg";
-import procedureIcon from "./icon-procedure.svg";
-import immunizationIcon from "./icon-immunization.svg";
+import allergiesIcon from "../../../assets/icon-allergies.png";
+import medicationIcon from "../../../assets/icon-medication.svg";
+import reportIcon from "../../../assets/icon-report.svg";
+import problemIcon from "../../../assets/icon-problem.svg";
+import procedureIcon from "../../../assets/icon-procedure.svg";
+import immunizationIcon from "../../../assets/icon-immunization.svg";
 import "./HealthPreviewSection.css"
 import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata";
 
