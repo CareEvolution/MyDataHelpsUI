@@ -1,0 +1,104 @@
+.dumbbellViz {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    height: 100%;
+}
+
+.grid{
+    height: 200px;
+    width: 100%;
+    position: relative;
+}
+
+.yAxisTick{
+    position: absolute;
+    flex-flow: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-end;
+    width: 100%;
+}
+
+.yAxisTick img{
+    width: 100%;
+}
+
+.xAxisTick{
+    position: absolute;
+    bottom: -20px;
+}
+
+.axisText{
+    color: #BFBFBF;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    justify-content: right;
+    align-items: end;
+}
+
+.pill{
+    position: absolute;
+    width: 9px;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 2px;
+    z-index: 100;
+    background-color: #FBFCFE;
+    min-height: 9px;
+    min-width: 9px;
+}
+
+.outOfRangeIcon{
+    position: absolute;
+    z-index: 300;
+    background-color: #EF3724;
+    border-color:#EF3724; 
+    width: 9px;
+    height: 8px;
+    min-height: 9px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.bottom{
+    bottom: 0%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px; 
+    border-bottom: 0;
+}
+
+.top{
+    bottom: 100%;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px; 
+    border-top: 0;
+}
+
+.line {
+    position: absolute;
+    border-left-style: solid;
+    border-left-width: 2px;
+    width: 1px;
+    z-index: 100;
+ }
+
+ .dumbbell{
+    bottom: 0px;
+    height: 100%;
+    position: absolute;
+ }
+
+.inRange {
+    background-color: #6495ED;
+    border-color:#6495ED;
+}
+
+.outOfRange {
+    background-color: #EF3724;
+    border-color: #EF3724;
+}
