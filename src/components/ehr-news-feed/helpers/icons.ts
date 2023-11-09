@@ -7,7 +7,9 @@ import immunizationIcon from "../../../assets/icon-immunization.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
 
 export default function getIcon(event: EhrNewsFeedEventModel) {
-    if (event.Type == "ProcedureGroup") {
+    if (event.Type == "ProcedureGroup" ||
+        event.Type == "ClaimProcedureGroup" ||
+        event.Type == "ClaimServiceGroup") {
         return procedureIcon;
     }
     if (event.Type == "Immunization") {

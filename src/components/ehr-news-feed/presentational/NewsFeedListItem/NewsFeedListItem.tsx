@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedLabObservationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "../../helpers/types";
+import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedImmunizationModel, EhrNewsFeedLabObservationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "../../helpers/types";
 import { Action } from "../../../presentational";
 import { format, parseISO } from "date-fns";
 import getIcon from "../../helpers/icons";
@@ -42,10 +42,19 @@ function getTitle(event: EhrNewsFeedEventModel) {
     if (event.Type == "LabReport") {
         return (event.Event as EhrNewsFeedLabReportModel).Service;
     }
+    if (event.Type == "ClaimProcedureGroup") {
+        let procedureGroupEvent = event.Event as EhrNewsFeedClaimProcedureModel[];
+        let distinctProcedureNames = procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
+        return distinctProcedureNames.join(" • ");
+    }
+    if (event.Type == "ClaimServiceGroup") {
+        let serviceGroupEvent = event.Event as EhrNewsFeedClaimServiceModel[];
+        let distinctServiceNames = serviceGroupEvent.map(f => f.Service).filter((value, index, array) => array.indexOf(value) === index);
+        return distinctServiceNames.join(" • ");
+    }
 }
 
 function getChildren(event: EhrNewsFeedEventModel) {
-
     function getLabObservationValue(labObservation: EhrNewsFeedLabObservationModel) {
         let style: React.CSSProperties = {};
         let acuityElement: ReactNode | undefined;
