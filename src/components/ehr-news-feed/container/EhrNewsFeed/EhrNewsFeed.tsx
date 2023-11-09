@@ -5,6 +5,11 @@ import { EhrNewsFeedEventModel } from '../../helpers/types';
 import { format, parseISO } from 'date-fns';
 import { Card, LoadingIndicator, Title } from '../../../presentational';
 import NewsFeedListItem from '../../presentational/NewsFeedListItem';
+import language from '../../../../helpers/language';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import "./EhrNewsFeed.css"
+import filterEvents from '../../helpers/filterEvents';
 
 export interface EhrNewsFeedProps {
     feed: string
@@ -16,6 +21,7 @@ interface EhrNewsFeedDayBucket {
 }
 
 export default function (props: EhrNewsFeedProps) {
+    let [searchString, setSearchString] = useState<string>("");
     let [loading, setLoading] = useState<boolean>(false);
     let [dayBuckets, setDayBuckets] = useState<EhrNewsFeedDayBucket[]>([]);
     let [nextPageId, setNextPageId] = useState<string | undefined>(undefined);
@@ -51,11 +57,29 @@ export default function (props: EhrNewsFeedProps) {
         });
     }
 
+    let filteredDayBuckets = dayBuckets.map((bucket) => {
+        let newBucket = {
+            ...bucket,
+            items: filterEvents(bucket.items, searchString)
+        }
+        if(!newBucket.items.length) {
+            return null;
+        }
+        return newBucket;
+    }).filter((bucket) => bucket != null) as EhrNewsFeedDayBucket[];
+
     return (
-        <div style={{paddingBottom:"48px"}}>
-            {dayBuckets.map((bucket) =>
+        <div style={{ paddingBottom: "48px" }}>
+            <Card className="mdhui-news-feed-search">
+                <div className="mdhui-news-feed-search-bar">
+                    <input title={language("search")} type="text" value={searchString} onChange={(event) => setSearchString(event.target.value)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <FontAwesomeSvgIcon icon={faSearch} />
+                </div>
+            </Card>
+
+            {filteredDayBuckets.map((bucket) =>
                 <Card key={bucket.day}>
-                    <Title style={{ margin:"var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
+                    <Title style={{ margin: "var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
                     {bucket.items.map((item) =>
                         <NewsFeedListItem showIcon key={item.ID} event={item} onClick={() => { }} />
                     )}
