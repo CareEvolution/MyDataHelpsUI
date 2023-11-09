@@ -59,8 +59,14 @@ export default function (props: AllergiesListProps) {
         {!allergies &&
             <LoadingIndicator />
         }
-        {allergies && allergies.map(c => <Action key={c.Substance} subtitle={c.Reactions.length > 0 ? `Reactions: ${c.Reactions.join(", ")}` : undefined} renderAs="div" bottomBorder title={c.Substance} indicator={
-            c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
-        } />)}
+        {allergies && allergies.map(c =>
+            <Action key={c.Substance}
+                subtitle={c.Reactions.length > 0 ? `Reactions: ${c.Reactions.join(", ")}` : undefined}
+                renderAs="div"
+                bottomBorder
+                title={c.Substance} indicator={
+                    c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
+                } />
+        )}
     </div>
 }
