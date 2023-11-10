@@ -203,7 +203,7 @@ export interface EhrNewsFeedClaimModel {
 
 export interface EhrNewsFeedClaimServiceModel {
     ID: string
-    Service?: string
+    Service: string
     AmountClaimed?: string
     AmountPaid?: string
     EndDate?: string
@@ -234,7 +234,7 @@ export interface EhrNewsFeedClaimConditionModel {
 export interface EhrNewsFeedClaimProcedureModel {
     ID: string
     Date?: string
-    Procedure?: string
+    Procedure: string
     Type?: string
 }
 

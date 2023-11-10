@@ -110,6 +110,11 @@ export const claimProcedureGroupEvent: EhrNewsFeedEventModel = {
             ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
             Procedure: "OPHTHALMIC BIOMETRY BY PARTIAL COHE",
             Date: "2016-09-01T23:59:59.9-04:00"
+        },
+        {
+            ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            Procedure: "4th procedure",
+            Date: "2016-09-01T23:59:59.9-04:00"
         }
     ],
     "Patient": {

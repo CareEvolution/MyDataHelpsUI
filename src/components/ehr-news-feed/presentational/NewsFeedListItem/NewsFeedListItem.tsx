@@ -19,6 +19,17 @@ export default function (props: NewsFeedListItemProps) {
         date = "";
     }
 
+    function getTitle() {
+        let titleItems = handler.getTitleItems(props.event);
+        if (titleItems.length <= 3) {
+            return titleItems.join(" • ");
+        }
+        else {
+            let shownItems = titleItems.slice(0, 3);
+            return <>{shownItems.join(" • ") + " • "}<span className="mdhui-news-feed-list-item-more">{titleItems.length - 3} More</span></>;
+        }
+    }
+
     return <Action
         className="mdhui-news-feed-list-item"
         bottomBorder
@@ -26,7 +37,7 @@ export default function (props: NewsFeedListItemProps) {
         onClick={handler.getDetail ? () => props.onClick!(props.event) : undefined}
         indicator={handler.getDetail ? undefined : <></>}
     >
-        <div className="mdhui-news-feed-list-item-title">{handler.getTitle(props.event)}</div>
+        <div className="mdhui-news-feed-list-item-title">{getTitle()}</div>
         {handler.getPreview && handler.getPreview(props.event)}
         <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
     </Action>;

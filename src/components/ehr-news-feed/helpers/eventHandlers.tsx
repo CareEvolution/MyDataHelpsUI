@@ -11,7 +11,7 @@ import { Card, Title } from "../../presentational";
 import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
 
 export interface EventTypeHandler {
-    getTitle(event: EhrNewsFeedEventModel): string
+    getTitleItems(event: EhrNewsFeedEventModel): string[]
     getPreview?(event: EhrNewsFeedEventModel): ReactNode
     getKeywords(event: EhrNewsFeedEventModel): string[]
     getDetailTitle?(event: EhrNewsFeedEventModel): string
@@ -22,10 +22,10 @@ export interface EventTypeHandler {
 
 
 let procedureGroupHandler: EventTypeHandler = {
-    getTitle: (event) => {
+    getTitleItems: (event) => {
         let procedureGroupEvent = event.Event as EhrNewsFeedProcedureModel[];
         let distinctProcedureNames = procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
-        return distinctProcedureNames.join(" • ");
+        return distinctProcedureNames;
     },
     icon: procedureIcon,
     getKeywords: (event) => {
@@ -71,9 +71,9 @@ let procedureGroupHandler: EventTypeHandler = {
 
 
 let immunizationHandler: EventTypeHandler = {
-    getTitle: (event) => {
+    getTitleItems: (event) => {
         let immunizationEvent = event.Event as EhrNewsFeedImmunizationModel;
-        return immunizationEvent.MedicationName;
+        return [immunizationEvent.MedicationName];
     },
     getKeywords: (event) => {
         let immunization = event.Event as EhrNewsFeedImmunizationModel;
@@ -88,8 +88,8 @@ let immunizationHandler: EventTypeHandler = {
 
 
 let reportHandler: EventTypeHandler = {
-    getTitle: (event) => {
-        return (event.Event as EhrNewsFeedReportModel).Type;
+    getTitleItems: (event) => {
+        return [(event.Event as EhrNewsFeedReportModel).Type];
     },
     getKeywords: (event) => {
         let report = event.Event as EhrNewsFeedReportModel;
@@ -110,8 +110,8 @@ let reportHandler: EventTypeHandler = {
 
 
 let labReportHandler: EventTypeHandler = {
-    getTitle: (event) => {
-        return (event.Event as EhrNewsFeedLabReportModel).Service;
+    getTitleItems: (event) => {
+        return [(event.Event as EhrNewsFeedLabReportModel).Service];
     },
     getPreview: (event) => {
         function getLabObservationValue(labObservation: EhrNewsFeedLabObservationModel) {
@@ -165,10 +165,9 @@ let labReportHandler: EventTypeHandler = {
 
 
 let claimProcedureGroupHandler: EventTypeHandler = {
-    getTitle: (event) => {
+    getTitleItems: (event) => {
         let procedureGroupEvent = event.Event as EhrNewsFeedClaimProcedureModel[];
-        let distinctProcedureNames = procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
-        return distinctProcedureNames.join(" • ");
+        return procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
     },
     icon: procedureIcon,
     getKeywords: (event) => {
@@ -204,10 +203,9 @@ let claimProcedureGroupHandler: EventTypeHandler = {
 };
 
 let claimServiceGroupHandler: EventTypeHandler = {
-    getTitle: (event) => {
+    getTitleItems: (event) => {
         let serviceGroupEvent = event.Event as EhrNewsFeedClaimServiceModel[];
-        let distinctServiceNames = serviceGroupEvent.map(f => f.Service).filter((value, index, array) => array.indexOf(value) === index);
-        return distinctServiceNames.join(" • ");
+        return serviceGroupEvent.map(f => f.Service).filter((value, index, array) => array.indexOf(value) === index);
     },
     icon: procedureIcon,
     getKeywords: (event) => {
@@ -221,6 +219,17 @@ let claimServiceGroupHandler: EventTypeHandler = {
     getDetailTitle: (event) => {
         let procedures = event.Event as EhrNewsFeedClaimServiceModel[];
         return procedures.length == 1 ? "Service Performed" : `${procedures.length} Services Performed`;
+    },
+    getDetail: (event) => {
+        let services = event.Event as EhrNewsFeedClaimServiceModel[];
+        return <>
+            <NewsFeedDetailTitle event={event} />
+            {services.map((service) =>
+                <Card key={service.ID} style={{ marginTop: "0" }}>
+                    <Title defaultMargin order={5}>{service.Service}</Title>
+                </Card>
+            )}
+        </>
     },
     getPreviewEvent: () => {
         return claimServiceGroupEvent;
