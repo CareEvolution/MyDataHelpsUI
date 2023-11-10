@@ -14,6 +14,11 @@ export interface NewsFeedListItemProps {
 export default function (props: NewsFeedListItemProps) {
     let handler = eventTypeHandlers[props.event.Type];
 
+    let date = format(parseISO(props.event.Date), "h:mm a");
+    if (date === "12:00 AM") {
+        date = "";
+    }
+
     return <Action
         className="mdhui-news-feed-list-item"
         bottomBorder
@@ -23,14 +28,6 @@ export default function (props: NewsFeedListItemProps) {
     >
         <div className="mdhui-news-feed-list-item-title">{handler.getTitle(props.event)}</div>
         {handler.getPreview && handler.getPreview(props.event)}
-        <div className="mdhui-news-feed-list-item-date">{`${format(parseISO(props.event.Date), "h:mm a")} • ${props.event.Patient.RecordAuthority}`}</div>
+        <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
     </Action>;
-}
-
-
-function isClickable(event: EhrNewsFeedEventModel) {
-    if (event.Type == "Immunization") {
-        return false;
-    }
-    return true;
 }

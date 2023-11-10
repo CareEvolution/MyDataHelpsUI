@@ -14,7 +14,12 @@ export default function (props: NewsFeedDetailTitleProps) {
     let title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
     if (!title) { return null; }
 
-    let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do h:mm:ss b")} • ${props.event.Patient.RecordAuthority}`
+    let date = parseISO(props.event.Date);
+    let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do, y h:mm a")} • ${props.event.Patient.RecordAuthority}`
+    if(format(date, "h:mm a") == "12:00 AM") {
+        subtitle = props.event.Patient.RecordAuthority;
+    }
+
     return <Action
         indicator={<></>}
         title={title}

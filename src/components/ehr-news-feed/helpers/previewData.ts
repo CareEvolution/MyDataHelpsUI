@@ -98,19 +98,17 @@ export const claimProcedureGroupEvent: EhrNewsFeedEventModel = {
         {
             ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
             Procedure: "INTERNAL EYE PHOTOGRAPHY",
-            Type: "Type",
+            Type: "Outpatient",
             Date: "2016-09-01T23:59:59.9-04:00"
         },
         {
             ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
             Procedure: "CORNEAL TOPOGRAPHY",
-            Type: "Type",
             Date: "2016-09-01T23:59:59.9-04:00"
         },
         {
             ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
             Procedure: "OPHTHALMIC BIOMETRY BY PARTIAL COHE",
-            Type: "Type",
             Date: "2016-09-01T23:59:59.9-04:00"
         }
     ],

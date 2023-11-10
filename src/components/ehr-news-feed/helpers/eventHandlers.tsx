@@ -8,6 +8,7 @@ import immunizationIcon from "../../../assets/icon-immunization.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
 import NewsFeedDetailTitle from "../presentational/NewsFeedDetailTitle/NewsFeedDetailTitle";
 import { Card, Title } from "../../presentational";
+import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
 
 export interface EventTypeHandler {
     getTitle(event: EhrNewsFeedEventModel): string
@@ -15,6 +16,7 @@ export interface EventTypeHandler {
     getKeywords(event: EhrNewsFeedEventModel): string[]
     getDetailTitle?(event: EhrNewsFeedEventModel): string
     getDetail?(event: EhrNewsFeedEventModel): ReactNode
+    getPreviewEvent(): EhrNewsFeedEventModel
     icon: any
 }
 
@@ -60,6 +62,9 @@ let procedureGroupHandler: EventTypeHandler = {
                 </Card>
             )}
         </>
+    },
+    getPreviewEvent: () => {
+        return procedureGroupEvent;
     }
 }
 
@@ -74,7 +79,10 @@ let immunizationHandler: EventTypeHandler = {
         let immunization = event.Event as EhrNewsFeedImmunizationModel;
         return [immunization.MedicationName];
     },
-    icon: immunizationIcon
+    icon: immunizationIcon,
+    getPreviewEvent: () => {
+        return immunizationEvent;
+    }
 }
 
 
@@ -93,7 +101,10 @@ let reportHandler: EventTypeHandler = {
             report.Summary
         ].filter((keyword) => !!keyword) as string[];
     },
-    icon: reportIcon
+    icon: reportIcon,
+    getPreviewEvent: () => {
+        return reportEvent;
+    }
 }
 
 
@@ -145,7 +156,10 @@ let labReportHandler: EventTypeHandler = {
         });
         return keywords;
     },
-    getDetailTitle: (event) => "Lab Report"
+    getDetailTitle: (event) => "Lab Report",
+    getPreviewEvent: () => {
+        return labReportEvent;
+    }
 };
 
 
@@ -183,10 +197,11 @@ let claimProcedureGroupHandler: EventTypeHandler = {
                 </Card>
             )}
         </>
+    },
+    getPreviewEvent: () => {
+        return claimProcedureGroupEvent;
     }
 };
-
-
 
 let claimServiceGroupHandler: EventTypeHandler = {
     getTitle: (event) => {
@@ -206,9 +221,11 @@ let claimServiceGroupHandler: EventTypeHandler = {
     getDetailTitle: (event) => {
         let procedures = event.Event as EhrNewsFeedClaimServiceModel[];
         return procedures.length == 1 ? "Service Performed" : `${procedures.length} Services Performed`;
+    },
+    getPreviewEvent: () => {
+        return claimServiceGroupEvent;
     }
 };
-
 
 export const eventTypeHandlers: Record<EhrNewsFeedEventType, EventTypeHandler> = {
     ProcedureGroup: procedureGroupHandler,
