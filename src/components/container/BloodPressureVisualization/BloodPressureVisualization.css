@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body{
+    background: var(--bg-secondary, #FFFFFF)!important;
+}
+
+.bloodPressureVisualization {
+    width:  300px;
+    height: 100%;
+}
+
+.buffer {
+    height: 10px;
+}
+
+.pagerRow {
+    width: 100%;
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.buttonCaption {
+    font-family: "Inter";
+    text-align: center;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    margin-top: 2px;
+    padding-right: 10px;
+    color: #FFF;
+}
+
+.bpTitle{
+    color: var(--ce-greyscale-800, #212121);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: "Inter";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
