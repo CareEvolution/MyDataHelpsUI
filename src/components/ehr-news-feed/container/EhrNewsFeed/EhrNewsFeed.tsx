@@ -11,12 +11,18 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
 import { eventTypeHandlers } from '../../helpers/eventHandlers';
 import { previewFeed } from '../../helpers/previewData';
-import { EventDetailProps } from '../EventDetail/EventDetail';
 
 export interface EhrNewsFeedProps {
     previewState?: "default"
-    onEventSelected(eventDetailPRops: EventDetailProps): void
+    onEventSelected(eventReference: EhrNewsFeedEventReference): void
     feed: string
+    onReportSelected(reportID: string): void
+}
+
+export interface EhrNewsFeedEventReference {
+    feed: string
+    pageId?: string
+    pageDate?: string
 }
 
 interface EhrNewsFeedDayBucket {
@@ -61,7 +67,6 @@ export default function (props: EhrNewsFeedProps) {
 
         setLoading(true);
         getNewsFeedPage(props.feed, nextPageId, nextPageDate).then((result) => {
-
             setNextPageDate(result.NextPageDate);
             setNextPageId(result.NextPageID);
             if (!result.NextPageID && !result.NextPageDate) {
@@ -90,6 +95,37 @@ export default function (props: EhrNewsFeedProps) {
         return newBucket;
     }).filter((bucket) => bucket != null) as EhrNewsFeedDayBucket[];
 
+    const selectEvent = function (dayBucket: EhrNewsFeedDayBucket, event: EhrNewsFeedEventModel) {
+        if (event.Type == "Report") {
+            props.onReportSelected(event.ID);
+            return;
+        }
+
+        let index = dayBucket.items.indexOf(event);
+        if (index != 0) {
+            props.onEventSelected({
+                feed: props.feed,
+                pageId: dayBucket.items[index - 1].ID,
+                pageDate: dayBucket.items[index - 1].Date
+            });
+        } else {
+            let bucketIndex = dayBuckets.indexOf(dayBucket);
+            if (bucketIndex == 0) {
+                props.onEventSelected({
+                    feed: props.feed
+                });
+            }
+            else {
+                let previousBucket = dayBuckets[bucketIndex - 1];
+                props.onEventSelected({
+                    feed: props.feed,
+                    pageId: previousBucket.items[previousBucket.items.length - 1].ID,
+                    pageDate: previousBucket.items[previousBucket.items.length - 1].Date
+                });
+            }
+        }
+    }
+
     return (
         <div style={{ paddingBottom: "48px" }}>
             <Card className="mdhui-news-feed-search">
@@ -102,7 +138,7 @@ export default function (props: EhrNewsFeedProps) {
                 <Card key={bucket.day}>
                     <Title style={{ margin: "var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
                     {bucket.items.map((item) =>
-                        <NewsFeedListItem key={item.ID} event={item} onClick={() => { }} />
+                        <NewsFeedListItem onClick={() => selectEvent(bucket, item)} key={item.ID} event={item} />
                     )}
                 </Card>
             )}

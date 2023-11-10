@@ -9,6 +9,7 @@ export interface EventDetailProps {
     pageId: string
     pageDate: string
     previewState?: EhrNewsFeedEventType
+    onViewLabObservationTermInfo(labObservationID: string): void
 }
 
 export default function (props: EventDetailProps) {

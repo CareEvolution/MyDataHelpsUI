@@ -16,7 +16,7 @@ export interface EventTypeHandler {
     getPreview?(event: EhrNewsFeedEventModel): ReactNode
     getKeywords(event: EhrNewsFeedEventModel): string[]
     getDetailTitle?(event: EhrNewsFeedEventModel): string
-    getDetail?(event: EhrNewsFeedEventModel): ReactNode
+    getDetail?(event: EhrNewsFeedEventModel, onViewLabObservationTermInfo: (labObservationID: string) => void): ReactNode
     getPreviewEvent(): EhrNewsFeedEventModel
     icon: any
 }
@@ -105,6 +105,9 @@ let reportHandler: EventTypeHandler = {
     icon: reportIcon,
     getPreviewEvent: () => {
         return reportEvent;
+    },
+    getDetail: () => {
+        return <></>
     }
 }
 
@@ -158,10 +161,10 @@ let labReportHandler: EventTypeHandler = {
         return keywords;
     },
     getDetailTitle: (event) => "Lab Report",
-    getDetail(event) {
+    getDetail(event, onViewLabObservationTermInfo) {
         return <>
             <NewsFeedDetailTitle event={event} />
-            <LabReportDetail labReport={event.Event as EhrNewsFeedLabReportModel} onViewTermInfo={() => { }} />
+            <LabReportDetail labReport={event.Event as EhrNewsFeedLabReportModel} onViewTermInfo={(id) => onViewLabObservationTermInfo(id)} />
         </>
     },
     getPreviewEvent: () => {

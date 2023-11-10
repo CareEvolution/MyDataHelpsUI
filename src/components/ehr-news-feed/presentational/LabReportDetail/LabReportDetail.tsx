@@ -15,7 +15,7 @@ export default function (props: LabReportDetailProps) {
         <Title defaultMargin order={3}>{props.labReport.Service}</Title>
         <TextBlock>{props.labReport.Comment}</TextBlock>
         {props.labReport.LabObservations.map((observation, index) =>
-            <Card>
+            <Card key={observation.ID}>
                 <Action renderAs="div" subtitle={observation.Type} indicator={
                     <UnstyledButton onClick={() => props.onViewTermInfo(observation.ID)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton>
                 }>
