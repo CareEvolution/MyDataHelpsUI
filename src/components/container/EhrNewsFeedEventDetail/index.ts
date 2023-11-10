@@ -1,1 +1,1 @@
-export { default } from "./EhrNewsEventDetail";
+export { default } from "./EhrNewsFeedEventDetail";

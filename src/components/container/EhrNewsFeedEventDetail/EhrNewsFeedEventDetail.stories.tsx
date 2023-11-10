@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "../../presentational";
 import EhrNewsFeedEventDetail, { EhrNewsFeedEventDetailProps } from "./EhrNewsFeedEventDetail";
 
-export default { title: "EhrNewsFeed/Container/EventDetail", component: EhrNewsFeedEventDetail, parameters: { layout: 'fullscreen' } };
+export default { title: "Container/EhrNewsFeedEventDetail", component: EhrNewsFeedEventDetail, parameters: { layout: 'fullscreen' } };
 let render = (args: EhrNewsFeedEventDetailProps) => <Layout colorScheme="auto">
     <EhrNewsFeedEventDetail {...args} />
 </Layout>

@@ -1,10 +1,10 @@
 import { ReactNode } from "react"
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedImmunizationModel, EhrNewsFeedLabObservationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "./types"
 import React from "react"
-import reportIcon from "../../../assets/icon-report.svg";
-import procedureIcon from "../../../assets/icon-procedure.svg";
-import immunizationIcon from "../../../assets/icon-immunization.svg";
-import labReportIcon from "../../../assets/icon-labreport.svg";
+import reportIcon from "../../assets/icon-report.svg";
+import procedureIcon from "../../assets/icon-procedure.svg";
+import immunizationIcon from "../../assets/icon-immunization.svg";
+import labReportIcon from "../../assets/icon-labreport.svg";
 import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
 import StatBlock from "../../components/presentational/StatBlock";
 

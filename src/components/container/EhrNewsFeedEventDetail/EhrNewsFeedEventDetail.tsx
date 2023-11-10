@@ -7,6 +7,7 @@ import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { format, parseISO } from 'date-fns';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
+import "./EhrNewsFeedEventDetail.css"
 
 export interface EhrNewsFeedEventDetailProps {
     feed: string

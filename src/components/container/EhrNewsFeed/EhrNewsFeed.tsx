@@ -126,7 +126,7 @@ export default function (props: EhrNewsFeedProps) {
     }
 
     return (
-        <div style={{ paddingBottom: "48px" }}>
+        <div className="mdhui-news-feed" style={{ paddingBottom: "48px" }}>
             <Card className="mdhui-news-feed-search">
                 <div className="mdhui-news-feed-search-bar">
                     <input title={language("search")} type="text" value={searchString} onChange={(event) => setSearchString(event.target.value)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
