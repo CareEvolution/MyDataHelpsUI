@@ -17,7 +17,7 @@ export interface NavigationBarProps {
 	closeButtonText?: string;
 	backButtonText?: string;
 	className?: string;
-	variant?: "default" | "compressed";
+	variant?: "default" | "compressed" | "compressedModal";
 	titleColor?: ColorDefinition;
 	subtitleColor?: ColorDefinition;
 	buttonColor?: ColorDefinition;
@@ -58,6 +58,9 @@ export default function (props: NavigationBarProps) {
 	if (props.variant == "compressed") {
 		classes.push("mdhui-navigation-bar-compressed");
 	}
+	if (props.variant == "compressedModal") {
+		classes.push("mdhui-navigation-bar-compressed-modal");
+	}
 
 	let layoutContext = useContext(LayoutContext);
 
@@ -75,7 +78,7 @@ export default function (props: NavigationBarProps) {
 				</div>
 			}
 			{props.subtitle &&
-				<div className="subtitle" style={{color:resolveColor(layoutContext?.colorScheme, props.subtitleColor)}}>
+				<div className="subtitle" style={{color:resolveColor(layoutContext?.colorScheme, props.subtitleColor), marginTop:props.title ? "var(--mdhui-padding-sm)" : "0"}}>
 					<span>{props.subtitle}</span>
 				</div>
 			}
