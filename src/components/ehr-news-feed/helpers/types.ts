@@ -8,10 +8,20 @@ export type EhrNewsFeedEvent =
     EhrNewsFeedImmunizationModel |
     EhrNewsFeedReportModel |
     EhrNewsFeedProcedureModel[] |
-    EhrNewsFeedLabReportModel
+    EhrNewsFeedLabReportModel | 
+    EhrNewsFeedClaimProcedureModel[] |
+    EhrNewsFeedClaimServiceModel[];
+
+export type EhrNewsFeedEventType =
+    "ProcedureGroup" |
+    "Report" |
+    "Immunization" |
+    "LabReport" |
+    "ClaimProcedureGroup" |
+    "ClaimServiceGroup"
 
 export interface EhrNewsFeedEventModel {
-    Type: "ProcedureGroup" | "Report" | "Immunization" | "LabReport" | "ClaimProcedureGroup" | "ClaimServiceGroup"
+    Type: EhrNewsFeedEventType
     Category?: string
     ID: string
     Date: string
@@ -69,7 +79,7 @@ export interface EhrNewsFeedLabReportModel {
     LabObservations: EhrNewsFeedLabObservationModel[]
     ReportStatusDate?: string
     ReportStatus?: string
-    Service?: string
+    Service: string
     Comment?: string
     OrderingCaregiver?: EhrNewsFeedCaregiverModel
     Location?: string
@@ -149,7 +159,7 @@ export interface EhrNewsFeedPharmacyOrderModel {
 
 export interface EhrNewsFeedReportModel {
     ID: string
-    Type?: string
+    Type: string
     Format?: string
     Summary?: string
     DictatedByCaregiver?: EhrNewsFeedCaregiverModel

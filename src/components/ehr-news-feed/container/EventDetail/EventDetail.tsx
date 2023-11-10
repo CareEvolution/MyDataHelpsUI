@@ -3,7 +3,7 @@ import { getNewsFeedPage } from '../../helpers/dataService';
 import { EhrNewsFeedEventModel } from '../../helpers/types';
 import { LoadingIndicator } from '../../../presentational';
 import "./EhrNewsFeed.css"
-import ProcedureGroupDetail from '../../presentational/ProcedureGroupDetail/ProcedureGroupDetail';
+import { eventTypeHandlers } from '../../helpers/eventHandlers';
 
 export interface EventDetailProps {
     feed: string
@@ -27,14 +27,15 @@ export default function (props: EventDetailProps) {
         load();
     }, []);
 
+    function getDetail() {
+        let handler = eventTypeHandlers[event!.Type];
+        return handler.getDetail!(event!);
+    }
+
     return <div>
         {loading &&
             <LoadingIndicator />
         }
-        {event &&
-            <>
-                {event.Type == "ProcedureGroup" && <ProcedureGroupDetail event={event} />}
-            </>
-        }
+        {event && getDetail()}
     </div>
 }

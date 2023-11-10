@@ -9,7 +9,7 @@ import language from '../../../../helpers/language';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
-import filterEvents from '../../helpers/filterEvents';
+import { eventTypeHandlers } from '../../helpers/eventHandlers';
 
 export interface EhrNewsFeedProps {
     feed: string
@@ -57,12 +57,20 @@ export default function (props: EhrNewsFeedProps) {
         });
     }
 
+    function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
+        return events.filter((event) => {
+            let keywords = eventTypeHandlers[event.Type].getKeywords(event);
+            return keywords.some((keyword) => keyword.toLowerCase().includes(filter.toLowerCase()));
+        });
+    }
+
     let filteredDayBuckets = dayBuckets.map((bucket) => {
         let newBucket = {
             ...bucket,
             items: filterEvents(bucket.items, searchString)
         }
-        if(!newBucket.items.length) {
+
+        if (!newBucket.items.length) {
             return null;
         }
         return newBucket;
@@ -76,7 +84,6 @@ export default function (props: EhrNewsFeedProps) {
                     <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </Card>
-
             {filteredDayBuckets.map((bucket) =>
                 <Card key={bucket.day}>
                     <Title style={{ margin: "var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>

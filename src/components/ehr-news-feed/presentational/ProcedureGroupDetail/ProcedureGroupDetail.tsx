@@ -4,6 +4,7 @@ import { format, parseISO } from "date-fns";
 import { Action, Card, Title } from "../../../presentational";
 import procedureIcon from "../../../../assets/icon-procedure.svg";
 import StatBlock from "../../../presentational/StatBlock";
+import NewsFeedDetailTitle from "../NewsFeedDetailTitle/NewsFeedDetailTitle";
 
 export interface ProcedureGroupDetailProps {
     event: EhrNewsFeedEventModel
@@ -15,7 +16,6 @@ export default function (props: ProcedureGroupDetailProps) {
     let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do h:mm:ss b")} • ${props.event.Patient.RecordAuthority}`
 
     return <>
-        <Action indicator={<></>} title={title} subtitle={subtitle} icon={<img src={procedureIcon} width={24} />} />
         {event.map((procedure, index) =>
             <Card style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{procedure.Procedure}</Title>
