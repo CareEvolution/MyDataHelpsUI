@@ -45,6 +45,9 @@ let props: NewsFeedListItemProps = {
             "PatientName": "D D",
             "RecordAuthority": "Cedars-Sinai"
         }
+    },
+    onClick: (event: any) => {
+        console.log(event);
     }
 }
 
@@ -52,7 +55,6 @@ export const Default = {
     args: props,
     render: render
 };
-
 
 export const ShowIcon = {
     args: { ...props, showIcon: true },

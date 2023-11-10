@@ -11,7 +11,7 @@ export interface NewsFeedDetailTitleProps {
 export default function (props: NewsFeedDetailTitleProps) {
     let handler = eventTypeHandlers[props.event.Type];
 
-    let title = handler.getDetailTitle ? (event);
+    let title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
     if (!title) { return null; }
 
     let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do h:mm:ss b")} • ${props.event.Patient.RecordAuthority}`

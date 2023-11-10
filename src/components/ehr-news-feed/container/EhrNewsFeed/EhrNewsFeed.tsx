@@ -10,8 +10,10 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
 import { eventTypeHandlers } from '../../helpers/eventHandlers';
+import { previewFeed } from '../../helpers/previewData';
 
 export interface EhrNewsFeedProps {
+    previewState?: "default"
     feed: string
 }
 
@@ -33,10 +35,9 @@ export default function (props: EhrNewsFeedProps) {
     }
 
     function loadMore() {
-        setLoading(true);
-        getNewsFeedPage(props.feed, nextPageId, nextPageDate).then((result) => {
+        function addEvents(events: EhrNewsFeedEventModel[]) {
             let newDayBuckets = [...dayBuckets];
-            result.Events.forEach((event) => {
+            events.forEach((event) => {
                 let eventDayLabel = dayLabel(event.Date);
                 if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day == eventDayLabel) {
                     newDayBuckets[newDayBuckets.length - 1].items.push(event);
@@ -48,6 +49,17 @@ export default function (props: EhrNewsFeedProps) {
                 }
             });
             setDayBuckets(newDayBuckets);
+        }
+
+        if (props.previewState == "default") {
+            addEvents(previewFeed);
+            setFinished(true);
+            return;
+        }
+
+        setLoading(true);
+        getNewsFeedPage(props.feed, nextPageId, nextPageDate).then((result) => {
+
             setNextPageDate(result.NextPageDate);
             setNextPageId(result.NextPageID);
             if (!result.NextPageID && !result.NextPageDate) {
