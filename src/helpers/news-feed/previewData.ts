@@ -29,7 +29,7 @@ export const procedureGroupEvent: EhrNewsFeedEventModel = {
             }
         },
         {
-            "ID": "fc14a3dc-2efe-ed11-aac9-0afb9334277d",
+            "ID": "fc14a3dc-2efe-ed11-aac9-0afb9334277f",
             "Date": "2017-11-05T16:00:00+00:00",
             "Procedure": "ARTHROCENTESIS - JOINT INJECTION",
             "Type": "",
@@ -37,7 +37,7 @@ export const procedureGroupEvent: EhrNewsFeedEventModel = {
             "Location": "Hospital B",
         },
         {
-            "ID": "fc14a3dc-2efe-ed11-aac9-0afb9334277d",
+            "ID": "fc14a3dc-2efe-ed11-aac9-0afb9334277x",
             "Date": "2017-11-05T16:00:00+00:00",
             "Procedure": "ARTHROCENTESIS - JOINT INJECTION",
             "Type": "",
@@ -67,14 +67,14 @@ export const claimServiceGroupEvent: EhrNewsFeedEventModel = {
             "Status": "Allowed"
         },
         {
-            "ID": "eae7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            "ID": "eae7a449-477f-ee11-aac1-e2a3d5bdf50ff",
             "Service": "CORNEAL TOPOGRAPHY",
             "EndDate": "2016-09-01T23:59:59.9-04:00",
             "StartDate": "2016-09-01T00:00:00-04:00",
             "Status": "Allowed"
         },
         {
-            "ID": "e9e7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            "ID": "e9e7a449-477f-ee11-aac1-e2a3sd5bdf50f",
             "Service": "OPHTHALMIC BIOMETRY BY PARTIAL COHE",
             "EndDate": "2016-09-01T23:59:59.9-04:00",
             "StartDate": "2016-09-01T00:00:00-04:00",
@@ -96,23 +96,23 @@ export const claimProcedureGroupEvent: EhrNewsFeedEventModel = {
     "Date": "2016-09-01T00:00:00-04:00",
     "Event": [
         {
-            ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            ID: "ebe7a449-477f-ee11-aac1-eg2a3d5bdf50f",
             Procedure: "INTERNAL EYE PHOTOGRAPHY",
             Type: "Outpatient",
             Date: "2016-09-01T23:59:59.9-04:00"
         },
         {
-            ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            ID: "ebe7a449-477f-ee11-aadc1-e2a3d5bdf50f",
             Procedure: "CORNEAL TOPOGRAPHY",
             Date: "2016-09-01T23:59:59.9-04:00"
         },
         {
-            ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            ID: "ebe7a449-477f-ee11f-aac1-e2a3d5bdf50f",
             Procedure: "OPHTHALMIC BIOMETRY BY PARTIAL COHE",
             Date: "2016-09-01T23:59:59.9-04:00"
         },
         {
-            ID: "ebe7a449-477f-ee11-aac1-e2a3d5bdf50f",
+            ID: "ebe7a449-477f-ees11-aac1-e2a3d5bdf50f",
             Procedure: "4th procedure",
             Date: "2016-09-01T23:59:59.9-04:00"
         }
@@ -138,7 +138,7 @@ export const labReportEvent: EhrNewsFeedEventModel = {
         "Comment": "This was performed at the request of Dr. Smith.",
         "LabObservations": [
             {
-                "ID": "be13ae69-477f-ee11-aac1-e2a3d5bdf50f",
+                "ID": "be13ae69-477f-gee11-aac1-e2a3d5bdf50f",
                 "Type": "Cholesterol",
                 "Value": "135.0",
                 "Acuity": "Normal",
@@ -152,7 +152,7 @@ export const labReportEvent: EhrNewsFeedEventModel = {
                 "TypeDefinition": "<p>Cholesterol is a waxy, fat-like substance that occurs naturally in all parts of the body. Your body needs some cholesterol to work properly. But if you have too much in your blood, it can combine with other substances in the blood and stick to the walls of your arteries. This is called plaque. Plaque can narrow your arteries or even block them.</p>\n\n<p>High levels of cholesterol in the blood can increase your risk of <a name=\"noreveal\" href='https://medlineplus.gov/heartdiseases.html' target=\"_blank\">heart disease</a>. Your cholesterol levels tend to rise as you get older. There are usually no signs or symptoms that you have high blood cholesterol, but it can be detected with a blood test. You are likely to have high cholesterol if members of your family have it, if you are overweight or if you eat a lot of fatty foods.</p>\n\n<p>You can lower your cholesterol by exercising more and eating more fruits and vegetables. You also may need to take medicine to lower your cholesterol.</p>\n\n<p class=\"attribution\">NIH: National Heart, Lung, and Blood Institute</p><p><a href='https://medlineplus.gov/cholesterol.html' target='_blank'>Click here for more information from MedlinePlus.gov.</a></p>"
             },
             {
-                "ID": "bf13ae69-477f-ee11-aac1-e2a3d5bdf50f",
+                "ID": "bf13ae69-477f-see11-aac1-e2a3d5bdf50f",
                 "Type": "HDL",
                 "Value": "45.0",
                 "Acuity": "Normal",
@@ -165,7 +165,7 @@ export const labReportEvent: EhrNewsFeedEventModel = {
                 "TypeDefinition": "<p>Cholesterol is a waxy, fat-like substance that occurs naturally in all parts of the body. Your body needs some cholesterol to work properly. But if you have too much in your blood, it can combine with other substances in the blood and stick to the walls of your arteries. This is called plaque. Plaque can narrow your arteries or even block them.</p>\n\n<p>High levels of cholesterol in the blood can increase your risk of <a name=\"noreveal\" href='https://medlineplus.gov/heartdiseases.html' target=\"_blank\">heart disease</a>. Your cholesterol levels tend to rise as you get older. There are usually no signs or symptoms that you have high blood cholesterol, but it can be detected with a blood test. You are likely to have high cholesterol if members of your family have it, if you are overweight or if you eat a lot of fatty foods.</p>\n\n<p>You can lower your cholesterol by exercising more and eating more fruits and vegetables. You also may need to take medicine to lower your cholesterol.</p>\n\n<p class=\"attribution\">NIH: National Heart, Lung, and Blood Institute</p><p><a href='https://medlineplus.gov/cholesterol.html' target='_blank'>Click here for more information from MedlinePlus.gov.</a></p>"
             },
             {
-                "ID": "c013ae69-477f-ee11-aac1-e2a3d5bdf50f",
+                "ID": "c013ae69s-477f-ee11-aac1-e2a3d5bdf50f",
                 "Type": "LDL",
                 "Value": "152.0",
                 "Acuity": "High",

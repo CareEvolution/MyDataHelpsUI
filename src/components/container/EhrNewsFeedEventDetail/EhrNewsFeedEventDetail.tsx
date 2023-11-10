@@ -77,7 +77,6 @@ function NewsFeedDetailTitle(props: { event: EhrNewsFeedEventModel }) {
 function ProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
     let procedures = props.event.Event as EhrNewsFeedProcedureModel[];
     return <>
-        <NewsFeedDetailTitle event={props.event} />
         {procedures.map((procedure, index) =>
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{procedure.Procedure}</Title>
@@ -133,7 +132,6 @@ function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObserva
 function ClaimProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
     let procedures = props.event.Event as EhrNewsFeedClaimProcedureModel[];
     return <>
-        <NewsFeedDetailTitle event={props.event} />
         {procedures.map((procedure) =>
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{procedure.Procedure}</Title>
@@ -148,7 +146,6 @@ function ClaimProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
 function ClaimServiceGroupDetail(props: { event: EhrNewsFeedEventModel }) {
     let services = props.event.Event as EhrNewsFeedClaimServiceModel[];
     return <>
-        <NewsFeedDetailTitle event={props.event} />
         {services.map((service) =>
             <Card key={service.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{service.Service}</Title>
