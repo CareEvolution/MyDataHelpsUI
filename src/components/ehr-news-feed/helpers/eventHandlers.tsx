@@ -9,6 +9,7 @@ import labReportIcon from "../../../assets/icon-labreport.svg";
 import NewsFeedDetailTitle from "../presentational/NewsFeedDetailTitle/NewsFeedDetailTitle";
 import { Card, Title } from "../../presentational";
 import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
+import LabReportDetail from "../presentational/LabReportDetail/LabReportDetail";
 
 export interface EventTypeHandler {
     getTitleItems(event: EhrNewsFeedEventModel): string[]
@@ -157,6 +158,12 @@ let labReportHandler: EventTypeHandler = {
         return keywords;
     },
     getDetailTitle: (event) => "Lab Report",
+    getDetail(event) {
+        return <>
+            <NewsFeedDetailTitle event={event} />
+            <LabReportDetail labReport={event.Event as EhrNewsFeedLabReportModel} onViewTermInfo={() => { }} />
+        </>
+    },
     getPreviewEvent: () => {
         return labReportEvent;
     }

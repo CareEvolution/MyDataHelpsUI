@@ -135,6 +135,7 @@ export const labReportEvent: EhrNewsFeedEventModel = {
         "ObservationDate": "2021-02-27T08:25:00-05:00",
         "AccessionNumber": "4DB2B1FA",
         "EncounterID": "aa12ae69-477f-ee11-aac1-e2a3d5bdf50f",
+        "Comment": "This was performed at the request of Dr. Smith.",
         "LabObservations": [
             {
                 "ID": "be13ae69-477f-ee11-aac1-e2a3d5bdf50f",
@@ -147,6 +148,7 @@ export const labReportEvent: EhrNewsFeedEventModel = {
                 "ObservationResultStatus": "F",
                 "ObservationResultStatusDate": "2017-02-27T08:25:00-05:00",
                 "TrendAvailable": false,
+                "Comment": "             NCEP RECOMMENDED ADULT GUIDELINES\r\n\r\nTotal Cholesterol:  <200 mg/dL        Desirable\r\n                    200 - 239 mg/dL   Borderline High\r\n                    >240 mg/dL        High\r\n\r\nTriglycerides:      <150 mg/dL        Normal\r\n                    150 - 199 mg/dL   Borderline High\r\n                    200 - 499 mg/dL   High\r\n                    >500 mg/dL        Very High\r\n\r\nHDL-Cholesterol:    <40 mg/dL         Low/Undesirable\r\n                    40 - 60 mg/dL     Normal\r\n                    >60 mg/dL         High/Desirable\r\n                                  (= negative risk for CHD)\r\n\r\nLDL-Cholesterol:    <100 mg/dL        Optimal\r\n                    100 - 129 mg/dL   Near Optimal\r\n                    130 - 159 mg/dL   Borderline High\r\n                    160 - 189 mg/dL   High\r\n                    >190 mg/dL        Very High\r\nPatient's individual LDL-cholesterol goal may differ based\r\non the presence of risk factors for cardiovascular disease.\r\n",
                 "TypeDefinition": "<p>Cholesterol is a waxy, fat-like substance that occurs naturally in all parts of the body. Your body needs some cholesterol to work properly. But if you have too much in your blood, it can combine with other substances in the blood and stick to the walls of your arteries. This is called plaque. Plaque can narrow your arteries or even block them.</p>\n\n<p>High levels of cholesterol in the blood can increase your risk of <a name=\"noreveal\" href='https://medlineplus.gov/heartdiseases.html' target=\"_blank\">heart disease</a>. Your cholesterol levels tend to rise as you get older. There are usually no signs or symptoms that you have high blood cholesterol, but it can be detected with a blood test. You are likely to have high cholesterol if members of your family have it, if you are overweight or if you eat a lot of fatty foods.</p>\n\n<p>You can lower your cholesterol by exercising more and eating more fruits and vegetables. You also may need to take medicine to lower your cholesterol.</p>\n\n<p class=\"attribution\">NIH: National Heart, Lung, and Blood Institute</p><p><a href='https://medlineplus.gov/cholesterol.html' target='_blank'>Click here for more information from MedlinePlus.gov.</a></p>"
             },
             {
