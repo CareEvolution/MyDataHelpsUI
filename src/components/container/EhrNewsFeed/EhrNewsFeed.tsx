@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import OnVisibleTrigger from '../../../presentational/OnVisibleTrigger';
-import { getNewsFeedPage } from '../../helpers/dataService';
-import { EhrNewsFeedEventModel } from '../../helpers/types';
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger';
+import { getNewsFeedPage } from '../../../helpers/news-feed/data';
 import { format, parseISO } from 'date-fns';
-import { Card, LoadingIndicator, Title } from '../../../presentational';
-import NewsFeedListItem from '../../presentational/NewsFeedListItem';
-import language from '../../../../helpers/language';
+import { Action, Card, LoadingIndicator, Title } from '../../presentational';
+import language from '../../../helpers/language';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
-import { eventTypeHandlers } from '../../helpers/eventHandlers';
-import { previewFeed } from '../../helpers/previewData';
+import { EhrNewsFeedEventModel } from '../../../helpers/news-feed/types';
+import { previewFeed } from '../../../helpers/news-feed/previewData';
+import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 
 export interface EhrNewsFeedProps {
     previewState?: "default"
@@ -78,7 +77,7 @@ export default function (props: EhrNewsFeedProps) {
 
     function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
         return events.filter((event) => {
-            let keywords = eventTypeHandlers[event.Type].getKeywords(event);
+            let keywords = eventTypeDefinitions[event.Type].getKeywords(event);
             return keywords.some((keyword) => keyword.toLowerCase().includes(filter.toLowerCase()));
         });
     }
@@ -148,4 +147,36 @@ export default function (props: EhrNewsFeedProps) {
             <OnVisibleTrigger onTrigger={() => loadMore()} enabled={!loading && !finished} />
         </div>
     )
+}
+
+function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
+    let definition = eventTypeDefinitions[props.event.Type];
+
+    let date = format(parseISO(props.event.Date), "h:mm a");
+    if (date === "12:00 AM") {
+        date = "";
+    }
+
+    function getTitle() {
+        let titleItems = definition.getTitleItems(props.event);
+        if (titleItems.length <= 3) {
+            return titleItems.join(" • ");
+        }
+        else {
+            let shownItems = titleItems.slice(0, 3);
+            return <>{shownItems.join(" • ") + " • "}<span className="mdhui-news-feed-list-item-more">{titleItems.length - 3} More</span></>;
+        }
+    }
+
+    return <Action
+        className="mdhui-news-feed-list-item"
+        bottomBorder
+        icon={<img src={definition.icon} width={24} />}
+        onClick={definition.hasDetail ? () => props.onClick!(props.event) : undefined}
+        indicator={definition.hasDetail ? undefined : <></>}
+    >
+        <div className="mdhui-news-feed-list-item-title">{getTitle()}</div>
+        {definition.getPreview && definition.getPreview(props.event)}
+        <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
+    </Action>;
 }

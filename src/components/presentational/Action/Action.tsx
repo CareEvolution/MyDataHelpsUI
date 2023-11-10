@@ -68,7 +68,7 @@ export default function (props: ActionProps) {
 	if (props.bottomBorder) {
 		classes.push("mdhui-action-bottom-border");
 	}
-	if (props.className) {
+	if(props.className){
 		classes.push(props.className);
 	}
 	if (props.onClick) {

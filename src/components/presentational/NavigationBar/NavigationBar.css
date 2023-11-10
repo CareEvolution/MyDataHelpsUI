@@ -56,9 +56,7 @@
     text-align: center;
     padding-top: calc(16px + env(safe-area-inset-top, 0px));
     font-size: 18px;
-
 }
-
 
 .mdhui-navigation-bar.mdhui-navigation-bar-compressed-modal {
     text-align: left;

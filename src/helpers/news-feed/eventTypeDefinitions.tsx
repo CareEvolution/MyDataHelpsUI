@@ -1,28 +1,24 @@
 import { ReactNode } from "react"
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedImmunizationModel, EhrNewsFeedLabObservationModel, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedReportModel } from "./types"
-import StatBlock from "../../presentational/StatBlock"
 import React from "react"
 import reportIcon from "../../../assets/icon-report.svg";
 import procedureIcon from "../../../assets/icon-procedure.svg";
 import immunizationIcon from "../../../assets/icon-immunization.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
-import NewsFeedDetailTitle from "../presentational/NewsFeedDetailTitle/NewsFeedDetailTitle";
-import { Card, Title } from "../../presentational";
 import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
-import LabReportDetail from "../presentational/LabReportDetail/LabReportDetail";
+import StatBlock from "../../components/presentational/StatBlock";
 
-export interface EventTypeHandler {
+export interface EventTypeDefinition {
     getTitleItems(event: EhrNewsFeedEventModel): string[]
     getPreview?(event: EhrNewsFeedEventModel): ReactNode
     getKeywords(event: EhrNewsFeedEventModel): string[]
     getDetailTitle?(event: EhrNewsFeedEventModel): string
-    getDetail?(event: EhrNewsFeedEventModel, onViewLabObservationTermInfo: (labObservationID: string) => void): ReactNode
     getPreviewEvent(): EhrNewsFeedEventModel
+    hasDetail?: boolean
     icon: any
 }
 
-
-let procedureGroupHandler: EventTypeHandler = {
+let procedureGroupHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         let procedureGroupEvent = event.Event as EhrNewsFeedProcedureModel[];
         let distinctProcedureNames = procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
@@ -46,32 +42,13 @@ let procedureGroupHandler: EventTypeHandler = {
         let procedures = event.Event as EhrNewsFeedProcedureModel[];
         return procedures.length == 1 ? "Procedure" : `${procedures.length} Procedures`;
     },
-    getDetail: (event) => {
-        let procedures = event.Event as EhrNewsFeedProcedureModel[];
-        return <>
-            <NewsFeedDetailTitle event={event} />
-            {procedures.map((procedure, index) =>
-                <Card key={procedure.ID} style={{ marginTop: "0" }}>
-                    <Title defaultMargin order={5}>{procedure.Procedure}</Title>
-                    <StatBlock labelWidth="90px" defaultMargin stats={[
-                        { label: "Type", value: procedure.Type },
-                        { label: "Location", value: procedure.Location },
-                        { label: "Description", value: procedure.Description == procedure.Procedure ? undefined : procedure.Description },
-                        { label: "Performed By", value: procedure.PerformedByCaregiver?.CaregiverName },
-                        { label: "Verified By", value: procedure.VerifiedByCaregiver?.CaregiverName }
-                    ]} />
-                </Card>
-            )}
-        </>
-    },
     getPreviewEvent: () => {
         return procedureGroupEvent;
-    }
+    },
+    hasDetail: true
 }
 
-
-
-let immunizationHandler: EventTypeHandler = {
+let immunizationHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         let immunizationEvent = event.Event as EhrNewsFeedImmunizationModel;
         return [immunizationEvent.MedicationName];
@@ -86,9 +63,7 @@ let immunizationHandler: EventTypeHandler = {
     }
 }
 
-
-
-let reportHandler: EventTypeHandler = {
+let reportHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         return [(event.Event as EhrNewsFeedReportModel).Type];
     },
@@ -106,14 +81,10 @@ let reportHandler: EventTypeHandler = {
     getPreviewEvent: () => {
         return reportEvent;
     },
-    getDetail: () => {
-        return <></>
-    }
+    hasDetail: true
 }
 
-
-
-let labReportHandler: EventTypeHandler = {
+let labReportHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         return [(event.Event as EhrNewsFeedLabReportModel).Service];
     },
@@ -161,20 +132,13 @@ let labReportHandler: EventTypeHandler = {
         return keywords;
     },
     getDetailTitle: (event) => "Lab Report",
-    getDetail(event, onViewLabObservationTermInfo) {
-        return <>
-            <NewsFeedDetailTitle event={event} />
-            <LabReportDetail labReport={event.Event as EhrNewsFeedLabReportModel} onViewTermInfo={(id) => onViewLabObservationTermInfo(id)} />
-        </>
-    },
     getPreviewEvent: () => {
         return labReportEvent;
-    }
+    },
+    hasDetail: true
 };
 
-
-
-let claimProcedureGroupHandler: EventTypeHandler = {
+let claimProcedureGroupHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         let procedureGroupEvent = event.Event as EhrNewsFeedClaimProcedureModel[];
         return procedureGroupEvent.map(f => f.Procedure).filter((value, index, array) => array.indexOf(value) === index);
@@ -193,26 +157,13 @@ let claimProcedureGroupHandler: EventTypeHandler = {
         let procedures = event.Event as EhrNewsFeedClaimProcedureModel[];
         return procedures.length == 1 ? "Procedure" : `${procedures.length} Procedures`;
     },
-    getDetail: (event) => {
-        let procedures = event.Event as EhrNewsFeedClaimProcedureModel[];
-        return <>
-            <NewsFeedDetailTitle event={event} />
-            {procedures.map((procedure) =>
-                <Card key={procedure.ID} style={{ marginTop: "0" }}>
-                    <Title defaultMargin order={5}>{procedure.Procedure}</Title>
-                    <StatBlock labelWidth="90px" defaultMargin stats={[
-                        { label: "Type", value: procedure.Type }
-                    ]} />
-                </Card>
-            )}
-        </>
-    },
     getPreviewEvent: () => {
         return claimProcedureGroupEvent;
-    }
+    },
+    hasDetail: true
 };
 
-let claimServiceGroupHandler: EventTypeHandler = {
+let claimServiceGroupHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         let serviceGroupEvent = event.Event as EhrNewsFeedClaimServiceModel[];
         return serviceGroupEvent.map(f => f.Service).filter((value, index, array) => array.indexOf(value) === index);
@@ -230,23 +181,13 @@ let claimServiceGroupHandler: EventTypeHandler = {
         let procedures = event.Event as EhrNewsFeedClaimServiceModel[];
         return procedures.length == 1 ? "Service Performed" : `${procedures.length} Services Performed`;
     },
-    getDetail: (event) => {
-        let services = event.Event as EhrNewsFeedClaimServiceModel[];
-        return <>
-            <NewsFeedDetailTitle event={event} />
-            {services.map((service) =>
-                <Card key={service.ID} style={{ marginTop: "0" }}>
-                    <Title defaultMargin order={5}>{service.Service}</Title>
-                </Card>
-            )}
-        </>
-    },
     getPreviewEvent: () => {
         return claimServiceGroupEvent;
-    }
+    },
+    hasDetail: true
 };
 
-export const eventTypeHandlers: Record<EhrNewsFeedEventType, EventTypeHandler> = {
+export const eventTypeDefinitions: Record<EhrNewsFeedEventType, EventTypeDefinition> = {
     ProcedureGroup: procedureGroupHandler,
     Immunization: immunizationHandler,
     Report: reportHandler,

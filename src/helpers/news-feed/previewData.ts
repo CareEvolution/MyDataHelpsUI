@@ -1,4 +1,4 @@
-import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedEventModel } from "./types";
+import { EhrNewsFeedEventModel } from "./types";
 
 export const procedureGroupEvent: EhrNewsFeedEventModel = {
     "Type": "ProcedureGroup",

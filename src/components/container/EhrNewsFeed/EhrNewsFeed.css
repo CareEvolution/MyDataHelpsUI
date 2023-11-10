@@ -33,3 +33,25 @@
     color: var(--mdhui-text-color-4);
     font-size: .8em;
 }
+
+.mdhui-news-feed-list-item .mdhui-news-feed-list-item-title {
+    font-size: .88em;
+}
+
+.mdhui-news-feed-list-item .mdhui-news-feed-list-item-more {
+    color: var(--mdhui-color-primary);
+    font-weight: bold;
+}
+
+.mdhui-news-feed-list-item .mdhui-news-feed-list-item-date {
+    font-size: .7em;
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-news-feed-list-item .mdhui-news-feed-list-item-acuity {
+    display: inline-block;
+    color: #FFF;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 4px;
+}
