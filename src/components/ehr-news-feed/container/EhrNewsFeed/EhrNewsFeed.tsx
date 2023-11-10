@@ -11,9 +11,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
 import { eventTypeHandlers } from '../../helpers/eventHandlers';
 import { previewFeed } from '../../helpers/previewData';
+import { EventDetailProps } from '../EventDetail/EventDetail';
 
 export interface EhrNewsFeedProps {
     previewState?: "default"
+    onEventSelected(eventDetailPRops: EventDetailProps): void
     feed: string
 }
 
@@ -100,7 +102,7 @@ export default function (props: EhrNewsFeedProps) {
                 <Card key={bucket.day}>
                     <Title style={{ margin: "var(--mdhui-padding-md)", marginBottom: 0 }} order={4}>{bucket.day}</Title>
                     {bucket.items.map((item) =>
-                        <NewsFeedListItem showIcon key={item.ID} event={item} onClick={() => { }} />
+                        <NewsFeedListItem key={item.ID} event={item} onClick={() => { }} />
                     )}
                 </Card>
             )}

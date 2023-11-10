@@ -8,7 +8,6 @@ import { eventTypeHandlers } from "../../helpers/eventHandlers";
 export interface NewsFeedListItemProps {
     event: EhrNewsFeedEventModel
     onClick(event: EhrNewsFeedEventModel): void
-    showIcon?: boolean
 }
 
 export default function (props: NewsFeedListItemProps) {
@@ -33,7 +32,7 @@ export default function (props: NewsFeedListItemProps) {
     return <Action
         className="mdhui-news-feed-list-item"
         bottomBorder
-        icon={props.showIcon ? <img src={handler.icon} width={24} /> : undefined}
+        icon={<img src={handler.icon} width={24} />}
         onClick={handler.getDetail ? () => props.onClick!(props.event) : undefined}
         indicator={handler.getDetail ? undefined : <></>}
     >
