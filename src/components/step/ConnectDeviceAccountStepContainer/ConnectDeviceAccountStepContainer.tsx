@@ -39,6 +39,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
     }
 
     async function completeStepIfConnected(deviceType: string) {
+      try {
         const accounts = await MyDataHelps.getExternalAccounts();
 
         const providerID = convertToProviderID(deviceType);
@@ -48,8 +49,9 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         if (connected) {
             MyDataHelps.completeStep(providerID);
         }
-
+      } finally {
         setLoading(false);
+      }
     }
 
     useEffect(() => {
@@ -58,10 +60,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
             config: StepConfiguration
         ) {
             if (!config) {
-
-                setLoading(false);
                 completeStepIfConnected(deviceType);
-
                 return; // allows test mode to work
             }
 
