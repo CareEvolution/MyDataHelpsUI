@@ -12,9 +12,9 @@ import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 
 export interface EhrNewsFeedProps {
-    previewState?: "default"
+    previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
     onEventSelected(eventReference: EhrNewsFeedEventReference): void
-    feed: string
+    feed: "Procedures" | "Reports" | "LabReports" | "Immunizations"
     onReportSelected(reportID: string): void
 }
 
@@ -59,7 +59,18 @@ export default function (props: EhrNewsFeedProps) {
         }
 
         if (props.previewState == "default") {
-            addEvents(previewFeed);
+            if (props.feed == "Procedures") {
+                addEvents(previewFeed.filter((event) => event.Type == "ProcedureGroup" || event.Type == "ClaimProcedureGroup" || event.Type == "ClaimServiceGroup"));
+            }
+            else if (props.feed == "Reports") {
+                addEvents(previewFeed.filter((event) => event.Type == "Report"));
+            }
+            else if (props.feed == "LabReports") {
+                addEvents(previewFeed.filter((event) => event.Type == "LabReport"));
+            }
+            else if (props.feed == "Immunizations") {
+                addEvents(previewFeed.filter((event) => event.Type == "Immunization"));
+            }
             setFinished(true);
             return;
         }

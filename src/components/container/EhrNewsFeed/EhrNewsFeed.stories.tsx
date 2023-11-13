@@ -7,10 +7,34 @@ let render = (args: EhrNewsFeedProps) => <Layout colorScheme="auto">
     <EhrNewsFeed {...args} />
 </Layout>
 
-export const Default = {
+export const Procedures = {
     args: {
         previewState: "default",
-        feed: "Something"
+        feed: "Procedures"
+    },
+    render: render
+};
+
+export const Immunizations = {
+    args: {
+        previewState: "default",
+        feed: "Immunizations"
+    },
+    render: render
+};
+
+export const LabReports = {
+    args: {
+        previewState: "default",
+        feed: "LabReports"
+    },
+    render: render
+};
+
+export const Reports = {
+    args: {
+        previewState: "default",
+        feed: "Reports"
     },
     render: render
 };
