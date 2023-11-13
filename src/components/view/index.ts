@@ -3,6 +3,8 @@ export { default as BlankView } from "./BlankView"
 export { default as ConditionsView } from "./ConditionsView"
 export { default as ConnectEhrView } from "./ConnectEhrView"
 export { default as DeviceDataView } from "./DeviceDataView"
+export { default as EhrNewsFeedView } from "./EhrNewsFeedView";
+export { default as EhrNewsFeedEventDetailView } from "./EhrNewsFeedEventDetailView";
 export { default as ExternalAccountsView } from "./ExternalAccountsView"
 export { default as FitbitView } from "./FitbitView"
 export { default as GarminView } from "./GarminView"
