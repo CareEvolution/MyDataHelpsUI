@@ -1,3 +1,5 @@
+export type EhrNewsFeedFeed = "Immunizations" | "LabReports" | "Procedures" | "Reports";
+
 export interface EhrNewsFeedPageModel {
     NextPageID?: string
     NextPageDate?: string

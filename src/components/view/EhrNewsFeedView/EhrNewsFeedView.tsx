@@ -39,7 +39,7 @@ export default function (props: EhrNewsFeedViewProps) {
     }
 
     return (
-        <Layout colorScheme="auto">
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
