@@ -2,6 +2,7 @@ import React from "react"
 import { Layout, NavigationBar, Title } from "../../presentational"
 import language from "../../../helpers/language"
 import proceduresIcon from "../../../assets/icon-procedure.svg";
+import immunizationsIcon from "../../../assets/icon-immunization.svg";
 import reportIcon from "../../../assets/icon-report.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
 import { EhrNewsFeed } from "../../container";
@@ -30,7 +31,7 @@ export default function (props: EhrNewsFeedViewProps) {
             break;
         case "Immunizations":
             title = language("immunizations-title");
-            icon = <img src={proceduresIcon} />;
+            icon = <img src={immunizationsIcon} />;
             break;
         case "LabReports":
             title = language("lab-results-title");
