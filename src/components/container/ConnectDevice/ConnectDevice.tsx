@@ -78,7 +78,16 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true });
+		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true })
+			.then(function() {
+				MyDataHelps.getExternalAccounts().then(function (accounts) {
+					accounts.forEach((account) => {
+						if (account.provider.id === props.providerID) {
+							setDeviceExternalAccount(account);
+						}
+					});
+				});
+			});
 	}
 
 	useEffect(() => {
