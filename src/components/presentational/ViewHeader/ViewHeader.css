@@ -17,11 +17,3 @@
     color: var(--mdhui-text-color-2);
     font-size: 1.2em;
 }
-
-.mdhui-view-header .mdhui-view-header-action-icon {
-    height: 48px;
-    width: 48px;
-    line-height: 48px;
-    font-size: 34px;
-    text-align: center;
-}
