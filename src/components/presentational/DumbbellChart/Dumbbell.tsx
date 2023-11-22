@@ -9,15 +9,15 @@ export interface DumbbellProps {
 }
 
 export default function (props : DumbbellProps) {
-    const xIncrement : number = props.axis.xIncrement;
+    const xIncrementPercent : number = props.axis.xIncrement;
     const halfCirclePx = 4.5;
     const minOfRange = props.axis.yRange.values[0];
     const maxOfRange = props.axis.yRange.values[1]
     const range = maxOfRange - minOfRange;
 
-    const classEnum = props.dumbbell?.class ?? DumbbellClass.inRange;
+    const classEnum = props.dumbbell?.class ?? DumbbellClass["mdhui-dumbbell-in-range"];
     const dbClass = DumbbellClass[classEnum];
-    const left = {"left" : `${(props.index * xIncrement) - halfCirclePx}px`};
+    const leftAsPercent= {"left" : `${(props.index * xIncrementPercent)}%`};
 
     const dataSet1 = props.dumbbell && props.dumbbell.dataPoint ? props.dumbbell.dataPoint.dataSet1.values : [];
     const dataSet2 = props.dumbbell && props.dumbbell.dataPoint ? props.dumbbell.dataPoint.dataSet2.values : [];
@@ -43,28 +43,28 @@ export default function (props : DumbbellProps) {
     var lineHeight1 = (dataSet2OutOfRange ? (maxOfRange - minOfRange) : dataSet2Bottom) - (dataSet1OutOfRange ? 0 : dataSet1Bottom);
     var lineHeightAsPercent = getAsPercent(lineHeight1, range);
     lineHeightAsPercent = lineHeightAsPercent > 100 ? 100 : lineHeightAsPercent;
-    const lineStyle = {"height": `${lineHeightAsPercent}%`, "bottom": `${dataSet1OutOfRange ? 0 : dataSet1BottomAsPercent}%`, "left" : `${(props.index * xIncrement) + halfCirclePx + .5}px`};
+    const lineStyle = {"height": `${lineHeightAsPercent}%`, "bottom": `${dataSet1OutOfRange ? 0 : dataSet1BottomAsPercent}%`, "left" : `${halfCirclePx + .5}px`};
    
     function getAsPercent( xx : number, range : number){
         return ((xx/ range) * 100);
     }
 
     function getStyle(height : any, bottom : any){
-        return {"height": height, "bottom": bottom, "left" : `${props.index * xIncrement}px`};
+       return {"height": height, "bottom": bottom};
     }
 
     return (
-        <div className="dumbbell">
+        <div className="mdhui-dumbbell" style={leftAsPercent} >
             {props.dumbbell?.dataPoint && 
                 <>
-                {dataSet2OutOfRange && <div className="outOfRangeIcon top" style={{"left" : `${(props.index * xIncrement)}px`}} ></div>}
-                {!dataSet2OutOfRange && <div className={`pill ${dbClass}`} style={dataSet2Style} ></div>}
-                <div className={`line ${dbClass}`} style={lineStyle} ></div>
-                {dataSet1OutOfRange && <div className="outOfRangeIcon bottom" style={{"left" : `${(props.index * xIncrement)}px`}} ></div>}
-                {!dataSet1OutOfRange && <div className={`pill ${dbClass}`} style={dataSet1Style} ></div>}
+                {dataSet2OutOfRange && <div className="mdhui-dumbbell-out-of-range-icon mdhui-dumbbell-top"></div>}
+                {!dataSet2OutOfRange && <div className={`mdhui-dumbbell-pill ${dbClass}`} style={dataSet2Style} ></div>}
+                <div className={`mdhui-dumbbell-line ${dbClass}`} style={lineStyle} ></div>
+                {dataSet1OutOfRange && <div className="mdhui-dumbbell-out-of-range-icon mdhui-dumbbell-bottom"></div>}
+                {!dataSet1OutOfRange && <div className={`mdhui-dumbbell-pill ${dbClass}`} style={dataSet1Style} ></div>}
                 </>
             }
-            <div style={left} className="xAxisTick axisText" key={`xAxis${props.index+1}`} >{props.dumbbell?.xValue}</div>
+            <div className="mdhui-dumbbell-x-axis mdhui-dumbbell-axis-text" key={`xAxis${props.index+1}`} >{props.dumbbell?.xValue}</div>
         </div>
     )
 }
