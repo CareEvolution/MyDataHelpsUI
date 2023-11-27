@@ -46,7 +46,7 @@
     border-radius: 25px;
     border-style: solid;
     border-width: 2px;
-    z-index: 100;
+    z-index: 1;
     background-color: #FBFCFE;
     min-height: 9px;
     min-width: 9px;
@@ -54,7 +54,7 @@
 
 .mdhui-dumbbell-out-of-range-icon{
     position: absolute;
-    z-index: 300;
+    z-index: 1;
     background-color: var(--mdhui-color-danger);
     border-color:var(--mdhui-color-danger); 
     width: 9px;
@@ -83,7 +83,7 @@
     border-left-style: solid;
     border-left-width: 2px;
     width: 1px;
-    z-index: 100;
+    z-index: 1;
  }
 
  .mdhui-dumbbell{

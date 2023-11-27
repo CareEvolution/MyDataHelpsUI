@@ -1,10 +1,9 @@
 import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { BloodPressureDataPoint } from "./query-blood-pressure";
-import { format, parseISO, startOfDay } from "date-fns";
+import { format, parseISO, startOfDay, toDate } from "date-fns";
 
 export interface BloodPressureDataParameters {
     surveyName: string,
-    stepIdentifier? : string,
     dateOfResultId? : string,
     systolicResultId? : string,
     diastolicResultId? : string
@@ -14,7 +13,7 @@ export default async function(props : BloodPressureDataParameters) : Promise<Blo
     const resultFilter = [props.dateOfResultId ?? "", props.systolicResultId ?? "", props.diastolicResultId ?? "" ];
     
 
-    const surveyAnswers = await getSurveyAnswers(props.surveyName, [props.stepIdentifier ?? ""], resultFilter);
+    const surveyAnswers = await getSurveyAnswers(props.surveyName, resultFilter);
     var sortedAnswers = (surveyAnswers).sort((a, b) => {
             if (parseISO(a.date) > parseISO(b.date)) { return -1; }
             if (parseISO(a.date) < parseISO(b.date)) { return 1; }
@@ -39,7 +38,7 @@ export default async function(props : BloodPressureDataParameters) : Promise<Blo
                 var bpDiastolic = bpDiastolicResults?.answers[0];
 
                 if (bpLogDate){
-                    var useDate = startOfDay(new Date(bpLogDate));
+                    var useDate = startOfDay(new Date(parseISO(bpLogDate)));
                     var formattedDate = format(useDate, "MM/dd");
                     var newBpEntry : BloodPressureDataPoint = {
                         dateLabel: formattedDate, 
@@ -56,22 +55,21 @@ export default async function(props : BloodPressureDataParameters) : Promise<Blo
         return bpDataPoints;
     }
 
-    async function getSurveyAnswers(surveyName: string, stepIdentifier : string[], resultId : string[]): Promise<SurveyAnswer[]> {
-        let dataPage = await getSurveyDataPage(surveyName, stepIdentifier, resultId);
+    async function getSurveyAnswers(surveyName: string, resultId : string[]): Promise<SurveyAnswer[]> {
+        let dataPage = await getSurveyDataPage(surveyName, resultId);
         let allData = dataPage.surveyAnswers;
         while (dataPage.nextPageID) {
-            dataPage = await getSurveyDataPage(surveyName, stepIdentifier, resultId, dataPage.nextPageID);
+            dataPage = await getSurveyDataPage(surveyName, resultId, dataPage.nextPageID);
             allData = allData.concat(dataPage.surveyAnswers);
         }
         return allData;
     }
 
-    async function getSurveyDataPage(surveyName: string, stepIdentifier : string[], resultId : string[], pageID?: Guid): Promise<SurveyAnswersPage> {
+    async function getSurveyDataPage(surveyName: string, resultId : string[], pageID?: Guid): Promise<SurveyAnswersPage> {
         var queryParameters: SurveyAnswersQuery = {
             surveyName
         };
 
-        queryParameters.stepIdentifier = [...stepIdentifier];
         queryParameters.resultIdentifier = resultId;
         
         if (pageID) {
