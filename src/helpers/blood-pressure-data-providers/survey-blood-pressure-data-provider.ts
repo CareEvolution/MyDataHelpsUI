@@ -38,7 +38,7 @@ export default async function(props : BloodPressureDataParameters) : Promise<Blo
                 var bpDiastolic = bpDiastolicResults?.answers[0];
 
                 if (bpLogDate){
-                    var useDate = startOfDay(new Date(parseISO(bpLogDate)));
+                    var useDate = startOfDay(parseISO(bpLogDate));
                     var formattedDate = format(useDate, "MM/dd");
                     var newBpEntry : BloodPressureDataPoint = {
                         dateLabel: formattedDate, 

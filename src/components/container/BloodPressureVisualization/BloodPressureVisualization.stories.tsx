@@ -3,8 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import BloodPressureVisualization, { BloodPressureVisualizationProps } from "./BloodPressureVisualization"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import queryBloodPressure, { BloodPressureDataParameters } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure"
-import { previewBloodPressureDataPoint } from './BloodPressureVisualization.previewdata'
+import { BloodPressureDataParameters } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure"
 
 export default {
 	title: "Container/BloodPressureVisualization",
@@ -25,7 +24,7 @@ const Template: ComponentStory<typeof BloodPressureVisualization> = (args: Blood
 const bpSurveyParams : BloodPressureDataParameters = {
 	dataSource: "Survey",
 	surveyParameters : {
-		surveyName: "RESOLVE Blood Pressure Readings - OPTIONAL",
+		surveyName: "Blood Pressure Readings",
 		dateOfResultId : "Date of BP",
 		systolicResultId : "Systolic BP",
 		diastolicResultId : "Diastolic BP"
@@ -35,35 +34,23 @@ const bpSurveyParams : BloodPressureDataParameters = {
 export const WithData = Template.bind({});
 WithData.args = {
 	previewState : "WithData",
-	dataParameters: bpSurveyParams,
-	previewDataProvider: (bpSurveyParams) => {
-		return Promise.resolve(previewBloodPressureDataPoint);
-	}
+	dataParameters: bpSurveyParams
 };
 
 export const Loading = Template.bind({});
 Loading.args = {
 	previewState : "Loading",
-	dataParameters: bpSurveyParams,
-	previewDataProvider: (bpSurveyParams) => {
-		return Promise.resolve([]);
-	}
+	dataParameters: bpSurveyParams
 };
 
 export const NoData = Template.bind({});
 NoData.args = {
 	previewState: "NoData",
-	dataParameters: bpSurveyParams,
-	previewDataProvider: (bpSurveyParams) => {
-		return Promise.resolve([]);
-	}
+	dataParameters: bpSurveyParams
 };
 
 export const Live = Template.bind({});
 Live.args = {
 	previewState: "Live",
-	dataParameters: bpSurveyParams,
-	previewDataProvider: (bpSurveyParams) => {
-		return queryBloodPressure(bpSurveyParams);
-	}
+	dataParameters: bpSurveyParams
 };

@@ -8,15 +8,15 @@ import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../
 import { addDays, format, isEqual, isMonday, previousMonday, startOfDay } from "date-fns";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { BloodPressureDataParameters, BloodPressureDataPoint, BloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure";
+import queryBloodPressure, { BloodPressureDataParameters, BloodPressureDataPoint, BloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure";
 import language from "../../../helpers/language";
+import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
 
 export enum Category {"Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown"};
 export type BloodPressurePreviewState = "WithData" | "NoData" | "Loading" | "Live";
 
 export interface BloodPressureVisualizationProps {
     previewState? : BloodPressurePreviewState,
-    previewDataProvider : BloodPressureDataProvider,
     dataParameters : BloodPressureDataParameters
 };
 
@@ -60,20 +60,31 @@ export default function (props : BloodPressureVisualizationProps) {
         if (!loadingData){
             setLoadingData(true);
 
-            if (props.previewState && props.previewState == "Loading"){
-                return;
+            if (props.previewState){
+               switch(props.previewState){
+                    case "Loading":
+                        return;
+                    case "NoData":
+                        setBloodPressureData([]);
+                    case "WithData":
+                        setBloodPressureData(previewBloodPressureDataPoint);
+               }
             }
-            else 
+            else
             {
-                props.previewDataProvider(props.dataParameters).then((bloodPressureDataPoints) => {
-                    const bloodPressureDumbbells = createDumbbellsPerDay(bloodPressureDataPoints);
-                    const weekStart = initializeWeekPager();
-                    pageWeeklyData( weekStart, bloodPressureDumbbells);
-                    setBpData(bloodPressureDumbbells);
-                    setLoadingData(false);
+                queryBloodPressure(props.dataParameters).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
+                    setBloodPressureData(bloodPressureDataPoints);
                 });
             }
         }
+    }
+
+    function setBloodPressureData(bloodPressureDataPoints : BloodPressureDataPoint[]){
+        const bloodPressureDumbbells = createDumbbellsPerDay(bloodPressureDataPoints);
+        const weekStart = initializeWeekPager();
+        pageWeeklyData( weekStart, bloodPressureDumbbells);
+        setBpData(bloodPressureDumbbells);
+        setLoadingData(false);
     }
 
     function createDumbbellsPerDay(bpDataPoints : BloodPressureDataPoint[]){
