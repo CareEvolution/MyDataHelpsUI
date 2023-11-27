@@ -2,11 +2,6 @@ body{
     background: #FFFFFF;
 }
 
-.mdhui-blood-pressure-visualization {
-    width: 100%;
-    height: 100%;
-}
-
 .mdhui-blood-pressure-visualization-pager {
     width: 100%;
     padding-top: 13px;
@@ -63,7 +58,7 @@ body{
     line-height: 15px;
     letter-spacing: 0em;
     text-align: left;
-    color: #EF3724;
+    color: var(--mdhui-color-danger);
 }
 
 .mdhui-blood-pressure-metric-value{
@@ -76,9 +71,9 @@ body{
 }
 
 .mdhui-blood-pressure-metric-normal{
-    color: #14B856;
+    color: var(--mdhui-color-primary);
 }
 
 .mdhui-blood-pressure-metric-not-normal{
-    color: #EF3724;
+    color: var(--mdhui-color-danger);
 }

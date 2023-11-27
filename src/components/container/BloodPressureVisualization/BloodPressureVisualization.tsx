@@ -10,7 +10,6 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BloodPressureDataParameters, BloodPressureDataPoint, BloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure";
 
-export type DataFaucet = "Survey";
 export enum Category {"Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown"};
 export type BloodPressurePreviewState = "WithData" | "NoData" | "Loading" | "Live";
 
@@ -59,7 +58,6 @@ export default function (props : BloodPressureVisualizationProps) {
 
         if (!loadingData){
             setLoadingData(true);
-            var weekStart = initializeWeekPager();
 
             if (props.previewState && props.previewState == "Loading"){
                 return;
@@ -68,6 +66,7 @@ export default function (props : BloodPressureVisualizationProps) {
             {
                 props.previewDataProvider(props.dataParameters).then((bloodPressureDataPoints) => {
                     const bloodPressureDumbbells = createDumbbellsPerDay(bloodPressureDataPoints);
+                    const weekStart = initializeWeekPager();
                     pageWeeklyData( weekStart, bloodPressureDumbbells);
                     setBpData(bloodPressureDumbbells);
                     setLoadingData(false);
@@ -97,16 +96,6 @@ export default function (props : BloodPressureVisualizationProps) {
         return dbs;
     }
 
-    function initializeWeekPager() : Date {
-        const today = startOfDay(new Date());
-        const monday : Date = isMonday(today) ? today : previousMonday(today);
-        return monday;
-    }
-
-    function pageWeek(newStart: Date) {
-        pageWeeklyData( newStart );
-    }
-
     function pageWeeklyData(startOfWeek: Date, freshData? : BloodPressureDumbbell[]){
         const useData = freshData ?? bpData;
         const weekData : Dumbbell[] = [];
@@ -130,90 +119,6 @@ export default function (props : BloodPressureVisualizationProps) {
         setMetrics(weeklyMetrics);
         setWeeklyDataForViz(weekData);
         setStartOfWeek(startOfWeek);
-    }
-
-    function buildDetailBlock( description : string, alert? : string, alertClass? : string, value? : number ){
-        return <div className="mdhui-blood-pressure-metrics-block">
-            <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
-            <div className="mdhui-blood-pressure-metric-description">{description}</div>
-            <div className={alertClass}>{alert ?? "No data yet"}</div>
-        </div>
-    }
-
-    function buildInterval(entries : number[]){
-        const min = Math.min(...entries);
-        const closedInterval : ClosedInterval = {values : [min]};
-        
-        var max = min;
-        if (entries.length > 1){
-            max = Math.max(...entries);
-        }
-        closedInterval.values.push(max);
-        return closedInterval;
-    }
-
-    function assignClass(avgSystolic : number, avgDiastolic : number){
-
-        const systolicCategory = getSystolicCategory(avgSystolic);
-        const diastolicCategory = getDiastolicCategory(avgDiastolic);
-
-        if (systolicCategory === Category.Normal && diastolicCategory === Category.Normal){
-            return DumbbellClass["mdhui-dumbbell-in-range"];
-        }
-
-        return DumbbellClass["mdhui-dumbbell-out-of-range"];
-    }
-
-    function getSystolicCategory(systolicValue : number) {
-        if (systolicValue < 90){
-            return Category.Low
-        }
-
-        if (systolicValue > 90 && systolicValue <= 119){
-            return Category.Normal;
-        }
-
-        if (systolicValue >= 120 && systolicValue <= 129){
-            return Category.Elevated;
-        }
-
-        if (systolicValue >= 130 && systolicValue <= 139){
-            return Category["Stage 1"];
-        }
-
-        if (systolicValue >= 140 && systolicValue <= 180){
-            return Category["Stage 2"];
-        }
-
-        if (systolicValue > 180){
-            return Category.Crisis;
-        }
-
-        return Category.Unknown;
-    }
-
-    function getDiastolicCategory(diastolicValue : number) {
-        if (diastolicValue < 60){
-            return Category.Low
-        }
-
-        if (diastolicValue >= 60 && diastolicValue <= 79){
-            return Category.Normal;
-        }
-
-        if (diastolicValue >= 80 && diastolicValue <= 89){
-            return Category["Stage 1"];
-        }
-
-        if (diastolicValue >= 90 && diastolicValue <= 120){
-            return Category["Stage 2"];
-        }
-
-        if (diastolicValue > 120){
-            return Category.Crisis;
-        }
-
-        return Category.Unknown;
     }
 
     function getWeeklyAggregates(dbs : BloodPressureDumbbell[]){
@@ -261,6 +166,100 @@ export default function (props : BloodPressureVisualizationProps) {
         return bpMetrics;
     }
 
+    function buildDetailBlock( description : string, alert? : string, alertClass? : string, value? : number ){
+        return <div className="mdhui-blood-pressure-metrics-block">
+            <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
+            <div className="mdhui-blood-pressure-metric-description">{description}</div>
+            <div className={alertClass}>{alert ?? "No data yet"}</div>
+        </div>
+    }
+
+    function buildInterval(entries : number[]){
+        const min = Math.min(...entries);
+        const closedInterval : ClosedInterval = {values : [min]};
+        
+        var max = min;
+        if (entries.length > 1){
+            max = Math.max(...entries);
+        }
+        closedInterval.values.push(max);
+        return closedInterval;
+    }
+
+    function assignClass(avgSystolic : number, avgDiastolic : number){
+
+        const systolicCategory = getSystolicCategory(avgSystolic);
+        const diastolicCategory = getDiastolicCategory(avgDiastolic);
+
+        if (systolicCategory === Category.Normal && diastolicCategory === Category.Normal){
+            return DumbbellClass["mdhui-dumbbell-in-range"];
+        }
+
+        return DumbbellClass["mdhui-dumbbell-out-of-range"];
+    }
+
+    function getSystolicCategory(systolicValue : number) {
+        if (systolicValue < 90){
+            return Category.Low
+        }
+
+        if (systolicValue >= 90 && systolicValue <= 119){
+            return Category.Normal;
+        }
+
+        if (systolicValue >= 120 && systolicValue <= 129){
+            return Category.Elevated;
+        }
+
+        if (systolicValue >= 130 && systolicValue <= 139){
+            return Category["Stage 1"];
+        }
+
+        if (systolicValue >= 140 && systolicValue <= 180){
+            return Category["Stage 2"];
+        }
+
+        if (systolicValue > 180){
+            return Category.Crisis;
+        }
+
+        return Category.Unknown;
+    }
+
+    function getDiastolicCategory(diastolicValue : number) {
+        if (diastolicValue < 60){
+            return Category.Low
+        }
+
+        if (diastolicValue >= 60 && diastolicValue <= 79){
+            return Category.Normal;
+        }
+
+        if (diastolicValue >= 80 && diastolicValue <= 89){
+            return Category["Stage 1"];
+        }
+
+        if (diastolicValue >= 90 && diastolicValue <= 120){
+            return Category["Stage 2"];
+        }
+
+        if (diastolicValue > 120){
+            return Category.Crisis;
+        }
+
+        return Category.Unknown;
+    }
+    
+    function initializeWeekPager() : Date {
+        const today = startOfDay(new Date());
+        const monday : Date = isMonday(today) ? today : previousMonday(today);
+        return monday;
+    }
+
+    function pageWeek(newStart: Date) {
+        pageWeeklyData( newStart );
+    }
+
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", initialize);
@@ -277,7 +276,7 @@ export default function (props : BloodPressureVisualizationProps) {
     else
     {
         return (
-            <div className="mdhui-blood-pressure-visualization">
+            <div>
                 <Title>Blood Pressure</Title>
                 <div className="mdhui-blood-pressure-visualization-pager">
                     <DateRangeNavigator intervalType="Week" intervalStart={startOfWeek} onIntervalChange={pageWeek}></DateRangeNavigator>

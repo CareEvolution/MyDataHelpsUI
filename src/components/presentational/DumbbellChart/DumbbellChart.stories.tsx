@@ -24,8 +24,8 @@ const yInterval : ClosedInterval = {values: [_minDiastolic, _maxSystolic]};
 const axis : Axis = {yRange : yInterval, yIncrement : 50, xIncrement: (85/7)};
 
 
-export const Default = Template.bind({});
-Default.args = {
+export const WithData = Template.bind({});
+WithData.args = {
 	axis: axis,
 	dumbbells: [
 		{dataPoint : {dataSet1: {values: [120, 110]}, dataSet2: {values: [180, 160]}}, xValue: "8/1", class: DumbbellClass["mdhui-dumbbell-in-range"]},
@@ -36,3 +36,10 @@ Default.args = {
 		{dataPoint : {dataSet1: {values: [54, 55]}, dataSet2: {values: [240, 250]}}, xValue: "12/31", class: DumbbellClass["mdhui-dumbbell-out-of-range"]},
 	]
 }
+
+
+export const NoData = Template.bind({});
+NoData.args = {
+	axis: axis,
+	dumbbells: []
+};

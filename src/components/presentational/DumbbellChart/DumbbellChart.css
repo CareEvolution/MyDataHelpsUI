@@ -55,8 +55,8 @@
 .mdhui-dumbbell-out-of-range-icon{
     position: absolute;
     z-index: 300;
-    background-color: #EF3724;
-    border-color:#EF3724; 
+    background-color: var(--mdhui-color-danger);
+    border-color:var(--mdhui-color-danger); 
     width: 9px;
     height: 8px;
     min-height: 9px;
@@ -93,11 +93,11 @@
  }
 
 .mdhui-dumbbell-in-range {
-    background-color: #6495ED;
-    border-color:#6495ED;
+    background-color: var(--mdhui-color-primary);
+    border-color: var(--mdhui-color-primary);
 }
 
 .mdhui-dumbbell-out-of-range {
-    background-color: #EF3724;
-    border-color: #EF3724;
+    background-color: var(--mdhui-color-danger);
+    border-color: var(--mdhui-color-danger);
 }
