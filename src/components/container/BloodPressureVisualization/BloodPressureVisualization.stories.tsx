@@ -25,7 +25,7 @@ const Template: ComponentStory<typeof BloodPressureVisualization> = (args: Blood
 const bpSurveyParams : BloodPressureDataParameters = {
 	dataSource: "Survey",
 	surveyParameters : {
-		surveyName: "Blood Pressure Readings",
+		surveyName: "RESOLVE Blood Pressure Readings - OPTIONAL",
 		dateOfResultId : "Date of BP",
 		systolicResultId : "Systolic BP",
 		diastolicResultId : "Diastolic BP"

@@ -38,7 +38,13 @@
     display: flex;
     justify-content: right;
     align-items: end;
+    
 }
+
+.mdhui-dumbbell-y-axis .mdhui-dumbbell-axis-text{
+    margin-right: 12px;
+}
+
 
 .mdhui-dumbbell-pill{
     position: absolute;

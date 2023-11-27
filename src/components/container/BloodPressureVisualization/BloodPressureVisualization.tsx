@@ -9,6 +9,7 @@ import { addDays, format, isEqual, isMonday, previousMonday, startOfDay } from "
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BloodPressureDataParameters, BloodPressureDataPoint, BloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure";
+import language from "../../../helpers/language";
 
 export enum Category {"Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown"};
 export type BloodPressurePreviewState = "WithData" | "NoData" | "Loading" | "Live";
@@ -277,24 +278,24 @@ export default function (props : BloodPressureVisualizationProps) {
     {
         return (
             <div>
-                <Title>Blood Pressure</Title>
+                <Title defaultMargin order={3}>{language("blood-pressure")}</Title>
                 <div className="mdhui-blood-pressure-visualization-pager">
                     <DateRangeNavigator intervalType="Week" intervalStart={startOfWeek} onIntervalChange={pageWeek}></DateRangeNavigator>
                 </div>
                 <DumbbellChart dumbbells={weeklyDataForViz} axis={axis} ></DumbbellChart>
                 <div className="mdhui-blood-pressure-metrics">
                     <div className="mdhui-blood-pressure-metrics-rows">
-                        {buildDetailBlock("Systolic Average", metrics?.averageSystolicAlert, metrics?.averageSystolicAlertClass, metrics?.averageSystolic)}
-                        {buildDetailBlock("Diastolic Average", metrics?.averageDiastolicAlert, metrics?.averageDiastolicAlertClass, metrics?.averageDiastolic)}
+                        {buildDetailBlock(language("systolic-average"), metrics?.averageSystolicAlert, metrics?.averageSystolicAlertClass, metrics?.averageSystolic)}
+                        {buildDetailBlock(language("diastolic-average"), metrics?.averageDiastolicAlert, metrics?.averageDiastolicAlertClass, metrics?.averageDiastolic)}
                     </div>
                     <div className="mdhui-blood-pressure-metrics-rows">
-                        {buildDetailBlock("Highest Systolic", metrics?.maxSystolicAlert, metrics?.maxSystolicAlertClass, metrics?.maxSystolic)}
-                        {buildDetailBlock("Lowest Diastolic", metrics?.minDiastolicAlert, metrics?.minDiastolicAlertClass, metrics?.minDiastolic)}
+                        {buildDetailBlock(language("highest-systolic"), metrics?.maxSystolicAlert, metrics?.maxSystolicAlertClass, metrics?.maxSystolic)}
+                        {buildDetailBlock(language("lowest-diastolic"), metrics?.minDiastolicAlert, metrics?.minDiastolicAlertClass, metrics?.minDiastolic)}
                     </div>
                 </div>
                 <div>
                     {props.dataParameters.surveyParameters && 
-                        <Button onClick={() => MyDataHelps.startSurvey(props.dataParameters.surveyParameters?.surveyName ?? "")}>Log Blood Pressure <FontAwesomeSvgIcon icon={faPlus} /></Button>
+                        <Button defaultMargin onClick={() => MyDataHelps.startSurvey(props.dataParameters.surveyParameters?.surveyName ?? "")}>{language("log-blood-pressure")} <FontAwesomeSvgIcon icon={faPlus} /></Button>
                     }
                 </div>
             </div>
