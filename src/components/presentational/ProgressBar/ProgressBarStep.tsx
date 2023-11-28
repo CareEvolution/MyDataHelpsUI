@@ -9,7 +9,7 @@ export interface ProgressBarStepsProps {
 	height: string;
 }
 
-export function ProgressBarSteps(props: ProgressBarStepsProps) {
+export default function ProgressBarSteps(props: ProgressBarStepsProps) {
 	let layoutContext = useContext(LayoutContext);
 	let calcTopMargin = "0px";
 	console.log(calcTopMargin);
