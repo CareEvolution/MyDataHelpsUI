@@ -14,8 +14,8 @@ export default {
 		layout: 'auto',
 	},
 	argTypes: {
-		backgroundColor: { control: 'object', description: "The backgroundColor color of the progress bar specified as a ColorDefinition" },
-		fillColor: { control: 'object', description: "The fillColor color of the progress bar specified as a ColorDefinition" },
+		backgroundColor: { control: 'object', description: "The backgroundColor color of the progress bar" },
+		fillColor: { control: 'object', description: "The fillColor color of the progress bar" },
 		fillPercent: { control: 'number', description: "The percent of the progress bar that is filled" },
 		steps: { control: 'object', description: "An array of steps to display on the progress bar. A step specifies the position on the progress bar as a percent and a React element to display at that position." },
 	}
