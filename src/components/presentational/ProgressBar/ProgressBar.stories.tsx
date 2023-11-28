@@ -5,6 +5,7 @@ import Layout from "../Layout";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ProgressBarStep from "./ProgressBarStep";
 
 export default {
 	title: "Presentational/ProgressBar",
@@ -13,8 +14,8 @@ export default {
 		layout: 'auto',
 	},
 	argTypes: {
-		background: { control: 'color', description: "The background color of the progress bar" },
-		fill: { control: 'color', description: "The fill color of the progress bar" },
+		backgroundColor: { control: 'object', description: "The backgroundColor color of the progress bar specified as a ColorDefinition" },
+		fillColor: { control: 'object', description: "The fillColor color of the progress bar specified as a ColorDefinition" },
 		fillPercent: { control: 'number', description: "The percent of the progress bar that is filled" },
 		steps: { control: 'object', description: "An array of steps to display on the progress bar. A step specifies the position on the progress bar as a percent and a React element to display at that position." },
 	}
@@ -30,45 +31,47 @@ Default.args = {
 export const GradientFill75TargetStep = Template.bind({});
 GradientFill75TargetStep.args = {
 	fillPercent: 75,
-	fill: "linear-gradient(90deg, #6cb144, #adc247)",
+	backgroundColor: { lightMode: "#d3d3d3", darkMode: "#c2c2c2" },
+	fillColor: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
-		stepPercent: 100,
-		stepIcon:
-			<span style={{ borderRadius: "24px", height: "24px", width: "24px", marginTop: "-2px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgba(148, 148, 148, 1)", padding: "4px 4px" }}>
+		percent: 100,
+		icon:
+			<ProgressBarStep borderColor="rgba(148, 148, 148, 1)" backgroundColor="rgba(148, 148, 148, 1)" height="24px">
 				<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "#fcfcfc", marginTop: "-3px" }} />
-			</span>
+			</ProgressBarStep>
 	}],
 } as ProgressBarProps;
 
 export const GradientFill100TargetStep = Template.bind({});
 GradientFill100TargetStep.args = {
 	fillPercent: 100,
-	fill: "linear-gradient(90deg, #6cb144, #adc247)",
+	fillColor: "linear-gradient(90deg, #6cb144, #adc247)",
 	steps: [{
-		stepPercent: 100,
-		stepIcon:
-			<span style={{ border: "2px solid gold", borderRadius: "24px", height: "24px", width: "24px", marginTop: "-3px", color: "rgba(148, 148, 148, 1)", backgroundColor: "#EA6B54", padding: "4px 4px" }}>
-				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "gold", marginTop: "-3px" }} />
-			</span>
+		percent: 100,
+		icon:
+			<ProgressBarStep borderColor="gold" backgroundColor="#EA6B54" height="24px">
+				<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "gold", marginTop: "-3px" }} />
+			</ProgressBarStep>
 	}],
 } as ProgressBarProps;
 
 export const GradientFillIconSteps = Template.bind({});
 GradientFillIconSteps.args = {
 	fillPercent: 50,
-	fill: "linear-gradient(270deg, #F0CA68 0%, #E5917F 100%)",
+	backgroundColor: "#d3d3d3",
+	fillColor: "linear-gradient(270deg, #F0CA68 0%, #E5917F 100%)",
 	steps: [...Array(4)].map((_e, i) => {
 		let value = (i + 1) * 25;
 		let icon = (value <= 50) ?
-			<span style={{ border: "2px solid gold", borderRadius: "16px", height: "16px", width: "16px", color: "rgba(148, 148, 148, 1)", backgroundColor: "#EA6B54", padding: "4px 4px" }}>
+			<ProgressBarStep borderColor="gold" backgroundColor="#EA6B54" height="16px">
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
-			</span> :
-			<span style={{ border: "2px solid rgba(148, 148, 148, 1)", borderRadius: "16px", height: "16px", width: "16px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgba(148, 148, 148, 1)", padding: "4px 4px" }}>
+			</ProgressBarStep> :
+			<ProgressBarStep borderColor="rgba(148, 148, 148, 1)" backgroundColor="rgba(148, 148, 148, 1)" height="16px">
 				<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
-			</span>;
+			</ProgressBarStep>
 		return {
-			stepPercent: Math.trunc(value),
-			stepIcon: icon
+			percent: Math.trunc(value),
+			icon: icon
 		}
 	})
 } as ProgressBarProps;
@@ -76,24 +79,24 @@ GradientFillIconSteps.args = {
 export const LabelSteps = Template.bind({});
 LabelSteps.args = {
 	fillPercent: 100 * 75 / 175,
-	fill: "rgb(34, 115, 209, 0.5)",
+	fillColor: "rgb(34, 115, 209, 0.5)",
 	steps: [...Array(7)].map((_e, i) => {
 		let amount = (i + 1) * 25;
 		let icon = (amount == 75) ?
-			<span style={{ border: "2px solid white", borderRadius: "14px", height: "14px", width: "14px", color: "white", backgroundColor: "rgb(34, 115, 209)", padding: "4px 4px", fontSize: "0.8em", marginTop: "1px" }}>
-				75
-			</span> :
+			<ProgressBarStep borderColor="white" backgroundColor="rgb(34, 115, 209)" height="14px">
+				<span style={{ fontSize: "0.8em" }}>75</span>
+			</ProgressBarStep> :
 			((amount < 75) ?
-				<span style={{ border: "2px solid white", borderRadius: "14px", height: "14px", width: "14px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgb(34, 115, 209)", padding: "4px 4px", marginTop: "1px" }}>
+				<ProgressBarStep borderColor="white" backgroundColor="rgb(34, 115, 209)" height="14px">
 					<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
-				</span> :
-				<span style={{ border: "2px solid rgba(148, 148, 148, 1)", borderRadius: "14px", height: "14px", width: "14px", color: "rgba(148, 148, 148, 1)", backgroundColor: "rgba(148, 148, 148, 1)", padding: "4px 4px", marginTop: "1px" }}>
+				</ProgressBarStep> :
+				<ProgressBarStep borderColor="white" backgroundColor="rgba(148, 148, 148, 1)" height="14px">
 					<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "rgb(34, 115, 209)", marginTop: "-3px" }} />
-				</span>
+				</ProgressBarStep>
 			);
 		return {
-			stepPercent: Math.trunc(100 * amount / 175),
-			stepIcon: icon
+			percent: Math.trunc(100 * amount / 175),
+			icon: icon
 		}
 	})
 } as ProgressBarProps

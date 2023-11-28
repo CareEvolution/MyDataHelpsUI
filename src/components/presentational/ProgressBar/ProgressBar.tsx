@@ -1,36 +1,46 @@
+import { ColorDefinition, resolveColor } from "../../../helpers/colors";
 import "./ProgressBar.css";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
+import { LayoutContext } from '../Layout';
 
 export interface ProgressBarProps {
-	background?: string;
-	fill?: string;
+	backgroundColor?: ColorDefinition;
+	fillColor?: ColorDefinition;
 	fillPercent: number;
 	steps?: [
 		{
-			stepPercent: number;
-			stepIcon: ReactElement;
+			percent: number;
+			icon: ReactElement;
 		}
-	]
+	],
+	innerRef?: React.Ref<HTMLDivElement>;
+	defaultMargin?: boolean
 }
 
 ProgressBar.defaultProps = {
-	background: "#d3d3d3",
-	fill: "#00A862",
+	backgroundColor: "var(--mdhui-background-color-0)",
+	fillColor: "var(--mdhui-color-primary)",
 	fillPercent: 0
 }
 
 export default function ProgressBar(props: ProgressBarProps) {
+	let layoutContext = useContext(LayoutContext);
+	let classes = ["mdhui-progress-bar"];
+	if (props.defaultMargin) {
+		classes.push("mdhui-progress-bar-default-margin");
+	}
+
 	return (
-		<div className="progress-bar">
-			<div className="progress-bar-background" style={{ background: props.background }}>
-				<div className="progress-bar-fill" style={{ width: props.fillPercent + "%", background: props.fill }} />
+		<div className={classes.join(" ")} ref={props.innerRef}>
+			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
+				<div className="mdhui-progress-bar-fill" style={{ width: props.fillPercent + "%", background: resolveColor(layoutContext?.colorScheme, props.fillColor) }} />
 			</div>
-			<div className="progress-steps">
+			<div className="mdhui-progress-steps">
 				{props.steps &&
 					<>
 						{props.steps.map((step, i) =>
-							<div key={`${i}-step`} className="step-icon" style={{ left: step.stepPercent + "%" }}>
-								{step.stepIcon}
+							<div key={`${i}-step`} className="step-icon" style={{ left: step.percent + "%" }}>
+								{step.icon}
 							</div>
 						)}
 					</>

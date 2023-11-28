@@ -1,26 +1,20 @@
-.progress-bar {
-	display:inline-block;
-	margin: 10px 0px;
+.mdhui-progress-bar {
+	display: block;
+	max-width:500px;
 	width: 100%;
-	max-width: 500px;
 	--icon_size: 24px;
 	--icon_border_width: 2px;
 }
 
-.progress-bar-fill {
-    position: absolute;
-	min-height: 1px;
-    height: calc( var(--icon_size) + 4px);
-	top:0;
-	border-radius: var(--icon_size);
-	z-index:1
+.mdhui-progress-bar .mdhui-progress-bar-default-margin {
+	margin: 16px;
 }
 
-.progress-bar .progress-bar-background {
-    border-radius: 500px;
+.mdhui-progress-bar .mdhui-progress-bar-background {
+	border-radius: 500px;
 	border-width: var(--icon_border_width) ;
 	border-style: none;
-    background: #fff;
+	background: #fff;
 	overflow: hidden;
 	width: 100%;
 	position: relative;
@@ -28,9 +22,17 @@
 	z-index:1;
 }
 
-.progress-bar .progress-steps {
+.mdhui-progress-bar .mdhui-progress-bar-background .mdhui-progress-bar-fill {
+	position: absolute;
+	min-height: 1px;
+	height: calc( var(--icon_size) + 4px);
 	top:0;
-	margin: 10px 0px;
+	border-radius: var(--icon_size);
+	z-index:1
+}
+
+.mdhui-progress-bar .mdhui-progress-steps {
+	top:0;
 	width: 100%;
 	max-width: 500px;
 	position: absolute;
@@ -38,12 +40,12 @@
 	display:inline-block;
 }
 
-.progress-bar .step-icon {
+.mdhui-progress-bar .step-icon {
 	position: absolute;
 	transform: translate(-100%, 0)
 }
 
-.progress-bar .step-icon span {
+.mdhui-progress-bar .step-icon * {
 	display: flex;
 	align-items: center;
 	justify-content: center;
