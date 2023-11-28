@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof Layout> = (args: LayoutProps) => <Layout {
         <TextBlock>The layout component should be used as a wrapper around your
             MyDataHelps view. It will set some global styles and provide some theming
             capabilities.  You may control the color scheme by passing in the
-            colorScheme prop.  
+            colorScheme prop.
         </TextBlock>
     </Card>
 </Layout>;
@@ -48,4 +48,10 @@ export const CustomBackground = Template.bind({});
 CustomBackground.args = {
     colorScheme: "dark",
     bodyBackgroundColor: "#23395d",
+}
+
+export const CustomBackgroundLightDark = Template.bind({});
+CustomBackgroundLightDark.args = {
+    colorScheme: "auto",
+    bodyBackgroundColor: { darkMode: "#23395d", lightMode: "#ffffff" },
 }

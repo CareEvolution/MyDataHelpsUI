@@ -11,6 +11,7 @@ export interface MostRecentNotificationProps {
 	onViewMore?: Function,
 	hideAfterHours?: number,
 	previewState?: MostRecentNotificationPreviewState
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type MostRecentNotificationPreviewState = "Default";
@@ -57,10 +58,10 @@ export default function (props: MostRecentNotificationProps) {
 	}
 
 	return (
-		<div className="mdhui-most-recent-notification">
+		<div ref={props.innerRef} className="mdhui-most-recent-notification">
 			<SingleNotification notification={notification} />
 			{props.onViewMore &&
-				<Action subtitle={language["all-notifications"]} onClick={props.onViewMore} />
+				<Action subtitle={language("all-notifications")} onClick={props.onViewMore} />
 			}
 		</div>
 	);

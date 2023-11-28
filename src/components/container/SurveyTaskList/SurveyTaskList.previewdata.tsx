@@ -24,10 +24,23 @@ export var previewIncompleteTasks: SurveyTask[] =
 			"surveyDisplayName": "Pregnancy: Followup",
 			"surveyDescription": "3 minutes",
 			"status": "incomplete",
-			"hasSavedProgress": false,
+			"hasSavedProgress": true,
 			"dueDate": add(new Date(), { days: 0 }).toISOString(),
 			"insertedDate": "2022-03-14T19:13:48.283Z",
 			"modifiedDate": "2022-03-14T19:13:48.283Z",
+			linkIdentifier: "1"
+		},
+		{
+			"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a11",
+			"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
+			"surveyName": "Rating: CheckIn",
+			"surveyDisplayName": "Let us know how we're doing",
+			"surveyDescription": "10 minutes",
+			"status": "incomplete",
+			"hasSavedProgress": false,
+			"dueDate": null,
+			"insertedDate": "2022-03-15T16:56:26.703Z",
+			"modifiedDate": "2022-03-15T16:56:26.703Z",
 			linkIdentifier: "1"
 		},
 		{
@@ -52,6 +65,19 @@ export var previewIncompleteTasks: SurveyTask[] =
 			"status": "incomplete",
 			"hasSavedProgress": false,
 			"dueDate": add(new Date(), { days: 10 }).toISOString(),
+			"insertedDate": "2022-03-15T16:56:26.703Z",
+			"modifiedDate": "2022-03-15T16:56:26.703Z",
+			linkIdentifier: "1"
+		},
+		{
+			"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a12",
+			"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
+			"surveyName": "Rating2: CheckIn",
+			"surveyDisplayName": "Rate Later",
+			"surveyDescription": "10 minutes",
+			"status": "incomplete",
+			"hasSavedProgress": false,
+			"dueDate": add(new Date(), { years: 10 }).toISOString(),
 			"insertedDate": "2022-03-15T16:56:26.703Z",
 			"modifiedDate": "2022-03-15T16:56:26.703Z",
 			linkIdentifier: "1"

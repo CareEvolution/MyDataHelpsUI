@@ -10,11 +10,17 @@
     top: 0;
     font-weight: bold;
     background: var(--mdhui-background-color-1);
-    line-height: 1.2em;
 }
 
 .mdhui-navigation-bar .title {
     font-size: 1.2em;
+}
+
+.mdhui-navigation-bar .subtitle {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--mdhui-text-color-2);
+    margin-top: 8px;
 }
 
 .mdhui-navigation-bar.scroll-shadow {

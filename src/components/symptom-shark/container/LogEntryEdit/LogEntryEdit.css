@@ -1,0 +1,60 @@
+.mdhui-ss-log-entry-edit {
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-top: 8px;
+    position: relative;
+    /*Prevents keyboard from covering notes on Android devices*/
+    padding-bottom: 300px;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-edit-title {
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 16px;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-edit-items {
+    padding-top: 8px;
+    padding-bottom: 16px;
+    text-align: center;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-edit-item {
+    margin: 4px;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-edit-face {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-symptom-edit-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--mdhui-modal-overlay-color);
+    overflow: auto;
+    z-index: 999;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-symptom-edit-padder {
+    padding-bottom: 16px;
+    position: absolute;
+    padding-top: 48px;
+    top: env(safe-area-inset-top);
+    left: 48px;
+    right: 48px;
+}
+
+.mdhui-ss-log-entry-edit .mdhui-ss-symptom-edit-container {
+    border-radius: var(--mdhui-card-border-radius);
+    background: var(--mdhui-background-color-0);
+    padding: 16px;
+}

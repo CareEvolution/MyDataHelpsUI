@@ -22,7 +22,7 @@ export default function (props: NotificationsViewProps) {
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			{props.presentation &&
-				<NavigationBar title={language["notifications"]}
+				<NavigationBar title={language("notifications")}
 					showBackButton={props.presentation == "Push"}
 					showCloseButton={props.presentation == "Modal"} />
 			}

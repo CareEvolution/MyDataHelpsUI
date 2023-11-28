@@ -12,6 +12,8 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    onProviderConnected?: (provider: ExternalAccountProvider) => void;
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -60,7 +62,7 @@ export default function (props: ProviderSearchProps) {
         setSearching(true);
         let requestID = ++currentRequestID;
 
-        MyDataHelps.getExternalAccountProviders(search, null, pageSize, currentPage).then(function (searchResultsResponse) {
+        MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
             if (requestID == currentRequestID) {
                 updateSearchResults(searchResultsResponse.externalAccountProviders);
                 setTotalResults(searchResultsResponse.totalExternalAccountProviders);
@@ -93,9 +95,17 @@ export default function (props: ProviderSearchProps) {
         debouncedPerformSearch(event.target.value);
     }
 
-    function connectToProvider(providerID: number) {
-        if (!(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID);
+    function connectToProvider(provider: ExternalAccountProvider) {
+        const providerID = provider.id;
+        if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true })
+                .then(function () {
+                    if (props.onProviderConnected) {
+                        props.onProviderConnected(provider);
+                    }
+
+                    return loadExternalAccounts();
+                });
         }
     }
 
@@ -128,26 +138,26 @@ export default function (props: ProviderSearchProps) {
     }, [currentPage]);
 
     return (
-        <div className="mdhui-provider-search">
+        <div ref={props.innerRef} className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
-                    <input title={language["search"]} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language["search"]} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <input title={language("search")} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
                     <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider.id)}>
+                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider)}>
                         {provider.logoUrl &&
                             <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
                         }
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language["reconnect"]}</div>
+                                <div className="provider-status error-status">{language("provider-search-reconnect")}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
-                                <div className="provider-status connected-status">{language["connected"]}</div>
+                                <div className="provider-status connected-status">{language("connected")}</div>
                             }
                         </div>
                     </UnstyledButton>

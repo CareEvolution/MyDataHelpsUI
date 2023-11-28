@@ -1,61 +1,25 @@
-.mdhui-single-survey-task
-{
-    padding: 16px;
-    display: grid;
-    grid-template-columns: max-content auto max-content;
-    grid-column-gap: 16px;
-    align-items: center;
-    width: 100%;
+.mdhui-single-survey-task .survey-name {
+    font-size: .88em;
+    font-weight: bold;
 }
 
-    .mdhui-single-survey-task .status-icon
-    {
-        color: var(--mdhui-text-color-3);
-    }
+.mdhui-single-survey-task .survey-description,
+.mdhui-single-survey-task .completed-date {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+}
 
-    .mdhui-single-survey-task.complete .status-icon
-    {
-        color: var(--mdhui-color-success);
-    }
+.mdhui-single-survey-task .due-date {
+    font-size: .88em;
+    color: var(--mdhui-color-primary);
+}
 
-    .mdhui-single-survey-task .survey-name
-    {
-        font-size: .88em;
-        font-weight: bold;
-    }
+.mdhui-single-survey-task .due-date.warning {
+    color: var(--mdhui-color-warning);
+    font-weight: bold;
+}
 
-    .mdhui-single-survey-task .survey-description,
-    .mdhui-single-survey-task .completed-date
-    {
-        font-size: .88em;
-        color: var(--mdhui-text-color-2);
-    }
-
-    .mdhui-single-survey-task .due-date
-    {
-        font-size: .88em;
-        color: var(--mdhui-color-primary);
-    }
-
-        .mdhui-single-survey-task .due-date.warning
-        {
-            color: var(--mdhui-color-warning);
-            font-weight: bold;
-        }
-
-        .mdhui-single-survey-task .due-date.danger
-        {
-            color: var(--mdhui-color-danger);
-            font-weight: bold;
-        }
-
-    .mdhui-single-survey-task .indicator
-    {
-        font-size: 16px;
-        color: var(--mdhui-text-color-3);
-    }
-
-    .mdhui-single-survey-task.incomplete
-    {
-        cursor: pointer;
-    }
+.mdhui-single-survey-task .due-date.danger {
+    color: var(--mdhui-color-danger);
+    font-weight: bold;
+}

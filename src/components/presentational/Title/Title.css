@@ -1,0 +1,66 @@
+.mdhui-title {
+    display: flex;
+    align-items: center;
+    gap: var(--mdhui-padding-md);
+}
+
+.mdhui-title.mdhui-title-default-margin {
+    margin: var(--mdhui-padding-md);
+}
+
+.mdhui-title.mdhui-title-image-top {
+    display: block;
+}
+
+.mdhui-title .mdhui-title-image
+{
+    display: flex;
+}
+
+.mdhui-title .mdhui-title-image-autosize img {
+    width: 100%;
+}
+
+.mdhui-title h1,
+.mdhui-title h2,
+.mdhui-title h3,
+.mdhui-title h4,
+.mdhui-title h5,
+.mdhui-title h6 {
+    margin: 0;
+    padding: 0;
+}
+
+
+.mdhui-title.mdhui-title-image-top h1,
+.mdhui-title.mdhui-title-image-top h2,
+.mdhui-title.mdhui-title-image-top h3,
+.mdhui-title.mdhui-title-image-top h4,
+.mdhui-title.mdhui-title-image-top h5,
+.mdhui-title.mdhui-title-image-top h6 {
+    margin-top: var(--mdhui-padding-md);
+}
+
+.mdhui-title h1 {
+    font-size: 2em;
+}
+
+.mdhui-title h2 {
+    font-size: 1.5em;
+}
+
+.mdhui-title h3 {
+    font-size: 1.17em;
+}
+
+.mdhui-title h4 {
+    font-size: 1em;
+}
+
+.mdhui-title h5 {
+    font-size: 0.83em;
+}
+
+.mdhui-title h6 {
+    font-size: 0.67em;
+}

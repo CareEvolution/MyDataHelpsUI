@@ -16,9 +16,9 @@ export default function (props: GarminMonthChartsProps) {
 						[{
 							showAverage: true,
 							dailyDataType: DailyDataType.GarminSteps,
-							label: language["steps"]
+							label: language("steps")
 						}],
-					title: language["steps"],
+					title: language("steps"),
 					syncId: "garmin"
 				},
 				{
@@ -26,9 +26,9 @@ export default function (props: GarminMonthChartsProps) {
 						[{
 							showAverage: true,
 							dailyDataType: DailyDataType.GarminRestingHeartRate,
-							label: language["resting-heart-rate"]
+							label: language("resting-heart-rate")
 						}],
-					title: language["resting-heart-rate"],
+					title: language("resting-heart-rate"),
 					syncId: "DeviceDataCharts"
 				},
 			]}

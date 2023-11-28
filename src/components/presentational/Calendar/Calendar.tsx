@@ -8,6 +8,8 @@ export interface CalendarProps {
 	year: number,
 	dayRenderer(year: number, month: number, day?: number): JSX.Element | null,
 	weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+	className?: string
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 interface CalendarWeek {
@@ -69,7 +71,7 @@ export default function (props: CalendarProps) {
 	generateWeeks();
 
 	return (
-		<div className="mdhui-calendar">
+		<div ref={props.innerRef} className={"mdhui-calendar" + (props.className ? ` ${props.className}` : "")}>
 			<table cellPadding="0" cellSpacing="0">
 				<thead>
 					<tr>

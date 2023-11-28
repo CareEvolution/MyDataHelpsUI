@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import "./ExternalAccountsPreview.css"
-import MyDataHelps, {ExternalAccount} from "@careevolution/mydatahelps-js"
-import {Action} from '../../presentational'
+import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js"
+import { Action } from '../../presentational'
 import language from '../../../helpers/language'
-import {previewAccounts} from './ExternalAccountsPreview.previewdata'
+import { previewAccounts } from './ExternalAccountsPreview.previewdata'
 
 export interface ExternalAccountsPreviewProps {
     excludeProviders?: boolean;
@@ -11,6 +11,7 @@ export interface ExternalAccountsPreviewProps {
     excludeDeviceManufacturers?: boolean;
     applicationUrl: ExternalAccountsApplicationUrl;
     previewState?: ExternalAccountsPreviewPreviewState;
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type ExternalAccountsApplicationUrl = "preview" | string;
@@ -24,21 +25,21 @@ export default function (props: ExternalAccountsPreviewProps) {
 
     if (!props.excludeProviders) {
         externalAccountProviderCategories.push('Provider');
-        title += language['external-accounts-title-providers'];
+        title += language('external-accounts-title-providers');
     }
     if (!props.excludeHealthPlans) {
         externalAccountProviderCategories.push('Health Plan');
         if (title.length > 0) {
-            title += language['external-accounts-title-divider'];
+            title += language('external-accounts-title-divider');
         }
-        title += language['external-accounts-title-health-plans'];
+        title += language('external-accounts-title-health-plans');
     }
     if (!props.excludeDeviceManufacturers) {
         externalAccountProviderCategories.push('Device Manufacturer');
         if (title.length > 0) {
-            title += language['external-accounts-title-divider'];
+            title += language('external-accounts-title-divider');
         }
-        title += language['external-accounts-title-devices'];
+        title += language('external-accounts-title-devices');
     }
 
     function initialize() {
@@ -80,7 +81,7 @@ export default function (props: ExternalAccountsPreviewProps) {
     }
 
     return (
-        <div className="mdhui-external-accounts-preview">
+        <div ref={props.innerRef} className="mdhui-external-accounts-preview">
             <Action title={title} onClick={() => manageExternalAccounts()}>
                 {externalAccounts.map((account) =>
                     <div key={account.id} className="external-account-title">{account.provider.name}</div>

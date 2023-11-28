@@ -14,9 +14,7 @@ export default {
 
 const Template: ComponentStory<typeof ProviderSearch> = (args: ProviderSearchProps) =>
 	<Layout colorScheme="auto">
-		<Card>
-			<ProviderSearch {...args} />
-		</Card>
+		<ProviderSearch {...args} />
 	</Layout>;
 
 export const Default = Template.bind({});
@@ -24,5 +22,22 @@ Default.args = {
 	previewState: "Default"
 }
 Default.parameters = {
+	externalAccounts: []
+}
+
+export const onProviderSelected = Template.bind({});
+onProviderSelected.args = {
+	previewState: "Default",
+	onProviderSelected: (provider) => alert(`You selected ${provider.name}`)
+}
+onProviderSelected.parameters = {
+	externalAccounts: []
+}
+
+export const Live = Template.bind({});
+Live.args = {
+	providerCategories: ["Health Plan"]
+}
+Live.parameters = {
 	externalAccounts: []
 }

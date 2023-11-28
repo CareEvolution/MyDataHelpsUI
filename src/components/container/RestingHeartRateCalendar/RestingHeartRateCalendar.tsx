@@ -16,6 +16,7 @@ export interface RestingHeartRateCalendarProps {
 	month: number,
 	year: number,
 	showPreviewData: RestingHeartRateCalendarPreviewState
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: RestingHeartRateCalendarProps) {
@@ -82,7 +83,7 @@ export default function (props: RestingHeartRateCalendarProps) {
 	}, [props]);
 
 	return (
-		<div>
+		<div ref={props.innerRef}>
 			{loading && <LoadingIndicator />}
 			{!loading && <Calendar year={props.year} month={props.month} dayRenderer={renderDay}></Calendar>}
 		</div>

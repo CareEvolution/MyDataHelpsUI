@@ -5,8 +5,9 @@ import ConnectedDevices, { ConnectedDevicesPreviewState } from '../ConnectedDevi
 
 export interface GarminDevicesProps {
 	previewState?: ConnectedDevicesPreviewState;
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: GarminDevicesProps) {
-	return (<ConnectedDevices providerName="Garmin" providerNamespace="Garmin" previewData={garminDevicePreviewData} previewState={props.previewState}/>);
+	return (<ConnectedDevices innerRef={props.innerRef} providerName="Garmin" providerNamespace="Garmin" previewData={garminDevicePreviewData} previewState={props.previewState}/>);
 }

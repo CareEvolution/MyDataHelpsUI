@@ -1,5 +1,5 @@
 .mdhui-card .mdhui-date-range-navigator:first-child {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: var(--mdhui-card-border-radius) var(--mdhui-card-border-radius) 0px 0px;
 }
 
 .mdhui-date-range-navigator {
@@ -7,14 +7,19 @@
     text-align: center;
     font-weight: bold;
     border-bottom: solid 1px var(--mdhui-border-color-0);
+    background: var(--mdhui-background-color-0);
+    z-index: 1;
+    position: relative;
+}
+
+.mdhui-date-range-navigator.mdhui-date-range-navigator-sticky {
     position: sticky;
     position: -webkit-sticky;
     top: 0;
-    background: var(--mdhui-background-color-0);
-    z-index: 1;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
 }
 
-.mdhui-date-range-navigator>.navigator-button {
+.mdhui-date-range-navigator .navigator-button {
     position: absolute;
     top: 0;
     padding: 16px;
@@ -22,25 +27,28 @@
     height: 100%;
 }
 
-.mdhui-date-range-navigator>.navigate-previous {
+.mdhui-date-range-navigator .navigate-previous {
     left: 0;
 }
 
-.mdhui-date-range-navigator>.navigate-next {
+.mdhui-date-range-navigator .navigate-next {
     right: 0;
 }
 
 .mdhui-date-range-navigator-rounded {
-    padding: 0;
+    padding: 16px;
+    border: none;
+    background: var(--mdhui-background-color-1);
+}
+
+.mdhui-date-range-navigator-rounded .mdhui-date-range-navigator-inner {
     line-height: 40px;
     border-radius: 32px;
     background: var(--mdhui-background-color-2);
-    margin: 16px;
     position: relative;
-    border: none;
 }
 
-.mdhui-date-range-navigator-rounded>.navigator-button {
+.mdhui-date-range-navigator-rounded .navigator-button {
     padding: 0;
     width: 36px;
     height: 36px;

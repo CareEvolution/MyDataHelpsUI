@@ -13,6 +13,7 @@ export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
     onClick(): void;
     onViewTermInfo(termInfo: TermInformation): void
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: LabResultsSummaryProps) {
@@ -74,7 +75,7 @@ export default function (props: LabResultsSummaryProps) {
     };
 
     if (!model) {
-        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+        return <div ref={props.innerRef} className="mdhui-health-preview-section"><LoadingIndicator /></div>
     }
 
     if (model && !model.ImportantLabs.length && !model.RecentLabs?.RecentLabReports.length) {
@@ -86,38 +87,40 @@ export default function (props: LabResultsSummaryProps) {
         props.onClick();
     }
 
-    return <Action
-        bottomBorder
-        title={language["lab-results-title"]}
-        titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
-        onClick={() => drilldown()}
-        indicatorValue={model?.RecentLabs?.TotalLabReports}
-        indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}
-        className="mdhui-lab-results-summary mdhui-health-preview-section">
-        {!model &&
-            <LoadingIndicator />
-        }
-        {model &&
-            <>
-                {!!model.ImportantLabs.length &&
-                    <div className={"mdhui-lab-results-values-container" + (noOverflow ? " no-overflow" : "")} style={{ height: model.ImportantLabs[0].length * 5.64 + "em" }}>
-                        <div className="mdhui-lab-results-values-slider" style={{ width: (model.ImportantLabs.length * 13 + 0.5) + "em" }}>
-                            {model.ImportantLabs.map((column: any, index: number) =>
-                                <div key={index} className="mdhui-lab-results-values-column">
-                                    {column.map((lab: any, index: number) =>
-                                        <LabResultWithSparkline onViewTermInfo={(t) => props.onViewTermInfo(t)} labResultValue={lab} key={index} />
-                                    )}
-                                </div>
-                            )}
+    return <div ref={props.innerRef}>
+        <Action
+            className="mdhui-lab-results-summary mdhui-health-preview-section"
+            bottomBorder
+            title={language("lab-results-title")}
+            titleIcon={<img className="mdhui-health-preview-icon" src={icon} alt="Lab Results" />}
+            onClick={() => drilldown()}
+            indicatorValue={model?.RecentLabs?.TotalLabReports}
+            indicatorPosition={model.ImportantLabs?.length ? "topRight" : undefined}>
+            {!model &&
+                <LoadingIndicator />
+            }
+            {model &&
+                <>
+                    {!!model.ImportantLabs.length &&
+                        <div className={"mdhui-lab-results-values-container" + (noOverflow ? " no-overflow" : "")} style={{ height: model.ImportantLabs[0].length * 5.64 + "em" }}>
+                            <div className="mdhui-lab-results-values-slider" style={{ width: (model.ImportantLabs.length * 13 + 0.5) + "em" }}>
+                                {model.ImportantLabs.map((column: any, index: number) =>
+                                    <div key={index} className="mdhui-lab-results-values-column">
+                                        {column.map((lab: any, index: number) =>
+                                            <LabResultWithSparkline onViewTermInfo={(t) => props.onViewTermInfo(t)} labResultValue={lab} key={index} />
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                }
-                {!model.ImportantLabs.length &&
-                    <div>
-                        {model.RecentLabs.RecentLabReports.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
-                    </div>
-                }
-            </>
-        }
-    </Action>
+                    }
+                    {!model.ImportantLabs.length &&
+                        <div>
+                            {model.RecentLabs.RecentLabReports.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
+                        </div>
+                    }
+                </>
+            }
+        </Action>
+    </div>
 }

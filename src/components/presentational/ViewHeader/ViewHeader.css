@@ -1,0 +1,19 @@
+.mdhui-view-header {
+    padding: 32px 16px;
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-content: center;
+}
+
+.mdhui-view-header .mdhui-view-header-title {
+    font-weight: 700;
+    font-size: 2em;
+    margin-bottom: 8px;
+    color: var(--mdhui-text-color-0);
+}
+
+.mdhui-view-header .mdhui-view-header-subtitle {
+    font-weight: 500;
+    color: var(--mdhui-text-color-2);
+    font-size: 1.2em;
+}

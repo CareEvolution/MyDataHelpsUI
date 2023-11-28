@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import SurveyTaskList, { SurveyTaskListProps } from "./SurveyTaskList"
 import Layout from "../../presentational/Layout"
 
-
 export default {
 	title: "Container/SurveyTaskList",
 	component: SurveyTaskList,
@@ -22,7 +21,8 @@ Incomplete.args = {
 	limit: 3,
 	status: 'incomplete',
 	title: 'Incomplete Tasks',
-	previewState: "IncompleteTasks"
+	previewState: "IncompleteTasks",
+	variant: "singleCard"
 }
 
 export const Complete = Template.bind({});
@@ -30,5 +30,31 @@ Complete.args = {
 	limit: 3,
 	status: 'complete',
 	title: 'Completed Tasks',
-	previewState: "CompleteTasks"
+	previewState: "CompleteTasks",
+	variant: "singleCard"
+}
+
+export const Multicard = Template.bind({});
+Multicard.args = {
+	limit: 3,
+	status: 'incomplete',
+	title: 'Incomplete Tasks',
+	previewState: "IncompleteTasks",
+	variant: "multiCard"
+}
+
+export const CustomStyle = Template.bind({});
+CustomStyle.args = {
+	limit: 3,
+	status: 'incomplete',
+	title: 'Incomplete Tasks',
+	previewState: "IncompleteTasks",
+	variant: "multiCard",
+	titleColor: "red",
+	cardBackgroundColor: "#eee",
+	cardStyle: {
+		boxShadow:"none"
+	},
+	buttonVariant: "default",
+	buttonColor: "blue"
 }

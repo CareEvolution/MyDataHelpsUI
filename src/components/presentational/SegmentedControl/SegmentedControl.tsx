@@ -5,16 +5,30 @@ import "./SegmentedControl.css"
 
 export interface SegmentedControlProps {
 	segments: { key: string, title: string }[];
-	selectedSegment: string;
-	onSegmentSelected: Function;
+	selectedSegment?: string;
+	onSegmentSelected(segmentKey: string): void;
 	className?: string;
 	color?: string;
+	variant?: "default" | "optionsHorizontal" | "optionsVertical";
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SegmentedControlProps) {
 	var width = 100 / props.segments.length;
+
+	let classes = ["mdhui-segmented-control"];
+	if (props.className) {
+		classes.push(props.className);
+	}
+	if (props.variant == "optionsHorizontal") {
+		classes.push("mdhui-segmented-control-options-horizontal");
+	}
+	if (props.variant == "optionsVertical") {
+		classes.push("mdhui-segmented-control-options-vertical");
+	}
+
 	return (
-		<div style={{ borderColor: props.color }} className={"mdhui-segmented-control " + (props.className || "")}>
+		<div ref={props.innerRef} style={{ borderColor: props.color }} className={classes.join(" ")}>
 			{props.segments.map((s) =>
 				<UnstyledButton className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}

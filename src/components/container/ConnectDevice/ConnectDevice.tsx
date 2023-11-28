@@ -3,7 +3,7 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExcla
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
 import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, Button, CardTitle } from '../../presentational';
+import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
 import add from 'date-fns/add'
@@ -13,12 +13,15 @@ import isAfter from 'date-fns/isAfter'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ConnectDeviceProps {
-	title?: string,
+	title: string,
 	providerName: string,
-	providerIDCallback: ()=>number,
+	providerID: number,
 	previewState?: ConnectDevicePreviewState,
 	disabledBehavior?: 'hide' | 'displayError',
-	dataCollectionProperty:	string 
+	dataCollectionProperty: string
+	innerRef?: React.Ref<HTMLDivElement>
+	titleImage: React.ReactNode
+	hideWhenConnected?: boolean
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -49,20 +52,20 @@ export default function (props: ConnectDeviceProps) {
 				provider: {
 					name: props.providerName,
 					category: "Device Manufacturer",
-					id: props.providerIDCallback(),
+					id: props.providerID,
 					logoUrl: ""
 				}
 			});
 			setLoading(false);
 			return;
 		}
-		
-		MyDataHelps.getDataCollectionSettings().then(function (settings:any) {
+
+		MyDataHelps.getDataCollectionSettings().then(function (settings: any) {
 			setDeviceEnabled(settings[props.dataCollectionProperty]);
 			if (settings[props.dataCollectionProperty]) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {
 					for (let i = 0; i < accounts.length; i++) {
-						if (accounts[i].provider.id == props.providerIDCallback()) {
+						if (accounts[i].provider.id == props.providerID) {
 							setDeviceExternalAccount(accounts[i]);
 						}
 					}
@@ -75,7 +78,10 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerIDCallback());
+		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true })
+			.then(function() {
+				initialize();
+			});
 	}
 
 	useEffect(() => {
@@ -102,7 +108,7 @@ export default function (props: ConnectDeviceProps) {
 	if (!deviceEnabled) {
 		if (props.disabledBehavior == 'displayError' && !loading) {
 			return (
-				<div className="mdhui-connect-device">
+				<div className="mdhui-connect-device" ref={props.innerRef}>
 					<div className="content">{props.title} is not enabled for this project.</div>
 				</div>
 			);
@@ -111,42 +117,39 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}
 
+	if (props.hideWhenConnected && deviceExternalAccount) {
+		return null;
+	}
+
 	return (
-		<div className="mdhui-connect-device">
-			{props.title &&
-				<CardTitle title={props.title} />
-			}
-			{loading &&
-				<LoadingIndicator />
-			}
-			{!loading &&
-				<div className="content">
-					{!deviceExternalAccount &&
-						<div>
-							<div className="subtitle">{language[buildLanguageKey("connect-{device}-intro")]}</div>
-							<Button onClick={() => connectToDevice()}>{language[buildLanguageKey("connect-{device}-button")]}</Button>
+		<div className="mdhui-connect-device" ref={props.innerRef}>
+			<Title defaultMargin autosizeImage order={3} image={props.titleImage}>{props.title}</Title>
+			<TextBlock>
+				{!deviceExternalAccount &&
+					<div>
+						<div className="subtitle">{language(buildLanguageKey("connect-{device}-intro"))}</div>
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
+					<div className="subtitle success">
+						<FontAwesomeSvgIcon icon={faCheckCircle} /> {language(buildLanguageKey("received-{device}-data"))}
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
+					<div className="subtitle downloading">
+						<FontAwesomeSvgIcon icon={faRefresh} spin /> {language("downloading-data")}
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
+					<div>
+						<div className="subtitle reconnect">
+							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("expired-reconnect")}
 						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchComplete' &&
-						<div className="subtitle success">
-							<FontAwesomeSvgIcon icon={faCheckCircle} /> {language[buildLanguageKey("received-{device}-data")]}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'fetchingData' &&
-						<div className="subtitle downloading">
-							<FontAwesomeSvgIcon icon={faRefresh} spin /> {language["downloading-data"]}
-						</div>
-					}
-					{deviceExternalAccount && deviceAccountStatus == 'unauthorized' &&
-						<div>
-							<div className="subtitle reconnect">
-								<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language["reconnect"]}
-							</div>
-							<Button onClick={() => connectToDevice()}>{language[buildLanguageKey("connect-{device}-button")]}</Button>
-						</div>
-					}
-				</div>
-			}
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+			</TextBlock>
 		</div>
 	);
 }

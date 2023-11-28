@@ -9,6 +9,7 @@ export interface StepNextButtonProps extends StepElementProps {
     letterSpacing: string,
     textTransform: string,
     gradient: any;
+    disabled?: boolean;
     onClick(): void;
 }
 
@@ -24,11 +25,12 @@ export default function (props: StepNextButtonProps) {
     style.letterSpacing = props.letterSpacing;
     style.textTransform = props.textTransform;
     style.backgroundColor = props.backgroundColor;
-    var text = props.text ? props.text : language["next-button-text"];
+    var text = props.text ? props.text : language("next-button-text");
     return (
       <button 
         className="mdhui-step-next-button" 
         style={style} 
+        disabled={props.disabled}
         onClick={props.onClick}>
           {text}
       </button>

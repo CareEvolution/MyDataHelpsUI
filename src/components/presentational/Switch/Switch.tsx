@@ -7,11 +7,12 @@ export interface SwitchProps {
 	onBackgroundColor?: string;
 	onValueChanged(value: boolean): void;
 	className?: string;
+	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: SwitchProps) {
 	return (
-		<UnstyledButton
+		<UnstyledButton innerRef={props.innerRef}
 			onClick={() => props.onValueChanged(!props.isOn)}
 			className={"mdhui-switch" + (props.isOn ? " mdhui-switch-on" : "") + (props.className ? " " + props.className : "")}
 			style={{ backgroundColor: props.isOn ? props.onBackgroundColor : "var(--mdhui-background-color-2)" }}>

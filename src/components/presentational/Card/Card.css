@@ -1,5 +1,5 @@
 ﻿.mdhui-card {
-    border-radius: 5px;
+    border-radius: var(--mdhui-card-border-radius);
     margin: 16px;
     background: var(--mdhui-background-color-0);
     box-shadow: var(--mdhui-box-shadow-0);
@@ -8,7 +8,7 @@
     -webkit-animation: var(--mdhui-fadein-animation);
     position: relative;
     overflow: hidden;
-
+    display: flow-root;
 }
 
 .mdhui-card:empty {
@@ -17,5 +17,21 @@
 
 .mdhui-card.allow-overflow {
     overflow: visible;
-    display: flow-root;
+}
+
+.mdhui-card-subtle {
+    box-shadow: none;
+    background: none !important;
+    border: solid 1px var(--mdhui-border-color-1);
+}
+
+.mdhui-card-highlight
+{
+    background: var(--mdhui-color-primary);
+    color: #FFF;
+    --mdhui-text-color-0: #FFF;
+    --mdhui-text-color-1: #FFF;
+    --mdhui-text-color-2: #FFF;
+    --mdhui-text-color-3: #FFF;
+    --mdhui-text-color-4: #FFF;
 }
