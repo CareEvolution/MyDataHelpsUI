@@ -90,5 +90,5 @@ export default function (props: AsthmaControlCalendarProps) {
         console.log('date clicked: ' + date.toString());
     };
 
-    return <BasicCalendar computeDayState={computeDayState} onDayClicked={onDayClicked}/>;
+    return <BasicCalendar innerRef={props.innerRef} computeDayState={computeDayState} onDayClicked={onDayClicked}/>;
 }

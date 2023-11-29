@@ -62,5 +62,5 @@ export default function (props: BasicCalendarProps) {
 
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
-    return <Calendar className="mdhui-basic-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>;
+    return <Calendar innerRef={props.innerRef} className="mdhui-basic-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>;
 }
