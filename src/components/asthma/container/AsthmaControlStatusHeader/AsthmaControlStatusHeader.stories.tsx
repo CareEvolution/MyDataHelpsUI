@@ -8,7 +8,7 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaControlStatusHeaderProps) => <Layout colorScheme="auto">
+const render = (args: AsthmaControlStatusHeaderProps) => <Layout colorScheme="auto" bodyBackgroundColor="#fff">
     <AsthmaControlStatusHeader {...args} />
 </Layout>;
 

@@ -1,9 +1,10 @@
 .mdhui-asthma-dashboard-view-header {
-    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 0 calc(env(safe-area-inset-bottom, 0px) + 16px);
     background: white;
 }
 
 .mdhui-asthma-dashboard-view-header-greeting {
+    padding: 0 16px;
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 8px;
