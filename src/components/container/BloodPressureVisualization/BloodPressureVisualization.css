@@ -1,46 +1,40 @@
-body{
-    background: #FFFFFF;
-}
-
-.mdhui-blood-pressure-visualization-pager {
-    width: 100%;
-    padding-top: 13px;
-    padding-bottom: 13px;
-}
-
 .mdhui-blood-pressure-metrics {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: var(--mdhui-padding-md);
+    /* padding-bottom: var(--mdhui-padding-md); */
+    /* padding: var(--mdhui-padding-md); */
     display: flex;
     flex-direction: column;
-    width: 100%;
+    /* width: 98%; */
+    padding: 16px;
+    gap: 13px;
 }
 
 .mdhui-blood-pressure-metrics-rows{
     display: flex;
     flex-direction: row;
-    background-color: #FFFFFF;
     height: 50%;
+    align-items: flex-start;
+    gap: 13px;
 }
 
 .mdhui-blood-pressure-metrics-block{
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: var(--mdhui-padding-md);;
     border-radius: 6px;
-    border-color:#EDEDED;
+    border-color:var(--mdhui-border-color-1); 
     border-width: 1px;
     border-style: solid;
     width: 50%;
 }
 
 .mdhui-blood-pressure-metric-description{
-    font-size: 12px;
+    font-size: 17px;
     font-weight: 500;
     line-height: 15px;
     letter-spacing: 0em;
     text-align: left;
-    color: #585858;
+    color: var(--mdhui-text-color-2);
 }
 
 .mdhui-blood-pressure-units{
@@ -49,11 +43,11 @@ body{
     line-height: 17px;
     letter-spacing: 0em;
     text-align: left;
-    color: #979797;
+    color: var(--mdhui-text-color-3);
 }
 
 .mdhui-blood-pressure-metric-alert{
-    font-size: 12px;
+    font-size: 17px;
     font-weight: 500;
     line-height: 15px;
     letter-spacing: 0em;
@@ -67,13 +61,15 @@ body{
     line-height: 29px;
     letter-spacing: 0em;
     text-align: left;
-    color: #000000;
+    color: var(--mdhui-text-color-0);
 }
 
 .mdhui-blood-pressure-metric-normal{
+    font-size: 17px;
     color: var(--mdhui-color-primary);
 }
 
 .mdhui-blood-pressure-metric-not-normal{
+    font-size: 17px;
     color: var(--mdhui-color-danger);
 }

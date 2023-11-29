@@ -42,7 +42,6 @@ export default function (props : DumbBellChartProps) {
         var yValue = props.axis.yRange.values[0];
         var bottom = 0;
         var style = {"bottom": `${0}%`};
-
         for (var i = 0; i < (increments + 1); i++){
             var key = `yAxis${i+1}`;
             var yLabel = (i == 0) ? "" : yValue;
@@ -57,7 +56,7 @@ export default function (props : DumbBellChartProps) {
 
     function buildDumbbells()
     {
-        return( props.dumbbells.map( (db, index) => <Dumbbell key={db.xValue} dumbbell={db} axis={props.axis} index={index +1}/>));
+        return( props.dumbbells.map( (db, index) => <Dumbbell key={`mdhui-dumbbell-${index}`} dumbbell={db} axis={props.axis} index={index +1}/>));
     }
 
 

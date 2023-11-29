@@ -5,21 +5,22 @@ import React from "react";
 import { Button, DateRangeNavigator, LoadingIndicator, Title } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
-import { addDays, format, isEqual, isMonday, previousMonday, startOfDay } from "date-fns";
+import { addDays, format, isEqual, startOfDay } from "date-fns";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import queryBloodPressure, { BloodPressureDataParameters, BloodPressureDataPoint, BloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers/query-blood-pressure";
 import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
+import surveyBloodPressureDataProvider, { BloodPressureDataPoint, SurveyBloodPressureDataParameters } from "../../../helpers/blood-pressure-data-providers/survey-blood-pressure-data-provider";
+import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
 
-export enum Category {"Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown"};
+enum Category {"Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown"};
 export type BloodPressurePreviewState = "WithData" | "NoData" | "Loading" | "Live";
 
 export interface BloodPressureVisualizationProps {
     previewState? : BloodPressurePreviewState,
-    dataParameters : BloodPressureDataParameters
+    surveyDataSource : SurveyBloodPressureDataParameters,
+    weekStartsOn?: WeekStartsOn
 };
-
 
 interface BloodPressureDumbbell {
     date: Date,
@@ -49,30 +50,33 @@ export default function (props : BloodPressureVisualizationProps) {
     const yInterval : ClosedInterval = {values: [_minDiastolic, _maxSystolic]};
     const axis : Axis = {yRange : yInterval, yIncrement : 50, xIncrement : (85/7)};
 
-    const [loadingData, setLoadingData] = useState(false);
-    const [bpData, setBpData] = useState<BloodPressureDumbbell[]>([]);
-    const [weeklyDataForViz, setWeeklyDataForViz] = useState<Dumbbell[]>([]);
-    const [startOfWeek, setStartOfWeek] = useState<Date>(initializeWeekPager());
-    const [metrics, setMetrics] = useState<BloodPressureMetrics>();
+    const [bloodPressureData, setBpData] = useState<BloodPressureDumbbell[]>();
+    const [weekData, setWeekData] = useState<WeekData>();
+    const [datePagerStartDate, setStartOfWeek] = useState<Date>(startOfDay(getWeekStart(props.weekStartsOn ?? "Monday")));
+    
+    interface WeekData {
+        dumbbells : Dumbbell[],
+        metrics? : BloodPressureMetrics
+    }
 
     async function initialize(){
 
-        if (!loadingData){
-            setLoadingData(true);
-
+        if (!bloodPressureData){
             if (props.previewState){
-               switch(props.previewState){
-                    case "Loading":
-                        return;
+                switch(props.previewState){
                     case "NoData":
                         setBloodPressureData([]);
+                        break;
                     case "WithData":
                         setBloodPressureData(previewBloodPressureDataPoint);
-               }
+                        break;
+                    default:
+                        return;
+                }
             }
             else
             {
-                queryBloodPressure(props.dataParameters).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
+                surveyBloodPressureDataProvider(props.surveyDataSource).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
                     setBloodPressureData(bloodPressureDataPoints);
                 });
             }
@@ -81,18 +85,16 @@ export default function (props : BloodPressureVisualizationProps) {
 
     function setBloodPressureData(bloodPressureDataPoints : BloodPressureDataPoint[]){
         const bloodPressureDumbbells = createDumbbellsPerDay(bloodPressureDataPoints);
-        const weekStart = initializeWeekPager();
-        pageWeeklyData( weekStart, bloodPressureDumbbells);
+        pageWeeklyData( datePagerStartDate, bloodPressureDumbbells);
         setBpData(bloodPressureDumbbells);
-        setLoadingData(false);
     }
 
     function createDumbbellsPerDay(bpDataPoints : BloodPressureDataPoint[]){
         var dbs : BloodPressureDumbbell[] = [];
         if (bpDataPoints.length > 0){
-            let logDates = [...new Set(bpDataPoints.map(dp => dp.dateLabel))];
+            let logDates = [...new Set(bpDataPoints.map(dp => dp.date))];
             logDates.forEach((logDay) =>{
-                const entriesForDate = bpDataPoints.filter( a => a.dateLabel == logDay);
+                const entriesForDate = bpDataPoints.filter(a => isEqual(a.date, logDay));
                 const systolicEntriesForDate = entriesForDate.map( e => e.systolic);
                 const systolicInterval = buildInterval(systolicEntriesForDate);
                 const systolicAverage = systolicEntriesForDate.reduce((a, b) => a + b) / systolicEntriesForDate.length;
@@ -100,7 +102,7 @@ export default function (props : BloodPressureVisualizationProps) {
                 const diastolicInterval = buildInterval(diastolicEntriesForDate);
                 const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
                 const dataPoint : DataPoint = {dataSet1: diastolicInterval, dataSet2: systolicInterval};
-                var db : Dumbbell = {dataPoint  :dataPoint, xValue : logDay, class : assignClass(systolicAverage, diastolicAverage)};
+                var db : Dumbbell = {dataPoint  :dataPoint, xValue : format(logDay, "MM/dd"), class : assignClass(systolicAverage, diastolicAverage)};
                 dbs.push({date: entriesForDate[0].date, dumbbell: db, averageSystolic : systolicAverage, averageDiastolic : diastolicAverage});
             });
         }
@@ -109,7 +111,7 @@ export default function (props : BloodPressureVisualizationProps) {
     }
 
     function pageWeeklyData(startOfWeek: Date, freshData? : BloodPressureDumbbell[]){
-        const useData = freshData ?? bpData;
+        const useData : BloodPressureDumbbell[] = freshData ?? (bloodPressureData ?? []);
         const weekData : Dumbbell[] = [];
         const weekDataForMetrics : BloodPressureDumbbell[] = [];
         for (let i = 0; i < 7; i++) {
@@ -128,8 +130,7 @@ export default function (props : BloodPressureVisualizationProps) {
         }
 
         const weeklyMetrics = getWeeklyAggregates(weekDataForMetrics);
-        setMetrics(weeklyMetrics);
-        setWeeklyDataForViz(weekData);
+        setWeekData({dumbbells: weekData, metrics : weeklyMetrics});
         setStartOfWeek(startOfWeek);
     }
 
@@ -157,23 +158,19 @@ export default function (props : BloodPressureVisualizationProps) {
             maxSystolicAlertClass : ""
         };
 
-        let diastolicLows = dbs.map(db => db.dumbbell.dataPoint ? db.dumbbell.dataPoint.dataSet1.values[0] : Infinity);
-        let diastolicLow = diastolicLows ? Math.min(...diastolicLows) : Infinity;
-        if (diastolicLow !== Infinity){
-            bpMetrics.minDiastolic = diastolicLow;
-            let cat = getDiastolicCategory(diastolicLow);
-            bpMetrics.minDiastolicAlert = Category[cat];
-            bpMetrics.minDiastolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
-        }
+        let diastolicLows : any[] = dbs.map(db => db.dumbbell.dataPoint?.dataSet1.values[0]);
+        let diastolicLow = Math.min(...diastolicLows);
+        bpMetrics.minDiastolic = diastolicLow;
+        let cat = getDiastolicCategory(diastolicLow);
+        bpMetrics.minDiastolicAlert = Category[cat];
+        bpMetrics.minDiastolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
-        let systolicHighs = dbs.map(db => db.dumbbell.dataPoint ? db.dumbbell.dataPoint.dataSet2.values[1] : Infinity);
-        let systolicHigh = systolicHighs ? Math.max(...systolicHighs) : Infinity;
-        if (systolicHigh !== Infinity){
-            bpMetrics.maxSystolic = systolicHigh;
-            let cat = getSystolicCategory(systolicHigh);
-            bpMetrics.maxSystolicAlert = Category[cat];
-            bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
-        }
+        let systolicHighs : any[] = dbs.map(db => db.dumbbell.dataPoint?.dataSet2.values[1]);
+        let systolicHigh = Math.max(...systolicHighs);
+        bpMetrics.maxSystolic = systolicHigh;
+        cat = getSystolicCategory(systolicHigh);
+        bpMetrics.maxSystolicAlert = Category[cat];
+        bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
         
         return bpMetrics;
     }
@@ -262,12 +259,6 @@ export default function (props : BloodPressureVisualizationProps) {
         return Category.Unknown;
     }
     
-    function initializeWeekPager() : Date {
-        const today = startOfDay(new Date());
-        const monday : Date = isMonday(today) ? today : previousMonday(today);
-        return monday;
-    }
-
     function pageWeek(newStart: Date) {
         pageWeeklyData( newStart );
     }
@@ -281,35 +272,31 @@ export default function (props : BloodPressureVisualizationProps) {
         }
      }, []);
 
-    if (loadingData) 
+    if (!bloodPressureData) 
     {
         return <LoadingIndicator/>;
     }
     else
     {
         return (
-            <div>
+            <>
                 <Title defaultMargin order={3}>{language("blood-pressure")}</Title>
-                <div className="mdhui-blood-pressure-visualization-pager">
-                    <DateRangeNavigator intervalType="Week" intervalStart={startOfWeek} onIntervalChange={pageWeek}></DateRangeNavigator>
-                </div>
-                <DumbbellChart dumbbells={weeklyDataForViz} axis={axis} ></DumbbellChart>
+                <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
+                <DumbbellChart dumbbells={weekData?.dumbbells ?? []} axis={axis} ></DumbbellChart>
                 <div className="mdhui-blood-pressure-metrics">
                     <div className="mdhui-blood-pressure-metrics-rows">
-                        {buildDetailBlock(language("systolic-average"), metrics?.averageSystolicAlert, metrics?.averageSystolicAlertClass, metrics?.averageSystolic)}
-                        {buildDetailBlock(language("diastolic-average"), metrics?.averageDiastolicAlert, metrics?.averageDiastolicAlertClass, metrics?.averageDiastolic)}
+                        {buildDetailBlock(language("systolic-average"), weekData?.metrics?.averageSystolicAlert, weekData?.metrics?.averageSystolicAlertClass, weekData?.metrics?.averageSystolic)}
+                        {buildDetailBlock(language("diastolic-average"), weekData?.metrics?.averageDiastolicAlert, weekData?.metrics?.averageDiastolicAlertClass, weekData?.metrics?.averageDiastolic)}
                     </div>
                     <div className="mdhui-blood-pressure-metrics-rows">
-                        {buildDetailBlock(language("highest-systolic"), metrics?.maxSystolicAlert, metrics?.maxSystolicAlertClass, metrics?.maxSystolic)}
-                        {buildDetailBlock(language("lowest-diastolic"), metrics?.minDiastolicAlert, metrics?.minDiastolicAlertClass, metrics?.minDiastolic)}
+                        {buildDetailBlock(language("highest-systolic"),weekData?.metrics?.maxSystolicAlert, weekData?.metrics?.maxSystolicAlertClass, weekData?.metrics?.maxSystolic)}
+                        {buildDetailBlock(language("lowest-diastolic"), weekData?.metrics?.minDiastolicAlert, weekData?.metrics?.minDiastolicAlertClass, weekData?.metrics?.minDiastolic)}
                     </div>
                 </div>
                 <div>
-                    {props.dataParameters.surveyParameters && 
-                        <Button defaultMargin onClick={() => MyDataHelps.startSurvey(props.dataParameters.surveyParameters?.surveyName ?? "")}>{language("log-blood-pressure")} <FontAwesomeSvgIcon icon={faPlus} /></Button>
-                    }
+                    <Button defaultMargin onClick={() => MyDataHelps.startSurvey(props.surveyDataSource.surveyName)}>{language("log-blood-pressure")} <FontAwesomeSvgIcon icon={faPlus} /></Button>
                 </div>
-            </div>
+            </>
         )
     }
 }
