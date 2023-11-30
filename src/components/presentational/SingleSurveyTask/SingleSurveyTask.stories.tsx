@@ -33,6 +33,24 @@ Incomplete.args = {
 	}
 }
 
+export const IncompleteSurveyActive = Template.bind({});
+IncompleteSurveyActive.args = {
+    previewState: 'surveyActive',
+    task: {
+        id: "test",
+        status: "incomplete",
+        surveyDisplayName: "Pain Survey",
+        surveyDescription: "5 minutes",
+        surveyName: "PainSurvey",
+        dueDate: (new Date()).toISOString(),
+        hasSavedProgress: false,
+        insertedDate: "2022-03-06T20:00:00Z",
+        modifiedDate: "2022-03-06T20:00:00Z",
+        surveyID: "1",
+        linkIdentifier:"1"
+    }
+}
+
 export const Complete = Template.bind({});
 Complete.args = {
 	task: {
