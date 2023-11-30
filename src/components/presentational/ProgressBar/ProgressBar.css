@@ -6,8 +6,9 @@
 	--icon_border_width: 2px;
 }
 
-.mdhui-progress-bar .mdhui-progress-bar-default-margin {
+.mdhui-progress-bar.mdhui-progress-bar-default-margin {
 	margin: 16px;
+	width:calc(100% - 32px)
 }
 
 .mdhui-progress-bar .mdhui-progress-bar-background {
@@ -41,7 +42,7 @@
 
 .mdhui-progress-bar .step-icon {
 	position: absolute;
-	transform: translate(-100%, 0)
+	transform: translate(-100%, 0);
 }
 
 .mdhui-progress-bar .step-icon * {
