@@ -91,18 +91,18 @@ export var previewBloodPressureDataPoint: BloodPressureDataPoint[] =
             dateLabel: format(add(new Date(), { days: -2 }), "MM/dd"),
             date: startOfDay(add(new Date(), { days: -2 })),
             systolic: 100,
-            diastolic: 60
+            diastolic: 55
         },
         {
             dateLabel: format(add(new Date(), { days: -1 }), "MM/dd"),
             date: startOfDay(add(new Date(), { days: -1 })),
-            systolic: 100,
-            diastolic: 60
+            systolic: 110,
+            diastolic: 65
         },
         {
             dateLabel: format(new Date(), "MM/dd"),
             date: startOfDay(new Date()),
-            systolic: 90,
-            diastolic: 60
+            systolic: 100,
+            diastolic: 75
         },
 ];
