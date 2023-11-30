@@ -18,15 +18,18 @@ export default {
 		fillColor: { control: 'object', description: "The fill color of the progress bar" },
 		fillPercent: { control: 'number', description: "The percent of the progress bar that is filled" },
 		steps: { control: 'object', description: "An array of steps to display on the progress bar. A step specifies the position on the progress bar as a percent and a React element to display at that position." },
+	},
+	args: {
+		defaultMargin: true
 	}
+
 } as Meta<typeof ProgressBar>;
 
-const Template: StoryFn<typeof ProgressBar> = (args: ProgressBarProps) => <Layout colorScheme="auto"><div style={{padding: "35px 0"}}><ProgressBar {...args} /></div></Layout>;
+const Template: StoryFn<typeof ProgressBar> = (args: ProgressBarProps) => <Layout colorScheme="auto"><div style={{padding: "35px 0"}}><ProgressBar {...args}/></div></Layout>;
 
 export const Default = Template.bind({});
 Default.args = {
 	fillPercent: 35,
-	defaultMargin: true
 }
 
 export const GradientFill75TargetStep = Template.bind({});
