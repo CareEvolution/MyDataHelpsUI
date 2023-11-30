@@ -16,11 +16,13 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
+import LoadingIndicator from '../LoadingIndicator';
 
 export interface SingleSurveyTaskProps {
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
-	disableClick?: boolean
+	onClick: () => void;
+	surveyActive?: boolean;
 	innerRef?: React.Ref<HTMLDivElement>;
 	buttonColor?: ColorDefinition;
 	buttonVariant?: ButtonVariant;
@@ -28,12 +30,6 @@ export interface SingleSurveyTaskProps {
 
 export default function (props: SingleSurveyTaskProps) {
 	const context = useContext(LayoutContext);
-
-	function startSurvey(survey: string) {
-		if (!props.disableClick) {
-			MyDataHelps.startSurvey(survey);
-		}
-	}
 
 	const datesAreOnSameDay = (first: Date, second: Date) =>
 		first.getFullYear() === second.getFullYear() &&
@@ -65,13 +61,13 @@ export default function (props: SingleSurveyTaskProps) {
 	}
 
 	if (props.task.status == 'incomplete') {
-		const indicator = <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
+		const indicator = props.surveyActive ? <LoadingIndicator/> : <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => {}}>
 			{!props.task.hasSavedProgress ? language("start") : language("resume")}
 		</Button>;
 		return (
 			<Action renderAs='div'
 				innerRef={props.innerRef}
-				onClick={() => startSurvey(props.task.surveyName!)}
+				onClick={() => props.onClick()}
 				className="mdhui-single-survey-task incomplete"
 				indicator={indicator}>
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
