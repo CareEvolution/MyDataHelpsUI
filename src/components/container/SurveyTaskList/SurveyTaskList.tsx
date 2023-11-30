@@ -7,7 +7,6 @@ import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.p
 import language from '../../../helpers/language'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { ButtonVariant } from '../../presentational/Button/Button'
-import { useInitializeView } from '../../../helpers/Initialization';
 
 export interface SurveyTaskListProps {
 	status: SurveyTaskStatus,
@@ -32,7 +31,13 @@ export default function (props: SurveyTaskListProps) {
 	const [tasks, setTasks] = useState<SurveyTask[] | null>(null);
 	const context = useContext(LayoutContext);
 
-	useInitializeView(initialize, ['surveyDidFinish'], [props.previewState])
+	useEffect(() => {
+		initialize()
+		MyDataHelps.on("applicationDidBecomeVisible", initialize);
+		return () => {
+			MyDataHelps.off("applicationDidBecomeVisible", initialize);
+		}
+	}, [props.previewState]);
 
 	function getSurveyTaskElement(task: SurveyTask) {
 		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} disableClick={loading} />
