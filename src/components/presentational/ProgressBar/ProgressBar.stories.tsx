@@ -14,8 +14,9 @@ export default {
 		layout: 'auto',
 	},
 	argTypes: {
-		backgroundColor: { control: 'object', description: "The backgroundColor color of the progress bar" },
-		fillColor: { control: 'object', description: "The fillColor color of the progress bar" },
+		backgroundColor: { control: 'object', description: "The background color of the progress bar" },
+		borderColor: { control: 'object', description: "The border color of the progress bar" },
+		fillColor: { control: 'object', description: "The fill color of the progress bar" },
 		fillPercent: { control: 'number', description: "The percent of the progress bar that is filled" },
 		steps: { control: 'object', description: "An array of steps to display on the progress bar. A step specifies the position on the progress bar as a percent and a React element to display at that position." },
 	}
@@ -80,6 +81,7 @@ export const LabelSteps = Template.bind({});
 LabelSteps.args = {
 	fillPercent: 100 * 75 / 175,
 	fillColor: "rgb(34, 115, 209, 0.5)",
+	backgroundColor: { lightMode: "#d3d3d3", darkMode: "#c2c2c2" },
 	steps: [...Array(7)].map((_e, i) => {
 		let amount = (i + 1) * 25;
 		let icon = (amount == 75) ?
@@ -90,7 +92,7 @@ LabelSteps.args = {
 				<ProgressBarStep borderColor="white" backgroundColor="rgb(34, 115, 209)" height="14px">
 					<FontAwesomeIcon icon={faSolidStar} size={"1x"} style={{ color: "white", marginTop: "-3px" }} />
 				</ProgressBarStep> :
-				<ProgressBarStep borderColor="white" backgroundColor="rgba(148, 148, 148, 1)" height="14px">
+				<ProgressBarStep borderColor="rgba(148, 148, 148, 1)" backgroundColor="rgba(148, 148, 148, 1)" height="14px">
 					<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "rgb(34, 115, 209)", marginTop: "-3px" }} />
 				</ProgressBarStep>
 			);

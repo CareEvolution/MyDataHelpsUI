@@ -1,7 +1,7 @@
 .mdhui-progress-bar {
 	display: block;
-	max-width:500px;
 	width: 100%;
+	position: relative;
 	--icon_size: 24px;
 	--icon_border_width: 2px;
 }
@@ -13,7 +13,7 @@
 .mdhui-progress-bar .mdhui-progress-bar-background {
 	border-radius: 500px;
 	border-width: var(--icon_border_width) ;
-	border-style: none;
+	border-style: solid;
 	background: #fff;
 	overflow: hidden;
 	width: 100%;
@@ -34,7 +34,6 @@
 .mdhui-progress-bar .mdhui-progress-steps {
 	top:0;
 	width: 100%;
-	max-width: 500px;
 	position: absolute;
 	z-index: 2;
 	display:inline-block;

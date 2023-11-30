@@ -5,14 +5,15 @@ import { LayoutContext } from '../Layout';
 
 export interface ProgressBarProps {
 	backgroundColor?: ColorDefinition;
+	borderColor?: ColorDefinition;
 	fillColor?: ColorDefinition;
 	fillPercent: number;
-	steps?: [
+	steps?: 
 		{
 			percent: number;
 			icon: ReactElement;
-		}
-	],
+		}[]
+	,
 	innerRef?: React.Ref<HTMLDivElement>;
 	defaultMargin?: boolean
 }
@@ -32,14 +33,14 @@ export default function ProgressBar(props: ProgressBarProps) {
 
 	return (
 		<div className={classes.join(" ")} ref={props.innerRef}>
-			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
+			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor), borderColor: resolveColor(layoutContext?.colorScheme, props.borderColor) }}>
 				<div className="mdhui-progress-bar-fill" style={{ width: props.fillPercent + "%", background: resolveColor(layoutContext?.colorScheme, props.fillColor) }} />
 			</div>
 			<div className="mdhui-progress-steps">
 				{props.steps &&
 					<>
 						{props.steps.map((step, i) =>
-							<div key={`${i}-step`} className="step-icon" style={{ left: step.percent + "%" }}>
+							<div key={`${i}-step`} className="step-icon" style={{ left: (1+step.percent) + "%" }}>
 								{step.icon}
 							</div>
 						)}
