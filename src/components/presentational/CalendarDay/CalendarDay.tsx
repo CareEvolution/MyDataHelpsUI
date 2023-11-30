@@ -20,9 +20,9 @@ export default function (props: CalendarDayProps) {
     let layoutContext = useContext(LayoutContext);
 
     if (!props.day) {
-        return <div/>;
+        return <div ref={props.innerRef}/>;
     }
-    
+
     const getLastDayOfMonth = (date: Date): number => {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     };
@@ -56,7 +56,7 @@ export default function (props: CalendarDayProps) {
         }
     }
 
-    return <div className={dayClasses.join(' ')} style={dayStyle} onClick={() => props.onClick(date)}>
+    return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle} onClick={() => props.onClick(date)}>
         <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
     </div>;
 }
