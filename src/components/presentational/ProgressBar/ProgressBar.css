@@ -14,7 +14,7 @@
 .mdhui-progress-bar .mdhui-progress-bar-background {
 	border-radius: 500px;
 	border-width: var(--icon_border_width) ;
-	border-style: solid;
+	border-style: none;
 	background: #fff;
 	overflow: hidden;
 	width: 100%;

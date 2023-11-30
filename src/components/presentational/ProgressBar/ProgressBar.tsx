@@ -33,14 +33,14 @@ export default function ProgressBar(props: ProgressBarProps) {
 
 	return (
 		<div className={classes.join(" ")} ref={props.innerRef}>
-			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor), borderColor: resolveColor(layoutContext?.colorScheme, props.borderColor) }}>
-				<div className="mdhui-progress-bar-fill" style={{ width: props.fillPercent + "%", background: resolveColor(layoutContext?.colorScheme, props.fillColor) }} />
+			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
+				<div className="mdhui-progress-bar-fill" style={{ width: Math.trunc(props.fillPercent) + "%", background: resolveColor(layoutContext?.colorScheme, props.fillColor) }} />
 			</div>
 			<div className="mdhui-progress-steps">
 				{props.steps &&
 					<>
 						{props.steps.map((step, i) =>
-							<div key={`${i}-step`} className="step-icon" style={{ left: (1+step.percent) + "%" }}>
+							<div key={`${i}-step`} className="step-icon" style={{ left: Math.trunc(step.percent) + "%" }}>
 								{step.icon}
 							</div>
 						)}

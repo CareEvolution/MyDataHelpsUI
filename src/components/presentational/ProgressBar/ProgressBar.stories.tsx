@@ -6,6 +6,7 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProgressBarStep from "./ProgressBarStep";
+import "./ProgressBar.stories.css";
 
 export default {
 	title: "Presentational/ProgressBar",
@@ -15,7 +16,6 @@ export default {
 	},
 	argTypes: {
 		backgroundColor: { control: 'object', description: "The background color of the progress bar" },
-		borderColor: { control: 'object', description: "The border color of the progress bar" },
 		fillColor: { control: 'object', description: "The fill color of the progress bar" },
 		fillPercent: { control: 'number', description: "The percent of the progress bar that is filled" },
 		steps: { control: 'object', description: "An array of steps to display on the progress bar. A step specifies the position on the progress bar as a percent and a React element to display at that position." },
