@@ -6,7 +6,6 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProgressBarStep from "./ProgressBarStep";
-import "./ProgressBar.stories.css";
 
 export default {
 	title: "Presentational/ProgressBar",
@@ -22,11 +21,12 @@ export default {
 	}
 } as Meta<typeof ProgressBar>;
 
-const Template: StoryFn<typeof ProgressBar> = (args: ProgressBarProps) => <Layout colorScheme="auto"><ProgressBar {...args} /></Layout>;
+const Template: StoryFn<typeof ProgressBar> = (args: ProgressBarProps) => <Layout colorScheme="auto"><div style={{padding: "35px 0"}}><ProgressBar {...args} /></div></Layout>;
 
 export const Default = Template.bind({});
 Default.args = {
-	fillPercent: 35
+	fillPercent: 35,
+	defaultMargin: true
 }
 
 export const GradientFill75TargetStep = Template.bind({});
@@ -41,6 +41,7 @@ GradientFill75TargetStep.args = {
 				<FontAwesomeIcon icon={faStar} size={"1x"} style={{ color: "#fcfcfc", marginTop: "-3px" }} />
 			</ProgressBarStep>
 	}],
+	
 } as ProgressBarProps;
 
 export const GradientFill100TargetStep = Template.bind({});
