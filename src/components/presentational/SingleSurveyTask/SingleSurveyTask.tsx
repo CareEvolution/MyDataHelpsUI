@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./SingleSurveyTask.css"
 import MyDataHelps, { SurveyTask } from "@careevolution/mydatahelps-js"
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
@@ -16,8 +16,12 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
+import LoadingIndicator from '../LoadingIndicator';
+
+export type SingleSurveyTaskPreviewState = 'hasBeenClicked';
 
 export interface SingleSurveyTaskProps {
+	previewState?: SingleSurveyTaskPreviewState,
 	task: SurveyTask,
 	descriptionIcon?: IconDefinition,
 	disableClick?: boolean
@@ -28,9 +32,15 @@ export interface SingleSurveyTaskProps {
 
 export default function (props: SingleSurveyTaskProps) {
 	const context = useContext(LayoutContext);
+	const [hasBeenClicked, setHasBeenClicked] = useState<boolean>(false);
+
+	useEffect(() => {
+		setHasBeenClicked(props.previewState === 'hasBeenClicked');
+	}, []);
 
 	function startSurvey(survey: string) {
-		if (!props.disableClick) {
+		if (!props.disableClick && !hasBeenClicked) {
+			setHasBeenClicked(true);
 			MyDataHelps.startSurvey(survey);
 		}
 	}
@@ -65,7 +75,7 @@ export default function (props: SingleSurveyTaskProps) {
 	}
 
 	if (props.task.status == 'incomplete') {
-		const indicator = <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => { }}>
+		const indicator = hasBeenClicked ? <LoadingIndicator/> : <Button color={resolveColor(context.colorScheme, props.buttonColor)} variant={props.buttonVariant || "light"} onClick={() => {}}>
 			{!props.task.hasSavedProgress ? language("start") : language("resume")}
 		</Button>;
 		return (

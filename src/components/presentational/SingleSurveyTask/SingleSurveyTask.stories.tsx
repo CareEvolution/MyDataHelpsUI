@@ -1,87 +1,75 @@
-﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
-import SingleSurveyTask, { SingleSurveyTaskProps } from "./SingleSurveyTask"
-import Layout from "../Layout"
+﻿import React from 'react'
+import SingleSurveyTask, { SingleSurveyTaskProps } from './SingleSurveyTask'
+import Layout from '../Layout'
+import { add } from 'date-fns';
 
 export default {
-	title: "Presentational/SingleSurveyTask",
+	title: 'Presentational/SingleSurveyTask',
 	component: SingleSurveyTask,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof SingleSurveyTask>;
+	parameters: {layout: 'fullscreen'}
+};
 
-const Template: ComponentStory<typeof SingleSurveyTask> = (args: SingleSurveyTaskProps) =>
-	<Layout colorScheme="auto">
-		<SingleSurveyTask {...args} />
-	</Layout>;
+const render = (args: SingleSurveyTaskProps) => <Layout colorScheme="auto"><SingleSurveyTask {...args} /></Layout>
 
-export const Incomplete = Template.bind({});
-Incomplete.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier:"1"
-	}
+const now = new Date();
+
+const commonTask = {
+	surveyName: 'PainSurvey',
+	surveyDisplayName: 'Pain Survey',
+	surveyDescription: '5 minutes',
+	dueDate: add(new Date(now), {days: 3}).toISOString(),
 }
 
-export const Complete = Template.bind({});
-Complete.args = {
-	task: {
-		id: "test",
-		status: "complete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		endDate: "2022-03-06T20:00:00Z",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier: "1"
-	}
-}
+export const Incomplete = {
+	args: {
+		task: {
+			...commonTask,
+			status: 'incomplete'
+		}
+	},
+	render: render
+};
 
-export const InProgress = Template.bind({});
-InProgress.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: true,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier: "1"
-	}
-}
+export const IncompleteInProgress = {
+	args: {
+		task: {
+			...commonTask,
+			status: 'incomplete',
+			hasSavedProgress: true
+		}
+	},
+	render: render
+};
 
-export const LongDescription = Template.bind({});
-LongDescription.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Long Description",
-		surveyDescription: "Here is a really long description that will likely need to wrap.  It should wrap before overlapping the right chevron.",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier:"1"
-	}
-}
+export const IncompleteAlreadyClicked = {
+	args: {
+		previewState: 'hasBeenClicked',
+		task: {
+			...commonTask,
+			status: 'incomplete'
+		}
+	},
+	render: render
+};
 
+export const IncompleteWithLongDescription = {
+	args: {
+		task: {
+			...commonTask,
+			status: 'incomplete',
+			surveyDescription: 'Here is a really long description that will likely need to wrap.  It should wrap before overlapping the action indicator.'
+		}
+	},
+	render: render
+};
+
+export const Complete = {
+	args: {
+		task: {
+			...commonTask,
+			status: 'complete',
+			endDate: add(new Date(now), {days: -2}).toISOString(),
+		}
+	},
+	render: render
+};
