@@ -15,12 +15,12 @@ const render = (args: CalendarDayProps) => <Layout colorScheme="auto">
     </div>
 </Layout>;
 
-const now = parseISO('2023-11-29T21:41:43.678Z');
+const testDate = parseISO('2023-11-29T21:41:43.678Z');
 
 const commonProps = {
-    year: now.getFullYear(),
-    month: now.getMonth(),
-    day: now.getDate(),
+    year: testDate.getFullYear(),
+    month: testDate.getMonth(),
+    day: testDate.getDate(),
     stateConfiguration: {
         'state1': {
             style: {
@@ -68,7 +68,7 @@ export const StreakLeftNotSupported = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: -1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
                 return "state1";
             }
             return 'state0';
@@ -81,7 +81,7 @@ export const StreakLeftDefaultColor = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: -1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
                 return "state2";
             }
             return 'state0';
@@ -94,7 +94,7 @@ export const StreakLeftCustomColor = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: -1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
                 return "state3";
             }
             return 'state0';
@@ -107,7 +107,7 @@ export const StreakRightNotSupported = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: 1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
                 return "state1";
             }
             return 'state0';
@@ -120,7 +120,7 @@ export const StreakRightDefaultColor = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: 1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
                 return "state2";
             }
             return 'state0';
@@ -133,7 +133,7 @@ export const StreakRightCustomColor = {
     args: {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(now), date) || isSameDay(add(new Date(now), {days: 1}), date)) {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
                 return "state3";
             }
             return 'state0';
