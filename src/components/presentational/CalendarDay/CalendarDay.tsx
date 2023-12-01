@@ -27,6 +27,18 @@ export default function (props: CalendarDayProps) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     };
 
+    const canStreakLeft = (date: Date): boolean => {
+        let isFirstDayOfMonth = date.getDate() === 1;
+        let isFirstDayOfWeek = date.getDay() === 0;
+        return !isFirstDayOfMonth && !isFirstDayOfWeek;
+    };
+
+    const canStreakRight = (date: Date): boolean => {
+        let isLastDayOfMonth = date.getDate() === getLastDayOfMonth(date);
+        let isLastDayOfWeek = date.getDay() === 6;
+        return !isLastDayOfMonth && !isLastDayOfWeek;
+    };
+
     let date = new Date(props.year, props.month, props.day);
 
     let previousDayState = props.computeStateForDay(add(new Date(date), {days: -1}));
@@ -38,17 +50,11 @@ export default function (props: CalendarDayProps) {
     let dayClasses = ['mdhui-calendar-day'];
     let dayStyle: CSSProperties | undefined;
     if (currentDayStateConfiguration?.streak) {
-        if (currentDayState === previousDayState && currentDayState === nextDayState) {
-            if (date.getDate() > 1 && date.getDay() > 0 && date.getDay() < 6 && date.getDate() < getLastDayOfMonth(date)) {
-                dayClasses.push('mdhui-calendar-day-streak-both');
-            } else if (date.getDate() > 1 && date.getDay() > 0) {
-                dayClasses.push('mdhui-calendar-day-streak-left');
-            } else if (date.getDay() < 6 && date.getDate() < getLastDayOfMonth(date)) {
-                dayClasses.push('mdhui-calendar-day-streak-right');
-            }
-        } else if (currentDayState === previousDayState && date.getDate() > 1 && date.getDay() > 0) {
+        if (currentDayState === previousDayState && currentDayState === nextDayState && canStreakLeft(date) && canStreakRight(date)) {
+            dayClasses.push('mdhui-calendar-day-streak-both');
+        } else if (currentDayState === previousDayState && canStreakLeft(date)) {
             dayClasses.push('mdhui-calendar-day-streak-left');
-        } else if (currentDayState === nextDayState && date.getDay() < 6 && date.getDate() < getLastDayOfMonth(date)) {
+        } else if (currentDayState === nextDayState && canStreakRight(date)) {
             dayClasses.push('mdhui-calendar-day-streak-right');
         }
         if (currentDayStateConfiguration?.streakColor) {
