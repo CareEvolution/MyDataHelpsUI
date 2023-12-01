@@ -102,7 +102,7 @@ export var previewBloodPressureDataPoint: BloodPressureDataPoint[] =
         {
             dateLabel: format(new Date(), "MM/dd"),
             date: startOfDay(new Date()),
-            systolic: 100,
-            diastolic: 75
+            systolic: 200.59,
+            diastolic: 55
         },
 ];

@@ -83,19 +83,24 @@ export default function (props : BloodPressureVisualizationProps) {
 
     function createDumbbellsPerDay(bpDataPoints : BloodPressureDataPoint[]){
         var dbs : BloodPressureDumbbell[] = [];
+
         if (bpDataPoints.length > 0){
-            let logDates = [...new Set(bpDataPoints.map(dp => dp.date))];
-            logDates.forEach((logDay) =>{
-                const entriesForDate = bpDataPoints.filter(a => isEqual(a.date, logDay));
-                const systolicEntriesForDate = entriesForDate.map( e => e.systolic);
-                const systolicInterval = buildInterval(systolicEntriesForDate);
-                const systolicAverage = systolicEntriesForDate.reduce((a, b) => a + b) / systolicEntriesForDate.length;
-                const diastolicEntriesForDate = entriesForDate.map( e => e.diastolic);
-                const diastolicInterval = buildInterval(diastolicEntriesForDate);
-                const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
-                const dataPoint : DataPoint = {dataSet1: diastolicInterval, dataSet2: systolicInterval};
-                var db : Dumbbell = {dataPoint  :dataPoint, xValue : format(logDay, "MM/dd"), class : assignClass(systolicAverage, diastolicAverage)};
-                dbs.push({date: entriesForDate[0].date, dumbbell: db, averageSystolic : systolicAverage, averageDiastolic : diastolicAverage});
+            var logDates = bpDataPoints.map(dp => dp.date);
+            var distinctLogDates : Date[] = [];
+            logDates.forEach((val) => {
+                if (!distinctLogDates.find(dld => isEqual(dld, val))){
+                    distinctLogDates.push(val);
+                    const entriesForDate = bpDataPoints.filter(a => isEqual(val, a.date));
+                    const systolicEntriesForDate = entriesForDate.map( e => e.systolic);
+                    const systolicInterval = buildInterval(systolicEntriesForDate);
+                    const systolicAverage = systolicEntriesForDate.reduce((a, b) => a + b) / systolicEntriesForDate.length;
+                    const diastolicEntriesForDate = entriesForDate.map( e => e.diastolic);
+                    const diastolicInterval = buildInterval(diastolicEntriesForDate);
+                    const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
+                    const dataPoint : DataPoint = {dataSet1: diastolicInterval, dataSet2: systolicInterval};
+                    var db : Dumbbell = {dataPoint  :dataPoint, xValue : format(val, "MM/dd"), class : assignClass(systolicAverage, diastolicAverage)};
+                    dbs.push({date: entriesForDate[0].date, dumbbell: db, averageSystolic : systolicAverage, averageDiastolic : diastolicAverage});
+                }
             });
         }
 
@@ -141,7 +146,7 @@ export default function (props : BloodPressureVisualizationProps) {
 
         const useData : BloodPressureDumbbell[] = (bloodPressureData ?? []);
         const start = startOfDay(startOfWeek);
-        const end = startOfDay(addDays(startOfWeek, 7));
+        const end = startOfDay(addDays(startOfWeek, 6));
         let bpMetrics : BloodPressureMetrics = { 
             averageDiastolicAlertClass : "",
             averageSystolicAlertClass : "",
@@ -170,20 +175,24 @@ export default function (props : BloodPressureVisualizationProps) {
         bpMetrics.averageDiastolicAlertClass = diastolicWeeklyAvgAlert == Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
 
-        let diastolicLows : any[] = dbs.map(db => db.dumbbell.dataPoint?.dataSet1.values[0]);
-        let diastolicLow = Math.min(...diastolicLows);
-        bpMetrics.minDiastolic = diastolicLow;
-        let cat = getDiastolicCategory(diastolicLow);
-        bpMetrics.minDiastolicAlert = Category[cat];
-        bpMetrics.minDiastolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
-
-        let systolicHighs : any[] = dbs.map(db => db.dumbbell.dataPoint?.dataSet2.values[1]);
-        let systolicHigh = Math.max(...systolicHighs);
-        bpMetrics.maxSystolic = systolicHigh;
-        cat = getSystolicCategory(systolicHigh);
-        bpMetrics.maxSystolicAlert = Category[cat];
-        bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+        var weekDataEntries = dbs.filter(db => db.dumbbell.dataPoint !== undefined);
+        if (weekDataEntries){
+            var weekDataEntryDataPoints = weekDataEntries.map(e => e.dumbbell.dataPoint);
+            let diastolicLows = weekDataEntryDataPoints.filter(db => !isNaN(Number(db?.dataSet1.values[0]))).map(db => Number(db?.dataSet1.values[0]));
+            let diastolicLow = Math.min(...diastolicLows);
+            bpMetrics.minDiastolic = Math.round(diastolicLow);
+            let cat = getDiastolicCategory(diastolicLow);
+            bpMetrics.minDiastolicAlert = Category[cat];
+            bpMetrics.minDiastolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
         
+            let systolicHighs = weekDataEntryDataPoints.filter(db => !isNaN(Number(db?.dataSet2.values[1]))).map(db => Number(db?.dataSet2.values[1]));
+            let systolicHigh = Math.max(...systolicHighs);
+            bpMetrics.maxSystolic = Math.round(systolicHigh);
+            cat = getSystolicCategory(systolicHigh);
+            bpMetrics.maxSystolicAlert = Category[cat];
+            bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+        }
+
         return bpMetrics;
     }
 
