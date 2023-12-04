@@ -1,6 +1,6 @@
 import React from 'react';
 import './RotatingText.css'
-import { differenceInDays, differenceInWeeks } from 'date-fns';
+import { differenceInDays, differenceInMonths, differenceInWeeks } from 'date-fns';
 
 export interface RotatingTextEntry {
     title?: string;
@@ -13,20 +13,24 @@ export interface RotatingTextProps {
     interval?: RotatingTextInterval;
     entryTitlePrefix?: string;
     entries: RotatingTextEntry[];
+    startDate: Date;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: RotatingTextProps) {
+    if (props.entries.length === 0) {
+        return <div ref={props.innerRef}/>;
+    }
+
     let now = new Date();
-    let startOfYear = new Date(now.getFullYear(), 0, 1);
 
     let entry: RotatingTextEntry;
     if (props.interval === 'month') {
-        entry = props.entries[now.getMonth() % props.entries.length];
+        entry = props.entries[differenceInMonths(now, props.startDate) % props.entries.length];
     } else if (props.interval === 'week') {
-        entry = props.entries[differenceInWeeks(now, startOfYear) % props.entries.length];
+        entry = props.entries[differenceInWeeks(now, props.startDate) % props.entries.length];
     } else {
-        entry = props.entries[differenceInDays(now, startOfYear) % props.entries.length];
+        entry = props.entries[differenceInDays(now, props.startDate) % props.entries.length];
     }
 
     return <div className="mdhui-rotating-text" ref={props.innerRef}>
