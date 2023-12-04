@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../Layout"
 import RotatingText, { RotatingTextProps } from "./RotatingText"
 import { add } from "date-fns";
+import Card from "../Card";
 
 export default {
     title: "Presentational/RotatingText",
@@ -9,7 +10,11 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-let render = (args: RotatingTextProps) => <Layout><RotatingText {...args} /></Layout>
+let render = (args: RotatingTextProps) => <Layout>
+    <Card>
+        <RotatingText {...args} />
+    </Card>
+</Layout>;
 
 let now = new Date();
 

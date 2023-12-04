@@ -1,5 +1,9 @@
+.mdhui-rotating-text {
+    padding: 16px;
+}
+
 .mdhui-rotating-text-title {
     font-size: 0.9em;
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }

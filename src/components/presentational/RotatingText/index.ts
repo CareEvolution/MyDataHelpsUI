@@ -1,1 +1,1 @@
-export { default } from './RotatingText';
+export { default, RotatingTextEntry } from './RotatingText';
