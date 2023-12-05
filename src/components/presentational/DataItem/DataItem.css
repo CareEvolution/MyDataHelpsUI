@@ -1,0 +1,48 @@
+.mdhui-data-item {
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--mdhui-border-color-1);
+}
+
+.mdhui-data-item-value-units {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: baseline;
+    grid-column-gap: 2px;
+}
+
+.mdhui-data-item-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.mdhui-data-item-units {
+    color: var(--mdhui-text-color-3);
+    font-size: 14px;
+}
+
+.mdhui-data-item-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.mdhui-data-item-status {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.mdhui-data-item-status-establishing {
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-data-item-status-offline {
+    color: var(--mdhui-color-warning);
+}
+
+.mdhui-data-item-status-in-range {
+    color: #188A83;
+}
+
+.mdhui-data-item-status-out-of-range {
+    color: #9D5BED;
+}
