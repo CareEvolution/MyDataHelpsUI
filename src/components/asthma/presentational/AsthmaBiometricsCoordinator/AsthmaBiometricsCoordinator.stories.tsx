@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, DataItem } from '../../../presentational';
+import { DataItem, Layout } from '../../../presentational';
 import AsthmaBiometricsCoordinator, { AsthmaBiometricsCoordinatorProps } from './AsthmaBiometricsCoordinator';
 
 export default {
@@ -10,7 +10,7 @@ export default {
 
 let render = (args: AsthmaBiometricsCoordinatorProps) => <Layout colorScheme="auto" bodyBackgroundColor="#fff">
     <AsthmaBiometricsCoordinator {...args}>
-        <DataItem dataKey="preview"/>
+        <DataItem dataKey="daytime-resting-heart-rate"/>
     </AsthmaBiometricsCoordinator>
 </Layout>;
 

@@ -1,27 +1,24 @@
 import React from 'react';
 import { asthmaDataService, getAsthmaBiometricTypeLabel, getAsthmaBiometricTypeUnits } from '../../helpers';
 import { Data, DataCoordinator } from '../../../presentational';
+import { AsthmaBiometric } from '../../model';
+import { AsthmaBiometricsPreviewState, previewData } from './AsthmaBiometricsCoordinator.previewData';
 
 export interface AsthmaBiometricsCoordinatorProps {
-    previewState?: 'default';
+    previewState?: AsthmaBiometricsPreviewState;
     children: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaBiometricsCoordinatorProps) {
     const loadData = async (): Promise<Record<string, Data>> => {
-        if (props.previewState === 'default') {
-            return {
-                'preview': {
-                    label: 'Resting HR',
-                    value: 64,
-                    units: 'BPM',
-                    status: 'in-range'
-                }
-            }
-        }
 
-        let biometrics = await asthmaDataService.loadBiometrics();
+        let biometrics: AsthmaBiometric[];
+        if (props.previewState) {
+            biometrics = previewData[props.previewState].biometrics;
+        } else {
+            biometrics = await asthmaDataService.loadBiometrics();
+        }
 
         let data: Record<string, Data> = {};
         biometrics.forEach(biometric => {
