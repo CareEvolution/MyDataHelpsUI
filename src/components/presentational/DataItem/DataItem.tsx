@@ -5,6 +5,7 @@ import { TextBlock } from "../index";
 
 export interface DataItemProps {
     dataKey: string;
+    availableDataKeys: string[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
