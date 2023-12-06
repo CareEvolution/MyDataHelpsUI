@@ -4,6 +4,8 @@ import './ColumnPanel.css';
 export interface ColumnPanelProps {
     columns: number;
     children: React.ReactNode;
+    padding?: string | number;
+    columnGap?: string | number;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -15,7 +17,12 @@ export default function (props: ColumnPanelProps) {
         }
         templateColumns += '1fr';
     }
-    return <div className="mdhui-column-panel" ref={props.innerRef} style={{gridTemplateColumns: templateColumns}}>
+    let style = {
+        gridTemplateColumns: templateColumns,
+        gridColumnGap: props.columnGap ?? 0,
+        padding: props.padding ?? 0
+    };
+    return <div className="mdhui-column-panel" ref={props.innerRef} style={style}>
         {props.children}
     </div>;
 }

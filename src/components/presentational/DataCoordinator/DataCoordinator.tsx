@@ -49,5 +49,5 @@ export default function (props: DataCoordinatorProps) {
         <DataContext.Provider value={currentContext}>
             {props.children}
         </DataContext.Provider>
-    </div>
+    </div>;
 }
