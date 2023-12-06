@@ -6,6 +6,7 @@ export interface ColumnPanelProps {
     children: React.ReactNode;
     padding?: string | number;
     columnGap?: string | number;
+    rowGap?: string | number;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -20,6 +21,7 @@ export default function (props: ColumnPanelProps) {
     let style = {
         gridTemplateColumns: templateColumns,
         gridColumnGap: props.columnGap ?? 0,
+        gridRowGap: props.rowGap ?? 0,
         padding: props.padding ?? 0
     };
     return <div className="mdhui-column-panel" ref={props.innerRef} style={style}>
