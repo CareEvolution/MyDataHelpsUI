@@ -22,7 +22,7 @@ const render = (args: DataItemStoryProps) => {
 
     return <Layout colorScheme="auto" bodyBackgroundColor="#fff">
         <DataCoordinator loadData={loadData}>
-            <DataItem dataKey={args.dataKey} availableDataKeys={Object.keys(args.data)}/>
+            <DataItem dataKey={args.dataKey}/>
         </DataCoordinator>
     </Layout>
 };
