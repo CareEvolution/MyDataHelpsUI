@@ -19,16 +19,18 @@
     width: 100%;
     border-top-width: 1px;
     border-top-style: solid;
-    border-top-color: var(--mdhui-border-color-0);
+    border-top-color: var(--mdhui-border-color-0); 
 }
 
-.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-x-axis{
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-x-axis{
     position: absolute;
     bottom: -15px;
     margin-left: -2.5px;
 }
 
-.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-axis-text{
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-axis-text{
     color: var(--mdhui-text-color-4);
     font-size: 10px;
     font-style: normal;
@@ -38,7 +40,8 @@
     justify-content: right;
 }
 
-.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-y-axis 
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-y-axis 
 .mdhui-dumbbell-axis-text{
     margin-right: 15px;
 }
@@ -62,32 +65,51 @@
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
-.mdhui-dumbbell-out-of-range-icon{
-    position: absolute;
-    z-index: 1;
+.mdhui-dumbbell-full-out-of-range-pill{
     background-color: var(--mdhui-color-danger);
-    border-color:var(--mdhui-color-danger); 
+    border-color:var(--mdhui-color-danger);
+    position: absolute;
     width: 9px;
-    height: 8px;
-    min-height: 9px;
+    height: 9px;
     border-style: solid;
     border-width: 2px;
+    z-index: 1;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-partial-out-of-range-pill{
+    position: absolute;
+    z-index: 1;
+    width: 9px;
+    border-style: solid;
+    border-width: 2px;
+    min-height: 10px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-top-upper-out-of-range{
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px; 
+    border-top: 0;
+    bottom: 100%; 
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-bottom-lower-out-of-range{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px; 
+    border-bottom: 0;
+    bottom: 10px; 
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
 .mdhui-dumbbell-bottom{
-    bottom: 0%;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px; 
-    border-bottom: 0;
+    bottom: 10px; 
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
 .mdhui-dumbbell-top{
-    bottom: 100%;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px; 
-    border-top: 0;
+    bottom: 100%; 
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 

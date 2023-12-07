@@ -17,6 +17,8 @@ export default function (props : DumbbellProps) {
 
     const classEnum = props.dumbbell?.class ?? DumbbellClass["mdhui-dumbbell-in-range"];
     const dbClass = DumbbellClass[classEnum];
+    const ds1dbClass : string[] = [dbClass];
+    const ds2dbClass : string[] = [dbClass];
     const leftAsPercent= {"left" : `${(props.index * xIncrementPercent)}%`};
 
     const dataSet1 = props.dumbbell && props.dumbbell.dataPoint ? props.dumbbell.dataPoint.dataSet1.values : [];
@@ -25,25 +27,56 @@ export default function (props : DumbbellProps) {
     const ds2HighEnd : number = dataSet2.length >1 ? dataSet2[1] : dataSet2[0];
     
     const dataSet1Bottom = dataSet1[0] - minOfRange;
-    const dataSet1BottomAsPercent = getAsPercent(dataSet1Bottom, range);
-    const dataSet1OutOfRange : boolean = (dataSet1[0] < minOfRange);
-    const dataSet1Height = ds1HighEnd - dataSet1[0];
-    const dataSet1Style : any = getStyle(`${dataSet1Height}px`, `${dataSet1BottomAsPercent}%`);
+    const dataSet1BottomAsPercent = getAsPercent(dataSet1Bottom + halfCirclePx, range);
+    var dataSet1BottomStyle = `${dataSet1BottomAsPercent}%`;
+    const dataSet1LowOutOfRange : boolean = (dataSet1[0] < minOfRange);
+    const dataSet1HighOutOfRange : boolean = (ds1HighEnd < minOfRange);
+    const dataSet1FullOutOfRange : boolean = dataSet1HighOutOfRange;
+    var dataSet1Height = ds1HighEnd - dataSet1[0];
+    if (!dataSet1FullOutOfRange && dataSet1LowOutOfRange){
+        ds1dbClass.push("mdhui-dumbbell-partial-out-of-range-pill"); 
+        ds1dbClass.push("mdhui-dumbbell-bottom-lower-out-of-range");
+        dataSet1Height = ds1HighEnd - minOfRange; 
+        dataSet1BottomStyle = "10px";
+    }
+    else
+    {
+        ds1dbClass.push("mdhui-dumbbell-pill");
+    }
+
+    const dataSet1Style : any = getStyle(`${dataSet1Height}px`, dataSet1BottomStyle);
 
     const dataSet2Bottom = dataSet2[0] - minOfRange;
-    var dataSet2BottomAsPercent = getAsPercent(dataSet2Bottom, range);
-    const dataSet2OutOfRange = (dataSet2[1] >= maxOfRange);
-    if (dataSet2OutOfRange){
+    var dataSet2BottomAsPercent = getAsPercent(dataSet2Bottom + halfCirclePx, range);
+    var dataSet2Height = (ds2HighEnd >= maxOfRange ? maxOfRange : ds2HighEnd) - dataSet2[0];
+    const dataSet2LowOutOfRange : boolean = (dataSet2[0] > maxOfRange);
+    const dataSet2HighOutOfRange : boolean = (ds2HighEnd > maxOfRange);
+    const dataSet2FullOutOfRange = dataSet2LowOutOfRange;
+
+    if (!dataSet2FullOutOfRange && dataSet2HighOutOfRange){
+        ds2dbClass.push("mdhui-dumbbell-partial-out-of-range-pill"); 
+        ds2dbClass.push("mdhui-dumbbell-top-upper-out-of-range");
+    }
+    else
+    {
+        ds2dbClass.push("mdhui-dumbbell-pill");
+    }
+
+    if (dataSet2FullOutOfRange){
         dataSet2BottomAsPercent = 100;
     }
-    const dataSet2Height = ds2HighEnd - dataSet2[0];
+
+    if (dataSet2Height <= 10){
+        dataSet2Height = dataSet2Height + halfCirclePx;
+    }
+
     const dataSet2Style : any = getStyle(`${dataSet2Height}px`, `${dataSet2BottomAsPercent}%`);
- 
-    
-    var lineHeight1 = (dataSet2OutOfRange ? (maxOfRange - minOfRange) : dataSet2Bottom) - (dataSet1OutOfRange ? 0 : dataSet1Bottom);
+
+    var lineHeight1 = (dataSet2FullOutOfRange ? (maxOfRange - minOfRange) : dataSet2Bottom) - ((dataSet1FullOutOfRange || dataSet1[0] <0) ? 0 : dataSet1Bottom);
     var lineHeightAsPercent = getAsPercent(lineHeight1, range);
     lineHeightAsPercent = lineHeightAsPercent > 100 ? 100 : lineHeightAsPercent;
-    const lineStyle = {"height": `${lineHeightAsPercent}%`, "bottom": `${dataSet1OutOfRange ? 0 : dataSet1BottomAsPercent}%`, "left" : `${halfCirclePx + .5}px`};
+    const lineBottom = (dataSet1FullOutOfRange || dataSet1Bottom <= 0) ? "10px" : `${dataSet1BottomAsPercent}%`;
+    const lineStyle = {"height": `${lineHeightAsPercent}%`, "bottom": lineBottom, "left" : `${halfCirclePx + .5}px`};
    
     function getAsPercent( xx : number, range : number){
         return ((xx/ range) * 100);
@@ -57,11 +90,11 @@ export default function (props : DumbbellProps) {
         <div className="mdhui-dumbbell" style={leftAsPercent} >
             {props.dumbbell?.dataPoint && 
                 <>
-                {dataSet2OutOfRange && <div className="mdhui-dumbbell-out-of-range-icon mdhui-dumbbell-top"></div>}
-                {!dataSet2OutOfRange && <div className={`mdhui-dumbbell-pill ${dbClass}`} style={dataSet2Style} ></div>}
+                {dataSet2FullOutOfRange && <div className="mdhui-dumbbell-full-out-of-range-pill mdhui-dumbbell-top-upper-out-of-range"></div>}
+                {!dataSet2FullOutOfRange && <div className={ds2dbClass.join(' ')} style={dataSet2Style} ></div>}
                 <div className={`mdhui-dumbbell-line ${dbClass}`} style={lineStyle} ></div>
-                {dataSet1OutOfRange && <div className="mdhui-dumbbell-out-of-range-icon mdhui-dumbbell-bottom"></div>}
-                {!dataSet1OutOfRange && <div className={`mdhui-dumbbell-pill ${dbClass}`} style={dataSet1Style} ></div>}
+                {dataSet1FullOutOfRange && <div className="mdhui-dumbbell-full-out-of-range-pill mdhui-dumbbell-bottom-lower-out-of-range"></div>}
+                {!dataSet1FullOutOfRange && <div className={ds1dbClass.join(' ')} style={dataSet1Style} ></div>}
                 </>
             }
             <div className="mdhui-dumbbell-x-axis mdhui-dumbbell-axis-text" key={`xAxis${props.index+1}`} >{props.dumbbell?.xValue}</div>

@@ -48,7 +48,7 @@ export default function (props : BloodPressureVisualizationProps) {
     const _minDiastolic = 0;
     const _maxSystolic = 250; 
     const yInterval : ClosedInterval = {values: [_minDiastolic, _maxSystolic]};
-    const axis : Axis = {yRange : yInterval, yIncrement : 50, xIncrement : (85/7)};
+    const axis : Axis = {yRange : yInterval, yIncrement : 50, xIncrement : (80/7)};
     const [bloodPressureData, setDataForGraph] = useState<BloodPressureDumbbell[]>();
     const [datePagerStartDate, setStartOfWeek] = useState<Date>(startOfDay(getWeekStart(props.weekStartsOn ?? "Monday")));
 

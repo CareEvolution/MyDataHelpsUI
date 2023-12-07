@@ -44,7 +44,7 @@ export default function (props : DumbBellChartProps) {
         var style = {"bottom": `${0}%`};
         for (var i = 0; i < (increments + 1); i++){
             var key = `yAxis${i+1}`;
-            var yLabel = (i == 0) ? "" : yValue;
+            var yLabel = yValue;
             yAxis.push(<div className="mdhui-dumbbell-y-axis" style={style} key={key}><div className="mdhui-dumbbell-axis-text">{yLabel}</div></div>);
             yValue = (yValue + props.axis.yIncrement);
             bottom = (i + 1) * props.axis.yIncrement;
