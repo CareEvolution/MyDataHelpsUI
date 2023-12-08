@@ -1,4 +1,5 @@
 import React from 'react';
+import { ColorDefinition } from '../../../helpers/colors';
 import { Card, Layout } from '../../presentational';
 import ValueSelector, { ValueSelectorProps } from './ValueSelector'
 
@@ -8,8 +9,8 @@ export default {
 	parameters: {layout: 'fullscreen'}
 };
 
-let render = (args: ValueSelectorProps) => <Layout colorScheme="auto" bodyBackgroundColor="#fff">
-	<Card>
+let render = (cardColor: ColorDefinition, args: ValueSelectorProps) => <Layout colorScheme="auto" bodyBackgroundColor="#fff">
+	<Card backgroundColor={cardColor}>
 		<ValueSelector {...args} />
 	</Card>
 </Layout>;
@@ -25,7 +26,7 @@ export const Default = {
 			'Option 4'
 		]
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const Buttons = {
@@ -42,7 +43,7 @@ export const Buttons = {
 			'Option 2'
 		]
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const ButtonsPreventEmptySelections = {
@@ -60,7 +61,7 @@ export const ButtonsPreventEmptySelections = {
 		],
 		preventEmptySelections: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const ButtonsMultiSelect = {
@@ -78,7 +79,7 @@ export const ButtonsMultiSelect = {
 		],
 		multiSelect: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const ButtonsMultiSelectPreventEmptySelections = {
@@ -97,12 +98,11 @@ export const ButtonsMultiSelectPreventEmptySelections = {
 		multiSelect: true,
 		preventEmptySelections: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const ButtonsCustomColors = {
 	args: {
-		backgroundColor: '#badbe8',
 		title: 'Some title',
 		titleColor: '#946105',
 		subtitle: 'Select one',
@@ -121,7 +121,7 @@ export const ButtonsCustomColors = {
 		selectedButtonBackgroundColor: '#ee9e0f',
 		selectedButtonTextColor: '#946105'
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#badbe8', args)
 };
 
 export const Checkboxes = {
@@ -139,7 +139,7 @@ export const Checkboxes = {
 		],
 		variant: 'checkboxes'
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const CheckboxesPreventEmptySelections = {
@@ -158,7 +158,7 @@ export const CheckboxesPreventEmptySelections = {
 		variant: 'checkboxes',
 		preventEmptySelections: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const CheckboxesMultiSelect = {
@@ -177,7 +177,7 @@ export const CheckboxesMultiSelect = {
 		variant: 'checkboxes',
 		multiSelect: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const CheckboxesMultiSelectPreventEmptySelections = {
@@ -197,12 +197,11 @@ export const CheckboxesMultiSelectPreventEmptySelections = {
 		multiSelect: true,
 		preventEmptySelections: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#f5f5f5', args)
 };
 
 export const CheckboxesCustomColors = {
 	args: {
-		backgroundColor: '#badbe8',
 		title: 'Some title',
 		titleColor: '#946105',
 		subtitle: 'Select all that apply',
@@ -223,5 +222,5 @@ export const CheckboxesCustomColors = {
 		variant: 'checkboxes',
 		multiSelect: true
 	},
-	render: render
+	render: (args: ValueSelectorProps) => render('#badbe8', args)
 };

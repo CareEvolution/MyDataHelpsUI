@@ -7,7 +7,6 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { LayoutContext } from '../Layout';
 
 export interface ValueSelectorProps {
-	backgroundColor?: ColorDefinition;
 	title?: string;
 	titleColor?: ColorDefinition;
 	subtitle?: string;
@@ -56,7 +55,6 @@ export default function (props: ValueSelectorProps) {
 	};
 
 	let colorStyles = {
-		'--mdhui-value-selector-background-color': resolveColor(layoutContext?.colorScheme, props.backgroundColor),
 		'--mdhui-value-selector-title-color': resolveColor(layoutContext?.colorScheme, props.titleColor),
 		'--mdhui-value-selector-subtitle-color': resolveColor(layoutContext?.colorScheme, props.subtitleColor),
 		'--mdhui-value-selector-value-background-color': resolveColor(layoutContext?.colorScheme, props.valueBackgroundColor),

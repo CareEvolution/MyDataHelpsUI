@@ -1,5 +1,4 @@
 .mdhui-value-selector {
-    --mdhui-value-selector-background-color: var(--mdhui-background-color-1);
     --mdhui-value-selector-title-color: var(--mdhui-text-color-1);
     --mdhui-value-selector-subtitle-color: var(--mdhui-text-color-3);
     --mdhui-value-selector-value-background-color: #fff;
@@ -9,7 +8,6 @@
     --mdhui-value-selector-checkbox-color: var(--mdhui-text-color-4);
     --mdhui-value-selector-checkbox-selected-color: var(--mdhui-color-primary);
     padding: 16px;
-    background: var(--mdhui-value-selector-background-color);
 }
 
 .mdhui-value-selector-title {
