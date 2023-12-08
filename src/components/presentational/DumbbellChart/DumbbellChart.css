@@ -1,7 +1,7 @@
 .mdhui-dumbbell-visualization {
     padding-top: var(--mdhui-padding-sm);
     padding-bottom: var(--mdhui-padding-md);
-    height: 100%;
+    overflow: hidden;
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart{
@@ -19,7 +19,7 @@
     width: 100%;
     border-top-width: 1px;
     border-top-style: solid;
-    border-top-color: var(--mdhui-border-color-0); 
+    border-top-color: var(--mdhui-border-color-0);
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
@@ -44,6 +44,10 @@
 .mdhui-dumbbell-y-axis 
 .mdhui-dumbbell-axis-text{
     margin-right: 15px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-y-axis .mdhui-dumbbell-axis-text-hidden{
+    visibility: hidden;
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell{
@@ -83,15 +87,14 @@
     width: 9px;
     border-style: solid;
     border-width: 2px;
-    min-height: 10px;
+    min-height: 9px;
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
 .mdhui-dumbbell-top-upper-out-of-range{
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px; 
-    border-top: 0;
-    bottom: 100%; 
+    bottom: 100%;
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 

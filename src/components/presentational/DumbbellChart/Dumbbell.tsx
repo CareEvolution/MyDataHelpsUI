@@ -25,6 +25,7 @@ export default function (props : DumbbellProps) {
     const dataSet2 = props.dumbbell && props.dumbbell.dataPoint ? props.dumbbell.dataPoint.dataSet2.values : [];
     const ds1HighEnd : number = dataSet1.length >1 ? dataSet1[1] : dataSet1[0];
     const ds2HighEnd : number = dataSet2.length >1 ? dataSet2[1] : dataSet2[0];
+    const ds2IsSingleValue : boolean = ds2HighEnd === dataSet2[0];
     
     const dataSet1Bottom = dataSet1[0] - minOfRange;
     const dataSet1BottomAsPercent = getAsPercent(dataSet1Bottom + halfCirclePx, range);
@@ -46,12 +47,27 @@ export default function (props : DumbbellProps) {
 
     const dataSet1Style : any = getStyle(`${dataSet1Height}px`, dataSet1BottomStyle);
 
-    const dataSet2Bottom = dataSet2[0] - minOfRange;
-    var dataSet2BottomAsPercent = getAsPercent(dataSet2Bottom + halfCirclePx, range);
-    var dataSet2Height = (ds2HighEnd >= maxOfRange ? maxOfRange : ds2HighEnd) - dataSet2[0];
     const dataSet2LowOutOfRange : boolean = (dataSet2[0] > maxOfRange);
     const dataSet2HighOutOfRange : boolean = (ds2HighEnd > maxOfRange);
     const dataSet2FullOutOfRange = dataSet2LowOutOfRange;
+
+    const axisLineDiv = 11;
+    var dataSet2Bottom = 0;
+    if (ds2IsSingleValue && dataSet2FullOutOfRange){
+        dataSet2Bottom = maxOfRange - (halfCirclePx * 2);
+    }
+    else
+    {
+        dataSet2Bottom = dataSet2[0] - minOfRange;
+    }
+    var dataSet2BottomAsPercent = getAsPercent(dataSet2Bottom, range);
+
+    var dataSet2Height = 0;
+    if (!ds2IsSingleValue){
+        var topPoint = ds2HighEnd > maxOfRange ? (maxOfRange + axisLineDiv) : ds2HighEnd;
+        dataSet2Height = topPoint - dataSet2Bottom;
+    }
+    const dataSet2Style : any = ds2IsSingleValue ? {"bottom" : `${dataSet2BottomAsPercent}%`} : getStyle(`${dataSet2Height}px`, `${dataSet2BottomAsPercent}%`);
 
     if (!dataSet2FullOutOfRange && dataSet2HighOutOfRange){
         ds2dbClass.push("mdhui-dumbbell-partial-out-of-range-pill"); 
@@ -62,15 +78,6 @@ export default function (props : DumbbellProps) {
         ds2dbClass.push("mdhui-dumbbell-pill");
     }
 
-    if (dataSet2FullOutOfRange){
-        dataSet2BottomAsPercent = 100;
-    }
-
-    if (dataSet2Height <= 10){
-        dataSet2Height = dataSet2Height + halfCirclePx;
-    }
-
-    const dataSet2Style : any = getStyle(`${dataSet2Height}px`, `${dataSet2BottomAsPercent}%`);
 
     var lineHeight1 = (dataSet2FullOutOfRange ? (maxOfRange - minOfRange) : dataSet2Bottom) - ((dataSet1FullOutOfRange || dataSet1[0] <0) ? 0 : dataSet1Bottom);
     var lineHeightAsPercent = getAsPercent(lineHeight1, range);
