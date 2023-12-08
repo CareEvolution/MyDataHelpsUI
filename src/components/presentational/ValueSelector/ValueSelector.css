@@ -12,13 +12,12 @@
 
 .mdhui-value-selector-title {
     font-weight: bold;
-    font-size: 18px;
     color: var(--mdhui-value-selector-title-color);
     margin-bottom: 4px;
 }
 
 .mdhui-value-selector-subtitle {
-    font-size: 12px;
+    font-size: 0.75em;
     color: var(--mdhui-value-selector-subtitle-color);
     margin-bottom: 12px;
 }
@@ -36,7 +35,6 @@
     padding: 0 16px;
     margin: 8px 0;
     font-weight: bold;
-    font-size: 14px;
 }
 
 .mdhui-value-selector-value:last-child {
@@ -44,6 +42,7 @@
 }
 
 .mdhui-value-selector-value-text {
+    font-size: 0.85em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -65,7 +64,7 @@
 
 .mdhui-value-selector-value-checkbox-icon {
     width: 48px;
-    font-size: 16px;
+    font-size: 0.95em;
     justify-self: center;
     color: var(--mdhui-value-selector-checkbox-color);
 }
