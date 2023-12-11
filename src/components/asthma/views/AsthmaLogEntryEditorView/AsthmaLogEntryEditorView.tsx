@@ -199,6 +199,6 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
 };
 
 export function editAsthmaLogEntry(date: Date, url?: string): void {
-    let applicationUrl = (url ?? 'https://viewlibrary.careevolutionapps.com/asthma/log-entry-editor') + '?' + formatISO(date, {representation: 'date'});
+    let applicationUrl = (url ?? 'https://viewlibrary.careevolutionapps.com/asthma/log-entry-editor') + '?date=' + formatISO(date, {representation: 'date'});
     MyDataHelps.openApplication(applicationUrl, {modal: true});
 }

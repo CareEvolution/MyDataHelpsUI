@@ -45,6 +45,6 @@ export default function (props: AsthmaDayViewProps) {
 };
 
 export function showAsthmaDay(date: Date, url?: string): void {
-    let applicationUrl = (url ?? 'https://viewlibrary.careevolutionapps.com/asthma/day') + '?' + formatISO(date, {representation: 'date'});
+    let applicationUrl = (url ?? 'https://viewlibrary.careevolutionapps.com/asthma/day') + '?date=' + formatISO(date, {representation: 'date'});
     MyDataHelps.openApplication(applicationUrl, {modal: true});
 }
