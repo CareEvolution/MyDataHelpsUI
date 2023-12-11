@@ -1,1 +1,1 @@
-export { default, showAsthmaDay } from './AsthmaDayView';
+export { default, AsthmaDayViewPreviewState, showAsthmaDay } from './AsthmaDayView';
