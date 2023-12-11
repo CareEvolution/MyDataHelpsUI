@@ -3,11 +3,10 @@ import './AsthmaLogEntryDetails.css';
 import { AsthmaLogEntry } from '../../model';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { add, isBefore, isSameDay, startOfToday } from 'date-fns';
+import { add, formatISO, isBefore, isSameDay, startOfToday } from 'date-fns';
 import { LoadingIndicator } from '../../../presentational';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, dateToAsthmaLogEntryIdentifier } from '../../helpers';
-import { editAsthmaLogEntry } from '../../views';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { AsthmaLogEntryDetailsPreviewState, previewData } from './AsthmaLogEntryDetails.previewData';
 
@@ -16,7 +15,7 @@ export interface AsthmaLogEntryDetailsProps {
     date: Date;
     logTodayEntrySurveyName: string;
     logYesterdayEntrySurveyName: string;
-    editLogEntryUrl?: string;
+    editLogEntryUrl: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -50,7 +49,7 @@ export default function (props: AsthmaLogEntryDetailsProps) {
 
         setLoading(true);
         if (logEntry) {
-            editAsthmaLogEntry(props.date, props.editLogEntryUrl);
+            MyDataHelps.openApplication(props.editLogEntryUrl + '?date=' + formatISO(props.date, {representation: 'date'}), {modal: true});
         } else if (isSameDay(props.date, today)) {
             MyDataHelps.startSurvey(props.logTodayEntrySurveyName);
         } else if (isSameDay(props.date, yesterday)) {

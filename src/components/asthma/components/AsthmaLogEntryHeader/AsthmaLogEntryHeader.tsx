@@ -7,13 +7,12 @@ import { asthmaDataService, dateToAsthmaLogEntryIdentifier } from '../../helpers
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { AsthmaLogEntryHeaderPreviewState, previewData } from './AsthmaLogEntryHeader.previewData';
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { showAsthmaDay } from "../../views";
-import parseISO from "date-fns/parseISO";
 
 export interface AsthmaLogEntryHeaderProps {
     previewState?: AsthmaLogEntryHeaderPreviewState;
     logTodayEntrySurveyName: string;
     logYesterdayEntrySurveyName: string;
+    dayViewUrl: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -54,7 +53,7 @@ export default function (props: AsthmaLogEntryHeaderProps) {
         if (props.previewState || loading) return;
 
         if (logEntry) {
-            showAsthmaDay(parseISO(logEntry.identifier));
+            MyDataHelps.openApplication(props.dayViewUrl + '?date=' + logEntry.identifier, {modal: true});
         } else {
             MyDataHelps.startSurvey(surveyName);
         }

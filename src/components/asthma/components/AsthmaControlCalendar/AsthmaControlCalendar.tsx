@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './AsthmaControlCalendar.css';
-import { isAfter, isSameDay, startOfMonth } from "date-fns";
+import { formatISO, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import { AsthmaLogEntry } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, computeAsthmaControlState } from '../../helpers';
@@ -84,7 +84,7 @@ export default function (props: AsthmaControlCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        MyDataHelps.openApplication(props.dayViewUrl, {modal: true});
+        MyDataHelps.openApplication(props.dayViewUrl + '?date=' + formatISO(date, {representation: 'date'}), {modal: true});
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {

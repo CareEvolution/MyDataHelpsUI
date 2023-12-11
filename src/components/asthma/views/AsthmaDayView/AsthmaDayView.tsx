@@ -17,7 +17,7 @@ export interface AsthmaDayViewProps {
     date: Date;
     logTodayEntrySurveyName: string;
     logYesterdayEntrySurveyName: string;
-    editLogEntryUrl?: string;
+    editLogEntryUrl: string;
 }
 
 export default function (props: AsthmaDayViewProps) {
@@ -42,9 +42,4 @@ export default function (props: AsthmaDayViewProps) {
             <AsthmaAirQualities previewState={props.previewState?.airQualitiesPreviewState}/>
         </Card>
     </Layout>;
-};
-
-export function showAsthmaDay(date: Date, url?: string): void {
-    let applicationUrl = (url ?? 'https://viewlibrary.careevolutionapps.com/asthma/day') + '?date=' + formatISO(date, {representation: 'date'});
-    MyDataHelps.openApplication(applicationUrl, {modal: true});
 }
