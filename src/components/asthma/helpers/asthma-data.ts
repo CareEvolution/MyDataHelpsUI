@@ -1,4 +1,4 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, isAfter, isBefore, parseISO, startOfDay } from 'date-fns';
 import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 
@@ -130,6 +130,8 @@ export interface AsthmaDataService {
     loadBiometrics(): Promise<AsthmaBiometric[]>;
 
     loadAirQualities(): Promise<AsthmaAirQuality[]>;
+
+    saveLogEntry(logEntry: AsthmaLogEntry): Promise<void>;
 }
 
 const service: AsthmaDataService = {
@@ -178,6 +180,15 @@ const service: AsthmaDataService = {
         };
         let result = await MyDataHelps.queryDeviceData(params);
         return computeAirQualities(result.deviceDataPoints);
+    },
+    saveLogEntry: function (logEntry: AsthmaLogEntry): Promise<void> {
+        let logEntryDataPoint: PersistableDeviceDataPoint = {
+            type: 'Asthma-LogEntry',
+            identifier: logEntry.identifier,
+            observationDate: `${logEntry.identifier}T12:00:00-06:00`,
+            value: JSON.stringify(logEntry)
+        };
+        return MyDataHelps.persistDeviceData([logEntryDataPoint]);
     }
 };
 

@@ -3,10 +3,10 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import formatISO from 'date-fns/formatISO';
 import { Card, Layout, LoadingIndicator, NavigationBar, ValueSelector } from '../../../presentational';
 import { add, format, isBefore, startOfToday } from 'date-fns';
-import { AsthmaLogEntry, AsthmaSymptomLevel } from "../../model";
-import { useInitializeView } from "../../../../helpers/Initialization";
-import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaSymptomLevel, getAsthmaSymptomLevelValue } from "../../helpers";
-import { AsthmaLogEntryEditorViewPreviewState, previewData } from "./AsthmaLogEntryEditorView.previewData";
+import { AsthmaLogEntry, AsthmaSymptomLevel } from '../../model';
+import { useInitializeView } from '../../../../helpers/Initialization';
+import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaSymptomLevel, getAsthmaSymptomLevelValue } from '../../helpers';
+import { AsthmaLogEntryEditorViewPreviewState, previewData } from './AsthmaLogEntryEditorView.previewData';
 
 export interface AsthmaLogEntryEditorViewProps {
     previewState?: AsthmaLogEntryEditorViewPreviewState;
@@ -70,8 +70,9 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
 
     const onSave = (): void => {
         if (loading || props.previewState) return;
-        // TODO: Save the updated log entry and close the modal.
-        console.log('save clicked.');
+        asthmaDataService.saveLogEntry(logEntry!).then(() => {
+            MyDataHelps.dismiss();
+        });
     };
 
     const onSymptomLevelChanged = (symptomLevelValue: string): void => {
