@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import CalendarDay, { CalendarDayProps, CalendarDayStateConfiguration } from './CalendarDay';
 import { Calendar, Card, DateRangeContext, DateRangeCoordinator, Layout } from '../../presentational';
 import { add, formatISO, isSameDay, parseISO } from 'date-fns';
+import { resolveColor } from "../../../helpers/colors";
 
 export default {
     title: 'Presentational/CalendarDay',
@@ -38,7 +39,7 @@ const commonProps = {
                 background: '#35A6A0'
             },
             streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
+            streakColor: resolveColor('light', '#35A6A0', 0.4)
         }
     },
     onClick: () => {
@@ -194,14 +195,14 @@ function CalendarDayInCalendar() {
                 color: '#000'
             },
             streak: true,
-            streakColor: 'rgba(248,106,92,0.4)'
+            streakColor: resolveColor('light', '#F86A5C', 0.4)
         },
         'state2': {
             style: {
                 background: '#35A6A0'
             },
             streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
+            streakColor: resolveColor('light', '#35A6A0', 0.4)
         },
         'state3': {
             style: {
