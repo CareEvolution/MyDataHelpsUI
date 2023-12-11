@@ -1,2 +1,2 @@
-export { default as AsthmaDayView, showAsthmaDay } from './AsthmaDayView';
-export { default as AsthmaLogEntryEditorView, editAsthmaLogEntry } from './AsthmaLogEntryEditorView';
+export { default as AsthmaDayView, AsthmaDayViewPreviewState, showAsthmaDay } from './AsthmaDayView';
+export { default as AsthmaLogEntryEditorView, AsthmaLogEntryEditorViewPreviewState, editAsthmaLogEntry } from './AsthmaLogEntryEditorView';
