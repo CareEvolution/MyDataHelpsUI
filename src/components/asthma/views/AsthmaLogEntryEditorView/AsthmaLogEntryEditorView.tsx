@@ -97,7 +97,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
         });
     };
 
-    return <Layout colorScheme={props.colorScheme ?? 'light'} bodyBackgroundColor="#fff">
+    return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="#fff">
         <NavigationBar
             title={format(props.date, 'LLLL do')}
             showCloseButton={true}
