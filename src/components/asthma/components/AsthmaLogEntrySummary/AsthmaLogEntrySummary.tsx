@@ -35,7 +35,7 @@ export default function (props: AsthmaLogEntrySummaryProps) {
                 <LoadingIndicator/>
             }
             {!props.loading && !props.logEntry &&
-                <div className="mdhui-asthma-log-entry-summary-add-button">+ Daily Entry</div>
+                <div className="mdhui-asthma-log-entry-summary-add-button">Log Entry</div>
             }
             {!props.loading && props.logEntry &&
                 <FontAwesomeIcon icon={faChevronRight as IconProp} className="mdhui-asthma-log-entry-summary-chevron"/>

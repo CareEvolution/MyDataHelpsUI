@@ -7,5 +7,3 @@ export { default as AsthmaFacts } from './AsthmaFacts';
 export { default as AsthmaLogEntryDetails, AsthmaLogEntryDetailsPreviewState } from './AsthmaLogEntryDetails';
 export { default as AsthmaLogEntryHeader } from './AsthmaLogEntryHeader';
 export { default as AsthmaLogEntrySummary } from './AsthmaLogEntrySummary';
-export { default as AsthmaToolLink } from './AsthmaToolLink';
-export { default as AsthmaTools } from './AsthmaTools';
