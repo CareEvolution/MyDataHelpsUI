@@ -11,7 +11,7 @@ export interface AsthmaDataViewProps {
 export default function (props: AsthmaDataViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <TextBlock style={{marginTop: 32, marginBottom: 16}}>
-            <h1>Data</h1>
+            <h1 style={{margin: 0}}>Data</h1>
         </TextBlock>
         <Card>
             <AsthmaBiometrics previewState={props.previewState ? previewData[props.previewState]?.biometricsPreviewState : undefined}/>

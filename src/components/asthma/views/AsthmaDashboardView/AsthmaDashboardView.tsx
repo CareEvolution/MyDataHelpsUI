@@ -32,7 +32,7 @@ export default function (props: AsthmaDashboardViewProps) {
         {participant &&
             <Section backgroundColor="#fff">
                 <TextBlock>
-                    <h1>Hi {participant.getFirstName()},</h1>
+                    <h1 style={{margin: 0}}>Hi {participant.getFirstName()},</h1>
                 </TextBlock>
                 <AsthmaControlStatusHeader
                     previewState={props.previewState ? previewData[props.previewState]?.controlStatusHeaderPreviewState : undefined}
@@ -48,7 +48,7 @@ export default function (props: AsthmaDashboardViewProps) {
         }
         <Card>
             <TextBlock>
-                <h2>Calendar</h2>
+                <h2 style={{margin: 0}}>Calendar</h2>
             </TextBlock>
             <DateRangeCoordinator intervalType="Month">
                 <AsthmaControlCalendar
@@ -59,7 +59,7 @@ export default function (props: AsthmaDashboardViewProps) {
         </Card>
         <Card>
             <TextBlock>
-                <h2>Asthma Tools</h2>
+                <h2 style={{margin: 0}}>Asthma Tools</h2>
             </TextBlock>
             <AsthmaTools/>
         </Card>
