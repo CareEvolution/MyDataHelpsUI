@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import CalendarDay, { CalendarDayProps, CalendarDayStateConfiguration } from './CalendarDay';
 import { Calendar, Card, DateRangeContext, DateRangeCoordinator, Layout } from '../../presentational';
-import { add, formatISO, isSameDay, parseISO } from 'date-fns';
+import { add, formatISO, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
 
 export default {
     title: 'Presentational/CalendarDay',
@@ -10,12 +10,14 @@ export default {
 };
 
 const render = (args: CalendarDayProps) => <Layout colorScheme="auto">
-    <div style={{width: '60px', margin: '0 auto'}}>
+    <div style={{width: '60px', margin: '20px auto 0'}}>
         <CalendarDay {...args} />
     </div>
 </Layout>;
 
 const testDate = parseISO('2023-11-29T21:41:43.678Z');
+const now = new Date();
+const tomorrow = startOfDay(add(new Date(now), {days: 1}));
 
 const commonProps = {
     year: testDate.getFullYear(),
@@ -59,6 +61,32 @@ export const Default = {
         ...commonProps,
         computeStateForDay: (date: Date): string => {
             return 'state0';
+        }
+    },
+    render: render
+};
+
+export const Today = {
+    args: {
+        ...commonProps,
+        year: now.getFullYear(),
+        month: now.getMonth(),
+        day: now.getDate(),
+        computeStateForDay: (date: Date): string => {
+            return 'today';
+        }
+    },
+    render: render
+};
+
+export const Future = {
+    args: {
+        ...commonProps,
+        year: tomorrow.getFullYear(),
+        month: tomorrow.getMonth(),
+        day: tomorrow.getDate(),
+        computeStateForDay: (date: Date): string => {
+            return 'future';
         }
     },
     render: render
@@ -172,7 +200,7 @@ export const StreakBothCustomColor = {
     render: render
 };
 
-export const InCalendar = {
+export const InCalendarNoData = {
     render: () => {
         return <Layout colorScheme="auto">
             <Card>
@@ -184,7 +212,19 @@ export const InCalendar = {
     }
 };
 
-function CalendarDayInCalendar() {
+export const InCalendarWithData = {
+    render: () => {
+        return <Layout colorScheme="auto">
+            <Card>
+                <DateRangeCoordinator intervalType="Month">
+                    <CalendarDayInCalendar withData={true}/>
+                </DateRangeCoordinator>
+            </Card>
+        </Layout>
+    }
+};
+
+function CalendarDayInCalendar(props: { withData?: boolean }) {
     let dateRangeContext = useContext(DateRangeContext);
 
     const stateConfiguration: CalendarDayStateConfiguration = {
@@ -218,17 +258,19 @@ function CalendarDayInCalendar() {
     };
 
     const computeStateForDay = (date: Date): string => {
-        if ((date.getDate() >= 5 && date.getDate() <= 13) || date.getDate() === 17) {
-            return 'state1';
-        }
-        if ((date.getDate() >= 2 && date.getDate() <= 4) || (date.getDate() >= 19 && date.getDate() <= 22) || date.getDate() === 16) {
-            return 'state2';
-        }
-        if (date.getDate() >= 24 && date.getDate() <= 25) {
-            return 'state3';
-        }
-        if (date.getDate() >= 26 && date.getDate() <= 27) {
-            return 'state4';
+        if (props.withData && isBefore(date, new Date())) {
+            if ((date.getDate() >= 5 && date.getDate() <= 13) || date.getDate() === 17) {
+                return 'state1';
+            }
+            if ((date.getDate() >= 2 && date.getDate() <= 4) || (date.getDate() >= 19 && date.getDate() <= 22) || date.getDate() === 16) {
+                return 'state2';
+            }
+            if (date.getDate() >= 24 && date.getDate() <= 25) {
+                return 'state3';
+            }
+            if (date.getDate() >= 26 && date.getDate() <= 27) {
+                return 'state4';
+            }
         }
         return 'state5';
     };
