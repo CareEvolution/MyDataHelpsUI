@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import './AsthmaControlCalendar.css';
 import { formatISO, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import { AsthmaLogEntry } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
@@ -40,22 +39,26 @@ export default function (props: AsthmaControlCalendarProps) {
         },
         'not-controlled': {
             style: {
-                background: '#f86a5c'
+                background: '#F86A5C',
+                color: '#fff'
             },
             streak: true,
-            streakColor: 'rgba(248,106,92,0.4)'
+            streakColor: '#FCCCC7'
         },
         'controlled': {
             style: {
-                background: '#35a6a0'
+                background: '#35A6A0',
+                color: '#fff'
             },
             streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
+            streakColor: '#CCE9E7'
         },
         'today': {
             style: {
-                boxShadow: 'inset 0 0 0 2px #000',
-                boxSizing: 'border-box'
+                background: '#369CFF',
+                color: '#fff',
+                border: '2px solid #fff',
+                marginTop: '-7px'
             }
         },
         'future': {

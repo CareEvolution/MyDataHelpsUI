@@ -1,6 +1,6 @@
 import React from 'react';
 import AsthmaControlCalendar, { AsthmaControlCalendarProps } from './AsthmaControlCalendar';
-import { DateRangeCoordinator, Layout } from '../../../presentational';
+import { Card, DateRangeCoordinator, Layout } from '../../../presentational';
 
 export default {
     title: 'Asthma/Components/AsthmaControlCalendar',
@@ -9,9 +9,11 @@ export default {
 };
 
 const render = (args: AsthmaControlCalendarProps) => <Layout colorScheme="auto">
-    <DateRangeCoordinator intervalType="Month">
-        <AsthmaControlCalendar {...args} />
-    </DateRangeCoordinator>
+    <Card backgroundColor="#fff">
+        <DateRangeCoordinator intervalType="Month">
+            <AsthmaControlCalendar {...args} />
+        </DateRangeCoordinator>
+    </Card>
 </Layout>;
 
 export const NoLogging = {
