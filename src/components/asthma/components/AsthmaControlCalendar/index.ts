@@ -1,2 +1,2 @@
-export { default } from './AsthmaControlCalendar';
+export { default, AsthmaControlCalendarVariant } from './AsthmaControlCalendar';
 export { AsthmaControlCalendarPreviewState } from './AsthmaControlCalendar.previewData';

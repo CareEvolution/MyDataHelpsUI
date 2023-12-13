@@ -1,6 +1,6 @@
 export { default as AsthmaAirQualities, AsthmaAirQualitiesPreviewState } from './AsthmaAirQualities';
 export { default as AsthmaBiometrics, AsthmaBiometricsPreviewState } from './AsthmaBiometrics';
-export { default as AsthmaControlCalendar } from './AsthmaControlCalendar';
+export { default as AsthmaControlCalendar, AsthmaControlCalendarVariant } from './AsthmaControlCalendar';
 export { default as AsthmaControlStatusHeader } from './AsthmaControlStatusHeader';
 export { default as AsthmaDataSummary } from './AsthmaDataSummary';
 export { default as AsthmaFacts } from './AsthmaFacts';

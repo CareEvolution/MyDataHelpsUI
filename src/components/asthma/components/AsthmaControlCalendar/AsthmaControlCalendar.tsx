@@ -8,11 +8,13 @@ import { Action, Calendar, CalendarDay, CalendarDayStateConfiguration, Card, Dat
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { ColorDefinition, resolveColor } from '../../../../helpers/colors';
 
+export type AsthmaControlCalendarVariant = 'compact' | 'verbose';
+
 export interface AsthmaControlCalendarProps {
     previewState?: AsthmaControlCalendarPreviewState;
     dayViewUrl: string;
     intervalStart?: Date;
-    variant?: 'compact' | 'verbose';
+    variant?: AsthmaControlCalendarVariant;
     logEntryBackgroundColor?: ColorDefinition;
     innerRef?: React.Ref<HTMLDivElement>;
 }
