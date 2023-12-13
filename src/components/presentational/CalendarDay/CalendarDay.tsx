@@ -2,7 +2,7 @@ import React, { CSSProperties, useContext } from 'react';
 import './CalendarDay.css';
 import { LayoutContext } from '../Layout';
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
-import { add } from 'date-fns';
+import { add, isAfter, isSameDay } from 'date-fns';
 
 export type CalendarDayStateConfiguration = Record<string, { style?: CSSProperties, streak?: boolean, streakColor?: ColorDefinition }>;
 
@@ -47,8 +47,15 @@ export default function (props: CalendarDayProps) {
 
     let currentDayStateConfiguration = props.stateConfiguration[currentDayState];
 
-    let dayClasses = ['mdhui-calendar-day'];
+    let dayClasses: string[] = ['mdhui-calendar-day'];
     let dayStyle: CSSProperties | undefined;
+
+    if (isSameDay(date, new Date())) {
+        dayClasses.push('mdhui-calendar-day-today');
+    } else if (isAfter(date, new Date())) {
+        dayClasses.push('mdhui-calendar-day-future');
+    }
+
     if (currentDayStateConfiguration?.streak) {
         if (currentDayState === previousDayState && currentDayState === nextDayState && canStreakLeft(date) && canStreakRight(date)) {
             dayClasses.push('mdhui-calendar-day-streak-both');
