@@ -1,21 +1,25 @@
 import React, { useContext, useState } from 'react';
-import { formatISO, isAfter, isSameDay, startOfMonth } from 'date-fns';
+import { add, differenceInDays, format, formatISO, isAfter, isBefore, isSameDay, parseISO, startOfMonth } from 'date-fns';
 import { AsthmaLogEntry } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService, computeAsthmaControlState } from '../../helpers';
+import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier, getAsthmaSymptomLevelValue } from '../../helpers';
 import { AsthmaControlCalendarPreviewState, previewData } from './AsthmaControlCalendar.previewData';
-import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext } from '../../../presentational';
+import { Action, Calendar, CalendarDay, CalendarDayStateConfiguration, Card, DateRangeContext, LayoutContext } from '../../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
+import { ColorDefinition, resolveColor } from '../../../../helpers/colors';
 
 export interface AsthmaControlCalendarProps {
     previewState?: AsthmaControlCalendarPreviewState;
     dayViewUrl: string;
     intervalStart?: Date;
+    variant?: 'compact' | 'verbose';
+    logEntryBackgroundColor?: ColorDefinition;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaControlCalendarProps) {
-    let dateRangeContext = useContext(DateRangeContext);
+    const layoutContext = useContext(LayoutContext);
+    const dateRangeContext = useContext(DateRangeContext);
 
     const [logEntries, setLogEntries] = useState<AsthmaLogEntry[]>([]);
 
@@ -32,10 +36,11 @@ export default function (props: AsthmaControlCalendarProps) {
     const stateConfiguration: CalendarDayStateConfiguration = {
         'not-determined': {
             style: {
-                background: 'repeating-linear-gradient(-45deg, #dadae0, #dadae0 2px, #f0f0f6 2px, #f0f0f6 4px)'
+                background: '#000',
+                color: '#fff'
             },
             streak: true,
-            streakColor: '#f8f8fb'
+            streakColor: '#DBDBDB'
         },
         'not-controlled': {
             style: {
@@ -52,19 +57,6 @@ export default function (props: AsthmaControlCalendarProps) {
             },
             streak: true,
             streakColor: '#CCE9E7'
-        },
-        'today': {
-            style: {
-                background: '#369CFF',
-                color: '#fff',
-                border: '2px solid #fff',
-                marginTop: '-7px'
-            }
-        },
-        'future': {
-            style: {
-                color: '#999'
-            }
         }
     };
 
@@ -103,5 +95,39 @@ export default function (props: AsthmaControlCalendarProps) {
 
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
-    return <Calendar innerRef={props.innerRef} className="mdhui-asthma-control-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>;
+    const getLogEntries = () => {
+        if (logEntries.length === 0) {
+            return null;
+        }
+
+        let logEntryLookup: Record<string, AsthmaLogEntry | undefined> = {};
+
+        let earliestLogEntry = [...logEntries].sort((e1, e2) => e1.identifier.localeCompare(e2.identifier))[0];
+        let earliestDate = parseISO(earliestLogEntry.identifier);
+        for (let i = 0; i < differenceInDays(new Date(), earliestDate); i++) {
+            let targetDate = add(new Date(earliestDate), {days: i});
+            if (!isBefore(targetDate, intervalStart) && isBefore(targetDate, add(new Date(intervalStart), {months: 1}))) {
+                logEntryLookup[dateToAsthmaLogEntryIdentifier(targetDate)] = logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(targetDate));
+            }
+        }
+
+        return <div className="mdhui-asthma-control-calendar-log-entries">
+            {Object.keys(logEntryLookup).sort().reverse().map((identifier, index) => {
+                let targetDate = parseISO(identifier);
+                let logEntry = logEntryLookup[identifier];
+                return <Card backgroundColor={resolveColor(layoutContext?.colorScheme, props.logEntryBackgroundColor)} key={index}>
+                    <Action
+                        title={format(targetDate, 'LLLL do')}
+                        subtitle={logEntry ? getAsthmaSymptomLevelValue(logEntry.symptomLevel) : 'Daily entry missed'}
+                        onClick={() => onDayClicked(targetDate)}
+                    />
+                </Card>;
+            })}
+        </div>;
+    };
+
+    return <div>
+        <Calendar innerRef={props.innerRef} className="mdhui-asthma-control-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>
+        {props.variant === 'verbose' && getLogEntries()}
+    </div>;
 };
