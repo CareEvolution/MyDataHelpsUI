@@ -12,7 +12,7 @@ export interface CalendarDayProps {
     day?: number;
     stateConfiguration: CalendarDayStateConfiguration;
     computeStateForDay: (date: Date) => string;
-    onClick: (date: Date) => void;
+    onClick?: (date: Date) => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
