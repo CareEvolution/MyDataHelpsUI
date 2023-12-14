@@ -49,7 +49,7 @@ export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Da
             inhalerUseDaysPast7 >= 3 ||
             symptomDaysPast7 >= 3) {
             status = 'not-controlled';
-        } else if (loggedDaysPast7 >= 2 &&
+        } else if (loggedDaysPast7 >= 1 &&
             nighttimeAwakeningDaysPast7 == 0 &&
             limitedActivityDaysPast7 == 0 &&
             inhalerUseDaysPast7 == 0 &&
