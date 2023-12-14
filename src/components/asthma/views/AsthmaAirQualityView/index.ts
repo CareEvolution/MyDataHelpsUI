@@ -1,1 +1,1 @@
-export { default, AsthmaAirQualityViewPreviewState } from './AsthmaAirQualityView';
+export { default } from './AsthmaAirQualityView';
