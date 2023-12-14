@@ -150,9 +150,9 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                         title="Impacts"
                         subtitle="Select all that apply"
                         values={[
-                            'Waking up at night',
-                            'Limiting your daily activity',
-                            'Using your rescue inhaler'
+                            'Wake up at night',
+                            'Limit your daily activity',
+                            'Use your rescue inhaler'
                         ]}
                         selectedValues={logEntry.impacts}
                         variant='checkboxes'
@@ -165,25 +165,25 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                         title="Triggers"
                         subtitle="Select all that apply"
                         values={[
-                            'Cold/flu/virus',
-                            'Animal exposure (cat/dog/other)',
+                            'Cold/viral illness',
+                            'Animal exposure',
                             'Seasonal allergens/pollen',
                             'Smoke (tobacco or wood burning)',
                             'Extreme weather changes',
                             'Air pollution',
-                            'Strong smells or odors',
-                            'Chemicals/gases/dust/cleaning supplies',
+                            'Strong smells',
+                            'Chemicals/cleaning supplies',
+                            'Dust',
                             'Mold',
                             'Dust mites',
                             'Rodents',
                             'Cockroaches',
-                            'Taken a NSAID (non-steroidal anti-inflammatory drugs including Advil and ibuprofen)',
+                            'Taken a NSAID (non-steroidal anti-inflammatory drugs including aspirin and ibuprofen)',
                             'Taken a beta blocker',
-                            'Taken an aspirin',
                             'Had heartburn',
                             'Drank red wine',
                             'Tried any new foods',
-                            'Cooked over a stove without a fan or open window',
+                            'Cooked without a fan or open window',
                             'Had a pet sleep in your bed',
                             'Burned incense or a candle'
                         ]}
