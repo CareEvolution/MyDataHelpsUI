@@ -30,15 +30,15 @@ export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Da
         }, 0);
 
         let nighttimeAwakeningDaysPast7 = past7LogEntries.reduce((sum, entry) => {
-            return sum + (entry.impacts.includes('Waking up at night') ? 1 : 0);
+            return sum + (entry.impacts.includes('Wake up at night') ? 1 : 0);
         }, 0);
 
         let limitedActivityDaysPast7 = past7LogEntries.reduce((sum, entry) => {
-            return sum + (entry.impacts.includes('Limiting your daily activity') || entry.impacts.includes('Limiting your daily activities') ? 1 : 0);
+            return sum + (entry.impacts.includes('Limit your daily activity') ? 1 : 0);
         }, 0);
 
         let inhalerUseDaysPast7 = past7LogEntries.reduce((sum, entry) => {
-            return sum + (entry.impacts.includes('Using your rescue inhaler') ? 1 : 0);
+            return sum + (entry.impacts.includes('Use your rescue inhaler') ? 1 : 0);
         }, 0);
 
         let loggedDaysPast7 = past7LogEntries.length;
