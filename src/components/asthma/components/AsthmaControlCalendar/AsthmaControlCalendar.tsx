@@ -106,7 +106,7 @@ export default function (props: AsthmaControlCalendarProps) {
 
         let earliestLogEntry = [...logEntries].sort((e1, e2) => e1.identifier.localeCompare(e2.identifier))[0];
         let earliestDate = parseISO(earliestLogEntry.identifier);
-        for (let i = 0; i < differenceInDays(new Date(), earliestDate); i++) {
+        for (let i = 0; i <= differenceInDays(new Date(), earliestDate); i++) {
             let targetDate = add(new Date(earliestDate), {days: i});
             if (!isBefore(targetDate, intervalStart) && isBefore(targetDate, add(new Date(intervalStart), {months: 1}))) {
                 logEntryLookup[dateToAsthmaLogEntryIdentifier(targetDate)] = logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(targetDate));
