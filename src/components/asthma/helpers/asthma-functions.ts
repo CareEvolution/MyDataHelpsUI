@@ -1,5 +1,5 @@
-import { add, formatISO } from "date-fns";
-import { AsthmaAirQualityType, AsthmaBiometricType, AsthmaControlState, AsthmaControlStatus, AsthmaDataStatus, AsthmaLogEntry, AsthmaSymptomLevel } from "../model";
+import { add, formatISO } from 'date-fns';
+import { AsthmaControlState, AsthmaControlStatus, AsthmaDataStatus, AsthmaLogEntry, AsthmaSymptomLevel } from '../model';
 
 export const dateToAsthmaLogEntryIdentifier = (date: Date): string => {
     return formatISO(date, {representation: 'date'});
@@ -73,33 +73,11 @@ export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Da
     return {status: 'no-data'};
 };
 
-export const getAsthmaBiometricTypeLabel = (type: AsthmaBiometricType): string => {
-    if (type === 'daytime-resting-heart-rate') return 'Resting HR (Day)';
-    if (type === 'nighttime-resting-heart-rate') return 'Resting HR (Night)';
-    if (type === 'respiratory-rate') return 'Respiratory Rate';
-    if (type === 'activity') return 'Steps';
-    if (type === 'sleep') return 'Sleep';
-    return 'Other';
-};
-
-export const getAsthmaBiometricTypeUnits = (type: AsthmaBiometricType): string => {
-    if (type === 'daytime-resting-heart-rate') return 'BPM';
-    if (type === 'nighttime-resting-heart-rate') return 'BPM';
-    if (type === 'respiratory-rate') return 'BPM';
-    return '';
-};
-
 export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
     if (status === 'offline') return 'Offline';
     if (status === 'in-range') return 'In range';
     if (status === 'out-of-range') return 'Out of range';
     return 'Establishing';
-};
-
-export const getAsthmaAirQualityTypeLabel = (type: AsthmaAirQualityType): string => {
-    if (type === 'home') return 'AQI (Home)';
-    if (type === 'work') return 'AQI (Work)';
-    return 'Other';
 };
 
 export const getAsthmaSymptomLevelValue = (symptomLevel: AsthmaSymptomLevel): string => {

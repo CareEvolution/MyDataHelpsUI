@@ -9,12 +9,23 @@ export interface AsthmaDataSummaryProps {
     statusText?: string;
     value?: number;
     units?: string;
+    onClick?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaDataSummaryProps) {
-    return <div className="mdhui-asthma-data-summary" ref={props.innerRef}>
+
+    const onClick = (): void => {
+        if (props.onClick) {
+            props.onClick();
+        }
+    };
+
+    return <div className="mdhui-asthma-data-summary" ref={props.innerRef} onClick={() => onClick()}>
         <div className="mdhui-asthma-data-summary-value-units">
+            {!props.value &&
+                <div className="mdhui-asthma-data-summary-value">...</div>
+            }
             {props.value &&
                 <div className="mdhui-asthma-data-summary-value">{props.value.toLocaleString()}</div>
             }

@@ -14,9 +14,23 @@ const render = (args: AsthmaBiometricsProps) => <Layout colorScheme="auto">
     </Card>
 </Layout>;
 
-export const Default = {
+export const NoData = {
     args: {
-        previewState: 'default'
+        previewState: 'no-data'
+    },
+    render: render
+};
+
+export const SomeData = {
+    args: {
+        previewState: 'some-data'
+    },
+    render: render
+};
+
+export const AllData = {
+    args: {
+        previewState: 'all-data'
     },
     render: render
 };

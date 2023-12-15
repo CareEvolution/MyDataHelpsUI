@@ -2,7 +2,7 @@ import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, PersistableDeviceDa
 import { add, compareDesc, isAfter, isBefore, parseISO, startOfDay } from 'date-fns';
 import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 
-type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances';
+type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
 type BiometricThresholdFunction = (baseline: number, value: number) => boolean;
 type AirQualityTypeTermCode = 'HomeAirQuality' | 'WorkAirQuality';
 
@@ -11,7 +11,9 @@ const biometricTypeTermCodes: Record<AsthmaBiometricType, BiometricTypeTermCode>
     'nighttime-resting-heart-rate': 'NighttimeRestingHeartRate',
     'respiratory-rate': 'RespiratoryRate',
     'activity': 'Steps',
-    'sleep': 'SleepDisturbances'
+    'sleep': 'SleepDisturbances',
+    'daytime-oxygen-saturation': 'DaytimeBloodOxygenLevel',
+    'nighttime-oxygen-saturation': 'NighttimeBloodOxygenLevel'
 };
 
 const airQualityTypeTermCodes: Record<AsthmaAirQualityType, AirQualityTypeTermCode> = {
@@ -75,7 +77,17 @@ const computeBiometrics = (today: Date, dataPoints: DeviceDataPoint[]): AsthmaBi
         computeBiometric('nighttime-resting-heart-rate', today, dataPoints, 0, (baseline, value) => value <= (baseline * 1.15)),
         computeBiometric('respiratory-rate', today, dataPoints, 0, (baseline, value) => value <= (baseline * 1.15)),
         computeBiometric('activity', today, dataPoints, -1, (baseline, value) => value >= (baseline / 2.0)),
-        computeBiometric('sleep', today, dataPoints, 0, (baseline, value) => value <= (baseline + 3.5))
+        computeBiometric('sleep', today, dataPoints, 0, (baseline, value) => value <= (baseline + 3.5)),
+        computeBiometric('daytime-oxygen-saturation', today, dataPoints, 0, (baseline, value) => {
+            let percentage = value * 100.0;
+            let threshold = (baseline * 100.0) - 4.0;
+            return percentage >= 95 || percentage >= threshold
+        }),
+        computeBiometric('nighttime-oxygen-saturation', today, dataPoints, 0, (baseline, value) => {
+            let percentage = value * 100.0;
+            let threshold = (baseline * 100.0) - 4.0;
+            return percentage >= 95 || percentage >= threshold
+        })
     ];
 };
 
@@ -162,7 +174,8 @@ const service: AsthmaDataService = {
             namespace: 'Project',
             type: [
                 'DaytimeRestingHeartRate', 'DaytimeRestingHeartRateBaseline', 'NighttimeRestingHeartRate', 'NighttimeRestingHeartRateBaseline',
-                'RespiratoryRate', 'RespiratoryRateBaseline', 'Steps', 'StepsBaseline', 'SleepDisturbances', 'SleepDisturbancesBaseline'
+                'RespiratoryRate', 'RespiratoryRateBaseline', 'Steps', 'StepsBaseline', 'SleepDisturbances', 'SleepDisturbancesBaseline',
+                'DaytimeBloodOxygenLevel', 'DaytimeBloodOxygenLevelBaseline', 'NighttimeBloodOxygenLevel', 'NighttimeBloodOxygenLevelBaseline'
             ],
             observedAfter: threshold.toISOString()
         };

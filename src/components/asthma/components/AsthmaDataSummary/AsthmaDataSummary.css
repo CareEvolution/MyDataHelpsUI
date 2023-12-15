@@ -3,6 +3,7 @@
     border-radius: 6px;
     border: 1px solid var(--mdhui-border-color-1);
     background: #FFF;
+    min-height: 60px;
 }
 
 .mdhui-asthma-data-summary-value-units {

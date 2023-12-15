@@ -58,7 +58,7 @@ export interface AsthmaControlState {
 
 export type AsthmaDataStatus = 'establishing' | 'offline' | 'in-range' | 'out-of-range';
 
-export type AsthmaBiometricType = 'daytime-resting-heart-rate' | 'nighttime-resting-heart-rate' | 'respiratory-rate' | 'activity' | 'sleep';
+export type AsthmaBiometricType = 'daytime-resting-heart-rate' | 'nighttime-resting-heart-rate' | 'respiratory-rate' | 'activity' | 'sleep' | 'daytime-oxygen-saturation' | 'nighttime-oxygen-saturation';
 
 export interface AsthmaBiometric {
     type: AsthmaBiometricType;

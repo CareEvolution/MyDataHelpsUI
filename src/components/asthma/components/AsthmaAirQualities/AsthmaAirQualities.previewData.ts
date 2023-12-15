@@ -1,25 +1,45 @@
 import { AsthmaAirQuality } from '../../model';
 
-export type AsthmaAirQualitiesPreviewState = 'default';
+export type AsthmaAirQualitiesPreviewState = 'no-data' | 'some-data' | 'all-data';
 
 export interface AsthmaAirQualitiesPreviewData {
-    airQualities: AsthmaAirQuality[];
+    homeAirQuality: AsthmaAirQuality;
+    workAirQuality: AsthmaAirQuality;
 }
 
 export const previewData: Record<AsthmaAirQualitiesPreviewState, AsthmaAirQualitiesPreviewData> = {
-    'default': {
-        airQualities: [
-            {
-                type: 'home',
-                status: 'in-range',
-                value: 32
-            },
-            {
-                type: 'work',
-                status: 'out-of-range',
-                value: 130,
-                description: 'Unhealthy'
-            }
-        ]
+    'no-data': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'establishing'
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'establishing'
+        }
+    },
+    'some-data': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'in-range',
+            value: 32
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'establishing'
+        }
+    },
+    'all-data': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'in-range',
+            value: 32
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'out-of-range',
+            value: 130,
+            description: 'Unhealthy'
+        }
     }
 };
