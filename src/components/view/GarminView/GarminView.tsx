@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Card, StatusBarBackground, ConnectGarmin, GarminDevices, GarminMonthCharts } from "../.."
+import { Layout, Card, StatusBarBackground, ConnectGarmin, GarminDevices, GarminMonthCharts, LoadingIndicator } from "../.."
 import { ConnectGarminPreviewState } from "../../container/ConnectGarmin/ConnectGarmin";
 import { ConnectedDevicesPreviewState } from '../../container/ConnectedDevices/ConnectedDevices';
 import { MonthChartsPreviewState } from '../../container/MonthCharts/MonthCharts';
