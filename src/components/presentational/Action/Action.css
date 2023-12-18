@@ -9,6 +9,12 @@
     align-items: center;
     gap: 16px;
     box-sizing: border-box;
+    cursor: default;
+}
+
+.mdhui-action.mdhui-action-clickable,
+.mdhui-unstyled-button.mdhui-action.mdhui-action-clickable
+{
     cursor: pointer;
 }
 

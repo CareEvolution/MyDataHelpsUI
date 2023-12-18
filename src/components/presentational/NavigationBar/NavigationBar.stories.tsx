@@ -49,6 +49,15 @@ Compressed.args = {
 }
 
 
+export const CompressedModal = Template.bind({});
+Compressed.args = {
+	title: "My Title",
+	showCloseButton: true,
+	showBackButton: true,
+	variant: "compressedModal"
+}
+
+
 export const WithDateRangeNavigator = Template.bind({});
 WithDateRangeNavigator.args = {
 	title: "Migraine",

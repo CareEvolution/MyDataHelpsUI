@@ -1,0 +1,57 @@
+.mdhui-news-feed .mdhui-news-feed-search {
+    text-align: left;
+    box-sizing: border-box;
+    font-weight: bold;
+    border-bottom: solid 1px var(--mdhui-border-color-1);
+}
+
+.mdhui-news-feed .mdhui-news-feed-search .mdhui-news-feed-search-bar {
+    position: relative;
+}
+
+.mdhui-news-feed .mdhui-news-feed-search .mdhui-news-feed-search-bar input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 100%;
+    line-height: 1.5em;
+    padding-left: 40px;
+    box-sizing: border-box;
+    font-size: .88em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-text-color-1);
+    border-radius: var(--mdhui-card-border-radius);
+}
+
+.mdhui-news-feed .mdhui-news-feed-search .mdhui-news-feed-search-bar .fa-magnifying-glass {
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    color: var(--mdhui-text-color-4);
+    font-size: .8em;
+}
+
+.mdhui-news-feed .mdhui-news-feed-list-item .mdhui-news-feed-list-item-title {
+    font-size: .88em;
+}
+
+.mdhui-news-feed .mdhui-news-feed-list-item .mdhui-news-feed-list-item-more {
+    color: var(--mdhui-color-primary);
+    font-weight: bold;
+}
+
+.mdhui-news-feed .mdhui-news-feed-list-item .mdhui-news-feed-list-item-date {
+    font-size: .7em;
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-news-feed .mdhui-news-feed-list-item .mdhui-news-feed-list-item-acuity {
+    display: inline-block;
+    color: #FFF;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 4px;
+}
