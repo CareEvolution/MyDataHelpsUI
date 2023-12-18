@@ -141,8 +141,7 @@
     "new-points-text": "You've been awarded points for the following:",
     "new-points-next-reward-prefix": "You now need ",
     "new-points-next-reward-suffix": " points to unlock your next reward.",
-    "new-points-done-button-text": "Done",
-    "log-swelling" : "Log Swelling"
+    "new-points-done-button-text": "Done"
 };
 
 export default strings;

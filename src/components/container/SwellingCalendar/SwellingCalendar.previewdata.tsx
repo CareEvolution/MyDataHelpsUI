@@ -3,7 +3,7 @@ import { addDays, startOfDay } from "date-fns";
 
 var today = new Date();
 
-export var previewSwellingData : SurveyAnswer[] = [
+export const previewSwellingData : SurveyAnswer[] = [
     {   id: "12345",
         surveyResultID: "1",
         surveyID: "2",
@@ -223,4 +223,4 @@ export var previewSwellingData : SurveyAnswer[] = [
         answers: [startOfDay(addDays(today, -8)).toISOString()],
         insertedDate: Date.now.toString()
     }
-]
+];

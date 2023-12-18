@@ -1,52 +1,44 @@
-import { useEffect, useState } from "react";
-import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
+import { useContext, useState } from "react";
+import { Guid, SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import React from "react";
 import surveyResults from "../../../helpers/get-survey-answers";
 import Calendar from "../../presentational/Calendar/Calendar";
 import { parseISO, startOfDay, startOfMonth } from "date-fns";
-import { Button, CalendarDay, CalendarDayStateConfiguration, DateRangeNavigator, LoadingIndicator } from "../../presentational";
+import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSwellingData } from "./SwellingCalendar.previewdata";
-import language from "../../../helpers/language";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { useInitializeView } from "../../../helpers/Initialization";
 export type SwellingCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
 
 export interface SwellingCalendarProps {
-    surveyName : string,
-    dateRecordedResultIdentifier : string, 
-    severityResultIdentifier : string, 
-    previewState? : SwellingCalendarPreviewState,
+    surveyName: string,
+    dateRecordedResultIdentifier: string,
+    severityResultIdentifier: string,
+    intervalStart?: Date,
+    previewState?: SwellingCalendarPreviewState,
 }
 
 interface SwellingDay {
-    dateRecorded : string,
-    severity : string
+    dateRecorded: string,
+    severity: string
 }
 
 export default function (props: SwellingCalendarProps) {
-    const surveyAnswerQuery : SurveyAnswersQuery = {
-        surveyName : props.surveyName,
-        resultIdentifier : [props.dateRecordedResultIdentifier, props.severityResultIdentifier]
+    const surveyAnswerQuery: SurveyAnswersQuery = {
+        surveyName: props.surveyName,
+        resultIdentifier: [props.dateRecordedResultIdentifier, props.severityResultIdentifier]
     }
-    const [datePagerMonth, setMonth] = useState<Date>(startOfMonth(new Date()));
-    const [data, setData] = useState<Map<string, SwellingDay> | undefined>();
 
-    async function initialize(){
-        if (!data){
-            if (props.previewState && props.previewState == "NoData")
-            {
-                transformToCalendarData([]);
-            } else {
-                if (props.previewState && props.previewState == "WithData"){
-                    transformToCalendarData(previewSwellingData);
-                }
-                else
-                {
-                    surveyResults(surveyAnswerQuery).then((results: SurveyAnswer[]) => {
-                        transformToCalendarData(results);
-                    });
-                }
-            }
+    const [data, setData] = useState<Map<string, SwellingDay> | undefined>();
+    const dateRangeContext = useContext(DateRangeContext);
+    let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
+
+    async function initialize() {
+        if (props.previewState !== "Live") {
+            transformToCalendarData(props.previewState === "WithData" ? previewSwellingData : []);
+        } else {
+            surveyResults(surveyAnswerQuery).then((results: SurveyAnswer[]) => {
+                transformToCalendarData(results);
+            });
         }
     }
 
@@ -75,21 +67,20 @@ export default function (props: SwellingCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string => {
-        let key : string = startOfDay(date).toDateString();
-        return (data && data?.get(key)?.severity) ?? "";
+        let key: string = startOfDay(date).toDateString();
+        return data?.get(key)?.severity ?? "";
     };
 
-    function transformToCalendarData(results : SurveyAnswer[]){
-        var swellingEntries : Map<Guid, SwellingDay> = createResultsMap(results);
+    function transformToCalendarData(results: SurveyAnswer[]) {
+        var swellingEntries: Map<Guid, SwellingDay> = createResultsMap(results);
 
-        var calendarData : Map<string, SwellingDay> = new Map<string, SwellingDay>();
-        swellingEntries.forEach( swellingEntry => {
-            let key : string = startOfDay(parseISO(swellingEntry.dateRecorded)).toDateString();
+        var calendarData: Map<string, SwellingDay> = new Map<string, SwellingDay>();
+        swellingEntries.forEach(swellingEntry => {
+            let key: string = startOfDay(parseISO(swellingEntry.dateRecorded)).toDateString();
             let exists = calendarData.get(key);
-            if (exists){
-                if (parseISO(swellingEntry.dateRecorded) > parseISO(exists.dateRecorded)){
+            if (exists) {
+                if (parseISO(swellingEntry.dateRecorded) > parseISO(exists.dateRecorded)) {
                     exists.severity = swellingEntry.severity;
-                    calendarData.set(key, exists);
                 }
             }
             else {
@@ -100,22 +91,20 @@ export default function (props: SwellingCalendarProps) {
         setData(calendarData);
     }
 
-    function createResultsMap(results : SurveyAnswer[]){
-        var groupedByResult = new  Map<Guid, SwellingDay>();
+    function createResultsMap(results: SurveyAnswer[]) {
+        var groupedByResult = new Map<Guid, SwellingDay>();
 
-        results.forEach( (r) => {
+        results.forEach((r) => {
             var exists = groupedByResult.get(r.surveyResultID);
-            var swellingDay = exists ?? {dateRecorded : "", severity : ""};
+            var swellingDay = exists ?? { dateRecorded: "", severity: "" };
 
-            if (r.resultIdentifier === props.dateRecordedResultIdentifier && r.answers)
-            {
+            if (r.resultIdentifier === props.dateRecordedResultIdentifier && r.answers) {
                 swellingDay.dateRecorded = r.answers[0];
             }
 
-            if (r.resultIdentifier === props.severityResultIdentifier && r.answers)
-            {
+            if (r.resultIdentifier === props.severityResultIdentifier && r.answers) {
                 var severity = "";
-                switch (r.answers[0]){
+                switch (r.answers[0]) {
                     case "mild":
                     case "severity1":
                         severity = "mild";
@@ -128,9 +117,9 @@ export default function (props: SwellingCalendarProps) {
                     case "severity3":
                         severity = "severe";
                         break;
-                    }
+                }
 
-                    swellingDay.severity = severity;
+                swellingDay.severity = severity;
             }
 
             groupedByResult.set(r.surveyResultID, swellingDay);
@@ -149,29 +138,12 @@ export default function (props: SwellingCalendarProps) {
         />;
     };
 
-    function pageMonth(newStart: Date) {
-        setMonth(startOfMonth(newStart));
-    } 
+    useInitializeView(initialize, [], [props.previewState]);
 
-
-    useEffect(() => {
-        initialize();
-        MyDataHelps.on("applicationDidBecomeVisible", initialize);
-
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", initialize);
-        }
-    }, []);
-
-
-    if (!data){
-        return <LoadingIndicator/>
+    if (!data) {
+        return <LoadingIndicator />
     }
     else {
-        return <>
-            <DateRangeNavigator intervalType={"Month"} intervalStart={datePagerMonth} onIntervalChange={pageMonth}></DateRangeNavigator>
-            <Calendar className="mdhui-simple-calendar" year={datePagerMonth.getFullYear()} month={datePagerMonth.getMonth()} dayRenderer={renderDay}/>
-            <Button defaultMargin onClick={() => MyDataHelps.startSurvey(props.surveyName)}>{language("log-swelling")} <FontAwesomeSvgIcon icon={faPlus} /></Button>
-        </>
+        return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
     }
 } 

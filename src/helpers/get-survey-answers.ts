@@ -3,15 +3,6 @@ import {parseISO} from "date-fns";
 
 export default async function(props : SurveyAnswersQuery) : Promise<SurveyAnswer[]> {
 
-    const results = await getSurveyAnswers();
-    var sortedResults = (results).sort((a, b) => {
-            if (parseISO(a.date) > parseISO(b.date)) { return -1; }
-            if (parseISO(a.date) < parseISO(b.date)) { return 1; }
-            return 0;
-    });
-
-    return sortedResults; 
-
     async function getSurveyAnswers(): Promise<SurveyAnswer[]> {
         let dataPage = await getSurveyDataPage();
         let allData = dataPage.surveyAnswers;
@@ -30,4 +21,13 @@ export default async function(props : SurveyAnswersQuery) : Promise<SurveyAnswer
 
         return MyDataHelps.querySurveyAnswers(queryParameters);
     }
+
+    const results = await getSurveyAnswers();
+    var sortedResults = (results).sort((a, b) => {
+            if (parseISO(a.date) > parseISO(b.date)) { return -1; }
+            if (parseISO(a.date) < parseISO(b.date)) { return 1; }
+            return 0;
+    });
+
+    return sortedResults; 
 }
