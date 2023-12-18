@@ -1,7 +1,7 @@
 .mdhui-value-selector {
     --mdhui-value-selector-title-color: var(--mdhui-text-color-1);
     --mdhui-value-selector-subtitle-color: var(--mdhui-text-color-3);
-    --mdhui-value-selector-value-background-color: #fff;
+    --mdhui-value-selector-value-background-color: var(--mdhui-background-color-0);
     --mdhui-value-selector-value-text-color: var(--mdhui-text-color-1);
     --mdhui-value-selector-button-value-selected-background-color: var(--mdhui-color-primary);
     --mdhui-value-selector-button-value-selected-text-color: #fff;
