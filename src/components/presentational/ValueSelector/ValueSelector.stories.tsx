@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '../../presentational';
 import ValueSelector, { ValueSelectorProps } from './ValueSelector'
 
@@ -8,7 +8,12 @@ export default {
 	parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: ValueSelectorProps) => <Layout colorScheme="auto"><ValueSelector {...args} /></Layout>;
+const render = (args: ValueSelectorProps) => {
+	const [selectedValues, setSelectedValues] = useState<string[]>(['Option 2']);
+	return <Layout colorScheme="auto">
+		<ValueSelector {...args} selectedValues={selectedValues} onChange={(selectedValues: string[]) => setSelectedValues(selectedValues)}/>
+	</Layout>;
+}
 
 export const Buttons = {
 	args: {
@@ -19,9 +24,6 @@ export const Buttons = {
 			'Option 2',
 			'Option 3',
 			'Option 4'
-		],
-		selectedValues: [
-			'Option 2'
 		]
 	},
 	render: render
@@ -36,9 +38,6 @@ export const ButtonsPreventEmptySelections = {
 			'Option 2',
 			'Option 3',
 			'Option 4'
-		],
-		selectedValues: [
-			'Option 2'
 		],
 		preventEmptySelections: true
 	},
@@ -55,9 +54,6 @@ export const ButtonsMultiSelect = {
 			'Option 3',
 			'Option 4'
 		],
-		selectedValues: [
-			'Option 2'
-		],
 		multiSelect: true
 	},
 	render: render
@@ -72,9 +68,6 @@ export const ButtonsMultiSelectPreventEmptySelections = {
 			'Option 2',
 			'Option 3',
 			'Option 4'
-		],
-		selectedValues: [
-			'Option 2'
 		],
 		multiSelect: true,
 		preventEmptySelections: true
@@ -96,9 +89,6 @@ export const ButtonsCustomColors = {
 		],
 		valueBackgroundColor: '#f8ead1',
 		valueTextColor: '#c58208',
-		selectedValues: [
-			'Option 2'
-		],
 		selectedButtonBackgroundColor: '#ee9e0f',
 		selectedButtonTextColor: {lightMode: '#946105', darkMode: '#f8ead1'}
 	},
@@ -115,9 +105,6 @@ export const Checkboxes = {
 			'Option 3',
 			'Option 4'
 		],
-		selectedValues: [
-			'Option 2'
-		],
 		variant: 'checkboxes'
 	},
 	render: render
@@ -132,9 +119,6 @@ export const CheckboxesPreventEmptySelections = {
 			'Option 2',
 			'Option 3',
 			'Option 4'
-		],
-		selectedValues: [
-			'Option 2'
 		],
 		variant: 'checkboxes',
 		preventEmptySelections: true
@@ -152,9 +136,6 @@ export const CheckboxesMultiSelect = {
 			'Option 3',
 			'Option 4'
 		],
-		selectedValues: [
-			'Option 2'
-		],
 		variant: 'checkboxes',
 		multiSelect: true
 	},
@@ -170,9 +151,6 @@ export const CheckboxesMultiSelectPreventEmptySelections = {
 			'Option 2',
 			'Option 3',
 			'Option 4'
-		],
-		selectedValues: [
-			'Option 2'
 		],
 		variant: 'checkboxes',
 		multiSelect: true,
@@ -195,9 +173,6 @@ export const CheckboxesCustomColors = {
 		],
 		valueBackgroundColor: '#f8ead1',
 		valueTextColor: '#c58208',
-		selectedValues: [
-			'Option 2'
-		],
 		checkboxColor: '#ee9e0f',
 		selectedCheckboxColor: '#946105',
 		variant: 'checkboxes',

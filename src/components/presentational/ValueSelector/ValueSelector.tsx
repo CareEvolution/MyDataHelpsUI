@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect, useState } from 'react';
+import React, { CSSProperties, useContext } from 'react';
 import './ValueSelector.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
@@ -29,28 +29,23 @@ export interface ValueSelectorProps {
 export default function (props: ValueSelectorProps) {
 	const layoutContext = useContext(LayoutContext);
 
-	const [selectedValues, setSelectedValues] = useState<string[]>([]);
+	const selectedValues = props.selectedValues ?? [];
 
-	useEffect(() => {
-		setSelectedValues(props.selectedValues ?? []);
-	}, [props.selectedValues]);
-
-	const updateSelectedValues = (updatedSelectedValues: string[]): void => {
-		setSelectedValues(updatedSelectedValues);
+	const onChange = (selectedValues: string[]): void => {
 		if (props.onChange) {
-			props.onChange(updatedSelectedValues);
+			props.onChange(selectedValues);
 		}
 	};
 
 	const onClick = (value: string): void => {
 		if (selectedValues.includes(value)) {
 			if (selectedValues.length > 1 || !props.preventEmptySelections) {
-				updateSelectedValues(selectedValues.filter(v => v !== value));
+				onChange(selectedValues.filter(v => v !== value));
 			}
 		} else if (props.multiSelect) {
-			updateSelectedValues([...selectedValues, value]);
+			onChange([...selectedValues, value]);
 		} else {
-			updateSelectedValues([value]);
+			onChange([value]);
 		}
 	};
 
