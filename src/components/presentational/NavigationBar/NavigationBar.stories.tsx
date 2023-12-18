@@ -33,16 +33,6 @@ export const WithBackButtonCustomText = {
 	render: render
 };
 
-export const WithBackButtonCustomColors = {
-	args: {
-		title: 'My Title',
-		showBackButton: true,
-		backButtonColor: '#fff',
-		backButtonBackgroundColor: '#369cff'
-	},
-	render: render
-};
-
 export const WithCloseButton = {
 	args: {
 		title: 'My Title',
@@ -60,69 +50,11 @@ export const WithCloseButtonCustomText = {
 	render: render
 };
 
-export const WithCloseButtonCustomPosition = {
+export const WithCustomButtons = {
 	args: {
 		title: 'My Title',
-		showCloseButton: true,
-		closeButtonPosition: 'left'
-	},
-	render: render
-};
-
-export const WithCloseButtonCustomColors = {
-	args: {
-		title: 'My Title',
-		showCloseButton: true,
-		closeButtonColor: '#fff',
-		closeButtonBackgroundColor: '#369CFF'
-	},
-	render: render
-};
-
-export const WithSaveButton = {
-	args: {
-		title: 'My Title',
-		showSaveButton: true,
-		onSave: () => {
-			console.log('save clicked');
-		}
-	},
-	render: render
-};
-
-export const WithSaveButtonCustomText = {
-	args: {
-		title: 'My Title',
-		showSaveButton: true,
-		saveButtonText: 'Commit',
-		onSave: () => {
-			console.log('save clicked');
-		}
-	},
-	render: render
-};
-
-export const WithSaveButtonCustomPosition = {
-	args: {
-		title: 'My Title',
-		showSaveButton: true,
-		saveButtonPosition: 'left',
-		onSave: () => {
-			console.log('save clicked');
-		}
-	},
-	render: render
-};
-
-export const WithSaveButtonCustomColors = {
-	args: {
-		title: 'My Title',
-		showSaveButton: true,
-		saveButtonColor: '#fff',
-		saveButtonBackgroundColor: '#369cff',
-		onSave: () => {
-			console.log('save clicked');
-		}
+		navigationBarLeft: <div className="button" style={{left: '16px'}}>Close</div>,
+		navigationBarRight: <div className="button" style={{color: '#fff', background: '#369cff', right: '16px', padding: '0 16px'}}>Save</div>
 	},
 	render: render
 };
@@ -130,14 +62,8 @@ export const WithSaveButtonCustomColors = {
 export const Compressed = {
 	args: {
 		title: 'My Title',
-		showCloseButton: true,
-		closeButtonPosition: 'left',
-		showSaveButton: true,
-		saveButtonColor: '#fff',
-		saveButtonBackgroundColor: '#369cff',
-		onSave: () => {
-			console.log('save clicked');
-		},
+		navigationBarLeft: <div className="button" style={{left: '16px'}}>Close</div>,
+		navigationBarRight: <div className="button" style={{color: '#fff', background: '#369cff', right: '16px', padding: '0 16px'}}>Save</div>,
 		variant: 'compressed'
 	},
 	render: render
@@ -147,14 +73,8 @@ export const CompressedWithSubtitle = {
 	args: {
 		title: 'My Title',
 		subtitle: 'My Subtitle',
-		showCloseButton: true,
-		closeButtonPosition: 'left',
-		showSaveButton: true,
-		saveButtonColor: '#fff',
-		saveButtonBackgroundColor: '#369cff',
-		onSave: () => {
-			console.log('save clicked');
-		},
+		navigationBarLeft: <div className="button" style={{left: '16px'}}>Close</div>,
+		navigationBarRight: <div className="button" style={{color: '#fff', background: '#369cff', right: '16px', padding: '0 16px'}}>Save</div>,
 		variant: 'compressed'
 	},
 	render: render

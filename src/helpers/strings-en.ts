@@ -2,7 +2,6 @@
     "back": "Back",
     "done": "Done",
     "close": "Close",
-    "save": "Save",
     "add": "Add",
     "settings": "Settings",
     "connect": "Connect",
