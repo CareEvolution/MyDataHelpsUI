@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import formatISO from 'date-fns/formatISO';
 import { Card, Layout, LoadingIndicator, NavigationBar, ValueSelector } from '../../../presentational';
 import { add, format, isBefore, startOfToday } from 'date-fns';
 import { AsthmaLogEntry, AsthmaSymptomLevel } from '../../model';
