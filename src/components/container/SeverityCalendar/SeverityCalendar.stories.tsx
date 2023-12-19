@@ -7,7 +7,10 @@ import { DateRangeCoordinator } from "../../presentational";
 export default {
     title: 'Container/SeverityCalendar',
     component: SeverityCalendar,
-    parameters: {layout: 'fullscreen'}
+    parameters: {layout: 'fullscreen'},
+    argTypes: {
+        severityResultIdentifier: { control: 'text', description:  "Result values must be one of mild = [mild, severity1], moderate = [moderate, severity2], severe = [severe, severity3]" }
+    }
 };
 
 const render = (args: SeverityCalendarProps) => <Layout colorScheme='auto'>
@@ -43,7 +46,7 @@ export const WithData = {
 export const Live = {
     args : {
         surveyName: 'RESOLVE Swelling and Urine Protein Measurements - OPTIONAL', 
-        severityResultIdentifier : 'Swelling Severity',
+        severityResultIdentifier : 'Swelling Severity', 
         dateRecordedResultIdentifier : 'Recent Swelling Date',
         previewState : 'Live'
     },
