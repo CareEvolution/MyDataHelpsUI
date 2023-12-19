@@ -20,7 +20,9 @@ export class AsthmaParticipant {
             this.hasEstablishedBaselineByType("NighttimeRestingHeartRateBaseline") ||
             this.hasEstablishedBaselineByType("RespiratoryRateBaseline") ||
             this.hasEstablishedBaselineByType("SleepDisturbancesBaseline") ||
-            this.hasEstablishedBaselineByType("StepsBaseline");
+            this.hasEstablishedBaselineByType("StepsBaseline") ||
+            this.hasEstablishedBaselineByType("DaytimeBloodOxygenLevelBaseline") ||
+            this.hasEstablishedBaselineByType("NighttimeBloodOxygenLevelBaseline");
     }
 
     hasRequestedWithdrawal(): boolean {
@@ -58,7 +60,7 @@ export interface AsthmaControlState {
 
 export type AsthmaDataStatus = 'establishing' | 'offline' | 'in-range' | 'out-of-range';
 
-export type AsthmaBiometricType = 'daytime-resting-heart-rate' | 'nighttime-resting-heart-rate' | 'respiratory-rate' | 'activity' | 'sleep' | 'daytime-oxygen-saturation' | 'nighttime-oxygen-saturation';
+export type AsthmaBiometricType = 'daytime-resting-heart-rate' | 'nighttime-resting-heart-rate' | 'respiratory-rate' | 'activity' | 'sleep' | 'daytime-blood-oxygen-level' | 'nighttime-blood-oxygen-level';
 
 export interface AsthmaBiometric {
     type: AsthmaBiometricType;

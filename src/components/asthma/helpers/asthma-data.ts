@@ -12,8 +12,8 @@ const biometricTypeTermCodes: Record<AsthmaBiometricType, BiometricTypeTermCode>
     'respiratory-rate': 'RespiratoryRate',
     'activity': 'Steps',
     'sleep': 'SleepDisturbances',
-    'daytime-oxygen-saturation': 'DaytimeBloodOxygenLevel',
-    'nighttime-oxygen-saturation': 'NighttimeBloodOxygenLevel'
+    'daytime-blood-oxygen-level': 'DaytimeBloodOxygenLevel',
+    'nighttime-blood-oxygen-level': 'NighttimeBloodOxygenLevel'
 };
 
 const airQualityTypeTermCodes: Record<AsthmaAirQualityType, AirQualityTypeTermCode> = {
@@ -78,12 +78,12 @@ const computeBiometrics = (today: Date, dataPoints: DeviceDataPoint[]): AsthmaBi
         computeBiometric('respiratory-rate', today, dataPoints, 0, (baseline, value) => value <= (baseline * 1.15)),
         computeBiometric('activity', today, dataPoints, -1, (baseline, value) => value >= (baseline / 2.0)),
         computeBiometric('sleep', today, dataPoints, 0, (baseline, value) => value <= (baseline + 3.5)),
-        computeBiometric('daytime-oxygen-saturation', today, dataPoints, 0, (baseline, value) => {
+        computeBiometric('daytime-blood-oxygen-level', today, dataPoints, 0, (baseline, value) => {
             let percentage = value * 100.0;
             let threshold = (baseline * 100.0) - 4.0;
             return percentage >= 95 || percentage >= threshold
         }),
-        computeBiometric('nighttime-oxygen-saturation', today, dataPoints, 0, (baseline, value) => {
+        computeBiometric('nighttime-blood-oxygen-level', today, dataPoints, 0, (baseline, value) => {
             let percentage = value * 100.0;
             let threshold = (baseline * 100.0) - 4.0;
             return percentage >= 95 || percentage >= threshold

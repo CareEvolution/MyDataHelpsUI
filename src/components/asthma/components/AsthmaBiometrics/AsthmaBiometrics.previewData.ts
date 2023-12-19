@@ -8,8 +8,8 @@ export interface AsthmaBiometricsPreviewData {
     respiratoryRate: AsthmaBiometric;
     activity: AsthmaBiometric;
     sleep: AsthmaBiometric;
-    daytimeOxygenSaturation: AsthmaBiometric;
-    nighttimeOxygenSaturation: AsthmaBiometric;
+    daytimeBloodOxygenLevel: AsthmaBiometric;
+    nighttimeBloodOxygenLevel: AsthmaBiometric;
 }
 
 export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsPreviewData> = {
@@ -34,12 +34,12 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             type: 'sleep',
             status: 'establishing'
         },
-        daytimeOxygenSaturation: {
-            type: 'daytime-oxygen-saturation',
+        daytimeBloodOxygenLevel: {
+            type: 'daytime-blood-oxygen-level',
             status: 'establishing'
         },
-        nighttimeOxygenSaturation: {
-            type: 'nighttime-oxygen-saturation',
+        nighttimeBloodOxygenLevel: {
+            type: 'nighttime-blood-oxygen-level',
             status: 'establishing'
         }
     },
@@ -67,12 +67,12 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             type: 'sleep',
             status: 'establishing'
         },
-        daytimeOxygenSaturation: {
-            type: 'daytime-oxygen-saturation',
+        daytimeBloodOxygenLevel: {
+            type: 'daytime-blood-oxygen-level',
             status: 'establishing'
         },
-        nighttimeOxygenSaturation: {
-            type: 'nighttime-oxygen-saturation',
+        nighttimeBloodOxygenLevel: {
+            type: 'nighttime-blood-oxygen-level',
             status: 'in-range',
             value: 96
         }
@@ -103,13 +103,13 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             status: 'establishing',
             value: 4
         },
-        daytimeOxygenSaturation: {
-            type: 'daytime-oxygen-saturation',
+        daytimeBloodOxygenLevel: {
+            type: 'daytime-blood-oxygen-level',
             status: 'in-range',
             value: 95
         },
-        nighttimeOxygenSaturation: {
-            type: 'nighttime-oxygen-saturation',
+        nighttimeBloodOxygenLevel: {
+            type: 'nighttime-blood-oxygen-level',
             status: 'in-range',
             value: 96
         }

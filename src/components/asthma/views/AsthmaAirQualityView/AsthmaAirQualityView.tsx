@@ -1,9 +1,16 @@
 import React from 'react';
 import { Layout, NavigationBar, Section, Title } from '../../../presentational';
 import { add } from 'date-fns';
-import { DailyDataChart } from "../../../container";
-import { DailyDataProvider, DailyDataQueryResult, DailyDataType } from '../../../../helpers/query-daily-data';
+import { DailyDataChart } from '../../../container';
+import { DailyDataProvider, DailyDataQueryResult, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
 import getDayKey from '../../../../helpers/get-day-key';
+import { homeAirQualityDataProvider, workAirQualityDataProvider } from '../../helpers/daily-data-providers';
+
+const HomeAirQualityDailyDataType = 'Asthma.HomeAirQuality';
+const WorkAirQualityDailyDataType = 'Asthma.WorkAirQuality';
+
+registerDailyDataProvider(HomeAirQualityDailyDataType, homeAirQualityDataProvider, simpleAvailabilityCheck("AirNowApi", ["HomeAirQuality"]));
+registerDailyDataProvider(WorkAirQualityDailyDataType, workAirQualityDataProvider, simpleAvailabilityCheck("AirNowApi", ["WorkAirQuality"]));
 
 export interface AsthmaAirQualityViewProps {
     previewState?: 'default';
@@ -28,13 +35,14 @@ export default function (props: AsthmaAirQualityViewProps) {
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <Section backgroundColor="#fff" noTopMargin={true}>
-            <NavigationBar showCloseButton={true} variant="compressed" backgroundColor="transparent"/>
-            <Title order={2} style={{padding: '0 16px'}}>Air Quality</Title>
+            <NavigationBar showCloseButton={true} backgroundColor="#fff">
+                <Title order={2} style={{paddingTop: '32px'}}>Air Quality</Title>
+            </NavigationBar>
             <DailyDataChart
                 title="Air Quality (Home)"
                 intervalType="Week"
                 weekStartsOn="6DaysAgo"
-                dailyDataType={DailyDataType.AirQualityAtHome}
+                dailyDataType={HomeAirQualityDailyDataType}
                 chartType="Bar"
                 options={{barColor: '#BBDEFF'}}
                 previewDataProvider={previewDataProvider}
@@ -43,7 +51,7 @@ export default function (props: AsthmaAirQualityViewProps) {
                 title="Air Quality (Work)"
                 intervalType="Week"
                 weekStartsOn="6DaysAgo"
-                dailyDataType={DailyDataType.AirQualityAtWork}
+                dailyDataType={WorkAirQualityDailyDataType}
                 chartType="Bar"
                 options={{barColor: '#BBDEFF'}}
                 previewDataProvider={previewDataProvider}

@@ -23,8 +23,8 @@ export default function (props: AsthmaBiometricsProps) {
     let [respiratoryRate, setRespiratoryRate] = useState<AsthmaBiometric>();
     let [activity, setActivity] = useState<AsthmaBiometric>();
     let [sleep, setSleep] = useState<AsthmaBiometric>();
-    let [daytimeOxygenSaturation, setDaytimeOxygenSaturation] = useState<AsthmaBiometric>();
-    let [nighttimeOxygenSaturation, setNighttimeOxygenSaturation] = useState<AsthmaBiometric>();
+    let [daytimeBloodOxygenLevel, setDaytimeBloodOxygenLevel] = useState<AsthmaBiometric>();
+    let [nighttimeBloodOxygenLevel, setNighttimeBloodOxygenLevel] = useState<AsthmaBiometric>();
 
     useInitializeView(() => {
         setLoading(true);
@@ -35,8 +35,8 @@ export default function (props: AsthmaBiometricsProps) {
             setRespiratoryRate(previewData[props.previewState].respiratoryRate);
             setActivity(previewData[props.previewState].activity);
             setSleep(previewData[props.previewState].sleep);
-            setDaytimeOxygenSaturation(previewData[props.previewState].daytimeOxygenSaturation);
-            setNighttimeOxygenSaturation(previewData[props.previewState].nighttimeOxygenSaturation);
+            setDaytimeBloodOxygenLevel(previewData[props.previewState].daytimeBloodOxygenLevel);
+            setNighttimeBloodOxygenLevel(previewData[props.previewState].nighttimeBloodOxygenLevel);
             setLoading(false);
             return;
         }
@@ -47,15 +47,15 @@ export default function (props: AsthmaBiometricsProps) {
             setRespiratoryRate(biometrics.find(b => b.type === 'respiratory-rate'));
             setActivity(biometrics.find(b => b.type === 'activity'));
             setSleep(biometrics.find(b => b.type === 'sleep'));
-            setDaytimeOxygenSaturation(biometrics.find(b => b.type === 'daytime-oxygen-saturation'));
-            setNighttimeOxygenSaturation(biometrics.find(b => b.type === 'nighttime-oxygen-saturation'));
+            setDaytimeBloodOxygenLevel(biometrics.find(b => b.type === 'daytime-blood-oxygen-level'));
+            setNighttimeBloodOxygenLevel(biometrics.find(b => b.type === 'nighttime-blood-oxygen-level'));
             setLoading(false);
         });
     });
 
     const onClick = (type: AsthmaBiometricType): void => {
         if (props.previewState) return;
-        if (type === 'daytime-resting-heart-rate' || type === 'nighttime-resting-heart-rate' || type === 'respiratory-rate' || type === 'daytime-oxygen-saturation' || type === 'nighttime-oxygen-saturation') {
+        if (type === 'daytime-resting-heart-rate' || type === 'nighttime-resting-heart-rate' || type === 'respiratory-rate' || type === 'daytime-blood-oxygen-level' || type === 'nighttime-blood-oxygen-level') {
             MyDataHelps.openApplication(props.heartAndLungsUrl, {modal: true});
         } else if (type === 'activity') {
             MyDataHelps.openApplication(props.stepsUrl, {modal: true});
@@ -104,16 +104,16 @@ export default function (props: AsthmaBiometricsProps) {
                 />
                 <AsthmaDataSummary
                     label="Oxygen Saturation (Day)"
-                    status={daytimeOxygenSaturation!.status}
-                    value={daytimeOxygenSaturation!.value}
-                    onClick={() => onClick('daytime-oxygen-saturation')}
+                    status={daytimeBloodOxygenLevel!.status}
+                    value={daytimeBloodOxygenLevel!.value}
+                    onClick={() => onClick('daytime-blood-oxygen-level')}
                     units="%"
                 />
                 <AsthmaDataSummary
                     label="Oxygen Saturation (Night)"
-                    status={nighttimeOxygenSaturation!.status}
-                    value={nighttimeOxygenSaturation!.value}
-                    onClick={() => onClick('nighttime-oxygen-saturation')}
+                    status={nighttimeBloodOxygenLevel!.status}
+                    value={nighttimeBloodOxygenLevel!.value}
+                    onClick={() => onClick('nighttime-blood-oxygen-level')}
                     units="%"
                 />
             </div>

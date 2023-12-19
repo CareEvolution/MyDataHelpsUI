@@ -1,6 +1,4 @@
-﻿export { default as airQualityAtHomeDataProvider } from "./air-quality-home"
-export { default as airQualityAtWorkDataProvider } from "./air-quality-work"
-export { default as appleHealthFlightsClimbedDataProvider } from "./apple-health-flights-climbed"
+﻿export { default as appleHealthFlightsClimbedDataProvider } from "./apple-health-flights-climbed"
 export { default as appleHealthHrvDataProvider } from "./apple-health-hrv"
 export { default as appleHealthHeartRateRangeDataProvider } from "./apple-health-heart-rate-range"
 export { default as appleHealthMaxHeartRateDataProvider } from "./apple-health-max-heart-rate"
