@@ -10,7 +10,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface AsthmaAirQualitiesProps {
     previewState?: AsthmaAirQualitiesPreviewState;
-    airQualitiesUrl: string;
+    airQualityUrl: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -38,7 +38,7 @@ export default function (props: AsthmaAirQualitiesProps) {
 
     const onClick = (): void => {
         if (props.previewState) return;
-        MyDataHelps.openApplication(props.airQualitiesUrl, {modal: true});
+        MyDataHelps.openApplication(props.airQualityUrl, {modal: true});
     };
 
     return <div className="mdhui-asthma-air-qualities" ref={props.innerRef}>
