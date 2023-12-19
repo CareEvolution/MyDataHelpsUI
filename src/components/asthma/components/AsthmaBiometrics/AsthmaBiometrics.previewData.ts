@@ -6,8 +6,8 @@ export interface AsthmaBiometricsPreviewData {
     daytimeRestingHeartRate: AsthmaBiometric;
     nighttimeRestingHeartRate: AsthmaBiometric;
     respiratoryRate: AsthmaBiometric;
-    activity: AsthmaBiometric;
-    sleep: AsthmaBiometric;
+    steps: AsthmaBiometric;
+    sleepDisturbances: AsthmaBiometric;
     daytimeBloodOxygenLevel: AsthmaBiometric;
     nighttimeBloodOxygenLevel: AsthmaBiometric;
 }
@@ -26,12 +26,12 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             type: 'respiratory-rate',
             status: 'establishing'
         },
-        activity: {
-            type: 'activity',
+        steps: {
+            type: 'steps',
             status: 'establishing'
         },
-        sleep: {
-            type: 'sleep',
+        sleepDisturbances: {
+            type: 'sleep-disturbances',
             status: 'establishing'
         },
         daytimeBloodOxygenLevel: {
@@ -58,13 +58,13 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             type: 'respiratory-rate',
             status: 'establishing'
         },
-        activity: {
-            type: 'activity',
+        steps: {
+            type: 'steps',
             status: 'out-of-range',
             value: 12909
         },
-        sleep: {
-            type: 'sleep',
+        sleepDisturbances: {
+            type: 'sleep-disturbances',
             status: 'establishing'
         },
         daytimeBloodOxygenLevel: {
@@ -93,13 +93,13 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             status: 'in-range',
             value: 20
         },
-        activity: {
-            type: 'activity',
+        steps: {
+            type: 'steps',
             status: 'out-of-range',
             value: 12909
         },
-        sleep: {
-            type: 'sleep',
+        sleepDisturbances: {
+            type: 'sleep-disturbances',
             status: 'establishing',
             value: 4
         },

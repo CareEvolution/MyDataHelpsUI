@@ -1,10 +1,8 @@
 import React from 'react';
 import { Layout, NavigationBar, Section, Title } from '../../../presentational';
-import { add } from 'date-fns';
 import { DailyDataChart } from '../../../container';
-import { DailyDataProvider, DailyDataQueryResult, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import getDayKey from '../../../../helpers/get-day-key';
-import { homeAirQualityDataProvider, workAirQualityDataProvider } from '../../helpers/daily-data-providers';
+import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
+import { homeAirQualityDataProvider, randomDataProvider, workAirQualityDataProvider } from '../../helpers/daily-data-providers';
 
 const HomeAirQualityDailyDataType = 'Asthma.HomeAirQuality';
 const WorkAirQualityDailyDataType = 'Asthma.WorkAirQuality';
@@ -21,25 +19,17 @@ export default function (props: AsthmaAirQualityViewProps) {
 
     let previewDataProvider: DailyDataProvider | undefined;
     if (props.previewState === 'default') {
-        previewDataProvider = (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.floor(Math.random() * 100 + 30);
-                currentDate = add(currentDate, {days: 1});
-            }
-            return Promise.resolve(data);
-        };
+        previewDataProvider = (start: Date, end: Date) => randomDataProvider(start, end, 30, 130);
     }
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <Section backgroundColor="#fff" noTopMargin={true}>
             <NavigationBar showCloseButton={true} backgroundColor="#fff">
-                <Title order={2} style={{paddingTop: '32px'}}>Air Quality</Title>
+                <Title order={1} style={{paddingTop: '32px'}}>Air Quality</Title>
             </NavigationBar>
             <DailyDataChart
                 title="Air Quality (Home)"
+                subtitle="Past 7 days"
                 intervalType="Week"
                 weekStartsOn="6DaysAgo"
                 dailyDataType={HomeAirQualityDailyDataType}
@@ -49,6 +39,7 @@ export default function (props: AsthmaAirQualityViewProps) {
             />
             <DailyDataChart
                 title="Air Quality (Work)"
+                subtitle="Past 7 days"
                 intervalType="Week"
                 weekStartsOn="6DaysAgo"
                 dailyDataType={WorkAirQualityDailyDataType}
