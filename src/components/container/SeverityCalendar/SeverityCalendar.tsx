@@ -5,36 +5,36 @@ import surveyResults from "../../../helpers/get-survey-answers";
 import Calendar from "../../presentational/Calendar/Calendar";
 import { parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
-import { previewSwellingData } from "./SwellingCalendar.previewdata";
+import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
-export type SwellingCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
+export type SeverityCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
 
-export interface SwellingCalendarProps {
+export interface SeverityCalendarProps {
     surveyName: string,
     dateRecordedResultIdentifier: string,
     severityResultIdentifier: string,
     intervalStart?: Date,
-    previewState?: SwellingCalendarPreviewState,
+    previewState?: SeverityCalendarPreviewState,
 }
 
-interface SwellingDay {
+interface SeverityDay {
     dateRecorded: string,
     severity: string
 }
 
-export default function (props: SwellingCalendarProps) {
+export default function (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
         surveyName: props.surveyName,
         resultIdentifier: [props.dateRecordedResultIdentifier, props.severityResultIdentifier]
     }
 
-    const [data, setData] = useState<Map<string, SwellingDay> | undefined>();
+    const [data, setData] = useState<Map<string, SeverityDay> | undefined>();
     const dateRangeContext = useContext(DateRangeContext);
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
     async function initialize() {
         if (props.previewState !== "Live") {
-            transformToCalendarData(props.previewState === "WithData" ? previewSwellingData : []);
+            transformToCalendarData(props.previewState === "WithData" ? previewSeverityData : []);
         } else {
             surveyResults(surveyAnswerQuery).then((results: SurveyAnswer[]) => {
                 transformToCalendarData(results);
@@ -72,19 +72,19 @@ export default function (props: SwellingCalendarProps) {
     };
 
     function transformToCalendarData(results: SurveyAnswer[]) {
-        var swellingEntries: Map<Guid, SwellingDay> = createResultsMap(results);
+        var severityEntries: Map<Guid, SeverityDay> = createResultsMap(results);
 
-        var calendarData: Map<string, SwellingDay> = new Map<string, SwellingDay>();
-        swellingEntries.forEach(swellingEntry => {
-            let key: string = startOfDay(parseISO(swellingEntry.dateRecorded)).toDateString();
+        var calendarData: Map<string, SeverityDay> = new Map<string, SeverityDay>();
+        severityEntries.forEach(severityEntry => {
+            let key: string = startOfDay(parseISO(severityEntry.dateRecorded)).toDateString();
             let exists = calendarData.get(key);
             if (exists) {
-                if (parseISO(swellingEntry.dateRecorded) > parseISO(exists.dateRecorded)) {
-                    exists.severity = swellingEntry.severity;
+                if (parseISO(severityEntry.dateRecorded) > parseISO(exists.dateRecorded)) {
+                    exists.severity = severityEntry.severity;
                 }
             }
             else {
-                calendarData.set(key, swellingEntry);
+                calendarData.set(key, severityEntry);
             }
         });
 
@@ -92,14 +92,14 @@ export default function (props: SwellingCalendarProps) {
     }
 
     function createResultsMap(results: SurveyAnswer[]) {
-        var groupedByResult = new Map<Guid, SwellingDay>();
+        var groupedByResult = new Map<Guid, SeverityDay>();
 
         results.forEach((r) => {
             var exists = groupedByResult.get(r.surveyResultID);
-            var swellingDay = exists ?? { dateRecorded: "", severity: "" };
+            var severityDay = exists ?? { dateRecorded: "", severity: "" };
 
             if (r.resultIdentifier === props.dateRecordedResultIdentifier && r.answers) {
-                swellingDay.dateRecorded = r.answers[0];
+                severityDay.dateRecorded = r.answers[0];
             }
 
             if (r.resultIdentifier === props.severityResultIdentifier && r.answers) {
@@ -119,10 +119,10 @@ export default function (props: SwellingCalendarProps) {
                         break;
                 }
 
-                swellingDay.severity = severity;
+                severityDay.severity = severity;
             }
 
-            groupedByResult.set(r.surveyResultID, swellingDay);
+            groupedByResult.set(r.surveyResultID, severityDay);
         });
 
         return groupedByResult;

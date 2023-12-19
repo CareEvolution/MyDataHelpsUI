@@ -3,7 +3,7 @@ import { addDays, startOfDay } from "date-fns";
 
 var today = new Date();
 
-export const previewSwellingData : SurveyAnswer[] = [
+export const previewSeverityData : SurveyAnswer[] = [
     {   id: "12345",
         surveyResultID: "1",
         surveyID: "2",

@@ -1,19 +1,19 @@
 import React from "react"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import SwellingCalendar, { SwellingCalendarProps } from "./SwellingCalendar";
+import SeverityCalendar, { SeverityCalendarProps } from "./SeverityCalendar";
 import { DateRangeCoordinator } from "../../presentational";
 
 export default {
-    title: 'Container/SwellingCalendar',
-    component: SwellingCalendar,
+    title: 'Container/SeverityCalendar',
+    component: SeverityCalendar,
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: SwellingCalendarProps) => <Layout colorScheme='auto'>
+const render = (args: SeverityCalendarProps) => <Layout colorScheme='auto'>
     <Card>
         <DateRangeCoordinator intervalType={"Month"}>
-            <SwellingCalendar {...args} />
+            <SeverityCalendar {...args} />
         </DateRangeCoordinator>
     </Card>
 </Layout>;
@@ -23,8 +23,8 @@ const today : Date = new Date();
 export const NoData = {
     args : {
         surveyName: 'Survey 1',
-        severityResultIdentifier : 'severityValue', 
-        dateRecordedResultIdentifier : 'swellingDate',
+        severityResultIdentifier : '', 
+        dateRecordedResultIdentifier : '',
         previewState : 'NoData'
     },
     render : render
