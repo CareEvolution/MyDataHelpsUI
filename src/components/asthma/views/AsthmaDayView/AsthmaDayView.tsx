@@ -1,6 +1,4 @@
 import React from 'react';
-import MyDataHelps from '@careevolution/mydatahelps-js';
-import formatISO from 'date-fns/formatISO';
 import { Card, Layout, NavigationBar, Title } from '../../../presentational';
 import { AsthmaAirQualities, AsthmaAirQualitiesPreviewState, AsthmaBiometrics, AsthmaBiometricsPreviewState, AsthmaLogEntryDetails, AsthmaLogEntryDetailsPreviewState } from '../../components';
 import { format } from 'date-fns';
@@ -18,6 +16,10 @@ export interface AsthmaDayViewProps {
     logTodayEntrySurveyName: string;
     logYesterdayEntrySurveyName: string;
     editLogEntryUrl: string;
+    heartAndLungsUrl: string;
+    activityUrl: string;
+    sleepUrl: string;
+    airQualityUrl: string;
 }
 
 export default function (props: AsthmaDayViewProps) {
@@ -36,10 +38,18 @@ export default function (props: AsthmaDayViewProps) {
             />
         </Card>
         <Card>
-            <AsthmaBiometrics previewState={props.previewState?.biometricsPreviewState}/>
+            <AsthmaBiometrics
+                previewState={props.previewState?.biometricsPreviewState}
+                heartAndLungsUrl={props.heartAndLungsUrl}
+                activityUrl={props.activityUrl}
+                sleepUrl={props.sleepUrl}
+            />
         </Card>
         <Card>
-            <AsthmaAirQualities previewState={props.previewState?.airQualitiesPreviewState}/>
+            <AsthmaAirQualities
+                previewState={props.previewState?.airQualitiesPreviewState}
+                airQualityUrl={props.airQualityUrl}
+            />
         </Card>
     </Layout>;
 }
