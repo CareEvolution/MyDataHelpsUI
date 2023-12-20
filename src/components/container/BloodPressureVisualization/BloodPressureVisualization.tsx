@@ -298,7 +298,6 @@ export default function (props: BloodPressureVisualizationProps) {
                 <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
                 {pageWeeklyData(datePagerStartDate)}
                 {pageWeeklyMetrics(datePagerStartDate)}
-                <Button defaultMargin onClick={() => MyDataHelps.startSurvey(props.surveyDataSource.surveyName)}>{language("log-blood-pressure")} <FontAwesomeSvgIcon icon={faPlus} /></Button>
             </>
         )
     }
