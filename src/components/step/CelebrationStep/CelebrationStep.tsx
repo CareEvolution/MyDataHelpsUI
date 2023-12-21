@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import StepLayout from '../StepLayout'
 import StepTitle from '../StepTitle';
@@ -20,10 +20,22 @@ export interface CelebrationStepProps {
 }
 
 export default function (props: CelebrationStepProps) {
-    startConfetti();
-    window.setTimeout(function () {
-        stopConfetti();
-    }, 1200);
+    function runConfetti() {
+        if (window.innerWidth === 0 || window.innerHeight === 0) {
+            window.setTimeout(runConfetti, 50);
+            return;
+        }
+
+        startConfetti();
+        window.setTimeout(function () {
+            stopConfetti();
+        }, 1200);
+    }
+
+    useEffect(() => {
+        runConfetti();
+    }, []);
+
     return (
       <StepLayout>
           <StepImageIcon srcUrl={props.iconUrl} />
