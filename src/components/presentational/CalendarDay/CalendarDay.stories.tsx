@@ -208,7 +208,19 @@ export const InCalendarNoData = {
                     <CalendarDayInCalendar/>
                 </DateRangeCoordinator>
             </Card>
-        </Layout>
+        </Layout>;
+    }
+};
+
+export const InCalendarNoDataWithClickHandler = {
+    render: () => {
+        return <Layout colorScheme="auto">
+            <Card>
+                <DateRangeCoordinator intervalType="Month">
+                    <CalendarDayInCalendar withClickHandler={true}/>
+                </DateRangeCoordinator>
+            </Card>
+        </Layout>;
     }
 };
 
@@ -220,11 +232,23 @@ export const InCalendarWithData = {
                     <CalendarDayInCalendar withData={true}/>
                 </DateRangeCoordinator>
             </Card>
-        </Layout>
+        </Layout>;
     }
 };
 
-function CalendarDayInCalendar(props: { withData?: boolean }) {
+export const InCalendarWithDataWithClickHandler = {
+    render: () => {
+        return <Layout colorScheme="auto">
+            <Card>
+                <DateRangeCoordinator intervalType="Month">
+                    <CalendarDayInCalendar withData={true} withClickHandler={true}/>
+                </DateRangeCoordinator>
+            </Card>
+        </Layout>;
+    }
+};
+
+function CalendarDayInCalendar(props: { withData?: boolean, withClickHandler?: boolean }) {
     let dateRangeContext = useContext(DateRangeContext);
 
     const stateConfiguration: CalendarDayStateConfiguration = {
@@ -286,7 +310,7 @@ function CalendarDayInCalendar(props: { withData?: boolean }) {
             day={day}
             stateConfiguration={stateConfiguration}
             computeStateForDay={computeStateForDay}
-            onClick={onDayClicked}
+            onClick={props.withClickHandler ? onDayClicked : undefined}
         />;
     };
 

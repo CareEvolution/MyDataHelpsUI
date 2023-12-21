@@ -3,6 +3,7 @@ import './CalendarDay.css';
 import { LayoutContext } from '../Layout';
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 import { add, isAfter, isSameDay } from 'date-fns';
+import UnstyledButton from '../UnstyledButton';
 
 export type CalendarDayStateConfiguration = Record<string, { style?: CSSProperties, streak?: boolean, streakColor?: ColorDefinition }>;
 
@@ -12,7 +13,7 @@ export interface CalendarDayProps {
     day?: number;
     stateConfiguration: CalendarDayStateConfiguration;
     computeStateForDay: (date: Date) => string;
-    onClick: (date: Date) => void;
+    onClick?: (date: Date) => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -69,7 +70,12 @@ export default function (props: CalendarDayProps) {
         }
     }
 
-    return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle} onClick={() => props.onClick(date)}>
-        <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
+    return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle}>
+        {props.onClick &&
+            <UnstyledButton className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style} onClick={() => props.onClick!(date)}>{date.getDate()}</UnstyledButton>
+        }
+        {!props.onClick &&
+            <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
+        }
     </div>;
 }
