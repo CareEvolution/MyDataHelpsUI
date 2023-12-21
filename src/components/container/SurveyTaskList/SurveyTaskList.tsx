@@ -45,7 +45,7 @@ export default function (props: SurveyTaskListProps) {
 	};
 
 	const onTaskClicked = (task: SurveyTask) => {
-		if (!isSurveyActive(task)) {
+		if (!props.previewState && !isSurveyActive(task)) {
 			setActiveSurveys([...activeSurveys, task.surveyName]);
 			MyDataHelps.startSurvey(task.surveyName);
 		}
