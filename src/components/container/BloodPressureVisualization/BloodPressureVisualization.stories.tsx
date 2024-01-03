@@ -26,9 +26,9 @@ const bpSurveyParams: SurveyBloodPressureDataParameters = {
 	diastolicResultIdentifier: "Diastolic BP"
 }
 
-export const WithData = {
+export const Default = {
 	args: {
-		previewState: "WithData",
+		previewState: "Default",
 		surveyDataSource: bpSurveyParams
 	},
 	render: render
@@ -52,7 +52,6 @@ export const NoData = {
 
 export const Live = {
 	args: {
-		previewState: "Live",
 		surveyDataSource: {
 			surveyName: "Blood Pressure Readings - OPTIONAL",
 			dateResultIdentifier: "Date of BP",

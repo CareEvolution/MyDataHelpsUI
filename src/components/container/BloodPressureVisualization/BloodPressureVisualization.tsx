@@ -1,13 +1,10 @@
 import "./BloodPressureVisualization.css";
 import { useState } from "react";
-import MyDataHelps from "@careevolution/mydatahelps-js";
 import React from "react";
-import { Button, DateRangeNavigator, LoadingIndicator, Title } from "../../presentational";
+import { DateRangeNavigator, LoadingIndicator, Title } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
 import { addDays, format, isEqual, parseISO, startOfDay } from "date-fns";
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
 import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
@@ -16,7 +13,7 @@ import { BloodPressureDataPoint, bloodPressureDataProvider, SurveyBloodPressureD
 
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
-export type BloodPressurePreviewState = "WithData" | "NoData" | "Loading" | "Live";
+export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
 
 export interface BloodPressureVisualizationProps {
     previewState?: BloodPressurePreviewState,
@@ -56,8 +53,8 @@ export default function (props: BloodPressureVisualizationProps) {
 
     async function initialize() {
         if (props.previewState !== "Loading") {
-            if (props.previewState !== "Live") {
-                const params = (props.previewState === "WithData") ? previewBloodPressureDataPoint : [];
+            if (["Default", "NoData"].includes(props.previewState ?? "")) {
+                const params = (props.previewState === "Default") ? previewBloodPressureDataPoint : [];
                 transformToGraphData(params);
             }
             else {
