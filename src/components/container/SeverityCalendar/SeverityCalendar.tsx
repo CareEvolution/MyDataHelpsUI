@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { Guid, SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import React from "react";
-import surveyResults from "../../../helpers/get-survey-answers";
+import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import Calendar from "../../presentational/Calendar/Calendar";
-import { parseISO, startOfDay, startOfMonth } from "date-fns";
+import { format, parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
-export type SeverityCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
+export type SeverityCalendarPreviewState = "Default" | "NoData";
 
 export interface SeverityCalendarProps {
     surveyName: string,
@@ -17,9 +17,10 @@ export interface SeverityCalendarProps {
     previewState?: SeverityCalendarPreviewState,
 }
 
-interface SeverityDay {
-    dateRecorded: string,
-    severity: string
+interface SeverityLogEntry {
+    dateObserved: Date,
+    severity: string,
+    dateEntered: string
 }
 
 export default function (props: SeverityCalendarProps) {
@@ -28,18 +29,83 @@ export default function (props: SeverityCalendarProps) {
         resultIdentifier: [props.dateRecordedResultIdentifier, props.severityResultIdentifier]
     }
 
-    const [data, setData] = useState<Map<string, SeverityDay> | undefined>();
+    const [data, setData] = useState<Map<string, SeverityLogEntry> | undefined>();
     const dateRangeContext = useContext(DateRangeContext);
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
     async function initialize() {
-        if (props.previewState !== "Live") {
-            transformToCalendarData(props.previewState === "WithData" ? previewSeverityData : []);
+        if (props.previewState) {
+            transformToCalendarData(props.previewState === "Default" ? previewSeverityData : []);
         } else {
-            surveyResults(surveyAnswerQuery).then((results: SurveyAnswer[]) => {
+            queryAllSurveyAnswers(surveyAnswerQuery).then((results: SurveyAnswer[]) => {
                 transformToCalendarData(results);
             });
         }
+    }
+
+    function transformToCalendarData(results: SurveyAnswer[]) {
+
+        var resultByDateMap = new Map<string, SeverityLogEntry>();
+        var groupedByResult = groupAnswersByResult(results);
+
+        groupedByResult.forEach((grouping) => {
+            var severity = "";
+            if (grouping.severityAnswer) {
+                switch (grouping.severityAnswer.answers[0]) {
+                    case "mild":
+                    case "severity1":
+                        severity = "mild";
+                        break;
+                    case "moderate":
+                    case "severity2":
+                        severity = "moderate";
+                        break;
+                    case "severe":
+                    case "severity3":
+                        severity = "severe";
+                        break;
+                }
+
+                if (severity) {
+                    let dateOfSeverity = parseISO(grouping.dateObservedAnswer ? grouping.dateObservedAnswer.answers[0] : grouping.severityAnswer.date);
+                    let key = format(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
+                    let exists = resultByDateMap.get(key);
+                    if (exists) {
+                        if ((dateOfSeverity > exists.dateObserved) ||
+                            (dateOfSeverity === exists.dateObserved && grouping.severityAnswer.date > exists.dateEntered)) {
+                            exists.dateObserved = dateOfSeverity;
+                            exists.severity = severity;
+                            exists.dateEntered = grouping.severityAnswer.date;
+                        }
+                    } else {
+                        resultByDateMap.set(key, { dateObserved: dateOfSeverity, severity: severity, dateEntered: grouping.severityAnswer.date });
+                    }
+                }
+            }
+        })
+
+        setData(resultByDateMap);
+    }
+
+    function groupAnswersByResult(results: SurveyAnswer[]) {
+        var groupedByResult = new Map<Guid, { dateObservedAnswer?: SurveyAnswer, severityAnswer?: SurveyAnswer }>();
+
+        results.forEach((r) => {
+            var exists = groupedByResult.get(r.surveyResultID);
+            var completeResult = exists ?? { dateObservedAnswer: undefined, severityAnswer: undefined };
+            if (r.answers && r.answers[0] !== "") {
+                if (r.resultIdentifier === props.severityResultIdentifier) {
+                    completeResult.severityAnswer = r;
+                }
+                else if (r.resultIdentifier === props.dateRecordedResultIdentifier) {
+                    completeResult.dateObservedAnswer = r;
+                }
+
+                groupedByResult.set(r.surveyResultID, completeResult);
+            }
+        })
+
+        return groupedByResult;
     }
 
     const stateConfiguration: CalendarDayStateConfiguration = {
@@ -67,66 +133,9 @@ export default function (props: SeverityCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string => {
-        let key: string = startOfDay(date).toDateString();
+        let key: string = format(startOfDay(date), 'MM/dd/yyyy');
         return data?.get(key)?.severity ?? "";
     };
-
-    function transformToCalendarData(results: SurveyAnswer[]) {
-        var severityEntries: Map<Guid, SeverityDay> = createResultsMap(results);
-
-        var calendarData: Map<string, SeverityDay> = new Map<string, SeverityDay>();
-        severityEntries.forEach(severityEntry => {
-            let key: string = startOfDay(parseISO(severityEntry.dateRecorded)).toDateString();
-            let exists = calendarData.get(key);
-            if (exists) {
-                if (parseISO(severityEntry.dateRecorded) > parseISO(exists.dateRecorded)) {
-                    exists.severity = severityEntry.severity;
-                }
-            }
-            else {
-                calendarData.set(key, severityEntry);
-            }
-        });
-
-        setData(calendarData);
-    }
-
-    function createResultsMap(results: SurveyAnswer[]) {
-        var groupedByResult = new Map<Guid, SeverityDay>();
-
-        results.forEach((r) => {
-            var exists = groupedByResult.get(r.surveyResultID);
-            var severityDay = exists ?? { dateRecorded: "", severity: "" };
-
-            if (r.resultIdentifier === props.dateRecordedResultIdentifier && r.answers) {
-                severityDay.dateRecorded = r.answers[0];
-            }
-
-            if (r.resultIdentifier === props.severityResultIdentifier && r.answers) {
-                var severity = "";
-                switch (r.answers[0]) {
-                    case "mild":
-                    case "severity1":
-                        severity = "mild";
-                        break;
-                    case "moderate":
-                    case "severity2":
-                        severity = "moderate";
-                        break;
-                    case "severe":
-                    case "severity3":
-                        severity = "severe";
-                        break;
-                }
-
-                severityDay.severity = severity;
-            }
-
-            groupedByResult.set(r.surveyResultID, severityDay);
-        });
-
-        return groupedByResult;
-    }
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
         return <CalendarDay

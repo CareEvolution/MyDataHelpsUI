@@ -7,48 +7,48 @@ import { DateRangeCoordinator } from "../../presentational";
 export default {
     title: 'Container/SeverityCalendar',
     component: SeverityCalendar,
-    parameters: {layout: 'fullscreen'},
+    parameters: { layout: 'fullscreen' },
     argTypes: {
-        severityResultIdentifier: { control: 'text', description:  "Result values must be one of mild = [mild, severity1], moderate = [moderate, severity2], severe = [severe, severity3]" }
+        severityResultIdentifier: { 
+            control: 'text', 
+            description: 'Result values must be one of mild = [mild, severity1], moderate = [moderate, severity2], severe = [severe, severity3]' 
+        }
     }
 };
 
 const render = (args: SeverityCalendarProps) => <Layout colorScheme='auto'>
     <Card>
-        <DateRangeCoordinator intervalType={"Month"}>
+        <DateRangeCoordinator intervalType={'Month'}>
             <SeverityCalendar {...args} />
         </DateRangeCoordinator>
     </Card>
 </Layout>;
 
-const today : Date = new Date();
-
-export const NoData = {
-    args : {
+export const Default = {
+    args: {
         surveyName: 'Survey 1',
-        severityResultIdentifier : '', 
-        dateRecordedResultIdentifier : '',
-        previewState : 'NoData'
+        severityResultIdentifier: 'severityValue',
+        dateRecordedResultIdentifier: 'swellingDate',
+        previewState: 'Default'
     },
-    render : render
+    render: render
 };
 
-export const WithData = {
-    args : {
+export const NoData = {
+    args: {
         surveyName: 'Survey 1',
-        severityResultIdentifier : 'severityValue', 
-        dateRecordedResultIdentifier : 'swellingDate',
-        previewState : 'WithData'
+        severityResultIdentifier: '',
+        dateRecordedResultIdentifier: '',
+        previewState: 'NoData'
     },
-    render : render
+    render: render
 };
 
 export const Live = {
-    args : {
-        surveyName: 'RESOLVE Swelling and Urine Protein Measurements - OPTIONAL', 
-        severityResultIdentifier : 'Swelling Severity', 
-        dateRecordedResultIdentifier : 'Recent Swelling Date',
-        previewState : 'Live'
+    args: {
+        surveyName: 'Swelling and Urine Protein Measurements',
+        severityResultIdentifier: 'Swelling Severity',
+        dateRecordedResultIdentifier: 'Recent Swelling Date'
     },
-    render : render
+    render: render
 };

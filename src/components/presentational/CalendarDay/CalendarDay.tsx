@@ -12,7 +12,7 @@ export interface CalendarDayProps {
     day?: number;
     stateConfiguration: CalendarDayStateConfiguration;
     computeStateForDay: (date: Date) => string;
-    onClick?: (date: Date) => void;
+    onClick: (date: Date) => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -69,7 +69,7 @@ export default function (props: CalendarDayProps) {
         }
     }
 
-    return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle} onClick={() => props.onClick ? props.onClick(date) : void(date)}>
+    return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle} onClick={() => props.onClick(date)}>
         <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
     </div>;
 }
