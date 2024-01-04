@@ -1,9 +1,9 @@
 ﻿import React from 'react'
-import SingleSurveyTask, { SingleSurveyTaskProps } from './SingleSurveyTask'
+import SingleSurveyTask, { SingleSurveyTaskVariant } from './SingleSurveyTask'
 import Layout from '../Layout'
-import { add } from 'date-fns';
-import { SurveyTask } from "@careevolution/mydatahelps-js";
 import Card from '../Card';
+import { SurveyTask, SurveyTaskStatus } from "@careevolution/mydatahelps-js";
+import { noop } from '../../../helpers/functions';
 
 export default {
 	title: 'Presentational/SingleSurveyTask',
@@ -11,81 +11,73 @@ export default {
 	parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: SingleSurveyTaskProps) => <Layout colorScheme="auto">
-	<Card>
-		<SingleSurveyTask {...args} />
-	</Card>
-</Layout>;
+interface SingleSurveyTaskStoryArgs {
+	name: string;
+	status: SurveyTaskStatus;
+	description?: string;
+	dueDate?: number;
+	hasSavedProgress?: boolean;
+	variant?: SingleSurveyTaskVariant;
+	endDate?: number;
+	surveyActive?: boolean;
+}
 
-const now = new Date();
+const render = (args: SingleSurveyTaskStoryArgs) => {
+	const task = {
+		surveyDisplayName: args.name,
+		surveyDescription: args.description,
+		status: args.status,
+		dueDate: args.dueDate ? new Date(args.dueDate).toISOString() : undefined,
+		endDate: args.endDate ? new Date(args.endDate).toISOString() : undefined,
+		hasSavedProgress: args.hasSavedProgress
+	} as SurveyTask;
 
-const commonTask = {
-	surveyName: 'PainSurvey',
-	surveyDisplayName: 'Pain Survey',
-	surveyDescription: '5 minutes',
-	dueDate: add(new Date(now), {days: 3}).toISOString(),
-} as SurveyTask;
-
-const commonProps = {
-	onClick: () => {
-		console.log('task clicked');
-	}
-} as SingleSurveyTaskProps;
-
-export const Incomplete = {
-	args: {
-		...commonProps,
-		task: {
-			...commonTask,
-			status: 'incomplete'
-		}
-	},
-	render: render
+	return <Layout colorScheme="auto">
+		<Card>
+			<SingleSurveyTask task={task} variant={args.variant} surveyActive={args.surveyActive} onClick={noop}/>
+		</Card>
+	</Layout>;
 };
 
-export const IncompleteInProgress = {
+export const Default = {
 	args: {
-		...commonProps,
-		task: {
-			...commonTask,
-			status: 'incomplete',
-			hasSavedProgress: true
-		}
+		variant: 'default',
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: undefined,
+		hasSavedProgress: false,
+		endDate: undefined,
+		surveyActive: false
 	},
-	render: render
-};
-
-export const IncompleteSurveyActive = {
-	args: {
-		...commonProps,
-		task: {
-			...commonTask,
-			status: 'incomplete'
+	argTypes: {
+		variant: {
+			control: 'radio',
+			options: ['default', 'expanded'],
 		},
-		surveyActive: true
-	},
-	render: render
-};
-
-export const IncompleteWithLongDescription = {
-	args: {
-		...commonProps,
-		task: {
-			...commonTask,
-			status: 'incomplete',
-			surveyDescription: 'Here is a really long description that will likely need to wrap.  It should wrap before overlapping the action indicator.'
-		}
-	},
-	render: render
-};
-
-export const Complete = {
-	args: {
-		...commonProps,
-		task: {
-			...commonTask,
-			status: 'complete',
-			endDate: add(new Date(now), {days: -2}).toISOString(),
+		status: {
+			control: 'radio',
+			options: ['incomplete', 'complete', 'closed']
+		},
+		dueDate: {
+			name: 'due date',
+			control: 'date',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		hasSavedProgress: {
+			name: 'in progress',
+			control: 'boolean',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		surveyActive: {
+			name: 'survey active',
+			control: 'boolean',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		endDate: {
+			name: 'end date',
+			control: 'date',
+			if: {arg: 'status', eq: 'complete'}
 		}
 	},
 	render: render

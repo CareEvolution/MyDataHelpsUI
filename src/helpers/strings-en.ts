@@ -84,6 +84,8 @@
     "app-download-app-store-link-alt": "Download on the Apple App Store",
     "start": "Start",
     "resume": "Resume",
+    "start-survey": "Start Survey",
+    "resume-survey": "Resume Survey",
     "30-day-average": "30 Day Average",
     "today": "Today",
     "yesterday": "Yesterday",
