@@ -1,0 +1,76 @@
+.mdhui-value-selector {
+    --mdhui-value-selector-title-color: var(--mdhui-text-color-1);
+    --mdhui-value-selector-subtitle-color: var(--mdhui-text-color-3);
+    --mdhui-value-selector-value-background-color: var(--mdhui-background-color-0);
+    --mdhui-value-selector-value-text-color: var(--mdhui-text-color-1);
+    --mdhui-value-selector-button-value-selected-background-color: var(--mdhui-color-primary);
+    --mdhui-value-selector-button-value-selected-text-color: #fff;
+    --mdhui-value-selector-checkbox-color: var(--mdhui-text-color-4);
+    --mdhui-value-selector-checkbox-selected-color: var(--mdhui-color-primary);
+    padding: 16px;
+}
+
+.mdhui-value-selector-title {
+    font-weight: bold;
+    color: var(--mdhui-value-selector-title-color);
+    margin-bottom: 4px;
+}
+
+.mdhui-value-selector-subtitle {
+    font-size: 0.75em;
+    color: var(--mdhui-value-selector-subtitle-color);
+    margin-bottom: 12px;
+}
+
+.mdhui-value-selector-value {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 6px;
+    background: var(--mdhui-value-selector-value-background-color);
+    border: 1px solid var(--mdhui-value-selector-value-background-color);
+    color: var(--mdhui-value-selector-value-text-color);
+    padding: 0 16px;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+.mdhui-value-selector-value:last-child {
+    margin-bottom: 0;
+}
+
+.mdhui-value-selector-value-text {
+    font-size: 0.85em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mdhui-value-selector-value-button {
+    text-align: center;
+}
+
+.mdhui-value-selector-value-button.mdhui-value-selector-value-selected {
+    background: color-mix(in srgb, var(--mdhui-value-selector-button-value-selected-background-color), transparent 30%);
+    border: 1px solid var(--mdhui-value-selector-button-value-selected-background-color);
+    color: var(--mdhui-value-selector-button-value-selected-text-color);
+}
+
+.mdhui-value-selector-value-checkbox {
+    padding-right: 0;
+}
+
+.mdhui-value-selector-value-checkbox-icon {
+    width: 48px;
+    font-size: 0.95em;
+    justify-self: center;
+    color: var(--mdhui-value-selector-checkbox-color);
+}
+
+.mdhui-value-selector-value-checkbox-icon-selected {
+    color: var(--mdhui-value-selector-checkbox-selected-color);
+}
+
+
