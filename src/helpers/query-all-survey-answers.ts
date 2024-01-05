@@ -3,22 +3,21 @@ import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery 
 export default async function (props: SurveyAnswersQuery): Promise<SurveyAnswer[]> {
 
     async function getSurveyAnswers(): Promise<SurveyAnswer[]> {
-        let dataPage = await getSurveyDataPage();
-        let allData = dataPage.surveyAnswers;
+        let dataPage = await getSurveyAnswersPage();
+        let allAnswers = dataPage.surveyAnswers;
         while (dataPage.nextPageID) {
-            dataPage = await getSurveyDataPage(dataPage.nextPageID);
-            allData = allData.concat(dataPage.surveyAnswers);
+            dataPage = await getSurveyAnswersPage(dataPage.nextPageID);
+            allAnswers = allAnswers.concat(dataPage.surveyAnswers);
         }
-        return allData;
+        return allAnswers;
     }
 
-    async function getSurveyDataPage(pageID?: Guid): Promise<SurveyAnswersPage> {
-        var queryParameters: SurveyAnswersQuery = props;
+    async function getSurveyAnswersPage(pageID?: Guid): Promise<SurveyAnswersPage> {
         if (pageID) {
-            queryParameters.pageID = pageID;
+            props.pageID = pageID;
         }
 
-        return MyDataHelps.querySurveyAnswers(queryParameters);
+        return MyDataHelps.querySurveyAnswers(props);
     }
 
     return await getSurveyAnswers();

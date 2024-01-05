@@ -11,7 +11,7 @@ export default {
     argTypes: {
         severityResultIdentifier: { 
             control: 'text', 
-            description: 'Result values must be one of mild = [mild, severity1], moderate = [moderate, severity2], severe = [severe, severity3]' 
+            description: 'Result values must be one of mild, moderate, severe. Use a severityValueMapper if other values are expected.' 
         }
     }
 };
@@ -28,7 +28,31 @@ export const Default = {
     args: {
         surveyName: 'Survey 1',
         severityResultIdentifier: 'severityValue',
-        dateRecordedResultIdentifier: 'swellingDate',
+        dateRecordedResultIdentifier: 'severityDate',
+        previewState: 'Default'
+    },
+    render: render
+};
+
+export const CustomValueMapper = {
+    args: {
+        surveyName: 'Survey 1',
+        severityResultIdentifier: 'severityValue',
+        dateRecordedResultIdentifier: 'severityDate',
+        severityValueMapper : (severityValue : string) => {
+            switch (severityValue){
+                case 'severity1':
+                    return 'mild';
+                    break;
+                case 'severity2':
+                    return 'moderate';
+                    break;
+                case 'severity3':
+                    return 'severe';
+                default:
+                    return '';
+            }
+        },
         previewState: 'Default'
     },
     render: render

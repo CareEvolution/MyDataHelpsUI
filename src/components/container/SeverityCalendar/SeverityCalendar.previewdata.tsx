@@ -26,7 +26,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfToday().toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -52,7 +52,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -1)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -78,7 +78,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -2)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -104,7 +104,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -3)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -130,7 +130,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -4)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -156,7 +156,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -5)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -182,7 +182,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -6)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -234,7 +234,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -9)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -260,7 +260,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: today.toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -9)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -299,7 +299,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: endOfDay(addDays(today, -10)).toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -10)).toISOString()],
         insertedDate: Date.now.toString()
     },
@@ -325,7 +325,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         surveyDisplayName: "test",
         date: startOfDay(addDays(today, -10)).toISOString(),
         stepIdentifier: "1",
-        resultIdentifier: "swellingDate",
+        resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -10)).toISOString()],
         insertedDate: Date.now.toString()
     }

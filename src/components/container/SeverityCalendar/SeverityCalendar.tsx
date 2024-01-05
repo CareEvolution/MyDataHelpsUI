@@ -11,8 +11,9 @@ export type SeverityCalendarPreviewState = "Default" | "NoData";
 
 export interface SeverityCalendarProps {
     surveyName: string,
-    dateRecordedResultIdentifier: string,
+    dateRecordedResultIdentifier?: string,
     severityResultIdentifier: string,
+    severityValueMapper? : () => void,
     intervalStart?: Date,
     previewState?: SeverityCalendarPreviewState,
 }
@@ -26,7 +27,7 @@ interface SeverityLogEntry {
 export default function (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
         surveyName: props.surveyName,
-        resultIdentifier: [props.dateRecordedResultIdentifier, props.severityResultIdentifier]
+        resultIdentifier: props.dateRecordedResultIdentifier ? [props.dateRecordedResultIdentifier, props.severityResultIdentifier] : [props.severityResultIdentifier]
     }
 
     const [data, setData] = useState<Map<string, SeverityLogEntry> | undefined>();
@@ -47,32 +48,24 @@ export default function (props: SeverityCalendarProps) {
 
         var resultByDateMap = new Map<string, SeverityLogEntry>();
         var groupedByResult = groupAnswersByResult(results);
+        var ceSeverityValueMapper = function(severityAnswer : string){
+            let severity = "";
+            if (['mild', 'moderate', 'severe'].includes(severityAnswer.toLowerCase())){
+                severity = severityAnswer.toLowerCase();
+            }
+            return severity;
+        }
 
+        const severityValueMapper = props.severityValueMapper ?? ceSeverityValueMapper;
         groupedByResult.forEach((grouping) => {
-            var severity = "";
             if (grouping.severityAnswer) {
-                switch (grouping.severityAnswer.answers[0]) {
-                    case "mild":
-                    case "severity1":
-                        severity = "mild";
-                        break;
-                    case "moderate":
-                    case "severity2":
-                        severity = "moderate";
-                        break;
-                    case "severe":
-                    case "severity3":
-                        severity = "severe";
-                        break;
-                }
-
+                var severity = severityValueMapper(grouping.severityAnswer.answers[0]);
                 if (severity) {
                     let dateOfSeverity = parseISO(grouping.dateObservedAnswer ? grouping.dateObservedAnswer.answers[0] : grouping.severityAnswer.date);
                     let key = format(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
                     let exists = resultByDateMap.get(key);
-                    if (exists) {
-                        if ((dateOfSeverity > exists.dateObserved) ||
-                            (dateOfSeverity === exists.dateObserved && grouping.severityAnswer.date > exists.dateEntered)) {
+                    if (exists){
+                        if (grouping.severityAnswer.date > exists.dateEntered) {
                             exists.dateObserved = dateOfSeverity;
                             exists.severity = severity;
                             exists.dateEntered = grouping.severityAnswer.date;
@@ -96,8 +89,7 @@ export default function (props: SeverityCalendarProps) {
             if (r.answers && r.answers[0] !== "") {
                 if (r.resultIdentifier === props.severityResultIdentifier) {
                     completeResult.severityAnswer = r;
-                }
-                else if (r.resultIdentifier === props.dateRecordedResultIdentifier) {
+                } else if (r.resultIdentifier === props.dateRecordedResultIdentifier) {
                     completeResult.dateObservedAnswer = r;
                 }
 
@@ -151,8 +143,7 @@ export default function (props: SeverityCalendarProps) {
 
     if (!data) {
         return <LoadingIndicator />
-    }
-    else {
+    } else {
         return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
     }
 } 
