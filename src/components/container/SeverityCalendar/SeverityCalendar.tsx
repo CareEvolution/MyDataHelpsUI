@@ -13,7 +13,7 @@ export interface SeverityCalendarProps {
     surveyName: string,
     dateRecordedResultIdentifier?: string,
     severityResultIdentifier: string,
-    severityValueMapper? : () => void,
+    severityValueMapper? : (value: string) => string,
     intervalStart?: Date,
     previewState?: SeverityCalendarPreviewState,
 }
@@ -28,7 +28,7 @@ export default function (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
         surveyName: props.surveyName,
         resultIdentifier: props.dateRecordedResultIdentifier ? [props.dateRecordedResultIdentifier, props.severityResultIdentifier] : [props.severityResultIdentifier]
-    }
+    };
 
     const [data, setData] = useState<Map<string, SeverityLogEntry> | undefined>();
     const dateRangeContext = useContext(DateRangeContext);
@@ -48,13 +48,13 @@ export default function (props: SeverityCalendarProps) {
 
         var resultByDateMap = new Map<string, SeverityLogEntry>();
         var groupedByResult = groupAnswersByResult(results);
-        var ceSeverityValueMapper = function(severityAnswer : string){
+        const ceSeverityValueMapper = function(severityAnswer : string){
             let severity = "";
             if (['mild', 'moderate', 'severe'].includes(severityAnswer.toLowerCase())){
                 severity = severityAnswer.toLowerCase();
             }
             return severity;
-        }
+        };
 
         const severityValueMapper = props.severityValueMapper ?? ceSeverityValueMapper;
         groupedByResult.forEach((grouping) => {
@@ -75,7 +75,7 @@ export default function (props: SeverityCalendarProps) {
                     }
                 }
             }
-        })
+        });
 
         setData(resultByDateMap);
     }
@@ -142,8 +142,8 @@ export default function (props: SeverityCalendarProps) {
     useInitializeView(initialize, [], [props.previewState]);
 
     if (!data) {
-        return <LoadingIndicator />
+        return <LoadingIndicator />;
     } else {
-        return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
+        return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
     }
 } 
