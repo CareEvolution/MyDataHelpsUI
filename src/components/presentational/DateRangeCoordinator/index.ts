@@ -1,1 +1,1 @@
-export { default } from "./DateRangeCoordinator";
+export { default, DateRangeContext } from "./DateRangeCoordinator";

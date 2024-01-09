@@ -103,6 +103,8 @@ export default function (props: ProviderSearchProps) {
                     if (props.onProviderConnected) {
                         props.onProviderConnected(provider);
                     }
+
+                    return loadExternalAccounts();
                 });
         }
     }

@@ -56,6 +56,13 @@ YouTubeStepCustomStyling.args = {
     }
 }
 
+export const YouTubeStepMarkdown = Template.bind({});
+YouTubeStepMarkdown.args = {
+    videoId: "Ee3x4oK_qv8",
+    text:"[My link](https://careevolution.com/mydatahelps/)",
+    styles: {}
+}
+
 export const YouTubeStepEmpty = Template.bind({});
 YouTubeStepEmpty.args = {
     videoId: "Ee3x4oK_qv8",

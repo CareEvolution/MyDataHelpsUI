@@ -45,3 +45,7 @@ export function getMonthName(month: number) {
 	}
 	return capitalizeFirstLetter(format(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
 }
+
+export function getLocale(): Locale {
+	return MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+}
