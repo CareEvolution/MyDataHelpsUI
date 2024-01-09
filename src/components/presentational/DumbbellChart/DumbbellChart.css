@@ -1,0 +1,137 @@
+.mdhui-dumbbell-visualization {
+    padding-top: var(--mdhui-padding-sm);
+    padding-bottom: var(--mdhui-padding-md);
+    overflow: hidden;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart{
+    height: 200px;
+    width: 100%;
+    position: relative;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-y-axis{
+    position: absolute;
+    flex-flow: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: var(--mdhui-border-color-0);
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-x-axis{
+    position: absolute;
+    bottom: -15px;
+    margin-left: -2.5px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-axis-text{
+    color: var(--mdhui-text-color-4);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    justify-content: right;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart 
+.mdhui-dumbbell-y-axis 
+.mdhui-dumbbell-axis-text{
+    margin-right: 15px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-y-axis .mdhui-dumbbell-axis-text-hidden{
+    visibility: hidden;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell{
+    bottom: 0px;
+    height: 100%;
+    position: absolute;
+ }
+
+ .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+ .mdhui-dumbbell-pill{
+    position: absolute;
+    width: 9px;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 2px;
+    z-index: 1;
+    min-height: 9px;
+    min-width: 9px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-full-out-of-range-pill{
+    background-color: var(--mdhui-color-danger);
+    border-color:var(--mdhui-color-danger);
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-style: solid;
+    border-width: 2px;
+    z-index: 1;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-partial-out-of-range-pill{
+    position: absolute;
+    z-index: 1;
+    width: 9px;
+    border-style: solid;
+    border-width: 2px;
+    min-height: 9px;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-top-upper-out-of-range{
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px; 
+    bottom: 100%;
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-bottom-lower-out-of-range{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px; 
+    border-bottom: 0;
+    bottom: 10px; 
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-bottom{
+    bottom: 10px; 
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-top{
+    bottom: 100%; 
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-line {
+    position: absolute;
+    border-left-style: solid;
+    border-left-width: 2px;
+    width: 1px;
+    z-index: 1;
+ }
+
+ .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+ .mdhui-dumbbell-in-range {
+    background-color: var(--mdhui-color-primary);
+    border-color: var(--mdhui-color-primary);
+}
+
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
+.mdhui-dumbbell-out-of-range {
+    background-color: var(--mdhui-color-danger);
+    border-color: var(--mdhui-color-danger);
+}

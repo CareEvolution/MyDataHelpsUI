@@ -1,5 +1,6 @@
 export { default as AllergiesList } from "./AllergiesList"
 export { default as AppDownload } from "./AppDownload"
+export { default as BloodPressureVisualization } from "./BloodPressureVisualization"
 export { default as ConditionsList } from "./ConditionsList"
 export { default as ConnectDevicesMenu } from "./ConnectDevicesMenu"
 export { default as ConnectEhr } from "./ConnectEhr"
