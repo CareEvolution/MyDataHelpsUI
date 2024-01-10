@@ -1,5 +1,5 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
-import { add, compareDesc, isAfter, isBefore, parseISO, startOfToday } from 'date-fns';
+import { add, compareDesc, formatISO, isAfter, isBefore, parseISO, startOfToday } from 'date-fns';
 import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 
 type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
@@ -222,7 +222,7 @@ const service: AsthmaDataService = {
         if (mostRecentDataPoint.properties?.hasOwnProperty('viewed')) return undefined;
 
         mostRecentDataPoint.properties = mostRecentDataPoint.properties ?? {};
-        mostRecentDataPoint.properties['viewed'] = new Date().toISOString();
+        mostRecentDataPoint.properties['viewed'] = formatISO(new Date());
         MyDataHelps.persistDeviceData([mostRecentDataPoint]).then();
 
         return mostRecentDataPoint.value;
