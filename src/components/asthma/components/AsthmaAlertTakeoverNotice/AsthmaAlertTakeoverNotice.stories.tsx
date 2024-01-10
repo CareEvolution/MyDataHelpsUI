@@ -1,6 +1,6 @@
 import React from 'react';
 import AsthmaAlertTakeoverNotice from './AsthmaAlertTakeoverNotice';
-import { Layout, Section } from '../../../presentational';
+import { Layout } from '../../../presentational';
 
 export default {
     title: 'Asthma/Components/AsthmaAlertTakeoverNotice',
@@ -9,18 +9,24 @@ export default {
 };
 
 interface AsthmaAlertTakeoverNoticeStoryProps {
+    state: 'default' | 'loading';
     message: string;
 }
 
 const render = (args: AsthmaAlertTakeoverNoticeStoryProps) => <Layout colorScheme="auto">
-    <Section noTopMargin={true}>
-        <AsthmaAlertTakeoverNotice previewState="default" message={args.message} logEntrySurveyName="Log Entry Survey Name"/>
-    </Section>
+    <AsthmaAlertTakeoverNotice previewState={args.state} message={args.message} logEntrySurveyName="Log Entry Survey Name"/>
 </Layout>;
 
 export const Default = {
     args: {
-        message: 'Your home AQI is unhealthy'
+        message: 'Your home AQI is unhealthy',
+        state: 'default'
+    },
+    argTypes: {
+        state: {
+            control: 'radio',
+            options: ['default', 'loading']
+        }
     },
     render: render
 };
