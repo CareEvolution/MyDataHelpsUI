@@ -1,4 +1,5 @@
 export { default as AsthmaAirQualities, AsthmaAirQualitiesPreviewState } from './AsthmaAirQualities';
+export { default as AsthmaAlertTakeoverTrigger } from './AsthmaAlertTakeoverTrigger';
 export { default as AsthmaBiometrics, AsthmaBiometricsPreviewState } from './AsthmaBiometrics';
 export { default as AsthmaControlCalendar, AsthmaControlCalendarVariant } from './AsthmaControlCalendar';
 export { default as AsthmaControlStatusHeader } from './AsthmaControlStatusHeader';

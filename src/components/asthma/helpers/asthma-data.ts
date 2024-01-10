@@ -1,5 +1,5 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
-import { add, compareDesc, isAfter, isBefore, parseISO, startOfDay } from 'date-fns';
+import { add, compareDesc, isAfter, isBefore, parseISO, startOfToday } from 'date-fns';
 import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 
 type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
@@ -144,6 +144,8 @@ export interface AsthmaDataService {
     loadAirQualities(): Promise<AsthmaAirQuality[]>;
 
     saveLogEntry(logEntry: AsthmaLogEntry): Promise<void>;
+
+    loadAndClearAlertTakeover(): Promise<string | undefined>;
 }
 
 const service: AsthmaDataService = {
@@ -166,8 +168,7 @@ const service: AsthmaDataService = {
         return result.deviceDataPoints.map(dp => JSON.parse(dp.value) as AsthmaLogEntry);
     },
     loadBiometrics: async function (): Promise<AsthmaBiometric[]> {
-        let now = new Date();
-        let today = startOfDay(now);
+        let today = startOfToday();
         let threshold = add(today, {days: -2});
 
         let params: DeviceDataPointQuery = {
@@ -202,6 +203,29 @@ const service: AsthmaDataService = {
             value: JSON.stringify(logEntry)
         };
         return MyDataHelps.persistDeviceData([logEntryDataPoint]);
+    },
+    loadAndClearAlertTakeover: async function (): Promise<string | undefined> {
+        let today = startOfToday();
+
+        let params: DeviceDataPointQuery = {
+            namespace: 'Project',
+            type: ['AlertTakeover'],
+            observedAfter: today.toISOString()
+        };
+
+        let result = await MyDataHelps.queryDeviceData(params);
+
+        let dataPoints = result.deviceDataPoints;
+        if (dataPoints.length === 0) return undefined;
+
+        let mostRecentDataPoint = dataPoints.sort(sortDataPointsDesc)[0];
+        if (mostRecentDataPoint.properties?.hasOwnProperty('viewed')) return undefined;
+
+        mostRecentDataPoint.properties = mostRecentDataPoint.properties ?? {};
+        mostRecentDataPoint.properties['viewed'] = new Date().toISOString();
+        MyDataHelps.persistDeviceData([mostRecentDataPoint]).then();
+
+        return mostRecentDataPoint.value;
     }
 };
 
