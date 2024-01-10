@@ -5,6 +5,7 @@ import { add } from 'date-fns';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface AsthmaAlertTakeoverTriggerProps {
+    previewState?: boolean;
     heartAndLungsUrl: string;
     activityUrl: string;
     sleepUrl: string;
@@ -29,6 +30,8 @@ export default function (props: AsthmaAlertTakeoverTriggerProps) {
     };
 
     useInitializeView(() => {
+        if (props.previewState) return;
+
         asthmaDataService.loadAndClearAlertTakeover().then(alertTakeover => {
             if (alertTakeover) {
                 asthmaDataService.loadLogEntries(add(new Date(), {days: -2})).then(entries => {
