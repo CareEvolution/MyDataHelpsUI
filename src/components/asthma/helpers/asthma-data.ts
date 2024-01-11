@@ -78,7 +78,7 @@ const computeBiometrics = (today: Date, dataPoints: DeviceDataPoint[]): AsthmaBi
         computeBiometric('respiratory-rate', today, dataPoints, 0, (baseline, value) => value <= (baseline * 1.15)),
         computeBiometric('steps', today, dataPoints, -1, (baseline, value) => value >= (baseline / 2.0)),
         computeBiometric('sleep-disturbances', today, dataPoints, 0, (baseline, value) => value <= (baseline + 3.5)),
-        computeBiometric('daytime-blood-oxygen-level', today, dataPoints, 0, (baseline, value) => {
+        computeBiometric('daytime-blood-oxygen-level', today, dataPoints, -1, (baseline, value) => {
             let percentage = value * 100.0;
             let threshold = (baseline * 100.0) - 4.0;
             return percentage >= 95 || percentage >= threshold
