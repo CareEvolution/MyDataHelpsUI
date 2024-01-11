@@ -97,12 +97,6 @@ export default function (props: AsthmaBiometricsProps) {
                     onClick={() => onClick('steps')}
                 />
                 <AsthmaDataSummary
-                    label="Sleep Disturbances"
-                    status={sleepDisturbances!.status}
-                    value={sleepDisturbances!.value}
-                    onClick={() => onClick('sleep-disturbances')}
-                />
-                <AsthmaDataSummary
                     label="Oxygen Saturation (Day)"
                     status={daytimeBloodOxygenLevel!.status}
                     value={daytimeBloodOxygenLevel!.value}
@@ -115,6 +109,12 @@ export default function (props: AsthmaBiometricsProps) {
                     value={nighttimeBloodOxygenLevel!.value}
                     onClick={() => onClick('nighttime-blood-oxygen-level')}
                     units="%"
+                />
+                <AsthmaDataSummary
+                    label="Sleep Disturbances"
+                    status={sleepDisturbances!.status}
+                    value={sleepDisturbances!.value}
+                    onClick={() => onClick('sleep-disturbances')}
                 />
             </div>
         }

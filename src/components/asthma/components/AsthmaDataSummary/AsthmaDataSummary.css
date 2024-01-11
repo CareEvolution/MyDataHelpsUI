@@ -14,22 +14,22 @@
 }
 
 .mdhui-asthma-data-summary-value {
-    font-size: 22px;
+    font-size: 1.3em;
     font-weight: bold;
 }
 
 .mdhui-asthma-data-summary-units {
     color: var(--mdhui-text-color-3);
-    font-size: 14px;
+    font-size: 0.8em;
 }
 
 .mdhui-asthma-data-summary-label {
-    font-size: 12px;
+    font-size: 0.7em;
     font-weight: bold;
 }
 
 .mdhui-asthma-data-summary-status {
-    font-size: 12px;
+    font-size: 0.7em;
     font-weight: bold;
 }
 
