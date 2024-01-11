@@ -4,7 +4,7 @@ import React from "react";
 import { DateRangeNavigator, LoadingIndicator, Title } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
-import { addDays, format, isEqual, parseISO, startOfDay } from "date-fns";
+import { addDays, format, startOfDay } from "date-fns";
 import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
 import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
@@ -291,7 +291,6 @@ export default function (props: BloodPressureVisualizationProps) {
     else {
         return (
             <>
-                <Title defaultMargin order={3}>{language("blood-pressure")}</Title>
                 <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
                 {pageWeeklyData(datePagerStartDate)}
                 {pageWeeklyMetrics(datePagerStartDate)}

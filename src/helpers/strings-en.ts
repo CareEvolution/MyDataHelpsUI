@@ -149,7 +149,10 @@
     "diastolic-average" : "Diastolic Average",
     "highest-systolic" : "Highest Systolic",
     "lowest-diastolic" : "Lowest Diastolic",
-    "log-blood-pressure" : "Log Blood Pressure"
+    "log-blood-pressure" : "Log Blood Pressure",
+    "log-swelling" : "Log Swelling",
+    "swelling" : "Swelling",
+    "health-data" : "Health Data"
 };
 
 export default strings;
