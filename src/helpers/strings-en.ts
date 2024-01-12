@@ -144,12 +144,10 @@
     "new-points-next-reward-prefix": "You now need ",
     "new-points-next-reward-suffix": " points to unlock your next reward.",
     "new-points-done-button-text": "Done",
-    "blood-pressure" : "Blood Pressure",
     "systolic-average" : "Systolic Average",
     "diastolic-average" : "Diastolic Average",
     "highest-systolic" : "Highest Systolic",
-    "lowest-diastolic" : "Lowest Diastolic",
-    "log-blood-pressure" : "Log Blood Pressure"
+    "lowest-diastolic" : "Lowest Diastolic"
 };
 
 export default strings;

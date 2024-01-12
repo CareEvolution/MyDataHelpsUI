@@ -291,7 +291,6 @@ export default function (props: BloodPressureVisualizationProps) {
     else {
         return (
             <>
-                <Title defaultMargin order={3}>{language("blood-pressure")}</Title>
                 <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
                 {pageWeeklyData(datePagerStartDate)}
                 {pageWeeklyMetrics(datePagerStartDate)}
