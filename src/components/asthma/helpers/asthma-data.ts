@@ -1,6 +1,6 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
-import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
+import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant, AsthmaPostEnrollmentFlags } from '../model';
 
 type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
 type BiometricThresholdFunction = (baseline: number, value: number) => boolean;
@@ -112,7 +112,7 @@ const computeSleepDisturbances = (date: Date, dataPoints: DeviceDataPoint[], off
 };
 
 const computeDaytimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('daytime-blood-oxygen-level', date, dataPoints, -1, (baseline, value) => {
+    return computeBiometric('daytime-blood-oxygen-level', date, dataPoints, offsetDays, (baseline, value) => {
         let percentage = value * 100.0;
         let threshold = (baseline * 100.0) - 4.0;
         return percentage >= 95 || percentage >= threshold
@@ -120,7 +120,7 @@ const computeDaytimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[
 };
 
 const computeNighttimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('nighttime-blood-oxygen-level', date, dataPoints, 0, (baseline, value) => {
+    return computeBiometric('nighttime-blood-oxygen-level', date, dataPoints, offsetDays, (baseline, value) => {
         let percentage = value * 100.0;
         let threshold = (baseline * 100.0) - 4.0;
         return percentage >= 95 || percentage >= threshold
@@ -220,6 +220,12 @@ export interface AsthmaDataService {
     saveLogEntry(logEntry: AsthmaLogEntry): Promise<void>;
 
     loadAndClearAlertTakeover(): Promise<string | undefined>;
+
+    loadPostEnrollmentFlags(): Promise<AsthmaPostEnrollmentFlags>;
+
+    markPostEnrollmentSurveyShown(): Promise<void>;
+
+    markPostEnrollmentMobileSurveyShown(): Promise<void>;
 }
 
 const service: AsthmaDataService = {
@@ -298,6 +304,25 @@ const service: AsthmaDataService = {
         MyDataHelps.persistDeviceData([mostRecentDataPoint]).then();
 
         return mostRecentDataPoint.value;
+    },
+    loadPostEnrollmentFlags: async function (): Promise<AsthmaPostEnrollmentFlags> {
+        let params: DeviceDataPointQuery = {
+            namespace: 'Project',
+            type: ['Asthma-PostEnrollmentSurveyShown', 'Asthma-PostEnrollmentMobileSurveyShown']
+        };
+
+        let result = await MyDataHelps.queryDeviceData(params);
+
+        return {
+            hasBeenShownPostEnrollmentSurvey: !!result.deviceDataPoints.find(dp => dp.type === 'Asthma-PostEnrollmentSurveyShown' && dp.value === 'Yes'),
+            hasBeenShownPostEnrollmentMobileSurvey: !!result.deviceDataPoints.find(dp => dp.type === 'Asthma-PostEnrollmentMobileSurveyShown' && dp.value === 'Yes')
+        } as AsthmaPostEnrollmentFlags;
+    },
+    markPostEnrollmentSurveyShown: function (): Promise<void> {
+        return MyDataHelps.persistDeviceData([{type: 'Asthma-PostEnrollmentSurveyShown', value: 'Yes'}]);
+    },
+    markPostEnrollmentMobileSurveyShown: function (): Promise<void> {
+        return MyDataHelps.persistDeviceData([{type: 'Asthma-PostEnrollmentMobileSurveyShown', value: 'Yes'}]);
     }
 };
 

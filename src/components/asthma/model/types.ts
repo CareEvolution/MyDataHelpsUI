@@ -86,3 +86,8 @@ export interface AsthmaLogEntry {
     impacts: string[];
     triggers: string[];
 }
+
+export interface AsthmaPostEnrollmentFlags {
+    hasBeenShownPostEnrollmentSurvey: boolean;
+    hasBeenShownPostEnrollmentMobileSurvey: boolean;
+}
