@@ -32,6 +32,7 @@ export interface LineChartOptions {
 
 export interface BarChartOptions {
     barColor?: string
+    domain?: AxisDomain
 }
 
 export interface AreaChartOptions {
@@ -192,6 +193,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 } else if (domainMin != undefined) {
                     domain = [domainMin, "auto"];
                 }
+            } else if (props.chartType === "Bar") {
+                domain = (props.options as BarChartOptions).domain;
             }
         }
 

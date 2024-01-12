@@ -48,13 +48,14 @@ export const queryAsthmaDeviceData = (namespace: DeviceDataNamespace, type: stri
     }).then(collateFunction);
 };
 
-export const randomDataProvider = (start: Date, end: Date, min: number, max: number): Promise<DailyDataQueryResult> => {
+export const randomDataProvider = (start: Date, end: Date, min: number, max: number, wholeNumbersOnly: boolean = true): Promise<DailyDataQueryResult> => {
     let result: DailyDataQueryResult = {};
 
     let currentDate = new Date(start);
     while (currentDate < end) {
         let dayKey = getDayKey(currentDate);
-        result[dayKey] = Math.floor(Math.random() * (max - min) + min);
+        let value = Math.random() * (max - min) + min;
+        result[dayKey] = wholeNumbersOnly ? Math.floor(value) : value;
         currentDate = add(currentDate, {days: 1});
     }
 

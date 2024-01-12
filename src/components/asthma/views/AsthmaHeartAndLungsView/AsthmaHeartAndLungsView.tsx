@@ -34,7 +34,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
     if (props.previewState === 'default') {
         hrPreviewDataProvider = (start: Date, end: Date) => randomDataProvider(start, end, 30, 180);
         rrPreviewDataProvider = (start: Date, end: Date) => randomDataProvider(start, end, 10, 50);
-        spo2PreviewDataProvider = (start: Date, end: Date) => randomDataProvider(start, end, 85, 100);
+        spo2PreviewDataProvider = (start: Date, end: Date) => randomDataProvider(start, end, 0.85, 1, false);
     }
 
     const backgroundColor: ColorDefinition = {darkMode: '#000', lightMode: '#fff'};
@@ -87,8 +87,9 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 weekStartsOn="6DaysAgo"
                 dailyDataType={DaytimeBloodOxygenLevelDailyDataType}
                 chartType="Bar"
-                options={{barColor: '#BBDEFF'}}
+                options={{barColor: '#BBDEFF', domain: [80, 100]}}
                 previewDataProvider={spo2PreviewDataProvider}
+                valueConverter={value => value * 100.0}
             />
         }
         {(!props.alert || props.alert === 'NighttimeBloodOxygenLevel') &&
@@ -99,8 +100,9 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 weekStartsOn="6DaysAgo"
                 dailyDataType={NighttimeBloodOxygenLevelDailyDataType}
                 chartType="Bar"
-                options={{barColor: '#BBDEFF'}}
+                options={{barColor: '#BBDEFF', domain: [80, 100]}}
                 previewDataProvider={spo2PreviewDataProvider}
+                valueConverter={value => value * 100.0}
             />
         }
         {props.alert === 'DaytimeRestingHeartRate' &&
