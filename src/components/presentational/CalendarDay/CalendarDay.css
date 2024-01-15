@@ -22,7 +22,12 @@
     background-color: var(--mdhui-calendar-day-streak-color);
 }
 
+.mdhui-calendar-day .mdhui-unstyled-button {
+    margin: 0 auto;
+}
+
 .mdhui-calendar-day-value {
+    position: relative;
     background: #DBDBDB;
     height: 40px;
     width: 40px;
