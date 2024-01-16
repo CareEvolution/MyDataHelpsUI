@@ -16,6 +16,7 @@ export interface SeverityCalendarProps {
     severityValueMapper? : (value: string) => string,
     intervalStart?: Date,
     previewState?: SeverityCalendarPreviewState,
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 interface SeverityLogEntry {
@@ -144,6 +145,6 @@ export default function (props: SeverityCalendarProps) {
     if (!data) {
         return <LoadingIndicator />;
     } else {
-        return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
+        return <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
     }
 } 
