@@ -13,7 +13,7 @@ export interface SeverityCalendarProps {
     surveyName: string,
     dateRecordedResultIdentifier?: string,
     severityResultIdentifier: string,
-    severityValueMapper? : (value: string) => string,
+    severityValueMapper?: (value: string) => string,
     intervalStart?: Date,
     previewState?: SeverityCalendarPreviewState,
     innerRef?: React.Ref<HTMLDivElement>
@@ -49,9 +49,9 @@ export default function (props: SeverityCalendarProps) {
 
         var resultByDateMap = new Map<string, SeverityLogEntry>();
         var groupedByResult = groupAnswersByResult(results);
-        const ceSeverityValueMapper = function(severityAnswer : string){
+        const ceSeverityValueMapper = function (severityAnswer: string) {
             let severity = "";
-            if (['mild', 'moderate', 'severe'].includes(severityAnswer.toLowerCase())){
+            if (['mild', 'moderate', 'severe'].includes(severityAnswer.toLowerCase())) {
                 severity = severityAnswer.toLowerCase();
             }
             return severity;
@@ -65,7 +65,7 @@ export default function (props: SeverityCalendarProps) {
                     let dateOfSeverity = parseISO(grouping.dateObservedAnswer ? grouping.dateObservedAnswer.answers[0] : grouping.severityAnswer.date);
                     let key = format(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
                     let exists = resultByDateMap.get(key);
-                    if (exists){
+                    if (exists) {
                         if (grouping.severityAnswer.date > exists.dateEntered) {
                             exists.dateObserved = dateOfSeverity;
                             exists.severity = severity;
@@ -143,7 +143,7 @@ export default function (props: SeverityCalendarProps) {
     useInitializeView(initialize, [], [props.previewState]);
 
     if (!data) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator innerRef={props.innerRef} />;
     } else {
         return <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
     }

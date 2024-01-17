@@ -287,7 +287,7 @@ export default function (props: BloodPressureVisualizationProps) {
     useInitializeView(initialize, [], [props.previewState]);
 
     if (!bloodPressureData) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator innerRef={props.innerRef}/>;
     }
     else {
         return (
