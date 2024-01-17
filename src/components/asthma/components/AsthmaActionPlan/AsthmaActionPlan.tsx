@@ -10,7 +10,7 @@ export interface AsthmaActionPlanProps {
     previewState?: 'loading' | 'loaded without action plan' | 'loaded with action plan';
     learnMoreUrl: string;
     editActionPlanSurveyName: string;
-    createActionPlanUrl: (id: string) => string;
+    createActionPlanUrl: (reportId: string) => Promise<string>;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -50,8 +50,13 @@ export default function (props: AsthmaActionPlanProps) {
                 MyDataHelps.persistParticipantInfo({} as ParticipantDemographics, {'AAPTrigger': formatISO(new Date())}).then(() => {
                     setTimeout(initialize, 1000);
                 });
+            } else if (reportID) {
+                props.createActionPlanUrl(reportID).then(url => {
+                    setActionPlanUrl(url);
+                    setLoading(false);
+                });
             } else {
-                setActionPlanUrl(reportID ? props.createActionPlanUrl(reportID) : undefined);
+                setActionPlanUrl(undefined);
                 setLoading(false);
             }
         });
