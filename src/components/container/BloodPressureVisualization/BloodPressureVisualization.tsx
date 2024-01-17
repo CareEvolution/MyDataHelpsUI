@@ -18,7 +18,8 @@ export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
 export interface BloodPressureVisualizationProps {
     previewState?: BloodPressurePreviewState,
     surveyDataSource: SurveyBloodPressureDataParameters,
-    weekStartsOn?: WeekStartsOn
+    weekStartsOn?: WeekStartsOn,
+    innerRef?: React.Ref<HTMLDivElement>
 };
 
 interface BloodPressureDumbbell {
@@ -286,15 +287,15 @@ export default function (props: BloodPressureVisualizationProps) {
     useInitializeView(initialize, [], [props.previewState]);
 
     if (!bloodPressureData) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator innerRef={props.innerRef}/>;
     }
     else {
         return (
-            <>
+            <div ref={props.innerRef}>
                 <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
                 {pageWeeklyData(datePagerStartDate)}
                 {pageWeeklyMetrics(datePagerStartDate)}
-            </>
+            </div>
         )
     }
 }
