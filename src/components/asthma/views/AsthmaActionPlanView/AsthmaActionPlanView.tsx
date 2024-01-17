@@ -7,7 +7,7 @@ export interface AsthmaActionPlanViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
     learnMoreUrl: string;
     editActionPlanSurveyName: string;
-    createActionPlanUrl: (id: string) => string;
+    createActionPlanUrl: (reportId: string) => Promise<string>;
 }
 
 export default function (props: AsthmaActionPlanViewProps) {
