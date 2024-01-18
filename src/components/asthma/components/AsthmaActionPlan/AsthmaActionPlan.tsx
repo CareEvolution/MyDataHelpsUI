@@ -9,7 +9,6 @@ export interface AsthmaActionPlanProps {
     previewState?: 'loading' | 'loaded without action plan' | 'loaded with action plan';
     learnMoreUrl: string;
     editActionPlanSurveyName: string;
-    createActionPlanUrl: (reportId: string) => Promise<string>;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
