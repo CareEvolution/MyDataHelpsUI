@@ -7,7 +7,6 @@ export interface AsthmaActionPlanViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
     learnMoreUrl: string;
     editActionPlanSurveyName: string;
-    createActionPlanUrl: (reportId: string) => Promise<string>;
 }
 
 export default function (props: AsthmaActionPlanViewProps) {
@@ -17,7 +16,6 @@ export default function (props: AsthmaActionPlanViewProps) {
             previewState={props.previewState}
             learnMoreUrl={props.learnMoreUrl}
             editActionPlanSurveyName={props.editActionPlanSurveyName}
-            createActionPlanUrl={props.createActionPlanUrl}
         />
     </Layout>;
 }
