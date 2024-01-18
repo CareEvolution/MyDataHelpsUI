@@ -53,8 +53,8 @@ export default function (props: AsthmaActionPlanProps) {
                 });
             } else if (reportID) {
                 if (reportID !== actionPlanReportID) {
+                    setActionPlanReportID(reportID);
                     props.createActionPlanUrl(reportID).then(url => {
-                        setActionPlanReportID(reportID);
                         setActionPlanUrl(url);
                         setLoading(false);
                     });
