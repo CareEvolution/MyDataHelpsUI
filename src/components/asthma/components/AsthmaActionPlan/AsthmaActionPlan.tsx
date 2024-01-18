@@ -16,6 +16,7 @@ export interface AsthmaActionPlanProps {
 
 export default function (props: AsthmaActionPlanProps) {
     const [loading, setLoading] = useState<boolean>(true);
+    const [actionPlanReportID, setActionPlanReportID] = useState<string>();
     const [actionPlanUrl, setActionPlanUrl] = useState<string>();
 
     const getCustomField = (participantInfo: ParticipantInfo, customFieldName: string): string | undefined => {
@@ -51,11 +52,17 @@ export default function (props: AsthmaActionPlanProps) {
                     setTimeout(initialize, 1000);
                 });
             } else if (reportID) {
-                props.createActionPlanUrl(reportID).then(url => {
-                    setActionPlanUrl(url);
+                if (reportID !== actionPlanReportID) {
+                    props.createActionPlanUrl(reportID).then(url => {
+                        setActionPlanReportID(reportID);
+                        setActionPlanUrl(url);
+                        setLoading(false);
+                    });
+                } else {
                     setLoading(false);
-                });
+                }
             } else {
+                setActionPlanReportID(undefined);
                 setActionPlanUrl(undefined);
                 setLoading(false);
             }
