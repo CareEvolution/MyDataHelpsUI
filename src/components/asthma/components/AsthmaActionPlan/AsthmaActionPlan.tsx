@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './AsthmaActionPlan.css';
 import { Button, LoadingIndicator } from '../../../presentational';
-import MyDataHelps, { ParticipantDemographics, ParticipantInfo } from '@careevolution/mydatahelps-js';
-import { formatISO } from "date-fns";
-import { useInitializeView } from "../../../../helpers/Initialization";
+import MyDataHelps from '@careevolution/mydatahelps-js';
+import { useInitializeView } from '../../../../helpers/Initialization';
 import sampleActionPlan from '../../assets/sample_aap.png'
 
 export interface AsthmaActionPlanProps {
@@ -16,16 +15,7 @@ export interface AsthmaActionPlanProps {
 
 export default function (props: AsthmaActionPlanProps) {
     const [loading, setLoading] = useState<boolean>(true);
-    const [actionPlanReportID, setActionPlanReportID] = useState<string>();
     const [actionPlanUrl, setActionPlanUrl] = useState<string>();
-
-    const getCustomField = (participantInfo: ParticipantInfo, customFieldName: string): string | undefined => {
-        let customFields = participantInfo.customFields;
-        if (customFields && customFields.hasOwnProperty(customFieldName)) {
-            return customFields[customFieldName];
-        }
-        return undefined;
-    };
 
     const initialize = (): void => {
         setLoading(true);
@@ -44,37 +34,13 @@ export default function (props: AsthmaActionPlanProps) {
             return;
         }
 
-        MyDataHelps.getParticipantInfo().then(participantInfo => {
-            let taskRunUUID = getCustomField(participantInfo, 'AAPTaskRunUUID');
-            let reportID = getCustomField(participantInfo, 'AAPReportID');
-            if (taskRunUUID && !reportID) {
-                MyDataHelps.persistParticipantInfo({} as ParticipantDemographics, {'AAPTrigger': formatISO(new Date())}).then(() => {
-                    setTimeout(initialize, 1000);
-                });
-            } else if (reportID) {
-                if (reportID !== actionPlanReportID) {
-                    setActionPlanReportID(reportID);
-                } else {
-                    setLoading(false);
-                }
-            } else {
-                setActionPlanReportID(undefined);
-                setActionPlanUrl(undefined);
-                setLoading(false);
-            }
+        MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true).then(response => {
+            setActionPlanUrl(response ? `data:image/jpeg;base64,${response.Content}` : undefined);
+            setLoading(false);
         });
     };
 
     useInitializeView(initialize, [], [props.previewState]);
-
-    useEffect(() => {
-        if (actionPlanReportID) {
-            props.createActionPlanUrl(actionPlanReportID).then(url => {
-                setActionPlanUrl(url);
-                setLoading(false);
-            });
-        }
-    }, [actionPlanReportID]);
 
     const onLearnMore = (): void => {
         if (props.previewState) return;
