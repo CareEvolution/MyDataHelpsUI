@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './AsthmaActionPlan.css';
 import { Button, LoadingIndicator } from '../../../presentational';
 import MyDataHelps, { ParticipantDemographics, ParticipantInfo } from '@careevolution/mydatahelps-js';
@@ -54,10 +54,6 @@ export default function (props: AsthmaActionPlanProps) {
             } else if (reportID) {
                 if (reportID !== actionPlanReportID) {
                     setActionPlanReportID(reportID);
-                    props.createActionPlanUrl(reportID).then(url => {
-                        setActionPlanUrl(url);
-                        setLoading(false);
-                    });
                 } else {
                     setLoading(false);
                 }
@@ -70,6 +66,15 @@ export default function (props: AsthmaActionPlanProps) {
     };
 
     useInitializeView(initialize, [], [props.previewState]);
+
+    useEffect(() => {
+        if (actionPlanReportID) {
+            props.createActionPlanUrl(actionPlanReportID).then(url => {
+                setActionPlanUrl(url);
+                setLoading(false);
+            });
+        }
+    }, [actionPlanReportID]);
 
     const onLearnMore = (): void => {
         if (props.previewState) return;
