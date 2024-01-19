@@ -12,7 +12,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 export interface AsthmaAirQualitiesProps {
     previewState?: AsthmaAirQualitiesPreviewState;
-    editZipCodesSurveyName: string;
+    editZipCodesSurveyName?: string;
     airQualityUrl: string;
     date?: Date;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -47,23 +47,29 @@ export default function (props: AsthmaAirQualitiesProps) {
     }, [], [props.previewState]);
 
     const onSetup = (): void => {
-        if (props.previewState) return;
+        if (props.previewState || !props.editZipCodesSurveyName) return;
         MyDataHelps.startSurvey(props.editZipCodesSurveyName);
     }
 
-    const onClick = (): void => {
+    const onClick = (airQuality: AsthmaAirQuality): void => {
         if (props.previewState) return;
-        MyDataHelps.openApplication(props.airQualityUrl, {modal: true});
+        if (airQuality.status === 'not-configured' && props.editZipCodesSurveyName) {
+            MyDataHelps.startSurvey(props.editZipCodesSurveyName);
+        } else {
+            MyDataHelps.openApplication(props.airQualityUrl, {modal: true});
+        }
     };
 
     return <div className="mdhui-asthma-air-qualities" ref={props.innerRef}>
         <div className="mdhui-asthma-air-qualities-header">
             <div className="mdhui-asthma-air-qualities-title">Air Quality</div>
-            <UnstyledButton onClick={() => onSetup()}>
-                <div className="mdhui-asthma-air-qualities-settings">
-                    <FontAwesomeIcon icon={faGear}/>
-                </div>
-            </UnstyledButton>
+            {props.editZipCodesSurveyName &&
+                <UnstyledButton onClick={() => onSetup()}>
+                    <div className="mdhui-asthma-air-qualities-settings">
+                        <FontAwesomeIcon icon={faGear}/>
+                    </div>
+                </UnstyledButton>
+            }
         </div>
         {loading && <LoadingIndicator/>}
         {!loading &&
@@ -73,14 +79,14 @@ export default function (props: AsthmaAirQualitiesProps) {
                     status={homeAirQuality!.status}
                     statusText={homeAirQuality!.description}
                     value={homeAirQuality!.value}
-                    onClick={homeAirQuality!.status === 'not-configured' ? () => onSetup() : () => onClick()}
+                    onClick={() => onClick(homeAirQuality!)}
                 />
                 <AsthmaDataSummary
                     label="AQI (Work)"
                     status={workAirQuality!.status}
                     statusText={workAirQuality!.description}
                     value={workAirQuality!.value}
-                    onClick={workAirQuality!.status === 'not-configured' ? () => onSetup() : () => onClick()}
+                    onClick={() => onClick(workAirQuality!)}
                 />
             </div>
         }
