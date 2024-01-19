@@ -25,8 +25,16 @@ export class AsthmaParticipant {
             this.hasEstablishedBaselineByType("NighttimeBloodOxygenLevelBaseline");
     }
 
+    getHomeAirQualityZipCode(): string {
+        return this.getCustomFieldValue('HomePostalCode');
+    }
+
+    getWorkAirQualityZipCode(): string {
+        return this.getCustomFieldValue('WorkPostalCode');
+    }
+
     hasRequestedWithdrawal(): boolean {
-        return this.getCustomFieldValue("WithdrawalRequested") === 'Yes';
+        return this.getCustomFieldValue('WithdrawalRequested') === 'Yes';
     }
 
     private hasEstablishedBaselineByType(baselineType: string): boolean {

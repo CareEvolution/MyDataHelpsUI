@@ -12,6 +12,14 @@ const render = (args: AsthmaDataSummaryProps) => <Layout colorScheme="auto" body
     <AsthmaDataSummary {...args} />
 </Layout>;
 
+export const RequiresSetup = {
+    args: {
+        label: 'Resting HR (Day)',
+        requiresSetup: true
+    },
+    render: render
+};
+
 export const Establishing = {
     args: {
         label: 'Resting HR (Day)',
