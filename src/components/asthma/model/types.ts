@@ -66,7 +66,7 @@ export interface AsthmaControlState {
     inhalerUseDaysPast7?: number;
 }
 
-export type AsthmaDataStatus = 'establishing' | 'offline' | 'in-range' | 'out-of-range';
+export type AsthmaDataStatus = 'not-configured' | 'not-found' | 'establishing' | 'offline' | 'in-range' | 'out-of-range';
 
 export type AsthmaBiometricType = 'daytime-resting-heart-rate' | 'nighttime-resting-heart-rate' | 'respiratory-rate' | 'steps' | 'sleep-disturbances' | 'daytime-blood-oxygen-level' | 'nighttime-blood-oxygen-level';
 

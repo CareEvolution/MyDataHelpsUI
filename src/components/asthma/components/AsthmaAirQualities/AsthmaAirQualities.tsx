@@ -20,32 +20,29 @@ export interface AsthmaAirQualitiesProps {
 
 export default function (props: AsthmaAirQualitiesProps) {
     const [loading, setLoading] = useState<boolean>(true);
-    let [homeAirQualityZipCode, setHomeAirQualityZipCode] = useState<string>();
     let [homeAirQuality, setHomeAirQuality] = useState<AsthmaAirQuality>();
-    let [workAirQualityZipCode, setWorkAirQualityZipCode] = useState<string>();
     let [workAirQuality, setWorkAirQuality] = useState<AsthmaAirQuality>();
 
     useInitializeView(() => {
         setLoading(true);
 
         if (props.previewState) {
-            setHomeAirQualityZipCode(previewData[props.previewState].homeAirQualityZipCode);
             setHomeAirQuality(previewData[props.previewState].homeAirQuality);
-            setWorkAirQualityZipCode(previewData[props.previewState].workAirQualityZipCode);
             setWorkAirQuality(previewData[props.previewState].workAirQuality);
             setLoading(false);
             return;
         }
 
-        let loadParticipant = asthmaDataService.loadParticipant();
-        let loadAirQualities = props.date ? asthmaDataService.loadAirQualitiesForDate(props.date) : asthmaDataService.loadAirQualitiesForControlStatus();
+        asthmaDataService.loadParticipant().then(participant => {
+            let loadAirQualities = props.date ?
+                asthmaDataService.loadAirQualitiesForDate(props.date) :
+                asthmaDataService.loadAirQualitiesForControlStatus(participant.getHomeAirQualityZipCode(), participant.getWorkAirQualityZipCode());
 
-        Promise.all([loadParticipant, loadAirQualities]).then(([participant, airQualities]) => {
-            setHomeAirQualityZipCode(participant.getHomeAirQualityZipCode());
-            setHomeAirQuality(airQualities.find(aq => aq.type === 'home'));
-            setWorkAirQualityZipCode(participant.getWorkAirQualityZipCode());
-            setWorkAirQuality(airQualities.find(aq => aq.type === 'work'));
-            setLoading(false);
+            loadAirQualities.then(airQualities => {
+                setHomeAirQuality(airQualities.find(aq => aq.type === 'home'));
+                setWorkAirQuality(airQualities.find(aq => aq.type === 'work'));
+                setLoading(false);
+            });
         });
     }, [], [props.previewState]);
 
@@ -73,19 +70,17 @@ export default function (props: AsthmaAirQualitiesProps) {
             <div className="mdhui-asthma-air-qualities-data">
                 <AsthmaDataSummary
                     label="AQI (Home)"
-                    requiresSetup={!homeAirQualityZipCode}
                     status={homeAirQuality!.status}
                     statusText={homeAirQuality!.description}
                     value={homeAirQuality!.value}
-                    onClick={homeAirQualityZipCode ? () => onClick() : () => onSetup()}
+                    onClick={homeAirQuality!.status === 'not-configured' ? () => onSetup() : () => onClick()}
                 />
                 <AsthmaDataSummary
                     label="AQI (Work)"
-                    requiresSetup={!workAirQualityZipCode}
                     status={workAirQuality!.status}
                     statusText={workAirQuality!.description}
                     value={workAirQuality!.value}
-                    onClick={workAirQualityZipCode ? () => onClick() : () => onSetup()}
+                    onClick={workAirQuality!.status === 'not-configured' ? () => onSetup() : () => onClick()}
                 />
             </div>
         }
