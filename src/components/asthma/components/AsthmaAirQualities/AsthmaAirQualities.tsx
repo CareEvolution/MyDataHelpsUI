@@ -12,9 +12,9 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 export interface AsthmaAirQualitiesProps {
     previewState?: AsthmaAirQualitiesPreviewState;
+    editZipCodesSurveyName: string;
     airQualityUrl: string;
     date?: Date;
-    editZipCodesSurveyName: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
