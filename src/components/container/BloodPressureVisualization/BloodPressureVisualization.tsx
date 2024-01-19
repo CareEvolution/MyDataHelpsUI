@@ -1,7 +1,7 @@
 import "./BloodPressureVisualization.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import React from "react";
-import { DateRangeNavigator, LoadingIndicator, Title } from "../../presentational";
+import { DateRangeContext, LoadingIndicator } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
 import { addDays, format, isEqual, parseISO, startOfDay } from "date-fns";
@@ -50,7 +50,8 @@ export default function (props: BloodPressureVisualizationProps) {
     const yInterval: ClosedInterval = { values: [_minDiastolic, _maxSystolic] };
     const axis: Axis = { yRange: yInterval, yIncrement: 50, xIncrement: (80 / 7) };
     const [bloodPressureData, setDataForGraph] = useState<Map<string, BloodPressureDumbbell> | undefined>(undefined);
-    const [datePagerStartDate, setStartOfWeek] = useState<Date>(startOfDay(getWeekStart(props.weekStartsOn ?? "Monday")));
+    const dateRangeContext = useContext(DateRangeContext);
+    let intervalStart = dateRangeContext?.intervalStart ?? startOfDay(getWeekStart(props.weekStartsOn ?? "Monday"));
 
     async function initialize() {
         if (props.previewState !== "Loading") {
@@ -280,11 +281,7 @@ export default function (props: BloodPressureVisualizationProps) {
         return Category.Unknown;
     }
 
-    function pageWeek(newStart: Date) {
-        setStartOfWeek(newStart);
-    }
-
-    useInitializeView(initialize, [], [props.previewState, props.weekStartsOn]);
+    useInitializeView(initialize, [], [props.previewState, props.weekStartsOn, dateRangeContext]);
 
     if (!bloodPressureData) {
         return <LoadingIndicator innerRef={props.innerRef} />;
@@ -292,9 +289,11 @@ export default function (props: BloodPressureVisualizationProps) {
     else {
         return (
             <div ref={props.innerRef}>
-                <DateRangeNavigator intervalType="Week" intervalStart={datePagerStartDate} onIntervalChange={pageWeek}></DateRangeNavigator>
-                {pageWeeklyData(datePagerStartDate)}
-                {pageWeeklyMetrics(datePagerStartDate)}
+                {(!dateRangeContext || dateRangeContext?.intervalType === "Week") && pageWeeklyData(intervalStart)}
+                {(!dateRangeContext || dateRangeContext?.intervalType === "Week") && pageWeeklyMetrics(intervalStart)}
+                {dateRangeContext && dateRangeContext?.intervalType !== "Week" &&
+                    <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization does not support month view at this time</div>
+                }
             </div>
         )
     }

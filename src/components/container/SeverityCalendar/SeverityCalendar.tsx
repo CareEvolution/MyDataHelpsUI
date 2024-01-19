@@ -148,9 +148,9 @@ export default function (props: SeverityCalendarProps) {
         return <LoadingIndicator innerRef={props.innerRef} />;
     } else {
         return (<>
-            {dateRangeContext?.intervalType !== "Month" && 
+            {dateRangeContext && dateRangeContext?.intervalType !== "Month" && 
                 <div className="mdhui-severity-calendar-date-interval-not-supported" ref={props.innerRef}>Severity calendar does not support week view at this time</div>}
-            {dateRangeContext?.intervalType === "Month" && 
+            {(!dateRangeContext || dateRangeContext?.intervalType === "Month") && 
                 <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
             }
         </>);

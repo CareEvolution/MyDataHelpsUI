@@ -3,6 +3,7 @@ import BloodPressureVisualization, { BloodPressureVisualizationProps } from "./B
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { SurveyBloodPressureDataParameters } from "../../../helpers/blood-pressure-data-providers/survey-blood-pressure-data-provider"
+import { DateRangeCoordinator } from "../../presentational"
 
 export default {
 	title: "Container/BloodPressureVisualization",
@@ -14,7 +15,9 @@ export default {
 
 const render = (args: BloodPressureVisualizationProps) => <Layout colorScheme='auto'>
 	<Card>
-		<BloodPressureVisualization {...args} />
+		<DateRangeCoordinator intervalType={'Week'} weekStartsOn="Sunday">
+			<BloodPressureVisualization {...args} />
+		</DateRangeCoordinator>
 	</Card>
 </Layout>;
 
