@@ -14,7 +14,7 @@ export const Default = {
         previewState: {
             logEntryDetailsPreviewState: 'logged-mild-symptoms',
             biometricsPreviewState: 'all-data',
-            airQualitiesPreviewState: 'all-data'
+            airQualitiesPreviewState: 'all data'
         },
         date: new Date()
     },
