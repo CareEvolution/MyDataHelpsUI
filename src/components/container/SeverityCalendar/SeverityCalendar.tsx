@@ -7,6 +7,8 @@ import { format, parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
+import "./SeverityCalendar.css";
+
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
 export interface SeverityCalendarProps {
@@ -145,6 +147,12 @@ export default function (props: SeverityCalendarProps) {
     if (!data) {
         return <LoadingIndicator innerRef={props.innerRef} />;
     } else {
-        return <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
+        return (<>
+            {dateRangeContext?.intervalType !== "Month" && 
+                <div className="mdhui-severity-calendar-date-interval-not-supported" ref={props.innerRef}>Severity calendar does not support week view at this time</div>}
+            {dateRangeContext?.intervalType === "Month" && 
+                <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
+            }
+        </>);
     }
-} 
+}

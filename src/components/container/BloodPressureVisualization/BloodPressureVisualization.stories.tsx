@@ -29,7 +29,8 @@ const bpSurveyParams: SurveyBloodPressureDataParameters = {
 export const Default = {
 	args: {
 		previewState: "Default",
-		surveyDataSource: bpSurveyParams
+		surveyDataSource: bpSurveyParams,
+		weekStartsOn : "Monday"
 	},
 	render: render
 };

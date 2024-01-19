@@ -284,10 +284,10 @@ export default function (props: BloodPressureVisualizationProps) {
         setStartOfWeek(newStart);
     }
 
-    useInitializeView(initialize, [], [props.previewState]);
+    useInitializeView(initialize, [], [props.previewState, props.weekStartsOn]);
 
     if (!bloodPressureData) {
-        return <LoadingIndicator innerRef={props.innerRef}/>;
+        return <LoadingIndicator innerRef={props.innerRef} />;
     }
     else {
         return (
