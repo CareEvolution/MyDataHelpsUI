@@ -10,9 +10,9 @@
     margin: 12px 0;
 }
 
-.mdhui-inbox-completed-list-item .mdhui-action .title, .mdhui-inbox-completed-list-item-name {
+.mdhui-inbox-completed-list-item .mdhui-acqtion .title, .mdhui-inbox-completed-list-item-name {
     font-weight: bold;
-    font-size: 1.15em;
+    font-size: 1.05em;
 }
 
 .mdhui-inbox-completed-list-item .mdhui-action .subtitle, .mdhui-inbox-completed-list-item-status {
