@@ -1,16 +1,34 @@
 import { AsthmaAirQuality } from '../../model';
 
-export type AsthmaAirQualitiesPreviewState = 'not configured' | 'some configured' | 'no data' | 'some data' | 'all data';
+export type AsthmaAirQualitiesPreviewState = 'neither configured' | 'one configured' | 'no data (control)' | 'no data (date)' | 'some data (control)' | 'some data (date)' | 'all data';
 
 export interface AsthmaAirQualitiesPreviewData {
-    homeAirQualityZipCode?: string;
     homeAirQuality: AsthmaAirQuality;
-    workAirQualityZipCode?: string;
     workAirQuality: AsthmaAirQuality;
 }
 
 export const previewData: Record<AsthmaAirQualitiesPreviewState, AsthmaAirQualitiesPreviewData> = {
-    'not configured': {
+    'neither configured': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'not-configured'
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'not-configured'
+        }
+    },
+    'one configured': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'not-configured'
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'establishing'
+        }
+    },
+    'no data (control)': {
         homeAirQuality: {
             type: 'home',
             status: 'establishing'
@@ -20,50 +38,44 @@ export const previewData: Record<AsthmaAirQualitiesPreviewState, AsthmaAirQualit
             status: 'establishing'
         }
     },
-    'some configured': {
+    'no data (date)': {
         homeAirQuality: {
             type: 'home',
-            status: 'establishing'
+            status: 'not-found'
         },
-        workAirQualityZipCode: '12345',
         workAirQuality: {
             type: 'work',
-            status: 'establishing'
+            status: 'not-found'
         }
     },
-    'no data': {
-        homeAirQualityZipCode: '12345',
-        homeAirQuality: {
-            type: 'home',
-            status: 'establishing'
-        },
-        workAirQualityZipCode: '12345',
-        workAirQuality: {
-            type: 'work',
-            status: 'establishing'
-        }
-    },
-    'some data': {
-        homeAirQualityZipCode: '12345',
+    'some data (control)': {
         homeAirQuality: {
             type: 'home',
             status: 'in-range',
             value: 32
         },
-        workAirQualityZipCode: '12345',
         workAirQuality: {
             type: 'work',
             status: 'establishing'
+        }
+    },
+    'some data (date)': {
+        homeAirQuality: {
+            type: 'home',
+            status: 'in-range',
+            value: 32
+        },
+        workAirQuality: {
+            type: 'work',
+            status: 'not-found'
         }
     },
     'all data': {
-        homeAirQualityZipCode: '12345',
         homeAirQuality: {
             type: 'home',
             status: 'in-range',
             value: 32
         },
-        workAirQualityZipCode: '12345',
         workAirQuality: {
             type: 'work',
             status: 'out-of-range',

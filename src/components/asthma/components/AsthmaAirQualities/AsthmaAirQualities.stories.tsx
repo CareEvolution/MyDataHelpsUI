@@ -8,21 +8,23 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaAirQualitiesProps) => <Layout colorScheme="auto">
-    <Card>
-        <AsthmaAirQualities {...args} />
-    </Card>
-</Layout>;
+const render = (args: AsthmaAirQualitiesProps) => {
+    return <Layout colorScheme="auto">
+        <Card>
+            <AsthmaAirQualities {...args} />
+        </Card>
+    </Layout>;
+};
 
 export const Default = {
     args: {
-        previewState: 'some data'
+        previewState: 'some data (control)'
     },
     argTypes: {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['not configured', 'some configured', 'no data', 'some data', 'all data']
+            options: ['neither configured', 'one configured', 'no data (control)', 'no data (date)', 'some data (control)', 'some data (date)', 'all data']
         }
     },
     render: render

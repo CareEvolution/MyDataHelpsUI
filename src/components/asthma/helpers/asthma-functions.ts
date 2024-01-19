@@ -74,10 +74,13 @@ export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Da
 };
 
 export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
-    if (status === 'offline') return 'Offline';
-    if (status === 'in-range') return 'In range';
     if (status === 'out-of-range') return 'Out of range';
-    return 'Establishing';
+    if (status === 'in-range') return 'In range';
+    if (status === 'offline') return 'Offline';
+    if (status === 'establishing') return 'Establishing';
+    if (status === 'not-found') return 'No Data Recorded'
+    if (status === 'not-configured') return 'Not Configured';
+    return '';
 };
 
 export const getAsthmaSymptomLevelValue = (symptomLevel: AsthmaSymptomLevel): string => {

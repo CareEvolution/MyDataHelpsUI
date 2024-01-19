@@ -1,6 +1,6 @@
 import { AsthmaBiometric } from '../../model';
 
-export type AsthmaBiometricsPreviewState = 'no-data' | 'some-data' | 'all-data';
+export type AsthmaBiometricsPreviewState = 'no data' | 'some data' | 'all data';
 
 export interface AsthmaBiometricsPreviewData {
     daytimeRestingHeartRate: AsthmaBiometric;
@@ -13,7 +13,7 @@ export interface AsthmaBiometricsPreviewData {
 }
 
 export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsPreviewData> = {
-    'no-data': {
+    'no data': {
         daytimeRestingHeartRate: {
             type: 'daytime-resting-heart-rate',
             status: 'establishing'
@@ -43,7 +43,7 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             status: 'establishing'
         }
     },
-    'some-data': {
+    'some data': {
         daytimeRestingHeartRate: {
             type: 'daytime-resting-heart-rate',
             status: 'in-range',
@@ -77,7 +77,7 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
             value: 0.96999999999999997
         }
     },
-    'all-data': {
+    'all data': {
         daytimeRestingHeartRate: {
             type: 'daytime-resting-heart-rate',
             status: 'in-range',

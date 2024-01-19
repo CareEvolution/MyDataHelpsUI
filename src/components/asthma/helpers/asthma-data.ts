@@ -67,87 +67,89 @@ const loadBiometrics = (observedAfter: Date, observedBefore: Date): Promise<Devi
     return MyDataHelps.queryDeviceData(params);
 };
 
-const computeBiometricStatus = (thresholdFunction: BiometricThresholdFunction, baseline?: number, value?: number): AsthmaDataStatus => {
+const computeBiometricStatus = (thresholdFunction: BiometricThresholdFunction, baseline: number | undefined, value: number | undefined, defaultStatus: AsthmaDataStatus): AsthmaDataStatus => {
     if (baseline) {
         if (value) {
             return thresholdFunction(baseline, value) ? 'in-range' : 'out-of-range';
         }
         return 'offline';
     }
-    return 'establishing';
+    return defaultStatus;
 };
 
-const computeBiometric = (type: AsthmaBiometricType, date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, thresholdFunction: BiometricThresholdFunction): AsthmaBiometric => {
+const computeBiometric = (type: AsthmaBiometricType, date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, thresholdFunction: BiometricThresholdFunction, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
     let baseline = getLatestDataPointValue(date, dataPoints, biometricTypeTermCodes[type] + 'Baseline', offsetDays - 1);
     let value = getLatestDataPointValue(date, dataPoints, biometricTypeTermCodes[type], offsetDays);
     return {
         type: type,
-        status: computeBiometricStatus(thresholdFunction, baseline, value),
+        status: computeBiometricStatus(thresholdFunction, baseline, value, defaultStatus),
         value: value
     }
 };
 
-const computeDaytimeRestingHeartRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('daytime-resting-heart-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.2));
+const computeDaytimeRestingHeartRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('daytime-resting-heart-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.2), defaultStatus);
 };
 
-const computeNighttimeRestingHeartRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('nighttime-resting-heart-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.15));
+const computeNighttimeRestingHeartRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('nighttime-resting-heart-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.15), defaultStatus);
 };
 
-const computeRespiratoryRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('respiratory-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.15));
+const computeRespiratoryRate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('respiratory-rate', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline * 1.15), defaultStatus);
 };
 
-const computeStepsForControlStatus = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('steps', date, dataPoints, offsetDays, (baseline, value) => value >= (baseline / 2.0));
+const computeStepsForControlStatus = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('steps', date, dataPoints, offsetDays, (baseline, value) => value >= (baseline / 2.0), defaultStatus);
 };
 
-const computeStepsForDate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('steps', date, dataPoints, offsetDays, (baseline, value) => (isToday(date) && new Date().getHours() < 19) || value >= (baseline / 2.0));
+const computeStepsForDate = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('steps', date, dataPoints, offsetDays, (baseline, value) => (isToday(date) && new Date().getHours() < 19) || value >= (baseline / 2.0), defaultStatus);
 };
 
-const computeSleepDisturbances = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
-    return computeBiometric('sleep-disturbances', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline + 3.5));
+const computeSleepDisturbances = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
+    return computeBiometric('sleep-disturbances', date, dataPoints, offsetDays, (baseline, value) => value <= (baseline + 3.5), defaultStatus);
 };
 
-const computeDaytimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
+const computeDaytimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
     return computeBiometric('daytime-blood-oxygen-level', date, dataPoints, offsetDays, (baseline, value) => {
         let percentage = value * 100.0;
         let threshold = (baseline * 100.0) - 4.0;
         return percentage >= 95 || percentage >= threshold
-    });
+    }, defaultStatus);
 };
 
-const computeNighttimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number): AsthmaBiometric => {
+const computeNighttimeBloodOxygenLevel = (date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {
     return computeBiometric('nighttime-blood-oxygen-level', date, dataPoints, offsetDays, (baseline, value) => {
         let percentage = value * 100.0;
         let threshold = (baseline * 100.0) - 4.0;
         return percentage >= 95 || percentage >= threshold
-    });
+    }, defaultStatus);
 };
 
 const computeBiometricsForControlStatus = (date: Date, dataPoints: DeviceDataPoint[]): AsthmaBiometric[] => {
+    const defaultStatus: AsthmaDataStatus = 'establishing';
     return [
-        computeDaytimeRestingHeartRate(date, dataPoints, -1),
-        computeNighttimeRestingHeartRate(date, dataPoints, 0),
-        computeRespiratoryRate(date, dataPoints, 0),
-        computeStepsForControlStatus(date, dataPoints, -1),
-        computeSleepDisturbances(date, dataPoints, 0),
-        computeDaytimeBloodOxygenLevel(date, dataPoints, -1),
-        computeNighttimeBloodOxygenLevel(date, dataPoints, 0)
+        computeDaytimeRestingHeartRate(date, dataPoints, -1, defaultStatus),
+        computeNighttimeRestingHeartRate(date, dataPoints, 0, defaultStatus),
+        computeRespiratoryRate(date, dataPoints, 0, defaultStatus),
+        computeStepsForControlStatus(date, dataPoints, -1, defaultStatus),
+        computeSleepDisturbances(date, dataPoints, 0, defaultStatus),
+        computeDaytimeBloodOxygenLevel(date, dataPoints, -1, defaultStatus),
+        computeNighttimeBloodOxygenLevel(date, dataPoints, 0, defaultStatus)
     ];
 };
 
 const computeBiometricsForDate = (date: Date, dataPoints: DeviceDataPoint[]): AsthmaBiometric[] => {
+    const defaultStatus: AsthmaDataStatus = 'not-found';
     return [
-        computeDaytimeRestingHeartRate(date, dataPoints, 0),
-        computeNighttimeRestingHeartRate(date, dataPoints, 0),
-        computeRespiratoryRate(date, dataPoints, 0),
-        computeStepsForDate(date, dataPoints, 0),
-        computeSleepDisturbances(date, dataPoints, 0),
-        computeDaytimeBloodOxygenLevel(date, dataPoints, 0),
-        computeNighttimeBloodOxygenLevel(date, dataPoints, 0)
+        computeDaytimeRestingHeartRate(date, dataPoints, 0, defaultStatus),
+        computeNighttimeRestingHeartRate(date, dataPoints, 0, defaultStatus),
+        computeRespiratoryRate(date, dataPoints, 0, defaultStatus),
+        computeStepsForDate(date, dataPoints, 0, defaultStatus),
+        computeSleepDisturbances(date, dataPoints, 0, defaultStatus),
+        computeDaytimeBloodOxygenLevel(date, dataPoints, 0, defaultStatus),
+        computeNighttimeBloodOxygenLevel(date, dataPoints, 0, defaultStatus)
     ];
 };
 
@@ -161,7 +163,7 @@ const loadAirQualities = (observedAfter: Date, observedBefore: Date): Promise<De
     return MyDataHelps.queryDeviceData(params);
 };
 
-const computeAirQualityStatusAndDescription = (aqi?: number): [AsthmaDataStatus, string | undefined] => {
+const computeAirQualityStatusAndDescription = (aqi: number | undefined, defaultStatus: AsthmaDataStatus): [AsthmaDataStatus, string | undefined] => {
     if (aqi) {
         if (aqi <= 100) {
             return ['in-range', undefined];
@@ -176,10 +178,10 @@ const computeAirQualityStatusAndDescription = (aqi?: number): [AsthmaDataStatus,
             return ['out-of-range', 'Hazardous'];
         }
     }
-    return ['establishing', undefined];
+    return [defaultStatus, undefined];
 };
 
-const computeAirQuality = (type: AsthmaAirQualityType, dataPoints: DeviceDataPoint[], computeAqi: (dataPoints: DeviceDataPoint[]) => number): AsthmaAirQuality => {
+const computeAirQuality = (type: AsthmaAirQualityType, dataPoints: DeviceDataPoint[], computeAqi: (dataPoints: DeviceDataPoint[]) => number, defaultStatus: AsthmaDataStatus): AsthmaAirQuality => {
     let filteredDataPoints = dataPoints.filter(dp => dp.type === airQualityTypeTermCodes[type]);
 
     let aqi: number | undefined;
@@ -187,7 +189,7 @@ const computeAirQuality = (type: AsthmaAirQualityType, dataPoints: DeviceDataPoi
         aqi = computeAqi(filteredDataPoints);
     }
 
-    let [status, description] = computeAirQualityStatusAndDescription(aqi);
+    let [status, description] = computeAirQualityStatusAndDescription(aqi, defaultStatus);
 
     return {
         type: type,
@@ -197,12 +199,6 @@ const computeAirQuality = (type: AsthmaAirQualityType, dataPoints: DeviceDataPoi
     }
 };
 
-const computeAirQualities = (dataPoints: DeviceDataPoint[], computeAqi: (dataPoints: DeviceDataPoint[]) => number): AsthmaAirQuality[] => {
-    return [
-        computeAirQuality('home', dataPoints, computeAqi),
-        computeAirQuality('work', dataPoints, computeAqi)
-    ];
-};
 
 export interface AsthmaDataService {
     loadParticipant(): Promise<AsthmaParticipant>;
@@ -213,7 +209,7 @@ export interface AsthmaDataService {
 
     loadBiometricsForDate(date: Date): Promise<AsthmaBiometric[]>;
 
-    loadAirQualitiesForControlStatus(): Promise<AsthmaAirQuality[]>;
+    loadAirQualitiesForControlStatus(homeAirQualityZipCode: string, workAirQualityZipCode: string): Promise<AsthmaAirQuality[]>;
 
     loadAirQualitiesForDate(date: Date): Promise<AsthmaAirQuality[]>;
 
@@ -252,13 +248,17 @@ const service: AsthmaDataService = {
         let result = await loadBiometrics(add(startOfDay(date), {days: -1}), endOfDay(date));
         return computeBiometricsForDate(date, result.deviceDataPoints);
     },
-    loadAirQualitiesForControlStatus: async function (): Promise<AsthmaAirQuality[]> {
+    loadAirQualitiesForControlStatus: async function (homeAirQualityZipCode: string, workAirQualityZipCode: string): Promise<AsthmaAirQuality[]> {
         let result = await loadAirQualities(add(new Date(), {hours: -12}), endOfToday());
-        return computeAirQualities(result.deviceDataPoints, dataPoints => getDataPointValueAsNumber(dataPoints.sort(sortDataPointsDesc)[0]));
+        const computeAqi = (dataPoints: DeviceDataPoint[]) => getDataPointValueAsNumber(dataPoints.sort(sortDataPointsDesc)[0]);
+        return [
+            homeAirQualityZipCode ? computeAirQuality('home', result.deviceDataPoints, computeAqi, 'establishing') : {type: 'home', status: 'not-configured'},
+            workAirQualityZipCode ? computeAirQuality('work', result.deviceDataPoints, computeAqi, 'establishing') : {type: 'work', status: 'not-configured'}
+        ];
     },
     loadAirQualitiesForDate: async function (date: Date): Promise<AsthmaAirQuality[]> {
         let result = await loadAirQualities(startOfDay(date), endOfDay(date));
-        return computeAirQualities(result.deviceDataPoints, dataPoints => {
+        const computeAqi = (dataPoints: DeviceDataPoint[]) => {
             let maxValue = 0;
             dataPoints.forEach(dataPoint => {
                 let value = getDataPointValueAsNumber(dataPoint);
@@ -267,7 +267,11 @@ const service: AsthmaDataService = {
                 }
             });
             return maxValue;
-        });
+        };
+        return [
+            computeAirQuality('home', result.deviceDataPoints, computeAqi, 'not-found'),
+            computeAirQuality('work', result.deviceDataPoints, computeAqi, 'not-found')
+        ];
     },
     saveLogEntry: function (logEntry: AsthmaLogEntry): Promise<void> {
         let logEntryDataPoint: PersistableDeviceDataPoint = {

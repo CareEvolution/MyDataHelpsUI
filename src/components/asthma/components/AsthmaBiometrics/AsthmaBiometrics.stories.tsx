@@ -8,29 +8,24 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaBiometricsProps) => <Layout colorScheme="auto">
-    <Card>
-        <AsthmaBiometrics {...args} />
-    </Card>
-</Layout>;
-
-export const NoData = {
-    args: {
-        previewState: 'no-data'
-    },
-    render: render
+const render = (args: AsthmaBiometricsProps) => {
+    return <Layout colorScheme="auto">
+        <Card>
+            <AsthmaBiometrics {...args} />
+        </Card>
+    </Layout>;
 };
 
-export const SomeData = {
+export const Default = {
     args: {
-        previewState: 'some-data'
+        previewState: 'some data'
     },
-    render: render
-};
-
-export const AllData = {
-    args: {
-        previewState: 'all-data'
+    argTypes: {
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['no data', 'some data', 'all data']
+        }
     },
     render: render
 };

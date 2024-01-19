@@ -13,7 +13,7 @@ export const Default = {
     args: {
         previewState: {
             logEntryDetailsPreviewState: 'logged-mild-symptoms',
-            biometricsPreviewState: 'all-data',
+            biometricsPreviewState: 'all data',
             airQualitiesPreviewState: 'all data'
         },
         date: new Date()
