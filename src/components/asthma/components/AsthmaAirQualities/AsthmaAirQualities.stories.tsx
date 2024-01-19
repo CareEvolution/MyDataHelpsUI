@@ -14,24 +14,16 @@ const render = (args: AsthmaAirQualitiesProps) => <Layout colorScheme="auto">
     </Card>
 </Layout>;
 
-export const NoData = {
+export const Default = {
     args: {
-        previewState: 'no-data'
+        previewState: 'some data'
+    },
+    argTypes: {
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['not configured', 'some configured', 'no data', 'some data', 'all data']
+        }
     },
     render: render
 };
-
-export const SomeData = {
-    args: {
-        previewState: 'some-data'
-    },
-    render: render
-};
-
-export const AllData = {
-    args: {
-        previewState: 'all-data'
-    },
-    render: render
-};
-

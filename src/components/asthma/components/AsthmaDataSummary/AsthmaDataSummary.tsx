@@ -5,6 +5,7 @@ import { getAsthmaDataStatusText } from '../../helpers';
 
 export interface AsthmaDataSummaryProps {
     label: string;
+    requiresSetup?: boolean;
     status: AsthmaDataStatus;
     statusText?: string;
     value?: number;
@@ -20,6 +21,13 @@ export default function (props: AsthmaDataSummaryProps) {
             props.onClick();
         }
     };
+
+    if (props.requiresSetup) {
+        return <div className="mdhui-asthma-data-summary" ref={props.innerRef} onClick={() => onClick()}>
+            <div className="mdhui-asthma-data-summary-setup">+ Setup</div>
+            <div className="mdhui-asthma-data-summary-label">{props.label}</div>
+        </div>;
+    }
 
     return <div className="mdhui-asthma-data-summary" ref={props.innerRef} onClick={() => onClick()}>
         <div className="mdhui-asthma-data-summary-value-units">

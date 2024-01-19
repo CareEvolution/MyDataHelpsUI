@@ -2,10 +2,24 @@
     padding: 16px;
 }
 
+.mdhui-asthma-air-qualities-header {
+    display: grid;
+    grid-template-columns: auto max-content;
+}
+
 .mdhui-asthma-air-qualities-title {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 16px;
+}
+
+.mdhui-asthma-air-qualities-settings {
+    width: 48px;
+    height: 100%;
+    text-align: right;
+    line-height: 32px;
+    font-size: 18px;
+    color: var(--mdhui-color-primary);
 }
 
 .mdhui-asthma-air-qualities-data {
