@@ -19,6 +19,7 @@ export interface AsthmaDayViewProps {
     heartAndLungsUrl: string;
     activityUrl: string;
     sleepUrl: string;
+    editZipCodesSurveyName: string;
     airQualityUrl: string;
 }
 
@@ -50,6 +51,7 @@ export default function (props: AsthmaDayViewProps) {
         <Card>
             <AsthmaAirQualities
                 previewState={props.previewState?.airQualitiesPreviewState}
+                editZipCodesSurveyName={props.editZipCodesSurveyName}
                 airQualityUrl={props.airQualityUrl}
                 date={props.date}
             />
