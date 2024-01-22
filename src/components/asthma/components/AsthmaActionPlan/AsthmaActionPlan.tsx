@@ -60,9 +60,7 @@ export default function (props: AsthmaActionPlanProps) {
 
     const onViewActionPlan = (): void => {
         if (props.previewState) return;
-        // MyDataHelps.openExternalUrl(actionPlanUrl!);
-        // @ts-ignore
-        window.webkit.messageHandlers.OpenFile.postMessage('https://designer.mydatahelps.org/Authenticated/ReportViewer/ServeReport.ashx?reportId=ef698523-118a-414a-bd01-ff97c6cb31f9');
+        MyDataHelps.openExternalUrl(actionPlanUrl!);
     };
 
     const onEditActionPlan = (): void => {
