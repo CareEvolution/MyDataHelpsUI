@@ -1,16 +1,16 @@
 import React from 'react';
 import { Layout } from '../../../presentational';
-import AsthmaActionPlan, { AsthmaActionPlanProps } from './AsthmaActionPlan';
+import AsthmaActionPlanManager, { AsthmaActionPlanManagerProps } from './AsthmaActionPlanManager';
 
 export default {
-    title: 'Asthma/Components/AsthmaActionPlan',
-    component: AsthmaActionPlan,
+    title: 'Asthma/Components/AsthmaActionPlanManager',
+    component: AsthmaActionPlanManager,
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaActionPlanProps) => {
+const render = (args: AsthmaActionPlanManagerProps) => {
     return <Layout colorScheme="auto">
-        <AsthmaActionPlan {...args}/>
+        <AsthmaActionPlanManager {...args}/>
     </Layout>;
 }
 
