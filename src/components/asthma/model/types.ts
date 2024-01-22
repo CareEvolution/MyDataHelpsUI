@@ -33,6 +33,10 @@ export class AsthmaParticipant {
         return this.getCustomFieldValue('WorkPostalCode');
     }
 
+    getActionPlanTaskRunUUID(): string {
+        return this.getCustomFieldValue('AAPTaskRunUUID');
+    }
+
     hasRequestedWithdrawal(): boolean {
         return this.getCustomFieldValue('WithdrawalRequested') === 'Yes';
     }
