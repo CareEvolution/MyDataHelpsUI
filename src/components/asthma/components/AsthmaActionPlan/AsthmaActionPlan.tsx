@@ -4,6 +4,7 @@ import { Button, LoadingIndicator } from '../../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import sampleActionPlan from '../../assets/sample_aap.png'
+import { asthmaDataService } from '../../helpers';
 
 export interface AsthmaActionPlanProps {
     previewState?: 'loading' | 'loaded without action plan' | 'loaded with action plan';
@@ -16,7 +17,7 @@ export default function (props: AsthmaActionPlanProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [actionPlanUrl, setActionPlanUrl] = useState<string>();
 
-    const initialize = (): void => {
+    const initialize = (retryCount: number = 0): void => {
         setLoading(true);
 
         if (props.previewState === 'loaded with action plan') {
@@ -33,9 +34,20 @@ export default function (props: AsthmaActionPlanProps) {
             return;
         }
 
-        MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true).then(response => {
-            setActionPlanUrl(response ? `data:image/jpeg;base64,${response.Content}` : undefined);
-            setLoading(false);
+        asthmaDataService.loadParticipant().then(participant => {
+            if (participant.getActionPlanTaskRunUUID()) {
+                MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true).then(response => {
+                    setActionPlanUrl(response ? `data:image/jpeg;base64,${response.Content}` : undefined);
+                    if (response || retryCount >= 3) {
+                        setLoading(false);
+                    } else {
+                        setTimeout(() => initialize(retryCount++), 2000);
+                    }
+                });
+            } else {
+                setActionPlanUrl(undefined);
+                setLoading(false);
+            }
         });
     };
 
