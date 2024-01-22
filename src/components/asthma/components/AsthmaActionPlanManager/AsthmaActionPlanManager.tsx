@@ -39,7 +39,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
         asthmaDataService.loadParticipant().then(participant => {
             if (participant.getActionPlanTaskRunUUID()) {
                 MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true).then(actionPlan => {
-                    setActionPlan({id: actionPlan.Id, url: `data:image/jpeg;base64,${actionPlan.Content}`});
+                    setActionPlan(actionPlan ? {id: actionPlan.Id, url: `data:image/jpeg;base64,${actionPlan.Content}`} : undefined);
                     if (actionPlan || retryCount >= 5) {
                         setLoading(false);
                     } else {
