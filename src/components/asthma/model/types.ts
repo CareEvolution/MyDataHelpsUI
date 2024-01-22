@@ -98,3 +98,8 @@ export interface AsthmaLogEntry {
     impacts: string[];
     triggers: string[];
 }
+
+export interface AsthmaActionPlan {
+    id: string;
+    url: string;
+}

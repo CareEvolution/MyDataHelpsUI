@@ -1,4 +1,4 @@
-export { default as AsthmaActionPlan } from './AsthmaActionPlan';
+export { default as AsthmaActionPlanManager } from './AsthmaActionPlanManager';
 export { default as AsthmaAirQualities, AsthmaAirQualitiesPreviewState } from './AsthmaAirQualities';
 export { default as AsthmaAlertTakeoverNotice } from './AsthmaAlertTakeoverNotice';
 export { default as AsthmaAlertTakeoverTrigger } from './AsthmaAlertTakeoverTrigger';
