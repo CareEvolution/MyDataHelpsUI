@@ -38,7 +38,7 @@ export default function (props: AsthmaActionPlanProps) {
             if (participant.getActionPlanTaskRunUUID()) {
                 MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true).then(response => {
                     setActionPlanUrl(response ? `data:image/jpeg;base64,${response.Content}` : undefined);
-                    if (response || retryCount >= 3) {
+                    if (response || retryCount >= 5) {
                         setLoading(false);
                     } else {
                         setTimeout(() => initialize(retryCount++), 2000);
