@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import './InboxItemList.css';
 import MyDataHelps, { InboxItem, InboxItemQueryParameters, InboxItemSortColumn, InboxItemStatus, InboxItemType, InboxMessage, InboxResource, InboxSurvey, SortOrder } from '@careevolution/mydatahelps-js';
-import { InboxMessageListItem, InboxResourceImageAlignment, InboxResourceListItem, InboxSurveyListItem, InboxSurveyVariant, LoadingIndicator } from '../../presentational';
+import { InboxMessageListItem, InboxResourceListItem, InboxSurveyListItem, InboxSurveyVariant, LoadingIndicator, ResourceImageAlignment } from '../../presentational';
 import { useInitializeView } from '../../../helpers/Initialization';
 import inboxDataService from '../../../helpers/Inbox/inbox-data';
 import { InboxItemListCoordinatorContext } from '../InboxItemListCoordinator';
@@ -23,7 +23,7 @@ export interface InboxItemListProps {
     emptyText?: string;
     showTitleWhenEmpty?: boolean;
     surveyVariant?: InboxSurveyVariant;
-    resourceImageAlignment?: InboxResourceImageAlignment;
+    resourceImageAlignment?: ResourceImageAlignment;
     hideLoadingIndicator?: boolean;
     onItemsLoaded?: (items: InboxItem[]) => void;
     syncOnChanges?: boolean;
