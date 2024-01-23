@@ -72,7 +72,9 @@ export default function (props: CalendarDayProps) {
 
     return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle}>
         {props.onClick &&
-            <UnstyledButton className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style} onClick={() => props.onClick!(date)}>{date.getDate()}</UnstyledButton>
+            <UnstyledButton onClick={() => props.onClick!(date)}>
+                <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
+            </UnstyledButton>
         }
         {!props.onClick &&
             <div className="mdhui-calendar-day-value" style={currentDayStateConfiguration?.style}>{date.getDate()}</div>
