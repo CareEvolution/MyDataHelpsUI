@@ -1,0 +1,1 @@
+export { default, ResourceImageAlignment } from './Resource';

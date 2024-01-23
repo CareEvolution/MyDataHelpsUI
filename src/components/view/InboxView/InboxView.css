@@ -1,0 +1,31 @@
+.mdhui-inbox {
+    padding: calc(env(safe-area-inset-top, 0px) + 20px) 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+}
+
+.mdhui-inbox .mdhui-view-header {
+    padding: 0;
+}
+
+.mdhui-inbox .mdhui-view-header .mdhui-view-header-title {
+    font-size: 1.8em;
+}
+
+.mdhui-inbox-empty-text {
+    color: var(--mdhui-text-color-3);
+    padding: 16px 0;
+}
+
+.mdhui-inbox-recently-completed {
+    margin-top: 20px;
+}
+
+.mdhui-inbox-recently-completed .mdhui-inbox-item-list-title {
+    color: var(--mdhui-text-color-0);
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.mdhui-inbox-recently-completed .mdhui-card {
+    margin: 12px 0 0 0;
+}

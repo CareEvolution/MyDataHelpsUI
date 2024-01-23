@@ -143,7 +143,22 @@
     "new-points-text": "Se le han otorgado puntos por lo siguiente:",
     "new-points-next-reward-prefix": "Ahora necesitas ",
     "new-points-next-reward-suffix": " puntos para desbloquear tu próxima recompensa.",
-    "new-points-done-button-text": "Hecho"
+    "new-points-done-button-text": "Hecho",
+    "resource-default-button-text": "Abierto",
+    "inbox-message-completed-status": "VISTO",
+    "inbox-resource-completed-status": "VISTO",
+    "inbox-survey-completed-status": "TERMINADO",
+    "inbox-history-view-title": "Historial de Bandeja de Entrada",
+    "inbox-history-view-empty-text": "No tienes elementos en el historial de bandeja de entrada.",
+    "inbox-message-view-related-resources-title": "Relacionado",
+    "inbox-view-title": "Bandeja de Entrada",
+    "inbox-view-empty-text": "No tienes nuevos elementos en tu bandeja de entrada.",
+    "inbox-view-messages-title": "Mensajes",
+    "inbox-view-surveys-title": "Encuestas",
+    "inbox-view-resources-title": "Recursos",
+    "inbox-view-recently-completed-title": "Reciente",
+    "inbox-view-recently-completed-empty-text": "No tienes elementos recientemente completados en tu bandeja de entrada.",
+    "inbox-view-history-button-text": "Ver historial de bandeja de entrada"
 };
 
 export default strings;
