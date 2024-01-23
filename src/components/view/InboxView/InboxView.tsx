@@ -9,14 +9,14 @@ import LoadingIndicator from '../../presentational/LoadingIndicator';
 import InboxItemList from '../../container/InboxItemList';
 import Card from '../../presentational/Card';
 import Action from '../../presentational/Action';
-import { InboxResourceImageAlignment, InboxSurveyVariant } from '../../presentational';
+import { InboxSurveyVariant, ResourceImageAlignment } from '../../presentational';
 import language from '../../../helpers/language';
 
 export interface InboxViewProps {
     previewState?: 'default';
     colorScheme?: 'auto' | 'light' | 'dark';
     surveyVariant?: InboxSurveyVariant;
-    resourceImageAlignment?: InboxResourceImageAlignment;
+    resourceImageAlignment?: ResourceImageAlignment;
     messageViewerUrl: string;
     historyViewerUrl: string;
 }
