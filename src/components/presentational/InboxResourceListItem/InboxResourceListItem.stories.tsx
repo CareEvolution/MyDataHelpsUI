@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { InboxResourceImageAlignment, Layout } from '../../presentational';
+import { Layout, ResourceImageAlignment } from '../../presentational';
 import InboxResourceListItem from './InboxResourceListItem';
 import resourceImage from '../../../assets/resource-image.png'
 import { InboxItemStatus, InboxResource } from '@careevolution/mydatahelps-js';
@@ -16,7 +16,7 @@ interface InboxResourceListItemStoryArgs {
     subTitle?: string;
     imageUrl?: string;
     status: InboxItemStatus;
-    imageAlignment?: InboxResourceImageAlignment;
+    imageAlignment?: ResourceImageAlignment;
     buttonText?: string;
 }
 

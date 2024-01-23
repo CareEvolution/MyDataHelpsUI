@@ -1,1 +1,1 @@
-export { default, InboxResourceImageAlignment } from './InboxResourceListItem';
+export { default } from './InboxResourceListItem';

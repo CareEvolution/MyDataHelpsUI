@@ -1,28 +1,28 @@
-.mdhui-inbox-resource {
+.mdhui-resource {
     background: var(--mdhui-background-color-0);
     border-radius: 12px;
     width: 100%;
     margin: 12px 0;
 }
 
-.mdhui-inbox-resource .mdhui-unstyled-button {
+.mdhui-resource .mdhui-unstyled-button {
     width: 100%;
     padding: 16px;
 }
 
-.mdhui-inbox-resource-image {
+.mdhui-resource-image {
     width: 100%;
     margin-bottom: 16px;
 }
 
-.mdhui-inbox-resource-image img {
+.mdhui-resource-image img {
     max-width: 100%;
 }
 
-.mdhui-inbox-resource-title {
+.mdhui-resource-title {
     font-size: 1.3em;
 }
 
-.mdhui-inbox-resource-subtitle {
+.mdhui-resource-subtitle {
     margin: 12px 0;
 }

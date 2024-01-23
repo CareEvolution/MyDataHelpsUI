@@ -1,35 +1,18 @@
 ﻿import React from 'react';
 import resourceImage from '../../../assets/resource-image.png'
-import { InboxResource } from '@careevolution/mydatahelps-js';
 import { noop } from '../../../helpers/functions';
-import InboxResourceDisplay from './InboxResourceDisplay';
+import Resource, { ResourceProps } from './Resource';
 import Layout from '../Layout';
-import { InboxResourceImageAlignment } from '../InboxResourceListItem';
 
 export default {
-    title: 'Presentational/InboxResourceDisplay',
-    component: InboxResourceDisplay,
+    title: 'Presentational/Resource',
+    component: Resource,
     parameters: {layout: 'fullscreen'}
 };
 
-interface InboxResourceDisplayStoryArgs {
-    title: string;
-    subTitle?: string;
-    imageUrl?: string;
-    imageAlignment?: InboxResourceImageAlignment;
-    buttonText?: string;
-}
-
-const render = (args: InboxResourceDisplayStoryArgs) => {
-    const resource = {
-        title: args.title,
-        subTitle: args.subTitle,
-        url: 'some url',
-        imageUrl: args.imageUrl
-    } as InboxResource;
-
+const render = (args: ResourceProps) => {
     return <Layout colorScheme="auto">
-        <InboxResourceDisplay resource={resource} imageAlignment={args.imageAlignment} buttonText={args.buttonText} onClick={noop}/>
+        <Resource {...args} onClick={noop}/>
     </Layout>;
 };
 

@@ -2,15 +2,13 @@ import React from 'react'
 import { InboxResource } from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import InboxCompletedListItem from '../InboxCompletedListItem';
-import InboxResourceDisplay from '../InboxResourceDisplay';
+import Resource, { ResourceImageAlignment } from '../Resource';
 import language from '../../../helpers/language';
-
-export type InboxResourceImageAlignment = 'left' | 'center' | 'right';
 
 export interface InboxResourceListItemProps {
     resource: InboxResource;
     onClick: () => void;
-    imageAlignment?: InboxResourceImageAlignment;
+    imageAlignment?: ResourceImageAlignment;
     buttonText?: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -18,7 +16,14 @@ export interface InboxResourceListItemProps {
 export default function (props: InboxResourceListItemProps) {
     if (props.resource.status === 'incomplete') {
         return <div className="mdhui-inbox-resource-list-item" ref={props.innerRef}>
-            <InboxResourceDisplay resource={props.resource} imageAlignment={props.imageAlignment} buttonText={props.buttonText} onClick={() => props.onClick()}/>
+            <Resource
+                imageUrl={props.resource.imageUrl}
+                title={props.resource.title}
+                subTitle={props.resource.subTitle}
+                imageAlignment={props.imageAlignment}
+                buttonText={props.buttonText}
+                onClick={() => props.onClick()}
+            />
         </div>;
     }
     if (props.resource.status === 'complete') {

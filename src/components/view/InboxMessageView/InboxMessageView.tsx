@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './InboxMessageView.css';
 import MyDataHelps, { Guid, InboxMessage, InboxMessageResource, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
 import inboxDataService from '../../../helpers/Inbox/inbox-data';
-import { Layout, LoadingIndicator, NavigationBar, Title } from '../../presentational';
-import InboxResourceDisplay from '../../presentational/InboxResourceDisplay/InboxResourceDisplay';
+import { Layout, LoadingIndicator, NavigationBar, Resource, Title } from '../../presentational';
 import language from '../../../helpers/language';
 
 export interface InboxMessageViewProps {
@@ -56,12 +55,14 @@ export default function (props: InboxMessageViewProps) {
                     <div className="mdhui-inbox-message-related-resources">
                         <Title order={4}>{language('inbox-message-view-related-resources-title')}</Title>
                         {message.relatedResources.map((resource, index) => {
-                            return <InboxResourceDisplay
+                            return <Resource
                                 key={index}
-                                resource={resource}
-                                onClick={() => onRelatedResourceClicked(resource)}
+                                imageUrl={resource.imageUrl}
+                                title={resource.title}
+                                subTitle={resource.subTitle}
                                 imageAlignment={props.resourceImageAlignment}
                                 buttonText={props.resourceButtonText}
+                                onClick={() => onRelatedResourceClicked(resource)}
                             />;
                         })}
                     </div>
