@@ -53,52 +53,54 @@ export default function (props: AsthmaControlStatusHeaderProps) {
     }
 
     const getNoDataDisplay = (): React.JSX.Element | null => {
-        if ((biometrics!.filter(b => b.status === 'out-of-range').length + airQualities!.filter(q => q.status === 'out-of-range').length) > 1) {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Multiple data points are <span className="mdhui-asthma-control-status-header-data-out-of-range">outside your normal levels</span>. Complete your daily entry.</p>
-            </div>;
-        }
+        if (props.participant.hasPairedDevice() && props.participant.hasEstablishedBaseline()) {
+            if ((biometrics!.filter(b => b.status === 'out-of-range').length + airQualities!.filter(q => q.status === 'out-of-range').length) > 1) {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Multiple data points are <span className="mdhui-asthma-control-status-header-data-out-of-range">outside your normal levels</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (biometrics!.find(b => b.type === 'daytime-resting-heart-rate' || b.type === 'nighttime-resting-heart-rate')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your resting heart rate is <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (biometrics!.find(b => b.type === 'daytime-resting-heart-rate' || b.type === 'nighttime-resting-heart-rate')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your resting heart rate is <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (biometrics!.find(b => b.type === 'respiratory-rate')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your respiratory rate is <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (biometrics!.find(b => b.type === 'respiratory-rate')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your respiratory rate is <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (biometrics!.find(b => b.type === 'steps')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your activity is <span className="mdhui-asthma-control-status-header-data-out-of-range">below your normal levels</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (biometrics!.find(b => b.type === 'steps')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your activity is <span className="mdhui-asthma-control-status-header-data-out-of-range">below your normal levels</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (biometrics!.find(b => b.type === 'sleep-disturbances')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your sleep disturbances are <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (biometrics!.find(b => b.type === 'sleep-disturbances')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your sleep disturbances are <span className="mdhui-asthma-control-status-header-data-out-of-range">above your normal level</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (biometrics!.find(b => b.type === 'daytime-blood-oxygen-level' || b.type === 'nighttime-blood-oxygen-level')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your blood oxygen level is <span className="mdhui-asthma-control-status-header-data-out-of-range">below your normal level</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (biometrics!.find(b => b.type === 'daytime-blood-oxygen-level' || b.type === 'nighttime-blood-oxygen-level')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your blood oxygen level is <span className="mdhui-asthma-control-status-header-data-out-of-range">below your normal level</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (airQualities!.find(q => q.type === 'home')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your home Air Quality Index is <span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'home')?.description}</span>. Complete your daily entry.</p>
-            </div>;
-        }
+            if (airQualities!.find(q => q.type === 'home')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your home Air Quality Index is <span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'home')?.description}</span>. Complete your daily entry.</p>
+                </div>;
+            }
 
-        if (airQualities!.find(q => q.type === 'work')?.status === 'out-of-range') {
-            return <div className="mdhui-asthma-control-status-header-text">
-                <p>Your work Air Quality Index is <span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'work')?.description}</span>. Complete your daily entry.</p>
-            </div>;
+            if (airQualities!.find(q => q.type === 'work')?.status === 'out-of-range') {
+                return <div className="mdhui-asthma-control-status-header-text">
+                    <p>Your work Air Quality Index is <span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'work')?.description}</span>. Complete your daily entry.</p>
+                </div>;
+            }
         }
 
         return <div className="mdhui-asthma-control-status-header-text">
