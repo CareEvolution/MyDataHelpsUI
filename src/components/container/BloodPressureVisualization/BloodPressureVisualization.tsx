@@ -53,7 +53,7 @@ export default function (props: BloodPressureVisualizationProps) {
     const dateRangeContext = useContext(DateRangeContext);
 
     if ( dateRangeContext && dateRangeContext.intervalType !== "Week"){
-        return <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization only supports 'month' at this time</div>;
+        return <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization only supports 'week' at this time</div>;
     }
 
     let intervalStart = dateRangeContext?.intervalStart ?? startOfDay(getWeekStart(props.weekStartsOn ?? "Monday"));

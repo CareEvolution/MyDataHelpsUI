@@ -38,9 +38,8 @@ export default function (props: SeverityCalendarProps) {
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
     if (dateRangeContext && dateRangeContext?.intervalType !== "Month") {
-        return <div className="mdhui-severity-calendar-date-interval-not-supported" ref={props.innerRef}>Severity calendar only supports 'week' at this time</div>;
+        return <div className="mdhui-severity-calendar-date-interval-not-supported" ref={props.innerRef}>Severity calendar only supports 'month' at this time</div>;
     }
-
 
     async function initialize() {
         if (props.previewState) {
@@ -152,7 +151,6 @@ export default function (props: SeverityCalendarProps) {
     if (!data) {
         return <LoadingIndicator innerRef={props.innerRef} />;
     } else {
-        return (!dateRangeContext || dateRangeContext?.intervalType === "Month") &&
-            <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
+        return <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
     }
 }
