@@ -15,7 +15,7 @@ export default {
 
 const render = (args: BloodPressureVisualizationProps) => <Layout colorScheme='auto'>
 	<Card>
-		<DateRangeCoordinator intervalType={'Week'} weekStartsOn="Sunday">
+		<DateRangeCoordinator intervalType={'Week'} weekStartsOn="Monday">
 			<BloodPressureVisualization {...args} />
 		</DateRangeCoordinator>
 	</Card>
@@ -32,8 +32,7 @@ const bpSurveyParams: SurveyBloodPressureDataParameters = {
 export const Default = {
 	args: {
 		previewState: "Default",
-		surveyDataSource: bpSurveyParams,
-		weekStartsOn : "Monday"
+		surveyDataSource: bpSurveyParams
 	},
 	render: render
 };
