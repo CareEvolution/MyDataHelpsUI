@@ -74,12 +74,12 @@
 
 .mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
 .mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-not-normal{
-    font-size: 17px;
+    font-size: 1em;
     color: var(--mdhui-color-danger);
 }
 
 .mdhui-blood-pressure-interval-not-supported{
     text-align: center;
     color : var( --mdhui-color-danger);
-    font-size: 16px;
+    font-size: .95em;
 }

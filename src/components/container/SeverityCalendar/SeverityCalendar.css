@@ -1,5 +1,5 @@
 .mdhui-severity-calendar-date-interval-not-supported {
     text-align: center;
     color : var( --mdhui-color-danger);
-    font-size: 16px;
+    font-size: .95em;
 }

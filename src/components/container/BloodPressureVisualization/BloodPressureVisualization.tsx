@@ -53,6 +53,10 @@ export default function (props: BloodPressureVisualizationProps) {
     const dateRangeContext = useContext(DateRangeContext);
     let intervalStart = dateRangeContext?.intervalStart ?? startOfDay(getWeekStart(props.weekStartsOn ?? "Monday"));
 
+    if ( dateRangeContext && dateRangeContext?.intervalType !== "Week"){
+        return <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization does not support month view at this time</div>;
+    }
+
     async function initialize() {
         if (props.previewState !== "Loading") {
             if (["Default", "NoData"].includes(props.previewState ?? "")) {
@@ -289,12 +293,9 @@ export default function (props: BloodPressureVisualizationProps) {
     else {
         return (
             <div ref={props.innerRef}>
-                {(!dateRangeContext || dateRangeContext?.intervalType === "Week") && pageWeeklyData(intervalStart)}
-                {(!dateRangeContext || dateRangeContext?.intervalType === "Week") && pageWeeklyMetrics(intervalStart)}
-                {dateRangeContext && dateRangeContext?.intervalType !== "Week" &&
-                    <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization does not support month view at this time</div>
-                }
+                {pageWeeklyData(intervalStart)}
+                {pageWeeklyMetrics(intervalStart)}
             </div>
-        )
+        );
     }
 }
