@@ -7,7 +7,6 @@ import { format, parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
-import "./SeverityCalendar.css";
 
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
