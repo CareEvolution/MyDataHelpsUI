@@ -15,7 +15,7 @@ export default {
 
 const render = (args: BloodPressureVisualizationProps) => <Layout colorScheme='auto'>
 	<Card>
-		<DateRangeCoordinator intervalType={'Month'} weekStartsOn="Monday">
+		<DateRangeCoordinator intervalType={'Week'} weekStartsOn="Monday">
 			<BloodPressureVisualization {...args} />
 		</DateRangeCoordinator>
 	</Card>

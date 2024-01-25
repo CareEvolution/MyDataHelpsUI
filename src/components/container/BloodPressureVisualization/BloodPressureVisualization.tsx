@@ -52,10 +52,6 @@ export default function (props: BloodPressureVisualizationProps) {
     const [bloodPressureData, setDataForGraph] = useState<Map<string, BloodPressureDumbbell> | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
 
-    if ( dateRangeContext && dateRangeContext.intervalType !== "Week"){
-        return <div className="mdhui-blood-pressure-interval-not-supported" ref={props.innerRef}>Blood Pressure Visualization only supports 'week' at this time</div>;
-    }
-
     let intervalStart = dateRangeContext?.intervalStart ?? startOfDay(getWeekStart(props.weekStartsOn ?? "Monday"));
 
     async function initialize() {
@@ -286,7 +282,7 @@ export default function (props: BloodPressureVisualizationProps) {
         return Category.Unknown;
     }
 
-    useInitializeView(initialize, [], [props.previewState, props.weekStartsOn, dateRangeContext?.intervalType]);
+    useInitializeView(initialize, [], [props.previewState, props.weekStartsOn]);
 
     if (!bloodPressureData) {
         return <LoadingIndicator innerRef={props.innerRef} />;
