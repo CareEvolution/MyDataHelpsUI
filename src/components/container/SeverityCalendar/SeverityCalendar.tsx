@@ -7,6 +7,7 @@ import { format, parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
+
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
 export interface SeverityCalendarProps {
@@ -147,4 +148,4 @@ export default function (props: SeverityCalendarProps) {
     } else {
         return <Calendar innerRef={props.innerRef} className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
     }
-} 
+}

@@ -74,6 +74,5 @@
 
 .mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
 .mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-not-normal{
-    font-size: 17px;
     color: var(--mdhui-color-danger);
 }
