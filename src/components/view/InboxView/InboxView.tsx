@@ -19,6 +19,7 @@ export interface InboxViewProps {
     resourceImageAlignment?: ResourceImageAlignment;
     messageViewerUrl: string;
     historyViewerUrl: string;
+    itemCategory?: string;
 }
 
 export default function (props: InboxViewProps) {
@@ -59,6 +60,7 @@ function InboxViewInner(props: InboxViewProps) {
             messageViewerUrl={props.messageViewerUrl}
             onItemsLoaded={setMessages}
             hideLoadingIndicator={true}
+            category={props.itemCategory}
         />
         <InboxItemList
             previewState={props.previewState === 'default' ? 'incomplete survey' : undefined}
@@ -70,6 +72,7 @@ function InboxViewInner(props: InboxViewProps) {
             onItemsLoaded={setSurveys}
             hideLoadingIndicator={true}
             surveyVariant={props.surveyVariant}
+            category={props.itemCategory}
         />
         <InboxItemList
             previewState={props.previewState === 'default' ? 'incomplete resource' : undefined}
@@ -81,6 +84,7 @@ function InboxViewInner(props: InboxViewProps) {
             onItemsLoaded={setResources}
             hideLoadingIndicator={true}
             resourceImageAlignment={props.resourceImageAlignment}
+            category={props.itemCategory}
         />
         <div className="mdhui-inbox-recently-completed">
             <InboxItemList
@@ -94,6 +98,7 @@ function InboxViewInner(props: InboxViewProps) {
                 showTitleWhenEmpty={true}
                 emptyText={language('inbox-view-recently-completed-empty-text')}
                 syncOnChanges={true}
+                category={props.itemCategory}
             />
             {!loading &&
                 <Card>
