@@ -6,6 +6,7 @@ import { AsthmaLibraryCategoryViewPreviewState, previewData } from './AsthmaLibr
 export interface AsthmaLibraryCategoryViewProps {
     previewState?: AsthmaLibraryCategoryViewPreviewState;
     colorScheme?: 'light' | 'dark' | 'auto';
+    title: string;
     categoryConfigUrl: string;
     category: string;
     articleImageAlignment?: ResourceImageAlignment;
@@ -14,7 +15,7 @@ export interface AsthmaLibraryCategoryViewProps {
 export default function (props: AsthmaLibraryCategoryViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar showCloseButton={true}>
-            <Title order={1} style={{paddingTop: '32px'}}>{props.category}</Title>
+            <Title order={1} style={{paddingTop: '32px'}}>{props.title}</Title>
         </NavigationBar>
         <AsthmaLibraryArticles
             previewState={props.previewState ? previewData[props.previewState].articlesPreviewState : undefined}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AsthmaLibraryArticles.css';
-import { AsthmaLibraryArticle } from '../../model';
+import { AsthmaLibraryArticle, AsthmaLibraryCategory } from '../../model';
 import { asthmaDataService } from '../../helpers';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { AsthmaLibraryArticlesPreviewState, previewData } from './AsthmaLibraryArticles.previewData';
@@ -17,19 +17,19 @@ export interface AsthmaLibraryArticlesProps {
 
 export default function (props: AsthmaLibraryArticlesProps) {
     let [loading, setLoading] = useState<boolean>(true);
-    let [articles, setArticles] = useState<AsthmaLibraryArticle[]>([]);
+    let [category, setCategory] = useState<AsthmaLibraryCategory>();
 
     useInitializeView(() => {
         setLoading(true);
 
         if (props.previewState) {
-            setArticles(previewData[props.previewState].articles);
+            setCategory(previewData[props.previewState].category);
             setLoading(false);
             return;
         }
 
         asthmaDataService.loadLibraryCategories(props.categoryConfigUrl).then(categories => {
-            setArticles(categories.find(category => category.category === props.category)?.articles ?? []);
+            setCategory(categories.find(category => category.category === props.category));
             setLoading(false);
         });
     }, [], [props.previewState]);
@@ -42,7 +42,7 @@ export default function (props: AsthmaLibraryArticlesProps) {
     return <div className="mdhui-asthma-library-articles" ref={props.innerRef}>
         <>
             {loading && <LoadingIndicator/>}
-            {!loading && articles.length > 0 && articles.map((article, index) => {
+            {!loading && category && category.articles && category.articles.length > 0 && category.articles.map((article, index) => {
                 return <Resource
                     key={index}
                     title={article.title}
@@ -53,7 +53,9 @@ export default function (props: AsthmaLibraryArticlesProps) {
                     hideButton={true}
                 />;
             })}
-            {!loading && articles.length === 0 && <div className="mdhui-asthma-library-articles-empty-text">No articles found.</div>}
+            {!loading && (!category || !category.articles || category.articles.length === 0) &&
+                <div className="mdhui-asthma-library-articles-empty-text">No articles found.</div>
+            }
         </>
     </div>;
 }

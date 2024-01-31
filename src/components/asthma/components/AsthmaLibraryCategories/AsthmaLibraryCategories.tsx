@@ -35,18 +35,20 @@ export default function (props: AsthmaLibraryCategoriesProps) {
 
     const onClick = (category: AsthmaLibraryCategory): void => {
         if (props.previewState || loading) return;
-        MyDataHelps.openApplication(props.categoryViewUrl + '?category=' + category.category, {modal: true});
+        MyDataHelps.openApplication(props.categoryViewUrl + '?title=' + category.title + '&category=' + category.category, {modal: true});
     };
 
     return <div className="mdhui-asthma-library-categories" ref={props.innerRef}>
         <>
             {loading && <LoadingIndicator/>}
-            {!loading && categories.length > 0 && categories.map((category, index) => {
+            {!loading && categories && categories.length > 0 && categories.map((category, index) => {
                 return <Card key={index}>
                     <Action className="mdhui-asthma-library-category" title={category.title} onClick={() => onClick(category)}/>
                 </Card>;
             })}
-            {!loading && categories.length === 0 && <div className="mdhui-asthma-library-categories-empty-text">No categories found.</div>}
+            {!loading && (!categories || categories.length === 0) &&
+                <div className="mdhui-asthma-library-categories-empty-text">No categories found.</div>
+            }
         </>
     </div>;
 }

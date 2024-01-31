@@ -14,7 +14,7 @@ const render = (args: AsthmaLibraryCategoryViewProps) => {
 export const Default = {
     args: {
         previewState: 'some articles',
-        category: 'Some category',
+        title: 'Category Title',
         articleImageAlignment: 'left'
     },
     argTypes: {
