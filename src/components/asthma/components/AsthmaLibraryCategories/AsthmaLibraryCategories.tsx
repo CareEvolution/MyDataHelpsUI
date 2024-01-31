@@ -40,8 +40,8 @@ export default function (props: AsthmaLibraryCategoriesProps) {
 
     return <div className="mdhui-asthma-library-categories" ref={props.innerRef}>
         <>
-            {loading && <LoadingIndicator/>}
-            {!loading && categories && categories.length > 0 && categories.map((category, index) => {
+            {loading && !categories && <LoadingIndicator/>}
+            {categories && categories.length > 0 && categories.map((category, index) => {
                 return <Card key={index}>
                     <Action className="mdhui-asthma-library-category" title={category.title} onClick={() => onClick(category)}/>
                 </Card>;

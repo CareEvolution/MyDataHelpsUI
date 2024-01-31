@@ -41,8 +41,8 @@ export default function (props: AsthmaLibraryArticlesProps) {
 
     return <div className="mdhui-asthma-library-articles" ref={props.innerRef}>
         <>
-            {loading && <LoadingIndicator/>}
-            {!loading && category && category.articles && category.articles.length > 0 && category.articles.map((article, index) => {
+            {loading && !category && <LoadingIndicator/>}
+            {category && category.articles && category.articles.length > 0 && category.articles.map((article, index) => {
                 return <Resource
                     key={index}
                     title={article.title}
