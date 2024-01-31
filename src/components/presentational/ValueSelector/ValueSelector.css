@@ -53,7 +53,7 @@
 }
 
 .mdhui-value-selector-value-button.mdhui-value-selector-value-selected {
-    background: color-mix(in srgb, var(--mdhui-value-selector-button-value-selected-background-color), transparent 30%);
+    background: var(--mdhui-value-selector-button-value-selected-background-color);
     border: 1px solid var(--mdhui-value-selector-button-value-selected-background-color);
     color: var(--mdhui-value-selector-button-value-selected-text-color);
 }
