@@ -35,7 +35,7 @@ export default function (props: AsthmaLibraryCategoriesProps) {
 
     const onClick = (category: AsthmaLibraryCategory): void => {
         if (props.previewState || loading) return;
-        MyDataHelps.openApplication(props.categoryViewUrl + '?title=' + category.title + '&category=' + category.category, {modal: true});
+        MyDataHelps.openApplication(props.categoryViewUrl + '?title=' + encodeURIComponent(category.title) + '&category=' + encodeURIComponent(category.category), {modal: true});
     };
 
     return <div className="mdhui-asthma-library-categories" ref={props.innerRef}>
