@@ -1,0 +1,42 @@
+.mdhui-data-summary {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    min-height: 60px;
+}
+
+.mdhui-data-summary-value-units {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: baseline;
+    grid-column-gap: 2px;
+}
+
+.mdhui-data-summary-setup {
+    font-size: 1.3em;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-data-summary-value {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.mdhui-data-summary-units {
+    color: var(--mdhui-text-color-3);
+    font-size: 0.8em;
+}
+
+.mdhui-data-summary-label {
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.mdhui-data-summary-status {
+    font-size: 0.7em;
+    font-weight: bold;
+}
