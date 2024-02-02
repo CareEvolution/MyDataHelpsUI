@@ -1,4 +1,4 @@
-.mdhui-data-summary {
+.mdhui-single-data-point {
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
@@ -9,34 +9,34 @@
     min-height: 60px;
 }
 
-.mdhui-data-summary-value-units {
+.mdhui-single-data-point-value-units {
     display: grid;
     grid-template-columns: max-content auto;
     align-items: baseline;
     grid-column-gap: 2px;
 }
 
-.mdhui-data-summary-setup {
+.mdhui-single-data-point-setup {
     font-size: 1.3em;
     color: var(--mdhui-color-primary);
 }
 
-.mdhui-data-summary-value {
+.mdhui-single-data-point-value {
     font-size: 1.3em;
     font-weight: bold;
 }
 
-.mdhui-data-summary-units {
+.mdhui-single-data-point-units {
     color: var(--mdhui-text-color-3);
     font-size: 0.8em;
 }
 
-.mdhui-data-summary-label {
+.mdhui-single-data-point-label {
     font-size: 0.7em;
     font-weight: bold;
 }
 
-.mdhui-data-summary-status {
+.mdhui-single-data-point-status {
     font-size: 0.7em;
     font-weight: bold;
 }
