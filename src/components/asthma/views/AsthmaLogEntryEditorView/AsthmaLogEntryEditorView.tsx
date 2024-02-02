@@ -6,6 +6,7 @@ import { AsthmaLogEntry, AsthmaSymptomLevel } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaSymptomLevel, getAsthmaSymptomLevelText } from '../../helpers';
 import { AsthmaLogEntryEditorViewPreviewState, previewData } from './AsthmaLogEntryEditorView.previewData';
+import language from '../../../../helpers/language';
 
 export interface AsthmaLogEntryEditorViewProps {
     previewState?: AsthmaLogEntryEditorViewPreviewState;
@@ -120,10 +121,10 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                         title="Symptom level"
                         subtitle="Select one"
                         values={[
-                            'No symptoms',
-                            'Mild symptoms',
-                            'Moderate symptoms',
-                            'Severe symptoms'
+                            language('asthma-symptom-level-none'),
+                            language('asthma-symptom-level-mild'),
+                            language('asthma-symptom-level-moderate'),
+                            language('asthma-symptom-level-severe')
                         ]}
                         selectedValues={[getAsthmaSymptomLevelText(logEntry.symptomLevel)]}
                         preventEmptySelections={true}

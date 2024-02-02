@@ -101,9 +101,9 @@ export const getAsthmaSymptomLevelText = (symptomLevel: AsthmaSymptomLevel): str
 };
 
 export const getAsthmaSymptomLevel = (symptomLevelValue: string | undefined): AsthmaSymptomLevel => {
-    if (symptomLevelValue === 'Mild symptoms') return 'mild';
-    if (symptomLevelValue === 'Moderate symptoms') return 'moderate';
-    if (symptomLevelValue === 'Severe symptoms') return 'severe';
+    if (symptomLevelValue === language('asthma-symptom-level-mild')) return 'mild';
+    if (symptomLevelValue === language('asthma-symptom-level-moderate')) return 'moderate';
+    if (symptomLevelValue === language('asthma-symptom-level-severe')) return 'severe';
     return 'none';
 };
 
