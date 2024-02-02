@@ -54,7 +54,7 @@ export default function (props: AsthmaBiometricsProps) {
             setNighttimeBloodOxygenLevel(biometrics.find(b => b.type === 'nighttime-blood-oxygen-level'));
             setLoading(false);
         });
-    });
+    }, [], [props.previewState]);
 
     const onClick = (type: AsthmaBiometricType): void => {
         if (props.previewState) return;

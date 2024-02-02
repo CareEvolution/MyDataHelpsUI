@@ -78,6 +78,7 @@ export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
     if (status === 'in-range') return 'In range';
     if (status === 'offline') return 'Offline';
     if (status === 'establishing') return 'Establishing';
+    if (status === 'not-determined') return 'Baseline Not Established'
     if (status === 'not-found') return 'No Data Recorded'
     if (status === 'not-configured') return 'Not Configured';
     return '';

@@ -45,6 +45,10 @@
     color: var(--mdhui-text-color-3);
 }
 
+.mdhui-asthma-data-summary-status-not-determined {
+    color: var(--mdhui-text-color-3);
+}
+
 .mdhui-asthma-data-summary-status-not-found {
     color: var(--mdhui-text-color-3);
 }
