@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './AsthmaAirQualities.css';
 import { AsthmaAirQuality } from '../../model';
-import AsthmaDataSummary from '../AsthmaDataSummary';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService } from '../../helpers';
-import { LoadingIndicator, UnstyledButton } from '../../../presentational';
+import { asthmaDataService, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
+import { LoadingIndicator, SingleDataPoint, UnstyledButton } from '../../../presentational';
 import { AsthmaAirQualitiesPreviewState, previewData } from './AsthmaAirQualities.previewData';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -51,6 +50,13 @@ export default function (props: AsthmaAirQualitiesProps) {
         MyDataHelps.startSurvey(props.editZipCodesSurveyName);
     }
 
+    const getSetupComponent = (label: string) => {
+        return <div className="mdhui-asthma-air-qualities-setup" onClick={() => onSetup()}>
+            <div className="mdhui-asthma-air-qualities-setup-button">+ Setup</div>
+            <div className="mdhui-asthma-air-qualities-setup-label">AQI (Home)</div>
+        </div>;
+    };
+
     const onClick = (airQuality: AsthmaAirQuality): void => {
         if (props.previewState) return;
         if (airQuality.status === 'not-configured' && props.editZipCodesSurveyName) {
@@ -74,20 +80,26 @@ export default function (props: AsthmaAirQualitiesProps) {
         {loading && <LoadingIndicator/>}
         {!loading &&
             <div className="mdhui-asthma-air-qualities-data">
-                <AsthmaDataSummary
-                    label="AQI (Home)"
-                    status={homeAirQuality!.status}
-                    statusText={homeAirQuality!.description}
-                    value={homeAirQuality!.value}
-                    onClick={() => onClick(homeAirQuality!)}
-                />
-                <AsthmaDataSummary
-                    label="AQI (Work)"
-                    status={workAirQuality!.status}
-                    statusText={workAirQuality!.description}
-                    value={workAirQuality!.value}
-                    onClick={() => onClick(workAirQuality!)}
-                />
+                {homeAirQuality!.status === 'not-configured' && getSetupComponent('AQI (Home)')}
+                {homeAirQuality!.status !== 'not-configured' &&
+                    <SingleDataPoint
+                        label="AQI (Home)"
+                        statusText={homeAirQuality!.description ?? getAsthmaDataStatusText(homeAirQuality!.status)}
+                        statusColor={getAsthmaDataStatusColor(homeAirQuality!.status)}
+                        value={homeAirQuality!.value}
+                        onClick={() => onClick(homeAirQuality!)}
+                    />
+                }
+                {workAirQuality!.status === 'not-configured' && getSetupComponent('AQI (Work)')}
+                {workAirQuality!.status !== 'not-configured' &&
+                    <SingleDataPoint
+                        label="AQI (Work)"
+                        statusText={workAirQuality!.description ?? getAsthmaDataStatusText(workAirQuality!.status)}
+                        statusColor={getAsthmaDataStatusColor(workAirQuality!.status)}
+                        value={workAirQuality!.value}
+                        onClick={() => onClick(workAirQuality!)}
+                    />
+                }
             </div>
         }
     </div>;
