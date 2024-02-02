@@ -75,7 +75,7 @@ const computeBiometricStatus = (thresholdFunction: BiometricThresholdFunction, b
         }
         return 'offline';
     }
-    return defaultStatus;
+    return value ? 'establishing' : defaultStatus;
 };
 
 const computeBiometric = (type: AsthmaBiometricType, date: Date, dataPoints: DeviceDataPoint[], offsetDays: number, thresholdFunction: BiometricThresholdFunction, defaultStatus: AsthmaDataStatus): AsthmaBiometric => {

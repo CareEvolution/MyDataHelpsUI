@@ -141,7 +141,7 @@ export default function (props: AsthmaControlCalendarProps) {
     };
 
     return <div>
-        <Section noTopMargin={true}>
+        <Section noTopMargin={true} style={{boxShadow: 'none', marginBottom: 0}}>
             <Calendar innerRef={props.innerRef} className="mdhui-asthma-control-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>
         </Section>
         {props.variant === 'verbose' && getLogEntries()}
