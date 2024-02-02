@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './AsthmaBiometrics.css';
 import { AsthmaBiometric, AsthmaBiometricType } from '../../model';
-import AsthmaDataSummary from '../AsthmaDataSummary';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService } from '../../helpers';
-import { LoadingIndicator } from '../../../presentational';
+import { asthmaDataService, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
+import { LoadingIndicator, SingleDataPoint } from '../../../presentational';
 import { AsthmaBiometricsPreviewState, previewData } from './AsthmaBiometrics.previewData';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
@@ -72,50 +71,57 @@ export default function (props: AsthmaBiometricsProps) {
         {loading && <LoadingIndicator/>}
         {!loading &&
             <div className="mdhui-asthma-biometrics-data">
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Resting HR (Day)"
-                    status={daytimeRestingHeartRate!.status}
+                    statusText={getAsthmaDataStatusText(daytimeRestingHeartRate!.status)}
+                    statusColor={getAsthmaDataStatusColor(daytimeRestingHeartRate!.status)}
                     value={daytimeRestingHeartRate!.value}
                     units="BPM"
                     onClick={() => onClick('daytime-resting-heart-rate')}
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Resting HR (Night)"
-                    status={nighttimeRestingHeartRate!.status}
+                    statusText={getAsthmaDataStatusText(nighttimeRestingHeartRate!.status)}
+                    statusColor={getAsthmaDataStatusColor(nighttimeRestingHeartRate!.status)}
                     value={nighttimeRestingHeartRate!.value}
                     units="BPM"
                     onClick={() => onClick('nighttime-resting-heart-rate')}
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Respiratory Rate"
-                    status={respiratoryRate!.status}
+                    statusText={getAsthmaDataStatusText(respiratoryRate!.status)}
+                    statusColor={getAsthmaDataStatusColor(respiratoryRate!.status)}
                     value={respiratoryRate!.value}
                     units="BPM"
                     onClick={() => onClick('respiratory-rate')}
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Steps"
-                    status={steps!.status}
+                    statusText={getAsthmaDataStatusText(steps!.status)}
+                    statusColor={getAsthmaDataStatusColor(steps!.status)}
                     value={steps!.value}
                     onClick={() => onClick('steps')}
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Oxygen Saturation (Day)"
-                    status={daytimeBloodOxygenLevel!.status}
+                    statusText={getAsthmaDataStatusText(daytimeBloodOxygenLevel!.status)}
+                    statusColor={getAsthmaDataStatusColor(daytimeBloodOxygenLevel!.status)}
                     value={daytimeBloodOxygenLevel!.value ? daytimeBloodOxygenLevel!.value! * 100.0 : undefined}
                     onClick={() => onClick('daytime-blood-oxygen-level')}
                     units="%"
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Oxygen Saturation (Night)"
-                    status={nighttimeBloodOxygenLevel!.status}
+                    statusText={getAsthmaDataStatusText(nighttimeBloodOxygenLevel!.status)}
+                    statusColor={getAsthmaDataStatusColor(nighttimeBloodOxygenLevel!.status)}
                     value={nighttimeBloodOxygenLevel!.value ? nighttimeBloodOxygenLevel!.value * 100.0 : undefined}
                     onClick={() => onClick('nighttime-blood-oxygen-level')}
                     units="%"
                 />
-                <AsthmaDataSummary
+                <SingleDataPoint
                     label="Sleep Disturbances"
-                    status={sleepDisturbances!.status}
+                    statusText={getAsthmaDataStatusText(sleepDisturbances!.status)}
+                    statusColor={getAsthmaDataStatusColor(sleepDisturbances!.status)}
                     value={sleepDisturbances!.value}
                     onClick={() => onClick('sleep-disturbances')}
                 />

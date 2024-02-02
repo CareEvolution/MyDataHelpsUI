@@ -1,6 +1,7 @@
 import { add, formatISO } from 'date-fns';
 import { AsthmaControlState, AsthmaControlStatus, AsthmaDataStatus, AsthmaLogEntry, AsthmaSymptomLevel } from '../model';
 import language from '../../../helpers/language';
+import { ColorDefinition } from "../../../helpers/colors";
 
 export const dateToAsthmaLogEntryIdentifier = (date: Date): string => {
     return formatISO(date, {representation: 'date'});
@@ -83,6 +84,13 @@ export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
     if (status === 'not-found') return 'No Data Recorded'
     if (status === 'not-configured') return 'Not Configured';
     return '';
+};
+
+export const getAsthmaDataStatusColor = (status: AsthmaDataStatus): ColorDefinition => {
+    if (status === 'out-of-range') return '#9D5BED';
+    if (status === 'in-range') return '#188A83';
+    if (status === 'offline') return 'var(--mdhui-color-warning)';
+    return 'var(--mdhui-text-color-3)';
 };
 
 export const getAsthmaSymptomLevelText = (symptomLevel: AsthmaSymptomLevel): string => {
