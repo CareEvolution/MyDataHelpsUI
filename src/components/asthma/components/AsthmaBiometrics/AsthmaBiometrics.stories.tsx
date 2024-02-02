@@ -8,8 +8,12 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaBiometricsProps) => {
-    return <Layout colorScheme="auto">
+interface AsthmaBiometricsStoryArgs extends AsthmaBiometricsProps {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const render = (args: AsthmaBiometricsStoryArgs) => {
+    return <Layout colorScheme={args.colorScheme}>
         <Card>
             <AsthmaBiometrics {...args} />
         </Card>
@@ -18,9 +22,15 @@ const render = (args: AsthmaBiometricsProps) => {
 
 export const Default = {
     args: {
+        colorScheme: 'auto',
         previewState: 'some data'
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         previewState: {
             name: 'state',
             control: 'radio',

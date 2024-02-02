@@ -1,7 +1,6 @@
 import React from 'react';
 import AsthmaAirQualities, { AsthmaAirQualitiesProps } from './AsthmaAirQualities';
 import { Card, Layout } from '../../../presentational';
-import { AsthmaAirQualitiesPreviewState } from './AsthmaAirQualities.previewData';
 
 export default {
     title: 'Asthma/Components/AsthmaAirQualities',
@@ -9,25 +8,31 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-interface AsthmaAirQualitiesStoryArgs {
-    previewState: AsthmaAirQualitiesPreviewState;
+interface AsthmaAirQualitiesStoryArgs extends AsthmaAirQualitiesProps {
+    colorScheme: 'auto' | 'light' | 'dark';
     canEditSettings: boolean;
 }
 
 const render = (args: AsthmaAirQualitiesStoryArgs) => {
-    return <Layout colorScheme="auto">
+    return <Layout colorScheme={args.colorScheme}>
         <Card>
-            <AsthmaAirQualities previewState={args.previewState} editZipCodesSurveyName={args.canEditSettings ? 'some_url' : undefined} {...({} as AsthmaAirQualitiesProps)} />
+            <AsthmaAirQualities {...args} editZipCodesSurveyName={args.canEditSettings ? 'some_url' : undefined}/>
         </Card>
     </Layout>;
 };
 
 export const Default = {
     args: {
+        colorScheme: 'auto',
         previewState: 'some data (control)',
         canEditSettings: false
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         previewState: {
             name: 'state',
             control: 'radio',
