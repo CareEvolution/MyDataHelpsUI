@@ -6,7 +6,6 @@ export { default as AsthmaBarChart } from './AsthmaBarChart';
 export { default as AsthmaBiometrics, AsthmaBiometricsPreviewState } from './AsthmaBiometrics';
 export { default as AsthmaControlCalendar, AsthmaControlCalendarPreviewState, AsthmaControlCalendarVariant } from './AsthmaControlCalendar';
 export { default as AsthmaControlStatusHeader } from './AsthmaControlStatusHeader';
-export { default as AsthmaDataSummary } from './AsthmaDataSummary';
 export { default as AsthmaFacts } from './AsthmaFacts';
 export { default as AsthmaLibraryArticles, AsthmaLibraryArticlesPreviewState } from './AsthmaLibraryArticles';
 export { default as AsthmaLibraryCategories, AsthmaLibraryCategoriesPreviewState } from './AsthmaLibraryCategories';
