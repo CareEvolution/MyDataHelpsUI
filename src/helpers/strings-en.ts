@@ -162,7 +162,16 @@
     "inbox-view-resources-title": "Resources",
     "inbox-view-recently-completed-title": "Recent",
     "inbox-view-recently-completed-empty-text": "You have no recently completed items in your inbox.",
-    "inbox-view-history-button-text": "View inbox history"
+    "inbox-view-history-button-text": "View inbox history",
+    "asthma-symptom-level-none": "No symptoms",
+    "asthma-symptom-level-mild": "Mild symptoms",
+    "asthma-symptom-level-moderate": "Moderate symptoms",
+    "asthma-symptom-level-severe": "Severe symptoms",
+    "asthma-control-calendar-daily-entry-missed": "Daily entry missed",
+    "asthma-control-calendar-not-logged-yet": "Not logged yet",
+    "asthma-control-calendar-log-entries-symptoms-label": "Symptoms",
+    "asthma-control-calendar-log-entries-impacts-label": "Impacts",
+    "asthma-control-calendar-log-entries-triggers-label": "Triggers"
 };
 
 export default strings;
