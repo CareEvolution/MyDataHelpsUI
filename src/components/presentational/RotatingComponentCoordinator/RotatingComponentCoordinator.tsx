@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
-import { differenceInDays, differenceInMonths, differenceInWeeks, min } from 'date-fns';
+import { differenceInDays, differenceInMonths, differenceInWeeks } from 'date-fns';
+import isAfter from "date-fns/isAfter";
 
 export type RotatingComponentInterval = 'day' | 'week' | 'month';
 
@@ -18,7 +19,10 @@ export default function (props: RotatingComponentCoordinatorProps) {
     }
 
     let now = new Date();
-    let startDate = min([now, props.startDate]);
+    let startDate = props.startDate;
+    if (isAfter(startDate, now)) {
+        startDate = now;
+    }
 
     let index: number;
     if (props.interval === 'month') {
