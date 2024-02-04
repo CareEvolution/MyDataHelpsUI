@@ -158,7 +158,11 @@
     "inbox-view-resources-title": "Recursos",
     "inbox-view-recently-completed-title": "Reciente",
     "inbox-view-recently-completed-empty-text": "No tienes elementos recientemente completados en tu bandeja de entrada.",
-    "inbox-view-history-button-text": "Ver historial de bandeja de entrada"
+    "inbox-view-history-button-text": "Ver historial de bandeja de entrada",
+	"choose-report-month": "Elegir el mes del informe",
+	"include-overall-experience": "Incluir la experiencia general diaria",
+	"include-notes": "Incluir notas",
+	"create-report": "Crear informe",
 };
 
 export default strings;

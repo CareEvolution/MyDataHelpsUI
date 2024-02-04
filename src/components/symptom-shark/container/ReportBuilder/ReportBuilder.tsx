@@ -12,6 +12,7 @@ import { SymptomSharkVisualizationContext } from "../VisualizationCoordinator/Vi
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faCircle } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import "./ReportBuilder.css"
 
 export interface SymptomSharkReportBuilderProps {
     productLogo?: string;
@@ -44,7 +45,13 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
     const [buildingReport, setBuildingReport] = useState<boolean>(false);
     const report = useRef<HTMLDivElement>(null);
 
-    if (!configuration || !logEntries) return <div ref={props.innerRef}><LoadingIndicator /></div>;
+    useEffect(() => {
+        initialize();
+        MyDataHelps.on("applicationDidBecomeVisible", initialize);
+        return () => {
+            MyDataHelps.off("applicationDidBecomeVisible", initialize);
+        }
+    }, []);
 
     function initialize() {
         if (props.previewState == "default") {
@@ -65,13 +72,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         });
     }
 
-    useEffect(() => {
-        initialize();
-        MyDataHelps.on("applicationDidBecomeVisible", initialize);
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", initialize);
-        }
-    }, []);
+    if (!configuration || !logEntries) return <div ref={props.innerRef}><LoadingIndicator /></div>;
 
     function toggleSymptom(item: SymptomConfiguration) {
         var newSelectedItems = [...selectedSymptoms];
@@ -123,18 +124,18 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         <div className="ss-report-builder">
             <div className="ss-report-builder-items">
                 <div className="ss-report-builder-item ss-report-builder-month-selector">
-                    <div className="ss-report-builder-selector-title">{language["choose-report-month"]}</div>
-                    <DateRangeNavigator className='ssreport-date-chooser' variant="rounded" intervalStart={intervalStartDate} intervalType="Month" onIntervalChange={(d) => setIntervalStartDate(d)} />
+                    <div className="ss-report-builder-selector-title">{language("choose-report-month")}</div>
+                    <DateRangeNavigator className='ss-report-date-chooser' variant="rounded" intervalStart={intervalStartDate} intervalType="Month" onIntervalChange={(d) => setIntervalStartDate(d)} />
                 </div>
                 <UnstyledButton className="ss-report-builder-item" onClick={() => setIncludeSymptoms(!includeSymptoms)} >
-                    <div className="ss-report-builder-item-title">{language["include-symptoms"]}</div>
+                    <div className="ss-report-builder-item-title">{language("include-symptoms")}</div>
                     <div className="ss-report-builder-item-status">
                         <FontAwesomeIcon icon={includeSymptoms ? faCheckCircle : faCircle} />
                     </div>
                 </UnstyledButton>
                 {includeSymptoms &&
                     <div className="ss-report-builder-item">
-                        <div className="ss-report-builder-item-title">{language["select-symptoms"]}</div>
+                        <div className="ss-report-builder-item-title">{language("select-symptoms")}</div>
                         <UnstyledButton className="ss-report-builder-item-status" onClick={() => setSymptomsExpanded(!symptomsExpanded)}>
                             {selectedSymptoms.length == 0 ? "All" : (selectedSymptoms.length + " Selected")}&nbsp;
                             <FontAwesomeIcon icon={symptomsExpanded ? faChevronUp : faChevronDown} />
@@ -155,14 +156,14 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                 {configuration.treatments!.length > 0 &&
                     <>
                         <UnstyledButton className="ss-report-builder-item" onClick={() => setIncludeTreatments(!includeTreatments)}>
-                            <div className="ss-report-builder-item-title">{language["include-treatments"]}</div>
+                            <div className="ss-report-builder-item-title">{language("include-treatments")}</div>
                             <div className="ss-report-builder-item-status">
                                 <FontAwesomeIcon icon={includeTreatments ? faCheckCircle : faCircle} />
                             </div>
                         </UnstyledButton>
                         {includeTreatments &&
                             <div className="ss-report-builder-item">
-                                <div className="ss-report-builder-item-title">{language["select-treatments"]}</div>
+                                <div className="ss-report-builder-item-title">{language("select-treatments")}</div>
                                 <UnstyledButton className="ss-report-builder-item-status" onClick={() => setTreatmentsExpanded(!treatmentsExpanded)}>
                                     {selectedTreatments.length == 0 ? "All" : (selectedTreatments.length + " Selected")}&nbsp;
                                     <FontAwesomeIcon icon={treatmentsExpanded ? faChevronUp : faChevronDown} />

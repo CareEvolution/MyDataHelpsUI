@@ -37,17 +37,17 @@
     font-weight: bold;
 }
 
-.ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa {
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item svg {
     color: var(--mdhui-text-color-3);
     font-size: 17px;
     top: calc(50% - 16px);
 }
 
-.ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa-check-circle {
-    color: var(--ss-secondary-theme-color);
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa-circle-check {
+    color: var(--mdhui-color-success);
 }
 
-.ss-report-builder .ss-report-builder-items .ss-report-builder-item.month-selector {
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item.ss-report-builder-month-selector {
     text-align: center;
     font-size: 17px;
     font-weight: bold;
@@ -64,7 +64,7 @@
     padding-bottom: 4px;
 }
 
-.ss-report-builder .ss-report-builder-items .ss-report-builder-item.ss-report-month-selector .mdhui-date-range-navigator {
+.ss-report-builder .ss-report-builder-items .ss-report-date-chooser {
     background: none;
 }
 

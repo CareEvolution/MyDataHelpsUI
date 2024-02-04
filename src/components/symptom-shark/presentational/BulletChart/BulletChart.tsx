@@ -83,7 +83,7 @@ export default function (props: SymptomSharkBulletChartProps) {
                 </thead>
                 <tbody>
                     {visualizationContext.symptoms.map((s) =>
-                        <tr>
+                        <tr key={s.id}>
                             <td className="ss-bullet-chart-item-name">{s.name} </td>
                             <td className="ss-bullet-chart-total">
                                 <span>{symptomTotal(s) > 0 ? symptomTotal(s) : <>&nbsp;</>}</span>
@@ -117,7 +117,7 @@ export default function (props: SymptomSharkBulletChartProps) {
                 </thead>
                 <tbody>
                     {visualizationContext.treatments.map((t) =>
-                        <tr>
+                        <tr key={t.id}>
                             <td className="ss-bullet-chart-item-name">{t.name}</td>
                             <td className="ss-bullet-chart-total">
                                 {treatmentTotal(t) > 0 ? treatmentTotal(t) : <>&nbsp;</>}
