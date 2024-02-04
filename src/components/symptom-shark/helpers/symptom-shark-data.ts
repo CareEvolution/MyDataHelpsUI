@@ -8,6 +8,7 @@ export interface SymptomSharkDataService {
 }
 
 export interface SymptomSharkConfiguration {
+	participantID: Guid;
 	symptoms: SymptomConfiguration[];
 	treatments: TreatmentConfiguration[];
 }
@@ -72,6 +73,7 @@ export function convertToSymptomSharkConfiguration(info: ParticipantInfo) {
 	treatments.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
 	return {
+		participantID: info.participantID,
 		symptoms: symptoms,
 		treatments: treatments
 	};

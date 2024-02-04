@@ -1,0 +1,82 @@
+.ss-report-builder {
+    padding-bottom: env(safe-area-inset-bottom);
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.ss-report-builder .ss-report-builder-items {
+    border-top: solid 1px var(--mdhui-border-color-1);
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item {
+    border-bottom: solid 1px var(--mdhui-border-color-1);
+    padding: 16px;
+    background: var(--mdhui-background-color-0);
+    position: relative;
+    box-shadow: var(--mdhui-box-shadow-0);
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item .ss-report-builder-item-title {
+    font-weight: normal;
+    font-size: 17px;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item .ss-report-builder-item-status {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 16px;
+    cursor: pointer;
+    text-align: right;
+    width: 100%;
+    font-weight: bold;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa {
+    color: var(--mdhui-text-color-3);
+    font-size: 17px;
+    top: calc(50% - 16px);
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa-check-circle {
+    color: var(--ss-secondary-theme-color);
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item.month-selector {
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: auto;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item.ss-report-month-selector .ss-report-builder-selector-title {
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--mdhui-text-color-2);
+    padding-bottom: 4px;
+}
+
+.ss-report-builder .ss-report-builder-items .ss-report-builder-item.ss-report-month-selector .mdhui-date-range-navigator {
+    background: none;
+}
+
+.ss-report-builder .ss-report-items {
+    margin-top: 12px;
+    margin-bottom: -4px;
+}
+
+.ss-report-builder .ss-report-items .ss-report-item {
+    margin: 4px;
+}
+
+.ss-report-builder .ss-report-report-date-chooser {
+    margin: 0;
+}
