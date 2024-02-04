@@ -58,7 +58,7 @@ export default function (props: OverallExperienceChartProps) {
     var daysThisMonth = monthDays.length;
     var ticks = 100 / daysThisMonth;
     var initialSpace = (100 / (daysThisMonth * 2));
-    var lines = [];
+    var lines: any[] = [];
     for (var i = 0; i < daysWithScore.length - 1; i++) {
         var currentDay = daysWithScore[i];
         var nextDay = daysWithScore[i + 1];
