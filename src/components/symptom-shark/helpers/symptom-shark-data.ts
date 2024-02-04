@@ -1,4 +1,5 @@
 import MyDataHelps, { DeviceDataPointQuery, Guid, ParticipantInfo } from "@careevolution/mydatahelps-js";
+import { LogEntryIconKey } from "../presentational/LogEntryIcon/LogEntryIcon";
 
 export interface SymptomSharkDataService {
 	getConfiguration(): Promise<SymptomSharkConfiguration>;
@@ -31,7 +32,7 @@ export interface DailyLogEntry {
 	treatments: TreatmentReference[];
 	overallFeeling?: number;
 	notes: string;
-	icon?: string;
+	icon?: LogEntryIconKey;
 }
 
 export interface SymptomReference {

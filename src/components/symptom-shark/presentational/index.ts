@@ -1,3 +1,4 @@
+export { default as SymptomSharkBulletChart } from "./BulletChart"
 export { default as SymptomSharkCalendar } from "./Calendar"
 export { default as SymptomSharkOverallExperienceChart } from "./OverallExperienceChart"
 export { default as SymptomSharkLogEntry } from "./LogEntry"

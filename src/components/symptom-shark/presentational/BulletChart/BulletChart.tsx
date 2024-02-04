@@ -64,7 +64,7 @@ export default function (props: SymptomSharkBulletChartProps) {
         return total;
     }
 
-    return <div className="ss-bullet-chart">
+    return <div ref={props.innerRef} className="ss-bullet-chart">
         {visualizationContext.symptoms.length > 0 &&
             <table cellPadding="0" cellSpacing="0">
                 <thead>
