@@ -2,6 +2,9 @@
     position: relative;
     width: 100%;
     font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
+    /* default color for PDF rendering */
+    background: #FFF;
+    background: var(--mdhui-background-color-0);
 }
 
 .ss-month-report>thead>tr>th {
@@ -33,7 +36,6 @@
     font-weight: normal;
 }
 
-
 .ss-month-report>thead>tr>th>.header .ss-month-report-product img {
     height: 32px;
     position: absolute;
@@ -50,89 +52,4 @@
     width: 100%;
     background: var(--mdhui-background-color-0);
     border-top: solid 1px var(--mdhui-border-color-1);
-}
-
-.ss-month-report .ss-month-report-bullets {
-    box-shadow: none;
-}
-
-
-.ss-month-report .ss-month-report-graph-wrapper {
-    box-shadow: none;
-    border: none;
-    position: relative;
-    margin: 0;
-    /*Default color for pdf rendering, because it doesn't support css vars*/
-    border-top: solid 1px #ddd;
-
-    border-top: solid 1px var(--mdhui-border-color-1);
-}
-
-.ss-month-report .ss-month-report-graph-wrapper .ss-month-report-title {
-    position: absolute;
-    left: 0;
-    width: 25%;
-    text-align: left;
-    box-sizing: border-box;
-    padding-right: 32px;
-    font-size: 17px;
-    color: var(--mdhui-text-color-1);
-    font-weight: bold;
-    text-transform: none;
-}
-
-.ss-month-report .ss-month-report-graph-wrapper .ss-month-report-average-wrapper {
-    display: block;
-    padding-top: 16px;
-    font-size: 15px;
-    text-transform: uppercase;
-    font-weight: normal;
-    position: absolute;
-    left: 16px;
-    top: 64px;
-    text-align: left;
-    padding: 0;
-    padding-bottom: 8px;
-    right: auto;
-}
-
-.ss-month-report .ss-month-report-graph-wrapper .ss-month-report-average-wrapper .ss-month-report-average {
-    margin-top: 8px;
-    font-size: 34px;
-    font-weight: bold;
-    display: block;
-    line-height: 34px;
-}
-
-.ss-month-report .ss-month-report-graph-wrapper .average-wrapper .average .ss-face {
-    height: 34px;
-    width: 34px;
-    vertical-align: top;
-    border-radius: 18px;
-    overflow: hidden;
-}
-
-.month-report .mood-graph .bar-wrapper .day-star {
-    font-size: 12px;
-    display: block;
-}
-
-
-.month-report .symptom-graph {
-    padding-left: 25%;
-    margin-right: 4px;
-    margin-left: 12px;
-}
-
-.month-report .symptom-graph .y-axis {
-    left: calc(25% - 64px);
-}
-
-.month-report .symptom-graph .x-axis-line {
-    width: calc(75% - 32px);
-    left: calc(25% + 16px);
-}
-
-.month-report .ss-face {
-    background: #eec04c;
 }
