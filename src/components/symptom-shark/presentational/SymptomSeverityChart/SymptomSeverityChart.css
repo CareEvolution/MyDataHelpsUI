@@ -130,3 +130,40 @@
 .mdhui-ss-severity-chart .mdhui-ss-severity-chart-three-point-scale .mdhui-ss-severity-chart-day-wrapper {
     height: 92px;
 }
+
+
+.mdhui-ss-severity-chart.mdhui-ss-severity-chart-month-report .mdhui-ss-severity-chart-inner {
+    padding-left: calc(25% + 8px);
+}
+
+.mdhui-ss-severity-chart.mdhui-ss-severity-chart-month-report .mdhui-ss-severity-chart-y-axis {
+    left: calc(25% - 56px);
+}
+
+.mdhui-ss-severity-chart.mdhui-ss-severity-chart-month-report .mdhui-ss-severity-chart-x-axis-line {
+    width: calc(75% - 32px);
+    left: calc(25% + 16px);
+}
+
+.mdhui-ss-severity-chart.mdhui-ss-severity-chart-month-report .mdhui-ss-severity-chart-average-wrapper {
+    display: block;
+    padding-top: 16px;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: normal;
+    position: absolute;
+    left: 16px;
+    top: 64px;
+    text-align: left;
+    padding: 0;
+    padding-bottom: 8px;
+    right: auto;
+}
+
+.mdhui-ss-severity-chart.mdhui-ss-severity-chart-month-report .mdhui-ss-severity-chart-average-wrapper .mdhui-ss-severity-chart-average {
+    margin-top: 8px;
+    font-size: 34px;
+    font-weight: bold;
+    display: block;
+    line-height: 34px;
+}

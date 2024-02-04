@@ -64,7 +64,7 @@ export default function (props: SymptomSharkMonthReportProps) {
                         <OverallExperienceChart variant="monthReport" showAllDays={true} />
                     }
                     {visualizationContext.symptoms.filter((s) => !s.inactive && s.severityTracking && s.severityTracking != 'None').map(s =>
-                        <SymptomSeverityChart symptom={s} showAllDays={true} />
+                        <SymptomSeverityChart variant="monthReport" symptom={s} showAllDays={true} />
                     )}
                     {props.includeNotes &&
                         <NotesTimeline />

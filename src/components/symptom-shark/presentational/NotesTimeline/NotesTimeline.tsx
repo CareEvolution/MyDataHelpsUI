@@ -16,7 +16,7 @@ export interface SymptomSharkNotesTimelineProps {
 export default function (props: SymptomSharkNotesTimelineProps) {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock innerRef={props.innerRef}>Error: Bullet Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock innerRef={props.innerRef}>Error: Notes timeline must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
 
     let dateRangeContext = useContext(DateRangeContext);
@@ -36,7 +36,7 @@ export default function (props: SymptomSharkNotesTimelineProps) {
     }
 
     return (
-        <div className="ss-notes-timeline">
+        <div ref={props.innerRef} className="ss-notes-timeline">
             <div className="ss-notes-timeline-title">{language("notes")}</div>
             <div className="ss-notes-timeline-line"></div>
             {daysWithNotes.map((m) =>
