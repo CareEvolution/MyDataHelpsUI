@@ -163,6 +163,7 @@
 	"include-overall-experience": "Incluir la experiencia general diaria",
 	"include-notes": "Incluir notas",
 	"create-report": "Crear informe",
+	"reports": "Informes"
 };
 
 export default strings;

@@ -167,6 +167,7 @@
 	"include-overall-experience": "Include Daily Overall Experience",
 	"include-notes": "Include Notes",
 	"create-report": "Create PDF Report",
+	"reports": "Reports"
 };
 
 export default strings;
