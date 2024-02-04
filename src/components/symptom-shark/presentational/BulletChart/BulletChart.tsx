@@ -110,7 +110,7 @@ export default function (props: SymptomSharkBulletChartProps) {
                         <td></td>
                         {monthDays.map((m) =>
                             <td key={m.toISOString()} style={{ width: (75 / monthDays.length) + '%' }}>
-                                <div className="day-number">{m.getDate()}</div>
+                                <div className="ss-bullet-chart-day-number">{m.getDate()}</div>
                             </td>
                         )}
                     </tr>

@@ -1,3 +1,7 @@
+.mdhui-ss-severity-chart {
+    position: relative;
+}
+
 .mdhui-ss-severity-chart .mdhui-ss-severity-chart-average-wrapper {
     font-size: 17px;
     padding: 16px;
