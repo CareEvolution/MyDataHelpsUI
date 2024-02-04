@@ -16,6 +16,7 @@
     text-align: center;
     margin-bottom: 0;
     margin-top: 16px;
+    display: block;
 }
 
 .mdhui-ss-log-entry-edit .mdhui-ss-edit-items {
