@@ -163,11 +163,11 @@
     "inbox-view-recently-completed-title": "Recent",
     "inbox-view-recently-completed-empty-text": "You have no recently completed items in your inbox.",
     "inbox-view-history-button-text": "View inbox history",
-	"choose-report-month": "Choose Report Month",
-	"include-overall-experience": "Include Daily Overall Experience",
-	"include-notes": "Include Notes",
-	"create-report": "Create PDF Report",
-	"reports": "Reports"
+    "choose-report-month": "Choose Report Month",
+    "include-overall-experience": "Include Daily Overall Experience",
+    "include-notes": "Include Notes",
+    "create-report": "Create PDF Report",
+    "reports": "Reports"
 };
 
 export default strings;
