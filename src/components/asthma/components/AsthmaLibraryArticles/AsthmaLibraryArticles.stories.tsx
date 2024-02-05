@@ -8,25 +8,35 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaLibraryArticlesProps) => {
-    return <Layout colorScheme="auto">
-        <AsthmaLibraryArticles {...args} />
+interface AsthmaLibraryArticlesStoryArgs extends AsthmaLibraryArticlesProps {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const render = (args: AsthmaLibraryArticlesStoryArgs) => {
+    return <Layout colorScheme={args.colorScheme}>
+        <AsthmaLibraryArticles {...args}/>
     </Layout>;
 };
 
 export const Default = {
     args: {
+        colorScheme: 'auto',
         previewState: 'some articles',
-        articleImageAlignment: 'left'
+        imageAlignment: 'left'
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         previewState: {
             name: 'state',
             control: 'radio',
             options: ['no articles', 'some articles']
         },
-        articleImageAlignment: {
-            name: 'article image alignment',
+        imageAlignment: {
+            name: 'image alignment',
             control: 'radio',
             options: ['left', 'center', 'right'],
             if: {arg: 'previewState', 'eq': 'some articles'}

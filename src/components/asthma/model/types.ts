@@ -146,9 +146,3 @@ export interface AsthmaLibraryArticle {
     url: string;
     imageUrl?: string;
 }
-
-export interface AsthmaLibraryCategory {
-    title: string;
-    category: string;
-    articles: AsthmaLibraryArticle[];
-}

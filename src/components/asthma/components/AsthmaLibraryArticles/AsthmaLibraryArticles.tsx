@@ -1,48 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './AsthmaLibraryArticles.css';
-import { AsthmaLibraryArticle, AsthmaLibraryCategory } from '../../model';
-import { asthmaDataService } from '../../helpers';
-import { useInitializeView } from '../../../../helpers/Initialization';
-import { AsthmaLibraryArticlesPreviewState, previewData } from './AsthmaLibraryArticles.previewData';
+import { AsthmaLibraryArticle } from '../../model';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { LoadingIndicator, Resource, ResourceImageAlignment } from '../../../presentational';
+import { Resource, ResourceImageAlignment } from '../../../presentational';
+import { AsthmaLibraryArticlesPreviewState, previewData } from './AsthmaLibraryArticles.previewData';
 
 export interface AsthmaLibraryArticlesProps {
     previewState?: AsthmaLibraryArticlesPreviewState;
-    categoryConfigUrl: string;
-    category: string;
+    articles: AsthmaLibraryArticle[];
     imageAlignment?: ResourceImageAlignment;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaLibraryArticlesProps) {
-    let [loading, setLoading] = useState<boolean>(true);
-    let [category, setCategory] = useState<AsthmaLibraryCategory>();
-
-    useInitializeView(() => {
-        setLoading(true);
-
-        if (props.previewState) {
-            setCategory(previewData[props.previewState].category);
-            setLoading(false);
-            return;
-        }
-
-        asthmaDataService.loadLibraryCategories(props.categoryConfigUrl).then(categories => {
-            setCategory(categories.find(category => category.category === props.category));
-            setLoading(false);
-        });
-    }, [], [props.previewState]);
-
     const onClick = (article: AsthmaLibraryArticle): void => {
-        if (props.previewState || loading) return;
+        if (props.previewState) return;
         MyDataHelps.openEmbeddedUrl(article.url);
     };
 
+    let articles = props.previewState ? previewData[props.previewState].articles : props.articles;
+
     return <div className="mdhui-asthma-library-articles" ref={props.innerRef}>
         <>
-            {loading && !category && <LoadingIndicator/>}
-            {category && category.articles && category.articles.length > 0 && category.articles.map((article, index) => {
+            {articles.length > 0 && articles.map((article, index) => {
                 return <Resource
                     key={index}
                     title={article.title}
@@ -53,7 +33,7 @@ export default function (props: AsthmaLibraryArticlesProps) {
                     hideButton={true}
                 />;
             })}
-            {!loading && (!category || !category.articles || category.articles.length === 0) &&
+            {articles.length === 0 &&
                 <div className="mdhui-asthma-library-articles-empty-text">No articles found.</div>
             }
         </>

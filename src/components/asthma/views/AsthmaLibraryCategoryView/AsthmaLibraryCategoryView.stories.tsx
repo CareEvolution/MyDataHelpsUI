@@ -7,17 +7,27 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = (args: AsthmaLibraryCategoryViewProps) => {
+interface AsthmaLibraryCategoryViewStoryArgs extends AsthmaLibraryCategoryViewProps {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const render = (args: AsthmaLibraryCategoryViewStoryArgs) => {
     return <AsthmaLibraryCategoryView {...args}/>;
 }
 
 export const Default = {
     args: {
-        previewState: 'some articles',
+        colorScheme: 'auto',
         title: 'Category Title',
+        previewState: 'some articles',
         articleImageAlignment: 'left'
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         previewState: {
             name: 'state',
             control: 'radio',

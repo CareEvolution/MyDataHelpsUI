@@ -1,6 +1,6 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
-import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLibraryCategory, AsthmaLogEntry, AsthmaParticipant } from '../model';
+import { AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
 
 type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
@@ -218,8 +218,6 @@ export interface AsthmaDataService {
     loadAndClearAlertTakeover(): Promise<string | undefined>;
 
     loadSurveyAnswers(surveyNames: string[]): Promise<SurveyAnswer[]>;
-
-    loadLibraryCategories(url: string): Promise<AsthmaLibraryCategory[]>;
 }
 
 const service: AsthmaDataService = {
@@ -328,9 +326,6 @@ const service: AsthmaDataService = {
         return getPage().then(function (surveyAnswers) {
             return surveyAnswers;
         });
-    },
-    loadLibraryCategories: async function (url: string): Promise<AsthmaLibraryCategory[]> {
-        return fetch(url, {method: 'get'}).then(res => res.json());
     }
 };
 
