@@ -301,13 +301,11 @@
     "asthma-sleep-view-chart-title": "Sleep Disturbances",
     "asthma-sleep-view-alert-message": "Your sleep disturbances are above your normal level.",
     "asthma-log-entry-editor-view-symptom-level-title": "Symptom level",
-    "asthma-log-entry-editor-view-symptom-level-subtitle": "Select one",
+    "asthma-log-entry-editor-view-select-one-subtitle": "Select one",
+    "asthma-log-entry-editor-view-select-all-subtitle": "Select all that apply",
     "asthma-log-entry-editor-view-symptoms-title": "Symptoms",
-    "asthma-log-entry-editor-view-symptoms-subtitle": "Select all that apply",
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
-    "asthma-log-entry-editor-view-impacts-subtitle": "Select all that apply",
-    "asthma-log-entry-editor-view-triggers-title": "Triggers",
-    "asthma-log-entry-editor-view-triggers-subtitle": "Select all that apply"
+    "asthma-log-entry-editor-view-triggers-title": "Triggers"
 };
 
 export default strings;

@@ -122,7 +122,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                 <Card backgroundColor="var(--mdhui-background-color-1)">
                     <ValueSelector
                         title={language('asthma-log-entry-editor-view-symptom-level-title')}
-                        subtitle={language('asthma-log-entry-editor-view-symptom-level-subtitle')}
+                        subtitle={language('asthma-log-entry-editor-view-select-one-subtitle')}
                         values={[
                             language('asthma-symptom-level-none'),
                             language('asthma-symptom-level-mild'),
@@ -137,7 +137,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                 <Card backgroundColor="var(--mdhui-background-color-1)">
                     <ValueSelector
                         title={language('asthma-log-entry-editor-view-symptoms-title')}
-                        subtitle={language('asthma-log-entry-editor-view-symptoms-subtitle')}
+                        subtitle={language('asthma-log-entry-editor-view-select-all-subtitle')}
                         values={[
                             language('asthma-symptom-difficulty-breathing'),
                             language('asthma-symptom-wheezing'),
@@ -153,7 +153,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                 <Card backgroundColor="var(--mdhui-background-color-1)">
                     <ValueSelector
                         title={language('asthma-log-entry-editor-view-impacts-title')}
-                        subtitle={language('asthma-log-entry-editor-view-impacts-subtitle')}
+                        subtitle={language('asthma-log-entry-editor-view-select-all-subtitle')}
                         values={[
                             language('asthma-impact-waking-at-night'),
                             language('asthma-impact-limit-daily-activity'),
@@ -168,7 +168,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                 <Card backgroundColor="var(--mdhui-background-color-1)">
                     <ValueSelector
                         title={language('asthma-log-entry-editor-view-triggers-title')}
-                        subtitle={language('asthma-log-entry-editor-view-triggers-subtitle')}
+                        subtitle={language('asthma-log-entry-editor-view-select-all-subtitle')}
                         values={[
                             language('asthma-trigger-cold-illness'),
                             language('asthma-trigger-animal-exposure'),
