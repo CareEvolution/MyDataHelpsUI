@@ -148,8 +148,3 @@ export interface AsthmaLibraryArticle {
     url: string;
     imageUrl?: string;
 }
-
-export interface AsthmaActionPlan {
-    id: string;
-    url: string;
-}
