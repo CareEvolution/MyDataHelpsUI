@@ -7,7 +7,7 @@ export interface SingleDataPointProps {
     label: string;
     statusText?: string;
     statusColor?: ColorDefinition;
-    value?: number;
+    value?: string;
     units?: string;
     onClick?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -20,10 +20,10 @@ export default function (props: SingleDataPointProps) {
                 {!props.value &&
                     <div className="mdhui-single-data-point-value">...</div>
                 }
-                {!!props.value &&
-                    <div className="mdhui-single-data-point-value">{props.value.toLocaleString()}</div>
+                {props.value &&
+                    <div className="mdhui-single-data-point-value">{props.value}</div>
                 }
-                {!!props.value && props.units &&
+                {props.value && props.units &&
                     <div className="mdhui-single-data-point-units">{props.units}</div>
                 }
             </div>

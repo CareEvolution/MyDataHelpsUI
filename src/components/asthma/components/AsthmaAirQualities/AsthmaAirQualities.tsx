@@ -90,7 +90,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                         label={language('asthma-air-qualities-home-aqi-label')}
                         statusText={homeAirQuality!.description ?? getAsthmaDataStatusText(homeAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(homeAirQuality!.status)}
-                        value={homeAirQuality!.value}
+                        value={homeAirQuality!.value?.toLocaleString()}
                         onClick={() => onClick(homeAirQuality!)}
                     />
                 }
@@ -100,7 +100,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                         label={language('asthma-air-qualities-work-aqi-label')}
                         statusText={workAirQuality!.description ?? getAsthmaDataStatusText(workAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(workAirQuality!.status)}
-                        value={workAirQuality!.value}
+                        value={workAirQuality!.value?.toLocaleString()}
                         onClick={() => onClick(workAirQuality!)}
                     />
                 }

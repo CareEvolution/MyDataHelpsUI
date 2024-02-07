@@ -26,7 +26,7 @@ export const Default = {
     args: {
         colorScheme: 'auto',
         hasValue: true,
-        value: 64,
+        value: '64',
         units: 'BPM',
         label: 'Resting HR (Day)',
         statusText: 'In range',

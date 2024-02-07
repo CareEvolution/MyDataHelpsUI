@@ -79,7 +79,7 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-daytime-resting-heart-rate-label')}
                     statusText={getAsthmaDataStatusText(daytimeRestingHeartRate!.status)}
                     statusColor={getAsthmaDataStatusColor(daytimeRestingHeartRate!.status)}
-                    value={daytimeRestingHeartRate!.value}
+                    value={daytimeRestingHeartRate!.value?.toLocaleString()}
                     units={language('asthma-biometrics-beats-per-minute-units')}
                     onClick={() => onClick('daytime-resting-heart-rate')}
                 />
@@ -87,7 +87,7 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-nighttime-resting-heart-rate-label')}
                     statusText={getAsthmaDataStatusText(nighttimeRestingHeartRate!.status)}
                     statusColor={getAsthmaDataStatusColor(nighttimeRestingHeartRate!.status)}
-                    value={nighttimeRestingHeartRate!.value}
+                    value={nighttimeRestingHeartRate!.value?.toLocaleString()}
                     units={language('asthma-biometrics-beats-per-minute-units')}
                     onClick={() => onClick('nighttime-resting-heart-rate')}
                 />
@@ -95,7 +95,7 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-respiratory-rate-label')}
                     statusText={getAsthmaDataStatusText(respiratoryRate!.status)}
                     statusColor={getAsthmaDataStatusColor(respiratoryRate!.status)}
-                    value={respiratoryRate!.value}
+                    value={respiratoryRate!.value?.toLocaleString()}
                     units={language('asthma-biometrics-breaths-per-minute-units')}
                     onClick={() => onClick('respiratory-rate')}
                 />
@@ -103,14 +103,14 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-steps-label')}
                     statusText={getAsthmaDataStatusText(steps!.status)}
                     statusColor={getAsthmaDataStatusColor(steps!.status)}
-                    value={steps!.value}
+                    value={steps!.value?.toLocaleString()}
                     onClick={() => onClick('steps')}
                 />
                 <SingleDataPoint
                     label={language('asthma-biometrics-daytime-blood-oxygen-level-label')}
                     statusText={getAsthmaDataStatusText(daytimeBloodOxygenLevel!.status)}
                     statusColor={getAsthmaDataStatusColor(daytimeBloodOxygenLevel!.status)}
-                    value={daytimeBloodOxygenLevel!.value ? daytimeBloodOxygenLevel!.value! * 100.0 : undefined}
+                    value={daytimeBloodOxygenLevel!.value ? (daytimeBloodOxygenLevel!.value! * 100.0).toLocaleString() : undefined}
                     onClick={() => onClick('daytime-blood-oxygen-level')}
                     units={language('asthma-biometrics-percent-units')}
                 />
@@ -118,7 +118,7 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-nighttime-blood-oxygen-level-label')}
                     statusText={getAsthmaDataStatusText(nighttimeBloodOxygenLevel!.status)}
                     statusColor={getAsthmaDataStatusColor(nighttimeBloodOxygenLevel!.status)}
-                    value={nighttimeBloodOxygenLevel!.value ? nighttimeBloodOxygenLevel!.value * 100.0 : undefined}
+                    value={nighttimeBloodOxygenLevel!.value ? (nighttimeBloodOxygenLevel!.value * 100.0).toLocaleString() : undefined}
                     onClick={() => onClick('nighttime-blood-oxygen-level')}
                     units={language('asthma-biometrics-percent-units')}
                 />
@@ -126,7 +126,7 @@ export default function (props: AsthmaBiometricsProps) {
                     label={language('asthma-biometrics-sleep-disturbances-label')}
                     statusText={getAsthmaDataStatusText(sleepDisturbances!.status)}
                     statusColor={getAsthmaDataStatusColor(sleepDisturbances!.status)}
-                    value={sleepDisturbances!.value}
+                    value={sleepDisturbances!.value?.toLocaleString()}
                     onClick={() => onClick('sleep-disturbances')}
                 />
             </div>
