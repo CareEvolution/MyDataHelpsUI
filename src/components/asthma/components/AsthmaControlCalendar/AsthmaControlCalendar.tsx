@@ -119,7 +119,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 let logEntry = logEntryLookup[identifier];
                 return <Card key={index}>
                     <Action
-                        title={format(targetDate, 'LLLL do')}
+                        title={format(targetDate, 'LLLL do, yyyy')}
                         subtitle={logEntry ? getAsthmaSymptomLevelText(logEntry.symptomLevel) : differenceInDays(today, targetDate) >= 2 ? language('asthma-control-calendar-daily-entry-missed') : language('asthma-control-calendar-not-logged-yet')}
                         onClick={() => onDayClicked(targetDate)}
                     />
