@@ -1,4 +1,4 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
@@ -203,6 +203,8 @@ const computeAirQuality = (type: AsthmaAirQualityType, dataPoints: DeviceDataPoi
 export interface AsthmaDataService {
     loadParticipant(): Promise<AsthmaParticipant>;
 
+    loadDeviceInfo(): Promise<DeviceInfo>;
+
     loadLogEntries(fromDate?: Date, toDate?: Date): Promise<AsthmaLogEntry[]>;
 
     loadBiometricsForControlStatus(): Promise<AsthmaBiometric[]>;
@@ -226,6 +228,9 @@ const service: AsthmaDataService = {
     loadParticipant: async function (): Promise<AsthmaParticipant> {
         let participantInfo = await MyDataHelps.getParticipantInfo();
         return new AsthmaParticipant(participantInfo);
+    },
+    loadDeviceInfo(): Promise<DeviceInfo> {
+        return MyDataHelps.getDeviceInfo();
     },
     loadLogEntries: async function (fromDate?: Date, toDate?: Date): Promise<AsthmaLogEntry[]> {
         let params: DeviceDataPointQuery = {

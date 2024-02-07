@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AsthmaActionPlanManager.css';
 import { Button, LoadingIndicator, UnstyledButton } from '../../../presentational';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceInfo } from '@careevolution/mydatahelps-js';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import sampleActionPlan from '../../assets/sample_aap.png'
 import { asthmaDataService } from '../../helpers';
@@ -11,14 +11,32 @@ import language from '../../../../helpers/language';
 export interface AsthmaActionPlanManagerProps {
     previewState?: 'loading' | 'loaded without action plan' | 'loaded with action plan';
     learnMoreUrl: string;
-    onViewActionPlan: (actionPlan: AsthmaActionPlan) => void;
     editActionPlanSurveyName: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaActionPlanManagerProps) {
     const [loading, setLoading] = useState<boolean>(true);
+    const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>();
     const [actionPlan, setActionPlan] = useState<AsthmaActionPlan>();
+
+    const loadActionPlan = (retryCount: number = 0): void => {
+        asthmaDataService.loadParticipant().then(participant => {
+            if (participant.getActionPlanTaskRunUUID()) {
+                asthmaDataService.loadAsthmaActionPlan().then(actionPlan => {
+                    setActionPlan(actionPlan);
+                    if (actionPlan || retryCount >= 5) {
+                        setLoading(false);
+                    } else {
+                        setTimeout(() => loadActionPlan(retryCount++), 2000);
+                    }
+                });
+            } else {
+                setActionPlan(undefined);
+                setLoading(false);
+            }
+        });
+    };
 
     const initialize = (retryCount: number = 0): void => {
         setLoading(true);
@@ -37,21 +55,11 @@ export default function (props: AsthmaActionPlanManagerProps) {
             return;
         }
 
-        asthmaDataService.loadParticipant().then(participant => {
-            if (participant.getActionPlanTaskRunUUID()) {
-                asthmaDataService.loadAsthmaActionPlan().then(actionPlan => {
-                    setActionPlan(actionPlan);
-                    if (actionPlan || retryCount >= 5) {
-                        setLoading(false);
-                    } else {
-                        setTimeout(() => initialize(retryCount++), 2000);
-                    }
-                });
-            } else {
-                setActionPlan(undefined);
-                setLoading(false);
-            }
+        asthmaDataService.loadDeviceInfo().then(deviceInfo => {
+            setDeviceInfo(deviceInfo);
         });
+
+        loadActionPlan();
     };
 
     useInitializeView(initialize, [], [props.previewState]);
@@ -63,7 +71,14 @@ export default function (props: AsthmaActionPlanManagerProps) {
 
     const onViewActionPlan = (): void => {
         if (props.previewState) return;
-        props.onViewActionPlan(actionPlan!);
+
+        let actionPlanUrl = `Authenticated/ReportViewer/ServeReport.ashx?reportId=${actionPlan!.id}`;
+        if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
+            // @ts-ignore
+            window.webkit.messageHandlers.OpenFile.postMessage({'url': actionPlanUrl});
+        } else {
+            MyDataHelps.openExternalUrl('/' + actionPlanUrl);
+        }
     };
 
     const onEditActionPlan = (): void => {
