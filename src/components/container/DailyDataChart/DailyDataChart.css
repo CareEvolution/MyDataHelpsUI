@@ -2,16 +2,11 @@
     position: relative;
 }
 
-.mdhui-daily-data-chart-title {
-    padding: 0 16px;
-    font-size: 1.2em;
+.mdhui-daily-data-chart .title {
+    padding: 16px;
+    padding-bottom: 0;
+    position: relative;
     font-weight: bold;
-}
-
-.mdhui-daily-data-chart-subtitle {
-    padding: 0 16px;
-    margin-top: 2px;
-    font-size: 0.95em;
 }
 
 .mdhui-daily-data-chart .chart-container {
