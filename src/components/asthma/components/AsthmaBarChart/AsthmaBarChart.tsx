@@ -8,7 +8,7 @@ import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAx
 import { useInitializeView } from '../../../../helpers/Initialization';
 import './AsthmaBarChart.css';
 
-export interface AsthmaDailyDataChartProps {
+export interface AsthmaBarChartProps {
     previewState?: 'default';
     title: string;
     dailyDataType: string;
@@ -21,7 +21,7 @@ export interface AsthmaDailyDataChartProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: AsthmaDailyDataChartProps) {
+export default function (props: AsthmaBarChartProps) {
     let [loading, setLoading] = useState<boolean>(true);
     let [currentData, setCurrentData] = useState<DailyDataQueryResult | null>(null);
 
