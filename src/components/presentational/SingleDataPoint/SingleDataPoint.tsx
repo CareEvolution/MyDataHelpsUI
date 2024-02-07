@@ -20,10 +20,10 @@ export default function (props: SingleDataPointProps) {
                 {!props.value &&
                     <div className="mdhui-single-data-point-value">...</div>
                 }
-                {props.value &&
+                {!!props.value &&
                     <div className="mdhui-single-data-point-value">{props.value.toLocaleString()}</div>
                 }
-                {props.value && props.units &&
+                {!!props.value && props.units &&
                     <div className="mdhui-single-data-point-units">{props.units}</div>
                 }
             </div>
