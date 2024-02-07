@@ -37,17 +37,17 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         let now = new Date();
 
         asthmaDataService.loadLogEntries(add(new Date(now), {days: -10})).then(logEntries => {
-            setControlState(computeAsthmaControlState(logEntries, now));
             if (props.participant.hasPairedDevice() && props.participant.hasEstablishedBaseline()) {
                 let biometricsLoader = asthmaDataService.loadBiometricsForControlStatus();
                 let airQualityLoaders = asthmaDataService.loadAirQualitiesForControlStatus(props.participant.getHomeAirQualityZipCode(), props.participant.getWorkAirQualityZipCode());
-
                 Promise.all([biometricsLoader, airQualityLoaders]).then(values => {
+                    setControlState(computeAsthmaControlState(logEntries, now));
                     setBiometrics(values[0]);
                     setAirQualities(values[1]);
                     setLoading(false);
                 });
             } else {
+                setControlState(computeAsthmaControlState(logEntries, now));
                 setLoading(false);
             }
         });
