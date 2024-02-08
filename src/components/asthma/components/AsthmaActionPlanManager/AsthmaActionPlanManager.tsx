@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AsthmaActionPlanManager.css';
-import { Button, LoadingIndicator, UnstyledButton } from '../../../presentational';
+import { Button, LoadingIndicator, Title, UnstyledButton } from '../../../presentational';
 import MyDataHelps, { DeviceInfo } from '@careevolution/mydatahelps-js';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService } from '../../helpers';
@@ -91,7 +91,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
     };
 
     return <div className="mdhui-asthma-action-plan-manager">
-        <div className="mdhui-asthma-action-plan-manager-title">{language('asthma-action-plan-manager-title')}</div>
+        <Title order={2} className="mdhui-asthma-action-plan-manager-title">{language('asthma-action-plan-manager-title')}</Title>
         <div className="mdhui-asthma-action-plan-manager-instructions">{language('asthma-action-plan-manager-instructions')}</div>
         <UnstyledButton className="mdhui-asthma-action-plan-manager-learn-more" onClick={() => onLearnMore()}>
             {language('asthma-action-plan-manager-learn-more')}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { checkDailyDataAvailability, DailyDataProvider, DailyDataQueryResult, queryDailyData } from '../../../../helpers/query-daily-data';
-import { LoadingIndicator } from '../../../presentational';
+import { LoadingIndicator, Title } from '../../../presentational';
 import { add, format, startOfToday } from 'date-fns';
 import getDayKey from '../../../../helpers/get-day-key';
 import { AxisDomain } from 'recharts/types/util/types';
@@ -9,7 +9,6 @@ import { useInitializeView } from '../../../../helpers/Initialization';
 import './AsthmaBarChart.css';
 
 export interface AsthmaBarChartProps {
-    previewState?: 'default';
     title: string;
     dailyDataType: string;
     domain?: AxisDomain;
@@ -108,7 +107,7 @@ export default function (props: AsthmaBarChartProps) {
     };
 
     return <div className="mdhui-asthma-bar-chart" ref={props.innerRef}>
-        <div className="mdhui-asthma-bar-chart-title">{props.title}</div>
+        <Title order={3} className="mdhui-asthma-bar-chart-title">{props.title}</Title>
         <div className="mdhui-asthma-bar-chart-subtitle">Past 7 days</div>
         <div className="mdhui-asthma-bar-chart-container">
             {loading && <LoadingIndicator/>}

@@ -3,7 +3,7 @@ import './AsthmaBiometrics.css';
 import { AsthmaBiometric, AsthmaBiometricType } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
-import { LoadingIndicator, SingleDataPoint } from '../../../presentational';
+import { LoadingIndicator, SingleDataPoint, Title } from '../../../presentational';
 import { AsthmaBiometricsPreviewState, previewData } from './AsthmaBiometrics.previewData';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language from '../../../../helpers/language';
@@ -71,7 +71,7 @@ export default function (props: AsthmaBiometricsProps) {
     };
 
     return <div className="mdhui-asthma-biometrics" ref={props.innerRef}>
-        <div className="mdhui-asthma-biometrics-title">{language('asthma-biometrics-title')}</div>
+        <Title order={2} className="mdhui-asthma-biometrics-title">{language('asthma-biometrics-title')}</Title>
         {loading && <LoadingIndicator/>}
         {!loading &&
             <div className="mdhui-asthma-biometrics-data">

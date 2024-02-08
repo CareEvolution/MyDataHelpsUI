@@ -3,7 +3,7 @@ import './AsthmaAirQualities.css';
 import { AsthmaAirQuality } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
-import { LoadingIndicator, SingleDataPoint, UnstyledButton } from '../../../presentational';
+import { LoadingIndicator, SingleDataPoint, Title, UnstyledButton } from '../../../presentational';
 import { AsthmaAirQualitiesPreviewState, previewData } from './AsthmaAirQualities.previewData';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -74,7 +74,7 @@ export default function (props: AsthmaAirQualitiesProps) {
 
     return <div className="mdhui-asthma-air-qualities" ref={props.innerRef}>
         <div className="mdhui-asthma-air-qualities-header">
-            <div className="mdhui-asthma-air-qualities-title">{language('asthma-air-qualities-title')}</div>
+            <Title order={2} className="mdhui-asthma-air-qualities-title">{language('asthma-air-qualities-title')}</Title>
             {props.editZipCodesSurveyName &&
                 <UnstyledButton className="mdhui-asthma-air-qualities-settings" onClick={() => onSetup()}>
                     <FontAwesomeIcon icon={faGear}/>
