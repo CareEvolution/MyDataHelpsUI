@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
 import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider } from '../../helpers/daily-data-providers';
-import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
+import { AsthmaAlertTakeoverNotice } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
+import { RecentDailyDataBarChart } from '../../../container';
 
 const DaytimeRestingHeartRateDailyDataType = 'Asthma.DaytimeRestingHeartRate';
 const NighttimeRestingHeartRateDailyDataType = 'Asthma.NighttimeRestingHeartRate';
@@ -68,37 +69,41 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
             <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-heart-and-lungs-view-title')}</Title>
         </NavigationBar>
         {(!props.alert || props.alert === 'DaytimeRestingHeartRate') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-dhr-chart-title')}
                 dailyDataType={DaytimeRestingHeartRateDailyDataType}
-                previewDataProvider={hrPreviewDataProvider}
                 highlight={rawValue => dhrBaseline ? !isDaytimeRestingHeartRateWithinRange(dhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
         }
         {(!props.alert || props.alert === 'NighttimeRestingHeartRate') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-nhr-chart-title')}
                 dailyDataType={NighttimeRestingHeartRateDailyDataType}
-                previewDataProvider={hrPreviewDataProvider}
                 highlight={rawValue => nhrBaseline ? !isNighttimeRestingHeartRateWithinRange(nhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
         }
         {(!props.alert || props.alert === 'RespiratoryRate') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={rrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-rr-chart-title')}
                 dailyDataType={RespiratoryRateDailyDataType}
-                previewDataProvider={rrPreviewDataProvider}
                 highlight={rawValue => rrBaseline ? !isRespiratoryRateWithinRange(rrBaseline, rawValue) : false}
                 emptyDomain={[0, 40]}
             />
         }
         {(!props.alert || props.alert === 'DaytimeBloodOxygenLevel') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={spo2PreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-dbol-chart-title')}
                 dailyDataType={DaytimeBloodOxygenLevelDailyDataType}
-                previewDataProvider={spo2PreviewDataProvider}
                 valueConverter={rawValue => rawValue * 100.0}
                 valueFormatter={value => Number(value).toFixed(1)}
                 highlight={rawValue => dbolBaseline ? !isBloodOxygenLevelWithinRange(dbolBaseline, rawValue) : false}
@@ -107,10 +112,11 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
             />
         }
         {(!props.alert || props.alert === 'NighttimeBloodOxygenLevel') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={spo2PreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-nbol-chart-title')}
                 dailyDataType={NighttimeBloodOxygenLevelDailyDataType}
-                previewDataProvider={spo2PreviewDataProvider}
                 valueConverter={rawValue => rawValue * 100.0}
                 valueFormatter={value => Number(value).toFixed(1)}
                 highlight={rawValue => nbolBaseline ? !isBloodOxygenLevelWithinRange(nbolBaseline, rawValue) : false}

@@ -2,7 +2,6 @@ export { default as AsthmaActionPlanManager } from './AsthmaActionPlanManager';
 export { default as AsthmaAirQualities, AsthmaAirQualitiesPreviewState } from './AsthmaAirQualities';
 export { default as AsthmaAlertTakeoverNotice } from './AsthmaAlertTakeoverNotice';
 export { default as AsthmaAlertTakeoverTrigger } from './AsthmaAlertTakeoverTrigger';
-export { default as AsthmaBarChart } from './AsthmaBarChart';
 export { default as AsthmaBiometrics, AsthmaBiometricsPreviewState } from './AsthmaBiometrics';
 export { default as AsthmaControlCalendar, AsthmaControlCalendarPreviewState, AsthmaControlCalendarVariant } from './AsthmaControlCalendar';
 export { default as AsthmaControlStatusHeader } from './AsthmaControlStatusHeader';

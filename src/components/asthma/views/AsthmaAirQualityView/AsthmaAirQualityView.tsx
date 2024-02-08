@@ -1,9 +1,10 @@
 import React from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, DailyDataType } from '../../../../helpers/query-daily-data';
-import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
+import { AsthmaAlertTakeoverNotice } from '../../components';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
+import { RecentDailyDataBarChart } from '../../../container';
 
 export interface AsthmaAirQualityViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -24,19 +25,21 @@ export default function (props: AsthmaAirQualityViewProps) {
             <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-air-quality-view-title')}</Title>
         </NavigationBar>
         {(!props.alert || props.alert === 'HomeAirQuality') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={previewDataProvider}
                 title={language('asthma-air-quality-view-home-aqi-chart-title')}
                 dailyDataType={DailyDataType.HomeAirQuality}
-                previewDataProvider={previewDataProvider}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}
             />
         }
         {(!props.alert || props.alert === 'WorkAirQuality') &&
-            <AsthmaBarChart
+            <RecentDailyDataBarChart
+                previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+                previewDataProvider={previewDataProvider}
                 title={language('asthma-air-quality-view-work-aqi-chart-title')}
                 dailyDataType={DailyDataType.WorkAirQuality}
-                previewDataProvider={previewDataProvider}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}
             />

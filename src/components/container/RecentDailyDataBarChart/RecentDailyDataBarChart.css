@@ -1,19 +1,19 @@
-.mdhui-asthma-bar-chart {
+.mdhui-recent-daily-data-bar-chart {
     position: relative;
     margin-bottom: 48px;
 }
 
-.mdhui-asthma-bar-chart-title {
+.mdhui-recent-daily-data-bar-chart-title {
     padding: 0 16px;
 }
 
-.mdhui-asthma-bar-chart-subtitle {
+.mdhui-recent-daily-data-bar-chart-subtitle {
     padding: 0 16px;
     margin-top: 2px;
     font-size: 0.95em;
 }
 
-.mdhui-asthma-bar-chart-container {
+.mdhui-recent-daily-data-bar-chart-container {
     position: relative;
     margin: 16px 16px 32px;
     padding: 0;
@@ -22,12 +22,12 @@
     height: 200px;
 }
 
-.mdhui-asthma-bar-chart .recharts-surface {
+.mdhui-recent-daily-data-bar-chart .recharts-surface {
     height: 270px !important;
     overflow: visible;
 }
 
-.mdhui-asthma-bar-chart-no-data-label, .mdhui-asthma-bar-chart .mdhui-loading-indicator {
+.mdhui-recent-daily-data-bar-chart-no-data-label, .mdhui-recent-daily-data-bar-chart .mdhui-loading-indicator {
     position: absolute;
     width: 80px;
     height: 20px;
@@ -43,6 +43,6 @@
     z-index: 5000;
 }
 
-.mdhui-asthma-bar-chart .recharts-cartesian-grid-horizontal line:first-child {
+.mdhui-recent-daily-data-bar-chart .recharts-cartesian-grid-horizontal line:first-child {
     display: none;
 }

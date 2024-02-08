@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
 import { stepsDataProvider } from '../../helpers/daily-data-providers';
-import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
+import { AsthmaAlertTakeoverNotice } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, isStepsWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
+import { RecentDailyDataBarChart } from '../../../container';
 
 const StepsDailyDataType = 'Asthma.Steps';
 
@@ -42,10 +43,11 @@ export default function (props: AsthmaActivityViewProps) {
         <NavigationBar showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
             <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-activity-view-title')}</Title>
         </NavigationBar>
-        <AsthmaBarChart
+        <RecentDailyDataBarChart
+            previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+            previewDataProvider={previewDataProvider}
             title={language('asthma-activity-view-chart-title')}
             dailyDataType={StepsDailyDataType}
-            previewDataProvider={previewDataProvider}
             highlight={rawValue => baseline ? !isStepsWithinRange(baseline, rawValue) : false}
             emptyDomain={[0, 10000]}
         />

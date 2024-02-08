@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { checkDailyDataAvailability, DailyDataProvider, DailyDataQueryResult, queryDailyData } from '../../../../helpers/query-daily-data';
-import { LoadingIndicator, Title } from '../../../presentational';
+import { checkDailyDataAvailability, DailyDataQueryResult, queryDailyData } from '../../../helpers/query-daily-data';
+import { LoadingIndicator, Title } from '../../presentational';
 import { add, format, startOfToday } from 'date-fns';
-import getDayKey from '../../../../helpers/get-day-key';
+import getDayKey from '../../../helpers/get-day-key';
 import { AxisDomain } from 'recharts/types/util/types';
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { useInitializeView } from '../../../../helpers/Initialization';
-import './AsthmaBarChart.css';
+import { useInitializeView } from '../../../helpers/Initialization';
+import './RecentDailyDataBarChart.css';
+import { randomDataProvider } from '../../../helpers/daily-data-providers';
 
-export interface AsthmaBarChartProps {
+export interface RecentDailyDataBarChartProps {
+    previewState?: 'loading' | 'loaded without data' | 'loaded with data';
+    previewDataProvider?: (start: Date, end: Date) => Promise<DailyDataQueryResult>;
     title: string;
     dailyDataType: string;
     domain?: AxisDomain;
@@ -16,11 +19,10 @@ export interface AsthmaBarChartProps {
     valueConverter?: (rawValue: number) => number;
     valueFormatter?: (value: number) => string;
     highlight?: (rawValue: number) => boolean;
-    previewDataProvider?: DailyDataProvider;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: AsthmaBarChartProps) {
+export default function (props: RecentDailyDataBarChartProps) {
     let [loading, setLoading] = useState<boolean>(true);
     let [currentData, setCurrentData] = useState<DailyDataQueryResult | null>(null);
 
@@ -31,8 +33,24 @@ export default function (props: AsthmaBarChartProps) {
     useInitializeView(() => {
         setLoading(true);
 
-        if (props.previewDataProvider) {
-            props.previewDataProvider(startDate, endDate).then((data) => {
+        if (props.previewState === 'loading') {
+            setCurrentData({});
+            return;
+        }
+        if (props.previewState === 'loaded without data') {
+            setCurrentData({});
+            setLoading(false);
+            return;
+        }
+        if (props.previewState === 'loaded with data') {
+            if (props.previewDataProvider) {
+                props.previewDataProvider(startDate, endDate).then((data) => {
+                    setCurrentData(data);
+                    setLoading(false);
+                });
+                return;
+            }
+            randomDataProvider(startDate, endDate, 0, 20000).then((data) => {
                 setCurrentData(data);
                 setLoading(false);
             });
@@ -50,7 +68,7 @@ export default function (props: AsthmaBarChartProps) {
                 setLoading(false);
             }
         });
-    }, ['externalAccountSyncComplete'])
+    }, ['externalAccountSyncComplete'], [props.previewState])
 
     let currentDate = startDate;
     let data: any[] = [];
@@ -106,15 +124,15 @@ export default function (props: AsthmaBarChartProps) {
         return <text x={x + (width / 2)} y={y - 5} fontSize={10} fontWeight="bold" textAnchor="middle" fill={textColor}>{props.valueFormatter ? props.valueFormatter(value) : value.toLocaleString()}</text>;
     };
 
-    return <div className="mdhui-asthma-bar-chart" ref={props.innerRef}>
-        <Title order={3} className="mdhui-asthma-bar-chart-title">{props.title}</Title>
-        <div className="mdhui-asthma-bar-chart-subtitle">Past 7 days</div>
-        <div className="mdhui-asthma-bar-chart-container">
+    return <div className="mdhui-recent-daily-data-bar-chart" ref={props.innerRef}>
+        <Title order={3} className="mdhui-recent-daily-data-bar-chart-title">{props.title}</Title>
+        <div className="mdhui-recent-daily-data-bar-chart-subtitle">Past 7 days</div>
+        <div className="mdhui-recent-daily-data-bar-chart-container">
             {loading && <LoadingIndicator/>}
-            {!loading && !chartHasData && <div className="mdhui-asthma-bar-chart-no-data-label">No Data</div>}
+            {!loading && !chartHasData && <div className="mdhui-recent-daily-data-bar-chart-no-data-label">No Data</div>}
             <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={data} cx={20}>
-                    <CartesianGrid vertical={false} x={0} horizontal={createLine}/>
+                    {!loading && chartHasData && <CartesianGrid vertical={false} x={0} horizontal={createLine}/>}
                     <YAxis
                         dataKey="value"
                         tick={valueTick}

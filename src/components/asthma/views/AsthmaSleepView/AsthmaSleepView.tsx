@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
 import { sleepDisturbancesDataProvider } from '../../helpers/daily-data-providers';
-import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
+import { AsthmaAlertTakeoverNotice } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, isSleepDisturbancesWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
+import { RecentDailyDataBarChart } from '../../../container';
 
 const SleepDisturbancesDailyDataType = 'Asthma.SleepDisturbances';
 
@@ -42,10 +43,11 @@ export default function (props: AsthmaSleepViewProps) {
         <NavigationBar showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
             <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-sleep-view-title')}</Title>
         </NavigationBar>
-        <AsthmaBarChart
+        <RecentDailyDataBarChart
+            previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
+            previewDataProvider={previewDataProvider}
             title={language('asthma-sleep-view-chart-title')}
             dailyDataType={SleepDisturbancesDailyDataType}
-            previewDataProvider={previewDataProvider}
             highlight={rawValue => baseline ? !isSleepDisturbancesWithinRange(baseline, rawValue) : false}
             emptyDomain={[0, 16]}
         />
