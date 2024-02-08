@@ -37,7 +37,7 @@
 .mdhui-unstyled-button.mdhui-asthma-log-entry-details-header-info-button {
     width: 48px;
     height: 32px;
-    text-align: center;
+    text-align: right;
     line-height: 32px;
     font-size: 20px;
     color: var(--mdhui-color-primary);
