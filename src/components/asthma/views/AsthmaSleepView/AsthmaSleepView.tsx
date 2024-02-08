@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import { randomDataProvider, sleepDisturbancesDataProvider } from '../../helpers/daily-data-providers';
+import { sleepDisturbancesDataProvider } from '../../helpers/daily-data-providers';
 import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, isSleepDisturbancesWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
+import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 
 const SleepDisturbancesDailyDataType = 'Asthma.SleepDisturbances';
 

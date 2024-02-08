@@ -1,15 +1,9 @@
 import React from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import { homeAirQualityDataProvider, randomDataProvider, workAirQualityDataProvider } from '../../helpers/daily-data-providers';
+import { DailyDataProvider, DailyDataType } from '../../../../helpers/query-daily-data';
 import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
 import language from '../../../../helpers/language';
-
-const HomeAirQualityDailyDataType = 'Asthma.HomeAirQuality';
-const WorkAirQualityDailyDataType = 'Asthma.WorkAirQuality';
-
-registerDailyDataProvider(HomeAirQualityDailyDataType, homeAirQualityDataProvider, simpleAvailabilityCheck('AirNowApi', ['HomeAirQuality']));
-registerDailyDataProvider(WorkAirQualityDailyDataType, workAirQualityDataProvider, simpleAvailabilityCheck('AirNowApi', ['WorkAirQuality']));
+import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 
 export interface AsthmaAirQualityViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -32,7 +26,7 @@ export default function (props: AsthmaAirQualityViewProps) {
         {(!props.alert || props.alert === 'HomeAirQuality') &&
             <AsthmaBarChart
                 title={language('asthma-air-quality-view-home-aqi-chart-title')}
-                dailyDataType={HomeAirQualityDailyDataType}
+                dailyDataType={DailyDataType.HomeAirQuality}
                 previewDataProvider={previewDataProvider}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}
@@ -41,7 +35,7 @@ export default function (props: AsthmaAirQualityViewProps) {
         {(!props.alert || props.alert === 'WorkAirQuality') &&
             <AsthmaBarChart
                 title={language('asthma-air-quality-view-work-aqi-chart-title')}
-                dailyDataType={WorkAirQualityDailyDataType}
+                dailyDataType={DailyDataType.WorkAirQuality}
                 previewDataProvider={previewDataProvider}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}

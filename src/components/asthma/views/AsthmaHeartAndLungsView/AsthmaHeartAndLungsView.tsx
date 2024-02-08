@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
 import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, randomDataProvider, respiratoryRateDataProvider } from '../../helpers/daily-data-providers';
+import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider } from '../../helpers/daily-data-providers';
 import { AsthmaAlertTakeoverNotice, AsthmaBarChart } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
+import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 
 const DaytimeRestingHeartRateDailyDataType = 'Asthma.DaytimeRestingHeartRate';
 const NighttimeRestingHeartRateDailyDataType = 'Asthma.NighttimeRestingHeartRate';
