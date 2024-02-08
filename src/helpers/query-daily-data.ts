@@ -58,7 +58,8 @@ import {
 	garminAwakeMinutesDataProvider,
 	garminSleepScoreDataProvider,
 	garminTotalSleepMinutesDataProvider,
-	homeAirQualityDataProvider, workAirQualityDataProvider
+	homeAirQualityDataProvider,
+	workAirQualityDataProvider
 } from "./daily-data-providers";
 import combinedRestingHeartRate from "./daily-data-providers/combined-resting-heart-rate";
 import getDayKey from "./get-day-key";
