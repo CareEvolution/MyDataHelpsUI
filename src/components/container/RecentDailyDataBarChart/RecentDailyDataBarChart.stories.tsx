@@ -12,6 +12,7 @@ interface RecentDailyDataBarChartStoryArgs extends RecentDailyDataBarChartProps 
     colorScheme: 'auto' | 'light' | 'dark';
     thresholdValue: number;
     thresholdComparison: 'less than' | 'more than';
+    withEmptyDomain: boolean;
 }
 
 const render = (args: RecentDailyDataBarChartStoryArgs) => {
@@ -22,6 +23,7 @@ const render = (args: RecentDailyDataBarChartStoryArgs) => {
                 highlight={args.thresholdComparison === 'less than' ?
                     rawValue => rawValue < args.thresholdValue :
                     rawValue => rawValue > args.thresholdValue}
+                emptyDomain={args.withEmptyDomain ? [0, 16000] : undefined}
             />
         </Section>
     </Layout>;
@@ -33,7 +35,8 @@ export const Default = {
         previewState: 'loaded with data',
         title: 'Chart Title',
         thresholdValue: 10000,
-        thresholdComparison: 'less than'
+        thresholdComparison: 'less than',
+        withEmptyDomain: false
     },
     argTypes: {
         colorScheme: {
@@ -55,7 +58,10 @@ export const Default = {
             control: 'radio',
             options: ['less than', 'more than'],
             if: {arg: 'previewState', eq: 'loaded with data'}
-        }
+        },
+        withEmptyDomain: {
+            name: "with empty domain"
+        },
     },
     render: render
 };

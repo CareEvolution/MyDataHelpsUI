@@ -132,7 +132,7 @@ export default function (props: RecentDailyDataBarChartProps) {
             {!loading && !chartHasData && <div className="mdhui-recent-daily-data-bar-chart-no-data-label">No Data</div>}
             <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={data} cx={20}>
-                    {!loading && chartHasData && <CartesianGrid vertical={false} x={0} horizontal={createLine}/>}
+                    {(chartHasData || props.emptyDomain) && <CartesianGrid vertical={false} x={0} horizontal={createLine}/>}
                     <YAxis
                         dataKey="value"
                         tick={valueTick}
