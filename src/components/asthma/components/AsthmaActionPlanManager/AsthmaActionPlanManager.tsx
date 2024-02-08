@@ -3,7 +3,6 @@ import './AsthmaActionPlanManager.css';
 import { Button, LoadingIndicator, UnstyledButton } from '../../../presentational';
 import MyDataHelps, { DeviceInfo } from '@careevolution/mydatahelps-js';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import sampleActionPlan from '../../assets/sample_aap.png'
 import { asthmaDataService } from '../../helpers';
 import { AsthmaActionPlan } from '../../model';
 import language from '../../../../helpers/language';
@@ -45,7 +44,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
             return;
         }
         if (props.previewState === 'loaded with action plan') {
-            setActionPlan({id: 'sample', url: sampleActionPlan});
+            setActionPlan({id: 'sample', url: 'https://asthma.careevolutionapps.dev/images/sample_aap.png'});
             setLoading(false);
             return;
         }
