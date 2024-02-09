@@ -166,6 +166,7 @@
     "inbox-view-history-button-text": "View inbox history",
     "recent-daily-data-bar-chart-subtitle": "Past 7 days",
     "recent-daily-data-bar-chart-no-data": "No Data",
+    "resource-list-empty-text": "No resources found.",
     "asthma-symptom-level-none": "No symptoms",
     "asthma-symptom-level-mild": "Mild symptoms",
     "asthma-symptom-level-moderate": "Moderate symptoms",
@@ -265,7 +266,6 @@
     "asthma-alert-takeover-notice-instructions": "Take a moment to record any asthma symptoms in a daily entry.",
     "asthma-alert-takeover-notice-add-entry-button-text": "+ Daily Entry",
     "asthma-alert-takeover-notice-not-now-button-text": "Not Now",
-    "asthma-library-articles-empty-text": "No articles found.",
     "asthma-log-entry-details-not-editable": "Daily entry missed",
     "asthma-log-entry-details-not-logged-yet": "Not logged yet",
     "asthma-log-entry-details-edit-button-text": "Edit",
@@ -307,7 +307,8 @@
     "asthma-log-entry-editor-view-select-all-subtitle": "Select all that apply",
     "asthma-log-entry-editor-view-symptoms-title": "Symptoms",
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
-    "asthma-log-entry-editor-view-triggers-title": "Triggers"
+    "asthma-log-entry-editor-view-triggers-title": "Triggers",
+    "asthma-library-category-view-empty-text": "No articles found."
 };
 
 export default strings;

@@ -1,4 +1,5 @@
 import { ParticipantInfo } from '@careevolution/mydatahelps-js';
+import { ResourceDefinition } from "../../presentational";
 
 export class AsthmaParticipant {
     participantInfo: ParticipantInfo;
@@ -140,11 +141,4 @@ export interface AsthmaLogEntry {
 export interface AsthmaActionPlan {
     id: string;
     url: string;
-}
-
-export interface AsthmaLibraryArticle {
-    title: string;
-    subTitle?: string;
-    url: string;
-    imageUrl?: string;
 }

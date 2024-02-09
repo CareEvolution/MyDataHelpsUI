@@ -1,9 +1,9 @@
-.mdhui-asthma-library-articles {
+.mdhui-resource-list {
     padding: 0 16px;
     margin-bottom: 16px;
 }
 
-.mdhui-asthma-library-articles-empty-text {
+.mdhui-resource-list-empty-text {
     color: var(--mdhui-text-color-3);
     padding: 16px 0;
 }

@@ -162,6 +162,7 @@
     "inbox-view-history-button-text": "Ver historial de bandeja de entrada",
     "recent-daily-data-bar-chart-subtitle": "Últimos 7 días",
     "recent-daily-data-bar-chart-no-data": "Sin datos",
+    "resource-list-empty-text": "No se encontraron recursos.",
     "asthma-symptom-level-none": "Sin síntomas",
     "asthma-symptom-level-mild": "Síntomas leves",
     "asthma-symptom-level-moderate": "Síntomas moderados",
