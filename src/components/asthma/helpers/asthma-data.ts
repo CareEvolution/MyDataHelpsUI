@@ -1,9 +1,10 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, PersistableDeviceDataPoint, SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
 import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers/query-daily-data";
 import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider, sleepDisturbancesDataProvider, stepsDataProvider } from "./daily-data-providers";
+import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
 
 export enum AsthmaDailyDataType {
     Steps = 'Asthma.Steps',
@@ -332,27 +333,8 @@ const service: AsthmaDataService = {
 
         return mostRecentDataPoint.value;
     },
-    loadSurveyAnswers: async function (surveyNames: string[]): Promise<SurveyAnswer[]> {
-        let answers: SurveyAnswer[] = [];
-
-        let queryParameters: SurveyAnswersQuery = {surveyName: surveyNames};
-
-        const getPage = async function (pageID?: Guid): Promise<SurveyAnswer[]> {
-            queryParameters.pageID = pageID;
-
-            let response = await MyDataHelps.querySurveyAnswers(queryParameters);
-
-            answers = answers.concat(response.surveyAnswers);
-            if (response.nextPageID) {
-                return getPage(response.nextPageID);
-            } else {
-                return answers;
-            }
-        };
-
-        return getPage().then(function (surveyAnswers) {
-            return surveyAnswers;
-        });
+    loadSurveyAnswers: function (surveyNames: string[]): Promise<SurveyAnswer[]> {
+        return queryAllSurveyAnswers({surveyName: surveyNames});
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);
