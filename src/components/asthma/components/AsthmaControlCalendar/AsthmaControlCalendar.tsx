@@ -96,7 +96,7 @@ export default function (props: AsthmaControlCalendarProps) {
 
     let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
-    const getLogEntries = () => {
+    const getLogEntriesDisplay = () => {
         if (logEntries.length === 0) {
             return null;
         }
@@ -146,7 +146,7 @@ export default function (props: AsthmaControlCalendarProps) {
         <Section noTopMargin={true} style={{boxShadow: 'none', marginBottom: '0'}}>
             <Calendar innerRef={props.innerRef} className="mdhui-asthma-control-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>
         </Section>
-        {props.variant === 'verbose' && getLogEntries()}
+        {props.variant === 'verbose' && getLogEntriesDisplay()}
     </div>;
 };
 

@@ -21,7 +21,8 @@ const filterLogEntries = (logEntries: AsthmaLogEntry[], dates: Date[]) => {
 };
 
 export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Date): AsthmaControlState => {
-    let logEntry = logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(date));
+    let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(date);
+    let logEntry = logEntries.find(e => e.identifier === logEntryIdentifier);
 
     if (logEntry) {
         let past7Dates = computePast7Dates(date);

@@ -42,10 +42,12 @@ export default function (props: AsthmaLogEntryHeaderProps) {
 
         asthmaDataService.loadLogEntries(add(new Date(), {days: -3})).then(entries => {
             let today = startOfDay(new Date());
-            setTodayLogEntry(entries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(today)));
+            let todayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(today);
+            setTodayLogEntry(entries.find(e => e.identifier === todayLogEntryIdentifier));
 
             let yesterday = startOfDay(add(new Date(), {days: -1}));
-            setYesterdayLogEntry(entries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(yesterday)));
+            let yesterdayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(yesterday);
+            setYesterdayLogEntry(entries.find(e => e.identifier === yesterdayLogEntryIdentifier));
 
             setLoading(false);
             setFirstTimeLoading(false);

@@ -61,7 +61,8 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
         let dayBefore = add(new Date(props.date), {days: -1});
         let dayAfter = add(new Date(props.date), {days: 1});
         asthmaDataService.loadLogEntries(dayBefore, dayAfter).then(logEntries => {
-            let logEntry = logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(props.date));
+            let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(props.date);
+            let logEntry = logEntries.find(e => e.identifier === logEntryIdentifier);
             if (logEntry) {
                 setLogEntry(logEntry);
             } else {

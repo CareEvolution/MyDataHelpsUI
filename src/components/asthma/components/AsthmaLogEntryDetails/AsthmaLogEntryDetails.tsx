@@ -44,7 +44,8 @@ export default function (props: AsthmaLogEntryDetailsProps) {
         }
 
         asthmaDataService.loadLogEntries(dayBefore, dayAfter).then(logEntries => {
-            setLogEntry(logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(props.date)));
+            let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(props.date);
+            setLogEntry(logEntries.find(e => e.identifier === logEntryIdentifier));
             setLoading(false);
         });
     }, [], [props.previewState]);
