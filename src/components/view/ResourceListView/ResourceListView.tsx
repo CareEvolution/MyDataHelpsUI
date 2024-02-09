@@ -1,5 +1,4 @@
 import React from 'react';
-import language from '../../../helpers/language';
 import { Layout, NavigationBar, ResourceDefinition, ResourceImageAlignment, ResourceList, ResourceListPreviewState, Title } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
@@ -8,6 +7,7 @@ export interface ResourceListViewProps {
     previewState?: ResourceListPreviewState;
     title: string;
     resources: ResourceDefinition[];
+    emptyText?: string;
     resourceImageAlignment?: ResourceImageAlignment;
 }
 
@@ -26,7 +26,7 @@ export default function (props: ResourceListViewProps) {
             previewState={props.previewState}
             resources={props.resources}
             onViewResource={onViewResource}
-            emptyText={language('resource-list-view-empty-text')}
+            emptyText={props.emptyText}
             imageAlignment={props.resourceImageAlignment}
         />
     </Layout>;
