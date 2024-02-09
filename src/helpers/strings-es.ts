@@ -160,6 +160,8 @@
     "inbox-view-recently-completed-title": "Reciente",
     "inbox-view-recently-completed-empty-text": "No tienes elementos recientemente completados en tu bandeja de entrada.",
     "inbox-view-history-button-text": "Ver historial de bandeja de entrada",
+    "recent-daily-data-bar-chart-subtitle": "Últimos 7 días",
+    "recent-daily-data-bar-chart-no-data": "Sin datos",
     "asthma-symptom-level-none": "Sin síntomas",
     "asthma-symptom-level-mild": "Síntomas leves",
     "asthma-symptom-level-moderate": "Síntomas moderados",

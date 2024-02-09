@@ -164,6 +164,8 @@
     "inbox-view-recently-completed-title": "Recent",
     "inbox-view-recently-completed-empty-text": "You have no recently completed items in your inbox.",
     "inbox-view-history-button-text": "View inbox history",
+    "recent-daily-data-bar-chart-subtitle": "Past 7 days",
+    "recent-daily-data-bar-chart-no-data": "No Data",
     "asthma-symptom-level-none": "No symptoms",
     "asthma-symptom-level-mild": "Mild symptoms",
     "asthma-symptom-level-moderate": "Moderate symptoms",

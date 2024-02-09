@@ -8,6 +8,7 @@ import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAx
 import { useInitializeView } from '../../../helpers/Initialization';
 import './RecentDailyDataBarChart.css';
 import { randomDataProvider } from '../../../helpers/daily-data-providers';
+import language from '../../../helpers/language';
 
 export interface RecentDailyDataBarChartProps {
     previewState?: 'loading' | 'loaded without data' | 'loaded with data';
@@ -126,10 +127,10 @@ export default function (props: RecentDailyDataBarChartProps) {
 
     return <div className="mdhui-recent-daily-data-bar-chart" ref={props.innerRef}>
         <Title order={3} className="mdhui-recent-daily-data-bar-chart-title">{props.title}</Title>
-        <div className="mdhui-recent-daily-data-bar-chart-subtitle">Past 7 days</div>
+        <div className="mdhui-recent-daily-data-bar-chart-subtitle">{language('recent-daily-data-bar-chart-subtitle')}</div>
         <div className="mdhui-recent-daily-data-bar-chart-container">
             {loading && <LoadingIndicator/>}
-            {!loading && !chartHasData && <div className="mdhui-recent-daily-data-bar-chart-no-data-label">No Data</div>}
+            {!loading && !chartHasData && <div className="mdhui-recent-daily-data-bar-chart-no-data-label">{language('recent-daily-data-bar-chart-no-data')}</div>}
             <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={data} cx={20}>
                     {(chartHasData || props.emptyDomain) && <CartesianGrid vertical={false} x={0} horizontal={createLine}/>}
