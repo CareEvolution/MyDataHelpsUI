@@ -1,25 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider } from '../../helpers/daily-data-providers';
+import { DailyDataProvider } from '../../../../helpers/query-daily-data';
 import { AsthmaAlertTakeoverNotice } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService, isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange } from '../../helpers';
+import { AsthmaDailyDataType, asthmaDataService, isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 import { RecentDailyDataBarChart } from '../../../container';
-
-const DaytimeRestingHeartRateDailyDataType = 'Asthma.DaytimeRestingHeartRate';
-const NighttimeRestingHeartRateDailyDataType = 'Asthma.NighttimeRestingHeartRate';
-const RespiratoryRateDailyDataType = 'Asthma.RespiratoryRate';
-const DaytimeBloodOxygenLevelDailyDataType = 'Asthma.DaytimeBloodOxygenLevel';
-const NighttimeBloodOxygenLevelDailyDataType = 'Asthma.NighttimeBloodOxygenLevel';
-
-registerDailyDataProvider(DaytimeRestingHeartRateDailyDataType, daytimeRestingHeartRateDataProvider, simpleAvailabilityCheck('Project', ['DaytimeRestingHeartRate']));
-registerDailyDataProvider(NighttimeRestingHeartRateDailyDataType, nighttimeRestingHeartRateDataProvider, simpleAvailabilityCheck('Project', ['NighttimeRestingHeartRate']));
-registerDailyDataProvider(RespiratoryRateDailyDataType, respiratoryRateDataProvider, simpleAvailabilityCheck('Project', ['RespiratoryRate']));
-registerDailyDataProvider(DaytimeBloodOxygenLevelDailyDataType, daytimeBloodOxygenLevelDataProvider, simpleAvailabilityCheck('Project', ['DaytimeBloodOxygenLevel']));
-registerDailyDataProvider(NighttimeBloodOxygenLevelDailyDataType, nighttimeBloodOxygenLevelDataProvider, simpleAvailabilityCheck('Project', ['NighttimeBloodOxygenLevel']));
 
 export interface AsthmaHeartAndLungsViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -73,7 +60,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-dhr-chart-title')}
-                dailyDataType={DaytimeRestingHeartRateDailyDataType}
+                dailyDataType={AsthmaDailyDataType.DaytimeRestingHeartRate}
                 highlight={rawValue => dhrBaseline ? !isDaytimeRestingHeartRateWithinRange(dhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
@@ -83,7 +70,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-nhr-chart-title')}
-                dailyDataType={NighttimeRestingHeartRateDailyDataType}
+                dailyDataType={AsthmaDailyDataType.NighttimeRestingHeartRate}
                 highlight={rawValue => nhrBaseline ? !isNighttimeRestingHeartRateWithinRange(nhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
@@ -93,7 +80,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={rrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-rr-chart-title')}
-                dailyDataType={RespiratoryRateDailyDataType}
+                dailyDataType={AsthmaDailyDataType.RespiratoryRate}
                 highlight={rawValue => rrBaseline ? !isRespiratoryRateWithinRange(rrBaseline, rawValue) : false}
                 emptyDomain={[0, 40]}
             />
@@ -103,7 +90,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={spo2PreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-dbol-chart-title')}
-                dailyDataType={DaytimeBloodOxygenLevelDailyDataType}
+                dailyDataType={AsthmaDailyDataType.DaytimeBloodOxygenLevel}
                 valueConverter={rawValue => rawValue * 100.0}
                 valueFormatter={value => Number(value).toFixed(1)}
                 highlight={rawValue => dbolBaseline ? !isBloodOxygenLevelWithinRange(dbolBaseline, rawValue) : false}
@@ -116,7 +103,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={spo2PreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-nbol-chart-title')}
-                dailyDataType={NighttimeBloodOxygenLevelDailyDataType}
+                dailyDataType={AsthmaDailyDataType.NighttimeBloodOxygenLevel}
                 valueConverter={rawValue => rawValue * 100.0}
                 valueFormatter={value => Number(value).toFixed(1)}
                 highlight={rawValue => nbolBaseline ? !isBloodOxygenLevelWithinRange(nbolBaseline, rawValue) : false}

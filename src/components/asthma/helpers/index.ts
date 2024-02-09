@@ -1,2 +1,2 @@
-export { default as asthmaDataService } from './asthma-data';
+export { default as asthmaDataService, AsthmaDailyDataType } from './asthma-data';
 export * from './asthma-functions';

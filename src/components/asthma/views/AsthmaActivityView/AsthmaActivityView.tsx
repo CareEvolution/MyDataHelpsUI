@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider, registerDailyDataProvider, simpleAvailabilityCheck } from '../../../../helpers/query-daily-data';
-import { stepsDataProvider } from '../../helpers/daily-data-providers';
+import { DailyDataProvider } from '../../../../helpers/query-daily-data';
 import { AsthmaAlertTakeoverNotice } from '../../components';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService, isStepsWithinRange } from '../../helpers';
+import { AsthmaDailyDataType, asthmaDataService, isStepsWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 import { RecentDailyDataBarChart } from '../../../container';
-
-const StepsDailyDataType = 'Asthma.Steps';
-
-registerDailyDataProvider(StepsDailyDataType, stepsDataProvider, simpleAvailabilityCheck('Project', ['Steps']));
 
 export interface AsthmaActivityViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -47,7 +42,7 @@ export default function (props: AsthmaActivityViewProps) {
             previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
             previewDataProvider={previewDataProvider}
             title={language('asthma-activity-view-chart-title')}
-            dailyDataType={StepsDailyDataType}
+            dailyDataType={AsthmaDailyDataType.Steps}
             highlight={rawValue => baseline ? !isStepsWithinRange(baseline, rawValue) : false}
             emptyDomain={[0, 10000]}
         />

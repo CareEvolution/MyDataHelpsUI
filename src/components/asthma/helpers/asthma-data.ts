@@ -2,6 +2,26 @@ import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPag
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
+import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers/query-daily-data";
+import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider, sleepDisturbancesDataProvider, stepsDataProvider } from "./daily-data-providers";
+
+export enum AsthmaDailyDataType {
+    Steps = 'Asthma.Steps',
+    DaytimeRestingHeartRate = 'Asthma.DaytimeRestingHeartRate',
+    NighttimeRestingHeartRate = 'Asthma.NighttimeRestingHeartRate',
+    RespiratoryRate = 'Asthma.RespiratoryRate',
+    DaytimeBloodOxygenLevel = 'Asthma.DaytimeBloodOxygenLevel',
+    NighttimeBloodOxygenLevel = 'Asthma.NighttimeBloodOxygenLevel',
+    SleepDisturbances = 'Asthma.SleepDisturbances'
+}
+
+registerDailyDataProvider(AsthmaDailyDataType.Steps, stepsDataProvider, simpleAvailabilityCheck('Project', ['Steps']));
+registerDailyDataProvider(AsthmaDailyDataType.DaytimeRestingHeartRate, daytimeRestingHeartRateDataProvider, simpleAvailabilityCheck('Project', ['DaytimeRestingHeartRate']));
+registerDailyDataProvider(AsthmaDailyDataType.NighttimeRestingHeartRate, nighttimeRestingHeartRateDataProvider, simpleAvailabilityCheck('Project', ['NighttimeRestingHeartRate']));
+registerDailyDataProvider(AsthmaDailyDataType.RespiratoryRate, respiratoryRateDataProvider, simpleAvailabilityCheck('Project', ['RespiratoryRate']));
+registerDailyDataProvider(AsthmaDailyDataType.DaytimeBloodOxygenLevel, daytimeBloodOxygenLevelDataProvider, simpleAvailabilityCheck('Project', ['DaytimeBloodOxygenLevel']));
+registerDailyDataProvider(AsthmaDailyDataType.NighttimeBloodOxygenLevel, nighttimeBloodOxygenLevelDataProvider, simpleAvailabilityCheck('Project', ['NighttimeBloodOxygenLevel']));
+registerDailyDataProvider(AsthmaDailyDataType.SleepDisturbances, sleepDisturbancesDataProvider, simpleAvailabilityCheck('Project', ['SleepDisturbances']));
 
 type BiometricTypeTermCode = 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'Steps' | 'SleepDisturbances' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
 type BiometricThresholdFunction = (baseline: number, rawValue: number) => boolean;
