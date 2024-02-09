@@ -26,7 +26,8 @@ export default function (props: AsthmaAlertTakeoverNoticeProps) {
         }
 
         asthmaDataService.loadLogEntries(add(new Date(), {days: -2})).then(entries => {
-            const todayLogEntry = entries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(new Date()));
+            let todayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(new Date());
+            let todayLogEntry = entries.find(e => e.identifier === todayLogEntryIdentifier);
             if (todayLogEntry) {
                 MyDataHelps.dismiss();
             } else {

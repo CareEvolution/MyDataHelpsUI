@@ -109,7 +109,8 @@ export default function (props: AsthmaControlCalendarProps) {
         for (let i = 0; i <= differenceInDays(today, earliestDate); i++) {
             let targetDate = add(earliestDate, {days: i});
             if (!isBefore(targetDate, intervalStart) && isBefore(targetDate, add(intervalStart, {months: 1}))) {
-                logEntryLookup[dateToAsthmaLogEntryIdentifier(targetDate)] = logEntries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(targetDate));
+                let targetDateLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(targetDate);
+                logEntryLookup[targetDateLogEntryIdentifier] = logEntries.find(e => e.identifier === targetDateLogEntryIdentifier);
             }
         }
 

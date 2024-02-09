@@ -35,7 +35,8 @@ export default function (props: AsthmaAlertTakeoverTriggerProps) {
         asthmaDataService.loadAndClearAlertTakeover().then(alertTakeover => {
             if (alertTakeover) {
                 asthmaDataService.loadLogEntries(add(new Date(), {days: -2})).then(entries => {
-                    if (!entries.find(e => e.identifier === dateToAsthmaLogEntryIdentifier(new Date()))) {
+                    let todayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(new Date());
+                    if (!entries.find(e => e.identifier === todayLogEntryIdentifier)) {
                         showAlertTakeover(alertTakeover);
                     }
                 });
