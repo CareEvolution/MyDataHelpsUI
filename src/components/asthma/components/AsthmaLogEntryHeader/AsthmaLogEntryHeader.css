@@ -1,0 +1,44 @@
+.mdhui-asthma-log-entry-header {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.mdhui-unstyled-button.mdhui-asthma-log-entry-summary {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: center;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 8px 0;
+    width: 100%;
+    background: var(--mdhui-background-color-1);
+}
+
+.mdhui-asthma-log-entry-summary-details {
+    font-size: 0.95em;
+}
+
+.mdhui-asthma-log-entry-summary-label {
+}
+
+.mdhui-asthma-log-entry-summary-status {
+    font-weight: bold;
+}
+
+.mdhui-asthma-log-entry-summary-add-button {
+    height: 32px;
+    line-height: 32px;
+    border-radius: 16px;
+    font-size: 0.8em;
+    padding: 0 16px;
+    color: #fff;
+    background: #369CFF;
+}
+
+.mdhui-asthma-log-entry-summary-chevron {
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-asthma-log-entry-summary .mdhui-loading-indicator {
+    padding: 0;
+}
