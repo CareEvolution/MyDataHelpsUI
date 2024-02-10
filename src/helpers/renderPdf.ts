@@ -9,7 +9,7 @@ export default function renderPdf(reportHtml: string, participantID: Guid) {
             value: reportHtml
         }
     ]).then(function () {
-        var url = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participantID + "&modelType=VisualizationModel&visualizationKey=Shared.MonthReport";
+        var url = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participantID + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf";
         return MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
             if (!deviceInfo || deviceInfo.platform == "Web") {
                 window.open(url);
