@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, DateRangeContext, DateRangeNavigator, LoadingIndicator, TrackerItem, UnstyledButton } from "../../../presentational";
+import { Button, DateRangeContext, DateRangeNavigator, LoadingIndicator, Section, TrackerItem, UnstyledButton } from "../../../presentational";
 import language from "../../../../helpers/language";
 import MonthReport from "../../presentational/MonthReport/MonthReport";
 import { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from "../../../..";
@@ -21,7 +21,6 @@ export interface SymptomSharkReportBuilderProps {
     previewState?: "default";
     innerRef?: React.Ref<HTMLDivElement>;
 }
-
 
 export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
     var currentDate = new Date();
@@ -122,7 +121,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
 
     return (
         <div className="ss-report-builder">
-            <div className="ss-report-builder-items">
+            <Section className="ss-report-builder-items" noTopMargin>
                 <div className="ss-report-builder-item ss-report-builder-month-selector">
                     <div className="ss-report-builder-selector-title">{language("choose-report-month")}</div>
                     <DateRangeNavigator className='ss-report-date-chooser' variant="rounded" intervalStart={intervalStartDate} intervalType="Month" onIntervalChange={(d) => setIntervalStartDate(d)} />
@@ -197,7 +196,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                         <FontAwesomeIcon icon={includeNotes ? faCheckCircle : faCircle} />
                     </div>
                 </UnstyledButton>
-            </div>
+            </Section>
             <div style={{ padding: "16px", paddingTop: "0" }}>
                 <Button loading={buildingReport} disabled={buildingReport || (!includeSymptoms && !includeTreatments && !includeNotes && !includeDailyOverallExperience)} onClick={() => buildReport()}>
                     {!buildingReport &&

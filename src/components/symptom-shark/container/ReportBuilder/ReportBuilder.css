@@ -4,18 +4,11 @@
     padding-bottom: 16px;
 }
 
-.ss-report-builder .ss-report-builder-items {
-    border-top: solid 1px var(--mdhui-border-color-1);
-    margin-top: 16px;
-    margin-bottom: 32px;
-}
-
 .ss-report-builder .ss-report-builder-items .ss-report-builder-item {
     border-bottom: solid 1px var(--mdhui-border-color-1);
     padding: 16px;
     background: var(--mdhui-background-color-0);
     position: relative;
-    box-shadow: var(--mdhui-box-shadow-0);
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
