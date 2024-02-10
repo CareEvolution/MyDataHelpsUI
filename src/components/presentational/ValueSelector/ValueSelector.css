@@ -22,6 +22,11 @@
     margin-bottom: 12px;
 }
 
+.mdhui-value-selector-values .mdhui-unstyled-button {
+    width: 100%;
+    margin: 8px 0;
+}
+
 .mdhui-value-selector-value {
     display: grid;
     grid-template-columns: auto max-content;
@@ -33,7 +38,6 @@
     border: 1px solid var(--mdhui-value-selector-value-background-color);
     color: var(--mdhui-value-selector-value-text-color);
     padding: 0 16px;
-    margin: 8px 0;
     font-weight: bold;
 }
 
@@ -53,7 +57,7 @@
 }
 
 .mdhui-value-selector-value-button.mdhui-value-selector-value-selected {
-    background: color-mix(in srgb, var(--mdhui-value-selector-button-value-selected-background-color), transparent 30%);
+    background: var(--mdhui-value-selector-button-value-selected-background-color);
     border: 1px solid var(--mdhui-value-selector-button-value-selected-background-color);
     color: var(--mdhui-value-selector-button-value-selected-text-color);
 }

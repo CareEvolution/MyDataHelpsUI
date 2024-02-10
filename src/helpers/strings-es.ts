@@ -2,6 +2,7 @@
     "back": "Atrás",
     "done": "Aceptar",
     "close": "Cerrar",
+    "save": "Ahorrar",
     "add": "Agregar",
     "settings": "Configuración",
     "connect": "Conectar",
@@ -163,7 +164,19 @@
     "include-overall-experience": "Incluir la experiencia general diaria",
     "include-notes": "Incluir notas",
     "create-report": "Crear informe",
-    "reports": "Informes"
+    "reports": "Informes",
+    "recent-daily-data-bar-chart-subtitle": "Últimos 7 días",
+    "recent-daily-data-bar-chart-no-data": "Sin datos",
+    "resource-list-empty-text": "No se encontraron recursos.",
+    "asthma-symptom-level-none": "Sin síntomas",
+    "asthma-symptom-level-mild": "Síntomas leves",
+    "asthma-symptom-level-moderate": "Síntomas moderados",
+    "asthma-symptom-level-severe": "Síntomas graves",
+    "asthma-control-calendar-daily-entry-missed": "Entrada diaria omitida",
+    "asthma-control-calendar-not-logged-yet": "No ingresado todavía",
+    "asthma-control-calendar-log-entries-symptoms-label": "Síntomas",
+    "asthma-control-calendar-log-entries-impacts-label": "Impactos",
+    "asthma-control-calendar-log-entries-triggers-label": "Disparadores"
 };
 
 export default strings;

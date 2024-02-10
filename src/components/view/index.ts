@@ -15,3 +15,4 @@ export { default as NewPointsView, NewPointsViewProps, NewPointsEntry, showNewPo
 export { default as InboxView } from "./InboxView"
 export { default as InboxHistoryView } from "./InboxHistoryView"
 export { default as InboxMessageView } from "./InboxMessageView"
+export { default as ResourceListView } from "./ResourceListView"

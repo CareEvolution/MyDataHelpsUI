@@ -24,5 +24,9 @@
 }
 
 .mdhui-resource-subtitle {
-    margin: 12px 0;
+    margin: 12px 0 0;
+}
+
+.mdhui-resource-button {
+    margin: 12px 0 0;
 }
