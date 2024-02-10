@@ -143,7 +143,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                         {symptomsExpanded &&
                             <div className="ss-report-items" style={{ textAlign: "center" }}>
                                 {configuration.symptoms!.filter(s => !s.inactive).map(s =>
-                                    <TrackerItem className="item" key={s.id}
+                                    <TrackerItem className="ss-report-item" key={s.id}
                                         selected={selectedSymptoms.indexOf(s.id) != -1}
                                         color={s.color}
                                         text={s.name}
@@ -171,7 +171,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                                 {treatmentsExpanded &&
                                     <div className="ss-report-items" style={{ textAlign: "center" }}>
                                         {configuration.treatments!.filter(s => !s.inactive).map(s =>
-                                            <TrackerItem bordered className="item"
+                                            <TrackerItem bordered className="ss-report-item"
                                                 key={s.id}
                                                 selected={selectedTreatments.indexOf(s.id) != -1}
                                                 color={s.color}
