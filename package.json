@@ -67,7 +67,7 @@
     "date-fns": "^2.28.0",
     "html-react-parser": "^5.0.7",
     "lodash": "^4.17.21",
-    "markdown-it": "^13.0.1",
+    "markdown-it": "^14.0.0",
     "react-feather": "^2.0.9",
     "react-fontawesome-svg-icon": "^1.1.2",
     "recharts": "^2.9.0"
