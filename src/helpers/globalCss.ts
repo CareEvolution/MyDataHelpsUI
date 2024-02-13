@@ -128,4 +128,5 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.3;
+    font-size: 17px;
 }`;
