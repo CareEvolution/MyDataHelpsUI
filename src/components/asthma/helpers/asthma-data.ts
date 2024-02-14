@@ -1,4 +1,4 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, PersistableDeviceDataPoint, SurveyAnswer } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
@@ -174,13 +174,18 @@ const computeBiometricsForDate = (date: Date, dataPoints: DeviceDataPoint[]): As
     ];
 };
 
-const loadAirQualities = (observedAfter: Date, observedBefore: Date): Promise<DeviceDataPointsPage> => {
+const loadAirQualities = (observedAfter: Date, observedBefore?: Date, pageID?: Guid): Promise<DeviceDataPointsPage> => {
     let params: DeviceDataPointQuery = {
         namespace: 'AirNowApi',
         type: ['HomeAirQuality', 'WorkAirQuality'],
-        observedAfter: observedAfter.toISOString(),
-        observedBefore: observedBefore.toISOString()
+        observedAfter: observedAfter.toISOString()
     };
+    if (observedBefore) {
+        params.observedBefore = observedBefore.toISOString();
+    }
+    if (pageID) {
+        params.pageID = pageID;
+    }
     return MyDataHelps.queryDeviceData(params);
 };
 
@@ -236,11 +241,15 @@ export interface AsthmaDataService {
 
     loadAirQualitiesForDate(date: Date): Promise<AsthmaAirQuality[]>;
 
+    loadAirQualityDataPoints(fromDate: Date): Promise<DeviceDataPoint[]>;
+
     saveLogEntry(logEntry: AsthmaLogEntry): Promise<void>;
 
-    loadAndClearAlertTakeover(): Promise<string | undefined>;
+    loadAlertTakeover(): Promise<DeviceDataPoint | undefined>;
 
-    loadSurveyAnswers(surveyNames: string[]): Promise<SurveyAnswer[]>;
+    updateAlertTakeover(dataPoint: DeviceDataPoint, status: string, comment?: string): Promise<void>;
+
+    loadSurveyAnswers(surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]>;
 
     loadAsthmaActionPlan(): Promise<AsthmaActionPlan | undefined>;
 }
@@ -301,6 +310,17 @@ const service: AsthmaDataService = {
             computeAirQuality('work', result.deviceDataPoints, computeAqi, 'not-found')
         ];
     },
+    loadAirQualityDataPoints: async function (fromDate: Date): Promise<DeviceDataPoint[]> {
+        let allDataPoints: DeviceDataPoint[] = [];
+
+        let results = await loadAirQualities(fromDate);
+        allDataPoints = allDataPoints.concat(results.deviceDataPoints);
+        while (results.nextPageID) {
+            results = await loadAirQualities(fromDate, undefined, results.nextPageID);
+            allDataPoints = allDataPoints.concat(results.deviceDataPoints);
+        }
+        return allDataPoints;
+    },
     saveLogEntry: function (logEntry: AsthmaLogEntry): Promise<void> {
         let logEntryDataPoint: PersistableDeviceDataPoint = {
             type: 'Asthma-LogEntry',
@@ -310,7 +330,7 @@ const service: AsthmaDataService = {
         };
         return MyDataHelps.persistDeviceData([logEntryDataPoint]);
     },
-    loadAndClearAlertTakeover: async function (): Promise<string | undefined> {
+    loadAlertTakeover: async function (): Promise<DeviceDataPoint | undefined> {
         let today = startOfToday();
 
         let params: DeviceDataPointQuery = {
@@ -325,16 +345,24 @@ const service: AsthmaDataService = {
         if (dataPoints.length === 0) return undefined;
 
         let mostRecentDataPoint = dataPoints.sort(sortDataPointsDesc)[0];
-        if (mostRecentDataPoint.properties?.hasOwnProperty('viewed')) return undefined;
+        if (mostRecentDataPoint.properties?.hasOwnProperty('viewed') || mostRecentDataPoint.properties?.hasOwnProperty('cleared')) return undefined;
 
-        mostRecentDataPoint.properties = mostRecentDataPoint.properties ?? {};
-        mostRecentDataPoint.properties['viewed'] = formatISO(new Date());
-        MyDataHelps.persistDeviceData([mostRecentDataPoint]).then();
-
-        return mostRecentDataPoint.value;
+        return mostRecentDataPoint;
     },
-    loadSurveyAnswers: function (surveyNames: string[]): Promise<SurveyAnswer[]> {
-        return queryAllSurveyAnswers({surveyName: surveyNames});
+    updateAlertTakeover(dataPoint: DeviceDataPoint, status: string, comment?: string): Promise<void> {
+        dataPoint.properties = dataPoint.properties ?? {};
+        dataPoint.properties[status] = formatISO(new Date());
+        if (comment) {
+            dataPoint.properties['comment'] = comment;
+        }
+        return MyDataHelps.persistDeviceData([dataPoint]);
+    },
+    loadSurveyAnswers: function (surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]> {
+        let query: SurveyAnswersQuery = {surveyName: surveyName};
+        if (fromDate) {
+            query.insertedAfter = formatISO(fromDate);
+        }
+        return queryAllSurveyAnswers(query);
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);
