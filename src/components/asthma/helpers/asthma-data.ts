@@ -1,4 +1,4 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, PersistableDeviceDataPoint, SurveyAnswer } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
@@ -240,7 +240,7 @@ export interface AsthmaDataService {
 
     loadAndClearAlertTakeover(): Promise<string | undefined>;
 
-    loadSurveyAnswers(surveyNames: string[]): Promise<SurveyAnswer[]>;
+    loadSurveyAnswers(surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]>;
 
     loadAsthmaActionPlan(): Promise<AsthmaActionPlan | undefined>;
 }
@@ -333,8 +333,12 @@ const service: AsthmaDataService = {
 
         return mostRecentDataPoint.value;
     },
-    loadSurveyAnswers: function (surveyNames: string[]): Promise<SurveyAnswer[]> {
-        return queryAllSurveyAnswers({surveyName: surveyNames});
+    loadSurveyAnswers: function (surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]> {
+        let query: SurveyAnswersQuery = {surveyName: surveyName};
+        if (fromDate) {
+            query.insertedAfter = formatISO(fromDate);
+        }
+        return queryAllSurveyAnswers(query);
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);
