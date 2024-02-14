@@ -32,15 +32,25 @@ export default function (props: AsthmaAlertTakeoverTriggerProps) {
     useInitializeView(() => {
         if (props.previewState) return;
 
-        asthmaDataService.loadAndClearAlertTakeover().then(alertTakeover => {
-            if (alertTakeover) {
-                asthmaDataService.loadLogEntries(add(new Date(), {days: -2})).then(entries => {
-                    let todayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(new Date());
-                    if (!entries.find(e => e.identifier === todayLogEntryIdentifier)) {
-                        showAlertTakeover(alertTakeover);
+        asthmaDataService.loadParticipant().then(participant => {
+            asthmaDataService.loadAlertTakeover().then(alertTakeoverDataPoint => {
+                if (alertTakeoverDataPoint) {
+                    if (participant.getAlertTakeover()) {
+                        asthmaDataService.loadLogEntries(add(new Date(), {days: -2})).then(entries => {
+                            let todayLogEntryIdentifier = dateToAsthmaLogEntryIdentifier(new Date());
+                            if (entries.find(entry => entry.identifier === todayLogEntryIdentifier)) {
+                                asthmaDataService.updateAlertTakeover(alertTakeoverDataPoint, 'cleared', 'The user has already logged today.').then();
+                            } else {
+                                asthmaDataService.updateAlertTakeover(alertTakeoverDataPoint, 'viewed').then(() => {
+                                    showAlertTakeover(alertTakeoverDataPoint.value);
+                                });
+                            }
+                        });
+                    } else {
+                        asthmaDataService.updateAlertTakeover(alertTakeoverDataPoint, 'cleared', 'The alert is no longer valid.').then();
                     }
-                });
-            }
+                }
+            });
         });
     });
 

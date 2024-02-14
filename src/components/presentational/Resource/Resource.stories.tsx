@@ -22,8 +22,8 @@ export const Default = {
         subTitle: 'Here is a resource subtitle to add context',
         imageUrl: resourceImage,
         imageAlignment: 'left',
-        hideButton: false,
-        buttonText: 'Open'
+        buttonVariant: undefined,
+        buttonText: ''
     },
     argTypes: {
         subTitle: {
@@ -37,12 +37,14 @@ export const Default = {
             control: 'radio',
             options: ['left', 'center', 'right']
         },
-        hideButton: {
-            name: 'hide button'
+        buttonVariant: {
+            name: 'button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
         },
         buttonText: {
-            name: 'button text',
-            if: {arg: 'hideButton', eq: false}
+            name: 'button text override',
+            if: {arg: 'buttonVariant', neq: undefined}
         }
     },
     render: render
