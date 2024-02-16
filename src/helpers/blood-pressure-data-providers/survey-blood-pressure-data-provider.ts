@@ -1,11 +1,12 @@
 import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import { format, isDate, parseISO, startOfDay, toDate } from "date-fns";
+import { addDays, parseISO, startOfDay } from "date-fns";
 
 export interface SurveyBloodPressureDataParameters {
     surveyName: string,
     dateResultIdentifier: string,
     systolicResultIdentifier: string,
-    diastolicResultIdentifier: string
+    diastolicResultIdentifier: string,
+    hideDeviceData?: boolean
 }
 
 export interface BloodPressureDataPoint {
@@ -15,7 +16,7 @@ export interface BloodPressureDataPoint {
 };
 
 export default async function (props: SurveyBloodPressureDataParameters): Promise<BloodPressureDataPoint[]> {
-    
+
     function groupSurveyAnswersByResults(answers: SurveyAnswer[]) {
         let bpDataPoints: BloodPressureDataPoint[] = [];
 
