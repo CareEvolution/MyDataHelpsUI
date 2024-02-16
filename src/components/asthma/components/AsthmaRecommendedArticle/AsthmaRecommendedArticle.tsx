@@ -125,7 +125,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
             return;
         }
         if (props.previewState === 'default') {
-            setRecommendedArticle({title: 'Article Title', subTitle: 'article subtitle', imageUrl: sampleResourceImage} as ResourceDefinition);
+            setRecommendedArticle({title: 'Recommended Article Title', subTitle: 'recommended article subtitle', imageUrl: sampleResourceImage} as ResourceDefinition);
             return;
         }
 
