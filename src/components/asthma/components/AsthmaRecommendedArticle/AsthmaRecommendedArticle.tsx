@@ -5,6 +5,7 @@ import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import sampleResourceImage from '../../../../assets/resource-image.png';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
 import { add, startOfToday } from 'date-fns';
+import './AsthmaRecommendedArticle.css';
 import { AsthmaControlState, AsthmaLogEntry } from '../../model';
 
 export interface AsthmaRecommendedArticleProps {
@@ -151,14 +152,16 @@ export default function (props: AsthmaRecommendedArticleProps) {
         MyDataHelps.openEmbeddedUrl(recommendedArticle.url);
     };
 
-    return <Resource
-        title={recommendedArticle.title}
-        subTitle={recommendedArticle.subTitle}
-        imageUrl={recommendedArticle.imageUrl}
-        imageAlignment={props.imageAlignment}
-        buttonText={props.buttonText}
-        hideButton={props.hideButton}
-        onClick={() => onClick()}
-        innerRef={props.innerRef}
-    />;
+    return <div className="mdhui-asthma-recommended-article">
+        <Resource
+            title={recommendedArticle.title}
+            subTitle={recommendedArticle.subTitle}
+            imageUrl={recommendedArticle.imageUrl}
+            imageAlignment={props.imageAlignment}
+            buttonText={props.buttonText}
+            hideButton={props.hideButton}
+            onClick={() => onClick()}
+            innerRef={props.innerRef}
+        />
+    </div>;
 }
