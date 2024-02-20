@@ -12,7 +12,7 @@ import { useInitializeView } from "../../../helpers/Initialization";
 import { BloodPressureDataPoint, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
-export type BloodPressurePreviewState = "Default" | "Survey" | "Device" | "NoData" | "Loading";
+export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
 
 export interface BloodPressureVisualizationProps {
     previewState?: BloodPressurePreviewState,
