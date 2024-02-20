@@ -36,7 +36,7 @@ export const previewData: Record<AsthmaControlCalendarPreviewState, AsthmaContro
             createLogEntry(4, 'none'),
             createLogEntry(3, 'none'),
             createLogEntry(2, 'mild'),
-            {...createLogEntry(1, 'mild'), symptoms: ['Difficulty breathing'], impacts: ['Limit your daily activity'], triggers: ['Smoke']},
+            {...createLogEntry(1, 'mild'), symptoms: ['Difficulty breathing'], impacts: ['Limit your daily activity'], triggers: ['Smoke (tobacco or wood burning)']},
             {...createLogEntry(0, 'mild'), impacts: ['Limit your daily activity']}
         ]
     }
