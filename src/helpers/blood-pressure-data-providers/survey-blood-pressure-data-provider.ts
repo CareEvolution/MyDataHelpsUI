@@ -1,5 +1,5 @@
 import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import { addDays, parseISO, startOfDay } from "date-fns";
+import { parseISO, startOfDay } from "date-fns";
 
 export interface SurveyBloodPressureDataParameters {
     surveyName: string,

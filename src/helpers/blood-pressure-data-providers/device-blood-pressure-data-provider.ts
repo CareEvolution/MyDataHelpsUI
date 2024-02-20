@@ -3,9 +3,9 @@ import queryAllDeviceData from "../daily-data-providers/query-all-device-data";
 import { BloodPressureDataPoint } from ".";
 import { parseISO, startOfDay } from "date-fns";
 
-export default async function (namespace: DeviceDataNamespace, bloodPressureSystolic : string, bloodPressureDiastolic : string): Promise<BloodPressureDataPoint[]> {
+export default async function (namespace: DeviceDataNamespace, bloodPressureSystolic: string, bloodPressureDiastolic: string): Promise<BloodPressureDataPoint[]> {
 
-    function collateAppleHealthResults(dataPoints: DeviceDataPoint[]): BloodPressureDataPoint[] {
+    function collateResults(dataPoints: DeviceDataPoint[]): BloodPressureDataPoint[] {
         let bpDataPointsByObservationDateTime: Map<string, BloodPressureDataPoint> = new Map<string, BloodPressureDataPoint>();
 
         dataPoints.forEach((dataPoint) => {
@@ -35,5 +35,5 @@ export default async function (namespace: DeviceDataNamespace, bloodPressureSyst
         type: [bloodPressureSystolic, bloodPressureDiastolic]
     });
 
-    return collateAppleHealthResults(dataPoints);
+    return collateResults(dataPoints);
 }

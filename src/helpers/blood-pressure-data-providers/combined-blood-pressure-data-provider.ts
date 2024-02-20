@@ -11,7 +11,7 @@ export default async function (surveyDataSource?: SurveyBloodPressureDataParamet
         if (surveyDataSource) {
             providers.push(surveyBloodPressureDataProvider(surveyDataSource));
         }
-        
+
         if (!surveyDataSource || !surveyDataSource.hideDeviceData) {
             providers.push(deviceDataBloodPressureDataProvider("AppleHealth", "BloodPressureSystolic", "BloodPressureDiastolic"));
             providers.push(deviceDataBloodPressureDataProvider("GoogleFit", "blood_pressure_systolic", "blood_pressure_diastolic"));
