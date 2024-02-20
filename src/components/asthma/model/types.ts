@@ -1,11 +1,14 @@
-import { ParticipantInfo } from '@careevolution/mydatahelps-js';
-import { ResourceDefinition } from "../../presentational";
+import { Guid, ParticipantInfo } from '@careevolution/mydatahelps-js';
 
 export class AsthmaParticipant {
     participantInfo: ParticipantInfo;
 
     constructor(participantInfo: ParticipantInfo) {
         this.participantInfo = participantInfo;
+    }
+
+    getId(): Guid {
+        return this.participantInfo.participantID;
     }
 
     getFirstName(): string {

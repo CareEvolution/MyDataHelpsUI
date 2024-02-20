@@ -25,8 +25,8 @@ export const previewData: Record<AsthmaLogEntryDetailsPreviewState, AsthmaLogEnt
             ...logEntry,
             symptomLevel: 'mild',
             symptoms: ['Coughing'],
-            impacts: ['Waking up at night', 'Rescue inhaler use'],
-            triggers: ['Cold/flu/virus', 'Seasonal allergies/pollen', 'Smoke', 'Air pollution', 'Dust mites', 'Mold']
+            impacts: ['Wake up at night', 'Use your rescue inhaler'],
+            triggers: ['Cold/viral illness', 'Seasonal allergens/pollen', 'Smoke (tobacco or wood burning)', 'Air pollution', 'Dust mites', 'Mold']
         }
     },
     'logged with moderate symptoms': {
@@ -34,7 +34,7 @@ export const previewData: Record<AsthmaLogEntryDetailsPreviewState, AsthmaLogEnt
             ...logEntry,
             symptomLevel: 'moderate',
             symptoms: ['Coughing'],
-            triggers: ['Cold/flu/virus', 'Mold']
+            triggers: ['Cold/viral illness', 'Mold']
         }
     },
     'logged with severe symptoms': {
@@ -42,7 +42,7 @@ export const previewData: Record<AsthmaLogEntryDetailsPreviewState, AsthmaLogEnt
             ...logEntry,
             symptomLevel: 'severe',
             symptoms: ['Coughing', 'Wheezing'],
-            impacts: ['Rescue inhaler use']
+            impacts: ['Use your rescue inhaler']
         }
     }
 };
