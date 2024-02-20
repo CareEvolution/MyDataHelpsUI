@@ -1,4 +1,4 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
@@ -174,13 +174,18 @@ const computeBiometricsForDate = (date: Date, dataPoints: DeviceDataPoint[]): As
     ];
 };
 
-const loadAirQualities = (observedAfter: Date, observedBefore: Date): Promise<DeviceDataPointsPage> => {
+const loadAirQualities = (observedAfter: Date, observedBefore?: Date, pageID?: Guid): Promise<DeviceDataPointsPage> => {
     let params: DeviceDataPointQuery = {
         namespace: 'AirNowApi',
         type: ['HomeAirQuality', 'WorkAirQuality'],
-        observedAfter: observedAfter.toISOString(),
-        observedBefore: observedBefore.toISOString()
+        observedAfter: observedAfter.toISOString()
     };
+    if (observedBefore) {
+        params.observedBefore = observedBefore.toISOString();
+    }
+    if (pageID) {
+        params.pageID = pageID;
+    }
     return MyDataHelps.queryDeviceData(params);
 };
 
@@ -235,6 +240,8 @@ export interface AsthmaDataService {
     loadAirQualitiesForControlStatus(homeAirQualityZipCode: string, workAirQualityZipCode: string): Promise<AsthmaAirQuality[]>;
 
     loadAirQualitiesForDate(date: Date): Promise<AsthmaAirQuality[]>;
+
+    loadAirQualityDataPoints(fromDate: Date): Promise<DeviceDataPoint[]>;
 
     saveLogEntry(logEntry: AsthmaLogEntry): Promise<void>;
 
@@ -300,6 +307,17 @@ const service: AsthmaDataService = {
             computeAirQuality('home', result.deviceDataPoints, computeAqi, 'not-found'),
             computeAirQuality('work', result.deviceDataPoints, computeAqi, 'not-found')
         ];
+    },
+    loadAirQualityDataPoints: async function (fromDate: Date): Promise<DeviceDataPoint[]> {
+        let allDataPoints: DeviceDataPoint[] = [];
+
+        let results = await loadAirQualities(fromDate);
+        allDataPoints = allDataPoints.concat(results.deviceDataPoints);
+        while (results.nextPageID) {
+            results = await loadAirQualities(fromDate, undefined, results.nextPageID);
+            allDataPoints = allDataPoints.concat(results.deviceDataPoints);
+        }
+        return allDataPoints;
     },
     saveLogEntry: function (logEntry: AsthmaLogEntry): Promise<void> {
         let logEntryDataPoint: PersistableDeviceDataPoint = {
