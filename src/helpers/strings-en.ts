@@ -74,6 +74,7 @@
     "start": "Start",
     "resume": "Resume",
     "30-day-average": "30 Day Average",
+    "blood-type": "Blood type"
 };
 
 export default strings;
