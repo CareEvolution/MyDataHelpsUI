@@ -20,7 +20,6 @@ export interface LabResultsBloodTypeProps {
 
 export default function (props: LabResultsBloodTypeProps) {
     const [model, setModel] = useState<any>(null);
-    const [noOverflow, setNoOverflow] = useState<boolean>(false);
 
     function getLabResultsSummary() {
         if (props.previewState == "BloodTypeLabs") {
@@ -50,10 +49,6 @@ export default function (props: LabResultsBloodTypeProps) {
     }
 
     useEffect(() => {
-        if (getScrollbarWidth() > 0) {
-            setNoOverflow(true);
-        }
-
         getLabResultsSummary();
 
         MyDataHelps.on("externalAccountSyncComplete", getLabResultsSummary);
@@ -63,19 +58,6 @@ export default function (props: LabResultsBloodTypeProps) {
             MyDataHelps.off("applicationDidBecomeVisible", getLabResultsSummary);
         }
     }, []);
-
-    var getScrollbarWidth = function () {
-        var div: any, width: any = (getScrollbarWidth as any).width;
-        if (width === undefined) {
-            div = document.createElement('div');
-            div.innerHTML = '<div style="width:50px;height:50px;position:absolute;left:-50px;top:-50px;overflow:auto;"><div style="width:1px;height:100px;"></div></div>';
-            div = div.firstChild;
-            document.body.appendChild(div);
-            width = (getScrollbarWidth as any).width = div.offsetWidth - div.clientWidth;
-            document.body.removeChild(div);
-        }
-        return width;
-    };
 
     if (!model) {
         return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
