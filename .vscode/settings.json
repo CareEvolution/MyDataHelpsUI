@@ -11,6 +11,5 @@
     "[css][scss][less]": {
         "editor.defaultFormatter": "vscode.css-language-features"
     },
-    "html.format.wrapLineLength": 180,
-    "liveServer.settings.port": 5501
+    "html.format.wrapLineLength": 180
 }

@@ -356,8 +356,5 @@ dist/
 .env
 
 storybook-static/
-package-lock.json
-.gitignore
-package.json
 
 **/.DS_Store
