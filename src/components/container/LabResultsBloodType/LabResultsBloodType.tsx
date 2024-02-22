@@ -16,6 +16,7 @@ export interface LabResultsBloodTypeProps {
     externalInfoLink?: true | false
     externalInfoLinkDefault?: string
     externalInfoLinkSpanish?: string
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: LabResultsBloodTypeProps) {
@@ -60,7 +61,7 @@ export default function (props: LabResultsBloodTypeProps) {
     }, []);
 
     if (!model) {
-        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+        return <div ref={props.innerRef} className="mdhui-health-preview-section"><LoadingIndicator /></div>
     }
 
     if (model && (!model.BloodTypeLabs || model.BloodTypeLabs.length == 0)) {
@@ -112,7 +113,8 @@ export default function (props: LabResultsBloodTypeProps) {
         return type + " " + rH;
     }
 
-    return <Action
+    return <div ref={props.innerRef} >
+        <Action
         bottomBorder
         title={ language ("blood-type") }
         titleIcon={<img className="mdhui-health-preview-icon" src={ iconBloodType} alt="Blood Type" />}
@@ -143,5 +145,6 @@ export default function (props: LabResultsBloodTypeProps) {
                 }
             </>
         }
-    </Action>
+        </Action>
+    </div>
 }
