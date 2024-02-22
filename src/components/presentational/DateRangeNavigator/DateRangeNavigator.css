@@ -1,5 +1,5 @@
 .mdhui-card .mdhui-date-range-navigator:first-child {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: var(--mdhui-card-border-radius) var(--mdhui-card-border-radius) 0px 0px;
 }
 
 .mdhui-date-range-navigator {
@@ -7,11 +7,16 @@
     text-align: center;
     font-weight: bold;
     border-bottom: solid 1px var(--mdhui-border-color-0);
-    position: sticky;
-    position: -webkit-sticky;
-    top: env(safe-area-inset-top, 0px);
     background: var(--mdhui-background-color-0);
     z-index: 1;
+    position: relative;
+}
+
+.mdhui-date-range-navigator.mdhui-date-range-navigator-sticky {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
 }
 
 .mdhui-date-range-navigator .navigator-button {

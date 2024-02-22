@@ -1,0 +1,78 @@
+.mdhui-blood-pressure-metrics {
+    padding-top: var(--mdhui-padding-md);
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 13px;
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows{
+    display: flex;
+    flex-direction: row;
+    height: 50%;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block{
+    display: flex;
+    flex-direction: column;
+    padding: var(--mdhui-padding-md);;
+    border-radius: 6px;
+    border-color:var(--mdhui-border-color-1); 
+    border-width: 1px;
+    border-style: solid;
+    width: 50%;
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-description{
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-units{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-alert{
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--mdhui-color-danger);
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-value{
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--mdhui-text-color-0);
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-normal{
+    font-size: 17px;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
+.mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-not-normal{
+    color: var(--mdhui-color-danger);
+}

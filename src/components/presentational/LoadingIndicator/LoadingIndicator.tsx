@@ -8,6 +8,7 @@ export interface LoadingIndicatorProps {
 	variant?: "default" | "inline";
 	color?: string;
 	className?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 function LoadingIndicator(props: LoadingIndicatorProps) {
@@ -19,7 +20,7 @@ function LoadingIndicator(props: LoadingIndicatorProps) {
 		classes.push("mdhui-loading-indicator-inline");
 	}
 	return (
-		<div style={{ color: props.color }} className={classes.join(" ")}>
+		<div ref={props.innerRef} style={{ color: props.color }} className={classes.join(" ")}>
 			<FontAwesomeSvgIcon icon={faRefresh} spin />
 		</div>
 	);

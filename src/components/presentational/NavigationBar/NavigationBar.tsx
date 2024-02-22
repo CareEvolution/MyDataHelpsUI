@@ -1,10 +1,12 @@
-import React, { useRef, useLayoutEffect } from 'react'
-import "./NavigationBar.css"
-import MyDataHelps from "@careevolution/mydatahelps-js"
+import React, { useContext, useLayoutEffect, useRef } from 'react'
+import './NavigationBar.css'
+import MyDataHelps from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
-import language from "../../../helpers/language"
+import language from '../../../helpers/language'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { LayoutContext } from '../Layout';
 
 export interface NavigationBarProps {
 	title?: string;
@@ -15,7 +17,13 @@ export interface NavigationBarProps {
 	closeButtonText?: string;
 	backButtonText?: string;
 	className?: string;
-	variant?: "default" | "compressed";
+	variant?: 'default' | 'compressed';
+	titleColor?: ColorDefinition;
+	subtitleColor?: ColorDefinition;
+	buttonColor?: ColorDefinition;
+	navigationBarLeft?: React.ReactNode;
+	navigationBarRight?: React.ReactNode;
+	backgroundColor?: ColorDefinition;
 }
 
 export default function (props: NavigationBarProps) {
@@ -30,13 +38,13 @@ export default function (props: NavigationBarProps) {
 	}
 
 	useLayoutEffect(() => {
-		const { current } = navBar;
+		const {current} = navBar;
 
 		function scrollListener() {
 			if (window.scrollY > 0) {
-				current?.classList.add("scroll-shadow");
+				current?.classList.add('scroll-shadow');
 			} else {
-				current?.classList.remove("scroll-shadow");
+				current?.classList.remove('scroll-shadow');
 			}
 		}
 
@@ -46,36 +54,48 @@ export default function (props: NavigationBarProps) {
 		}
 	})
 
-	let classes = ["mdhui-navigation-bar"];
+	let classes = ['mdhui-navigation-bar'];
 	if (props.className) {
 		classes.push(props.className);
 	}
-	if (props.variant == "compressed") {
-		classes.push("mdhui-navigation-bar-compressed");
+	if (props.variant == 'compressed') {
+		classes.push('mdhui-navigation-bar-compressed');
 	}
 
+	let layoutContext = useContext(LayoutContext);
+
 	return (
-		<div className={classes.join(" ")} ref={navBar}>
+		<div className={classes.join(' ')} ref={navBar} style={{background: resolveColor(layoutContext?.colorScheme, props.backgroundColor)}}>
 			{props.showBackButton &&
-				<a className="back-button" href="javascript:{}" onClick={() => back()}>
-					<FontAwesomeSvgIcon icon={faChevronLeft} />
-					{props.backButtonText ? props.backButtonText : language("back")}
-				</a>
+				<div className="button back-button" onClick={() => back()} style={{color: resolveColor(layoutContext?.colorScheme, props.buttonColor)}}>
+					<FontAwesomeSvgIcon icon={faChevronLeft}/>
+					{props.backButtonText ? props.backButtonText : language('back')}
+				</div>
+			}
+			{props.navigationBarLeft &&
+				<div className="navigation-bar-left">
+					{props.navigationBarLeft}
+				</div>
 			}
 			{props.title &&
-				<div className="title">
+				<div className="title" style={{color: resolveColor(layoutContext?.colorScheme, props.titleColor)}}>
 					<span>{props.title}</span>
 				</div>
 			}
 			{props.subtitle &&
-				<div className="subtitle">
+				<div className="subtitle" style={{color: resolveColor(layoutContext?.colorScheme, props.subtitleColor)}}>
 					<span>{props.subtitle}</span>
 				</div>
 			}
+			{props.navigationBarRight &&
+				<div className="navigation-bar-right">
+					{props.navigationBarRight}
+				</div>
+			}
 			{props.showCloseButton &&
-				<a className="close-button" href="javascript:{}" onClick={() => close()}>
-					{props.closeButtonText ? props.closeButtonText : language("close")}
-				</a>
+				<div className="button close-button" onClick={() => close()} style={{color: resolveColor(layoutContext?.colorScheme, props.buttonColor)}}>
+					{props.closeButtonText ? props.closeButtonText : language('close')}
+				</div>
 			}
 			{props.children}
 		</div>

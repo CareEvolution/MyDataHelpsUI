@@ -1,27 +1,32 @@
 ﻿import React from 'react'
-import MyDataHelps, { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
+import { getGarminProviderID } from '../../../helpers/providerIDs';
+import GarminLogo from '../../../assets/garmin-logo.svg';
 
 export interface ConnectGarminProps {
 	title?: string,
 	garminProviderID?: number,
 	previewState?: ConnectGarminPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
+	innerRef?: React.Ref<HTMLDivElement>
+	hideWhenConnected?: boolean
 }
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
-export default function(props: ConnectGarminProps) {
-	function getGarminProviderID() {
-		var garminProviderID = 6327;
-		if (!MyDataHelps.baseUrl || MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev")) {
-			garminProviderID = 1384;
-		}
-		if (props.garminProviderID) {
-			garminProviderID = props.garminProviderID;
-		}
-		return garminProviderID;
+export default function (props: ConnectGarminProps) {
+	function getInternalGarminProviderID() {
+		return props.garminProviderID || getGarminProviderID();
 	}
-	
-	return (<ConnectDevice title="Garmin" providerName="Garmin" dataCollectionProperty='garminEnabled' providerIDCallback={getGarminProviderID} previewState={props.previewState} disabledBehavior={props.disabledBehavior} />);
-  }
+
+	return (<ConnectDevice innerRef={props.innerRef}
+		title="Garmin"
+		titleImage={<img src={GarminLogo} />}
+		providerName="Garmin"
+		dataCollectionProperty='garminEnabled'
+		providerID={getInternalGarminProviderID()}
+		previewState={props.previewState}
+		disabledBehavior={props.disabledBehavior}
+		hideWhenConnected={props.hideWhenConnected} />);
+}

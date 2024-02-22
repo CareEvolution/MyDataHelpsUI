@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import language from "../../../helpers/language";
 import { LoadingIndicator } from "../../presentational";
 import Action from "../../presentational/Action";
-import allergiesIcon from "./icon-allergies.png";
-import medicationIcon from "./icon-medication.svg";
-import reportIcon from "./icon-report.svg";
-import problemIcon from "./icon-problem.svg";
-import procedureIcon from "./icon-procedure.svg";
-import immunizationIcon from "./icon-immunization.svg";
+import allergiesIcon from "../../../assets/icon-allergies.png";
+import medicationIcon from "../../../assets/icon-medication.svg";
+import reportIcon from "../../../assets/icon-report.svg";
+import problemIcon from "../../../assets/icon-problem.svg";
+import procedureIcon from "../../../assets/icon-procedure.svg";
+import immunizationIcon from "../../../assets/icon-immunization.svg";
 import "./HealthPreviewSection.css"
 import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata";
 
@@ -19,6 +19,7 @@ export interface HealthPreviewSectionProps {
     onClick(): void;
     previewState?: "NoData" | "Default";
     indicatorPosition?: "default" | "topRight";
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: HealthPreviewSectionProps) {
@@ -91,16 +92,18 @@ export default function (props: HealthPreviewSectionProps) {
     }
 
     if (!model) {
-        return <div className="mdhui-health-preview-section"><LoadingIndicator /></div>
+        return <div ref={props.innerRef} className="mdhui-health-preview-section"><LoadingIndicator /></div>
     }
 
     if (!model.PreviewValues.length) {
         return null;
     }
 
-    return <Action indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} className="mdhui-health-preview-section" title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
-        <div>
-            {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
-        </div>
-    </Action>
+    return <div ref={props.innerRef}>
+        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
+            <div>
+                {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
+            </div>
+        </Action>
+    </div>
 }

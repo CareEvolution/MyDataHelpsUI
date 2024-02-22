@@ -8,6 +8,7 @@ import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTri
 export interface NotificationListProps {
 	notificationType?: NotificationType,
 	previewState?: NotificationListPreviewState
+	innerRef?: React.Ref<HTMLDivElement>
 }
 
 export type NotificationListPreviewState = "Default" | "NoData";
@@ -67,7 +68,7 @@ export default function (props: NotificationListProps) {
 	}, []);
 
 	return (
-		<div className="mdhui-notification-list">
+		<div ref={props.innerRef} className="mdhui-notification-list">
 			{notifications && notifications.map((notification) =>
 				<Card key={notification.id.toString()}>
 					<SingleNotification notification={notification} />

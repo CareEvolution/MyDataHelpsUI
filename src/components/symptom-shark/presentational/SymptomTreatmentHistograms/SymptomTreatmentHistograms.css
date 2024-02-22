@@ -1,0 +1,24 @@
+.mdhui-ss-histograms {
+    border-top: solid 1px var(--mdhui-border-color-1);
+    border-bottom: solid 1px var(--mdhui-border-color-1);
+    box-shadow: var(--mdhui-box-shadow-0);
+}
+
+.mdhui-ss-histograms .mdhui-ss-histogram {
+    padding: 16px;
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    position: relative;
+    padding-right: 32px;
+}
+
+.mdhui-ss-histograms .mdhui-ss-histogram .mdhui-ss-histogram-title {
+    color: var(--mdhui-text-color-1);
+    display: block;
+    padding-bottom: 8px;
+}
+
+.mdhui-ss-histograms .mdhui-ss-histogram .ss-histogram {
+    padding: 0;
+}

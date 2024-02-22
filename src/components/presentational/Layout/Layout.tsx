@@ -3,11 +3,12 @@ import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
 import { darkColorScheme, lightColorScheme, global, core } from '../../../helpers/globalCss';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
 export interface LayoutProps {
 	children?: React.ReactNode;
-	bodyBackgroundColor?: string;
-	primaryColor?: string;
+	bodyBackgroundColor?: ColorDefinition;
+	primaryColor?: ColorDefinition;
 	statusBarStyle?: StatusBarStyle;
 	className?: string;
 	noGlobalStyles?: boolean;
@@ -16,6 +17,7 @@ export interface LayoutProps {
 	  * @deprecated 
 	  */
 	stylesheetPath?: string;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface LayoutContext {
@@ -31,23 +33,24 @@ export default function (props: LayoutProps) {
 		className += " " + props.className;
 	}
 
-	if (props.bodyBackgroundColor) {
-		document.body.style.backgroundColor = props.bodyBackgroundColor;
-	} else {
-		document.body.style.removeProperty('background-color');
-	}
-
-	if (props.statusBarStyle) {
-		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
-	}
-
 	let colorScheme: "light" | "dark" = "light";
 	if (props.colorScheme === "auto" && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		colorScheme = "dark";
 	} else if (props.colorScheme === "dark" || props.colorScheme === "light") {
 		colorScheme = props.colorScheme;
 	}
-	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: props.bodyBackgroundColor || "var(--mdhui-background-color-1)" };
+
+	let backgroundColor = resolveColor(colorScheme, props.bodyBackgroundColor);
+	if (backgroundColor) {
+		document.body.style.backgroundColor = backgroundColor;
+	} else {
+		document.body.style.removeProperty('background-color');
+	}
+	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: backgroundColor || "var(--mdhui-background-color-1)" };
+
+	if (props.statusBarStyle) {
+		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
+	}
 
 	return (
 		<LayoutContext.Provider value={context}>
@@ -55,7 +58,7 @@ export default function (props: LayoutProps) {
 			{props.primaryColor &&
 				<EmotionGlobal styles={css`
 				:root {
-					--mdhui-color-primary: ${props.primaryColor};
+					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
 				}`
 				} />
 			}
@@ -68,7 +71,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div className={className}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor: backgroundColor }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}

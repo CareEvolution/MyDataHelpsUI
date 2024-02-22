@@ -1,0 +1,16 @@
+.mdhui-ss-symptom-severity-summaries .mdhui-ss-symptom-severity-summary {
+    width: 33%;
+    float: left;
+    text-align: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.mdhui-ss-symptom-severity-summaries .mdhui-ss-symptom-severity-summary-label {
+    padding: 8px;
+}
+
+.mdhui-ss-symptom-severity-summaries .mdhui-ss-symptom-severity-summary-count {
+    font-size: 34px;
+    font-weight: bold;
+}

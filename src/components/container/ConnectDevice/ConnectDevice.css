@@ -2,15 +2,8 @@
     font-weight: bold;
 }
 
-.mdhui-connect-device .subtitle {
-    font-size: .88em;
-    font-weight: normal;
-    color: var(--mdhui-text-color-2);
-}
-
 .mdhui-connect-device .subtitle.reconnect {
     color: var(--mdhui-color-danger);
-    font-weight: bold;
 }
 
 .mdhui-connect-device .subtitle.success svg {

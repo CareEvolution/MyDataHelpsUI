@@ -13,7 +13,7 @@ export default {
 const Template: ComponentStory<typeof HomeView> = (args: HomeViewProps) => <HomeView {...args} />;
 
 export const Preview = Template.bind({});
-Preview.args = { preview: true, notificationsViewUrl: "test.html" };
+Preview.args = { preview: true, notificationsViewUrl: "test.html", ehrConnectApplicationUrl: "test.html" };
 
 export const Live = Template.bind({});
 Live.args = { preview: false, notificationsViewUrl:"test.html" };

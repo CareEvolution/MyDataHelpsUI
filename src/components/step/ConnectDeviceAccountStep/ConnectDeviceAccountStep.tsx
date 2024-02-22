@@ -1,7 +1,4 @@
 import React from "react";
-import MyDataHelps, {
-    ExternalAccountProvidersPage,
-} from "@careevolution/mydatahelps-js";
 import StepLayout from "../StepLayout";
 import StepTitle from "../StepTitle";
 import StepText from "../StepText";
@@ -11,40 +8,13 @@ export interface ConnectDeviceAccountStepProps {
     title?: string;
     text?: string;
     deviceType: string; // "Fitbit" | "Garmin" | "Omron";
-    providerName: string;
+    providerID: number;
     styles: { [key: string]: any };
+    onConnect: () => void;
 }
 
 export default function (props: ConnectDeviceAccountStepProps) {
     const nextButtonText = `Connect to ${props.deviceType}`;
-
-    function handleClick() {
-        if (!props.providerName || props.providerName.length === 0) return;
-        MyDataHelps.getExternalAccountProviders(
-            props.providerName,
-            "Device Manufacturer",
-            10,
-            0
-        )
-            .then((page: ExternalAccountProvidersPage) => {
-                if (page.totalExternalAccountProviders === 0) {
-                    throw new Error(
-                        `No external account provider ${props.providerName} found.`
-                    );
-                } else if (page.totalExternalAccountProviders > 1) {
-                    throw new Error(
-                        `More than one external account provider ${props.providerName} found.`
-                    );
-                }
-
-                return page.externalAccountProviders[0].id;
-            })
-            .then((providerId) => {
-                return MyDataHelps.connectExternalAccount(providerId, {
-                    openNewWindow: true,
-                });
-            });
-    }
 
     return (
         <StepLayout>
@@ -70,7 +40,7 @@ export default function (props: ConnectDeviceAccountStepProps) {
                 letterSpacing={props.styles.nextButtonLetterSpacing}
                 textTransform={props.styles.nextButtonTextTransform?.toLowerCase()}
                 gradient={props.styles.nextButtonBackgroundGradient}
-                onClick={handleClick}
+                onClick={props.onConnect}
             />
         </StepLayout>
     );

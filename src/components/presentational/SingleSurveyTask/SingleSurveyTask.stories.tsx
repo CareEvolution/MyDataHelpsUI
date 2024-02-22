@@ -1,87 +1,84 @@
-﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
-import SingleSurveyTask, { SingleSurveyTaskProps } from "./SingleSurveyTask"
-import Layout from "../Layout"
+﻿import React from 'react'
+import SingleSurveyTask, { SingleSurveyTaskVariant } from './SingleSurveyTask'
+import Layout from '../Layout'
+import Card from '../Card';
+import { SurveyTask, SurveyTaskStatus } from "@careevolution/mydatahelps-js";
+import { noop } from '../../../helpers/functions';
 
 export default {
-	title: "Presentational/SingleSurveyTask",
+	title: 'Presentational/SingleSurveyTask',
 	component: SingleSurveyTask,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof SingleSurveyTask>;
+	parameters: {layout: 'fullscreen'}
+};
 
-const Template: ComponentStory<typeof SingleSurveyTask> = (args: SingleSurveyTaskProps) =>
-	<Layout colorScheme="auto">
-		<SingleSurveyTask {...args} />
+interface SingleSurveyTaskStoryArgs {
+	name: string;
+	status: SurveyTaskStatus;
+	description?: string;
+	dueDate?: number;
+	hasSavedProgress?: boolean;
+	variant?: SingleSurveyTaskVariant;
+	endDate?: number;
+	surveyActive?: boolean;
+}
+
+const render = (args: SingleSurveyTaskStoryArgs) => {
+	const task = {
+		surveyDisplayName: args.name,
+		surveyDescription: args.description,
+		status: args.status,
+		dueDate: args.dueDate ? new Date(args.dueDate).toISOString() : undefined,
+		endDate: args.endDate ? new Date(args.endDate).toISOString() : undefined,
+		hasSavedProgress: args.hasSavedProgress
+	} as SurveyTask;
+
+	return <Layout colorScheme="auto">
+		<Card>
+			<SingleSurveyTask task={task} variant={args.variant} surveyActive={args.surveyActive} onClick={noop}/>
+		</Card>
 	</Layout>;
+};
 
-export const Incomplete = Template.bind({});
-Incomplete.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
+export const Default = {
+	args: {
+		variant: 'default',
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: undefined,
 		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier:"1"
-	}
-}
-
-export const Complete = Template.bind({});
-Complete.args = {
-	task: {
-		id: "test",
-		status: "complete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		endDate: "2022-03-06T20:00:00Z",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier: "1"
-	}
-}
-
-export const InProgress = Template.bind({});
-InProgress.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Pain Survey",
-		surveyDescription: "5 minutes",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: true,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier: "1"
-	}
-}
-
-export const LongDescription = Template.bind({});
-LongDescription.args = {
-	task: {
-		id: "test",
-		status: "incomplete",
-		surveyDisplayName: "Long Description",
-		surveyDescription: "Here is a really long description that will likely need to wrap.  It should wrap before overlapping the right chevron.",
-		surveyName: "PainSurvey",
-		dueDate: (new Date()).toISOString(),
-		hasSavedProgress: false,
-		insertedDate: "2022-03-06T20:00:00Z",
-		modifiedDate: "2022-03-06T20:00:00Z",
-		surveyID: "1",
-		linkIdentifier:"1"
-	}
-}
-
+		endDate: undefined,
+		surveyActive: false
+	},
+	argTypes: {
+		variant: {
+			control: 'radio',
+			options: ['default', 'expanded'],
+		},
+		status: {
+			control: 'radio',
+			options: ['incomplete', 'complete', 'closed']
+		},
+		dueDate: {
+			name: 'due date',
+			control: 'date',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		hasSavedProgress: {
+			name: 'in progress',
+			control: 'boolean',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		surveyActive: {
+			name: 'survey active',
+			control: 'boolean',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		endDate: {
+			name: 'end date',
+			control: 'date',
+			if: {arg: 'status', eq: 'complete'}
+		}
+	},
+	render: render
+};

@@ -1,6 +1,17 @@
 ﻿let strings: { [key: string]: string } = {
     "back": "Back",
+    "done": "Done",
     "close": "Close",
+    "save": "Save",
+    "add": "Add",
+    "settings": "Settings",
+    "connect": "Connect",
+    "reconnect": "Reconnect",
+    "refresh": "Refresh",
+    "remove": "Remove",
+    "help": "Help",
+    "view": "View",
+    "health-records": "Health Records",
     "connect-ehr-title-prefix": "Connect ",
     "connect-ehr-title-divider": " or ",
     "connect-ehr-title-providers": "Provider",
@@ -11,7 +22,7 @@
     "connect-ehr-text-connected": "Thank you for sharing your EHR data with @@PROJECT_NAME@@. Connect another provider to share more data or manage your EHR connections.",
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
-    "reconnect": "Connection expired.  Please reconnect.",
+    "expired-reconnect": "Connection expired.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",
@@ -21,6 +32,7 @@
     "connect-garmin-button": "Connect Garmin",
     "received-garmin-data": "We are receiving your Garmin data!",
     "downloading-data": "Downloading data...",
+    "downloading-data-menu": "Downloading Data",
     "all-tasks-complete": "All Tasks Complete!",
     "view-all": "View All",
     "tasks": "Tasks",
@@ -73,8 +85,10 @@
     "app-download-app-store-link-alt": "Download on the Apple App Store",
     "start": "Start",
     "resume": "Resume",
+    "start-survey": "Start Survey",
+    "resume-survey": "Resume Survey",
     "30-day-average": "30 Day Average",
-    "blood-type": "Blood type"
+    "blood-type": "Blood type",
 };
 
 export default strings;

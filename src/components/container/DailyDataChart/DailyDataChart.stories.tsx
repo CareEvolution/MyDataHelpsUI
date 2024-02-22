@@ -7,6 +7,7 @@ import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
 let render = (args: DailyDataChartProps) => <Layout colorScheme="auto"><Card><DailyDataChart {...args} /></Card></Layout>
+
 export const stepsLineChart = {
     args: {
         title: "Steps",
@@ -54,6 +55,22 @@ export const stepsBarChart = {
             }
             return Promise.resolve(data);
         }
+    },
+    render: render
+};
+
+
+export const stepsLiveBarChart = {
+    args: {
+        title: "Steps",
+        options: {
+
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar"
     },
     render: render
 };

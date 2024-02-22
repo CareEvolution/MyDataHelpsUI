@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
 import "./Button.css"
+import { LayoutContext } from '../Layout';
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+
+export type ButtonVariant = "default" | "subtle" | "light";
 
 export interface ButtonProps {
 	children?: React.ReactNode;
-	/**
-	 * Notification Type to display for the most recent notification
-	 * @default Push
-	 * */
 	disabled?: boolean;
 	onClick: Function;
 	className?: string;
-	color?: string;
+	color?: ColorDefinition;
 	loading?: boolean;
-	variant?: "default" | "subtle" | "light";
+	variant?: ButtonVariant;
+	innerRef?: React.Ref<HTMLButtonElement>;
+	defaultMargin?: boolean;
+	fullWidth?: boolean;
 }
 
 export default function (props: ButtonProps) {
@@ -21,20 +24,29 @@ export default function (props: ButtonProps) {
 	if (props.className) {
 		classes.push(props.className);
 	}
+	if(props.fullWidth ?? true){
+		classes.push("mdhui-button-full-width");
+	}
+	if (props.defaultMargin) {
+		classes.push("mdhui-button-default-margin");
+	}
 
-	let backgroundColor = props.color;
+
+	let context = useContext(LayoutContext);
+
+	let backgroundColor = resolveColor(context?.colorScheme, props.color);
 	let textColor = "#FFF";
 	if (props.variant === "subtle") {
-		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
 		backgroundColor = "transparent";
 	}
 	else if (props.variant === "light") {
-		textColor = props.color ? props.color : "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
 		backgroundColor = "var(--mdhui-background-color-1)";
 	}
 
 	return (
-		<button style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
+		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
 			onClick={() => {

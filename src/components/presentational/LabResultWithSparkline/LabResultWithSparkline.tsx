@@ -30,6 +30,7 @@ export interface TermInformation {
 export interface LabResultWithSparklineProps {
     labResultValue: LabResultValue;
     onViewTermInfo(termInfo: TermInformation): void;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: LabResultWithSparklineProps) {
@@ -52,7 +53,7 @@ export default function (props: LabResultWithSparklineProps) {
         props.onViewTermInfo(termInfo);
     }
 
-    return <div className="mdhui-lab-result-with-sparkline">
+    return <div ref={props.innerRef} className="mdhui-lab-result-with-sparkline">
         <div className="mdhui-lab-result-with-sparkline-title">{props.labResultValue.Type}</div>
         <div className="mdhui-lab-result-with-sparkline-flex">
             <div className="mdhui-lab-result-with-sparkline-value">

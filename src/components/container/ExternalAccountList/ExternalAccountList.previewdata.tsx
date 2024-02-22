@@ -20,7 +20,7 @@ export var previewExternalAccounts: ExternalAccount[] =
         provider:
             {
                 "id": 1,
-                "name": "CareEvolution FHIR",
+                "name": "Kaiser Permanente",
                 "category": "Provider",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo"
             }
@@ -31,7 +31,7 @@ export var previewExternalAccounts: ExternalAccount[] =
         provider:
             {
                 "id": 17,
-                "name": "CMS Sandbox",
+                "name": "Medicare / CMS",
                 "category": "Health Plan",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/17/logo"
             }
@@ -42,7 +42,7 @@ export var previewExternalAccounts: ExternalAccount[] =
         provider:
             {
                 "id": 2,
-                "name": "Fitbit Staging",
+                "name": "Fitbit",
                 "category": "Device Manufacturer",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo"
             }

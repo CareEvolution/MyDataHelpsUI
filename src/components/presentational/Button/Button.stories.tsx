@@ -63,3 +63,17 @@ LightVariant.args = {
 	children: "Click Here",
 	variant: "light"
 }
+
+export const NotFullWidth = Template.bind({});
+NotFullWidth.args = {
+	disabled: false,
+	children: "Click Here",
+	fullWidth: false
+}
+
+export const DefaultMargin = Template.bind({});
+DefaultMargin.args = {
+	disabled: false,
+	children: "Click Here",
+	defaultMargin: true
+}
