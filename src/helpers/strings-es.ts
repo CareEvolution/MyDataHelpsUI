@@ -85,7 +85,6 @@
     "app-download-app-store-link-alt": "Descargar en la tienda de aplicaciones de Apple",
     "start": "Inicio",
     "resume": "Continuar",
-    "30-day-average": "Promedio de 30 días",
     "start-survey": "Iniciar encuesta",
     "resume-survey": "Reanudar encuesta",
     "30-day-average": "Promedio de 30 días",
@@ -174,7 +173,6 @@
     "asthma-control-calendar-log-entries-impacts-label": "Impactos",
     "asthma-control-calendar-log-entries-triggers-label": "Disparadores",
     "blood-type": "Tipo de sangre",
-
 };
 
 export default strings;
