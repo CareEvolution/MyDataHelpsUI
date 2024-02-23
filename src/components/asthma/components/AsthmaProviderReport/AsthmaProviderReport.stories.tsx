@@ -9,7 +9,7 @@ export default {
 };
 
 const render = (args: AsthmaProviderReportProps) => {
-    return <Layout colorScheme='light' bodyBackgroundColor="#fff">
+    return <Layout colorScheme='light'>
         <AsthmaProviderReport {...args}/>
     </Layout>;
 }
