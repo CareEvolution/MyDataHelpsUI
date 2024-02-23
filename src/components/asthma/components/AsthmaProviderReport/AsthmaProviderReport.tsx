@@ -232,16 +232,16 @@ export default function (props: AsthmaProviderReportProps) {
                 <div style={{fontSize: '32px', fontWeight: 600, marginBottom: '8px'}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                 <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '24px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                 <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
-                    <div style={{display: 'grid', gridTemplateColumns: 'auto max-content', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
-                        <div>
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
+                        <div style={{flexGrow: 1}}>
                             <div style={{fontSize: '18px', fontWeight: 700}}>Asthma Control</div>
                             <div style={{fontSize: '16px', color: '#3b3b3b', marginBottom: '16px'}}>Patient reported</div>
-                            <div style={{display: 'flex', flexDirection: 'row', columnGap: '24px'}}>
-                                <div>
+                            <div style={{display: 'flex', flexDirection: 'row'}}>
+                                <div style={{marginRight: '24px'}}>
                                     <div style={{fontSize: '24px', fontWeight: 700}}>{logEntries.length} out of 90</div>
                                     <div>Daily entries logged</div>
                                 </div>
-                                <div>
+                                <div style={{marginRight: '24px'}}>
                                     <div style={{fontSize: '24px', fontWeight: 700, color: '#F86A5C'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'not-controlled').length} days</div>
                                     <div>Not under control</div>
                                 </div>
@@ -252,17 +252,17 @@ export default function (props: AsthmaProviderReportProps) {
                             </div>
                         </div>
                         <div style={{fontSize: '14px', fontWeight: 500, paddingTop: '8px'}}>
-                            <div style={{display: 'grid', gridTemplateColumns: 'max-content auto', marginBottom: '8px'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
                                 <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #35A6A0', color: '#35A6A0'}}/>
-                                <div style={{padding: '2px 8px'}}>Under control</div>
+                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Under control</div>
                             </div>
-                            <div style={{display: 'grid', gridTemplateColumns: 'max-content auto', marginBottom: '8px'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
                                 <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #F86A5C', color: '#fff', backgroundColor: '#F86A5C'}}/>
-                                <div style={{padding: '2px 8px'}}>Not under control</div>
+                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not under control</div>
                             </div>
-                            <div style={{display: 'grid', gridTemplateColumns: 'max-content auto', marginBottom: '8px'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
                                 <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px dashed #000'}}/>
-                                <div style={{padding: '2px 8px'}}>Not enough information</div>
+                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not enough information</div>
                             </div>
                         </div>
                     </div>
@@ -276,42 +276,42 @@ export default function (props: AsthmaProviderReportProps) {
                         inhaler use or due to asthma 1 nighttime awakening or limitation in activity was recorded.
                     </div>
                 </div>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '16px'}}>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
                         {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Rescue inhaler use', inhalerUseDays, inhalerUseDays === 1 ? 'day' : 'days')}
                         {renderStat('Normal activities affected', limitedActivityDays, limitedActivityDays === 1 ? 'day' : 'days')}
                         {renderStat('Nighttime awakenings', nighttimeAwakeningDays, nighttimeAwakeningDays === 1 ? 'day' : 'days')}
                     </div>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Symptom severity</div>
                         {renderStat('None', noSymptomDays, noSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Mild', mildSymptomDays, mildSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Moderate', moderateSymptomDays, moderateSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Severe', severeSymptomDays, severeSymptomDays === 1 ? 'day' : 'days')}
                     </div>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Common symptoms</div>
                         {renderStat('Coughing', coughingDays, coughingDays === 1 ? 'day' : 'days')}
                         {renderStat('Wheezing', wheezingDays, wheezingDays === 1 ? 'day' : 'days')}
                     </div>
                 </div>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '32px'}}>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '32px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Top 4 triggers</div>
                         {renderStat('Animal exposure', animalExposureDays, animalExposureDays === 1 ? 'report' : 'reports')}
                         {renderStat('Seasonal allergens/pollen', allergenDays, allergenDays === 1 ? 'report' : 'reports')}
                         {renderStat('Smoke', smokeDays, smokeDays === 1 ? 'report' : 'reports')}
                         {renderStat('Air pollution', airPollutionDays, airPollutionDays === 1 ? 'report' : 'reports')}
                     </div>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
                         {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
                         {renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
                         <div style={{fontSize: '12px', marginTop: '12px'}}>*Unable to afford the medications, concern over side effects, medications not working</div>
                     </div>
-                    <div style={{backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Days with AQI over 100</div>
                         {renderStat('Home', highHomeAqiDays > 0 ? highHomeAqiDays : 'None', highHomeAqiDays === 1 ? 'day' : highHomeAqiDays > 1 ? 'days' : '')}
                         {renderStat('Work', highWorkAqiDays > 0 ? highWorkAqiDays : 'None', highWorkAqiDays === 1 ? 'day' : highWorkAqiDays > 1 ? 'days' : '')}
