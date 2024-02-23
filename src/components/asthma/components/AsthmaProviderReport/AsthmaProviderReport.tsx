@@ -228,7 +228,7 @@ export default function (props: AsthmaProviderReportProps) {
             </button>
         </div>
         <div style={{margin: '16px', border: '1px solid #555'}}>
-            <div style={{padding: '48px', backgroundColor: '#fff'}} ref={reportRef}>
+            <div style={{width: 1224, height: 1584, padding: '48px', backgroundColor: '#fff'}} ref={reportRef}>
                 <div style={{fontSize: '32px', fontWeight: 600, marginBottom: '8px'}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                 <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '24px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                 <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
