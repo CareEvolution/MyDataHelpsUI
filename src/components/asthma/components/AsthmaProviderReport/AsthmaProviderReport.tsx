@@ -227,6 +227,9 @@ export default function (props: AsthmaProviderReportProps) {
         });
     };
 
+    let documentWidth = 1224;
+    let scale = window.innerWidth / (documentWidth + 136);
+
     return <div>
         <div style={{margin: '0 16px', textAlign: 'right'}}>
             <button className="mdhui-button" onClick={() => onDownload()}>
@@ -234,8 +237,8 @@ export default function (props: AsthmaProviderReportProps) {
                 {!downloading && <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>}
             </button>
         </div>
-        <div style={{display: 'block'}}>
-            <div style={{margin: '16px', border: '1px solid #555'}}>
+        <div style={{display: 'block', transform: 'scale(' + scale + ')', transformOrigin: 'left top', margin: '0 16px'}}>
+            <div style={{margin: '16px', border: '1px solid #333', width: 1224, boxSizing: 'border-box'}}>
                 <div style={{padding: '32px 48px', backgroundColor: '#fff'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                     <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
