@@ -193,7 +193,7 @@ export default function (props: AsthmaProviderReportProps) {
 
     const renderStat = (label: string, value: number | string, units: string) => {
         return <div style={{display: 'flex', flexDirection: 'row', margin: '2px 0'}}>
-            <div style={{flexGrow: 1, marginRight: '4px', fontWeight: 'normal'}}>{label}</div>
+            <div style={{flexGrow: 1, marginRight: '4px', fontWeight: 500}}>{label}</div>
             <div style={{flexShrink: 0}}>{value} {units}</div>
         </div>;
     };
@@ -235,121 +235,114 @@ export default function (props: AsthmaProviderReportProps) {
                 {!downloading && <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>}
             </button>
         </div>
-        <div style={{margin: '16px', border: '1px solid #555'}}>
-            <div style={{padding: '48px', backgroundColor: '#fff'}} ref={reportRef}>
-                <div style={{fontSize: '32px', fontWeight: 600, marginBottom: '8px'}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
-                <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '24px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
-                <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
-                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
-                        <div style={{flexGrow: 1}}>
-                            <div style={{fontSize: '18px', fontWeight: 700}}>Asthma Control</div>
-                            <div style={{fontSize: '16px', color: '#3b3b3b', marginBottom: '16px'}}>Patient reported</div>
-                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                                <div style={{marginRight: '24px'}}>
-                                    <div style={{fontSize: '24px', fontWeight: 700}}>{logEntries.length} out of 90</div>
-                                    <div>Daily entries logged</div>
+        <div style={{display: 'block'}}>
+            <div style={{margin: '16px', border: '1px solid #555'}}>
+                <div style={{padding: '32px 48px', backgroundColor: '#fff'}} ref={reportRef}>
+                    <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
+                    <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
+                    <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
+                        <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
+                            <div style={{flexGrow: 1}}>
+                                <div style={{fontSize: '18px', fontWeight: 700}}>Asthma Control</div>
+                                <div style={{fontSize: '16px', color: '#3b3b3b', marginBottom: '16px'}}>Patient reported</div>
+                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                    <div style={{marginRight: '24px'}}>
+                                        <div style={{fontSize: '24px', fontWeight: 700}}>{logEntries.length} out of 90</div>
+                                        <div>Daily entries logged</div>
+                                    </div>
+                                    <div style={{marginRight: '24px'}}>
+                                        <div style={{fontSize: '24px', fontWeight: 700, color: '#F86A5C'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'not-controlled').length} days</div>
+                                        <div>Not under control</div>
+                                    </div>
+                                    <div>
+                                        <div style={{fontSize: '24px', fontWeight: 700, color: '#35A6A0'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'controlled').length} days</div>
+                                        <div>Under control</div>
+                                    </div>
                                 </div>
-                                <div style={{marginRight: '24px'}}>
-                                    <div style={{fontSize: '24px', fontWeight: 700, color: '#F86A5C'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'not-controlled').length} days</div>
-                                    <div>Not under control</div>
+                            </div>
+                            <div style={{fontSize: '14px', fontWeight: 500, paddingTop: '8px'}}>
+                                <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
+                                    <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #35A6A0', boxSizing: 'border-box', color: '#35A6A0'}}/>
+                                    <div style={{flexGrow: 1, padding: '2px 8px'}}>Under control</div>
                                 </div>
-                                <div>
-                                    <div style={{fontSize: '24px', fontWeight: 700, color: '#35A6A0'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'controlled').length} days</div>
-                                    <div>Under control</div>
+                                <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
+                                    <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #F86A5C', boxSizing: 'border-box', color: '#fff', backgroundColor: '#F86A5C'}}/>
+                                    <div style={{flexGrow: 1, padding: '2px 8px'}}>Not under control</div>
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
+                                    <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px dashed #000', boxSizing: 'border-box'}}/>
+                                    <div style={{flexGrow: 1, padding: '2px 8px'}}>Not enough information</div>
                                 </div>
                             </div>
                         </div>
-                        <div style={{fontSize: '14px', fontWeight: 500, paddingTop: '8px'}}>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #35A6A0', color: '#35A6A0'}}/>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Under control</div>
-                            </div>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #F86A5C', color: '#fff', backgroundColor: '#F86A5C'}}/>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not under control</div>
-                            </div>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px dashed #000'}}/>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not enough information</div>
-                            </div>
+                        <div style={{padding: '12px 16px'}}>
+                            {renderRow(0, 18, true)}
+                            {renderRow(18, 18)}
+                            {renderRow(36, 18)}
+                            {renderRow(54, 18)}
+                            {renderRow(72, 18)}
+                        </div>
+                        <div style={{fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px'}}>
+                            This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler and impact
+                            on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the EPR-3 guidelines. A
+                            day is noted as not under control if in the prior week (7 days) there are more than 2 days of symptoms or rescue inhaler use or due to asthma 1
+                            nighttime awakening or limitation in activity was recorded.
                         </div>
                     </div>
-                    <div style={{padding: '16px'}}>
-                        {renderRow(0, 18, true)}
-                        {renderRow(18, 18)}
-                        {renderRow(36, 18)}
-                        {renderRow(54, 18)}
-                        {renderRow(72, 18)}
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '16px'}}>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
+                            {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
+                            {renderStat('Rescue inhaler use', inhalerUseDays, inhalerUseDays === 1 ? 'day' : 'days')}
+                            {renderStat('Normal activities affected', limitedActivityDays, limitedActivityDays === 1 ? 'day' : 'days')}
+                            {renderStat('Nighttime awakenings', nighttimeAwakeningDays, nighttimeAwakeningDays === 1 ? 'day' : 'days')}
+                        </div>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Symptom severity</div>
+                            {renderStat('None', noSymptomDays, noSymptomDays === 1 ? 'day' : 'days')}
+                            {renderStat('Mild', mildSymptomDays, mildSymptomDays === 1 ? 'day' : 'days')}
+                            {renderStat('Moderate', moderateSymptomDays, moderateSymptomDays === 1 ? 'day' : 'days')}
+                            {renderStat('Severe', severeSymptomDays, severeSymptomDays === 1 ? 'day' : 'days')}
+                        </div>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Common symptoms</div>
+                            {renderStat('Coughing', coughingDays, coughingDays === 1 ? 'day' : 'days')}
+                            {renderStat('Wheezing', wheezingDays, wheezingDays === 1 ? 'day' : 'days')}
+                        </div>
                     </div>
-                    <div style={{fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px'}}>
-                        This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler
-                        and impact on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the
-                        EPR-3 guidelines. A day is noted as not under control if in the prior week (7 days) there are more than 2 days of symptoms or rescue
-                        inhaler use or due to asthma 1 nighttime awakening or limitation in activity was recorded.
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '24px'}}>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Top 4 triggers</div>
+                            {renderStat('Animal exposure', animalExposureDays, animalExposureDays === 1 ? 'report' : 'reports')}
+                            {renderStat('Seasonal allergens/pollen', allergenDays, allergenDays === 1 ? 'report' : 'reports')}
+                            {renderStat('Smoke', smokeDays, smokeDays === 1 ? 'report' : 'reports')}
+                            {renderStat('Air pollution', airPollutionDays, airPollutionDays === 1 ? 'report' : 'reports')}
+                        </div>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
+                            {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
+                            {renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
+                            <div style={{fontSize: '12px', marginTop: '12px'}}>*Unable to afford the medications, concern over side effects, medications not working</div>
+                        </div>
+                        <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
+                            <div style={{marginBottom: '8px', fontWeight: 700}}>Days with AQI over 100</div>
+                            {renderStat('Home', highHomeAqiDays > 0 ? highHomeAqiDays : 'None', highHomeAqiDays === 1 ? 'day' : highHomeAqiDays > 1 ? 'days' : '')}
+                            {renderStat('Work', highWorkAqiDays > 0 ? highWorkAqiDays : 'None', highWorkAqiDays === 1 ? 'day' : highWorkAqiDays > 1 ? 'days' : '')}
+                            <div style={{fontSize: '12px', marginTop: '12px'}}>Source: airnow.gov</div>
+                        </div>
                     </div>
-                </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '16px'}}>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
-                        {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
-                        {renderStat('Rescue inhaler use', inhalerUseDays, inhalerUseDays === 1 ? 'day' : 'days')}
-                        {renderStat('Normal activities affected', limitedActivityDays, limitedActivityDays === 1 ? 'day' : 'days')}
-                        {renderStat('Nighttime awakenings', nighttimeAwakeningDays, nighttimeAwakeningDays === 1 ? 'day' : 'days')}
-                    </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px', margin: '0 16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Symptom severity</div>
-                        {renderStat('None', noSymptomDays, noSymptomDays === 1 ? 'day' : 'days')}
-                        {renderStat('Mild', mildSymptomDays, mildSymptomDays === 1 ? 'day' : 'days')}
-                        {renderStat('Moderate', moderateSymptomDays, moderateSymptomDays === 1 ? 'day' : 'days')}
-                        {renderStat('Severe', severeSymptomDays, severeSymptomDays === 1 ? 'day' : 'days')}
-                    </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Common symptoms</div>
-                        {renderStat('Coughing', coughingDays, coughingDays === 1 ? 'day' : 'days')}
-                        {renderStat('Wheezing', wheezingDays, wheezingDays === 1 ? 'day' : 'days')}
-                    </div>
-                </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '32px'}}>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Top 4 triggers</div>
-                        {renderStat('Animal exposure', animalExposureDays, animalExposureDays === 1 ? 'report' : 'reports')}
-                        {renderStat('Seasonal allergens/pollen', allergenDays, allergenDays === 1 ? 'report' : 'reports')}
-                        {renderStat('Smoke', smokeDays, smokeDays === 1 ? 'report' : 'reports')}
-                        {renderStat('Air pollution', airPollutionDays, airPollutionDays === 1 ? 'report' : 'reports')}
-                    </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px', margin: '0 16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
-                        {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
-                        {renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
-                        <div style={{fontSize: '12px', marginTop: '12px'}}>*Unable to afford the medications, concern over side effects, medications not working</div>
-                    </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Days with AQI over 100</div>
-                        {renderStat('Home', highHomeAqiDays > 0 ? highHomeAqiDays : 'None', highHomeAqiDays === 1 ? 'day' : highHomeAqiDays > 1 ? 'days' : '')}
-                        {renderStat('Work', highWorkAqiDays > 0 ? highWorkAqiDays : 'None', highWorkAqiDays === 1 ? 'day' : highWorkAqiDays > 1 ? 'days' : '')}
-                        <div style={{fontSize: '12px', marginTop: '12px'}}>Source: airnow.gov</div>
-                    </div>
-                </div>
-                <div style={{fontSize: '16px'}}>
-                    <div style={{fontWeight: 700, marginBottom: '16px'}}>About this report</div>
-                    <div style={{marginBottom: '16px'}}>
-                        Randomized controlled studies on interventions based on social cognitive theory of self-regulation (which includes the core components of
-                        self-monitoring, self-judgment and self-evaluation) have shown clinical benefits across different conditions, including asthma. This tool
-                        design was based on promoting self-regulation. It enables patients to track daily their symptoms and triggers, provides clear summaries
-                        or what they log and surfaces relevant educational content and resource links. The tool does not recommend any changes in management or
-                        provide diagnosis.
-                    </div>
-                    <div style={{marginBottom: '16px'}}>
-                        This report was generated from the Asthma Tool experience, powered by MyDataHelps, it summarizes what the user chose to log. The experience
-                        allows logging/editing on the current day and day prior, to remove any memory recall. Goal of this report is to help patients share with
-                        their providers how they have been feeling. The patients also receive recommended educational topics based on what they log.
-                    </div>
-                    <div style={{marginBottom: '16px'}}>
-                        If you have general feedback on this report, feel free to e-mail us: XXX@careevolution.com.
-                    </div>
-                    <div>
-                        If you plan to share this report with your provider, be aware that communications over email, text, and other channels may not be secure
-                        because they can be sent to the wrong person or intercepted.
+                    <div style={{fontSize: '16px'}}>
+                        <div style={{fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
+                        <div style={{marginBottom: '16px'}}>
+                            This report was generated from the Asthma Tool experience, powered by MyDataHelps, it summarizes the user’s logs. This digital tool design was
+                            based on promoting self-regulation (shown in RCTs to have clinical benefits across different conditions, including asthma.). It enables patients
+                            to track daily their symptoms and triggers, provides clear summaries or what they log and surfaces relevant educational content and resource
+                            links. The tool does not recommend any changes in management or provide diagnosis. If you plan to share this report with your provider, please
+                            be aware that communications over email, text, and other channels may not be secure because they can be sent to the wrong person or intercepted.
+                        </div>
+                        <div>
+                            To provide feedback on this report or tool, please e-mail us: XXX@careevolution.com
+                        </div>
                     </div>
                 </div>
             </div>
