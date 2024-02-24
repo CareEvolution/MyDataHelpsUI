@@ -199,8 +199,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     const onDownload = () => {
-        // if (props.previewState || downloading) return;
-        if (downloading) return;
+        if (props.previewState || downloading) return;
 
         setDownloading(true);
 
@@ -219,9 +218,9 @@ export default function (props: AsthmaProviderReportProps) {
                 let reportPdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf";
                 if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
                     // @ts-ignore
-                    //window.webkit.messageHandlers.OpenFile.postMessage({'url': reportPdfUrl});
+                    window.webkit.messageHandlers.OpenFile.postMessage({'url': reportPdfUrl});
                 } else {
-                    //MyDataHelps.openExternalUrl(reportPdfUrl);
+                    MyDataHelps.openExternalUrl(reportPdfUrl);
                 }
                 setDownloading(false);
             });
