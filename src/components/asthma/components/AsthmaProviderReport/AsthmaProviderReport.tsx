@@ -178,21 +178,29 @@ export default function (props: AsthmaProviderReportProps) {
             dayStyle.borderStyle = 'dashed';
         }
 
-        return <div style={{textAlign: 'center', fontSize: '16px', padding: '1px'}}>
+        return <div style={{textAlign: 'center', fontSize: '16px', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
             <div style={{width: '38px', minHeight: '22px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? format(date, 'MMM').toUpperCase() : ''}</div>
             <div style={dayStyle}>{date.getDate()}</div>
         </div>;
     };
 
+    const renderRow = (start: number, dayCount: number, labelFirstDay?: boolean) => {
+        let days = Array.from({length: dayCount}, (_, i) => i + start);
+        return <div style={{display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly', margin: '4px 0'}}>
+            {days.map(day => renderDay(day, !!labelFirstDay && start == day))}
+        </div>;
+    };
+
     const renderStat = (label: string, value: number | string, units: string) => {
-        return <div style={{display: 'grid', gridTemplateColumns: 'auto max-content', margin: '2px 0'}}>
-            <div style={{marginRight: '4px', fontWeight: 'normal'}}>{label}</div>
-            <div>{value} {units}</div>
+        return <div style={{display: 'flex', flexDirection: 'row', margin: '2px 0'}}>
+            <div style={{flexGrow: 1, marginRight: '4px', fontWeight: 'normal'}}>{label}</div>
+            <div style={{flexShrink: 0}}>{value} {units}</div>
         </div>;
     };
 
     const onDownload = () => {
-        if (props.previewState || downloading) return;
+        // if (props.previewState || downloading) return;
+        if (downloading) return;
 
         setDownloading(true);
 
@@ -204,16 +212,16 @@ export default function (props: AsthmaProviderReportProps) {
             reportHtml += documentStyles[i].outerHTML;
         }
 
-        reportHtml += reportRef.current!.innerHTML;
+        reportHtml += reportRef.current!.outerHTML;
 
         MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
             MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
                 let reportPdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf";
                 if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
                     // @ts-ignore
-                    window.webkit.messageHandlers.OpenFile.postMessage({'url': reportPdfUrl});
+                    //window.webkit.messageHandlers.OpenFile.postMessage({'url': reportPdfUrl});
                 } else {
-                    MyDataHelps.openExternalUrl(reportPdfUrl);
+                    //MyDataHelps.openExternalUrl(reportPdfUrl);
                 }
                 setDownloading(false);
             });
@@ -266,8 +274,12 @@ export default function (props: AsthmaProviderReportProps) {
                             </div>
                         </div>
                     </div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'repeat( 18, 1fr )', padding: '16px'}}>
-                        {Array.from({length: 90}, (_, i) => i).map(day => renderDay(day, day === 0))}
+                    <div style={{padding: '16px'}}>
+                        {renderRow(0, 18, true)}
+                        {renderRow(18, 18)}
+                        {renderRow(36, 18)}
+                        {renderRow(54, 18)}
+                        {renderRow(72, 18)}
                     </div>
                     <div style={{fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px'}}>
                         This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler
@@ -276,7 +288,7 @@ export default function (props: AsthmaProviderReportProps) {
                         inhaler use or due to asthma 1 nighttime awakening or limitation in activity was recorded.
                     </div>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '16px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '16px'}}>
                     <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
                         {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
@@ -284,7 +296,7 @@ export default function (props: AsthmaProviderReportProps) {
                         {renderStat('Normal activities affected', limitedActivityDays, limitedActivityDays === 1 ? 'day' : 'days')}
                         {renderStat('Nighttime awakenings', nighttimeAwakeningDays, nighttimeAwakeningDays === 1 ? 'day' : 'days')}
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px', margin: '0 16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Symptom severity</div>
                         {renderStat('None', noSymptomDays, noSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Mild', mildSymptomDays, mildSymptomDays === 1 ? 'day' : 'days')}
@@ -297,7 +309,7 @@ export default function (props: AsthmaProviderReportProps) {
                         {renderStat('Wheezing', wheezingDays, wheezingDays === 1 ? 'day' : 'days')}
                     </div>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', columnGap: '16px', marginBottom: '32px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '32px'}}>
                     <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Top 4 triggers</div>
                         {renderStat('Animal exposure', animalExposureDays, animalExposureDays === 1 ? 'report' : 'reports')}
@@ -305,7 +317,7 @@ export default function (props: AsthmaProviderReportProps) {
                         {renderStat('Smoke', smokeDays, smokeDays === 1 ? 'report' : 'reports')}
                         {renderStat('Air pollution', airPollutionDays, airPollutionDays === 1 ? 'report' : 'reports')}
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px'}}>
+                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '16px', margin: '0 16px'}}>
                         <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
                         {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
                         {renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}

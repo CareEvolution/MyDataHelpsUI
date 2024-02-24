@@ -1,5 +1,5 @@
 import { AsthmaLogEntry, AsthmaParticipant } from '../../model';
-import { DeviceDataPoint, SurveyAnswer } from '@careevolution/mydatahelps-js';
+import { DeviceDataPoint, Guid, SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { dateToAsthmaLogEntryIdentifier } from "../../helpers";
 import { add } from 'date-fns';
 
@@ -15,6 +15,7 @@ export interface AsthmaProviderReportPreviewData {
 export const previewData: Record<AsthmaProviderReportPreviewState, AsthmaProviderReportPreviewData> = {
     'default': {
         participant: {
+            getId: () => 'ef698523-118a-414a-bd01-ff97c6cb31f9' as Guid,
             getFirstName: () => 'Leroy'
         } as AsthmaParticipant,
         logEntries: [
