@@ -219,7 +219,16 @@ export default function (props: AsthmaProviderReportProps) {
         setGeneratingPdf(true);
 
         if (!deviceInfo) {
-            MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportRef.current!.outerHTML}]).then(() => {
+            let reportHtml = '';
+
+            let documentStyles = document.head.getElementsByTagName("style");
+            for (let i = 0; i < documentStyles.length; i++) {
+                reportHtml += documentStyles[i].outerHTML;
+            }
+
+            reportHtml += reportRef.current!.outerHTML;
+
+            MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
                 MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
                     setDeviceInfo(deviceInfo);
                     openPdf(deviceInfo);
