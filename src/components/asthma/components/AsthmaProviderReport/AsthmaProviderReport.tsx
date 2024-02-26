@@ -219,13 +219,7 @@ export default function (props: AsthmaProviderReportProps) {
         setGeneratingPdf(true);
 
         if (!deviceInfo) {
-            let reportHtml = '';
-
-            let documentStyles = document.head.getElementsByTagName("style");
-            for (let i = 0; i < documentStyles.length; i++) {
-                reportHtml += documentStyles[i].outerHTML;
-            }
-
+            let reportHtml = '<head><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>';
             reportHtml += reportRef.current!.outerHTML;
 
             MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
@@ -245,7 +239,7 @@ export default function (props: AsthmaProviderReportProps) {
     return <div>
         <div style={{display: 'flex', justifyContent: 'center', zoom: zoom}}>
             <div style={{marginBottom: '32px', border: '1px solid #333', width: documentWidth, boxSizing: 'border-box'}}>
-                <div style={{padding: '32px 48px', backgroundColor: '#fff'}} ref={reportRef}>
+                <div style={{padding: '32px 48px', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                     <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                     <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
