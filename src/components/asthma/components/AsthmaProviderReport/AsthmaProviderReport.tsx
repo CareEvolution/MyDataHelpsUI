@@ -3,7 +3,7 @@ import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdent
 import { AsthmaProviderReportPreviewState, previewData } from './AsthmaProviderReport.previewData';
 import { add, format, formatISO, parseISO, startOfToday } from 'date-fns';
 import { AsthmaControlState, AsthmaLogEntry, AsthmaParticipant } from '../../model';
-import MyDataHelps, { DeviceDataPoint, SurveyAnswer } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPoint, DeviceInfo, SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { LoadingIndicator } from '../../../presentational';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +22,8 @@ export default function (props: AsthmaProviderReportProps) {
     const [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer[]>([]);
     const [airQualityDataPoints, setAirQualityDataPoints] = useState<DeviceDataPoint[]>([]);
     const reportRef = useRef<HTMLDivElement>(null);
-    const [downloading, setDownloading] = useState<boolean>(false);
+    const [generatingPdf, setGeneratingPdf] = useState<boolean>(false);
+    const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>();
 
     let today = startOfToday();
     let startDate = add(today, {days: -89});
@@ -57,7 +58,7 @@ export default function (props: AsthmaProviderReportProps) {
     }, [props.previewState]);
 
     useInitializeView(() => {
-        setDownloading(false);
+        setGeneratingPdf(false);
     });
 
     if (loading) {
@@ -202,40 +203,39 @@ export default function (props: AsthmaProviderReportProps) {
         </div>;
     };
 
-    const onDownload = () => {
-        if (props.previewState || downloading) return;
+    const openPdf = (deviceInfo: DeviceInfo) => {
+        let pdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf";
+        if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
+            // @ts-ignore
+            window.webkit.messageHandlers.OpenFile.postMessage({'url': pdfUrl});
+        } else {
+            MyDataHelps.openExternalUrl(pdfUrl);
+        }
+    };
 
-        setDownloading(true);
+    const onGeneratePdf = () => {
+        if (props.previewState || generatingPdf) return;
 
-        let reportHtml = '';
+        setGeneratingPdf(true);
 
-        // Get the styles from the document and add them to the report so they are included in the PDF
-        // let documentStyles = document.head.getElementsByTagName("style");
-        // for (let i = 0; i < documentStyles.length; i++) {
-        //     reportHtml += documentStyles[i].outerHTML;
-        // }
-
-        reportHtml += reportRef.current!.outerHTML;
-
-        MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
-            MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-                let reportPdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf";
-                if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
-                    // @ts-ignore
-                    window.webkit.messageHandlers.OpenFile.postMessage({'url': reportPdfUrl});
-                } else {
-                    MyDataHelps.openExternalUrl(reportPdfUrl);
-                }
+        if (!deviceInfo) {
+            MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportRef.current!.outerHTML}]).then(() => {
+                MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
+                    setDeviceInfo(deviceInfo);
+                    openPdf(deviceInfo);
+                });
             });
-        });
+        } else {
+            openPdf(deviceInfo);
+        }
     };
 
     let documentWidth = 1224;
-    let scale = window.innerWidth / (documentWidth + 130);
+    let zoom = window.innerWidth / (documentWidth + 130);
 
     return <div>
-        <div style={{display: 'flex', justifyContent: 'center', zoom: scale}}>
-            <div style={{marginBottom: '32px', border: '1px solid #333', width: 1224, boxSizing: 'border-box'}}>
+        <div style={{display: 'flex', justifyContent: 'center', zoom: zoom}}>
+            <div style={{marginBottom: '32px', border: '1px solid #333', width: documentWidth, boxSizing: 'border-box'}}>
                 <div style={{padding: '32px 48px', backgroundColor: '#fff'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                     <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
@@ -347,9 +347,9 @@ export default function (props: AsthmaProviderReportProps) {
             </div>
         </div>
         <div style={{textAlign: 'center'}}>
-            {downloading && <LoadingIndicator/>}
-            {!downloading &&
-                <button className="mdhui-button" onClick={() => onDownload()}>
+            {generatingPdf && <LoadingIndicator/>}
+            {!generatingPdf &&
+                <button className="mdhui-button" onClick={() => onGeneratePdf()}>
                     <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>
                 </button>
             }
