@@ -13,9 +13,6 @@ export interface LabResultsBloodTypeProps {
     summaryResultsOnly?: true | false
     maximumResults?: number
     onClick?: any
-    externalInfoLink?: true | false
-    externalInfoLinkDefault?: string
-    externalInfoLinkSpanish?: string
     innerRef?: React.Ref<HTMLDivElement>
 }
 
@@ -74,11 +71,9 @@ export default function (props: LabResultsBloodTypeProps) {
             props.onClick();
             return;
         }
-        if (!props.externalInfoLink) { return; }
-        if (!props.externalInfoLinkDefault) { return; }
         var linkTarget: string;
-        linkTarget = props.externalInfoLinkDefault;
-        if (MyDataHelps.language === "es" && props.externalInfoLinkSpanish) linkTarget = props.externalInfoLinkSpanish;
+        linkTarget = "https://medlineplus.gov/blood.html";
+        if (MyDataHelps.language === "es") linkTarget = "https://medlineplus.gov/spanish/blood.html";
         MyDataHelps.openEmbeddedUrl(linkTarget);
     }
 
@@ -116,7 +111,7 @@ export default function (props: LabResultsBloodTypeProps) {
         <Action
         bottomBorder
         title={ language ("blood-type") }
-        titleIcon={<img className="mdhui-health-preview-icon" src={ iconBloodType} alt="Blood Type" />}
+        titleIcon={<img className="mdhui-health-preview-icon" src={ iconBloodType } alt="Blood Type" />}
         onClick={ model ? drilldown: undefined }
         indicatorIcon={ faInfoCircle }
         indicatorPosition= "topRight" 

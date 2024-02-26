@@ -21,9 +21,6 @@ export const BloodTypeLabs = Template.bind({});
 BloodTypeLabs.args = {
     previewState: "BloodTypeLabs",
     summaryResultsOnly: true,
-    externalInfoLink: true,
-    externalInfoLinkDefault: "https://medlineplus.gov/blood.html",
-    externalInfoLinkSpanish: "https://medlineplus.gov/spanish/blood.html"
 };
 
 export const SingleLabs = Template.bind({});
