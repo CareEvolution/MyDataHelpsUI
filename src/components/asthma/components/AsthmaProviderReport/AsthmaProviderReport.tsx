@@ -232,7 +232,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     let documentWidth = 1224;
-    let scale = (window.innerWidth - 64) / documentWidth;
+    let scale = (window.innerWidth - 32) / documentWidth;
 
     return <div style={{display: 'flex', justifyContent: 'center'}}>
         <div style={{position: 'absolute', width: documentWidth, boxSizing: 'border-box', transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
@@ -334,11 +334,10 @@ export default function (props: AsthmaProviderReportProps) {
                     <div style={{fontSize: '16px'}}>
                         <div style={{fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
                         <div style={{marginBottom: '16px'}}>
-                            This report was generated from the Asthma Tool experience, powered by MyDataHelps, it summarizes the user’s logs. This digital tool design was
-                            based on promoting self-regulation (shown in RCTs to have clinical benefits across different conditions, including asthma.). It enables patients
-                            to track daily their symptoms and triggers, provides clear summaries or what they log and surfaces relevant educational content and resource
-                            links. The tool does not recommend any changes in management or provide diagnosis. If you plan to share this report with your provider, please
-                            be aware that communications over email, text, and other channels may not be secure because they can be sent to the wrong person or intercepted.
+                            This report was generated from what is logged in the Asthma Tool, powered by MyDataHelps. The Asthma Tool enables patients to track daily their
+                            symptoms and triggers, provides clear summaries or what they log and surfaces relevant educational content and resource links. it summarizes the
+                            user’s symptom logs. This digital tool design was based on promoting self-regulation, which studies demonstrate can improve conditions such as
+                            asthma. The Asthma Tool does not recommend any changes in management or provide diagnosis.
                         </div>
                         <div>
                             To provide feedback on this report or tool, please e-mail us: XXX@careevolution.com
