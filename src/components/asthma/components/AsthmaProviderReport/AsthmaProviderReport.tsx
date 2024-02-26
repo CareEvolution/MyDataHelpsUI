@@ -235,7 +235,7 @@ export default function (props: AsthmaProviderReportProps) {
     let zoom = window.innerWidth / (documentWidth + 130);
 
     return <div>
-        <div style={{display: 'flex', justifyContent: 'center', zoom: zoom}}>
+        <div style={{display: 'flex', justifyContent: 'center', zoom: zoom, textSizeAdjust: 'none'}}>
             <div style={{marginBottom: '32px', border: '1px solid #333', width: documentWidth, boxSizing: 'border-box'}}>
                 <div style={{padding: '32px 48px', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
