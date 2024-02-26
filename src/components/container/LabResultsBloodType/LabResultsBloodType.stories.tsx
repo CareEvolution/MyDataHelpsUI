@@ -28,7 +28,6 @@ SingleLabs.args = {
     previewState: "SingleLabs",
     summaryResultsOnly: false,
     maximumResults: 5,
-    externalInfoLink: false,
 };
 
 export const ManyLabs = Template.bind({});
@@ -36,7 +35,6 @@ ManyLabs.args = {
     previewState: "ManyLabs",
     summaryResultsOnly: false,
     maximumResults: 5,
-    externalInfoLink: false
 };
 
 export const NoData = Template.bind({});

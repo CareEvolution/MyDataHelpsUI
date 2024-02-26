@@ -7,17 +7,31 @@ import language from "../../../helpers/language";
 import { bloodTypeLabs, singleLabs, manyLabs } from "./LabResultsBloodType.previewdata";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import iconBloodType from "./icon-bloodtype.svg";
+import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
 
 export interface LabResultsBloodTypeProps {
     previewState?: "BloodTypeLabs" | "SingleLabs" | "ManyLabs" | "NoData"
     summaryResultsOnly?: true | false
     maximumResults?: number
-    onClick?: any
+    onClick?: () => void
     innerRef?: React.Ref<HTMLDivElement>
 }
 
+interface BloodTypeLab {
+    Type: string,
+    MostRecentValue: string,
+    MostRecentDate: string,
+    TermInformation: TermInformation,
+}
+
+interface LabResultBloodTypeData {
+    ImportantLabs?: any[],
+    RecentLabs?: any[],
+    BloodTypeLabs?: BloodTypeLab[],
+}
+
 export default function (props: LabResultsBloodTypeProps) {
-    const [model, setModel] = useState<any>(null);
+    const [model, setModel] = useState<LabResultBloodTypeData | null>(null);
 
     function getLabResultsSummary() {
         if (props.previewState == "BloodTypeLabs") {
@@ -34,7 +48,7 @@ export default function (props: LabResultsBloodTypeProps) {
         }
         if (props.previewState == "NoData") {
             setModel({
-                bloodTypeLabs: []
+                BloodTypeLabs: []
             });
             return;
         }
