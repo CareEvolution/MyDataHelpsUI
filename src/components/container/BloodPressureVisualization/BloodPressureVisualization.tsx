@@ -9,7 +9,7 @@ import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
 import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
 import { useInitializeView } from "../../../helpers/Initialization";
-import { BloodPressureDataPoint, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
+import { BloodPressureDataPoint, BloodPressureDeviceDataSource, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
 export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
@@ -18,6 +18,7 @@ export interface BloodPressureVisualizationProps {
     previewState?: BloodPressurePreviewState,
     surveyDataSource?: SurveyBloodPressureDataParameters,
     weekStartsOn?: WeekStartsOn,
+    deviceDataSource?: BloodPressureDeviceDataSource[],
     innerRef?: React.Ref<HTMLDivElement>
 };
 
@@ -54,7 +55,7 @@ export default function (props: BloodPressureVisualizationProps) {
                 setData(groupDataPointsByDate(params));
             }
             else {
-                bloodPressureDataProvider(props.surveyDataSource).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
+                bloodPressureDataProvider(props.surveyDataSource, props.deviceDataSource).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
                     setData(groupDataPointsByDate(bloodPressureDataPoints));
                 });
             }

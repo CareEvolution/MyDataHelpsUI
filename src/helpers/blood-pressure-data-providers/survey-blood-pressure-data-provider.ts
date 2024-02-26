@@ -5,8 +5,7 @@ export interface SurveyBloodPressureDataParameters {
     surveyName: string,
     dateResultIdentifier: string,
     systolicResultIdentifier: string,
-    diastolicResultIdentifier: string,
-    hideDeviceData?: boolean
+    diastolicResultIdentifier: string
 }
 
 export interface BloodPressureDataPoint {

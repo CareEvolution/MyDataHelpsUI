@@ -7,19 +7,22 @@ export default async function (namespace: DeviceDataNamespace, bloodPressureSyst
 
     function collateResults(dataPoints: DeviceDataPoint[]): BloodPressureDataPoint[] {
         let bpDataPointsByObservationDateTime: Map<string, BloodPressureDataPoint> = new Map<string, BloodPressureDataPoint>();
+        let complete: BloodPressureDataPoint[] = [];
 
         dataPoints.forEach((dataPoint) => {
             if (dataPoint.observationDate && !isNaN(Number(dataPoint.value))) {
                 var bpDate = parseISO(dataPoint.observationDate);
-                var bpDateIdentifier = bpDate.toDateString();
-                var exists = bpDataPointsByObservationDateTime.get(bpDateIdentifier);
+                var exists = bpDataPointsByObservationDateTime.get(dataPoint.observationDate);
                 var bp: BloodPressureDataPoint = exists ?? { date: startOfDay(bpDate), systolic: 0, diastolic: 0 };
                 buildBpDataPoint(dataPoint, bp);
-                bpDataPointsByObservationDateTime.set(bpDateIdentifier, bp);
+                bpDataPointsByObservationDateTime.set(dataPoint.observationDate, bp);
+                if (bp.systolic !== 0 && bp.diastolic !== 0) {
+                    complete.push(bp);
+                }
             }
         });
 
-        return Array.from(bpDataPointsByObservationDateTime.values());
+        return complete;
     }
 
     function buildBpDataPoint(dataPoint: DeviceDataPoint, bpDataPoint: BloodPressureDataPoint) {

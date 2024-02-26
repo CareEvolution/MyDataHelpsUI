@@ -60,7 +60,8 @@ export const Live = {
 			dateResultIdentifier: "Date of BP",
 			systolicResultIdentifier: "Systolic BP",
 			diastolicResultIdentifier: "Diastolic BP"
-		}
+		},
+		deviceDataSource: ["AppleHealth", "GoogleFit"]
 	},
 	render: render
 };
