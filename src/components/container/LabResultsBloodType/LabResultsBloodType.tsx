@@ -1,7 +1,6 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import React, { useEffect, useState } from "react";
 import { Action, LoadingIndicator } from "../../presentational";
-import "./LabResultsBloodType.css";
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { bloodTypeLabs, singleLabs, manyLabs } from "./LabResultsBloodType.previewdata";
@@ -129,7 +128,7 @@ export default function (props: LabResultsBloodTypeProps) {
         onClick={ model ? drilldown: undefined }
         indicatorIcon={ faInfoCircle }
         indicatorPosition= "topRight" 
-        className="mdhui-lab-results-summary mdhui-health-preview-section">
+        className="mdhui-health-preview-section">
         {!model &&
             <LoadingIndicator />
         }
