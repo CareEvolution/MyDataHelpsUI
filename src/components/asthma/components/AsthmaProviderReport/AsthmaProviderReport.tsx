@@ -7,7 +7,6 @@ import MyDataHelps, { DeviceDataPoint, DeviceInfo, SurveyAnswer } from '@careevo
 import { LoadingIndicator } from '../../../presentational';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
-import { useInitializeView } from "../../../../helpers/Initialization";
 
 export interface AsthmaProviderReportProps {
     previewState?: 'loading' | AsthmaProviderReportPreviewState;
@@ -56,10 +55,6 @@ export default function (props: AsthmaProviderReportProps) {
             setLoading(false);
         });
     }, [props.previewState]);
-
-    useInitializeView(() => {
-        setGeneratingPdf(false);
-    });
 
     if (loading) {
         return <LoadingIndicator innerRef={props.innerRef}/>;
@@ -211,6 +206,9 @@ export default function (props: AsthmaProviderReportProps) {
         } else {
             MyDataHelps.openExternalUrl(pdfUrl);
         }
+        setTimeout(() => {
+            setGeneratingPdf(false);
+        }, 2000);
     };
 
     const onGeneratePdf = () => {
