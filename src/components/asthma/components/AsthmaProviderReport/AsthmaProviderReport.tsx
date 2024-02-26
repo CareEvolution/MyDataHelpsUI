@@ -7,6 +7,7 @@ import MyDataHelps, { DeviceDataPoint, SurveyAnswer } from '@careevolution/mydat
 import { LoadingIndicator } from '../../../presentational';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { useInitializeView } from "../../../../helpers/Initialization";
 
 export interface AsthmaProviderReportProps {
     previewState?: 'loading' | AsthmaProviderReportPreviewState;
@@ -28,7 +29,6 @@ export default function (props: AsthmaProviderReportProps) {
 
     useEffect(() => {
         setLoading(true);
-        setDownloading(false);
 
         if (props.previewState === 'loading') {
             return;
@@ -55,6 +55,10 @@ export default function (props: AsthmaProviderReportProps) {
             setLoading(false);
         });
     }, [props.previewState]);
+
+    useInitializeView(() => {
+        setDownloading(false);
+    });
 
     if (loading) {
         return <LoadingIndicator innerRef={props.innerRef}/>;
@@ -343,10 +347,12 @@ export default function (props: AsthmaProviderReportProps) {
             </div>
         </div>
         <div style={{textAlign: 'center'}}>
-            <button className="mdhui-button" onClick={() => onDownload()}>
-                {downloading && <LoadingIndicator/>}
-                {!downloading && <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>}
-            </button>
+            {downloading && <LoadingIndicator/>}
+            {!downloading &&
+                <button className="mdhui-button" onClick={() => onDownload()}>
+                    <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>
+                </button>
+            }
         </div>
     </div>;
 }
