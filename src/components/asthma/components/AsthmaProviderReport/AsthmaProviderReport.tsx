@@ -159,33 +159,39 @@ export default function (props: AsthmaProviderReportProps) {
         let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(date);
         let logEntryControlState = controlStateLookup[logEntryIdentifier];
 
+        let dayWrapperStyle: CSSProperties = {
+            fill: 'transparent',
+            stroke: '#fff',
+            strokeWidth: 2
+        };
+
         let dayStyle: CSSProperties = {
-            height: '38px',
-            width: '38px',
-            paddingTop: '8px',
-            border: '2px solid #fff',
-            borderRadius: '19px',
-            boxSizing: 'border-box',
             fontSize: '15px',
             fontWeight: 600,
-            margin: '0 auto 2px'
+            textAlign: 'center',
+            lineHeight: '40px'
         } as CSSProperties;
 
         if (logEntryControlState?.status === 'not-controlled') {
+            dayWrapperStyle.fill = '#F86A5C';
+            dayWrapperStyle.stroke = '#F86A5C';
             dayStyle.color = '#fff';
-            dayStyle.backgroundColor = '#F86A5C';
-            dayStyle.borderColor = '#F86A5C';
         } else if (logEntryControlState?.status === 'controlled') {
+            dayWrapperStyle.stroke = '#35A6A0';
             dayStyle.color = '#35A6A0';
-            dayStyle.borderColor = '#35A6A0';
         } else if (logEntryControlState?.status === 'not-determined') {
-            dayStyle.borderColor = '#000';
-            dayStyle.borderStyle = 'dashed';
+            dayWrapperStyle.stroke = '#000';
+            dayWrapperStyle.strokeDasharray = 4;
         }
 
         return <div style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
             <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? format(date, 'MMM').toUpperCase() : ''}</div>
-            <div style={dayStyle}>{date.getDate()}</div>
+            <svg viewBox="0 0 40px 40px" style={{height: '40px', width: '40px'}}>
+                <circle cx="20" cy="20" r="18" style={dayWrapperStyle}/>
+                <foreignObject x="0" y="0" height="40px" width="40px">
+                    <div style={dayStyle}>{date.getDate()}</div>
+                </foreignObject>
+            </svg>
         </div>;
     };
 
@@ -217,7 +223,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     const onGeneratePdf = () => {
-        if (generatingPdf) return;
+        if (props.previewState || generatingPdf) return;
 
         setGeneratingPdf(true);
 
@@ -227,8 +233,7 @@ export default function (props: AsthmaProviderReportProps) {
 
             MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
                 MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-                    // setDeviceInfo(deviceInfo);
-                    setGeneratingPdf(false);
+                    setDeviceInfo(deviceInfo);
                     openPdf(deviceInfo);
                 });
             });
@@ -238,7 +243,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     let documentWidth = 1224;
-    let documentHeight = 1575; // Should be 1584, but attempting to avoid running up to the bleeding edge.
+    let documentHeight = 1575; // Would be 1584, but avoiding running up to the bleeding edge, which results in a blank second page.
     let scale = (window.innerWidth - 32) / documentWidth;
 
     return <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -268,15 +273,21 @@ export default function (props: AsthmaProviderReportProps) {
                         </div>
                         <div style={{fontSize: '14px', fontWeight: 500, paddingTop: '8px'}}>
                             <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #35A6A0', boxSizing: 'border-box', color: '#35A6A0'}}/>
+                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
+                                    <circle cx="10" cy="10" r="8" style={{fill: '#fff', stroke: '#35A6A0', strokeWidth: 2}}/>
+                                </svg>
                                 <div style={{flexGrow: 1, padding: '2px 8px'}}>Under control</div>
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px solid #F86A5C', boxSizing: 'border-box', color: '#fff', backgroundColor: '#F86A5C'}}/>
+                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
+                                    <circle cx="10" cy="10" r="8" style={{fill: '#F86A5C', stroke: '#F86A5C', strokeWidth: 2}}/>
+                                </svg>
                                 <div style={{flexGrow: 1, padding: '2px 8px'}}>Not under control</div>
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <div style={{height: '20px', width: '20px', borderRadius: '10px', border: '2px dashed #000', boxSizing: 'border-box'}}/>
+                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
+                                    <circle cx="10" cy="10" r="8" style={{fill: '#fff', stroke: '#000', strokeWidth: 2, strokeDasharray: 3}}/>
+                                </svg>
                                 <div style={{flexGrow: 1, padding: '2px 8px'}}>Not enough information</div>
                             </div>
                         </div>
