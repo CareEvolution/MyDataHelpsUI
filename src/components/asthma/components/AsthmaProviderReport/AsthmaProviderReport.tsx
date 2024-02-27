@@ -127,6 +127,7 @@ export default function (props: AsthmaProviderReportProps) {
 
     let missedDosesDays = 0;
     let barrierDays = 0;
+    let barrierAnswers: string[] = [];
 
     surveyAnswers.forEach(surveyAnswer => {
         if (surveyAnswer.stepIdentifier === 'MISSED_DOSES') {
@@ -136,11 +137,14 @@ export default function (props: AsthmaProviderReportProps) {
                 missedDosesDays++;
             }
         } else if (surveyAnswer.stepIdentifier === 'MISSED_DOSES_REASONS') {
-            if (surveyAnswer.answers.includes('Unable to afford the medications') ||
-                surveyAnswer.answers.includes('Concerns over side effects') ||
-                surveyAnswer.answers.includes('Medications not working')) {
+            if (surveyAnswer.answers.length > 0 && surveyAnswer.answers[0] !== 'None of the above') {
                 barrierDays++;
             }
+            surveyAnswer.answers.forEach(answer => {
+                if (answer !== 'None of the above' && !barrierAnswers.includes(answer)) {
+                    barrierAnswers.push(answer);
+                }
+            });
         }
     });
 
@@ -285,7 +289,7 @@ export default function (props: AsthmaProviderReportProps) {
                         </div>
                         <div style={{fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px'}}>
                             This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler and impact
-                            on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the EPR-3 guidelines. A
+                            on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the <a href="https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma" target="_blank">EPR-3 guidelines</a>. A
                             day is noted as not under control if in the prior week (7 days) there are more than 2 days of symptoms or rescue inhaler use or due to asthma 1
                             nighttime awakening or limitation in activity was recorded.
                         </div>
@@ -322,8 +326,11 @@ export default function (props: AsthmaProviderReportProps) {
                         <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px'}}>
                             <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
                             {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
-                            {renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
-                            <div style={{fontSize: '12px', marginTop: '12px'}}>*Unable to afford the medications, concern over side effects, medications not working</div>
+                            {barrierDays === 0 && renderStat('Reported barriers to adherence', 0, 'reports')}
+                            {barrierDays >= 1 && renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
+                            {barrierDays >= 1 &&
+                                <div style={{fontSize: '12px', marginTop: '12px'}}>*{barrierAnswers.join(', ')}</div>
+                            }
                         </div>
                         <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
                             <div style={{marginBottom: '8px', fontWeight: 700}}>Days with AQI over 100</div>
@@ -335,13 +342,14 @@ export default function (props: AsthmaProviderReportProps) {
                     <div style={{fontSize: '16px'}}>
                         <div style={{fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
                         <div style={{marginBottom: '16px'}}>
-                            This report was generated from what is logged in the Asthma Tool, powered by MyDataHelps. The Asthma Tool enables patients to track daily their
-                            symptoms and triggers, provides clear summaries or what they log and surfaces relevant educational content and resource links. it summarizes the
-                            user’s symptom logs. This digital tool design was based on promoting self-regulation, which studies demonstrate can improve conditions such as
-                            asthma. The Asthma Tool does not recommend any changes in management or provide diagnosis.
+                            This report was generated from what is logged in the Asthma Tool, powered by <a href="https://careevolution.com/mydatahelps/" target="_blank">MyDataHelps</a>.
+                            The Asthma Tool enables patients to track daily their symptoms and triggers, provides clear summaries or what they log and surfaces relevant
+                            educational content and resource links. it summarizes the user's symptom logs. This digital tool design was based on promoting self-regulation,
+                            which <a href="https://pubmed.ncbi.nlm.nih.gov/26252889/" target="_blank">studies</a> demonstrate can improve conditions such as asthma. The Asthma Tool does
+                            not recommend any changes in management or provide diagnosis.
                         </div>
                         <div>
-                            To provide feedback on this report or tool, please e-mail us: XXX@careevolution.com
+                            To provide feedback on this report or tool, please e-mail us: <a href="mailto:asthma@careevolution.com" target="_blank">asthma@careevolution.com</a>
                         </div>
                     </div>
                 </div>

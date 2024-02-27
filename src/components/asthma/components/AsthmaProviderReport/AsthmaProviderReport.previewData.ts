@@ -41,7 +41,35 @@ export const previewData: Record<AsthmaProviderReportPreviewState, AsthmaProvide
                 triggers: []
             }
         ],
-        surveyAnswers: [],
+        surveyAnswers: [
+            {
+                stepIdentifier: 'MISSED_DOSES_REASONS',
+                answers: ['Unable to afford the medications', 'Medications not working']
+            } as SurveyAnswer,
+            {
+                stepIdentifier: 'MISSED_DOSES_REASONS',
+                answers: ['None of the above']
+            } as SurveyAnswer,
+            {
+                stepIdentifier: 'MISSED_DOSES_REASONS',
+                answers: ['Don\'t want to run out, so purposefully skipping doses']
+            } as SurveyAnswer,
+            {
+                stepIdentifier: 'MISSED_DOSES_REASONS',
+                answers: [
+                    'Unable to afford the medications',
+                    'Difficulty getting refills',
+                    'Trouble remembering to take them',
+                    'I\'m confused which inhaler to take when',
+                    'Don\'t know why I should take it',
+                    'Concerns over side effects',
+                    'Medications not working',
+                    'Don\'t want to run out, so purposefully skipping doses',
+                    'Never learned how to take them',
+                    'None of the above'
+                ]
+            } as SurveyAnswer
+        ],
         airQualityDataPoints: []
     }
 };
