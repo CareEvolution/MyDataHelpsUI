@@ -236,14 +236,14 @@ export default function (props: AsthmaProviderReportProps) {
         }
     };
 
-    let pageScale = (11 / 8.5);
     let documentWidth = 1224;
+    let documentHeight = 1584;
     let scale = (window.innerWidth - 32) / documentWidth;
 
     return <div style={{display: 'flex', justifyContent: 'center'}}>
-        <div style={{position: 'absolute', width: documentWidth, boxSizing: 'border-box', transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
+        <div style={{position: 'absolute', width: documentWidth, height: documentHeight, boxSizing: 'border-box', transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
             <div style={{border: '1px solid #333'}}>
-                <div style={{position: 'relative', padding: '32px 48px', height: (documentWidth * pageScale), backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
+                <div style={{position: 'relative', padding: '32px 48px', height: documentHeight, backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                     <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                     <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
