@@ -236,13 +236,14 @@ export default function (props: AsthmaProviderReportProps) {
         }
     };
 
+    let pageScale = (11 / 8.5);
     let documentWidth = 1224;
     let scale = (window.innerWidth - 32) / documentWidth;
 
     return <div style={{display: 'flex', justifyContent: 'center'}}>
         <div style={{position: 'absolute', width: documentWidth, boxSizing: 'border-box', transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
             <div style={{border: '1px solid #333'}}>
-                <div style={{padding: '32px 48px', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
+                <div style={{position: 'relative', padding: '32px 48px', height: (documentWidth * pageScale), backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
                     <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
                     <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                     <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
@@ -294,7 +295,7 @@ export default function (props: AsthmaProviderReportProps) {
                             nighttime awakening or limitation in activity was recorded.
                         </div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '16px'}}>
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '17px', marginBottom: '16px'}}>
                         <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
                             <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
                             {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
@@ -339,8 +340,8 @@ export default function (props: AsthmaProviderReportProps) {
                             <div style={{fontSize: '12px', marginTop: '12px'}}>Source: airnow.gov</div>
                         </div>
                     </div>
-                    <div style={{fontSize: '16px'}}>
-                        <div style={{fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
+                    <div style={{position: 'absolute', bottom: 64, left: 48, right: 48, fontSize: '17px'}}>
+                        <div style={{fontSize: '16px', fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
                         <div style={{marginBottom: '16px'}}>
                             This report was generated from what is logged in the Asthma Tool, powered by <a href="https://careevolution.com/mydatahelps/" target="_blank">MyDataHelps</a>.
                             The Asthma Tool enables patients to track daily their symptoms and triggers, provides clear summaries or what they log and surfaces relevant
@@ -348,9 +349,16 @@ export default function (props: AsthmaProviderReportProps) {
                             which <a href="https://pubmed.ncbi.nlm.nih.gov/26252889/" target="_blank">studies</a> demonstrate can improve conditions such as asthma. The Asthma Tool does
                             not recommend any changes in management or provide diagnosis.
                         </div>
-                        <div>
+                        <div style={{marginBottom: '16px'}}>
                             To provide feedback on this report or tool, please e-mail us: <a href="mailto:asthma@careevolution.com" target="_blank">asthma@careevolution.com</a>
                         </div>
+                        <div style={{marginBottom: '16px', height: '1px', backgroundColor: '#bdbdbd'}}/>
+                        <div>
+                            If you plan to share this report with your provider, be aware that communications over email, text, and other channels may not be secure because they can be sent to the wrong address or intercepted.
+                        </div>
+                    </div>
+                    <div style={{position: 'absolute', bottom: 32, right: 48, fontSize: '16px', fontWeight: 500, textAlign: 'right'}}>
+                        Page 1 of 1
                     </div>
                 </div>
             </div>
