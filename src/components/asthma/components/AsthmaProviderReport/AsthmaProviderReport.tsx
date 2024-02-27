@@ -217,7 +217,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     const onGeneratePdf = () => {
-        if (props.previewState || generatingPdf) return;
+        if (generatingPdf) return;
 
         setGeneratingPdf(true);
 
@@ -227,7 +227,8 @@ export default function (props: AsthmaProviderReportProps) {
 
             MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
                 MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-                    setDeviceInfo(deviceInfo);
+                    // setDeviceInfo(deviceInfo);
+                    setGeneratingPdf(false);
                     openPdf(deviceInfo);
                 });
             });
@@ -237,7 +238,7 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     let documentWidth = 1224;
-    let documentHeight = 1580; // Should be 1584, but attempting to avoid running up to the bleeding edge.
+    let documentHeight = 1575; // Should be 1584, but attempting to avoid running up to the bleeding edge.
     let scale = (window.innerWidth - 32) / documentWidth;
 
     return <div style={{display: 'flex', justifyContent: 'center'}}>
