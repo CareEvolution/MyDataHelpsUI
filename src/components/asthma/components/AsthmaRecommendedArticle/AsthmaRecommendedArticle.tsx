@@ -26,7 +26,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
         return {
             title: title,
             url: new URL(`atedu_${article}.html`, props.libraryBaseUrl).href,
-            imageUrl: `https://asthma.careevolutionapps.com/images/article/category_${image}.svg`
+            imageUrl: new URL(`images/article_category_${image}.svg`, props.libraryBaseUrl).href
         };
     }
 
