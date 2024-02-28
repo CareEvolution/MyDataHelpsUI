@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { Resource, ResourceDefinition, ResourceImageAlignment } from '../../../presentational';
+import { Resource, ResourceButtonVariant, ResourceDefinition, ResourceImageAlignment } from '../../../presentational';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import sampleResourceImage from '../../../../assets/resource-image.png';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
@@ -13,8 +13,8 @@ export interface AsthmaRecommendedArticleProps {
     libraryBaseUrl: string;
     logTodayEntrySurveyName: string;
     imageAlignment?: ResourceImageAlignment;
+    buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
-    hideButton?: boolean;
     style?: React.CSSProperties;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -159,8 +159,8 @@ export default function (props: AsthmaRecommendedArticleProps) {
             subTitle={recommendedArticle.subTitle}
             imageUrl={recommendedArticle.imageUrl}
             imageAlignment={props.imageAlignment}
+            buttonVariant={props.buttonVariant}
             buttonText={props.buttonText}
-            hideButton={props.hideButton}
             onClick={() => onClick()}
             innerRef={props.innerRef}
         />

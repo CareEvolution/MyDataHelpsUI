@@ -23,7 +23,7 @@ export const Default = {
         colorScheme: 'auto',
         previewState: 'default',
         imageAlignment: 'left',
-        hideButton: false,
+        buttonVariant: undefined,
         buttonText: ''
     },
     argTypes: {
@@ -42,12 +42,14 @@ export const Default = {
             control: 'radio',
             options: ['left', 'center', 'right']
         },
-        hideButton: {
-            name: 'hide button?'
+        buttonVariant: {
+            name: 'button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
         },
         buttonText: {
             name: 'button text override',
-            if: {arg: 'hideButton', eq: false}
+            if: {arg: 'buttonVariant', neq: undefined}
         }
     },
     render: render
