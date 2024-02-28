@@ -7,15 +7,16 @@ import { noop } from '../../../helpers/functions';
 import language from '../../../helpers/language';
 
 export type ResourceImageAlignment = 'left' | 'center' | 'right';
+export type ResourceButtonVariant = 'button' | 'link';
 
 export interface ResourceProps {
     imageUrl?: string;
     title: string;
     subTitle?: string;
     imageAlignment?: ResourceImageAlignment;
+    buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
     onClick: () => void;
-    hideButton?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -29,7 +30,12 @@ export default function (props: ResourceProps) {
             }
             <div className="mdhui-resource-title">{props.title}</div>
             <div className="mdhui-resource-subtitle">{props.subTitle}</div>
-            {!props.hideButton && <Button className="mdhui-resource-button" onClick={noop}>{props.buttonText || language('resource-default-button-text')}</Button>}
+            {props.buttonVariant === 'button' &&
+                <Button className="mdhui-resource-button" onClick={noop}>{props.buttonText || language('resource-default-button-text')}</Button>
+            }
+            {props.buttonVariant === 'link' &&
+                <div className="mdhui-resource-link">{props.buttonText || language('resource-default-button-text')}</div>
+            }
         </UnstyledButton>
     </div>;
 }

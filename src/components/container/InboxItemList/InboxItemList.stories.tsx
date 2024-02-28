@@ -22,7 +22,9 @@ export const Default = {
         emptyText: '',
         limit: 10,
         surveyVariant: 'default',
-        resourceImageAlignment: 'left'
+        resourceImageAlignment: 'left',
+        resourceButtonVariant: undefined,
+        resourceButtonText: ''
     },
     argTypes: {
         previewState: {
@@ -43,14 +45,25 @@ export const Default = {
             if: {arg: 'previewState', 'neq': 'no items'}
         },
         surveyVariant: {
+            name: 'survey variant',
             control: 'radio',
             options: ['default', 'expanded'],
             if: {arg: 'previewState', 'eq': 'incomplete items'}
         },
         resourceImageAlignment: {
+            name: 'resource image alignment',
             control: 'radio',
             options: ['left', 'center', 'right'],
             if: {arg: 'previewState', 'eq': 'incomplete items'}
+        },
+        resourceButtonVariant: {
+            name: 'resource button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
+        },
+        resourceButtonText: {
+            name: 'resource button text override',
+            if: {arg: 'resourceButtonVariant', neq: undefined}
         }
     },
     render: render

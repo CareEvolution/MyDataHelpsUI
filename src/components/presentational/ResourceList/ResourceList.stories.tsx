@@ -14,7 +14,7 @@ interface ResourceListStoryArgs extends ResourceListProps {
 
 const render = (args: ResourceListStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <ResourceList {...args}/>
+        <ResourceList {...args} />
     </Layout>;
 };
 
@@ -23,7 +23,9 @@ export const Default = {
         colorScheme: 'auto',
         previewState: 'some resources',
         emptyText: '',
-        imageAlignment: 'left'
+        imageAlignment: 'left',
+        buttonVariant: undefined,
+        buttonText: ''
     },
     argTypes: {
         colorScheme: {
@@ -45,6 +47,15 @@ export const Default = {
             control: 'radio',
             options: ['left', 'center', 'right'],
             if: {arg: 'previewState', eq: 'some resources'}
+        },
+        buttonVariant: {
+            name: 'button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
+        },
+        buttonText: {
+            name: 'button text override',
+            if: {arg: 'buttonVariant', neq: undefined}
         }
     },
     render: render
