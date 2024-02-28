@@ -22,11 +22,11 @@ export interface AsthmaRecommendedArticleProps {
 export default function (props: AsthmaRecommendedArticleProps) {
     const [recommendedArticle, setRecommendedArticle] = useState<ResourceDefinition>();
 
-    const createResourceDefinition = (title: string, article: string): ResourceDefinition => {
+    const createResourceDefinition = (title: string, article: string, image: string): ResourceDefinition => {
         return {
-            'title': title,
-            'url': new URL(`atedu_${article}.html`, props.libraryBaseUrl).href,
-            'imageUrl': new URL('images/article-image.png', props.libraryBaseUrl).href
+            title: title,
+            url: new URL(`atedu_${article}.html`, props.libraryBaseUrl).href,
+            imageUrl: `https://asthma.careevolutionapps.com/images/article/category_${image}.svg`
         };
     }
 
@@ -34,16 +34,16 @@ export default function (props: AsthmaRecommendedArticleProps) {
         let articles: ResourceDefinition[] = [];
 
         if (asthmaControlState.status === 'controlled') {
-            articles.push(createResourceDefinition('How to keep your asthma under control', '21'));
+            articles.push(createResourceDefinition('How to keep your asthma under control', '21', 'asthmacontrol'));
         } else if (asthmaControlState.status === 'not-controlled') {
-            articles.push(createResourceDefinition('Is your asthma under control?', '22'));
+            articles.push(createResourceDefinition('Is your asthma under control?', '22', 'asthmacontrol'));
         }
 
         if (todayLogEntry.triggers.includes('Seasonal allergens/pollen')) {
-            articles.push(createResourceDefinition('Seasonal allergens/pollen', '42'));
+            articles.push(createResourceDefinition('Seasonal allergens/pollen', '42', 'triggers'));
         }
         if (todayLogEntry.triggers.includes('Air pollution')) {
-            articles.push(createResourceDefinition('Air quality and asthma', '43'));
+            articles.push(createResourceDefinition('Air quality and asthma', '43', 'triggers'));
         }
 
         const surpriseTriggers = [
@@ -57,28 +57,28 @@ export default function (props: AsthmaRecommendedArticleProps) {
             'Burned incense or a candle'
         ];
         if (todayLogEntry.triggers.find(trigger => surpriseTriggers.includes(trigger))) {
-            articles.push(createResourceDefinition('Surprise triggers', '41'));
+            articles.push(createResourceDefinition('Surprise triggers', '41', 'triggers'));
         }
 
         let missedDosesAnswer = surveyAnswers.find(surveyAnswer => surveyAnswer.stepIdentifier === 'MISSED_DOSES');
         if (missedDosesAnswer) {
             if (missedDosesAnswer.answers.includes('No controller med')) {
-                articles.push(createResourceDefinition('Who needs a controller medication?', '32'));
+                articles.push(createResourceDefinition('Who needs a controller medication?', '32', 'medications'));
             }
             if (missedDosesAnswer.answers.includes('No missed doses')) {
                 let inhalerTypeAnswer = surveyAnswers.find(surveyAnswer => surveyAnswer.stepIdentifier === 'MISSED_DOSES_INHALER_TYPE');
                 if (inhalerTypeAnswer) {
                     if (inhalerTypeAnswer.answers.includes('Metered-dose inhaler (MDI)')) {
-                        articles.push(createResourceDefinition('Inhaler technique - MDI', '37a'));
+                        articles.push(createResourceDefinition('Inhaler technique - MDI', '37a', 'medications'));
                     }
                     if (inhalerTypeAnswer.answers.includes('Dry-powder inhaler (DPI)')) {
-                        articles.push(createResourceDefinition('Inhaler technique - DPI', '37b'));
+                        articles.push(createResourceDefinition('Inhaler technique - DPI', '37b', 'medications'));
                     }
                     if (inhalerTypeAnswer.answers.includes('Soft mist inhaler')) {
-                        articles.push(createResourceDefinition('Inhaler technique - SMI', '37c'));
+                        articles.push(createResourceDefinition('Inhaler technique - SMI', '37c', 'medications'));
                     }
                     if (inhalerTypeAnswer.answers.includes('Nebulizer')) {
-                        articles.push(createResourceDefinition('Inhaler technique - nebulizer', '37d'));
+                        articles.push(createResourceDefinition('Inhaler technique - nebulizer', '37d', 'medications'));
                     }
                 }
             }
@@ -88,30 +88,30 @@ export default function (props: AsthmaRecommendedArticleProps) {
         if (missedDosesReasonsAnswer) {
             if (missedDosesReasonsAnswer.answers.includes('Unable to afford the medications') ||
                 missedDosesReasonsAnswer.answers.includes('Don\'t want to run out, so purposefully skipping doses')) {
-                articles.push(createResourceDefinition('Medication access', '33'));
+                articles.push(createResourceDefinition('Medication access', '33', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('Difficulty getting refills')) {
-                articles.push(createResourceDefinition('Medication Refills', '34'));
+                articles.push(createResourceDefinition('Medication Refills', '34', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('Trouble remembering to take them')) {
-                articles.push(createResourceDefinition('Trouble remembering medications', '35'));
+                articles.push(createResourceDefinition('Trouble remembering medications', '35', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('I\'m confused which inhaler to take when')) {
-                articles.push(createResourceDefinition('Which inhaler to use when', '36'));
+                articles.push(createResourceDefinition('Which inhaler to use when', '36', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('Don\'t know why I should take it')) {
-                articles.push(createResourceDefinition('Why should I take my controller?', '38'));
+                articles.push(createResourceDefinition('Why should I take my controller?', '38', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('Concerns over side effects')) {
-                articles.push(createResourceDefinition('Asthma medication side effects', '39'));
+                articles.push(createResourceDefinition('Asthma medication side effects', '39', 'medications'));
             }
             if (missedDosesReasonsAnswer.answers.includes('Medications not working')) {
-                articles.push(createResourceDefinition('How do I know if my asthma medications are working?', '39a'));
+                articles.push(createResourceDefinition('How do I know if my asthma medications are working?', '39a', 'medications'));
             }
         }
 
         if (todayLogEntry.symptomLevel === 'severe') {
-            articles.push(createResourceDefinition('Navigating the Danger Zone: Preparedness for Asthma Flare-Ups', '24'));
+            articles.push(createResourceDefinition('Navigating the Danger Zone: Preparedness for Asthma Flare-Ups', '24', 'asthmacontrol'));
         }
 
         if (articles.length > 0) {
