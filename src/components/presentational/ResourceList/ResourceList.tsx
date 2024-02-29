@@ -1,6 +1,6 @@
 import React from 'react';
 import './ResourceList.css';
-import { Resource, ResourceImageAlignment } from '../../presentational';
+import { Resource, ResourceButtonVariant, ResourceImageAlignment } from '../../presentational';
 import language from '../../../helpers/language';
 import { previewData, ResourceListPreviewState } from './ResourceList.previewData';
 
@@ -17,6 +17,8 @@ export interface ResourceListProps {
     onViewResource: (resource: ResourceDefinition) => void;
     emptyText?: string;
     imageAlignment?: ResourceImageAlignment;
+    buttonVariant?: ResourceButtonVariant;
+    buttonText?: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -33,7 +35,9 @@ export default function (props: ResourceListProps) {
                     imageUrl={resource.imageUrl}
                     onClick={() => props.onViewResource(resource)}
                     imageAlignment={props.imageAlignment}
-                    hideButton={true}
+                    hideButton={!props.buttonVariant}
+                    buttonVariant={props.buttonVariant}
+                    buttonText={props.buttonText}
                 />;
             })}
             {resources.length === 0 &&

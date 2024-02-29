@@ -2,13 +2,14 @@ import React from 'react'
 import { InboxResource } from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import InboxCompletedListItem from '../InboxCompletedListItem';
-import Resource, { ResourceImageAlignment } from '../Resource';
+import Resource, { ResourceButtonVariant, ResourceImageAlignment } from '../Resource';
 import language from '../../../helpers/language';
 
 export interface InboxResourceListItemProps {
     resource: InboxResource;
     onClick: () => void;
     imageAlignment?: ResourceImageAlignment;
+    buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -21,6 +22,7 @@ export default function (props: InboxResourceListItemProps) {
                 title={props.resource.title}
                 subTitle={props.resource.subTitle}
                 imageAlignment={props.imageAlignment}
+                buttonVariant={props.buttonVariant}
                 buttonText={props.buttonText}
                 onClick={() => props.onClick()}
             />

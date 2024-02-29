@@ -1,1 +1,1 @@
-export { default, ResourceImageAlignment } from './Resource';
+export { default, ResourceImageAlignment, ResourceButtonVariant } from './Resource';
