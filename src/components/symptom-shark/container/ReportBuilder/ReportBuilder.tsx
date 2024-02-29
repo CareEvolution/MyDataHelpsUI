@@ -3,7 +3,7 @@ import { Button, DateRangeContext, DateRangeNavigator, LoadingIndicator, Section
 import language from "../../../../helpers/language";
 import MonthReport from "../../presentational/MonthReport/MonthReport";
 import { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from "../../../..";
-import { add } from "date-fns";
+import { add, startOfMonth } from "date-fns";
 import symptomSharkData from "../../helpers/symptom-shark-data";
 import { demoLogEntries, demoSymptoms, demoTreatments } from "../../helpers/demo-data";
 import MyDataHelps from "@careevolution/mydatahelps-js";
@@ -23,13 +23,7 @@ export interface SymptomSharkReportBuilderProps {
 }
 
 export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
-    var currentDate = new Date();
-    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
-    var initialIntervalStart = currentDate;
-    while (initialIntervalStart.getDate() != 1) {
-        initialIntervalStart = add(initialIntervalStart, { days: -1 });
-    }
-
+    var initialIntervalStart = startOfMonth(new Date());
     const [logEntries, setLogEntries] = useState<{ [key: string]: DailyLogEntry }>({});
     const [configuration, setConfiguration] = useState<SymptomSharkConfiguration | null>(null);
     const [intervalStartDate, setIntervalStartDate] = useState(initialIntervalStart);
