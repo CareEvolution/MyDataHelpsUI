@@ -29,6 +29,7 @@ export const previewData: Record<AsthmaControlCalendarPreviewState, AsthmaContro
             createLogEntry(17, 'none'),
             createLogEntry(16, 'none'),
             createLogEntry(15, 'none'),
+            createLogEntry(8, 'mild'),
             createLogEntry(8, 'none'),
             createLogEntry(7, 'none'),
             createLogEntry(6, 'none'),

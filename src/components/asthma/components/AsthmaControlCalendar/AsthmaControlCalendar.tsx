@@ -37,27 +37,53 @@ export default function (props: AsthmaControlCalendarProps) {
     const stateConfiguration: CalendarDayStateConfiguration = {
         'not-determined': {
             style: {
-                background: '#000',
-                color: '#fff'
-            },
-            streak: true,
-            streakColor: '#DBDBDB'
+                background: 'var(--mdhui-background-color-0)',
+                border: '3px dashed var(--mdhui-text-color-0)',
+                color: 'var(--mdhui-text-color-0)',
+                fontWeight: 600,
+                marginTop: '-12px'
+            }
         },
         'not-controlled': {
             style: {
                 background: '#F86A5C',
-                color: '#fff'
-            },
-            streak: true,
-            streakColor: '#FCCCC7'
+                border: '3px solid #F86A5C',
+                color: '#fff',
+                fontWeight: 600,
+                marginTop: '-12px'
+            }
         },
         'controlled': {
             style: {
-                background: '#35A6A0',
-                color: '#fff'
-            },
-            streak: true,
-            streakColor: '#CCE9E7'
+                background: 'var(--mdhui-background-color-0)',
+                border: '3px solid #35A6A0',
+                color: '#35A6A0',
+                fontWeight: 600,
+                marginTop: '-12px'
+            }
+        },
+        'today': {
+            style: {
+                border: '3px solid #369CFF'
+            }
+        },
+        'future': {
+            style: {
+                background: 'var(--mdhui-background-color-0)',
+                border: '3px solid var(--mdhui-background-color-0)',
+                color: 'var(--mdhui-text-color-3)',
+                fontWeight: 600,
+                marginTop: '-12px'
+            }
+        },
+        'no-data': {
+            style: {
+                background: 'var(--mdhui-background-color-0)',
+                border: '3px solid var(--mdhui-background-color-0)',
+                color: 'var(--mdhui-text-color-0)',
+                fontWeight: 600,
+                marginTop: '-12px'
+            }
         }
     };
 
