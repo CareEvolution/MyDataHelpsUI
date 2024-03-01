@@ -4,15 +4,15 @@ import deviceDataBloodPressureDataProvider from "./device-blood-pressure-data-pr
 
 export type BloodPressureDeviceDataSource = 'AppleHealth' | 'GoogleFit';
 
-export default async function (surveyDataSource?: SurveyBloodPressureDataParameters, bloodPressureDeviceDataSource?: BloodPressureDeviceDataSource[]): Promise<BloodPressureDataPoint[]> {
+export default async function (surveyDataSource?: SurveyBloodPressureDataParameters, bloodPressureDeviceDataSources?: BloodPressureDeviceDataSource[]): Promise<BloodPressureDataPoint[]> {
     let providers: Promise<BloodPressureDataPoint[]>[] = [];
 
     if (surveyDataSource) {
         providers.push(surveyBloodPressureDataProvider(surveyDataSource));
     }
 
-    if (bloodPressureDeviceDataSource) {
-        bloodPressureDeviceDataSource.forEach((source) => {
+    if (bloodPressureDeviceDataSources) {
+        bloodPressureDeviceDataSources.forEach((source) => {
             if (source === 'AppleHealth') {
                 providers.push(deviceDataBloodPressureDataProvider("AppleHealth", "BloodPressureSystolic", "BloodPressureDiastolic"));
             } else if (source === 'GoogleFit') {

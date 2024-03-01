@@ -42,7 +42,7 @@ export default function (props: BloodPressureVisualizationProps) {
     const _maxSystolic = 250;
     const yInterval: ClosedInterval = { values: [_minDiastolic, _maxSystolic] };
     const axis: Axis = { yRange: yInterval, yIncrement: 50, xIncrement: (80 / 7) };
-    const [bloodPressureData, setData] = useState<Map<string, BloodPressureDataPoint[]> | undefined>(undefined);
+    const [bloodPressureData, setBloodPressureDataData] = useState<Map<string, BloodPressureDataPoint[]> | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
 
     let intervalStart = dateRangeContext?.intervalStart ?? getWeekStart(props.weekStartsOn ?? "Monday");
@@ -52,11 +52,11 @@ export default function (props: BloodPressureVisualizationProps) {
         if (props.previewState !== "Loading") {
             if (["Default", "NoData"].includes(props.previewState ?? "")) {
                 const params = (props.previewState === "Default") ? previewBloodPressureDataPoint : [];
-                setData(groupDataPointsByDate(params));
+                setBloodPressureDataData(groupDataPointsByDate(params));
             }
             else {
                 bloodPressureDataProvider(props.surveyDataSource, props.deviceDataSource).then((bloodPressureDataPoints: BloodPressureDataPoint[]) => {
-                    setData(groupDataPointsByDate(bloodPressureDataPoints));
+                    setBloodPressureDataData(groupDataPointsByDate(bloodPressureDataPoints));
                 });
             }
         }
