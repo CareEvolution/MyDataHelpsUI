@@ -14,7 +14,7 @@ export const ffwelCreativeSelfChart = {
         title: "Steps",
         options: {
             domainMin: 0,
-            lineColor: "red"
+            lineColor: ["#e41a1c", "#377eb8"]
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",

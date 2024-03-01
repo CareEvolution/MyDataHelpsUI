@@ -4,6 +4,7 @@ import { CardTitle, LoadingIndicator } from '../../presentational'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import "./DataChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
+import { LineChartOptions } from '../../container'
 
 export interface DataChartProps {
     title?: string
@@ -20,7 +21,7 @@ export interface DataChartProps {
 }
 
 export interface LineChartOptions {
-    lineColor?: string
+    lineColor?: string | string[],
     domainMin?: number | "Auto"
 }
 
@@ -94,6 +95,20 @@ export default function DataChart(props: DataChartProps) {
         </>
     }
 
+    function getStrokeColor(i: number) {
+        if(props.chartType === "Line"){
+            const options = (props.options as LineChartOptions);
+            if(options.lineColor){
+                if(Array.isArray(options.lineColor)){
+                    return options.lineColor[i];
+                }
+                return options.lineColor;
+            }
+
+            return "var(--mdhui-color-primary)";
+        }
+    }
+
     if (!props.hasAnyData && props.hideIfNoData) {
         return null;
     }
@@ -122,18 +137,14 @@ export default function DataChart(props: DataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={props.data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        {
-
-                        }
                         {props.dataKeys && 
-                            props.dataKeys.map((dk) =>
-                                <Line strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={(props.options as LineChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                            props.dataKeys.map((dk, i) =>
+                                <Line strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
                             )
                         }
                         {!props.dataKeys &&
                             <Line strokeWidth={2} key="line" type="monotone" dataKey="value" stroke={(props.options as LineChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                         }
-                    }
                     </LineChart>
                 </ResponsiveContainer>
             }
