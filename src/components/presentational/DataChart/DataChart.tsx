@@ -158,7 +158,14 @@ export default function DataChart(props: DataChartProps) {
                             </linearGradient>
                         </defs>
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                        {props.dataKeys && 
+                            props.dataKeys.map((dk, i) =>
+                                <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                            )
+                        }
+                        {!props.dataKeys &&
+                            <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                        }
                     </BarChart>
                 </ResponsiveContainer>
             }
