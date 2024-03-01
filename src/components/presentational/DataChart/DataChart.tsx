@@ -179,7 +179,14 @@ export default function DataChart(props: DataChartProps) {
                             </linearGradient>
                         </defs>
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        {props.dataKeys && 
+                            props.dataKeys.map((dk, i) =>
+                                <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                            )
+                        }
+                        {!props.dataKeys &&
+                            <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        }
                     </AreaChart>
                 </ResponsiveContainer>
             }
