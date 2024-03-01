@@ -123,7 +123,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
     var currentDate = intervalStart;
     var data: any[] = [];
     var chartHasData: boolean = false;
-	if (currentData) {
+	if (currentData !== null) {
 		props.lines.forEach((line) => {
 			var dataKey = getDataKey(line);
 			currentData[dataKey].surveyAnswers.forEach((answer) => {
@@ -160,7 +160,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
 	const GraphToolTip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
 			return (
-				<div className="graph-tooltip">
+				<div className="mdhui-daily-data-tooltip">
 					<div className="graph-date">{payload[0].payload.day}</div>
 					<table className="payload-values">
 						<tbody>
