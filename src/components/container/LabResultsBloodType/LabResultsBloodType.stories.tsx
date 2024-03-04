@@ -20,20 +20,18 @@ const Template: ComponentStory<typeof LabResultsBloodType> = (args: LabResultsBl
 export const BloodTypeLabs = Template.bind({});
 BloodTypeLabs.args = {
     previewState: "BloodTypeLabs",
-    summaryResultsOnly: true,
 };
 
 export const SingleLabs = Template.bind({});
 SingleLabs.args = {
     previewState: "SingleLabs",
-    summaryResultsOnly: false,
-    maximumResults: 5,
+    showDetailedResults: true,
 };
 
 export const ManyLabs = Template.bind({});
 ManyLabs.args = {
     previewState: "ManyLabs",
-    summaryResultsOnly: false,
+    showDetailedResults: true,
     maximumResults: 5,
 };
 

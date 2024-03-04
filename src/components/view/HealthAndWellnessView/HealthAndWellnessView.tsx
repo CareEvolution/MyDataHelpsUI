@@ -50,7 +50,7 @@ export default function (props: HealthAndWellnessViewProps) {
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
-                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} summaryResultsOnly={true} />
+                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
                     {getHealthPreviewSection("Reports")}

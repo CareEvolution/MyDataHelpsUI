@@ -9,7 +9,7 @@ import iconBloodType from "./icon-bloodtype.svg";
 
 export interface LabResultsBloodTypeProps {
     previewState?: "BloodTypeLabs" | "SingleLabs" | "ManyLabs" | "NoData"
-    summaryResultsOnly?: true | false
+    showDetailedResults?: true | false
     maximumResults?: number
     onClick?: () => void
     innerRef?: React.Ref<HTMLDivElement>
@@ -130,7 +130,7 @@ export default function (props: LabResultsBloodTypeProps) {
         {!model &&
             <LoadingIndicator />
         }
-        {model && !props.summaryResultsOnly &&
+        {model && props.showDetailedResults &&
             <>
                 {model.BloodTypeLabs && model.BloodTypeLabs.length &&
                     <div>
@@ -141,7 +141,7 @@ export default function (props: LabResultsBloodTypeProps) {
                 }
             </>
         }
-        {model && props.summaryResultsOnly &&
+        {model && !props.showDetailedResults &&
             <>
                 {model.BloodTypeLabs && model.BloodTypeLabs.length &&
                     <div>
