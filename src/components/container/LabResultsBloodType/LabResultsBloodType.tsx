@@ -83,12 +83,12 @@ export default function (props: LabResultsBloodTypeProps) {
             return;
         }
         var linkTarget: string;
-        linkTarget = "https://medlineplus.gov/blood.html";
-        if (MyDataHelps.language === "es") linkTarget = "https://medlineplus.gov/spanish/blood.html";
+        linkTarget = "https://medlineplus.gov/ency/article/003345.htm";
+        if (MyDataHelps.language === "es") linkTarget = "https://medlineplus.gov/spanish/ency/article/003345.htm";
         MyDataHelps.openEmbeddedUrl(linkTarget);
     }
 
-    // Sometimes the data will only have either the type or the rH factor
+    // Sometimes the data will only have either the ABO type or the rH factor
     // Combine those into a unified value, if the first value doesn't contain both
     var summaryResults = function(bloodTypeLabs: any) {
         var type = "";
