@@ -6,7 +6,6 @@ import language from "../../../helpers/language";
 import { bloodTypeLabs, singleLabs, manyLabs } from "./LabResultsBloodType.previewdata";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import iconBloodType from "./icon-bloodtype.svg";
-import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
 
 export interface LabResultsBloodTypeProps {
     previewState?: "BloodTypeLabs" | "SingleLabs" | "ManyLabs" | "NoData"
@@ -20,7 +19,6 @@ interface BloodTypeLab {
     Type: string,
     MostRecentValue: string,
     MostRecentDate: string,
-    TermInformation: TermInformation,
 }
 
 interface LabResultBloodTypeData {
