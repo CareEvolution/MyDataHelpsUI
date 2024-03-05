@@ -37,7 +37,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
         });
     };
 
-    const initialize = (retryCount: number = 0): void => {
+    const initialize = (): void => {
         setLoading(true);
 
         if (props.previewState === 'loading') {
@@ -58,7 +58,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
             setDeviceInfo(deviceInfo);
         });
 
-        loadActionPlan();
+        setTimeout(loadActionPlan, 500);
     };
 
     useInitializeView(initialize, [], [props.previewState]);
