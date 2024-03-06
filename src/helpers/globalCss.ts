@@ -41,7 +41,7 @@ export const core = css`
     --ce-orange-55: #B15103;
  
     --ce-violet-5: #F9E9FF;    
-    --ce-vilet-30: #E08DFF;
+    --ce-violet-30: #E08DFF;
     --ce-violet-40: #CF5EFF; // 3.12:1 only use for 14 point (typically 18.66px) and bold or larger, or 18 point (typically 24px) or larger
     --ce-violet-55: #A22AE9;
 
