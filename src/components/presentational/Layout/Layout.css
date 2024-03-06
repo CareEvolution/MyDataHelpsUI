@@ -1,5 +1,6 @@
 ﻿.mdhui-layout {
     padding-bottom: env(safe-area-inset-bottom);
+    /* background: var(--mdhui-background-color-1); */
     color: var(--mdhui-text-color-1);
     display: flow-root;
 }

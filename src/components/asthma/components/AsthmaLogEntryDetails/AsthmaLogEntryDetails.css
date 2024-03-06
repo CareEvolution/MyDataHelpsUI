@@ -48,30 +48,30 @@
 }
 
 .mdhui-asthma-log-entry-details-component-symptoms .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #E87C00;
+    background: var(--ce-orange-40);
 }
 
 .mdhui-asthma-log-entry-details-component-symptoms .mdhui-asthma-log-entry-details-component-data {
-    background: #f9debf;
-    color: #E87C00;
+    background: var(--ce-orange-5);
+    color: var(--ce-orange-55);
 }
 
 .mdhui-asthma-log-entry-details-component-impacts .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #9D5BED;
+    background: var(--ce-violet-40);
 }
 
 .mdhui-asthma-log-entry-details-component-impacts .mdhui-asthma-log-entry-details-component-data {
-    background: #e6d6fa;
-    color: #9D5BED;
+    background: var(--ce-violet-5);
+    color: var(--ce-violet-55);
 }
 
 .mdhui-asthma-log-entry-details-component-triggers .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #000000;
+    background: var(--ce-grey-40);
 }
 
 .mdhui-asthma-log-entry-details-component-triggers .mdhui-asthma-log-entry-details-component-data {
-    background: #bfbfbf;
-    color: #000000;
+    background: var(--ce-grey-5);
+    color: var(--ce-grey-55);
 }
 
 .mdhui-asthma-log-entry-details-component:last-child {

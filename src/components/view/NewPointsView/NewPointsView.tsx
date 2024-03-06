@@ -32,6 +32,7 @@ export default function (props: NewPointsViewProps) {
     }, totalBonusPoints);
 
     return (
+        // TODO: couldn't figure this out, ask Garrett
         <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
             <div className="mdhui-new-points">
                 <ProgressRing animate={true}>

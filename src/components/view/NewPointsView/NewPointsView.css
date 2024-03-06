@@ -70,7 +70,7 @@
 }
 
 .mdhui-new-points-entry .bonus {
-    color: #ffcc5b;
+    color: var(--mdhui-color-secondary);
     font-weight: bold;
 }
 
