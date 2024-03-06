@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './AsthmaActionPlanManager.css';
 import { Button, LoadingIndicator, Title, UnstyledButton } from '../../../presentational';
 import MyDataHelps, { DeviceInfo } from '@careevolution/mydatahelps-js';
-import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService } from '../../helpers';
 import { AsthmaActionPlan } from '../../model';
 import language from '../../../../helpers/language';
@@ -20,6 +19,8 @@ export default function (props: AsthmaActionPlanManagerProps) {
     const [actionPlan, setActionPlan] = useState<AsthmaActionPlan>();
 
     const loadActionPlan = (retryCount: number = 0): void => {
+        setLoading(true);
+
         asthmaDataService.loadParticipant().then(participant => {
             if (participant.getActionPlanTaskRunUUID()) {
                 asthmaDataService.loadAsthmaActionPlan().then(actionPlan => {
@@ -37,7 +38,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
         });
     };
 
-    const initialize = (): void => {
+    useEffect(() => {
         setLoading(true);
 
         if (props.previewState === 'loading') {
@@ -58,10 +59,13 @@ export default function (props: AsthmaActionPlanManagerProps) {
             setDeviceInfo(deviceInfo);
         });
 
-        setTimeout(loadActionPlan, 500);
-    };
+        loadActionPlan();
 
-    useInitializeView(initialize, [], [props.previewState]);
+        MyDataHelps.on('surveyDidFinish', loadActionPlan);
+        return () => {
+            MyDataHelps.off('surveyDidFinish', loadActionPlan);
+        }
+    }, [props.previewState]);
 
     const onLearnMore = (): void => {
         if (props.previewState) return;
