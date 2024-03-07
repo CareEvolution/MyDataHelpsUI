@@ -38,7 +38,7 @@ export default function (props: SymptomSharkLogTodayProps) {
                     setSymptomLogEntry(undefined);
                 }
             });
-    });
+    }, []);
 
     if (!configuration || !configuration.symptoms.length) {
         return null;
