@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { checkDailyDataAvailability, DailyDataQueryResult, queryDailyData } from '../../../helpers/query-daily-data';
 import { LoadingIndicator, Title } from '../../presentational';
-import { add, format, startOfToday } from 'date-fns';
+import { add, differenceInDays, format, startOfToday } from 'date-fns';
 import getDayKey from '../../../helpers/get-day-key';
 import { AxisDomain } from 'recharts/types/util/types';
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -77,7 +77,7 @@ export default function (props: RecentDailyDataBarChartProps) {
     if (currentData) {
         while (currentDate < endDate) {
             let dataDay: any = {
-                day: currentDate.getDate()
+                daysAfterStart: differenceInDays(currentDate, startDate)
             };
             data.push(dataDay);
 
@@ -107,7 +107,8 @@ export default function (props: RecentDailyDataBarChartProps) {
     }
 
     const dayTick = ({x, y, payload}: any) => {
-        let currentDate = add(startDate, {days: payload.value - startDate.getDate()});
+        let daysAfterStart = payload.value;
+        let currentDate = add(startDate, {days: daysAfterStart});
         return <text x={x} y={y + 8} fontSize="11" fontWeight="bold" textAnchor="middle" fill="var(--mdhui-text-color-2)">{format(currentDate, 'M/d')}</text>;
     }
 
@@ -145,7 +146,7 @@ export default function (props: RecentDailyDataBarChartProps) {
                         orientation="right"
                     />
                     <XAxis
-                        dataKey="day"
+                        dataKey="daysAfterStart"
                         tick={dayTick}
                         axisLine={false} minTickGap={0}
                         tickLine={false}

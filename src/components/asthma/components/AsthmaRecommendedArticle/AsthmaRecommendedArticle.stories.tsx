@@ -1,28 +1,27 @@
 import React from 'react';
-import ResourceList, { ResourceListProps } from './ResourceList';
-import { Layout } from '../../presentational';
+import AsthmaRecommendedArticle, { AsthmaRecommendedArticleProps } from './AsthmaRecommendedArticle';
+import { Layout } from '../../../presentational';
 
 export default {
-    title: 'Presentational/ResourceList',
-    component: ResourceList,
+    title: 'Asthma/Components/AsthmaRecommendedArticle',
+    component: AsthmaRecommendedArticle,
     parameters: {layout: 'fullscreen'}
 };
 
-interface ResourceListStoryArgs extends ResourceListProps {
+interface AsthmaRecommendedArticleStoryArgs extends AsthmaRecommendedArticleProps {
     colorScheme: 'auto' | 'light' | 'dark';
 }
 
-const render = (args: ResourceListStoryArgs) => {
+const render = (args: AsthmaRecommendedArticleStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <ResourceList {...args} />
+        <AsthmaRecommendedArticle {...args} />
     </Layout>;
 };
 
 export const Default = {
     args: {
         colorScheme: 'auto',
-        previewState: 'some resources',
-        emptyText: '',
+        previewState: 'default',
         imageAlignment: 'left',
         buttonVariant: undefined,
         buttonText: ''
@@ -36,17 +35,12 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['no resources', 'some resources']
-        },
-        emptyText: {
-            name: 'empty text override',
-            if: {arg: 'previewState', eq: 'no resources'}
+            options: ['none', 'default']
         },
         imageAlignment: {
             name: 'image alignment',
             control: 'radio',
-            options: ['left', 'center', 'right'],
-            if: {arg: 'previewState', eq: 'some resources'}
+            options: ['left', 'center', 'right']
         },
         buttonVariant: {
             name: 'button variant',

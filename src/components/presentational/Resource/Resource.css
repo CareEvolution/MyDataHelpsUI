@@ -21,12 +21,20 @@
 
 .mdhui-resource-title {
     font-size: 1.3em;
+    font-weight: 600;
 }
 
 .mdhui-resource-subtitle {
+    font-size: 0.95em;
     margin: 12px 0 0;
 }
 
 .mdhui-resource-button {
     margin: 12px 0 0;
+}
+
+.mdhui-resource-link {
+    color: var(--mdhui-color-primary);
+    font-weight: 500;
+    margin: 16px 0 0;
 }
