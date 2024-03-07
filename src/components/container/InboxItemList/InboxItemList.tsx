@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import './InboxItemList.css';
 import MyDataHelps, { InboxItem, InboxItemQueryParameters, InboxItemSortColumn, InboxItemStatus, InboxItemType, InboxMessage, InboxResource, InboxSurvey, SortOrder } from '@careevolution/mydatahelps-js';
-import { InboxMessageListItem, InboxResourceListItem, InboxSurveyListItem, InboxSurveyVariant, LoadingIndicator, ResourceImageAlignment } from '../../presentational';
+import { InboxMessageListItem, InboxResourceListItem, InboxSurveyListItem, InboxSurveyVariant, LoadingIndicator, ResourceButtonVariant, ResourceImageAlignment } from '../../presentational';
 import { useInitializeView } from '../../../helpers/Initialization';
 import inboxDataService from '../../../helpers/Inbox/inbox-data';
 import { InboxItemListCoordinatorContext } from '../InboxItemListCoordinator';
@@ -24,6 +24,8 @@ export interface InboxItemListProps {
     showTitleWhenEmpty?: boolean;
     surveyVariant?: InboxSurveyVariant;
     resourceImageAlignment?: ResourceImageAlignment;
+    resourceButtonVariant?: ResourceButtonVariant;
+    resourceButtonText?: string;
     hideLoadingIndicator?: boolean;
     onItemsLoaded?: (items: InboxItem[]) => void;
     syncOnChanges?: boolean;
@@ -122,7 +124,7 @@ export default function (props: InboxItemListProps) {
                 return <InboxSurveyListItem key={index} survey={inboxItem as InboxSurvey} onClick={() => onClick(inboxItem)} variant={props.surveyVariant}/>;
             }
             if (inboxItem.type === 'resource') {
-                return <InboxResourceListItem key={index} resource={inboxItem as InboxResource} onClick={() => onClick(inboxItem)} imageAlignment={props.resourceImageAlignment}/>;
+                return <InboxResourceListItem key={index} resource={inboxItem as InboxResource} onClick={() => onClick(inboxItem)} imageAlignment={props.resourceImageAlignment} buttonVariant={props.resourceButtonVariant} buttonText={props.resourceButtonText}/>;
             }
             return null;
         })}

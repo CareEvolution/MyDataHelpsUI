@@ -16,7 +16,9 @@ export const Default = {
         colorScheme: 'auto',
         previewState: 'some resources',
         title: 'List Title',
-        resourceImageAlignment: 'left'
+        resourceImageAlignment: 'left',
+        resourceButtonVariant: undefined,
+        resourceButtonText: ''
     },
     argTypes: {
         colorScheme: {
@@ -30,10 +32,19 @@ export const Default = {
             options: ['no resources', 'some resources']
         },
         resourceImageAlignment: {
-            name: 'resources image alignment',
+            name: 'resource image alignment',
             control: 'radio',
             options: ['left', 'center', 'right'],
             if: {arg: 'previewState', 'eq': 'some resources'}
+        },
+        resourceButtonVariant: {
+            name: 'resource button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
+        },
+        resourceButtonText: {
+            name: 'resource button text override',
+            if: {arg: 'resourceButtonVariant', neq: undefined}
         }
     },
     render: render
