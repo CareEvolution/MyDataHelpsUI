@@ -190,7 +190,7 @@ export const ffwelCreativeSelfBarChart = {
         title: "FFWEL",
         options: {
             domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
+            barColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
@@ -369,7 +369,8 @@ export const ffwelCreativeSelfAreaChart = {
         title: "FFWEL",
         options: {
             domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
+            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"],
+            areaColor: ["#d41a1c", "#277eb8", "#3daf4a"]
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",

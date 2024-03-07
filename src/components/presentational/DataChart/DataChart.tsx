@@ -26,12 +26,12 @@ export interface LineChartOptions {
 }
 
 export interface BarChartOptions {
-    barColor?: string
+    barColor?: string | string[],
 }
 
 export interface AreaChartOptions {
-    lineColor?: string
-    areaColor?: string
+    lineColor?: string | string[],
+    areaColor?: string | string[],
 }
 
 export default function DataChart(props: DataChartProps) {
@@ -96,22 +96,41 @@ export default function DataChart(props: DataChartProps) {
     }
 
     function getStrokeColor(i: number) {
-        if(props.chartType === "Line"){
-            const options = (props.options as LineChartOptions);
-            if(options.lineColor){
-                if(Array.isArray(options.lineColor)){
-                    return options.lineColor[i];
-                }
-                return options.lineColor;
-            }
-
-            return "var(--mdhui-color-primary)";
+        if(props.chartType === "Line" || props.chartType === "Area"){
+            return getColorFromOptions(i, "lineColor");
         }
+    }
+
+    function getBarColor(i: number) {
+        if(props.chartType === "Bar"){
+            return getColorFromOptions(i, "barColor");
+        }
+    }
+
+    function getAreaColor(i: number) {
+        if(props.chartType === "Area"){
+            return getColorFromOptions(i, "areaColor");
+        }
+    }
+
+
+    function getColorFromOptions(i: number, fieldName: string) {
+        var property = props.options[fieldName];
+        if(!!property){
+            if (Array.isArray(property)) {
+                return property[i];
+            }
+            return property;
+        }
+
+        return "var(--mdhui-color-primary)";
     }
 
     if (!props.hasAnyData && props.hideIfNoData) {
         return null;
     }
+
+    const keys = props.dataKeys || ["value"];
 
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
@@ -137,13 +156,9 @@ export default function DataChart(props: DataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={props.data} syncId="DailyDataChart">
                         {standardChartComponents()}
-                        {props.dataKeys && 
-                            props.dataKeys.map((dk, i) =>
+                        {keys.map((dk, i) =>
                                 <Line strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
                             )
-                        }
-                        {!props.dataKeys &&
-                            <Line strokeWidth={2} key="line" type="monotone" dataKey="value" stroke={(props.options as LineChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                         }
                     </LineChart>
                 </ResponsiveContainer>
@@ -152,19 +167,17 @@ export default function DataChart(props: DataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={props.data} syncId="DailyDataChart" >
                         <defs>
-                            <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
-                                <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
-                            </linearGradient>
+                            {keys.map((dk, i) =>
+                                <linearGradient id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={getBarColor(i)} stopOpacity={1.0} />
+                                    <stop offset="100%" stopColor={getBarColor(i)} stopOpacity={0.7} />
+                                </linearGradient>
+                            )}
                         </defs>
                         {standardChartComponents()}
-                        {props.dataKeys && 
-                            props.dataKeys.map((dk, i) =>
-                                <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                        {keys.map((dk, i) =>
+                                <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} />
                             )
-                        }
-                        {!props.dataKeys &&
-                            <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
                         }
                     </BarChart>
                 </ResponsiveContainer>
@@ -173,19 +186,17 @@ export default function DataChart(props: DataChartProps) {
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={props.data} syncId="DailyDataChart">
                         <defs>
-                            <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
-                                <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
+                            {keys.map((dk, i) =>
+                            <linearGradient id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={getAreaColor(i)} stopOpacity={0.5} />
+                                <stop offset="100%" stopColor={getAreaColor(i)} stopOpacity={0.2} />
                             </linearGradient>
+                            )}
                         </defs>
                         {standardChartComponents()}
-                        {props.dataKeys && 
-                            props.dataKeys.map((dk, i) =>
-                                <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        {keys.map((dk, i) =>
+                                <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey}${i})`} stroke={getStrokeColor(i)} />
                             )
-                        }
-                        {!props.dataKeys &&
-                            <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
                         }
                     </AreaChart>
                 </ResponsiveContainer>
