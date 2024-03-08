@@ -126,7 +126,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
 	if (currentData !== null) {
 		props.lines.forEach((line) => {
 			var dataKey = getDataKey(line);
-			currentData[dataKey].surveyAnswers.forEach((answer) => {
+			currentData![dataKey].surveyAnswers.forEach((answer) => {
 				var day = parseISO(answer.date).toLocaleDateString();
 				var dataDay = data.find(d => d.day === day);
 				if (!dataDay) {
@@ -136,25 +136,11 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
 					data.push(dataDay);
 				}
 				dataDay[line.label] = parseFloat(answer.answers[0]);
-				//dataDay['value'] = parseFloat(answer.answers[0]);
 				chartHasData = true;
 			});
 		});
 
 		data.sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
-
-        /*
-		if (data.length === 1) {
-			showBarGraph = true;
-			var newData: any[] = [];
-			var keys = Object.keys(data[0]).filter(k => k !== 'day');
-			keys.forEach(key => newData.push({
-				key,
-				value: data[0][key]
-			}));
-			data = newData;
-		}
-        */
 	}
 
 	const GraphToolTip = ({ active, payload }: any) => {
