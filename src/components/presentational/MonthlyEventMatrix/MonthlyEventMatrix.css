@@ -1,0 +1,76 @@
+.mdhui-monthly-event-matrix {
+    margin: 16px;
+}
+
+.mdhui-monthly-event-matrix table {
+    width: 100%;
+    page-break-inside: avoid;
+}
+
+.mdhui-monthly-event-matrix table th,
+.mdhui-monthly-event-matrix table td {
+    vertical-align: top;
+}
+
+.mdhui-monthly-event-matrix table th {
+    text-align: left;
+    border: none;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 0;
+    padding-bottom: 8px;
+    padding-right: 8px;
+}
+
+.mdhui-monthly-event-matrix table thead th {
+    text-align: left;
+    font-weight: bold;
+    font-size: 17px;
+    padding-bottom: 8px;
+}
+
+.mdhui-monthly-event-matrix table thead .mdhui-monthly-event-matrix-day-number {
+    width: 100%;
+    min-width: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-monthly-event-matrix table td {
+    padding: 0;
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.mdhui-monthly-event-matrix table td.mdhui-monthly-event-matrix-row-label {
+    text-align: left;
+    border: none;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 0;
+    padding-bottom: 8px;
+    padding-right: 8px;
+    width: 22%;
+}
+
+.mdhui-monthly-event-matrix table td .mdhui-monthly-event-matrix-circle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 8px;
+    font-size: 9px;
+    color: var(--mdhui-background-color-0);
+    line-height: 14px;
+    text-align: center;
+    position: relative;
+}
+
+.mdhui-monthly-event-matrix table td.mdhui-monthly-event-matrix-total {
+    padding-right: 8px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: right;
+    width: 3%;
+    box-sizing: border-box;
+}

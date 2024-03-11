@@ -141,8 +141,6 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
         treatments.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     }
 
-
-
     if (!props.logEntry || !(symptoms.length > 0 || treatments.length > 0 || props.logEntry.notes.length > 0)) {
         return null;
     }
