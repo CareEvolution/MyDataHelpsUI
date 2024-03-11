@@ -1,6 +1,6 @@
 import React from "react";
 import { DateRangeCoordinator, Layout, Section } from "../../../presentational";
-import BulletChart, { SymptomSharkBulletChartProps } from "./BulletChart";
+import BulletChart, { SymptomSharkBulletChartProps } from "./SymptomMatrix";
 import { SymptomSharkVisualizationCoordinator } from "../../container";
 
 export default { title: "SymptomShark/Presentational/BulletChart", component: BulletChart, parameters: { layout: 'fullscreen' } };

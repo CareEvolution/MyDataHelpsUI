@@ -1,19 +1,19 @@
 import React, { useContext } from "react";
-import "./BulletChart.css"
+import "./SymptomMatrix.css"
 import { getDatesForMonth } from "../../../../helpers/date-helpers";
 import { DateRangeContext, SymptomConfiguration, TextBlock, TreatmentConfiguration, getDayKey, language } from "../../../..";
 import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
 import { startOfMonth } from "date-fns";
 
-export interface SymptomSharkBulletChartProps {
+export interface SymptomSharkSymptomMatrixProps {
     intervalStart?: Date;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: SymptomSharkBulletChartProps) {
+export default function (props: SymptomSharkSymptomMatrixProps) {
     let visualizationContext = useContext(SymptomSharkVisualizationContext);
     if (!visualizationContext) {
-        return <TextBlock innerRef={props.innerRef}>Error: Bullet Chart must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
+        return <TextBlock innerRef={props.innerRef}>Error: Symptom Matrix must be used inside a Symptom Shark Visualization Coordinator.</TextBlock>
     }
 
     let dateRangeContext = useContext(DateRangeContext);

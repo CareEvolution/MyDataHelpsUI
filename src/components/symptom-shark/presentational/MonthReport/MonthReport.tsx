@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./MonthReport.css";
 import NotesTimeline from "../NotesTimeline/NotesTimeline";
-import BulletChart from "../BulletChart/BulletChart";
+import SymptomMatrix from "../SymptomMatrix/SymptomMatrix";
 import OverallExperienceChart from "../OverallExperienceChart/OverallExperienceChart";
 import SymptomSeverityChart from "../SymptomSeverityChart/SymptomSeverityChart";
 import { getMonthName } from "../../../../helpers/date-helpers";
@@ -59,7 +59,7 @@ export default function (props: SymptomSharkMonthReportProps) {
         <tbody>
             <tr>
                 <td>
-                    <BulletChart />
+                    <SymptomMatrix />
                     {props.includeDailyOverallFeeling &&
                         <OverallExperienceChart variant="monthReport" showAllDays={true} />
                     }
