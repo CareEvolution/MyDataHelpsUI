@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
