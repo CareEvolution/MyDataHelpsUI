@@ -1,1 +1,1 @@
-export { default } from "./MonthlyEventMatrix";
+export { default, MonthlyEventMatrixRow } from "./MonthlyEventMatrix";

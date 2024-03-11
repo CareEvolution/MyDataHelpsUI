@@ -1,6 +1,7 @@
 import { DailyLogEntry, SymptomSharkConfiguration } from "../../helpers/symptom-shark-data";
 
 export let previewConfiguration: SymptomSharkConfiguration = {
+    participantID: "123",
     "symptoms": [
         {
             "id": "1",
