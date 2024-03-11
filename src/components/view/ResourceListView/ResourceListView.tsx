@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, NavigationBar, ResourceDefinition, ResourceImageAlignment, ResourceList, ResourceListPreviewState, Title } from '../../presentational';
+import { Layout, NavigationBar, ResourceButtonVariant, ResourceDefinition, ResourceImageAlignment, ResourceList, ResourceListPreviewState, Title } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface ResourceListViewProps {
@@ -9,6 +9,8 @@ export interface ResourceListViewProps {
     resources: ResourceDefinition[];
     emptyText?: string;
     resourceImageAlignment?: ResourceImageAlignment;
+    resourceButtonVariant?: ResourceButtonVariant;
+    resourceButtonText?: string;
 }
 
 export default function (props: ResourceListViewProps) {
@@ -28,6 +30,8 @@ export default function (props: ResourceListViewProps) {
             onViewResource={onViewResource}
             emptyText={props.emptyText}
             imageAlignment={props.resourceImageAlignment}
+            buttonVariant={props.resourceButtonVariant}
+            buttonText={props.resourceButtonText}
         />
     </Layout>;
 }

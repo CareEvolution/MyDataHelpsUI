@@ -1,11 +1,14 @@
-import { ParticipantInfo } from '@careevolution/mydatahelps-js';
-import { ResourceDefinition } from "../../presentational";
+import { Guid, ParticipantInfo } from '@careevolution/mydatahelps-js';
 
 export class AsthmaParticipant {
     participantInfo: ParticipantInfo;
 
     constructor(participantInfo: ParticipantInfo) {
         this.participantInfo = participantInfo;
+    }
+
+    getId(): Guid {
+        return this.participantInfo.participantID;
     }
 
     getFirstName(): string {
@@ -36,6 +39,10 @@ export class AsthmaParticipant {
 
     getActionPlanTaskRunUUID(): string {
         return this.getCustomFieldValue('AAPTaskRunUUID');
+    }
+
+    getAlertTakeover(): string | undefined {
+        return this.getCustomFieldValue('AlertTakeover');
     }
 
     getDaytimeRestingHeartRateBaseline(): number | undefined {
@@ -82,15 +89,6 @@ export class AsthmaParticipant {
         let customFields = this.participantInfo.customFields;
         return customFields.hasOwnProperty(name) ? customFields[name] ?? '' : '';
     }
-}
-
-export interface AsthmaControlMetrics {
-    date: string;
-    nighttimeAwakeningDaysPast7: number;
-    limitedActivityDaysPast7: number;
-    inhalerUseDaysPast7: number;
-    symptomDaysPast7: number;
-    loggedDaysPast7: number;
 }
 
 export type AsthmaControlStatus = 'no-data' | 'not-controlled' | 'controlled' | 'not-determined';

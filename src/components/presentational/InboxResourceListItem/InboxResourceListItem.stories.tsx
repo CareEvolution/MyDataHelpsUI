@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Layout, ResourceImageAlignment } from '../../presentational';
+import { Layout, ResourceButtonVariant, ResourceImageAlignment } from '../../presentational';
 import InboxResourceListItem from './InboxResourceListItem';
 import resourceImage from '../../../assets/resource-image.png'
 import { InboxItemStatus, InboxResource } from '@careevolution/mydatahelps-js';
@@ -17,6 +17,7 @@ interface InboxResourceListItemStoryArgs {
     imageUrl?: string;
     status: InboxItemStatus;
     imageAlignment?: ResourceImageAlignment;
+    buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
 }
 
@@ -30,7 +31,7 @@ const render = (args: InboxResourceListItemStoryArgs) => {
     } as InboxResource;
 
     return <Layout colorScheme="auto">
-        <InboxResourceListItem resource={resource} imageAlignment={args.imageAlignment} buttonText={args.buttonText} onClick={noop}/>
+        <InboxResourceListItem resource={resource} imageAlignment={args.imageAlignment} buttonVariant={args.buttonVariant} buttonText={args.buttonText} onClick={noop}/>
     </Layout>;
 };
 
@@ -41,7 +42,8 @@ export const Default = {
         subTitle: 'Here is a resource subtitle to add context',
         imageUrl: resourceImage,
         imageAlignment: 'left',
-        buttonText: 'Open'
+        buttonVariant: undefined,
+        buttonText: ''
     },
     argTypes: {
         status: {
@@ -62,9 +64,14 @@ export const Default = {
             options: ['left', 'center', 'right'],
             if: {arg: 'status', 'eq': 'incomplete'}
         },
+        buttonVariant: {
+            name: 'button variant',
+            control: 'radio',
+            options: [undefined, 'button', 'link']
+        },
         buttonText: {
-            name: 'button text',
-            if: {arg: 'status', 'eq': 'incomplete'}
+            name: 'button text override',
+            if: {arg: 'buttonVariant', neq: undefined}
         }
     },
     render: render
