@@ -36,11 +36,11 @@ export default function (props: SymptomSharkNotesTimelineProps) {
         <div ref={props.innerRef} className="ss-notes-timeline">
             <div className="ss-notes-timeline-title">{language("notes")}</div>
             <div className="ss-notes-timeline-line"></div>
-            {daysWithNotes.map((m) =>
-                <div key={m.toISOString()} className="ss-notes-timeline-day">
-                    {visualizationContext!.logEntries[getDayKey(m)].icon ? <LogEntryIcon className="ss-notes-timeline-day-icon" icon={visualizationContext!.logEntries[getDayKey(m)].icon!}/> : <FontAwesomeIcon className="ss-notes-timeline-day-icon ss-notes-timeline-day-circle" icon={faCircle}/>}
-                    <div className="ss-notes-timeline-day-title">{format(m, 'MMMM d, yyyy')}</div>
-                    <div className="ss-notes-timeline-note">{visualizationContext!.logEntries[getDayKey(m)].notes}</div>
+            {daysWithNotes.map(day =>
+                <div key={day.toISOString()} className="ss-notes-timeline-day">
+                    {visualizationContext!.logEntries[getDayKey(day)].icon ? <LogEntryIcon className="ss-notes-timeline-day-icon" icon={visualizationContext!.logEntries[getDayKey(day)].icon!}/> : <FontAwesomeIcon className="ss-notes-timeline-day-icon ss-notes-timeline-day-circle" icon={faCircle}/>}
+                    <div className="ss-notes-timeline-day-title">{format(day, 'MMMM d, yyyy')}</div>
+                    <div className="ss-notes-timeline-note">{visualizationContext!.logEntries[getDayKey(day)].notes}</div>
                 </div>
             )}
         </div>

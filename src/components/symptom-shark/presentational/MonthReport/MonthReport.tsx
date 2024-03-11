@@ -26,10 +26,7 @@ export default function (props: SymptomSharkMonthReportProps) {
     }
 
     let dateRangeContext = useContext(DateRangeContext);
-    let intervalStart = props.intervalStart || startOfMonth(new Date());
-    if (dateRangeContext) {
-        intervalStart = dateRangeContext.intervalStart;
-    }
+    let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
 
     if (!visualizationContext.symptoms.length && !visualizationContext.treatments.length) {
         return null;
@@ -49,7 +46,7 @@ export default function (props: SymptomSharkMonthReportProps) {
                                 <div className="product-name">{props.productName}</div>
                             }
                             {props.productUrl &&
-                                <a href={"https://" + props.productUrl} className="product-url">{props.productUrl}</a>
+                                <a href={props.productUrl} className="product-url">{props.productUrl}</a>
                             }
                         </div>
                     </div>

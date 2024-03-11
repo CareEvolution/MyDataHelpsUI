@@ -12,7 +12,5 @@ export const Default = {
 };
 
 export const Live = {
-    args: {
-    },
     render: render
 };

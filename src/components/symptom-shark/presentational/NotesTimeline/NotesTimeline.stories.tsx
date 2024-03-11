@@ -10,7 +10,7 @@ let render = (args: SymptomSharkNotesTimelineProps) => <Layout colorScheme="auto
             <Section><NotesTimeline {...args} /></Section>
         </SymptomSharkVisualizationCoordinator>
     </DateRangeCoordinator>
-</Layout>
+</Layout>;
 
 export const Default = {
     render: render
