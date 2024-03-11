@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
-import {  faStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { faAmbulance, faBolt, faFlask, faSpoon, faStar as faStarSolid, faThermometer, faTrophy, faFlag, faHospital, faMoon, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { faUserMd } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,7 +16,7 @@ export default function LogEntryIcon(props: LogEntryIconProps) {
     return <FontAwesomeIcon {...iconProps} />;
 }
 
-const logEntryIcons: { [key: string]: FontAwesomeIconProps } = {
+const logEntryIcons: { [key in LogEntryIconKey]: FontAwesomeIconProps } = {
     "star": { color: "#eec04c", icon: faStarSolid },
     "star-o": { color: "#eec04c", icon: faStar },
     "user-md": { color: "#397d49", icon: faUserMd },

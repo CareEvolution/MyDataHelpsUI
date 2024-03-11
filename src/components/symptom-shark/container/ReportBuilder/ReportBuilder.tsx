@@ -61,7 +61,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
 
     function toggleSymptom(item: SymptomConfiguration) {
         var newSelectedItems = [...selectedSymptoms];
-        if (newSelectedItems.indexOf(item.id) != -1) {
+        if (newSelectedItems.includes(item.id)) {
             newSelectedItems.splice(newSelectedItems.indexOf(item.id), 1);
         } else {
             newSelectedItems.push(item.id);
@@ -71,7 +71,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
 
     function toggleTreatment(item: TreatmentConfiguration) {
         var newSelectedItems = [...selectedTreatments];
-        if (newSelectedItems.indexOf(item.id) != -1) {
+        if (newSelectedItems.includes(item.id)) {
             newSelectedItems.splice(newSelectedItems.indexOf(item.id), 1);
         } else {
             newSelectedItems.push(item.id);
