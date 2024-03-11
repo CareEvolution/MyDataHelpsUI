@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./SymptomSeverityChart.css"
-import { CardTitle, ShinyOverlay, SymptomConfiguration, TextBlock, getDayKey, language } from "../../../..";
+import { CardTitle, ShinyOverlay, SymptomConfiguration, SymptomReference, TextBlock, getDayKey, language } from "../../../..";
 import { getDatesForMonth } from "../../../../helpers/date-helpers";
 import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
 import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/DateRangeCoordinator";
@@ -11,6 +11,7 @@ export interface SymptomSeverityChartProps {
     symptom: SymptomConfiguration;
     showAllDays?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
+    variant?: "default" | "monthReport";
 }
 
 export default function (props: SymptomSeverityChartProps) {
@@ -31,7 +32,7 @@ export default function (props: SymptomSeverityChartProps) {
     let calculateSymptomAverage = function () {
         var total = 0;
 
-        var relevantEntries = [];
+        var relevantEntries: SymptomReference[] = [];
         for (var i = 0; i < monthDays.length; i++) {
             var day = getDayKey(monthDays[i]);
             if (logEntries[day]) {
@@ -89,7 +90,7 @@ export default function (props: SymptomSeverityChartProps) {
         return null;
     }
 
-    return <div ref={props.innerRef} className="mdhui-ss-severity-chart">
+    return <div ref={props.innerRef} className={"mdhui-ss-severity-chart" + (props.variant == "monthReport" ? " mdhui-ss-severity-chart-month-report" : "")} >
         <CardTitle title={props.symptom.name + " " + language("severity")} />
         {props.symptom.severityTracking == "3PointScale" &&
             <>

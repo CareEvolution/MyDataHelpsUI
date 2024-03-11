@@ -30,7 +30,7 @@ export default function (props: SymptomSharkVisualizationCoordinatorProps) {
 
     function load() {
         if (props.previewState == "default") {
-            setConfiguration({ symptoms: demoSymptoms, treatments: demoTreatments });
+            setConfiguration({ symptoms: demoSymptoms, treatments: demoTreatments, participantID: "1" });
             setCurrentContext({ symptoms: demoSymptoms, treatments: demoTreatments, logEntries: demoLogEntries, hasFilteredSymptoms: false });
             return;
         }

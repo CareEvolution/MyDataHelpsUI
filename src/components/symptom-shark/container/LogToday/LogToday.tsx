@@ -5,6 +5,7 @@ import { previewConfiguration, previewLogEntry } from './LogToday.previewData';
 import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from '../../helpers/symptom-shark-data';
 import getDayKey from '../../../../helpers/get-day-key';
 import language from '../../../../helpers/language';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface SymptomSharkLogTodayProps {
     previewState?: "withLog" | "noLog";
@@ -19,7 +20,7 @@ export default function (props: SymptomSharkLogTodayProps) {
     var currentDate = new Date();
     currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
 
-    useEffect(() => {
+    function initialize() {
         if (props.previewState == "withLog") {
             setConfiguration(previewConfiguration);
             setSymptomLogEntry(previewLogEntry);
@@ -38,7 +39,15 @@ export default function (props: SymptomSharkLogTodayProps) {
                     setSymptomLogEntry(undefined);
                 }
             });
-    });
+    }
+
+    useEffect(() => {
+        initialize();
+        MyDataHelps.on("applicationDidBecomeVisible", initialize);
+        return () => {
+            MyDataHelps.off("applicationDidBecomeVisible", initialize);
+        }
+    }, []);
 
     if (!configuration || !configuration.symptoms.length) {
         return null;

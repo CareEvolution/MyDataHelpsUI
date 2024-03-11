@@ -1,0 +1,25 @@
+.ss-icon-selector
+{
+    background: var(--mdhui-background-color-0);
+    overflow-x: auto;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+    position: relative;
+    font-size: 21px;
+    font-size: 0;
+    z-index: 1;
+    border-bottom:  solid 1px var(--mdhui-border-color-0);
+}
+
+    .ss-icon-selector .ss-icon-item
+    {
+        display: inline-block;
+        padding: 16px;
+        border-right: solid 1px var(--mdhui-border-color-0);
+        width: 24px;
+        text-align: center;
+        font-size: 21px;
+        cursor: pointer;
+        box-sizing: content-box;
+    }

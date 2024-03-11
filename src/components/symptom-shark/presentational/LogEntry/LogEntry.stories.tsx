@@ -8,6 +8,7 @@ export default { title: "SymptomShark/Presentational/LogEntry", component: Sympt
 let render = (args: SymptomSharkLogEntryProps) => <Layout colorScheme="auto"><SymptomSharkLogEntry {...args} /></Layout>
 
 let configuration: SymptomSharkConfiguration = {
+	participantID: "123",
 	symptoms: [
 		{
 			id: "1",
