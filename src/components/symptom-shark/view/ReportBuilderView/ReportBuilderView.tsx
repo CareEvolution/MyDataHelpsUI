@@ -11,8 +11,8 @@ export interface SymptomSharkReportBuilderViewProps {
 export default function (props: SymptomSharkReportBuilderViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "light"}>
-            <NavigationBar variant='compressed' title={language("reports")} />
+            <NavigationBar variant="compressed" title={language("reports")} />
             <ReportBuilder previewState={props.previewState} />
         </Layout>
-    )
+    );
 }

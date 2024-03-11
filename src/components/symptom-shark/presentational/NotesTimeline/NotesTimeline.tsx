@@ -20,11 +20,8 @@ export default function (props: SymptomSharkNotesTimelineProps) {
     }
 
     let dateRangeContext = useContext(DateRangeContext);
-    let intervalStart = props.intervalStart || startOfMonth(new Date());
-    if (dateRangeContext) {
-        intervalStart = dateRangeContext.intervalStart;
-    }
-
+    let intervalStart = dateRangeContext?.intervalStart ?? props.intervalStart ?? startOfMonth(new Date());
+   
     if (!visualizationContext.symptoms.length && !visualizationContext.treatments.length) {
         return null;
     }

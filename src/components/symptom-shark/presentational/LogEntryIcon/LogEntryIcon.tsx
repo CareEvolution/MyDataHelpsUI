@@ -30,4 +30,4 @@ const logEntryIcons: { [key in LogEntryIconKey]: FontAwesomeIconProps } = {
     "thermometer": { color: "#a3144d", icon: faThermometer },
     "trophy": { color: "#e0bc39", icon: faTrophy },
     "spoon": { color: "#6e4b3f", icon: faSpoon }
-}
+};
