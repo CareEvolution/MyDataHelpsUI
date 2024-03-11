@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, DateRangeContext, DateRangeNavigator, LoadingIndicator, Section, TrackerItem, UnstyledButton } from "../../../presentational";
 import language from "../../../../helpers/language";
 import MonthReport from "../../presentational/MonthReport/MonthReport";
-import { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from "../../../..";
+import { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration, useInitializeView } from "../../../..";
 import { add, startOfMonth } from "date-fns";
 import symptomSharkData from "../../helpers/symptom-shark-data";
 import { demoLogEntries, demoSymptoms, demoTreatments } from "../../helpers/demo-data";
@@ -38,15 +38,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
     const [buildingReport, setBuildingReport] = useState<boolean>(false);
     const report = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        initialize();
-        MyDataHelps.on("applicationDidBecomeVisible", initialize);
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", initialize);
-        }
-    }, []);
-
-    function initialize() {
+    useInitializeView(() => {
         if (props.previewState == "default") {
             setConfiguration({
                 participantID: "1",
@@ -63,7 +55,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                 setLogEntries(logEntries);
             });
         });
-    }
+    }, [], []);
 
     if (!configuration || !logEntries) return <div ref={props.innerRef}><LoadingIndicator /></div>;
 

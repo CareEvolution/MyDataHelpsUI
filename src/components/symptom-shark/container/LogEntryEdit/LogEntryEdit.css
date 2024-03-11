@@ -2,10 +2,6 @@
     background: var(--mdhui-background-color-0);
 }
 
-.mdhui-ss-log-entry-edit-wrapper .mdhui-ss-edit-nav {
-    background: var(--mdhui-background-color-0);
-}
-
 .mdhui-ss-log-entry-edit {
     text-align: center;
     padding-left: 16px;
