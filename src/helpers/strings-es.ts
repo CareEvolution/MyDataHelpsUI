@@ -176,7 +176,8 @@
     "asthma-control-calendar-not-logged-yet": "No ingresado todavía",
     "asthma-control-calendar-log-entries-symptoms-label": "Síntomas",
     "asthma-control-calendar-log-entries-impacts-label": "Impactos",
-    "asthma-control-calendar-log-entries-triggers-label": "Disparadores"
+    "asthma-control-calendar-log-entries-triggers-label": "Disparadores",
+    "blood-type": "Tipo de sangre",
 };
 
 export default strings;

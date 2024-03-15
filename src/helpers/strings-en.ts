@@ -312,7 +312,8 @@
     "asthma-log-entry-editor-view-select-all-subtitle": "Select all that apply",
     "asthma-log-entry-editor-view-symptoms-title": "Symptoms",
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
-    "asthma-log-entry-editor-view-triggers-title": "Triggers"
+    "asthma-log-entry-editor-view-triggers-title": "Triggers",
+    "blood-type": "Blood Type",
 };
 
 export default strings;
