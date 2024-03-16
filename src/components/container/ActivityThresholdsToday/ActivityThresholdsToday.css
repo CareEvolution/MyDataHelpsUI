@@ -1,0 +1,17 @@
+.mdhui-activity-thresholds-today .mdhui-activity-threshold-meter {
+    margin: 16px;
+}
+
+.mdhui-activity-thresholds-today .mdhui-activity-threshold {
+    position: relative;
+}
+
+.mdhui-activity-thresholds-today .mdhui-activity-threshold .mdhui-activity-threshold-marker {
+    position: absolute;
+    width: 100%;
+    top: 8px;
+    left: 0;
+    text-align: center;
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+}

@@ -1,3 +1,4 @@
+export { default as ActivityThresholdsToday } from "./ActivityThresholdsToday"
 export { default as AllergiesList } from "./AllergiesList"
 export { default as AppDownload } from "./AppDownload"
 export { default as BloodPressureVisualization } from "./BloodPressureVisualization"

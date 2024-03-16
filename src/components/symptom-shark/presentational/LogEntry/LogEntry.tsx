@@ -42,7 +42,7 @@ export default function (props: SymptomSharkLogEntryProps) {
     let title: string = props.title ?? getDayOfWeek(props.date);
     let highlight = props.highlight ?? isToday(props.date);
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
-    
+
     if (emptyLogEntry) {
         return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
             <Action
@@ -159,7 +159,7 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
     }
 
     return <div className="mdhui-ss-log-entry-section">
-        <div className="mdhui-ss-section-header">Symptoms & Treatments</div>
+        <div className="mdhui-ss-section-header">Activities & Symptoms</div>
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
             <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
         )}

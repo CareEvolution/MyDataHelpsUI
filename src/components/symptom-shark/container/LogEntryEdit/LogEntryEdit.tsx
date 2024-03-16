@@ -127,7 +127,7 @@ export default function (props: SymptomSharkLogEntryEditProps) {
         }
         saveLogEntry(newEntry);
     }
-
+    
     const debouncedSave = useMemo(
         () => debounce(saveLogEntry, 300)
         , []);
