@@ -1,0 +1,5 @@
+.notification-date {
+    color: var(--mdhui-text-color-2);
+    margin-top: 16px;
+    font-size: .75em;
+}

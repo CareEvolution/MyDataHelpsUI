@@ -98,7 +98,7 @@
     "moderate-shortened": "mod",
     "mild-shortened": "mild",
     "log-todays-symptoms": "Log Today's Symptoms",
-    "todays-log": "Today's Log",
+    "todays-log": "Log Entry",
     "symptoms": "Symptoms",
     "treatments": "Activities",
     "symptoms-experiencing-today": "What symptoms are you experiencing?",

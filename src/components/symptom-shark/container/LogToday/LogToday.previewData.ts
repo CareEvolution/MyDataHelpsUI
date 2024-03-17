@@ -26,12 +26,17 @@ export let previewConfiguration: SymptomSharkConfiguration = {
         {
             "id": "10",
             "color": "#c4291c",
-            "name": "Tylenol"
+            "name": "Cooked Dinner"
         },
         {
             "id": "12",
             "color": "#e35c33",
-            "name": "Rest"
+            "name": "Took Shower"
+        },
+        {
+            "id": "12",
+            "color": "#e35c33",
+            "name": "Cooked Dinner"
         }
     ]
 };
@@ -58,6 +63,5 @@ export let previewLogEntry: DailyLogEntry = {
             "id": "12"
         }
     ],
-    "overallFeeling": 5,
-    "notes": "I'm feeling a little better today."
+    "overallFeeling": 5
 }

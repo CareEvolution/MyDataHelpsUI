@@ -1,7 +1,7 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { format, sub } from 'date-fns';
+import { format, isToday, sub } from 'date-fns';
 import React from 'react';
 import UnstyledButton from '../UnstyledButton';
 import "./DateRangeNavigator.css"
@@ -11,7 +11,7 @@ import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface DateRangeNavigatorProps {
-	intervalType: "Week" | "Month";
+	intervalType: "Day" | "Week" | "Month";
 	intervalStart: Date;
 	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
@@ -22,7 +22,9 @@ export interface DateRangeNavigatorProps {
 
 export default function (props: DateRangeNavigatorProps) {
 	var duration: Duration = props.intervalType == "Month" ? { months: 1 } : { weeks: 1 };
-
+	if (props.intervalType == "Day") {
+		duration = { days: 1 };
+	}
 	var nextInterval = function () {
 		var newIntervalStart = add(props.intervalStart, duration);
 		props.onIntervalChange(newIntervalStart, add(newIntervalStart, duration));
@@ -70,10 +72,15 @@ export default function (props: DateRangeNavigatorProps) {
 						{getMonthName()} {props.intervalStart.getFullYear()}
 					</div>
 				}
-				{(props.intervalType == "Week" || props.intervalStart.getDate() != 1) &&
+				{(props.intervalType == "Week" || props.intervalStart.getDate() != 1) && props.intervalType != "Day" &&
 					<div>
 						{format(props.intervalStart, "MM/dd/yyyy")}&nbsp;-&nbsp;
 						{format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}
+					</div>
+				}
+				{(props.intervalType == "Day") &&
+					<div>
+						{isToday(props.intervalStart) ? "Today" : format(props.intervalStart, "MM/dd/yyyy")}
 					</div>
 				}
 				{!isCurrentInterval &&

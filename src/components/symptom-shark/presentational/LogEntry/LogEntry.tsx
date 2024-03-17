@@ -58,7 +58,7 @@ export default function (props: SymptomSharkLogEntryProps) {
         </Card>;
     }
 
-    return <Card innerRef={props.innerRef} className="mdhui-ss-log-entry">
+    return <Card style={{marginTop:"0"}} innerRef={props.innerRef} className="mdhui-ss-log-entry">
         <Action
             title={title}
             subtitle={subtitle}
