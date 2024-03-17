@@ -30,6 +30,7 @@ export const stepsLineChart = {
             }
             return Promise.resolve(data);
         }
+        
     },
     render: render
 };
@@ -40,7 +41,7 @@ export const stepsBarChart = {
         options: {
 
         },
-        intervalType: "Week",
+        intervalType: "Month",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
@@ -54,7 +55,8 @@ export const stepsBarChart = {
                 currentDate = add(currentDate, { days: 1 });
             }
             return Promise.resolve(data);
-        }
+        },
+        threshold: 10000
     },
     render: render
 };

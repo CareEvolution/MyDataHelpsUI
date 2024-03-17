@@ -52,27 +52,27 @@ export var demoTreatments: TreatmentConfiguration[] = [
 	{
 		color: "#616161",
 		id: "Tylenol",
-		name: "Tylenol"
+		name: "Walk with Friends"
 	},
 	{
 		color: "#429BDF",
 		id: "Rest",
-		name: "Rest"
+		name: "Cooked Dinner"
 	},
 	{
 		color: "#d98177",
 		id: "Ice",
-		name: "Ice"
+		name: "Took a Shower"
 	},
 	{
 		color: "#5db37e",
 		id: "Stretching",
-		name: "Stretching"
+		name: "Vacuumed"
 	},
 	{
 		color: "#e35c33",
 		id: "Meditation",
-		name: "Meditation"
+		name: "Phone Call"
 	}
 ];
 

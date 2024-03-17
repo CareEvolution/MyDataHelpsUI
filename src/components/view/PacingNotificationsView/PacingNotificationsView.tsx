@@ -16,7 +16,6 @@ export interface PacingNotificationsViewProps {
 
 }
 
-
 export default function (props: PacingNotificationsViewProps) {
     return (
         <BlankView title='Pacing Notifications' colorScheme={"auto"}>

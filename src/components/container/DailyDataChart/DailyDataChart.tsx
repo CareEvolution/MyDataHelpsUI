@@ -4,7 +4,7 @@ import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, qu
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LoadingIndicator } from '../../presentational'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import getDayKey from '../../../helpers/get-day-key'
 import "./DailyDataChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
@@ -22,6 +22,7 @@ export interface DailyDataChartProps {
     hideIfNoData?: boolean
     previewDataProvider?: DailyDataProvider
     innerRef?: React.Ref<HTMLDivElement>
+    threshold?: number
 }
 
 export interface LineChartOptions {
@@ -181,6 +182,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     //ensures that gradients are unique for each chart
     let gradientKey = `gradient_${Math.random()}`;
+    let highlightGradientKey = `gradient_${Math.random()}`;
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
@@ -199,6 +201,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<GraphToolTip />} />
             }
             <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
+            {props.threshold &&
+                <ReferenceLine y={props.threshold} stroke="#bbb" />
+            }
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : "preserveStartEnd"} />
         </>
@@ -244,9 +249,19 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                                 <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
                                 <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                             </linearGradient>
+                            <linearGradient id={highlightGradientKey} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
+                                <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
+                            </linearGradient>
                         </defs>
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]}>
+                            {
+                                data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.value > props.threshold! ? `url(#${highlightGradientKey})` : `url(#${gradientKey})`} />
+                                ))
+                            }
+                        </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             }
