@@ -12,7 +12,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
     const [deviceType, setDeviceType] = useState<'Fitbit' | 'Omron' | 'Garmin'>(
-        props.deviceType || 'Fitbit'
+        props.deviceType
     );
     const [loading, setLoading] = useState<boolean>(true);
 
