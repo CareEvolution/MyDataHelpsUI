@@ -37,7 +37,7 @@ export default function () {
           context  
         ){
           if (!context) return;
-          setSurveyContext(context as SurveyContext);
+          setSurveyContext(context);
         }); 
     }, []);
 
