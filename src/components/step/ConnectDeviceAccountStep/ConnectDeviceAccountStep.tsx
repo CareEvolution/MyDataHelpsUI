@@ -3,11 +3,12 @@ import StepLayout from "../StepLayout";
 import StepTitle from "../StepTitle";
 import StepText from "../StepText";
 import StepNextButton from "../StepNextButton";
+import { deviceType } from "../../../helpers/deviceType";
 
 export interface ConnectDeviceAccountStepProps {
     title?: string;
     text?: string;
-    deviceType: "Fitbit" | "Garmin" | "Omron";
+    deviceType: deviceType;
     providerID: number;
     styles: { [key: string]: any };
     onConnect: () => void;
