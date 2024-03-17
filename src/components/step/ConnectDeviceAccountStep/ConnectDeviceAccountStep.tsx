@@ -7,7 +7,7 @@ import StepNextButton from "../StepNextButton";
 export interface ConnectDeviceAccountStepProps {
     title?: string;
     text?: string;
-    deviceType: string; // "Fitbit" | "Garmin" | "Omron";
+    deviceType: "Fitbit" | "Garmin" | "Omron";
     providerID: number;
     styles: { [key: string]: any };
     onConnect: () => void;

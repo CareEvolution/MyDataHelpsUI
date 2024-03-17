@@ -4,15 +4,15 @@ import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
 export interface ConnectDeviceAccountStepContainerProps {
-    deviceType?: string;
+    deviceType: 'Fitbit' | 'Omron' | 'Garmin';
 }
 
 export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
-    const [deviceType, setDeviceType] = useState<string>(
-        props.deviceType || ''
+    const [deviceType, setDeviceType] = useState<'Fitbit' | 'Omron' | 'Garmin'>(
+        props.deviceType || 'Fitbit'
     );
     const [loading, setLoading] = useState<boolean>(true);
 
