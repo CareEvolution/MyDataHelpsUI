@@ -1,0 +1,36 @@
+.device-activity-calendar-day
+{
+    text-align: center;
+    font-size: .7em;
+    position: relative;
+    cursor: pointer;
+}
+
+    .device-activity-calendar-day .day-symptoms-marker
+    {
+        padding-top: 8px;
+        height: 63px;
+        height: 48px;
+    }
+
+    .device-activity-calendar-day .face-wrapper
+    {
+        height: 26px;
+    }
+
+    .device-activity-calendar-day .day-bar-wrapper
+    {
+        height: 72px;
+    }
+
+    .device-activity-calendar-day .face-wrapper
+    {
+        text-align: center;
+        width: 100%;
+    }
+
+        .device-activity-calendar-day .face-wrapper .ss-face
+        {
+            width: 18px;
+            height: 18px;
+        }

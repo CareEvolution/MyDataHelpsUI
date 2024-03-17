@@ -4,6 +4,6 @@ import PacingCalendarView, { PacingCalendarViewProps } from "./PacingCalendarVie
 export default { title: "View/PacingCalendarView", component: PacingCalendarView, parameters: { layout: 'fullscreen' } };
 let render = (args: PacingCalendarViewProps) => <PacingCalendarView {...args} />
 export const Default = {
-    args: { previewState:"default" },
+    args: { previewState: "default" },
     render: render
 };

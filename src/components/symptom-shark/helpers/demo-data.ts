@@ -1,5 +1,5 @@
 import { DailyLogEntry, SymptomConfiguration, TreatmentConfiguration } from "../..";
-import { add, startOfMonth } from 'date-fns';
+import { add } from 'date-fns';
 import getDayKey from "../../../helpers/get-day-key";
 import { LogEntryIconKey } from "../presentational/LogEntryIcon/LogEntryIcon";
 
@@ -17,9 +17,9 @@ export var demoSymptoms: SymptomConfiguration[] = [
 		id: "Fatigue"
 	},
 	{
-		severityTracking: "None",
+		severityTracking: "3PointScale",
 		color: "#5db37e",
-		name: "Nausea",
+		name: "Exhaustion / PEM",
 		id: "Nausea"
 	},
 	{
@@ -132,4 +132,4 @@ addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea", "Headache", "Insomnia"
 addLogEntry([], [], 5);
 addLogEntry(["Headache", "Insomnia"], ["Tylenol"], 3);
 addLogEntry([], [], 5);
-addLogEntry(["Fatigue", "Insomnia",], ["Rest"], 2, "trophy", true);
+addLogEntry(["Fatigue", "Nausea", "Insomnia"], ["Rest", "Ice"], 2, "trophy", false);

@@ -30,6 +30,8 @@
 .mdhui-week-calendar .mdhui-week-calendar-week {
     min-width: 100%;
     scroll-snap-align: start;
+    display: flex;
+    justify-content: space-between;
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day {
@@ -74,7 +76,7 @@
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day-selected {
-    background: var(--mdhui-background-color-2);
+    background: rgba(74, 144, 226, 0.1);
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day-selected .mdhui-week-calendar-date-label .mdhui-week-calendar-day-of-month {

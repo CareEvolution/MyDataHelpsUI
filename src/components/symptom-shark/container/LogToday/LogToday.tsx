@@ -6,6 +6,7 @@ import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from '../.
 import getDayKey from '../../../../helpers/get-day-key';
 import language from '../../../../helpers/language';
 import MyDataHelps from '@careevolution/mydatahelps-js';
+import { demoLogEntries, demoSymptoms, demoTreatments } from '../../helpers/demo-data';
 
 export interface SymptomSharkLogTodayProps {
     previewState?: "withLog" | "noLog";
@@ -20,13 +21,15 @@ export default function (props: SymptomSharkLogTodayProps) {
     var currentDate = new Date();
     currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
 
+    var config = { symptoms: demoSymptoms, treatments: demoTreatments, participantID: "1" };
+
     function initialize() {
         if (props.previewState == "withLog") {
-            setConfiguration(previewConfiguration);
-            setSymptomLogEntry(previewLogEntry);
+            setConfiguration(config);
+            setSymptomLogEntry(demoLogEntries[getDayKey(currentDate)] ?? previewLogEntry);
             return;
         } else if (props.previewState == "noLog") {
-            setConfiguration(previewConfiguration);
+            setConfiguration(config);
             return;
         }
 
