@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import { isSameDay, format, add, formatISO } from 'date-fns';
+import { isSameDay, format, add, formatISO, startOfDay } from 'date-fns';
 import "./LogEntryEdit.css"
 import getDayKey from '../../../../helpers/get-day-key';
 import { getDayOfWeek } from '../../../../helpers/date-helpers';
@@ -9,6 +9,7 @@ import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConf
 import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
 import { debounce } from 'lodash';
 import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
+import { demoLogEntries, demoSymptoms, demoTreatments } from '../../helpers/demo-data';
 
 export interface SymptomSharkLogEntryEditProps {
     date: Date;
@@ -23,10 +24,12 @@ export default function (props: SymptomSharkLogEntryEditProps) {
     const [saving, setSaving] = useState<boolean>(false);
     const [selectedSymptom, setSelectedSymptom] = useState<SymptomConfiguration | null>(null);
 
+    var config = { symptoms: demoSymptoms, treatments: demoTreatments, participantID: "1" };
+
     function initialize() {
         if (props.previewState == "default") {
-            setConfiguration(previewConfiguration);
-            setLogEntry(previewLogEntry);
+            setConfiguration(config);
+            setLogEntry(demoLogEntries[getDayKey(startOfDay(new Date()))] );
             return;
         }
 
@@ -106,6 +109,19 @@ export default function (props: SymptomSharkLogEntryEditProps) {
             newItems.push({ id: item.id });
         }
         newEntry.treatments = newItems;
+        saveLogEntry(newEntry);
+    }
+
+    function toggleExertionActivity(item: TreatmentConfiguration) {
+        var newEntry = { ...logEntry! };
+        var newItems = [...newEntry.exertionActivities || []];
+
+        if (newItems.find(t => t == item.id)) {
+            newItems.splice(newItems.findIndex(t => t == item.id), 1);
+        } else {
+            newItems.push(item.id);
+        }
+        newEntry.exertionActivities = newItems;
         saveLogEntry(newEntry);
     }
 
@@ -225,9 +241,26 @@ export default function (props: SymptomSharkLogEntryEditProps) {
                                             onClick={() => toggleTreatment(s)}
                                             bordered={true} />
                                     )}
+                                    <TrackerItem className="mdhui-ss-edit-item" selected={false}
+                                            color="var(--mdhui-color-primary)"
+                                            text="+ Add Activity"
+                                            onClick={() => {}}
+                                            bordered={true} />
                                 </div>
                             </div>
                         }
+
+                        <Title className="mdhui-ss-edit-title" order={3}>Select any activities that caused you to "overdo it":</Title>
+                        <div className="mdhui-ss-edit-items">
+                            {configuration?.treatments.filter(s => !s.inactive && logEntry.treatments.find(s2 => s2.id == s.id)).map(s =>
+                                <TrackerItem className="mdhui-ss-edit-item" selected={!!logEntry.exertionActivities?.find(s2 => s2 == s.id)}
+                                    color={s.color}
+                                    text={s.name}
+                                    key={s.id}
+                                    bordered
+                                    onClick={() => toggleExertionActivity(s)} />
+                            )}
+                        </div>
                         {isSameDay(new Date(), props.date) &&
                             <Title className="mdhui-ss-edit-title" order={3}>{language("feeling-overall-today")}</Title>
                         }

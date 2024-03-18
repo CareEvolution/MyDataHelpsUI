@@ -1,6 +1,7 @@
 import React from "react";
 import { SymptomSharkLogEntryEdit } from "../../container";
 import { Layout } from "../../../presentational";
+import "../../../../components/view/recover.css";
 
 export interface LogEntryEditViewProps {
     colorScheme?: "light" | "dark" | "auto";
@@ -10,7 +11,7 @@ export interface LogEntryEditViewProps {
 }
 
 export default function (props: LogEntryEditViewProps) {
-    return <Layout bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme || "light"}>
+    return <Layout className="recover" bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme || "light"}>
         <SymptomSharkLogEntryEdit {...props} />
     </Layout>
 }

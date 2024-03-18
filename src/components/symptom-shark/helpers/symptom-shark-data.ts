@@ -31,6 +31,7 @@ export interface TreatmentConfiguration {
 export interface DailyLogEntry {
 	symptoms: SymptomReference[];
 	treatments: TreatmentReference[];
+	exertionActivities?: string[];
 	overallFeeling?: number;
 	notes: string;
 	icon?: LogEntryIconKey;

@@ -11,6 +11,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBed, faHeartbeat, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 import IntradayHeartRateChart from '../../container/IntradayHeartRateChart/IntradayHeartRateChart';
 import "./PacingNotificationsView.css"
+import "../recover.css"
 
 export interface PacingNotificationsViewProps {
 
@@ -18,7 +19,7 @@ export interface PacingNotificationsViewProps {
 
 export default function (props: PacingNotificationsViewProps) {
     return (
-        <BlankView title='Pacing Notifications' colorScheme={"auto"}>
+        <BlankView className="recover" title='Pacing Notifications' colorScheme={"auto"}>
             <Title defaultMargin order={3}>Today</Title>
             <Card>
                 <Action icon={<FontAwesomeSvgIcon icon={faHeartbeat} color="var(--mdhui-color-danger)" />} onClick={() => { }} indicator={<></>}>

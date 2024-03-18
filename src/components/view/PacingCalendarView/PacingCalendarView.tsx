@@ -12,6 +12,7 @@ import { faBed, faHeartbeat, faPersonRunning } from '@fortawesome/free-solid-svg
 import IntradayHeartRateChart from '../../container/IntradayHeartRateChart/IntradayHeartRateChart';
 import { add } from "date-fns";
 import { DailyDataChartProps } from '../../container/DailyDataChart/DailyDataChart';
+import "../recover.css"
 
 export interface PacingCalendarViewProps {
     colorScheme?: "light" | "dark" | "auto";
@@ -124,7 +125,7 @@ let sleepArgs: DailyDataChartProps = {
 
 export default function (props: PacingCalendarViewProps) {
     return (
-        <Layout colorScheme={props.colorScheme ?? "light"}>
+        <Layout className='recover' colorScheme={props.colorScheme ?? "light"}>
             <DateRangeCoordinator variant='rounded' intervalType='Month' sticky>
                 <SymptomSharkVisualizationCoordinator showFilters previewState={props.previewState}>
                     <Section>

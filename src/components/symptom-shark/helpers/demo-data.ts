@@ -7,7 +7,7 @@ export var demoSymptoms: SymptomConfiguration[] = [
 	{
 		severityTracking: "10PointScale",
 		color: "#c4291c",
-		name: "Headache",
+		name: "Stomach Problems",
 		id: "Headache"
 	},
 	{
@@ -25,7 +25,7 @@ export var demoSymptoms: SymptomConfiguration[] = [
 	{
 		severityTracking: "None",
 		color: "#429bdf",
-		name: "Anxiety",
+		name: "Difficulty Sleeping",
 		id: "Anxiety"
 	},
 	{
@@ -35,16 +35,22 @@ export var demoSymptoms: SymptomConfiguration[] = [
 		id: "Brain Fog"
 	},
 	{
-		severityTracking: "None",
+		severityTracking: "10PointScale",
 		color: "#616161",
-		name: "Back Pain",
+		name: "Pain",
 		id: "Back Pain"
 	},
 	{
 		severityTracking: "None",
 		color: "#d98177",
-		name: "Insomnia",
+		name: "Shortness of Breath",
 		id: "Insomnia"
+	},
+	{
+		severityTracking: "None",
+		color: "rgb(245, 183, 34)",
+		name: "Racing Heart",
+		id: "Racing Heart"
 	}
 ];
 
