@@ -100,7 +100,7 @@ let sleepArgs: DailyDataChartProps = {
     },
     intervalType: "Month",
     weekStartsOn: "6DaysAgo",
-    dailyDataType: DailyDataType.FitbitSleepMinutes,  
+    dailyDataType: DailyDataType.FitbitSleepMinutes,
     valueFormatter: (value: number) => {
         var hours = Math.floor(value / 60);
         var displayValue = hours > 0 ? (hours + "h ") : "";
@@ -124,12 +124,22 @@ let sleepArgs: DailyDataChartProps = {
 };
 
 export default function (props: PacingCalendarViewProps) {
+    function circle(value: number) {
+        return <div style={{ paddingLeft:"4px", paddingRight:"4px", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFF", fontWeight: "bold", fontSize: ".7em", width:"70px", height: "24px", borderRadius: "24px", backgroundColor: (value > 7) ? "var(--mdhui-color-danger)" : (value > 3) ? "var(--mdhui-color-warning)" : "var(--mdhui-color-primary)" }}>Severity {value}</div>
+    }
+
     return (
         <Layout className='recover' colorScheme={props.colorScheme ?? "light"}>
             <DateRangeCoordinator variant='rounded' intervalType='Month' sticky>
                 <SymptomSharkVisualizationCoordinator showFilters previewState={props.previewState}>
                     <Section>
                         <SymptomSharkCalendar onDaySelected={props.onDaySelected} />
+                    </Section>
+                    <Section>
+                        <Title defaultMargin order={3}>Exertional Triggers</Title>
+                        <Action className='no-top-padding' icon={circle(8)} indicator={<></>} title="Cooked Dinner" subtitle='3/17/2024 10:20 AM'></Action>
+                        <Action className='no-top-padding' icon={circle(4)} indicator={<></>} title="Walked the Dog" subtitle='3/14/2024 3:30 PM'></Action>
+                        <Action className='no-top-padding' icon={circle(2)} indicator={<></>} title="Took a Shower" subtitle='3/11/2024 9:30 AM'></Action>
                     </Section>
                     <Section>
                         <SymptomSharkSymptomTreatmentHistograms onSymptomSelected={props.onSymptomSelected} />

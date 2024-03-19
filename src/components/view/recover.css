@@ -13,3 +13,7 @@ a {
     font-style: normal;
     --mdhui-background-color-1: #f6f4ef;
 }
+
+.recover .no-top-padding {
+    padding-top:0;
+}
