@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, SymptomSharkLogToday, Title, DateRangeCoordinator, DateRangeNavigator, ActivityThresholdsToday, DailyDataType, Action, WeekCalendar, getDayKey, SparkBarChartBar } from "../../.."
+import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, SymptomSharkLogToday, Title, DateRangeCoordinator, DateRangeNavigator, ActivityThresholdsToday, DailyDataType, Action, WeekCalendar, getDayKey, SparkBarChartBar, Section } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
@@ -18,65 +18,65 @@ export interface PacingHomeViewProps {
 }
 
 
-let dataTypes = [{
-    dailyDataType: DailyDataType.Steps,
-    label: "Steps",
-    icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-    color: "rgba(255, 166, 102, 1)",
-    formatter: function (number: number) {
-        return Math.floor(number).toLocaleString()
+let dataTypes = [
+    {
+        dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
+        label: "Max Heart Rate",
+        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        color: "#ACBBC9",
+        formatter: function (number: number) {
+            return Math.floor(number).toString() + " bpm";
+        },
+        threshold: 115
+    }, {
+        dailyDataType: DailyDataType.Steps,
+        label: "Steps",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        color: "var(--mdhui-color-warning)",
+        formatter: function (number: number) {
+            return Math.floor(number).toLocaleString()
+        },
+        threshold: 2500
+    }, {
+        dailyDataType: DailyDataType.FitbitActiveMinutes,
+        label: "Active Minutes",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        color: "var(--mdhui-color-warning)",
+        formatter: function (number: number) {
+            return Math.floor(number).toString() + " minutes";
+        },
+        threshold: 80
     },
-    threshold: 2500
-}, {
-    dailyDataType: DailyDataType.FitbitActiveMinutes,
-    label: "Active Minutes",
-    icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-    color: "rgba(255, 166, 102, 1)",
-    formatter: function (number: number) {
-        return Math.floor(number).toString() + " minutes";
+    {
+        dailyDataType: DailyDataType.AppleHealthSleepMinutes,
+        label: "Sleep Time",
+        icon: <FontAwesomeSvgIcon icon={faBed} />,
+        color: "rgba(74, 144, 226, 1)",
+        formatter: function (number: number) {
+            var hours = Math.floor(number / 60);
+            var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
+            if (Math.round(number - (hours * 60)) == 0) {
+                displayValue = hours + "h";
+            }
+            return displayValue;
+        },
+        threshold: 60 * 8
     },
-    threshold: 80
-},
-{
-    dailyDataType: DailyDataType.AppleHealthSleepMinutes,
-    label: "Sleep Time",
-    icon: <FontAwesomeSvgIcon icon={faBed} />,
-    color: "rgba(74, 144, 226, 1)",
-    formatter: function (number: number) {
-        var hours = Math.floor(number / 60);
-        var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
-        if (Math.round(number - (hours * 60)) == 0) {
-            displayValue = hours + "h";
-        }
-        return displayValue;
-    },
-    threshold: 60 * 8
-},
-{
-    dailyDataType: DailyDataType.FitbitSleepMinutes,
-    label: "Sleep Time",
-    icon: <FontAwesomeSvgIcon icon={faBed} />,
-    color: "rgba(74, 144, 226, 1)",
-    formatter: function (number: number) {
-        var hours = Math.floor(number / 60);
-        var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
-        if (Math.round(number - (hours * 60)) == 0) {
-            displayValue = hours + " hours";
-        }
-        return displayValue;
-    },
-    threshold: 60 * 8
-},
-{
-    dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
-    label: "Max Heart Rate",
-    icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-    color: "rgba(239, 132, 129, 1)",
-    formatter: function (number: number) {
-        return Math.floor(number).toString() + " bpm";
-    },
-    threshold: 115
-}];
+    {
+        dailyDataType: DailyDataType.FitbitSleepMinutes,
+        label: "Sleep Time",
+        icon: <FontAwesomeSvgIcon icon={faBed} />,
+        color: "#ACBBC9",
+        formatter: function (number: number) {
+            var hours = Math.floor(number / 60);
+            var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
+            if (Math.round(number - (hours * 60)) == 0) {
+                displayValue = hours + " hours";
+            }
+            return displayValue;
+        },
+        threshold: 60 * 8
+    }];
 
 
 export default function (props: PacingHomeViewProps) {
@@ -86,44 +86,48 @@ export default function (props: PacingHomeViewProps) {
         var date = new Date(year, month, day);
         var dayKey = getDayKey(date);
         let bars: SparkBarChartBar[] = [];
-        if(isToday(date)){
+        if (isToday(date)) {
             bars = [
                 {
-                    color: dataTypes[0].color,
+                    color: "#ACBBC9",
+                    barFillPercent: 0.42
+                },
+                {
+                    color: "var(--mdhui-color-warning)",
                     barFillPercent: 0.7
                 },
                 {
-                    color: dataTypes[1].color,
+                    color: "var(--mdhui-color-warning)",
                     barFillPercent: 0.8
                 },
                 {
-                    color: dataTypes[2].color,
+                    color: "#ACBBC9",
                     barFillPercent: 0.55
-                },
-                {
-                    color: dataTypes[4].color,
-                    barFillPercent: 0.42
-                },
+                }
             ];
         }
-        else{
+        else {
+
+            function randomActivityBar() {
+                var value = 0.2 + Math.random() * 0.35;
+                var color = "#ACBBC9";
+                if (value > 0.5) {
+                    color = "var(--mdhui-color-warning)";
+                }
+                return {
+                    color: color,
+                    barFillPercent: value
+                }
+            };
+
             bars = [
+                randomActivityBar(),
+                randomActivityBar(),
+                randomActivityBar(),
                 {
-                    color: dataTypes[0].color,
-                    barFillPercent: Math.random()
-                },
-                {
-                    color: dataTypes[1].color,
-                    barFillPercent: Math.random()
-                },
-                {
-                    color: dataTypes[2].color,
+                    color: "#ACBBC9",
                     barFillPercent: Math.random() * 0.2 + 0.4
-                },
-                {
-                    color: dataTypes[4].color,
-                    barFillPercent: Math.random()
-                },
+                }
             ];
         }
         return <DeviceActivityCalendarDay
@@ -138,13 +142,17 @@ export default function (props: PacingHomeViewProps) {
             loading={false} />
     }
 
+    function circle(value: number) {
+        return <div style={{ paddingLeft:"4px", paddingRight:"4px", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFF", fontWeight: "bold", fontSize: ".7em", width:"70px", height: "24px", borderRadius: "24px", backgroundColor: (value > 7) ? "var(--mdhui-color-danger)" : (value > 3) ? "var(--mdhui-color-warning)" : "var(--mdhui-color-primary)" }}>Severity {value}</div>
+    }
+
     return (
         <Layout className='recover' colorScheme={"auto"}>
             <StatusBarBackground color='#FFFFFF' />
             <WeekCalendar dayRenderer={getDay}
                 selectedDate={startOfDay(new Date())}
                 loading={false}
-                startDate={ add(startOfDay(new Date()), {days:-6}) }
+                startDate={add(startOfDay(new Date()), { days: -6 })}
                 onDateSelected={(d) => { }}
                 onStartDateChange={(d) => { }} />
             <Title defaultMargin order={3}>Today, March 17, 2024</Title>
@@ -155,6 +163,10 @@ export default function (props: PacingHomeViewProps) {
             <Card>
                 <Title defaultMargin order={4}>Heart Rate</Title>
                 <IntradayHeartRateChart />
+            </Card>
+            <Card>
+                <Title defaultMargin order={3}>Exertional Triggers</Title>
+                <Action className='no-top-padding' icon={circle(5)} indicator={<></>} title="Cooked Dinner" subtitle='6:30 PM'></Action>
             </Card>
             <Title defaultMargin style={{ marginTop: "24px" }} order={3}>Pacing Notifications</Title>
             <Card>

@@ -39,10 +39,10 @@ export default function (props: DeviceActivityCalendarDayProps) {
     }
 
     return <div key={props.date.getTime()} className={"device-activity-calendar-day " + (props.selected ? "selected" : "") + (isFuture ? "future" : "")}>
-        <div className="day-symptoms-marker">
+        {/* <div className="day-symptoms-marker">
             {!props.loading && !!props.logEntry && getDayTracker(props.logEntry)}
-        </div>
-        <div className="face-wrapper">
+        </div> */}
+        <div className="face-wrapper" style={{paddingTop:"16px"}}>
             {!props.loading && props.logEntry && props.logEntry.overallFeeling &&
                 <Face className="ss-face" faceValue={props.logEntry.overallFeeling} selected={true} />
             }

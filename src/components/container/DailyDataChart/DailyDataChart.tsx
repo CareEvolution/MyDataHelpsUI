@@ -250,8 +250,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                                 <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                             </linearGradient>
                             <linearGradient id={highlightGradientKey} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
-                                <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
+                                <stop offset="0%" stopColor={"var(--mdhui-color-warning)"} stopOpacity={1.0} />
+                                <stop offset="100%" stopColor={"var(--mdhui-color-warning)"} stopOpacity={0.7} />
                             </linearGradient>
                         </defs>
                         {standardChartComponents()}

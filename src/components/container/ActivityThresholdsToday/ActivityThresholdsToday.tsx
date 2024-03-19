@@ -83,6 +83,11 @@ export default function (props: ActivityThresholdTodayProps) {
     if (props.previewState === "Default") {
         computedResults = [
             {
+                dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
+                fillPercent: 0.42,
+                value: "90 bpm"
+            },
+            {
                 dailyDataType: DailyDataType.Steps,
                 fillPercent: 0.7,
                 value: "3,995"
@@ -96,11 +101,6 @@ export default function (props: ActivityThresholdTodayProps) {
                 dailyDataType: DailyDataType.FitbitSleepMinutes,
                 fillPercent: 0.55,
                 value: "8h 12m"
-            },
-            {
-                dailyDataType: DailyDataType.AppleHealthMaxHeartRate,
-                fillPercent: 0.42,
-                value: "90 bpm"
             }
         ]
     }
@@ -113,7 +113,8 @@ export default function (props: ActivityThresholdTodayProps) {
         {props.title && <CardTitle title={props.title} />}
         {computedResults.map(c => {
             let dataType = props.dataTypes.find(dt => dt.dailyDataType === c.dailyDataType)!;
-            return <div className="mdhui-activity-threshold"><ActivityMeter key={dataType.dailyDataType} className="mdhui-activity-threshold-meter" label={dataType.label} value={c.value} fillPercent={c.fillPercent} averageFillPercent={0.5} icon={dataType.icon} color={dataType.color} />
+            return <div className="mdhui-activity-threshold">
+                <ActivityMeter key={dataType.dailyDataType} className="mdhui-activity-threshold-meter" label={dataType.label} value={c.value} fillPercent={c.fillPercent} averageFillPercent={0.5} icon={dataType.icon} color={dataType.color} />
                 <div className="mdhui-activity-threshold-marker">
                     {dataType.formatter(dataType.threshold)}
                     <div>

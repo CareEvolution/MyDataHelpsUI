@@ -83,8 +83,8 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
                     <stop offset="0%" stopColor="var(--mdhui-color-danger)" />
                     {/* <stop offset={`${percentage}%`} stopColor="red" />
                     <stop offset={`${percentage}%`} stopColor="blue" /> */}
-                    <stop offset="35%" stopColor="#999" />
-                    <stop offset="100%" stopColor="#999" />
+                    <stop offset="35%" stopColor="#bbb" />
+                    <stop offset="100%" stopColor="#bbb" />
                 </linearGradient>
             </defs>
             <Tooltip wrapperStyle={{ outline: "none" }} active content={<GraphToolTip />} />
@@ -100,7 +100,7 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
             <ResponsiveContainer width="100%" height={150}>
                 <LineChart width={400} height={400} data={data} syncId="DailyDataChart">
                     {standardChartComponents()}
-                    <Line dot={false} strokeWidth={2} key="line" type="monotone" dataKey="value" stroke="url(#gradient)" />
+                    <Line dot={false} strokeWidth={3} key="line" type="monotone" dataKey="value" stroke="url(#gradient)" />
 
                 </LineChart>
             </ResponsiveContainer>
