@@ -92,7 +92,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
         if (todayLogEntry.triggers.includes('Smoke (tobacco or wood burning)')) {
             articles.push(createResourceDefinition(
                 'Asthma and Smoke',
-                'Wildfires and tobacco smoke can trigger asthma. Learn about steps you can take to reduce your exposure. ',
+                'Wildfires and tobacco smoke can trigger asthma. Learn about steps you can take to reduce your exposure.',
                 '43c',
                 'triggers'
             ));
@@ -100,7 +100,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
         if (todayLogEntry.triggers.includes('Extreme weather changes')) {
             articles.push(createResourceDefinition(
                 'Asthma and Weather',
-                'Common weather triggers are cold air, hot and humid air, and rain/thunderstorms.  Explorer why these can trigger asthma.  ',
+                'Common weather triggers are cold air, hot and humid air, and rain/thunderstorms. Explore why these can trigger asthma.',
                 '43d',
                 'triggers'
             ));
