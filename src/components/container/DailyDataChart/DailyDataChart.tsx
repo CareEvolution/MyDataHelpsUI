@@ -256,7 +256,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                             </linearGradient>
                         </defs>
                         {(props.options as BarChartOptions)?.threshold &&
-                            <ReferenceLine y={(props.options as BarChartOptions)?.threshold} stroke={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-border-color-2)"} />
+                            <ReferenceLine y={(props.options as BarChartOptions)?.threshold} stroke={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.thresholdLineColor) || "var(--mdhui-border-color-2)"} />
                         }
                         {standardChartComponents()}
                         <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} >

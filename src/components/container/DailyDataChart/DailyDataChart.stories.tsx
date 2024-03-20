@@ -65,7 +65,7 @@ export const stepsBarWithThresholdChart = {
         title: "Steps",
         options: {
             threshold: 8000,
-            thresholdColor: "red",
+            thresholdLineColor: "red",
             overThresholdBarColor: "green",
             barColor: "#bbb"
         },
