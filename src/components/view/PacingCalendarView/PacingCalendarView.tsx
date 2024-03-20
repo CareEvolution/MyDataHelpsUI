@@ -25,7 +25,7 @@ export interface PacingCalendarViewProps {
 let stepsArgs: DailyDataChartProps = {
     title: "Steps",
     options: {
-
+        barColor: "#bbb"
     },
     intervalType: "Month",
     weekStartsOn: "6DaysAgo",
@@ -48,7 +48,7 @@ let stepsArgs: DailyDataChartProps = {
 let maxHrArgs: DailyDataChartProps = {
     title: "Max Heart Rate",
     options: {
-
+        barColor: "#bbb"
     },
     intervalType: "Month",
     weekStartsOn: "6DaysAgo",
@@ -72,7 +72,7 @@ let maxHrArgs: DailyDataChartProps = {
 let activeMinutesArgs: DailyDataChartProps = {
     title: "Active Minutes",
     options: {
-
+        barColor: "#bbb"
     },
     intervalType: "Month",
     weekStartsOn: "6DaysAgo",
@@ -96,7 +96,7 @@ let activeMinutesArgs: DailyDataChartProps = {
 let sleepArgs: DailyDataChartProps = {
     title: "Sleep Time",
     options: {
-
+        barColor: "#346094"
     },
     intervalType: "Month",
     weekStartsOn: "6DaysAgo",
@@ -120,7 +120,7 @@ let sleepArgs: DailyDataChartProps = {
             currentDate = add(currentDate, { days: 1 });
         }
         return Promise.resolve(data);
-    }
+    },
 };
 
 export default function (props: PacingCalendarViewProps) {
@@ -142,9 +142,6 @@ export default function (props: PacingCalendarViewProps) {
                         <Action className='no-top-padding' icon={circle(2)} indicator={<></>} title="Took a Shower" subtitle='3/11/2024 9:30 AM'></Action>
                     </Section>
                     <Section>
-                        <SymptomSharkSymptomTreatmentHistograms onSymptomSelected={props.onSymptomSelected} />
-                    </Section>
-                    <Section>
                         <DailyDataChart {...stepsArgs} />
                         <DailyDataChart {...maxHrArgs} />
                         <DailyDataChart {...activeMinutesArgs} />
@@ -152,6 +149,9 @@ export default function (props: PacingCalendarViewProps) {
                     </Section>
                     <Section>
                         <SymptomSharkOverallExperienceChart />
+                    </Section>
+                    <Section>
+                        <SymptomSharkSymptomTreatmentHistograms onSymptomSelected={props.onSymptomSelected} />
                     </Section>
                 </SymptomSharkVisualizationCoordinator>
             </DateRangeCoordinator>
