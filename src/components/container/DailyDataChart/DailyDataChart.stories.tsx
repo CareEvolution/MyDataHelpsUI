@@ -66,13 +66,13 @@ export const stepsBarWithThresholdsChart = {
         options: {
             thresholds: [
                 {
-                    threshold: 8000,
-                    thresholdLineColor: "red",
+                    value: 8000,
+                    referenceLineColor: "red",
                     overThresholdBarColor: "green",
                 },
                 {
-                    threshold: 10000,
-                    thresholdLineColor: "blue",
+                    value: 10000,
+                    referenceLineColor: "blue",
                     overThresholdBarColor: "red",
                 }
             ],

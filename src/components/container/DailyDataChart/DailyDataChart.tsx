@@ -36,8 +36,8 @@ export interface BarChartOptions {
 }
 
 export interface BarChartThreshold {
-    threshold: number
-    thresholdLineColor?: ColorDefinition
+    value: number
+    referenceLineColor?: ColorDefinition
     overThresholdBarColor?: ColorDefinition
 }
 
@@ -224,7 +224,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
         let highestThresholdIndex = -1;
         for (var i = 0; i < thresholds?.length; i++) {
-            if (value > thresholds[i].threshold && (highestThresholdIndex == -1 || thresholds[i].threshold > thresholds[highestThresholdIndex].threshold)) {
+            if (value > thresholds[i].value && (highestThresholdIndex == -1 || thresholds[i].value > thresholds[highestThresholdIndex].value)) {
                 highestThresholdIndex = i;
             }
         }
@@ -277,8 +277,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                                 </linearGradient>
                             )}
                         </defs>
-                        {(props.options as BarChartOptions)?.thresholds?.filter(t=>t.thresholdLineColor)?.map((threshold, index) =>
-                            <ReferenceLine y={threshold.threshold} stroke={resolveColor(layoutContext.colorScheme, threshold.thresholdLineColor)} />
+                        {(props.options as BarChartOptions)?.thresholds?.filter(t=>t.referenceLineColor)?.map((threshold, index) =>
+                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
                         {standardChartComponents()}
                         <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} >
