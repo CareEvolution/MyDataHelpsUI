@@ -32,7 +32,11 @@ export interface LineChartOptions {
 
 export interface BarChartOptions {
     barColor?: ColorDefinition
-    threshold?: number
+    thresholds?: ChartThreshold[]
+}
+
+export interface ChartThreshold {
+    threshold: number
     thresholdLineColor?: ColorDefinition
     overThresholdBarColor?: ColorDefinition
 }
@@ -214,6 +218,21 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
+    function getBarColor(value: number) {
+        var thresholds = (props.options as BarChartOptions)?.thresholds;
+        if (!thresholds) return `url(#${gradientKey})`;
+
+        let highestThresholdIndex = -1;
+        for (var i = 0; i < thresholds?.length; i++) {
+            if (value > thresholds[i].threshold && (highestThresholdIndex == -1 || thresholds[i].threshold > thresholds[highestThresholdIndex].threshold)) {
+                highestThresholdIndex = i;
+            }
+        }
+
+        if (highestThresholdIndex == -1) return `url(#${gradientKey})`;
+        return `url(#${gradientKey}_threshold${highestThresholdIndex})`;
+    }
+
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
@@ -250,21 +269,22 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                                 <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
                                 <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                             </linearGradient>
-                            <linearGradient id={gradientKey + "_overthreshold"} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
-                                <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
-                            </linearGradient>
+
+                            {(props.options as BarChartOptions)?.thresholds?.map((threshold, index) =>
+                                <linearGradient id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, threshold.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
+                                    <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, threshold.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
+                                </linearGradient>
+                            )}
                         </defs>
-                        {(props.options as BarChartOptions)?.threshold &&
-                            <ReferenceLine y={(props.options as BarChartOptions)?.threshold} stroke={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.thresholdLineColor) || "var(--mdhui-border-color-2)"} />
-                        }
+                        {(props.options as BarChartOptions)?.thresholds?.filter(t=>t.thresholdLineColor)?.map((threshold, index) =>
+                            <ReferenceLine y={threshold.threshold} stroke={resolveColor(layoutContext.colorScheme, threshold.thresholdLineColor)} />
+                        )}
                         {standardChartComponents()}
                         <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} >
-                            {(props.options as BarChartOptions).threshold &&
-                                data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.value > (props.options as BarChartOptions).threshold! ? `url(#${gradientKey + "_overthreshold"})` : `url(#${gradientKey})`} />
-                                ))
-                            }
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={getBarColor(entry.value)} />
+                            ))}
                         </Bar>
                     </BarChart>
                 </ResponsiveContainer>

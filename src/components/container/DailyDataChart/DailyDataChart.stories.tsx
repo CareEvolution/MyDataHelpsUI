@@ -60,13 +60,22 @@ export const stepsBarChart = {
 };
 
 
-export const stepsBarWithThresholdChart = {
+export const stepsBarWithThresholdsChart = {
     args: {
         title: "Steps",
         options: {
-            threshold: 8000,
-            thresholdLineColor: "red",
-            overThresholdBarColor: "green",
+            thresholds: [
+                {
+                    threshold: 8000,
+                    thresholdLineColor: "red",
+                    overThresholdBarColor: "green",
+                },
+                {
+                    threshold: 10000,
+                    thresholdLineColor: "blue",
+                    overThresholdBarColor: "red",
+                }
+            ],
             barColor: "#bbb"
         },
         intervalType: "Week",
