@@ -32,10 +32,10 @@ export interface LineChartOptions {
 
 export interface BarChartOptions {
     barColor?: ColorDefinition
-    thresholds?: ChartThreshold[]
+    thresholds?: BarChartThreshold[]
 }
 
-export interface ChartThreshold {
+export interface BarChartThreshold {
     threshold: number
     thresholdLineColor?: ColorDefinition
     overThresholdBarColor?: ColorDefinition
