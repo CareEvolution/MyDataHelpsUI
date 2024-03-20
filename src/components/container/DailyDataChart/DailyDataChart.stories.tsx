@@ -60,6 +60,35 @@ export const stepsBarChart = {
 };
 
 
+export const stepsBarWithThresholdChart = {
+    args: {
+        title: "Steps",
+        options: {
+            threshold: 8000,
+            thresholdColor: "red",
+            overThresholdBarColor: "green",
+            barColor: "#bbb"
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar",
+        previewDataProvider: (start: Date, end: Date) => {
+            let data: DailyDataQueryResult = {};
+            let currentDate = new Date(start);
+            while (currentDate < end) {
+                let dayKey = getDayKey(currentDate);
+                data[dayKey] = Math.random() * 10000 + 3000;
+                currentDate = add(currentDate, { days: 1 });
+            }
+            return Promise.resolve(data);
+        }
+    },
+    render: render
+};
+
+
 export const stepsLiveBarChart = {
     args: {
         title: "Steps",

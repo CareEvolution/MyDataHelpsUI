@@ -3,12 +3,13 @@ import { DateRangeContext } from '../../presentational/DateRangeCoordinator/Date
 import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, queryDailyData } from '../../../helpers/query-daily-data'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
-import { CardTitle, LoadingIndicator } from '../../presentational'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import getDayKey from '../../../helpers/get-day-key'
 import "./DailyDataChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
+import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 
 export interface DailyDataChartProps {
     title?: string
@@ -30,12 +31,15 @@ export interface LineChartOptions {
 }
 
 export interface BarChartOptions {
-    barColor?: string
+    barColor?: ColorDefinition
+    threshold?: number
+    thresholdLineColor?: ColorDefinition
+    overThresholdBarColor?: ColorDefinition
 }
 
 export interface AreaChartOptions {
-    lineColor?: string
-    areaColor?: string
+    lineColor?: ColorDefinition
+    areaColor?: ColorDefinition
 }
 
 function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
@@ -51,6 +55,8 @@ function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: 
 export default function DailyDataChart(props: DailyDataChartProps) {
     let [currentData, setCurrentData] = useState<DailyDataQueryResult | null>(null);
     let [hasAnyData, setHasAnyData] = useState(false);
+
+    let layoutContext = useContext(LayoutContext);
 
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
@@ -241,12 +247,25 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     <BarChart width={400} height={400} data={data} syncId="DailyDataChart" >
                         <defs>
                             <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
-                                <stop offset="100%" stopColor={(props.options as BarChartOptions)?.barColor || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
+                                <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
+                                <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
+                            </linearGradient>
+                            <linearGradient id={gradientKey + "_overthreshold"} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
+                                <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
                             </linearGradient>
                         </defs>
+                        {(props.options as BarChartOptions)?.threshold &&
+                            <ReferenceLine y={(props.options as BarChartOptions)?.threshold} stroke={resolveColor(layoutContext.colorScheme, (props.options as BarChartOptions)?.barColor) || "var(--mdhui-border-color-2)"} />
+                        }
                         {standardChartComponents()}
-                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} />
+                        <Bar key="bar" type="monotone" dataKey="value" fill={`url(#${gradientKey})`} radius={[2, 2, 0, 0]} >
+                            {(props.options as BarChartOptions).threshold &&
+                                data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.value > (props.options as BarChartOptions).threshold! ? `url(#${gradientKey + "_overthreshold"})` : `url(#${gradientKey})`} />
+                                ))
+                            }
+                        </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             }
@@ -255,12 +274,12 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     <AreaChart width={400} height={400} data={data} syncId="DailyDataChart">
                         <defs>
                             <linearGradient id={gradientKey} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
-                                <stop offset="100%" stopColor={(props.options as AreaChartOptions)?.areaColor || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
+                                <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as AreaChartOptions)?.areaColor) || "var(--mdhui-color-primary)"} stopOpacity={0.5} />
+                                <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, (props.options as AreaChartOptions)?.areaColor) || "var(--mdhui-color-primary)"} stopOpacity={0.2} />
                             </linearGradient>
                         </defs>
                         {standardChartComponents()}
-                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={(props.options as AreaChartOptions)?.lineColor || "var(--mdhui-color-primary)"} />
+                        <Area key="area" type="monotone" dataKey="value" fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey})`} stroke={resolveColor(layoutContext.colorScheme, (props.options as AreaChartOptions)?.lineColor) || "var(--mdhui-color-primary)"} />
                     </AreaChart>
                 </ResponsiveContainer>
             }
