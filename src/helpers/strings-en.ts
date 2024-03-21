@@ -314,6 +314,8 @@
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
     "asthma-log-entry-editor-view-triggers-title": "Triggers",
     "blood-type": "Blood Type",
+    "points-until-next-badge": "{{points}} points to next badge",
+    "current-points": "Current Points"
 };
 
 export default strings;

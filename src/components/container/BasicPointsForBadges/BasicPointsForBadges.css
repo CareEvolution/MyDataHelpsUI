@@ -1,0 +1,13 @@
+.mdhui-basic-points-for-badges {
+    padding: 16px;
+}
+
+.mdhui-basic-points-for-badges .mdhui-basic-points-for-badges-points-toward-badge {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.mdhui-basic-points-for-badges .mdhui-basic-points-for-badges-next-badge {
+    margin-top: 8px;
+    color: var(--mdhui-text-color-2);
+}

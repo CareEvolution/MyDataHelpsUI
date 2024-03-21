@@ -178,6 +178,8 @@
     "asthma-control-calendar-log-entries-impacts-label": "Impactos",
     "asthma-control-calendar-log-entries-triggers-label": "Disparadores",
     "blood-type": "Tipo de sangre",
+    "points-until-next-badge": "{{points}} puntos para el próximo distintivo",
+    "current-points": "Puntos actuales"
 };
 
 export default strings;
