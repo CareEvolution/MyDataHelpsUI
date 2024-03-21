@@ -2,6 +2,7 @@ import { ColorDefinition, resolveColor } from "../../../helpers/colors";
 import "./ProgressBar.css";
 import React, { ReactElement, useContext, useEffect } from "react";
 import { LayoutContext } from '../Layout';
+import ShinyOverlay from "../ShinyOverlay";
 
 export interface ProgressBarProps {
 	backgroundColor?: ColorDefinition;
@@ -35,6 +36,7 @@ export default function ProgressBar(props: ProgressBarProps) {
 		<div className={classes.join(" ")} ref={props.innerRef}>
 			<div className="mdhui-progress-bar-background" style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
 				<div className="mdhui-progress-bar-fill" style={{ width: Math.trunc(props.fillPercent) + "%", background: resolveColor(layoutContext?.colorScheme, props.fillColor) }} />
+				<ShinyOverlay/>
 			</div>
 			<div className="mdhui-progress-steps">
 				{props.steps &&

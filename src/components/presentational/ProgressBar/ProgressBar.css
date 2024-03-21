@@ -29,7 +29,6 @@
 	height: calc( var(--icon_size) + 4px);
 	top:0;
 	border-radius: var(--icon_size);
-	z-index:1
 }
 
 .mdhui-progress-bar .mdhui-progress-steps {

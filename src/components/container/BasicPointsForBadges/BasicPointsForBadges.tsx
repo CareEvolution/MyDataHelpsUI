@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
+import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, ShinyOverlay, Title } from "../../presentational";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
 import language from "../../../helpers/language";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { BasicPointsForBadgesGoal, pointsForGoal } from "./Goals";
-import { ColorDefinition, resolveColor } from "../../../helpers/colors";
+import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export interface BasicPointsForBadgesProps {
     pointsForBadge: number;
@@ -44,7 +44,7 @@ export default function (props: BasicPointsForBadgesProps) {
 
     async function awardPointsAndBadges() {
         if (props.previewState === "Default") {
-            setPointsAndBadges({ points: 550 + (4 * props.pointsForBadge), badges: 4 });
+            setPointsAndBadges({ points: 550 + (4 * props.pointsForBadge), badges: 3 });
             return;
         };
 
@@ -88,6 +88,10 @@ export default function (props: BasicPointsForBadgesProps) {
         return props.pointsForBadge - (pointsAndBadges!.points % props.pointsForBadge);
     }
 
+    function nextBadgeColor() {
+        return getColorFromAssortment(pointsAndBadges!.badges + 1)
+    }
+
     return <div className="mdhui-basic-points-for-badges">
         <Title order={4}>{language("current-points")}</Title>
         {pointsAndBadges &&
@@ -96,8 +100,8 @@ export default function (props: BasicPointsForBadgesProps) {
                 <ProgressBar fillPercent={(pointsUntilNextBadge() * 1.0 / (props.pointsForBadge * 1.0)) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
                     percent: 100,
                     icon:
-                        <ProgressBarStep borderColor="rgba(148, 148, 148, 1)" backgroundColor="rgba(148, 148, 148, 1)" height="24px">
-                            <FontAwesomeIcon icon={faStar as any} size={"1x"} style={{ color: "#fcfcfc", marginTop: "-3px" }} />
+                        <ProgressBarStep borderColor={nextBadgeColor()} backgroundColor={nextBadgeColor()} height="24px">
+                            <FontAwesomeIcon icon={faStar as any} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
                         </ProgressBarStep>
                 }]} />
                 <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge").replace("{{points}}", pointsUntilNextBadge().toString())}</div>
