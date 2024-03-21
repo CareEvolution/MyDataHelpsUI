@@ -3,7 +3,6 @@ import { ComponentMeta, ComponentStory } from "@storybook/react"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import ConnectEhr, { ConnectEhrProps } from "./ConnectEhr";
-import { truncateByDomain } from "recharts/types/util/ChartUtils";
 
 
 export default {
