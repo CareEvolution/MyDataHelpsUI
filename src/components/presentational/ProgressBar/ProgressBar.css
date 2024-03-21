@@ -8,35 +8,36 @@
 
 .mdhui-progress-bar.mdhui-progress-bar-default-margin {
 	margin: 16px;
-	width:calc(100% - 32px)
+	width: calc(100% - 32px)
 }
 
 .mdhui-progress-bar .mdhui-progress-bar-background {
 	border-radius: 500px;
-	border-width: var(--icon_border_width) ;
+	border-width: var(--icon_border_width);
 	border-style: none;
 	background: #fff;
 	overflow: hidden;
 	width: 100%;
 	position: relative;
-	height:calc( var(--icon_size) + 4px);
-	z-index:1;
+	height: calc(var(--icon_size) + 4px);
+	z-index: 1;
 }
 
 .mdhui-progress-bar .mdhui-progress-bar-background .mdhui-progress-bar-fill {
 	position: absolute;
 	min-height: 1px;
-	height: calc( var(--icon_size) + 4px);
-	top:0;
+	height: calc(var(--icon_size) + 4px);
+	top: 0;
 	border-radius: var(--icon_size);
+	transition: width 1s ease-in-out;
 }
 
 .mdhui-progress-bar .mdhui-progress-steps {
-	top:0;
+	top: 0;
 	width: 100%;
 	position: absolute;
 	z-index: 2;
-	display:inline-block;
+	display: inline-block;
 }
 
 .mdhui-progress-bar .step-icon {
