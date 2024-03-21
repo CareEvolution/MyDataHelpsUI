@@ -102,7 +102,7 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
-	if (props.hideWhenConnected && connected) {
+	if (props.hideWhenConnected && connected && !needsAttention) {
 		return null;
 	}
 

@@ -117,7 +117,7 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}
 
-	if (props.hideWhenConnected && deviceExternalAccount && deviceExternalAccount?.status != "unauthorized") {
+	if (props.hideWhenConnected && deviceExternalAccount && deviceExternalAccount?.status != "unauthorized" && deviceExternalAccount?.status != "error") {
 		return null;
 	}
 
