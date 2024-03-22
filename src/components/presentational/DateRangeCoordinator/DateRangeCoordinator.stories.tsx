@@ -71,6 +71,16 @@ let children = <Card><DailyDataChart title="Steps"
 		return Promise.resolve(data);
 	}} /></Card>;
 
+export const day = {
+	args: {
+		variant: "rounded",
+		initialIntervalStart: new Date(),
+		intervalType: "Day",
+		children: <Card></Card>
+	},
+	render: render
+};
+
 export const month = {
 	args: {
 		variant: "rounded",
