@@ -42,7 +42,7 @@
     "@storybook/addon-links": "^7.0.12",
     "@storybook/react": "^7.0.12",
     "@storybook/react-webpack5": "^7.0.12",
-    "@storybook/testing-library": "^0.1.0",
+    "@storybook/testing-library": "^0.2.2",
     "@types/markdown-it": "^12.2.3",
     "@types/react": "^18.0.33",
     "babel-loader": "^9.1.3",
