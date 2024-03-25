@@ -314,6 +314,8 @@
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
     "asthma-log-entry-editor-view-triggers-title": "Triggers",
     "blood-type": "Blood Type",
+    "device-data-month-chart-no-data": "No Data",
+    "device-data-month-chart-daily-average": "Daily Average",
 };
 
 export default strings;
