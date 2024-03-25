@@ -1,42 +1,42 @@
-﻿import { add, parseISO } from "date-fns";
-import { fitbitRestingHeartRateDataProvider } from ".";
+﻿import { add } from "date-fns";
+import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider } from ".";
 import getDayKey from "../get-day-key";
-import queryAllDeviceData from "./query-all-device-data";
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export default function (startDate: Date, endDate: Date) {
-	return queryAllDeviceData({
-		namespace: "AppleHealth",
-		type: "RestingHeartRate",
-		observedAfter: add(startDate, { days: -1 }).toISOString(),
-		observedBefore: add(endDate, { days: 1 }).toISOString()
-	}).then(function (ddp) {
-		return fitbitRestingHeartRateDataProvider(startDate, endDate).then(function (fitbitData) {
-			var dayValues: { [key: string]: number[] } = {};
-			ddp.forEach((d) => {
-				if (!d.startDate) { return; }
-				var day = getDayKey(parseISO(d.startDate));
-				var value = parseFloat(d.value);
-				if (!dayValues[day]) {
-					dayValues[day] = [];
-				}
-				dayValues[day].push(value);
-			});
+	let providers: Promise<{ [key: string]: number }>[] = [];
 
+	return MyDataHelps.getDataCollectionSettings().then((settings) => {
+		if (settings.fitbitEnabled) {
+			providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
+		}
+		if (settings.garminEnabled) {
+			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
+		}
+		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
+			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
+		}
+
+		if (!providers.length) {
+			return {};
+		}
+
+		return Promise.all(providers).then((values) => {
 			var data: { [key: string]: number } = {};
 			while (startDate < endDate) {
 				var dayKey = getDayKey(startDate);
-				if (fitbitData[dayKey]) {
-					if (!dayValues[dayKey]) {
-						dayValues[dayKey] = [];
+				var heartRates: number[] = [];
+				values.forEach((value) => {
+					if (value[dayKey] && value[dayKey] > 0) {
+						heartRates.push(value[dayKey]);
 					}
-					dayValues[dayKey].push(fitbitData[dayKey]);
-				}
-				if (dayValues[dayKey]) {
-					data[dayKey] = dayValues[dayKey].reduce((a, b) => a + b) / dayValues[dayKey].length;
+				});
+				if (heartRates.length > 0) {
+					data[dayKey] = heartRates.reduce((a,b) => a+b) / heartRates.length; // rounding?
 				}
 				startDate = add(startDate, { days: 1 });
 			}
 			return data;
-		})
+		});
 	});
 }
