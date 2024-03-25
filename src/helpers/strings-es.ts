@@ -178,6 +178,8 @@
     "asthma-control-calendar-log-entries-impacts-label": "Impactos",
     "asthma-control-calendar-log-entries-triggers-label": "Disparadores",
     "blood-type": "Tipo de sangre",
+    "device-data-month-chart-no-data": "Sin Datos",
+    "device-data-month-chart-daily-average": "Promedio Diario",
 };
 
 export default strings;
