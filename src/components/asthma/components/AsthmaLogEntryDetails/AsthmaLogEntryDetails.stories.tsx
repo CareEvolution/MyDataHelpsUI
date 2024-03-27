@@ -2,6 +2,7 @@ import React from 'react';
 import AsthmaLogEntryDetails, { AsthmaLogEntryDetailsProps } from './AsthmaLogEntryDetails';
 import { Card, Layout } from '../../../presentational';
 import { add } from 'date-fns';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Components/AsthmaLogEntryDetails',
@@ -11,10 +12,12 @@ export default {
 
 interface AsthmaLogEntryDetailsStoryArgs extends AsthmaLogEntryDetailsProps {
     colorScheme: 'auto' | 'light' | 'dark';
+    language: 'English' | 'Spanish';
     daysInPast: number;
 }
 
 const render = (args: AsthmaLogEntryDetailsStoryArgs) => {
+    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <Layout colorScheme={args.colorScheme}>
         <Card>
             <AsthmaLogEntryDetails {...args} date={add(new Date(), {days: args.daysInPast * -1})}/>
@@ -25,6 +28,7 @@ const render = (args: AsthmaLogEntryDetailsStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
+        language: 'English',
         previewState: 'not logged',
         daysInPast: 0
     },
@@ -33,6 +37,11 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        language: {
+            name: 'language',
+            control: 'radio',
+            options: ['English', 'Spanish']
         },
         previewState: {
             name: 'state',

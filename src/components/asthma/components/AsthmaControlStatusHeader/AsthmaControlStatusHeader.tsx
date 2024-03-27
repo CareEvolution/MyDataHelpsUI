@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AsthmaControlStatusHeader.css';
-import { asthmaDataService, computeAsthmaControlState } from '../../helpers';
+import { asthmaDataService, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
 import { AsthmaAirQuality, AsthmaBiometric, AsthmaControlState, AsthmaParticipant } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
 import { add } from 'date-fns';
@@ -97,13 +97,13 @@ export default function (props: AsthmaControlStatusHeaderProps) {
 
             if (airQualities!.find(q => q.type === 'home')?.status === 'out-of-range') {
                 return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-home-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'home')?.description}</span>{language('asthma-control-status-header-abnormal-home-aqi-p2')}</p>
+                    <p>{language('asthma-control-status-header-abnormal-home-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'home')?.description)}</span>{language('asthma-control-status-header-abnormal-home-aqi-p2')}</p>
                 </div>;
             }
 
             if (airQualities!.find(q => q.type === 'work')?.status === 'out-of-range') {
                 return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-work-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{airQualities!.find(q => q.type === 'work')?.description}</span>{language('asthma-control-status-header-abnormal-work-aqi-p2')}</p>
+                    <p>{language('asthma-control-status-header-abnormal-work-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'work')?.description)}</span>{language('asthma-control-status-header-abnormal-work-aqi-p2')}</p>
                 </div>;
             }
         }

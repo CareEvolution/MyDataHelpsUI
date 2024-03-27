@@ -113,11 +113,13 @@ export interface AsthmaBiometric {
 
 export type AsthmaAirQualityType = 'work' | 'home';
 
+export type AsthmaAirQualityDescription = 'unhealthy' | 'very unhealthy' | 'hazardous';
+
 export interface AsthmaAirQuality {
     type: AsthmaAirQualityType;
     status: AsthmaDataStatus;
     value?: number;
-    description?: string;
+    description?: AsthmaAirQualityDescription;
 }
 
 export type AsthmaSymptomLevel = 'none' | 'mild' | 'moderate' | 'severe';

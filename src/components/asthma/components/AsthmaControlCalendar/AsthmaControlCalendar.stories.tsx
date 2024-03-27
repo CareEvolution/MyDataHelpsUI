@@ -1,6 +1,7 @@
 import React from 'react';
 import AsthmaControlCalendar, { AsthmaControlCalendarProps } from './AsthmaControlCalendar';
 import { Card, DateRangeCoordinator, Layout } from '../../../presentational';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Components/AsthmaControlCalendar',
@@ -10,10 +11,12 @@ export default {
 
 interface AsthmaControlCalendarStoryArgs extends AsthmaControlCalendarProps {
     colorScheme: 'auto' | 'light' | 'dark';
+    language: 'English' | 'Spanish';
     onCard: boolean;
 }
 
 const render = (args: AsthmaControlCalendarStoryArgs) => {
+    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <Layout colorScheme={args.colorScheme}>
         {args.onCard &&
             <Card>
@@ -34,6 +37,7 @@ const render = (args: AsthmaControlCalendarStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
+        language: 'English',
         previewState: 'no logs',
         variant: 'compact',
         onCard: false
@@ -43,6 +47,11 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        language: {
+            name: 'language',
+            control: 'radio',
+            options: ['English', 'Spanish']
         },
         previewState: {
             name: 'state',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from '../../../presentational';
 import AsthmaActionPlanManager, { AsthmaActionPlanManagerProps } from './AsthmaActionPlanManager';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Components/AsthmaActionPlanManager',
@@ -10,9 +11,11 @@ export default {
 
 interface AsthmaActionPlanManagerStoryArgs extends AsthmaActionPlanManagerProps {
     colorScheme: 'auto' | 'light' | 'dark';
+    language: 'English' | 'Spanish';
 }
 
 const render = (args: AsthmaActionPlanManagerStoryArgs) => {
+    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <Layout colorScheme={args.colorScheme}>
         <AsthmaActionPlanManager {...args}/>
     </Layout>;
@@ -21,6 +24,7 @@ const render = (args: AsthmaActionPlanManagerStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
+        language: 'English',
         previewState: 'loaded without action plan'
     },
     argTypes: {
@@ -28,6 +32,11 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        language: {
+            name: 'language',
+            control: 'radio',
+            options: ['English', 'Spanish']
         },
         previewState: {
             name: 'state',
