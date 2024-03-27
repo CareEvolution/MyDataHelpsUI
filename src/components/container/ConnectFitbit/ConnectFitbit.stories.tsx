@@ -39,3 +39,15 @@ NotEnabledHide.args = { previewState: "notEnabled", title: "Fitbit", disabledBeh
 
 export const NotEnabledDisplayError = Template.bind({});
 NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "displayError" };
+
+export const HideConnectedFetchComplete = Template.bind({});
+HideConnectedFetchComplete.args = { previewState: "fetchComplete", title: "Fitbit", hideWhenConnected: true };
+
+export const HideConnectedNotConnected = Template.bind({});
+HideConnectedNotConnected.args = { previewState: "notConnected", title: "Fitbit", hideWhenConnected: true };
+
+export const HideConnectedUnauthorized = Template.bind({});
+HideConnectedUnauthorized.args = { previewState: "unauthorized", title: "Fitbit", hideWhenConnected: true };
+
+export const HideConnectedFetchingData = Template.bind({});
+HideConnectedFetchingData.args = { previewState: "fetchingData", title: "Fitbit", hideWhenConnected: true };

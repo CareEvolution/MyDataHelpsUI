@@ -81,3 +81,12 @@ export const CustomConnectText = {
     render: render
 };
 
+export const HideConnectedEnabledConnected = {
+    args: { previewState: "enabledConnected", applicationUrl: "preview", hideWhenConnected: true },
+    render: render
+};
+
+export const HideConnectedEnabledNeedsAttention = {
+    args: { previewState: "enabledNeedsAttention", applicationUrl: "preview", hideWhenConnected: true },
+    render: render
+};
