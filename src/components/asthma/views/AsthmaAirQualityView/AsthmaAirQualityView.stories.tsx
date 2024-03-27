@@ -1,5 +1,6 @@
 import React from 'react';
 import AsthmaAirQualityView, { AsthmaAirQualityViewProps } from './AsthmaAirQualityView';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Views/AsthmaAirQualityView',
@@ -8,11 +9,13 @@ export default {
 };
 
 interface AsthmaAirQualityViewStoryArgs extends AsthmaAirQualityViewProps {
+    language: 'English' | 'Spanish';
     withAlert: boolean;
     alertType: 'HomeAirQuality' | 'WorkAirQuality';
 }
 
 const render = (args: AsthmaAirQualityViewStoryArgs) => {
+    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <AsthmaAirQualityView
         {...args}
         previewState="default"
@@ -23,6 +26,7 @@ const render = (args: AsthmaAirQualityViewStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
+        language: 'English',
         withAlert: false,
         alertType: 'HomeAirQuality'
     },
@@ -31,6 +35,11 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        language: {
+            name: 'language',
+            control: 'radio',
+            options: ['English', 'Spanish']
         },
         withAlert: {
             name: 'with alert'

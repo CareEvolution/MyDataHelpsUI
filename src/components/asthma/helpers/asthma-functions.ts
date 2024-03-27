@@ -1,5 +1,5 @@
 import { add, formatISO } from 'date-fns';
-import { AsthmaControlState, AsthmaControlStatus, AsthmaDataStatus, AsthmaImpact, AsthmaLogEntry, AsthmaSymptom, AsthmaSymptomLevel, AsthmaTrigger } from '../model';
+import { AsthmaAirQualityDescription, AsthmaControlState, AsthmaControlStatus, AsthmaDataStatus, AsthmaImpact, AsthmaLogEntry, AsthmaSymptom, AsthmaSymptomLevel, AsthmaTrigger } from '../model';
 import language from '../../../helpers/language';
 import { ColorDefinition } from '../../../helpers/colors';
 
@@ -198,6 +198,13 @@ export const getAsthmaTriggers = (triggerTexts: string[]): AsthmaTrigger[] => {
         if (triggerText === language('asthma-trigger-incense-or-candle')) return 'Burned incense or a candle';
         return triggerText as AsthmaTrigger;
     });
+};
+
+export const getAsthmaAirQualityDescriptionText = (description: AsthmaAirQualityDescription | undefined): string | undefined => {
+    if (description === 'unhealthy') return language('asthma-air-quality-description-unhealthy');
+    if (description === 'very unhealthy') return language('asthma-air-quality-description-very-unhealthy');
+    if (description === 'hazardous') return language('asthma-air-quality-description-hazardous');
+    return description;
 };
 
 export const isDaytimeRestingHeartRateWithinRange = (baseline: number, rawValue: number) => rawValue <= (baseline * 1.2);
