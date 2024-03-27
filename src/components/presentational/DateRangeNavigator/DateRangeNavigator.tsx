@@ -1,7 +1,7 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { format, sub } from 'date-fns';
+import { format, isToday, sub } from 'date-fns';
 import React from 'react';
 import UnstyledButton from '../UnstyledButton';
 import "./DateRangeNavigator.css"
@@ -9,6 +9,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
 import { enUS, es } from 'date-fns/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import language from '../../../helpers/language';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Day" | "Week" | "Month";
@@ -78,7 +79,7 @@ export default function (props: DateRangeNavigatorProps) {
 				}
 				{(props.intervalType == "Day") &&
 					<div>
-						{format(props.intervalStart, "MM/dd/yyyy")}
+						{isToday(props.intervalStart) ? language("today") : format(props.intervalStart, "MM/dd/yyyy")}
 					</div>
 				}
 				{!isCurrentInterval &&
