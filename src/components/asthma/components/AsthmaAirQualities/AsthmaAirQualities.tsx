@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './AsthmaAirQualities.css';
 import { AsthmaAirQuality } from '../../model';
 import { useInitializeView } from '../../../../helpers/Initialization';
-import { asthmaDataService, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
+import { asthmaDataService, getAsthmaAirQualityDescriptionText, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
 import { LoadingIndicator, SingleDataPoint, Title, UnstyledButton } from '../../../presentational';
 import { AsthmaAirQualitiesPreviewState, previewData } from './AsthmaAirQualities.previewData';
 import MyDataHelps from '@careevolution/mydatahelps-js';
@@ -88,7 +88,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                 {homeAirQuality!.status !== 'not-configured' &&
                     <SingleDataPoint
                         label={language('asthma-air-qualities-home-aqi-label')}
-                        statusText={homeAirQuality!.description ?? getAsthmaDataStatusText(homeAirQuality!.status)}
+                        statusText={getAsthmaAirQualityDescriptionText(homeAirQuality!.description) ?? getAsthmaDataStatusText(homeAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(homeAirQuality!.status)}
                         value={homeAirQuality!.value?.toLocaleString()}
                         onClick={() => onClick(homeAirQuality!)}
@@ -98,7 +98,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                 {workAirQuality!.status !== 'not-configured' &&
                     <SingleDataPoint
                         label={language('asthma-air-qualities-work-aqi-label')}
-                        statusText={workAirQuality!.description ?? getAsthmaDataStatusText(workAirQuality!.status)}
+                        statusText={getAsthmaAirQualityDescriptionText(workAirQuality!.description) ?? getAsthmaDataStatusText(workAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(workAirQuality!.status)}
                         value={workAirQuality!.value?.toLocaleString()}
                         onClick={() => onClick(workAirQuality!)}
