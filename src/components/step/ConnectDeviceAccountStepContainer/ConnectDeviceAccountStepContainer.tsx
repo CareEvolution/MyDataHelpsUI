@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
 import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
+import { deviceType } from "../../../helpers/deviceType";
 
 export interface ConnectDeviceAccountStepContainerProps {
-    deviceType?: string;
+    deviceType: deviceType
 }
 
 export default function (props: ConnectDeviceAccountStepContainerProps) {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
-    const [deviceType, setDeviceType] = useState<string>(
-        props.deviceType || ''
+    const [deviceType, setDeviceType] = useState<deviceType>(
+        props.deviceType
     );
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -25,7 +26,7 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
         });
     }
 
-    function convertToProviderID(deviceType: string) {
+    function convertToProviderID(deviceType: deviceType) {
         switch (deviceType) {
             case "Fitbit":
                 return getFitbitProviderID();
@@ -33,12 +34,10 @@ export default function (props: ConnectDeviceAccountStepContainerProps) {
                 return getOmronProviderID();
             case "Garmin":
                 return getGarminProviderID();
-            default:
-                throw Error("Unsupported device type " + deviceType);
         }
     }
 
-    async function completeStepIfConnected(deviceType: string) {
+    async function completeStepIfConnected(deviceType: deviceType) {
       try {
         const accounts = await MyDataHelps.getExternalAccounts();
 

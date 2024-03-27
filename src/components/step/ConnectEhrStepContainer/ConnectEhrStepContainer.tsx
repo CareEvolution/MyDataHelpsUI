@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MyDataHelps, {
     ExternalAccountProvider,
     StepConfiguration,
+    SurveyContext,
 } from "@careevolution/mydatahelps-js";
 import ConnectEhrStep from "../ConnectEhrStep/ConnectEhrStep";
 import React from "react";
@@ -9,6 +10,7 @@ import React from "react";
 export default function () {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
+    const [surveyContext, setSurveyContext] = useState<SurveyContext>();
     const [nextButtonText, setNextButtonText] = useState<string>();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
     const [styles, setStyles] = useState<any>({});
@@ -30,6 +32,13 @@ export default function () {
             setNextButtonText(config.properties.nextButtonText);
             setStyles(config.styles ?? {});
         });
+
+        MyDataHelps.getSurveyContext().then(function(
+          context  
+        ){
+          if (!context) return;
+          setSurveyContext(context);
+        }); 
     }, []);
 
     return (
@@ -40,6 +49,8 @@ export default function () {
             nextButtonDisabled={nextButtonDisabled}
             styles={styles}
             onProviderConnected={onProviderConnected}
+            // Display preview data under 'Design' mode.
+            previewState={surveyContext?.surveyMode === 'Design'?'Default' : undefined}
             onNextButtonClick={() => MyDataHelps.completeStep(providerIDs.toString())}
         />
     );
