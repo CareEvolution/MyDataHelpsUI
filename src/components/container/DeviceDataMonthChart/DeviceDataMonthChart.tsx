@@ -8,6 +8,7 @@ import { LoadingIndicator } from '../../presentational'
 import { getPreviewData } from './DeviceDataMonthChart.previewdata'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
+import language from "../../../helpers/language"
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
@@ -223,7 +224,7 @@ export default function (props: DeviceDataMonthChartProps) {
 			}
 			{!loading && average != null &&
 				<div className="average">
-					Daily Average: <span className="average-value">{average}</span>
+					{language("device-data-month-chart-daily-average")}: <span className="average-value">{average}</span>
 				</div>
 			}
 			<div style={{ clear: "both" }}></div>
@@ -231,7 +232,7 @@ export default function (props: DeviceDataMonthChartProps) {
 				{(!graphHasData || loading) &&
 					<div>
 						{!graphHasData && !loading &&
-							<div className="no-data-label">No Data</div>
+							<div className="no-data-label">{language("device-data-month-chart-no-data")}</div>
 						}
 						{loading &&
 							<LoadingIndicator />

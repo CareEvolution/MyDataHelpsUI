@@ -19,3 +19,10 @@ export const WithLog = {
     },
     render: render
 };
+
+
+export const Live = {
+    args: {
+    },
+    render: render
+};

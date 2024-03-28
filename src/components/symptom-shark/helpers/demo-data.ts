@@ -1,6 +1,7 @@
 import { DailyLogEntry, SymptomConfiguration, TreatmentConfiguration } from "../..";
 import { add, startOfMonth } from 'date-fns';
 import getDayKey from "../../../helpers/get-day-key";
+import { LogEntryIconKey } from "../presentational/LogEntryIcon/LogEntryIcon";
 
 export var demoSymptoms: SymptomConfiguration[] = [
 	{
@@ -82,7 +83,7 @@ demoTreatments.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 
 export var demoLogEntries: { [key: string]: DailyLogEntry } = {};
 var currentDate = add(new Date(), {days:-29});
 
-function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: number, icon?: string, notes?: boolean) {
+function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: number, icon?: LogEntryIconKey, notes?: boolean) {
 	demoLogEntries[getDayKey(currentDate)] = {
 		symptoms: symptoms.map(s => {
 			return {
@@ -102,23 +103,23 @@ function addLogEntry(symptoms: string[], treatments: string[], overallFeeling: n
 	currentDate = add(currentDate, { days: 1 });
 }
 
-addLogEntry(["Headache", "Insomnia"], ["Tylenol"], 2, "user-md", true);
+addLogEntry(["Headache", "Insomnia"], ["Tylenol"], 2, "moon-o", true);
 addLogEntry(["Brain Fog", "Nausea"], ["Tylenol", "Ice"], 4);
 addLogEntry(["Headache"], ["Tylenol"], 3);
 addLogEntry(["Headache", "Insomnia"], ["Tylenol"], 3);
 addLogEntry([], [], 5);
 addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea"], ["Stretching", "Rest", "Ice"], 1);
 addLogEntry([], [], 5);
-addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea", "Headache", "Insomnia", "Brain Fog"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 1, "user-md", true);
+addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea", "Headache", "Insomnia", "Brain Fog"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 1, "star-o", true);
 addLogEntry(["Fatigue", "Nausea", "Headache"], ["Stretching"], 2);
-addLogEntry(["Anxiety", "Brain Fog"], ["Rest", "Meditation"], 3, "bolt", true);
+addLogEntry(["Anxiety", "Brain Fog"], ["Rest", "Meditation"], 3, undefined, true);
 addLogEntry([], [], 5);
 addLogEntry(["Back Pain", "Headache"], ["Ice", "Tylenol"], 4);
 addLogEntry(["Fatigue", "Back Pain", "Nausea", "Brain Fog"], ["Meditation", "Tylenol"], 2);
 addLogEntry([], [], 5);
 addLogEntry(["Fatigue", "Insomnia", "Brain Fog"], ["Rest"], 4, "star", true);
 addLogEntry(["Fatigue", "Back Pain"], ["Stretching", "Rest"], 3);
-addLogEntry(["Fatigue", "Nausea"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 2, "user-md", true);
+addLogEntry(["Fatigue", "Nausea"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 2, "flag", true);
 addLogEntry(["Headache", "Insomnia", "Brain Fog"], ["Stretching", "Tylenol"], 4, "user-md", true);
 addLogEntry([], [], 5);
 addLogEntry([], [], 5);
@@ -126,9 +127,9 @@ addLogEntry([], [], 5);
 addLogEntry(["Back Pain", "Headache"], ["Ice", "Tylenol"], 4);
 addLogEntry(["Fatigue", "Back Pain", "Nausea", "Brain Fog"], ["Meditation", "Tylenol"], 2);
 addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea"], ["Stretching", "Rest", "Ice"], 1);
-addLogEntry(["Fatigue", "Insomnia", "Brain Fog"], ["Rest"], 4, "star", true);
-addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea", "Headache", "Insomnia", "Brain Fog"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 1, "user-md", true);
+addLogEntry(["Fatigue", "Insomnia", "Brain Fog"], ["Rest"], 4, "question-circle-o", true);
+addLogEntry(["Fatigue", "Back Pain", "Anxiety", "Nausea", "Headache", "Insomnia", "Brain Fog"], ["Stretching", "Rest", "Ice", "Meditation", "Tylenol"], 1, "flask", true);
 addLogEntry([], [], 5);
 addLogEntry(["Headache", "Insomnia"], ["Tylenol"], 3);
 addLogEntry([], [], 5);
-addLogEntry(["Fatigue", "Insomnia",], ["Rest"], 2, "moon-o", false);
+addLogEntry(["Fatigue", "Insomnia",], ["Rest"], 2, "trophy", true);

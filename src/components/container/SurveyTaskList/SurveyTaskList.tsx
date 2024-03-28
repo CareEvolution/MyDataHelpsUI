@@ -7,6 +7,7 @@ import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.p
 import language from '../../../helpers/language'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { ButtonVariant } from '../../presentational/Button/Button'
+import { useInitializeView } from '../../../helpers/Initialization';
 
 export interface SurveyTaskListProps {
 	status: SurveyTaskStatus,
@@ -28,19 +29,30 @@ export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks"
 
 export default function (props: SurveyTaskListProps) {
 	const [loading, setLoading] = useState(true);
-	const [tasks, setTasks] = useState<SurveyTask[] | null>(null);
+	const [tasks, setTasksInner] = useState<SurveyTask[] | null>(null);
+	const [activeSurveys, setActiveSurveys] = useState<string[]>([]);
 	const context = useContext(LayoutContext);
 
-	useEffect(() => {
-		initialize()
-		MyDataHelps.on("applicationDidBecomeVisible", initialize);
-		return () => {
-			MyDataHelps.off("applicationDidBecomeVisible", initialize);
+	const setTasks = (tasks: SurveyTask[]): void => {
+		setTasksInner(tasks);
+		setActiveSurveys([]);
+	};
+
+	useInitializeView(initialize, [], [props.previewState]);
+
+	const isSurveyActive = (task: SurveyTask): boolean => {
+		return activeSurveys.includes(task.surveyName);
+	};
+
+	const onTaskClicked = (task: SurveyTask) => {
+		if (!props.previewState && !isSurveyActive(task)) {
+			setActiveSurveys([...activeSurveys, task.surveyName]);
+			MyDataHelps.startSurvey(task.surveyName);
 		}
-	}, [props.previewState]);
+	};
 
 	function getSurveyTaskElement(task: SurveyTask) {
-		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} disableClick={loading} />
+		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} onClick={() => onTaskClicked(task)} surveyActive={isSurveyActive(task)}/>
 	}
 
 	function initialize() {

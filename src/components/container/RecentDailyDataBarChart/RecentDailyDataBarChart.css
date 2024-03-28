@@ -1,0 +1,51 @@
+.mdhui-recent-daily-data-bar-chart {
+    position: relative;
+    margin-bottom: 48px;
+}
+
+.mdhui-recent-daily-data-bar-chart-title {
+    padding: 0 16px;
+}
+
+.mdhui-recent-daily-data-bar-chart-subtitle {
+    padding: 0 16px;
+    margin-top: 2px;
+    font-size: 0.95em;
+}
+
+.mdhui-recent-daily-data-bar-chart-container {
+    position: relative;
+    margin: 16px 16px 32px;
+    padding: 0;
+    background: var(--mdhui-background-color-1);
+    border-radius: 12px;
+    height: 200px;
+}
+
+.mdhui-recent-daily-data-bar-chart .recharts-surface {
+    height: 270px !important;
+    overflow: visible;
+}
+
+.mdhui-recent-daily-data-bar-chart-no-data-label, .mdhui-recent-daily-data-bar-chart .mdhui-loading-indicator {
+    position: absolute;
+    width: 120px;
+    height: 20px;
+    line-height: 20px;
+    left: calc(50% - 76px);
+    top: calc(50% - 26px);
+    border: 1px solid var(--mdhui-border-color-1);
+    background: var(--mdhui-background-color-0);
+    border-radius: 12px;
+    padding: 16px 8px;
+    text-align: center;
+    color: var(--mdhui-text-color-4);
+    z-index: 5000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mdhui-recent-daily-data-bar-chart .recharts-cartesian-grid-horizontal line:first-child {
+    display: none;
+}

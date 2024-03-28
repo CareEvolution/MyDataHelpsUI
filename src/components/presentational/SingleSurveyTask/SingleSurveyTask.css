@@ -1,9 +1,37 @@
+.mdhui-single-survey-task {
+    border-radius: inherit;
+}
+
+.mdhui-single-survey-task.incomplete-expanded {
+    padding: 16px;
+    width: 100%;
+}
+
+.mdhui-single-survey-task.incomplete-expanded .header {
+    display: grid;
+    grid-template-columns: auto max-content;
+    align-items: center;
+}
+
 .mdhui-single-survey-task .survey-name {
     font-size: .88em;
     font-weight: bold;
 }
 
-.mdhui-single-survey-task .survey-description,
+.mdhui-single-survey-task.incomplete-expanded .survey-name {
+    font-size: 1.3em;
+}
+
+.mdhui-single-survey-task .survey-description {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-single-survey-task.incomplete-expanded .survey-description {
+    font-size: 1em;
+    margin: 12px 0;
+}
+
 .mdhui-single-survey-task .completed-date {
     font-size: .88em;
     color: var(--mdhui-text-color-2);
