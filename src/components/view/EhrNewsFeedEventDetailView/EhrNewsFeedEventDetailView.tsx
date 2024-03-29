@@ -5,8 +5,8 @@ import { EhrNewsFeedEventType, EhrNewsFeedFeed } from "../../../helpers/news-fee
 
 export interface EhrNewsFeedEventDetailViewProps {
     feed: EhrNewsFeedFeed
-    pageId: string
-    pageDate: string
+    pageId?: string
+    pageDate?: string
     previewState?: EhrNewsFeedEventType
     onViewLabObservationTermInfo(labObservationID: string): void
     presentation?: "Push" | "Modal"

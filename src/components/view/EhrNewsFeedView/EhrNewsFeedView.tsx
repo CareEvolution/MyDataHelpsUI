@@ -15,6 +15,8 @@ export interface EhrNewsFeedViewProps {
     colorScheme?: "auto" | "light" | "dark"
     onEventSelected(eventReference: EhrNewsFeedEventReference): void
     onReportSelected(reportID: string): void
+    onBack?(): void
+    onClose?(): void
 }
 
 export default function (props: EhrNewsFeedViewProps) {
@@ -42,6 +44,8 @@ export default function (props: EhrNewsFeedViewProps) {
     return (
         <Layout colorScheme={props.colorScheme}>
             <NavigationBar
+                onBack={props.onBack}
+                onClose={props.onClose}
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
                 <Title order={2} autosizeImage image={icon} imageAlignment="left">{title}</Title>

@@ -9,9 +9,10 @@ export interface ExternalAccountsPreviewProps {
     excludeProviders?: boolean;
     excludeHealthPlans?: boolean;
     excludeDeviceManufacturers?: boolean;
-    applicationUrl: ExternalAccountsApplicationUrl;
+    applicationUrl?: ExternalAccountsApplicationUrl;
     previewState?: ExternalAccountsPreviewPreviewState;
     innerRef?: React.Ref<HTMLDivElement>
+    onClick?: () => void;
 }
 
 export type ExternalAccountsApplicationUrl = "preview" | string;
@@ -64,7 +65,11 @@ export default function (props: ExternalAccountsPreviewProps) {
         if (props.applicationUrl == "preview") {
             console.log("PREVIEW: Opening the external accounts application.");
         } else {
-            MyDataHelps.openApplication(props.applicationUrl);
+            if (props.onClick) {
+                props.onClick();
+            } else if (props.applicationUrl) {
+                MyDataHelps.openApplication(props.applicationUrl);
+            }
         }
     }
 

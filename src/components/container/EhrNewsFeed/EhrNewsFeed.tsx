@@ -19,7 +19,7 @@ export interface EhrNewsFeedProps {
 }
 
 export interface EhrNewsFeedEventReference {
-    feed: string
+    feed: EhrNewsFeedFeed
     pageId?: string
     pageDate?: string
 }

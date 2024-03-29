@@ -8,22 +8,41 @@ import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLo
 export interface HealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
-    connectEhrApplicationUrl: string
-    externalAccountsApplicationUrl: string
+    connectEhrApplicationUrl?: string
+    externalAccountsApplicationUrl?: string
     variant?: "default" | "cardBased"
+    onViewTermInfo?(termInfo: TermInformation): void
+    onViewLabs?(): void
+    onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
+    onViewExternalAccounts?(): void
 }
 
 export default function (props: HealthAndWellnessViewProps) {
     function viewLabs() {
+        if (props.onViewLabs) {
+            props.onViewLabs();
+            return;
+        }
+
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }
 
     function viewTermInfo(termInfo: TermInformation) {
+        if (props.onViewTermInfo) {
+            props.onViewTermInfo(termInfo);
+            return;
+        }
+
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }
 
     function viewHealthSectionDetails(concept: HealthPreviewSectionConcept) {
+        if (props.onViewHealthSectionDetails) {
+            props.onViewHealthSectionDetails(concept);
+            return;
+        }
+
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/" + concept + ".html");
     }
 
@@ -63,10 +82,10 @@ export default function (props: HealthAndWellnessViewProps) {
             {variant == "cardBased" &&
                 <>
                     <Card>
-                        <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined}  />
+                        <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
                     </Card>
                     <Card>
-                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} summaryResultsOnly={true} />
+                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
                     </Card>
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
@@ -79,9 +98,11 @@ export default function (props: HealthAndWellnessViewProps) {
                     </Card>
                 </>
             }
-            <Card>
-                <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
-            </Card>
+            {props.connectEhrApplicationUrl &&
+                <Card>
+                    <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
+                </Card>
+            }
         </Layout>
     )
 }
