@@ -22,9 +22,7 @@ interface BloodTypeLab {
 }
 
 interface LabResultBloodTypeData {
-    ImportantLabs?: any[],
-    RecentLabs?: any[],
-    BloodTypeLabs?: BloodTypeLab[],
+    BloodTypeLabs?: BloodTypeLab[]
 }
 
 export default function (props: LabResultsBloodTypeProps) {
