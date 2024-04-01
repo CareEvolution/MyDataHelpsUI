@@ -28,7 +28,7 @@ export const Xss = {
 
 export const Pdf = {
     args: {
-        "type": "ResearchKitConsentDocument",
+        "type": "Symptom Report",
         "content": previewReportPdf,
         "contentType": "application/pdf"
     },
