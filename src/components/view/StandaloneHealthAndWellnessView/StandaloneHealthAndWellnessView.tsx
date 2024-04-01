@@ -7,6 +7,7 @@ import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFe
 import ReportView from '../ReportView/ReportView';
 import { EhrNewsFeedEventType, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
 import TermInformationView from '../TermInformationView/TermInformationView';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface StandaloneHealthAndWellnessViewProps {
     previewState?: "default"
@@ -66,6 +67,13 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         setViewStack([...viewStack, { key: "ReportDetail", properties: { reportID: reportID } }]);
     }
 
+    function viewBloodTypeInformation() {
+        let spanish = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es");
+        let linkTarget = "https://medlineplus.gov/ency/article/003345.htm";
+        if (spanish) linkTarget = "https://medlineplus.gov/spanish/ency/article/003345.htm";
+        window.open(linkTarget, "_blank");
+    }
+
     if (!viewStack.length) {
         return <HealthAndWellnessView
             previewState={props.previewState}
@@ -74,6 +82,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
             onViewHealthSectionDetails={(concept) => viewHealthSectionDetails(concept)}
             onViewLabs={() => viewLabs()}
             onViewTermInfo={(termInfo) => viewTermInfo(termInfo)}
+            onBloodTypeClick={() => viewBloodTypeInformation()}
             variant="default" />
     }
 

@@ -15,6 +15,7 @@ export interface HealthAndWellnessViewProps {
     onViewLabs?(): void
     onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
     onViewExternalAccounts?(): void
+    onBloodTypeClick?(): void
 }
 
 export default function (props: HealthAndWellnessViewProps) {
@@ -69,7 +70,7 @@ export default function (props: HealthAndWellnessViewProps) {
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
-                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
+                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} onClick={props.onBloodTypeClick} />
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
                     {getHealthPreviewSection("Reports")}
@@ -89,7 +90,7 @@ export default function (props: HealthAndWellnessViewProps) {
                         <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
                     </Card>
                     <Card>
-                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
+                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} onClick={props.onBloodTypeClick} />
                     </Card>
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
