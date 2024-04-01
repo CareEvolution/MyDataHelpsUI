@@ -1,14 +1,12 @@
 import React from 'react'
-import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section, NavigationBar, HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountList, ExternalAccountsView } from "../.."
-import MyDataHelps from '@careevolution/mydatahelps-js';
-import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView } from "../.."
+import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
-import EhrNewsFeed from '../../container/EhrNewsFeed';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
 import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFeed';
-import { set } from 'lodash';
 import ReportView from '../ReportView/ReportView';
 import { EhrNewsFeedEventType, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
+import TermInformationView from '../TermInformationView/TermInformationView';
 
 export interface StandaloneHealthAndWellnessViewProps {
     previewState?: "default"
@@ -38,8 +36,8 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         setViewStack([...viewStack, { key: "NewsFeed", properties: { feed: "LabReports" } }]);
     }
 
-    function viewTermInfo(termInfo: TermInformation) {
-        let term = { termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() };
+    function viewTermInfo(termInfo: TermInformationReference) {
+        let term: TermInformationReference = { TermFamily: termInfo.TermFamily, TermNamespace: termInfo.TermNamespace, TermCode: termInfo.TermCode };
         setViewStack([...viewStack, { key: "TermInformation", properties: { "term": term } }]);
     }
 
@@ -108,15 +106,13 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
     }
 
     if (currentView.key == "TermInformation") {
-        if (currentView.properties?.labObservationID) {
-            // TODO do a term information view
-            let labObservationID = currentView.properties?.labObservationID as string;
-
-        } else {
-            let term = currentView.properties?.term as { termFamily: string, termNamespace: string, termCode: string, lang: string };
-        }
-
-        return <NavigationBar showCloseButton={true} onClose={() => back()} />
+        return <TermInformationView
+            presentation="Modal"
+            openLinksInNewWindow
+            previewState={props.previewState}
+            term={currentView.properties?.term}
+            labObservationID={currentView.properties?.labObservationID}
+            onClose={() => back()} />
     }
 
     if (currentView.key == "Medications") {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Card, NavigationBar, Title, ConditionsList } from "../.."
-import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import conditionIcon from "../../../assets/icon-problem.svg";
 import language from '../../../helpers/language';
@@ -13,7 +13,7 @@ export interface ConditionsViewProps {
 }
 
 export default function (props: ConditionsViewProps) {
-    function viewTermInfo(termInfo: TermInformation) {
+    function viewTermInfo(termInfo: TermInformationReference) {
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }

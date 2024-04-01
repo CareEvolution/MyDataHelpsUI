@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, TextBlock, Title, Card } from '../../presentational'
-import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline'
+import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline'
 import termInformationPreviewData from './TermInformation.previewData'
 import { useInitializeView } from '../../../helpers/Initialization'
 import language from '../../../helpers/language'
@@ -10,7 +10,7 @@ import "./TermInformation.css"
 
 export interface TermInformationProps {
     previewState?: "default" | "noData"
-    term?: TermInformation
+    term?: TermInformationReference
     labObservationID?: string
     openLinksInNewWindow?: boolean
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
 
@@ -27,7 +27,7 @@ export default function (props: HealthAndWellnessViewProps) {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }
 
-    function viewTermInfo(termInfo: TermInformation) {
+    function viewTermInfo(termInfo: TermInformationReference) {
         if (props.onViewTermInfo) {
             props.onViewTermInfo(termInfo);
             return;

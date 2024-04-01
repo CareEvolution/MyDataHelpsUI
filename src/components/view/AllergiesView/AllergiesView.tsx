@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Card, NavigationBar, AllergiesList, Title } from "../.."
-import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import allergiesIcon from "../../../assets/icon-allergies.png";
 import language from '../../../helpers/language';
@@ -13,7 +13,7 @@ export interface AllergiesViewProps {
 }
 
 export default function (props: AllergiesViewProps) {
-    function viewTermInfo(termInfo: TermInformation) {
+    function viewTermInfo(termInfo: TermInformationReference) {
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }
