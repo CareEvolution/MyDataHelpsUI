@@ -21,8 +21,8 @@ export default function (props: AsthmaAirQualityViewProps) {
     }
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
-        <NavigationBar showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-air-quality-view-title')}</Title>
+        <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
+            <Title order={1}>{language('asthma-air-quality-view-title')}</Title>
         </NavigationBar>
         {(!props.alert || props.alert === 'HomeAirQuality') &&
             <RecentDailyDataBarChart

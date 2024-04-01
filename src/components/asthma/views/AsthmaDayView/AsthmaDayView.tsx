@@ -19,8 +19,8 @@ export interface AsthmaDayViewProps {
 
 export default function (props: AsthmaDayViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
-        <NavigationBar showCloseButton={true}>
-            <Title order={2} style={{paddingTop: '32px'}}>
+        <NavigationBar variant="compressed" showCloseButton={true}>
+            <Title order={2}>
                 {format(props.date, 'PPP')}
             </Title>
         </NavigationBar>
