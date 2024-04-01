@@ -5,19 +5,18 @@ import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
 export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
-    previewState?: NotificationListPreviewState;
+    previewState?: "default"
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export type NotificationListPreviewState = "Default"
 
 export default function (props: ExternalAccountListProps) {
     const [loading, setLoading] = useState(true);
     const [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>([]);
 
     function initialize() {
-        if (props.previewState == "Default") {
+        if (props.previewState == "default") {
             setLoading(false);
             updateExternalAccounts(previewExternalAccounts);
             return;

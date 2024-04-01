@@ -116,15 +116,26 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
     }
 
     if (currentView.key == "Medications") {
-        return <MedicationsView presentation="Push" previewState={props.previewState} onBack={() => back()} />
+        return <MedicationsView
+            presentation="Push"
+            previewState={props.previewState}
+            onBack={() => back()}
+            onViewTermInfo={(e) => viewTermInfo(e)} />
     }
 
     if (currentView.key == "Conditions") {
-        return <ConditionsView presentation="Push" previewState={props.previewState} onBack={() => back()} />
+        return <ConditionsView
+            presentation="Push"
+            previewState={props.previewState}
+            onBack={() => back()}
+            onViewTermInfo={(e) => viewTermInfo(e)} />
     }
 
     if (currentView.key == "Allergies") {
-        return <AllergiesView presentation="Push" previewState={props.previewState} onBack={() => back()} />
+        return <AllergiesView presentation="Push"
+            previewState={props.previewState}
+            onBack={() => back()}
+            onViewTermInfo={(e) => viewTermInfo(e)} />
     }
 
     if (currentView.key == "ReportDetail") {
@@ -132,7 +143,12 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
     }
 
     if (currentView.key == "ExternalAccounts") {
-        return <ExternalAccountsView colorScheme={props.colorScheme} />
+        return <ExternalAccountsView
+            presentation="Push"
+            onBack={() => back()}
+            excludeDeviceManufacturers
+            colorScheme={props.colorScheme}
+            previewState={props.previewState} />
     }
 
     return null;

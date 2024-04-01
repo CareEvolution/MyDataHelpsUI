@@ -10,10 +10,15 @@ export interface ConditionsViewProps {
     previewState?: "default"
     onBack?(): void
     onClose?(): void
+    onViewTermInfo?(termInfo: TermInformationReference): void
 }
 
 export default function (props: ConditionsViewProps) {
     function viewTermInfo(termInfo: TermInformationReference) {
+        if (props.onViewTermInfo) {
+            props.onViewTermInfo(termInfo);
+            return;
+        }
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }

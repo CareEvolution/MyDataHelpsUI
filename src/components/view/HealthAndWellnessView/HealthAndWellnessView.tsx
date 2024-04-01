@@ -11,7 +11,7 @@ export interface HealthAndWellnessViewProps {
     connectEhrApplicationUrl?: string
     externalAccountsApplicationUrl?: string
     variant?: "default" | "cardBased"
-    onViewTermInfo?(termInfo: TermInformation): void
+    onViewTermInfo?(termInfo: TermInformationReference): void
     onViewLabs?(): void
     onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
     onViewExternalAccounts?(): void
@@ -76,7 +76,11 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Allergies")}
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
-                    <ExternalAccountsPreview excludeDeviceManufacturers applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
+                    <ExternalAccountsPreview
+                        excludeDeviceManufacturers
+                        applicationUrl={props.externalAccountsApplicationUrl}
+                        previewState={props.previewState == "default" ? "Default" : undefined}
+                        onClick={() => props.onViewExternalAccounts?.()} />
                 </Section>
             }
             {variant == "cardBased" &&
@@ -94,7 +98,11 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
                     <Card>
-                        <ExternalAccountsPreview excludeDeviceManufacturers applicationUrl={props.externalAccountsApplicationUrl} previewState={props.previewState == "default" ? "Default" : undefined} />
+                        <ExternalAccountsPreview
+                            onClick={() => props.onViewExternalAccounts?.()}
+                            excludeDeviceManufacturers
+                            applicationUrl={props.externalAccountsApplicationUrl}
+                            previewState={props.previewState == "default" ? "Default" : undefined} />
                     </Card>
                 </>
             }
