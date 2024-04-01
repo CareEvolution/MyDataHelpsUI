@@ -81,12 +81,8 @@ export const CustomConnectText = {
     render: render
 };
 
-export const HideConnectedEnabledConnected = {
+export const HideConnected = {
     args: { previewState: "enabledConnected", applicationUrl: "preview", hideWhenConnected: true },
-    render: render
-};
-
-export const HideConnectedEnabledNeedsAttention = {
-    args: { previewState: "enabledNeedsAttention", applicationUrl: "preview", hideWhenConnected: true },
+    argTypes: { previewState: { name: "Connection State", control: "radio", options: ["enabled", "enabledConnected", "enabledNeedsAttention", "notEnabled"]}},
     render: render
 };

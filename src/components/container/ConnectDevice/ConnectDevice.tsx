@@ -92,7 +92,7 @@ export default function (props: ConnectDeviceProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
-	}, []);
+	}, [props.previewState]);
 
 
 	var deviceAccountStatus: ExternalAccountStatus | undefined = deviceExternalAccount?.status;
