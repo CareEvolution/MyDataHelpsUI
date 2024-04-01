@@ -77,6 +77,7 @@ export default function (props: EhrNewsFeedProps) {
 
         setLoading(true);
         getNewsFeedPage(props.feed, nextPageId, nextPageDate).then((result) => {
+            addEvents(result.Events)
             setNextPageDate(result.NextPageDate);
             setNextPageId(result.NextPageID);
             if (!result.NextPageID && !result.NextPageDate) {
@@ -86,9 +87,12 @@ export default function (props: EhrNewsFeedProps) {
         });
     }
 
+
+
     function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
         return events.filter((event) => {
             let keywords = eventTypeDefinitions[event.Type].getKeywords(event);
+            if (!keywords.length) { return !filter; }
             return keywords.some((keyword) => keyword.toLowerCase().includes(filter.toLowerCase()));
         });
     }
@@ -136,6 +140,8 @@ export default function (props: EhrNewsFeedProps) {
         }
     }
 
+    console.log(dayBuckets);
+
     return (
         <div className="mdhui-news-feed" style={{ paddingBottom: "48px" }}>
             <Card className="mdhui-news-feed-search">
@@ -162,7 +168,6 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-
     let date = format(parseISO(props.event.Date), "h:mm a");
     if (date === "12:00 AM") {
         date = "";

@@ -44,10 +44,11 @@ export default function (props: TermInformationProps) {
         } else if (props.term) {
             queryString = new URLSearchParams(props.term as any).toString();
         }
-        var endpoint = 'HealthAndWellnessApi.PatientEventsPreview';
+        var endpoint = 'HealthAndWellnessApi.TermInformation';
         return MyDataHelps.invokeCustomApi(endpoint, 'GET', queryString, true)
             .then(function (response) {
                 setTermInformation(response);
+                setLoading(false);
             });
     }
 

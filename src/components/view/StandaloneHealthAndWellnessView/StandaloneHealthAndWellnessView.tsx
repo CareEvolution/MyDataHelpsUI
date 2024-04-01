@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView } from "../.."
 import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
@@ -15,6 +15,7 @@ export interface StandaloneHealthAndWellnessViewProps {
 }
 
 type InlineViewKey =
+    "Dashboard" |
     "NewsFeed" |
     "Medications" |
     "Allergies" |
@@ -31,40 +32,46 @@ interface InlineView {
 }
 
 export default function (props: StandaloneHealthAndWellnessViewProps) {
-    let [viewStack, setViewStack] = React.useState<InlineView[]>([]);
+    let [viewStack, setViewStack] = React.useState<InlineView[]>([{ key: "Dashboard" }]);
+
+    function pushView(view: InlineView) {
+        setViewStack([...viewStack, view]);
+        MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
+    }
 
     function viewLabs() {
-        setViewStack([...viewStack, { key: "NewsFeed", properties: { feed: "LabReports" } }]);
+        pushView({ key: "NewsFeed", properties: { feed: "LabReports" } });
     }
 
     function viewTermInfo(termInfo: TermInformationReference) {
         let term: TermInformationReference = { TermFamily: termInfo.TermFamily, TermNamespace: termInfo.TermNamespace, TermCode: termInfo.TermCode };
-        setViewStack([...viewStack, { key: "TermInformation", properties: { "term": term } }]);
+        pushView({ key: "TermInformation", properties: { "term": term } });
     }
 
 
     function viewLabTermInfo(labObservationId: string) {
-        setViewStack([...viewStack, { key: "TermInformation", properties: { "labObservationID": labObservationId } }]);
+        pushView({ key: "TermInformation", properties: { "labObservationID": labObservationId } });
     }
 
     function viewHealthSectionDetails(concept: HealthPreviewSectionConcept) {
         if (concept == "Reports" || concept == "Immunizations" || concept == "Procedures") {
-            setViewStack([...viewStack, { key: "NewsFeed", properties: { feed: concept as any } }]);
+            pushView({ key: "NewsFeed", properties: { feed: concept as any } });
         } else {
-            setViewStack([...viewStack, { key: concept }]);
+            pushView({ key: concept });
         }
     }
 
     function viewExternalAccounts() {
-        setViewStack([...viewStack, { key: "ExternalAccounts" }]);
+        pushView({ key: "ExternalAccounts" });
     }
 
     function back() {
-        setViewStack(viewStack.slice(0, viewStack.length - 1))
+        setViewStack(viewStack.slice(0, viewStack.length - 1));
+        MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
     }
 
     function selectReport(reportID: string) {
-        setViewStack([...viewStack, { key: "ReportDetail", properties: { reportID: reportID } }]);
+        pushView({ key: "ReportDetail", properties: { reportID: reportID } });
     }
 
     function viewBloodTypeInformation() {
@@ -74,91 +81,96 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         window.open(linkTarget, "_blank");
     }
 
-    if (!viewStack.length) {
-        return <HealthAndWellnessView
-            previewState={props.previewState}
-            colorScheme={props.colorScheme}
-            onViewExternalAccounts={() => viewExternalAccounts()}
-            onViewHealthSectionDetails={(concept) => viewHealthSectionDetails(concept)}
-            onViewLabs={() => viewLabs()}
-            onViewTermInfo={(termInfo) => viewTermInfo(termInfo)}
-            onBloodTypeClick={() => viewBloodTypeInformation()}
-            variant="default" />
-    }
-
-    let currentView = viewStack[viewStack.length - 1];
-
-    if (currentView.key == "NewsFeed") {
-        return <EhrNewsFeedView feed={currentView.properties?.feed as any}
-            previewState={props.previewState}
-            presentation="Push" colorScheme={props.colorScheme}
-            onEventSelected={(e) => { setViewStack([...viewStack, { key: "NewsFeedEventDetail", properties: { eventReference: e } }]) }}
-            onReportSelected={(r) => selectReport(r)}
-            onBack={() => back()} />
-    }
-
-    if (currentView.key == "NewsFeedEventDetail") {
-        let eventReference = currentView.properties?.eventReference as EhrNewsFeedEventReference;
-        let feed = eventReference.feed as EhrNewsFeedFeed;
-        let detailPreviewState: EhrNewsFeedEventType = "LabReport";
-        if (feed == "Procedures") {
-            detailPreviewState = "ProcedureGroup";
+    function getView(view: InlineView) {
+        if (view.key == "Dashboard") {
+            return <HealthAndWellnessView
+                previewState={props.previewState}
+                colorScheme={props.colorScheme}
+                onViewExternalAccounts={() => viewExternalAccounts()}
+                onViewHealthSectionDetails={(concept) => viewHealthSectionDetails(concept)}
+                onViewLabs={() => viewLabs()}
+                onViewTermInfo={(termInfo) => viewTermInfo(termInfo)}
+                onBloodTypeClick={() => viewBloodTypeInformation()}
+                variant="default" />
         }
 
-        return <EhrNewsFeedEventDetailView feed={eventReference.feed}
-            presentation="Push"
-            pageDate={eventReference.pageDate}
-            pageId={eventReference.pageId}
-            onViewLabObservationTermInfo={(l) => viewLabTermInfo(l)}
-            previewState={detailPreviewState}
-            onBack={() => back()} />
+        if (view.key == "NewsFeed") {
+            return <EhrNewsFeedView feed={view.properties?.feed as any}
+                previewState={props.previewState}
+                presentation="Push" colorScheme={props.colorScheme}
+                onEventSelected={(e) => { setViewStack([...viewStack, { key: "NewsFeedEventDetail", properties: { eventReference: e } }]) }}
+                onReportSelected={(r) => selectReport(r)}
+                onBack={() => back()} />
+        }
+
+        if (view.key == "NewsFeedEventDetail") {
+            let eventReference = view.properties?.eventReference as EhrNewsFeedEventReference;
+            let feed = eventReference.feed as EhrNewsFeedFeed;
+            let detailPreviewState: EhrNewsFeedEventType = "LabReport";
+            if (feed == "Procedures") {
+                detailPreviewState = "ProcedureGroup";
+            }
+
+            return <EhrNewsFeedEventDetailView feed={eventReference.feed}
+                presentation="Push"
+                pageDate={eventReference.pageDate}
+                pageId={eventReference.pageId}
+                onViewLabObservationTermInfo={(l) => viewLabTermInfo(l)}
+                previewState={detailPreviewState}
+                onBack={() => back()} />
+        }
+
+        if (view.key == "TermInformation") {
+            return <TermInformationView
+                presentation="Modal"
+                openLinksInNewWindow
+                previewState={props.previewState}
+                term={view.properties?.term}
+                labObservationID={view.properties?.labObservationID}
+                onClose={() => back()} />
+        }
+
+        if (view.key == "Medications") {
+            return <MedicationsView
+                presentation="Push"
+                previewState={props.previewState}
+                onBack={() => back()}
+                onViewTermInfo={(e) => viewTermInfo(e)} />
+        }
+
+        if (view.key == "Conditions") {
+            return <ConditionsView
+                presentation="Push"
+                previewState={props.previewState}
+                onBack={() => back()}
+                onViewTermInfo={(e) => viewTermInfo(e)} />
+        }
+
+        if (view.key == "Allergies") {
+            return <AllergiesView presentation="Push"
+                previewState={props.previewState}
+                onBack={() => back()}
+                onViewTermInfo={(e) => viewTermInfo(e)} />
+        }
+
+        if (view.key == "ReportDetail") {
+            return <ReportView previewState={"html"} reportId={view.properties?.reportId} onClose={() => back()} />
+        }
+
+        if (view.key == "ExternalAccounts") {
+            return <ExternalAccountsView
+                presentation="Push"
+                onBack={() => back()}
+                excludeDeviceManufacturers
+                colorScheme={props.colorScheme}
+                previewState={props.previewState} />
+        }
     }
 
-    if (currentView.key == "TermInformation") {
-        return <TermInformationView
-            presentation="Modal"
-            openLinksInNewWindow
-            previewState={props.previewState}
-            term={currentView.properties?.term}
-            labObservationID={currentView.properties?.labObservationID}
-            onClose={() => back()} />
-    }
 
-    if (currentView.key == "Medications") {
-        return <MedicationsView
-            presentation="Push"
-            previewState={props.previewState}
-            onBack={() => back()}
-            onViewTermInfo={(e) => viewTermInfo(e)} />
-    }
-
-    if (currentView.key == "Conditions") {
-        return <ConditionsView
-            presentation="Push"
-            previewState={props.previewState}
-            onBack={() => back()}
-            onViewTermInfo={(e) => viewTermInfo(e)} />
-    }
-
-    if (currentView.key == "Allergies") {
-        return <AllergiesView presentation="Push"
-            previewState={props.previewState}
-            onBack={() => back()}
-            onViewTermInfo={(e) => viewTermInfo(e)} />
-    }
-
-    if (currentView.key == "ReportDetail") {
-        return <ReportView previewState={"html"} reportId={currentView.properties?.reportId} onClose={() => back()} />
-    }
-
-    if (currentView.key == "ExternalAccounts") {
-        return <ExternalAccountsView
-            presentation="Push"
-            onBack={() => back()}
-            excludeDeviceManufacturers
-            colorScheme={props.colorScheme}
-            previewState={props.previewState} />
-    }
-
-    return null;
+    return <>
+        {viewStack.map((view, index) =>
+            <div style={{ display: index != viewStack.length - 1 ? "none" : undefined }}>{getView(view)}</div>
+        )}
+    </>
 }
