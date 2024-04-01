@@ -316,6 +316,10 @@
     "blood-type": "Blood Type",
     "device-data-month-chart-no-data": "No Data",
     "device-data-month-chart-daily-average": "Daily Average",
+    "term-information-not-found-header": "No Information Found",
+	"term-information-not-found-body": "Unable to find any information on this topic",
+	"term-information-disclaimer": "<strong>DISCLAIMER:</strong> The information provided is not medical advice.  It is to help you better understand your health.  Please contact your healthcare provider if you have questions regarding your medical condition.",
+	"term-information-view-on-medline": "View on MedlinePlus",
 };
 
 export default strings;
