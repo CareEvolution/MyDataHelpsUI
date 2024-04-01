@@ -8,6 +8,8 @@ import language from '../../../helpers/language';
 export interface AllergiesViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
+    onBack?(): void
+    onClose?(): void
 }
 
 export default function (props: AllergiesViewProps) {
@@ -20,7 +22,9 @@ export default function (props: AllergiesViewProps) {
         <Layout>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}>
+                showCloseButton={props.presentation == "Modal"}
+                onClose={props.onClose}
+                onBack={props.onBack}>
                 <Title order={2} autosizeImage image={<img src={allergiesIcon} />} imageAlignment="left">{language("allergies-title")}</Title>
             </NavigationBar>
             <Card>

@@ -11,8 +11,8 @@ import "./EhrNewsFeedEventDetail.css"
 
 export interface EhrNewsFeedEventDetailProps {
     feed: EhrNewsFeedFeed
-    pageId: string
-    pageDate: string
+    pageId?: string
+    pageDate?: string
     previewState?: EhrNewsFeedEventType
     onViewLabObservationTermInfo(labObservationID: string): void
 }

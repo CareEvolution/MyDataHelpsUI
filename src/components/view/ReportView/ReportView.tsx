@@ -9,6 +9,7 @@ import "./ReportView.css"
 export interface ReportViewProps {
     reportId: string
     previewState?: "html" | "pdf"
+    onClose?(): void
 }
 
 export interface ReportContent {
@@ -50,15 +51,15 @@ export default function (props: ReportViewProps) {
     }, []);
 
     let title = "";
-    if(reportContent){
+    if (reportContent) {
         title = reportContent.Type;
-        if(reportContent.Summary){
+        if (reportContent.Summary) {
             title += " • " + reportContent.Summary;
         }
     }
 
     return <Layout className="mdhui-report-view">
-        <NavigationBar variant="compressedModal" subtitle={title} showCloseButton />
+        <NavigationBar variant="compressedModal" subtitle={title} showCloseButton onClose={props.onClose} />
         {!reportContent && <LoadingIndicator />}
         {reportContent && <ReportContent type={reportContent.Type} content={reportContent.Content} contentType={reportContent.ContentType} />}
     </Layout>

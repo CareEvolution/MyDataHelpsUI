@@ -11,6 +11,8 @@ export interface EhrNewsFeedEventDetailViewProps {
     onViewLabObservationTermInfo(labObservationID: string): void
     presentation?: "Push" | "Modal"
     colorScheme?: "auto" | "light" | "dark"
+    onBack?(): void
+    onClose?(): void
 }
 
 export default function (props: EhrNewsFeedEventDetailViewProps) {
@@ -19,7 +21,9 @@ export default function (props: EhrNewsFeedEventDetailViewProps) {
             <NavigationBar
                 variant="compressed"
                 showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}>
+                showCloseButton={props.presentation == "Modal"}
+                onBack={props.onBack}
+                onClose={props.onClose}>
             </NavigationBar>
             <EhrNewsFeedEventDetail
                 feed={props.feed}

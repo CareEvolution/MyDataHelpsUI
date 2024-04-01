@@ -2,13 +2,13 @@ import React from 'react'
 import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section, NavigationBar, HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountList, ExternalAccountsView } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformation } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
-import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
-import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
+import { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import EhrNewsFeed from '../../container/EhrNewsFeed';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
 import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFeed';
 import { set } from 'lodash';
 import ReportView from '../ReportView/ReportView';
+import { EhrNewsFeedEventType, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
 
 export interface StandaloneHealthAndWellnessViewProps {
     previewState?: "default"
@@ -92,10 +92,19 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
     if (currentView.key == "NewsFeedEventDetail") {
         let eventReference = currentView.properties?.eventReference as EhrNewsFeedEventReference;
+        let feed = eventReference.feed as EhrNewsFeedFeed;
+        let detailPreviewState: EhrNewsFeedEventType = "LabReport";
+        if (feed == "Procedures") {
+            detailPreviewState = "ProcedureGroup";
+        }
+
         return <EhrNewsFeedEventDetailView feed={eventReference.feed}
+            presentation="Push"
             pageDate={eventReference.pageDate}
             pageId={eventReference.pageId}
-            onViewLabObservationTermInfo={(l) => viewLabTermInfo(l)} />
+            onViewLabObservationTermInfo={(l) => viewLabTermInfo(l)}
+            previewState={detailPreviewState}
+            onBack={() => back()} />
     }
 
     if (currentView.key == "TermInformation") {
@@ -111,19 +120,19 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
     }
 
     if (currentView.key == "Medications") {
-        return <MedicationsView previewState={props.previewState} />
+        return <MedicationsView presentation="Push" previewState={props.previewState} onBack={() => back()} />
     }
 
     if (currentView.key == "Conditions") {
-        return <ConditionsView previewState={props.previewState} />
+        return <ConditionsView presentation="Push" previewState={props.previewState} onBack={() => back()} />
     }
 
     if (currentView.key == "Allergies") {
-        return <AllergiesView previewState={props.previewState} />
+        return <AllergiesView presentation="Push" previewState={props.previewState} onBack={() => back()} />
     }
 
     if (currentView.key == "ReportDetail") {
-        return <ReportView previewState={"html"} reportId={currentView.properties?.reportId} />
+        return <ReportView previewState={"html"} reportId={currentView.properties?.reportId} onClose={() => back()} />
     }
 
     if (currentView.key == "ExternalAccounts") {

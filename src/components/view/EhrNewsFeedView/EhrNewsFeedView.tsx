@@ -5,8 +5,7 @@ import proceduresIcon from "../../../assets/icon-procedure.svg";
 import immunizationsIcon from "../../../assets/icon-immunization.svg";
 import reportIcon from "../../../assets/icon-report.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
-import { EhrNewsFeed } from "../../container";
-import { EhrNewsFeedEventReference } from "../../container/EhrNewsFeed/EhrNewsFeed";
+import EhrNewsFeed, { EhrNewsFeedEventReference } from "../../container/EhrNewsFeed/EhrNewsFeed";
 
 export interface EhrNewsFeedViewProps {
     feed: "Procedures" | "Reports" | "LabReports" | "Immunizations"

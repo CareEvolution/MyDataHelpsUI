@@ -8,6 +8,8 @@ import language from '../../../helpers/language';
 export interface ConditionsViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
+    onBack?(): void
+    onClose?(): void
 }
 
 export default function (props: ConditionsViewProps) {
@@ -20,7 +22,9 @@ export default function (props: ConditionsViewProps) {
         <Layout>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}>
+                showCloseButton={props.presentation == "Modal"}
+                onBack={props.onBack}
+                onClose={props.onClose}>
                 <Title order={2} autosizeImage image={<img src={conditionIcon} />} imageAlignment="left">{language("conditions-title")}</Title>
             </NavigationBar>
             <Card>

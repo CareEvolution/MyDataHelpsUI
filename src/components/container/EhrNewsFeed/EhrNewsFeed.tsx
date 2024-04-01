@@ -119,7 +119,7 @@ export default function (props: EhrNewsFeedProps) {
                 pageDate: dayBucket.items[index - 1].Date
             });
         } else {
-            let bucketIndex = dayBuckets.indexOf(dayBucket);
+            let bucketIndex = dayBuckets.findIndex(v => v.day == dayBucket.day);
             if (bucketIndex == 0) {
                 props.onEventSelected({
                     feed: props.feed
