@@ -1,7 +1,7 @@
 import React from 'react'
-import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView } from "../.."
+import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview } from "../.."
 import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
-import { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
+import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
 import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFeed';
 import ReportView from '../ReportView/ReportView';
@@ -83,17 +83,31 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         window.open(linkTarget, "_blank");
     }
 
+    function getHealthPreviewSection(concept: HealthPreviewSectionConcept) {
+        return <HealthPreviewSection concept={concept as any}
+            onClick={() => viewHealthSectionDetails(concept)}
+            previewState={props.previewState == "default" ? "Default" : undefined} />
+    }
+
     function getView(view: InlineView) {
         if (view.key == "Dashboard") {
-            return <HealthAndWellnessView
-                previewState={props.previewState}
-                colorScheme={props.colorScheme}
-                onViewExternalAccounts={() => viewExternalAccounts()}
-                onViewHealthSectionDetails={(concept) => viewHealthSectionDetails(concept)}
-                onViewLabs={() => viewLabs()}
-                onViewTermInfo={(termInfo) => viewTermInfo(termInfo)}
-                onBloodTypeClick={() => viewBloodTypeInformation()}
-                variant="default" />
+            return <Layout colorScheme={props.colorScheme ?? "auto"}>
+                <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
+                <Section noTopMargin>
+                    <ExternalAccountsPreview
+                        excludeDeviceManufacturers
+                        onClick={() => viewExternalAccounts()}
+                        previewState={props.previewState == "default" ? "Default" : undefined} />
+                    <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
+                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} onClick={() => viewBloodTypeInformation()} />
+                    {getHealthPreviewSection("Medications")}
+                    {getHealthPreviewSection("Immunizations")}
+                    {getHealthPreviewSection("Reports")}
+                    {getHealthPreviewSection("Allergies")}
+                    {getHealthPreviewSection("Conditions")}
+                    {getHealthPreviewSection("Procedures")}
+                </Section>
+            </Layout>
         }
 
         if (view.key == "NewsFeed") {
