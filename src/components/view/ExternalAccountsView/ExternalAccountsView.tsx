@@ -13,6 +13,8 @@ export interface ExternalAccountsViewProps {
     colorScheme?: "auto" | "light" | "dark";
     onBack?(): void
     onClose?(): void
+    reconnectOpenNewWindow?: boolean
+    standaloneModeFinalRedirectPath?:string
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -62,7 +64,11 @@ export default function (props: ExternalAccountsViewProps) {
             {!props.presentation &&
                 <StatusBarBackground />
             }
-            <ExternalAccountList previewState={props.previewState} externalAccountProviderCategories={externalAccountProviderCategories} onExternalAccountsLoaded={onExternalAccountsLoaded} />
+            <ExternalAccountList previewState={props.previewState}
+                externalAccountProviderCategories={externalAccountProviderCategories}
+                onExternalAccountsLoaded={onExternalAccountsLoaded}
+                reconnectOpenNewWindow={props.reconnectOpenNewWindow}
+                standaloneModeFinalRedirectPath={props.standaloneModeFinalRedirectPath} />
         </Layout>
     )
 }

@@ -8,8 +8,9 @@ export interface ExternalAccountListProps {
     previewState?: "default"
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
     innerRef?: React.Ref<HTMLDivElement>
+    reconnectOpenNewWindow?: boolean
+    standaloneModeFinalRedirectPath?: string
 }
-
 
 export default function (props: ExternalAccountListProps) {
     const [loading, setLoading] = useState(true);
@@ -47,8 +48,8 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id, {openNewWindow: true})
-            .then(function() {
+        MyDataHelps.connectExternalAccount(account.provider.id, { openNewWindow: props.reconnectOpenNewWindow != undefined ? props.reconnectOpenNewWindow : true, standaloneModeFinalRedirectPath: props.standaloneModeFinalRedirectPath })
+            .then(function () {
                 loadExternalAccounts();
             });
     }

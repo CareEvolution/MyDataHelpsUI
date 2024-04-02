@@ -36,8 +36,19 @@ onProviderSelected.parameters = {
 
 export const Live = Template.bind({});
 Live.args = {
-	providerCategories: ["Health Plan"]
+	//providerCategories: ["Health Plan"]
 }
 Live.parameters = {
+	externalAccounts: []
+}
+
+
+export const LiveStandalone = Template.bind({});
+LiveStandalone.args = {
+	openNewWindow: false,
+	standaloneModeFinalRedirectPath: "https://allofus-ptsc.careevolutionapps.com/HwDashboard.html?success=%SUCCESSVALUE%"// replace with actual redirect url for this to work
+	//providerCategories: ["Health Plan"]
+}
+LiveStandalone.parameters = {
 	externalAccounts: []
 }

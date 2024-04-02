@@ -36,7 +36,6 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
     function pushView(view: InlineView) {
         setViewStack([...viewStack, view]);
-        MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
     }
 
     function viewLabs() {
@@ -47,7 +46,6 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         let term: TermInformationReference = { TermFamily: termInfo.TermFamily, TermNamespace: termInfo.TermNamespace, TermCode: termInfo.TermCode };
         pushView({ key: "TermInformation", properties: { "term": term } });
     }
-
 
     function viewLabTermInfo(labObservationId: string) {
         pushView({ key: "TermInformation", properties: { "labObservationID": labObservationId } });
@@ -67,7 +65,10 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
     function back() {
         setViewStack(viewStack.slice(0, viewStack.length - 1));
-        MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
+        if (viewStack.length == 2) {
+            //refresh the main dashboard when going back to it
+            MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
+        }
     }
 
     function selectReport(reportID: string) {
@@ -163,7 +164,9 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 onBack={() => back()}
                 excludeDeviceManufacturers
                 colorScheme={props.colorScheme}
-                previewState={props.previewState} />
+                previewState={props.previewState}
+                reconnectOpenNewWindow={false}
+                standaloneModeFinalRedirectPath={"https://mydatahelps.org"} />
         }
     }
 

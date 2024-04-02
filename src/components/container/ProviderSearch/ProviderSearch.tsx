@@ -14,6 +14,8 @@ export interface ProviderSearchProps {
     providerCategories?: string[];
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
+    openNewWindow?: boolean;
+    standaloneModeFinalRedirectPath?: string;
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -98,7 +100,7 @@ export default function (props: ProviderSearchProps) {
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true })
+            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow != undefined ? props.openNewWindow : true, standaloneModeFinalRedirectPath: props.standaloneModeFinalRedirectPath })
                 .then(function () {
                     if (props.onProviderConnected) {
                         props.onProviderConnected(provider);
@@ -154,7 +156,7 @@ export default function (props: ProviderSearchProps) {
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language("provider-search-reconnect")}</div>
+                                <div className="provider-status error-status">{language("expired-reconnect")}</div>
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>

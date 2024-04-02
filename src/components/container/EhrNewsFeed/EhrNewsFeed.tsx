@@ -87,8 +87,6 @@ export default function (props: EhrNewsFeedProps) {
         });
     }
 
-
-
     function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
         return events.filter((event) => {
             let keywords = eventTypeDefinitions[event.Type].getKeywords(event);
@@ -139,8 +137,6 @@ export default function (props: EhrNewsFeedProps) {
             }
         }
     }
-
-    console.log(dayBuckets);
 
     return (
         <div className="mdhui-news-feed" style={{ paddingBottom: "48px" }}>
