@@ -42,12 +42,12 @@ Live.parameters = {
 	externalAccounts: []
 }
 
-
 export const LiveStandalone = Template.bind({});
 LiveStandalone.args = {
-	openNewWindow: false,
-	standaloneModeFinalRedirectPath: "https://allofus-ptsc.careevolutionapps.com/HwDashboard.html?success=%SUCCESSVALUE%"// replace with actual redirect url for this to work
-	//providerCategories: ["Health Plan"]
+	connectExternalAccountOptions: {
+		openNewWindow: false,
+		standaloneModeFinalRedirectPath: "https://mydatahelps.org"// replace with actual redirect url for this to work
+	}
 }
 LiveStandalone.parameters = {
 	externalAccounts: []

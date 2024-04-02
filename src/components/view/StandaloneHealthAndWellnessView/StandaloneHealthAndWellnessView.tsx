@@ -7,12 +7,12 @@ import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFe
 import ReportView from '../ReportView/ReportView';
 import { EhrNewsFeedEventType, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
 import TermInformationView from '../TermInformationView/TermInformationView';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions } from '@careevolution/mydatahelps-js';
 
 export interface StandaloneHealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
-    standaloneModeFinalRedirectPath?: string
+    connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 type InlineViewKey =
@@ -166,8 +166,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 excludeDeviceManufacturers
                 colorScheme={props.colorScheme}
                 previewState={props.previewState}
-                reconnectOpenNewWindow={false}
-                standaloneModeFinalRedirectPath={props.standaloneModeFinalRedirectPath} />
+                connectExternalAccountOptions={props.connectExternalAccountOptions} />
         }
     }
 

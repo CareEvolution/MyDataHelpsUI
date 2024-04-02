@@ -9,6 +9,8 @@ export const Default = {
 };
 
 export const Live = {
-    args: {},
-    render: render
+    args: {
+        connectExternalAccountOptions: { openNewWindow: false, standaloneModeFinalRedirectPath: "https://mydatahelps.org" },
+        render: render
+    }
 };

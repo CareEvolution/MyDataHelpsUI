@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from '@careevolution/mydatahelps-js';
 import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
 import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
@@ -8,8 +8,7 @@ export interface ExternalAccountListProps {
     previewState?: "default"
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
     innerRef?: React.Ref<HTMLDivElement>
-    reconnectOpenNewWindow?: boolean
-    standaloneModeFinalRedirectPath?: string
+    connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export default function (props: ExternalAccountListProps) {
@@ -48,7 +47,7 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id, { openNewWindow: props.reconnectOpenNewWindow != undefined ? props.reconnectOpenNewWindow : true, standaloneModeFinalRedirectPath: props.standaloneModeFinalRedirectPath })
+        MyDataHelps.connectExternalAccount(account.provider.id, props.connectExternalAccountOptions || { openNewWindow: true })
             .then(function () {
                 loadExternalAccounts();
             });

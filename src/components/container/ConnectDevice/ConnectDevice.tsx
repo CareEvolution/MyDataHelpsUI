@@ -2,7 +2,7 @@
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
 import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
-import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
@@ -22,6 +22,7 @@ export interface ConnectDeviceProps {
 	innerRef?: React.Ref<HTMLDivElement>
 	titleImage: React.ReactNode
 	hideWhenConnected?: boolean
+	connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -78,8 +79,8 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true })
-			.then(function() {
+		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
+			.then(function () {
 				initialize();
 			});
 	}

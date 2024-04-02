@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from "../../../helpers/language";
 import ExternalAccountList from "../../container/ExternalAccountList";
-import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from "@careevolution/mydatahelps-js";
 
 export interface ExternalAccountsViewProps {
     excludeProviders?: boolean;
@@ -13,8 +13,7 @@ export interface ExternalAccountsViewProps {
     colorScheme?: "auto" | "light" | "dark";
     onBack?(): void
     onClose?(): void
-    reconnectOpenNewWindow?: boolean
-    standaloneModeFinalRedirectPath?: string
+    connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
 export type ViewPresentationType = "Modal" | "Push";
@@ -67,8 +66,7 @@ export default function (props: ExternalAccountsViewProps) {
             <ExternalAccountList previewState={props.previewState}
                 externalAccountProviderCategories={externalAccountProviderCategories}
                 onExternalAccountsLoaded={onExternalAccountsLoaded}
-                reconnectOpenNewWindow={props.reconnectOpenNewWindow}
-                standaloneModeFinalRedirectPath={props.standaloneModeFinalRedirectPath} />
+                connectExternalAccountOptions={props.connectExternalAccountOptions} />
         </Layout>
     )
 }

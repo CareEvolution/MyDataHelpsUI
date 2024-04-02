@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
-import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, UnstyledButton } from '../../presentational';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import "./ProviderSearch.css"
@@ -14,8 +14,7 @@ export interface ProviderSearchProps {
     providerCategories?: string[];
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
-    openNewWindow?: boolean;
-    standaloneModeFinalRedirectPath?: string;
+    connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export type ProviderSearchPreviewState = "Default"
@@ -100,7 +99,7 @@ export default function (props: ProviderSearchProps) {
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
         if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: props.openNewWindow != undefined ? props.openNewWindow : true, standaloneModeFinalRedirectPath: props.standaloneModeFinalRedirectPath })
+            MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
                         props.onProviderConnected(provider);
