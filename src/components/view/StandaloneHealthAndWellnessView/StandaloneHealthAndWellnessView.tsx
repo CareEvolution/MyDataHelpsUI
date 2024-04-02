@@ -1,5 +1,5 @@
 import React from 'react'
-import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview } from "../.."
+import { EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, ProviderSearch, NavigationBar } from "../.."
 import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
@@ -25,7 +25,8 @@ type InlineViewKey =
     "AddExternalAccount" |
     "TermInformation" |
     "ReportDetail" |
-    "NewsFeedEventDetail";
+    "NewsFeedEventDetail" |
+    "ConnectEhr";
 
 interface InlineView {
     key: InlineViewKey
@@ -107,6 +108,9 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
                 </Section>
+                <Card>
+                    <ConnectEhr variant="small" hideWhenConnected onClick={() => pushView({ key: "ConnectEhr" })}></ConnectEhr>
+                </Card>
             </Layout>
         }
 
@@ -187,6 +191,17 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 colorScheme={props.colorScheme}
                 previewState={props.previewState}
                 connectExternalAccountOptions={props.connectExternalAccountOptions} />
+        }
+
+        if (view.key == "ConnectEhr") {
+            return <Layout colorScheme={props.colorScheme} >
+                <NavigationBar showBackButton={true} onBack={() => back()} />
+                <Section>
+                    <ProviderSearch
+                        providerCategories={["Provider", "Health Plan"]}
+                        connectExternalAccountOptions={props.connectExternalAccountOptions} />
+                </Section>
+            </Layout>
         }
     }
 
