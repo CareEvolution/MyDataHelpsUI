@@ -7,12 +7,12 @@ import LabResultWithSparkline from "../../presentational/LabResultWithSparkline"
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
-import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
+import { TermInformationReference } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
 
 export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
     onClick(): void;
-    onViewTermInfo(termInfo: TermInformation): void
+    onViewTermInfo(termInfo: TermInformationReference): void
     innerRef?: React.Ref<HTMLDivElement>
 }
 

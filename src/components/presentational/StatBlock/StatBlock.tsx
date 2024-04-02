@@ -17,7 +17,7 @@ export interface Stat {
 
 export default function (props: StatBlockProps) {
     let stats = props.stats?.filter(stat => !!stat.value);
-    if (!stats || stats.length == 0) { return; }
+    if (!stats || stats.length == 0) { return null; }
 
     let classes = ["mdhui-stat-block"];
     let size = props.size || "sm";
