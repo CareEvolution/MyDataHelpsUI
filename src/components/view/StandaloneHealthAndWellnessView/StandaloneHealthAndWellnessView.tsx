@@ -108,9 +108,15 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         if (view.key == "NewsFeedEventDetail") {
             let eventReference = view.properties?.eventReference as EhrNewsFeedEventReference;
             let feed = eventReference.feed as EhrNewsFeedFeed;
-            let detailPreviewState: EhrNewsFeedEventType = "LabReport";
-            if (feed == "Procedures") {
-                detailPreviewState = "ProcedureGroup";
+
+            let detailPreviewState: EhrNewsFeedEventType | undefined = undefined;
+            if (props.previewState) {
+                if (feed == "Procedures") {
+                    detailPreviewState = "ProcedureGroup";
+                }
+                if (feed == "LabReports") {
+                    detailPreviewState = "LabReport";
+                }
             }
 
             return <EhrNewsFeedEventDetailView feed={eventReference.feed}
