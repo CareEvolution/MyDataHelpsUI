@@ -69,3 +69,11 @@
 .mdhui-navigation-bar .close-button {
     right: 16px;
 }
+
+.mdhui-navigation-bar .children {
+    padding-top: calc(56px + env(safe-area-inset-top, 0px));
+}
+
+.mdhui-navigation-bar.mdhui-navigation-bar-compressed .children {
+    padding-top: calc(32px + env(safe-area-inset-top, 0px));
+}

@@ -110,7 +110,11 @@ export default function (props: NavigationBarProps) {
 					{props.closeButtonText ? props.closeButtonText : language('close')}
 				</div>
 			}
-			{props.children}
+			{props.children &&
+				<div className="children">
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
