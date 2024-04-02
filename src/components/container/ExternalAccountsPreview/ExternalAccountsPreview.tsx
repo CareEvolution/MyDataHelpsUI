@@ -87,7 +87,7 @@ export default function (props: ExternalAccountsPreviewProps) {
 
     return (
         <div ref={props.innerRef} className="mdhui-external-accounts-preview">
-            <Action title={title} onClick={() => manageExternalAccounts()}>
+            <Action bottomBorder title={title} onClick={() => manageExternalAccounts()}>
                 {externalAccounts.map((account) =>
                     <div key={account.id} className="external-account-title">{account.provider.name}</div>
                 )}
