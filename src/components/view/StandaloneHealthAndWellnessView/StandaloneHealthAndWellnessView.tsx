@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { HealthAndWellnessView, EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView } from "../.."
 import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
@@ -12,6 +12,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 export interface StandaloneHealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
+    standaloneModeFinalRedirectPath?: string
 }
 
 type InlineViewKey =
@@ -166,10 +167,9 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 colorScheme={props.colorScheme}
                 previewState={props.previewState}
                 reconnectOpenNewWindow={false}
-                standaloneModeFinalRedirectPath={"https://mydatahelps.org"} />
+                standaloneModeFinalRedirectPath={props.standaloneModeFinalRedirectPath} />
         }
     }
-
 
     return <>
         {viewStack.map((view, index) =>

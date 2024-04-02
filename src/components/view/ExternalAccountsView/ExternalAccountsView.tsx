@@ -14,7 +14,7 @@ export interface ExternalAccountsViewProps {
     onBack?(): void
     onClose?(): void
     reconnectOpenNewWindow?: boolean
-    standaloneModeFinalRedirectPath?:string
+    standaloneModeFinalRedirectPath?: string
 }
 
 export type ViewPresentationType = "Modal" | "Push";
