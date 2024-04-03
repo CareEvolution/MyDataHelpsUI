@@ -42,4 +42,4 @@ NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Fitbit", dis
 
 export const HideConnected = Template.bind({});
 HideConnected.args = { previewState: "fetchComplete", hideWhenConnected: true };
-HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "notConnected"]}};
+HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized"]}};
