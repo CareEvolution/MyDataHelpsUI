@@ -2,7 +2,7 @@ import { BloodPressureDataPoint, SurveyBloodPressureDataParameters } from "."
 import surveyBloodPressureDataProvider from "./survey-blood-pressure-data-provider"
 import deviceDataBloodPressureDataProvider from "./device-blood-pressure-data-provider"
 
-export type BloodPressureDeviceDataSource = 'AppleHealth' | 'GoogleFit' | "Omron";
+export type BloodPressureDeviceDataSource = 'AppleHealth' | 'GoogleFit' | 'Omron';
 
 export default async function (surveyDataSource?: SurveyBloodPressureDataParameters, bloodPressureDeviceDataSources?: BloodPressureDeviceDataSource[]): Promise<BloodPressureDataPoint[]> {
     let providers: Promise<BloodPressureDataPoint[]>[] = [];
