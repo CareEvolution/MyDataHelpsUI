@@ -93,7 +93,10 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
     function getView(view: InlineView) {
         if (view.key == "Dashboard") {
             return <Layout colorScheme={props.colorScheme ?? "auto"}>
-                <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
+                <ExternalAccountsLoadingIndicator
+                    previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined}
+                    externalAccountCategories={["Provider", "Health Plan"]}
+                    triggerWebExternalAccountSyncComplete />
                 <Section noTopMargin>
                     <ExternalAccountsPreview
                         excludeDeviceManufacturers
