@@ -8,8 +8,8 @@ import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLo
 export interface HealthAndWellnessViewProps {
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
-    connectEhrApplicationUrl?: string
-    externalAccountsApplicationUrl?: string
+    connectEhrApplicationUrl: string
+    externalAccountsApplicationUrl: string
     variant?: "default" | "cardBased"
 }
 
@@ -85,11 +85,9 @@ export default function (props: HealthAndWellnessViewProps) {
                     </Card>
                 </>
             }
-            {props.connectEhrApplicationUrl &&
-                <Card>
-                    <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
-                </Card>
-            }
+            <Card>
+                <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
+            </Card>
         </Layout>
     )
 }
