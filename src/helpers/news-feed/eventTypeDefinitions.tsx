@@ -7,6 +7,7 @@ import immunizationIcon from "../../assets/icon-immunization.svg";
 import labReportIcon from "../../assets/icon-labreport.svg";
 import { claimProcedureGroupEvent, claimServiceGroupEvent, immunizationEvent, labReportEvent, procedureGroupEvent, reportEvent } from "./previewData";
 import StatBlock from "../../components/presentational/StatBlock";
+import language from "../language";
 
 export interface EventTypeDefinition {
     getTitleItems(event: EhrNewsFeedEventModel): string[]
@@ -40,7 +41,7 @@ let procedureGroupHandler: EventTypeDefinition = {
     },
     getDetailTitle: (event) => {
         let procedures = event.Event as EhrNewsFeedProcedureModel[];
-        return procedures.length == 1 ? "Procedure" : `${procedures.length} Procedures`;
+        return procedures.length == 1 ? language("procedure") : `${procedures.length} ${language("procedures")}`;
     },
     getPreviewEvent: () => {
         return procedureGroupEvent;
@@ -131,7 +132,7 @@ let labReportHandler: EventTypeDefinition = {
         });
         return keywords;
     },
-    getDetailTitle: (event) => "Lab Report",
+    getDetailTitle: (event) => language("lab-report"),
     getPreviewEvent: () => {
         return labReportEvent;
     },
@@ -155,7 +156,7 @@ let claimProcedureGroupHandler: EventTypeDefinition = {
     },
     getDetailTitle: (event) => {
         let procedures = event.Event as EhrNewsFeedClaimProcedureModel[];
-        return procedures.length == 1 ? "Procedure" : `${procedures.length} Procedures`;
+        return procedures.length == 1 ? language("procedure") : `${procedures.length} ${language("procedures")}`;
     },
     getPreviewEvent: () => {
         return claimProcedureGroupEvent;
@@ -179,7 +180,7 @@ let claimServiceGroupHandler: EventTypeDefinition = {
     },
     getDetailTitle: (event) => {
         let procedures = event.Event as EhrNewsFeedClaimServiceModel[];
-        return procedures.length == 1 ? "Service Performed" : `${procedures.length} Services Performed`;
+        return procedures.length == 1 ? language("service-performed") : `${procedures.length} ${language("services-performed")}`;
     },
     getPreviewEvent: () => {
         return claimServiceGroupEvent;

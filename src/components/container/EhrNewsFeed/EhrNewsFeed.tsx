@@ -176,7 +176,7 @@ function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event
         }
         else {
             let shownItems = titleItems.slice(0, 3);
-            return <>{shownItems.join(" • ") + " • "}<span className="mdhui-news-feed-list-item-more">{titleItems.length - 3} More</span></>;
+            return <>{shownItems.join(" • ") + " • "}<span className="mdhui-news-feed-list-item-more">{titleItems.length - 3} {language("more")}</span></>;
         }
     }
 

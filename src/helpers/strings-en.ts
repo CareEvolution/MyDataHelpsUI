@@ -326,6 +326,12 @@
     "performed-by": "Performed By",
     "verified-by": "Verified By",
     "normal-range": "Normal Range",
+    "more": "More",
+    "procedure": "Procedure",
+    "procedures": "Procedures",
+    "lab-report": "Lab Report",
+    "service-performed": "Service Performed",
+    "services-performed": "Services Performed",
 };
 
 export default strings;

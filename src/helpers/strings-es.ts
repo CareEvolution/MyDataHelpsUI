@@ -189,7 +189,13 @@
     "description": "Descripción",
     "performed-by": "Realizado Por",
     "verified-by": "Verificado Por",
-    "normal-range": "Rango Normal"
+    "normal-range": "Rango Normal",
+    "more": "Más",
+    "procedure": "Procedimiento",
+    "procedures": "Procedimientos",
+    "lab-report": "Informe de Laboratorio",
+    "service-performed": "Servicio Realizado",
+    "services-performed": "Servicios Realizados"
 };
 
 export default strings;
