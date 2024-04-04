@@ -100,7 +100,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                     externalAccountCategories={["Provider", "Health Plan"]}
                     triggerWebExternalAccountSyncComplete />
                 <Section noTopMargin>
-                    <ExternalAccountConnectionAlert externalAccountCategories={["Provider", "Health Plan"]} onClick={() => viewExternalAccounts()} />
+                    <ExternalAccountConnectionAlert previewState={props.previewState == "default" ? "externalAccountWithIssue" : undefined} externalAccountCategories={["Provider", "Health Plan"]} onClick={() => viewExternalAccounts()} />
                     <ExternalAccountsPreview
                         excludeDeviceManufacturers
                         onClick={() => viewExternalAccounts()}
@@ -115,7 +115,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Procedures")}
                 </Section>
                 <Card>
-                    <ConnectEhr variant="small" hideWhenConnected onClick={() => pushView({ key: "ConnectEhr" })}></ConnectEhr>
+                    <ConnectEhr previewState={props.previewState == "default" ? "enabled" : undefined} variant="small" hideWhenConnected onClick={() => pushView({ key: "ConnectEhr" })}></ConnectEhr>
                 </Card>
             </Layout>
         }
@@ -207,7 +207,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
     return <>
         {viewStack.map((view, index) =>
-            <div style={{ display: index != viewStack.length - 1 ? "none" : undefined }}>{getView(view)}</div>
+            <div key={view.key} style={{ display: index != viewStack.length - 1 ? "none" : undefined }}>{getView(view)}</div>
         )}
     </>
 }
