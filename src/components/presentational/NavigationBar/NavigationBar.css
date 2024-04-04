@@ -64,6 +64,7 @@
     text-align: left;
     padding-top: calc(16px + env(safe-area-inset-top, 0px));
     font-size: 18px;
+    margin-bottom: 0;
 }
 
 .mdhui-navigation-bar .close-button {

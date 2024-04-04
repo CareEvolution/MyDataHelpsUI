@@ -58,7 +58,7 @@ export default function (props: ReportViewProps) {
     }
 
     return <Layout className="mdhui-report-view">
-        <NavigationBar variant="compressedModal" subtitle={title} showCloseButton />
+        <NavigationBar subtitle={title} variant="compressedModal" showCloseButton />
         {!reportContent && <LoadingIndicator />}
         {reportContent && <ReportContent type={reportContent.Type} content={reportContent.Content} contentType={reportContent.ContentType} />}
     </Layout>
