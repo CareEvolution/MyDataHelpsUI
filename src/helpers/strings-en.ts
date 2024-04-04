@@ -316,6 +316,8 @@
     "blood-type": "Blood Type",
     "device-data-month-chart-no-data": "No Data",
     "device-data-month-chart-daily-average": "Daily Average",
+    "device-data-month-chart-minutes": "Minutes",
+    "device-data-month-chart-sleep": "Sleep",
 };
 
 export default strings;
