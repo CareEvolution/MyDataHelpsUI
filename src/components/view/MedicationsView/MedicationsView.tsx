@@ -8,8 +8,6 @@ import language from '../../../helpers/language';
 export interface MedicationsViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
-    onBack?(): void
-    onClose?(): void
     onViewTermInfo?(termInfo: TermInformationReference): void
 }
 
@@ -27,9 +25,7 @@ export default function (props: MedicationsViewProps) {
         <Layout>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}
-                onBack={props.onBack}
-                onClose={props.onClose}>
+                showCloseButton={props.presentation == "Modal"}>
                 <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">{language("medications-title")}</Title>
             </NavigationBar>
             <Card>

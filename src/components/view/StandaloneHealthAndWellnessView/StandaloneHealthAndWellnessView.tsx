@@ -34,6 +34,7 @@ interface InlineView {
 }
 
 export default function (props: StandaloneHealthAndWellnessViewProps) {
+
     let [viewStack, setViewStack] = React.useState<InlineView[]>([{ key: "Dashboard" }]);
 
     function pushView(view: InlineView) {
@@ -72,6 +73,8 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
             MyDataHelps.triggerEvent({ type: "applicationDidBecomeVisible" });
         }
     }
+    MyDataHelps.back = back;
+    MyDataHelps.dismiss = back;
 
     function selectReport(reportID: string) {
         pushView({ key: "ReportDetail", properties: { reportID: reportID } });
@@ -122,8 +125,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 previewState={props.previewState}
                 presentation="Push" colorScheme={props.colorScheme}
                 onEventSelected={(e) => { setViewStack([...viewStack, { key: "NewsFeedEventDetail", properties: { eventReference: e } }]) }}
-                onReportSelected={(r) => selectReport(r)}
-                onBack={() => back()} />
+                onReportSelected={(r) => selectReport(r)} />
         }
 
         if (view.key == "NewsFeedEventDetail") {
@@ -145,8 +147,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 pageDate={eventReference.pageDate}
                 pageId={eventReference.pageId}
                 onViewLabObservationTermInfo={(l) => viewLabTermInfo(l)}
-                previewState={detailPreviewState}
-                onBack={() => back()} />
+                previewState={detailPreviewState} />
         }
 
         if (view.key == "TermInformation") {
@@ -155,15 +156,13 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                 openLinksInNewWindow
                 previewState={props.previewState}
                 term={view.properties?.term}
-                labObservationID={view.properties?.labObservationID}
-                onClose={() => back()} />
+                labObservationID={view.properties?.labObservationID} />
         }
 
         if (view.key == "Medications") {
             return <MedicationsView
                 presentation="Push"
                 previewState={props.previewState}
-                onBack={() => back()}
                 onViewTermInfo={(e) => viewTermInfo(e)} />
         }
 
@@ -171,19 +170,17 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
             return <ConditionsView
                 presentation="Push"
                 previewState={props.previewState}
-                onBack={() => back()}
                 onViewTermInfo={(e) => viewTermInfo(e)} />
         }
 
         if (view.key == "Allergies") {
             return <AllergiesView presentation="Push"
                 previewState={props.previewState}
-                onBack={() => back()}
                 onViewTermInfo={(e) => viewTermInfo(e)} />
         }
 
         if (view.key == "ReportDetail") {
-            return <ReportView previewState={"html"} reportId={view.properties?.reportId} onClose={() => back()} />
+            return <ReportView previewState={"html"} reportId={view.properties?.reportId} />
         }
 
         if (view.key == "ExternalAccounts") {
@@ -198,7 +195,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
         if (view.key == "ConnectEhr") {
             return <Layout colorScheme={props.colorScheme} >
-                <NavigationBar showBackButton={true} onBack={() => back()} />
+                <NavigationBar showBackButton={true} />
                 <Section>
                     <ProviderSearch
                         providerCategories={["Provider", "Health Plan"]}

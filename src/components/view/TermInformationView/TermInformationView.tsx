@@ -5,8 +5,6 @@ import { TermInformationReference } from '../../presentational/LabResultWithSpar
 export interface TermInformationViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default" | "noData"
-    onBack?(): void
-    onClose?(): void
     term?: TermInformationReference
     labObservationID?: string
     openLinksInNewWindow?: boolean
@@ -18,9 +16,7 @@ export default function (props: TermInformationViewProps) {
         <Layout>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}
-                onBack={props.onBack}
-                onClose={props.onClose}>
+                showCloseButton={props.presentation == "Modal"}>
             </NavigationBar>
             <TermInformation previewState={props.previewState}
                 term={props.term}

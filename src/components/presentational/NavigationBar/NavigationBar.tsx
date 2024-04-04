@@ -13,8 +13,6 @@ export interface NavigationBarProps {
 	subtitle?: string;
 	showBackButton?: boolean;
 	showCloseButton?: boolean;
-	onBack?: () => void;
-	onClose?: () => void;
 	children?: React.ReactNode;
 	closeButtonText?: string;
 	backButtonText?: string;
@@ -32,19 +30,11 @@ export default function (props: NavigationBarProps) {
 	const navBar = useRef<HTMLDivElement>(null);
 
 	function back() {
-		if (props.onBack) {
-			props.onBack();
-		} else {
-			MyDataHelps.back();
-		}
+		MyDataHelps.back();
 	}
 
 	function close() {
-		if (props.onClose) {
-			props.onClose();
-		} else {
-			MyDataHelps.dismiss();
-		}
+		MyDataHelps.dismiss();
 	}
 
 	useLayoutEffect(() => {
