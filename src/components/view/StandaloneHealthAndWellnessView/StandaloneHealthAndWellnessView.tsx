@@ -1,6 +1,6 @@
 import React from 'react'
 import { EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, ProviderSearch, NavigationBar } from "../.."
-import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
 import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFeed';
@@ -34,7 +34,6 @@ interface InlineView {
 }
 
 export default function (props: StandaloneHealthAndWellnessViewProps) {
-
     let [viewStack, setViewStack] = React.useState<InlineView[]>([{ key: "Dashboard" }]);
 
     function pushView(view: InlineView) {

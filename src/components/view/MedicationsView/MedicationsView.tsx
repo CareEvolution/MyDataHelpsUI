@@ -1,9 +1,9 @@
 import React from 'react'
 import { Layout, Card, NavigationBar, MedicationsList, Title } from "../.."
-import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import medicationIcon from "../../../assets/icon-medication.svg";
 import language from '../../../helpers/language';
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 
 export interface MedicationsViewProps {
     presentation?: "Push" | "Modal"

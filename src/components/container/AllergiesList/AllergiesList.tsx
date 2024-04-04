@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { TermInformationReference } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline"
+import { TermInformationReference } from "../TermInformation/TermInformation";
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { useMyDataHelps } from "../../../helpers/useMyDataHelps"
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"

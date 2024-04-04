@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Card, NavigationBar, AllergiesList, Title } from "../.."
-import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import allergiesIcon from "../../../assets/icon-allergies.png";
 import language from '../../../helpers/language';

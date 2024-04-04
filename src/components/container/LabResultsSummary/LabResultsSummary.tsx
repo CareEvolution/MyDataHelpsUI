@@ -7,7 +7,7 @@ import LabResultWithSparkline from "../../presentational/LabResultWithSparkline"
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
-import { TermInformationReference } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
+import { TermInformationReference } from "../TermInformation/TermInformation";
 
 export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"

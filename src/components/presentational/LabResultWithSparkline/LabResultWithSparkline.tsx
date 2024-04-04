@@ -3,6 +3,7 @@ import { format, parseISO } from "date-fns";
 import "./LabResultWithSparkline.css"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 
 export interface LabResultValue {
     Type: string,
@@ -18,12 +19,6 @@ export interface LabResultValue {
 export interface SparklinePoint {
     X: number,
     Y: number
-}
-
-export interface TermInformationReference {
-    TermFamily: string,
-    TermNamespace: string,
-    TermCode: string
 }
 
 export interface LabResultWithSparklineProps {

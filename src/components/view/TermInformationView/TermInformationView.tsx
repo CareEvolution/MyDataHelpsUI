@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, NavigationBar, TermInformation } from "../.."
-import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline'
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 
 export interface TermInformationViewProps {
     presentation?: "Push" | "Modal"

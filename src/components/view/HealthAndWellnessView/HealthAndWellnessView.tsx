@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { TermInformationReference } from '../../presentational/LabResultWithSparkline/LabResultWithSparkline';
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
 

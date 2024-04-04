@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Layout } from "../../presentational";
 import MedicationsList, { MedicationsListProps } from "./MedicationsList";
-import { TermInformationReference } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
+import { TermInformationReference } from "../TermInformation/TermInformation";
 
 export default { title: "Container/MedicationsList", component: MedicationsList, parameters: { layout: 'fullscreen' } };
 let render = (args: MedicationsListProps) => <Layout colorScheme="auto"><Card><MedicationsList {...args} /></Card></Layout>
