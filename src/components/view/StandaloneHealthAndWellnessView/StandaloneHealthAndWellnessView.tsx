@@ -1,5 +1,5 @@
 import React from 'react'
-import { EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, ProviderSearch, NavigationBar } from "../.."
+import { EhrNewsFeedEventDetailView, MedicationsView, ConditionsView, AllergiesView, ExternalAccountsView, StatusBarBackground, ExternalAccountsLoadingIndicator, Layout, Section, LabResultsBloodType, LabResultsSummary, ExternalAccountsPreview, ConnectEhr, Card, ProviderSearch, NavigationBar, ExternalAccountConnectionAlert } from "../.."
 import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
@@ -100,6 +100,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
                     externalAccountCategories={["Provider", "Health Plan"]}
                     triggerWebExternalAccountSyncComplete />
                 <Section noTopMargin>
+                    <ExternalAccountConnectionAlert externalAccountCategories={["Provider", "Health Plan"]} onClick={() => viewExternalAccounts()} />
                     <ExternalAccountsPreview
                         excludeDeviceManufacturers
                         onClick={() => viewExternalAccounts()}
