@@ -11,6 +11,7 @@ export { default as DeviceDataMonthChart, DeviceDataChartLine } from "./DeviceDa
 export { default as DeviceDataMonthCharts } from "./DeviceDataMonthCharts"
 export { default as EhrNewsFeed } from "./EhrNewsFeed"
 export { default as EhrNewsFeedEventDetail } from "./EhrNewsFeedEventDetail"
+export { default as ExternalAccountConnectionAlert } from "./ExternalAccountConnectionAlert"
 export { default as ExternalAccountList } from "./ExternalAccountList"
 export { default as ExternalAccountsLoadingIndicator } from "./ExternalAccountsLoadingIndicator"
 export { default as ExternalAccountsPreview } from "./ExternalAccountsPreview"
