@@ -11,39 +11,19 @@ export interface HealthAndWellnessViewProps {
     connectEhrApplicationUrl?: string
     externalAccountsApplicationUrl?: string
     variant?: "default" | "cardBased"
-    onViewTermInfo?(termInfo: TermInformationReference): void
-    onViewLabs?(): void
-    onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
-    onViewExternalAccounts?(): void
-    onBloodTypeClick?(): void
 }
 
 export default function (props: HealthAndWellnessViewProps) {
     function viewLabs() {
-        if (props.onViewLabs) {
-            props.onViewLabs();
-            return;
-        }
-
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }
 
     function viewTermInfo(termInfo: TermInformationReference) {
-        if (props.onViewTermInfo) {
-            props.onViewTermInfo(termInfo);
-            return;
-        }
-
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }
 
     function viewHealthSectionDetails(concept: HealthPreviewSectionConcept) {
-        if (props.onViewHealthSectionDetails) {
-            props.onViewHealthSectionDetails(concept);
-            return;
-        }
-
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/" + concept + ".html");
     }
 
@@ -70,7 +50,7 @@ export default function (props: HealthAndWellnessViewProps) {
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
-                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} onClick={props.onBloodTypeClick} />
+                    <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
                     {getHealthPreviewSection("Reports")}
@@ -80,8 +60,7 @@ export default function (props: HealthAndWellnessViewProps) {
                     <ExternalAccountsPreview
                         excludeDeviceManufacturers
                         applicationUrl={props.externalAccountsApplicationUrl}
-                        previewState={props.previewState == "default" ? "Default" : undefined}
-                        onClick={() => props.onViewExternalAccounts?.()} />
+                        previewState={props.previewState == "default" ? "Default" : undefined} />
                 </Section>
             }
             {variant == "cardBased" &&
@@ -90,7 +69,7 @@ export default function (props: HealthAndWellnessViewProps) {
                         <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
                     </Card>
                     <Card>
-                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} onClick={props.onBloodTypeClick} />
+                        <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
                     </Card>
                     {getHealthPreviewSection("Medications")}
                     {getHealthPreviewSection("Immunizations")}
@@ -100,7 +79,6 @@ export default function (props: HealthAndWellnessViewProps) {
                     {getHealthPreviewSection("Procedures")}
                     <Card>
                         <ExternalAccountsPreview
-                            onClick={() => props.onViewExternalAccounts?.()}
                             excludeDeviceManufacturers
                             applicationUrl={props.externalAccountsApplicationUrl}
                             previewState={props.previewState == "default" ? "Default" : undefined} />
