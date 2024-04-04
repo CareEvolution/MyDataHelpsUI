@@ -181,9 +181,15 @@
     "device-data-month-chart-no-data": "Sin Datos",
     "device-data-month-chart-daily-average": "Promedio Diario",
     "term-information-not-found-header": "No se encontró información",
-	"term-information-not-found-body": "No se encontró información sobre este tema",
-	"term-information-disclaimer": "<strong>AVISO: </strong>La información presentada no es asesoría médica. Es con el propósito de ayudarle a que entienda más sobre su salud. Por favor contacte a su proveedor de atención médica si tiene preguntas sobre su estado de salud.",
-	"term-information-view-on-medline": "Ver en MedlinePlus",
+    "term-information-not-found-body": "No se encontró información sobre este tema",
+    "term-information-disclaimer": "<strong>AVISO: </strong>La información presentada no es asesoría médica. Es con el propósito de ayudarle a que entienda más sobre su salud. Por favor contacte a su proveedor de atención médica si tiene preguntas sobre su estado de salud.",
+    "term-information-view-on-medline": "Ver en MedlinePlus",
+    "type": "Tipo",
+    "location": "Ubicación",
+    "description": "Descripción",
+    "performed-by": "Realizado Por",
+    "verified-by": "Verificado Por",
+    "normal-range": "Rango Normal"
 };
 
 export default strings;

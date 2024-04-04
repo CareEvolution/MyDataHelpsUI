@@ -8,6 +8,7 @@ import { format, parseISO } from 'date-fns';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedFeed, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
 import "./EhrNewsFeedEventDetail.css"
+import language from '../../../helpers/language';
 
 export interface EhrNewsFeedEventDetailProps {
     feed: EhrNewsFeedFeed
@@ -81,11 +82,11 @@ function ProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{procedure.Procedure}</Title>
                 <StatBlock labelWidth="90px" defaultMargin stats={[
-                    { label: "Type", value: procedure.Type },
-                    { label: "Location", value: procedure.Location },
-                    { label: "Description", value: procedure.Description == procedure.Procedure ? undefined : procedure.Description },
-                    { label: "Performed By", value: procedure.PerformedByCaregiver?.CaregiverName },
-                    { label: "Verified By", value: procedure.VerifiedByCaregiver?.CaregiverName }
+                    { label: language("type"), value: procedure.Type },
+                    { label: language("location"), value: procedure.Location },
+                    { label: language("description"), value: procedure.Description == procedure.Procedure ? undefined : procedure.Description },
+                    { label: language("performed-by"), value: procedure.PerformedByCaregiver?.CaregiverName },
+                    { label: language("verified-by"), value: procedure.VerifiedByCaregiver?.CaregiverName }
                 ]} />
             </Card>
         )}
@@ -115,7 +116,7 @@ function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObserva
                     </Title>
                     {observation.NormalRange &&
                         <div className="mdhui-lab-report-detail-normal-range">
-                            Normal Range: {observation.NormalRange}
+                            {language("normal-range")}: {observation.NormalRange}
                         </div>
                     }
                 </Action>
@@ -136,7 +137,7 @@ function ClaimProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{procedure.Procedure}</Title>
                 <StatBlock labelWidth="90px" defaultMargin stats={[
-                    { label: "Type", value: procedure.Type }
+                    { label: language("type"), value: procedure.Type }
                 ]} />
             </Card>
         )}
