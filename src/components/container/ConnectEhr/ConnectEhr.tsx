@@ -84,7 +84,7 @@ export default function (props: ConnectEhrProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
-	}, []);
+	}, [props.previewState]);
 
 	if (!ehrEnabled) {
 		if (props.disabledBehavior == 'displayError') {
@@ -102,7 +102,7 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
-	if (props.hideWhenConnected && connected) {
+	if (props.hideWhenConnected && connected && !needsAttention) {
 		return null;
 	}
 
