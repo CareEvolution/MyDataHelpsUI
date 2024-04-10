@@ -23,6 +23,7 @@
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
     "expired-reconnect": "Connection expired.  Please reconnect.",
+    "connect-error-reconnect": "Unexpected error.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",

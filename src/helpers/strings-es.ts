@@ -23,6 +23,7 @@
     "connect-ehr-not-enabled": "EHR enlacando no está habilitado para este proyecto.",
     "search-for-provider": "Encontrar a mi Proveedor",
     "expired-reconnect": "Volver a conectar",
+    "connect-error-reconnect": "Error imprevisto.  Volver a conectar.",
     "connected": "Conectado",
     "search": "Buscar",
     "connect-fitbit-intro": "Si ya tiene una cuenta Fitbit, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Fitbit:",

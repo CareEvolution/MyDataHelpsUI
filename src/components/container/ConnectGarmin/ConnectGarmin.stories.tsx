@@ -25,6 +25,9 @@ NotConnected.args = { previewState: "notConnected", title: "Garmin" };
 export const Unauthorized = Template.bind({});
 Unauthorized.args = { previewState: "unauthorized", title: "Garmin" };
 
+export const ConnectionError = Template.bind({});
+ConnectionError.args = { previewState: "error", title: "Garmin" };
+
 export const FetchComplete = Template.bind({});
 FetchComplete.args = { previewState: "fetchComplete", title: "Garmin" };
 
@@ -42,6 +45,6 @@ NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Garmin", dis
 
 export const HideConnected = Template.bind({});
 HideConnected.args = { previewState: "fetchComplete", hideWhenConnected: true };
-HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized"]}};
+HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"]}};
 
 

@@ -117,7 +117,7 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}
 
-	if (props.hideWhenConnected && deviceExternalAccount && deviceExternalAccount?.status != "unauthorized") {
+	if (props.hideWhenConnected && deviceExternalAccount && deviceExternalAccount?.status != "unauthorized" && deviceExternalAccount?.status != "error") {
 		return null;
 	}
 
@@ -145,6 +145,14 @@ export default function (props: ConnectDeviceProps) {
 					<div>
 						<div className="subtitle reconnect">
 							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("expired-reconnect")}
+						</div>
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'error' &&
+					<div>
+						<div className="subtitle reconnect">
+							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("connect-error-reconnect")}
 						</div>
 						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 					</div>
