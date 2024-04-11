@@ -117,7 +117,7 @@ function coreSleepMultiValue(startDate: Date, endDate: Date, value: SleepType[])
 	});
 }
 
-export function asleepTime(startDate: Date, endDate: Date) {
+export function asleepOnlyAsleepTime(startDate: Date, endDate: Date) {
 	return coreSleep(startDate, endDate, "Asleep");
 }
 
@@ -137,6 +137,6 @@ export function asleepDeepTime(startDate: Date, endDate: Date) {
 	return coreSleep(startDate, endDate, "AsleepDeep");
 }
 
-export function asleepAnyTime(startDate: Date, endDate: Date) {
-	return coreSleepMultiValue(startDate, endDate, [ "AsleepCore", "AsleepREM", "AsleepDeep" ]);
+export function asleepTime(startDate: Date, endDate: Date) {
+	return coreSleepMultiValue(startDate, endDate, [ "AsleepCore", "AsleepREM", "AsleepDeep", "Asleep" ]);
 }
