@@ -23,6 +23,7 @@
     "connect-ehr-not-enabled": "EHR enlacando no está habilitado para este proyecto.",
     "search-for-provider": "Encontrar a mi Proveedor",
     "expired-reconnect": "Volver a conectar",
+    "connect-error-reconnect": "Error imprevisto.  Volver a conectar.",
     "connected": "Conectado",
     "search": "Buscar",
     "connect-fitbit-intro": "Si ya tiene una cuenta Fitbit, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Fitbit:",
@@ -160,6 +161,11 @@
     "inbox-view-recently-completed-title": "Reciente",
     "inbox-view-recently-completed-empty-text": "No tienes elementos recientemente completados en tu bandeja de entrada.",
     "inbox-view-history-button-text": "Ver historial de bandeja de entrada",
+    "choose-report-month": "Elegir el mes del informe",
+    "include-overall-experience": "Incluir la experiencia general diaria",
+    "include-notes": "Incluir notas",
+    "create-report": "Crear informe",
+    "reports": "Informes",
     "recent-daily-data-bar-chart-subtitle": "Últimos 7 días",
     "recent-daily-data-bar-chart-no-data": "Sin datos",
     "resource-list-empty-text": "No se encontraron recursos.",
@@ -171,7 +177,10 @@
     "asthma-control-calendar-not-logged-yet": "No ingresado todavía",
     "asthma-control-calendar-log-entries-symptoms-label": "Síntomas",
     "asthma-control-calendar-log-entries-impacts-label": "Impactos",
-    "asthma-control-calendar-log-entries-triggers-label": "Disparadores"
+    "asthma-control-calendar-log-entries-triggers-label": "Disparadores",
+    "blood-type": "Tipo de sangre",
+    "device-data-month-chart-no-data": "Sin Datos",
+    "device-data-month-chart-daily-average": "Promedio Diario",
 };
 
 export default strings;

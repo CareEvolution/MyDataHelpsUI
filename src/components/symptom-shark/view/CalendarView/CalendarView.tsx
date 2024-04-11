@@ -42,9 +42,9 @@ function CalendarSeverityCharts() {
 
     if (!hasFilteredSymptoms) { return null; }
 
-    return symptoms.filter(s => s.severityTracking != "None").map(s =>
+    return <>{symptoms.filter(s => s.severityTracking != "None").map(s =>
         <Section key={s.id}>
             <SymptomSharkSymptomSeverityChart symptom={s} />
         </Section>
-    )
+    )}</>
 }

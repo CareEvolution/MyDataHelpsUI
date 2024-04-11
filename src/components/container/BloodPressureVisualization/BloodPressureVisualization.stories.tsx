@@ -61,7 +61,7 @@ export const Live = {
 			systolicResultIdentifier: "Systolic BP",
 			diastolicResultIdentifier: "Diastolic BP"
 		},
-		deviceDataSource: ["AppleHealth", "GoogleFit"]
+		deviceDataSource: ["AppleHealth", "GoogleFit", "Omron"]
 	},
 	render: render
 };

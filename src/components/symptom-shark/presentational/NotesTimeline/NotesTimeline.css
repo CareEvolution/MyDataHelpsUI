@@ -1,0 +1,72 @@
+.ss-notes-timeline {
+    padding: 16px;
+    padding-top: 48px;
+
+    /* Default color for PDF Rendering, since pdf renderer does not support CSS variables */
+    border-top: solid 1px #ddd;
+
+    border-top: solid 1px var(--mdhui-border-color-1);
+    padding-left: 64px;
+    position: relative;
+}
+
+.ss-notes-timeline .ss-notes-timeline-title {
+    font-size: 17px;
+    color: var(--mdhui-text-color-1);
+    font-weight: bold;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+}
+
+.ss-notes-timeline .ss-notes-timeline-line {
+    position: absolute;
+    top: 48px;
+    left: 32px;
+
+    /* Default color for PDF Rendering, since pdf renderer does not support CSS variables */
+    background: #ddd;
+
+    background: var(--mdhui-background-color-2);
+    bottom: 48px;
+    width: 1px;
+}
+
+.ss-notes-timeline .ss-notes-timeline-day {
+    margin-bottom: 32px;
+    page-break-inside: avoid;
+    position: relative;
+
+    /* Default color for PDF Rendering, since pdf renderer does not support CSS variables */
+    border: solid 1px #ddd;
+
+    border: solid 1px var(--mdhui-border-color-1);
+    border-radius: 5px;
+    padding: 16px;
+}
+
+.ss-notes-timeline .ss-notes-timeline-day .ss-notes-timeline-day-icon {
+    font-size: 21px;
+    position: absolute;
+    left: -51px;
+    top: calc(50% - 11px);
+    width: 37px;
+    text-align: center;
+    display: block;
+}
+
+.ss-notes-timeline .ss-notes-timeline-day .ss-notes-timeline-day-circle {
+    /* Default color for PDF Rendering, since pdf renderer does not support CSS variables */
+    color:  #429bdf;
+
+    color: var(--mdhui-color-primary);
+}
+
+.notes-timeline .ss-notes-timeline-day .ss-notes-timeline-day-title {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.notes-timeline .ss-notes-timeline-day .ss-notes-timeline-note {
+    white-space: pre-wrap;
+}

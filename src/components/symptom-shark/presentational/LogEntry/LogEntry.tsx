@@ -37,6 +37,8 @@ export default function (props: SymptomSharkLogEntryProps) {
         emptyLogEntry = true;
     }
 
+
+
     let title: string = props.title ?? getDayOfWeek(props.date);
     let highlight = props.highlight ?? isToday(props.date);
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
@@ -152,7 +154,7 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
         highlightedTreatments = props.highlightedTreatments;
     }
 
-    if (props.logEntry.symptoms.length == 0 || props.logEntry.treatments.length == 0) {
+    if (props.logEntry.symptoms.length == 0 && props.logEntry.treatments.length == 0) {
         return null;
     }
 

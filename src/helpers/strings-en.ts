@@ -23,6 +23,7 @@
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
     "expired-reconnect": "Connection expired.  Please reconnect.",
+    "connect-error-reconnect": "Unexpected error.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",
@@ -164,6 +165,11 @@
     "inbox-view-recently-completed-title": "Recent",
     "inbox-view-recently-completed-empty-text": "You have no recently completed items in your inbox.",
     "inbox-view-history-button-text": "View inbox history",
+    "choose-report-month": "Choose Report Month",
+    "include-overall-experience": "Include Daily Overall Experience",
+    "include-notes": "Include Notes",
+    "create-report": "Create PDF Report",
+    "reports": "Reports",
     "recent-daily-data-bar-chart-subtitle": "Past 7 days",
     "recent-daily-data-bar-chart-no-data": "No Data",
     "resource-list-empty-text": "No resources found.",
@@ -307,7 +313,10 @@
     "asthma-log-entry-editor-view-select-all-subtitle": "Select all that apply",
     "asthma-log-entry-editor-view-symptoms-title": "Symptoms",
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
-    "asthma-log-entry-editor-view-triggers-title": "Triggers"
+    "asthma-log-entry-editor-view-triggers-title": "Triggers",
+    "blood-type": "Blood Type",
+    "device-data-month-chart-no-data": "No Data",
+    "device-data-month-chart-daily-average": "Daily Average",
 };
 
 export default strings;

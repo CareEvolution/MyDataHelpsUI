@@ -10,6 +10,7 @@ export interface OverallExperienceChartProps {
     intervalStart?: Date;
     showAllDays?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
+    variant?: "default" | "monthReport";
 }
 
 export default function (props: OverallExperienceChartProps) {
@@ -58,7 +59,7 @@ export default function (props: OverallExperienceChartProps) {
     var daysThisMonth = monthDays.length;
     var ticks = 100 / daysThisMonth;
     var initialSpace = (100 / (daysThisMonth * 2));
-    var lines = [];
+    var lines: any[] = [];
     for (var i = 0; i < daysWithScore.length - 1; i++) {
         var currentDay = daysWithScore[i];
         var nextDay = daysWithScore[i + 1];
@@ -77,7 +78,7 @@ export default function (props: OverallExperienceChartProps) {
 
     let overallFeelingAverage = calculateOverallFeelingAverage();
 
-    return <div ref={props.innerRef} className="mdhui-ss-oe-chart">
+    return <div ref={props.innerRef} className={"mdhui-ss-oe-chart" + (props.variant == "monthReport" ? " mdhui-ss-oe-chart-month-report" : "")}>
         <CardTitle title={language("daily-overall-experience")} />
         <div className="mdhui-ss-oe-chart-inner">
             <div className="mdhui-ss-oe-chart-y-axis">
