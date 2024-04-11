@@ -137,6 +137,6 @@ export function asleepDeepTime(startDate: Date, endDate: Date) {
 	return coreSleep(startDate, endDate, "AsleepDeep");
 }
 
-export function asleepTime(startDate: Date, endDate: Date) {
+export default function asleepTime(startDate: Date, endDate: Date) {
 	return coreSleepMultiValue(startDate, endDate, [ "AsleepCore", "AsleepREM", "AsleepDeep", "Asleep" ]);
 }
