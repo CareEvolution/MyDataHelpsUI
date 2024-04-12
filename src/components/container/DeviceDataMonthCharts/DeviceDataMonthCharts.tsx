@@ -114,17 +114,6 @@ export default function (props: DeviceDataMonthChartsProps) {
 					month={month}
 					year={year}
 					syncId="DeviceDataCharts" />
-				<DeviceDataMonthChart onDataDetected={() => onDataDetected()}
-					previewState={props.previewState == "Default" ? "WithData" : undefined}
-					lines={[{
-						showAverage: true,
-						dailyDataType: DailyDataType.AppleHealthSleepMinutes,
-						label: language("device-data-month-chart-minutes")
-					}]}
-					title={"Apple Health " + language("device-data-month-chart-sleep") + " (" + language("device-data-month-chart-minutes") + ")"}
-					month={month}
-					year={year}
-					syncId="DeviceDataCharts" />
 			</div>
 		</>
 	);
