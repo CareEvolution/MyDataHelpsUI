@@ -99,16 +99,6 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	});
 }
 
-export function queryDailyMultiData(types: string[], startDate: Date, endDate: Date) {
-	var result: { [key: string]: Promise<DailyDataQueryResult> } = {};
-	var promises = types.map((currentDataType) => {
-		var r = queryDailyData(currentDataType, startDate, endDate);
-		result[currentDataType] = r;
-	});
-
-	return result;
-}
-
 export function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: string | string[]) {
 	return function (modifiedAfter?: Date) {
 		var parameters: DeviceDataPointQuery = { namespace: namespace, type: type, limit: 1 };
