@@ -181,6 +181,8 @@
     "blood-type": "Tipo de sangre",
     "device-data-month-chart-no-data": "Sin Datos",
     "device-data-month-chart-daily-average": "Promedio Diario",
+    "device-data-month-chart-minutes": "Minutos",
+    "device-data-month-chart-sleep": "Dormir",
 };
 
 export default strings;
