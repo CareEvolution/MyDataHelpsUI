@@ -67,7 +67,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        intervalType = dateRangeContext.intervalType;
+        intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
