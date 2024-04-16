@@ -1,7 +1,6 @@
 import React from 'react';
 import AsthmaAirQualities, { AsthmaAirQualitiesProps } from './AsthmaAirQualities';
 import { Card, Layout } from '../../../presentational';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Components/AsthmaAirQualities',
@@ -11,12 +10,10 @@ export default {
 
 interface AsthmaAirQualitiesStoryArgs extends AsthmaAirQualitiesProps {
     colorScheme: 'auto' | 'light' | 'dark';
-    language: 'English' | 'Spanish';
     canEditSettings: boolean;
 }
 
 const render = (args: AsthmaAirQualitiesStoryArgs) => {
-    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <Layout colorScheme={args.colorScheme}>
         <Card>
             <AsthmaAirQualities {...args} editZipCodesSurveyName={args.canEditSettings ? 'some_url' : undefined}/>
@@ -27,7 +24,6 @@ const render = (args: AsthmaAirQualitiesStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        language: 'English',
         previewState: 'some data (control)',
         canEditSettings: false
     },
@@ -36,11 +32,6 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        },
-        language: {
-            name: 'language',
-            control: 'radio',
-            options: ['English', 'Spanish']
         },
         previewState: {
             name: 'state',

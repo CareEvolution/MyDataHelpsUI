@@ -1,6 +1,5 @@
 import React from 'react';
 import AsthmaActivityView, { AsthmaActivityViewProps } from './AsthmaActivityView';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Views/AsthmaActivityView',
@@ -9,12 +8,10 @@ export default {
 };
 
 interface AsthmaActivityViewStoryArgs extends AsthmaActivityViewProps {
-    language: 'English' | 'Spanish';
     withAlert: boolean;
 }
 
 const render = (args: AsthmaActivityViewStoryArgs) => {
-    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <AsthmaActivityView
         {...args}
         previewState='default'
@@ -25,7 +22,6 @@ const render = (args: AsthmaActivityViewStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        language: 'English',
         withAlert: false
     },
     argTypes: {
@@ -33,11 +29,6 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        },
-        language: {
-            name: 'language',
-            control: 'radio',
-            options: ['English', 'Spanish']
         },
         withAlert: {
             name: 'with alert'

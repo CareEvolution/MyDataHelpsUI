@@ -1,6 +1,5 @@
 import React from 'react';
 import AsthmaDayView, { AsthmaDayViewProps } from './AsthmaDayView';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Views/AsthmaDayView',
@@ -8,12 +7,7 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-interface AsthmaDayViewStoryArgs extends AsthmaDayViewProps {
-    language: 'English' | 'Spanish';
-}
-
-const render = (args: AsthmaDayViewStoryArgs) => {
-    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
+const render = (args: AsthmaDayViewProps) => {
     return <AsthmaDayView
         {...args}
         previewState="default"
@@ -23,19 +17,13 @@ const render = (args: AsthmaDayViewStoryArgs) => {
 
 export const Default = {
     args: {
-        colorScheme: 'auto',
-        language: 'English'
+        colorScheme: 'auto'
     },
     argTypes: {
         colorScheme: {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        },
-        language: {
-            name: 'language',
-            control: 'radio',
-            options: ['English', 'Spanish']
         }
     },
     render: render

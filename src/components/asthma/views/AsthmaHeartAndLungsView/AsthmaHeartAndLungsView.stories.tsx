@@ -1,6 +1,5 @@
 import React from 'react';
 import AsthmaHeartAndLungsView, { AsthmaHeartAndLungsViewProps } from './AsthmaHeartAndLungsView';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export default {
     title: 'Asthma/Views/AsthmaHeartAndLungsView',
@@ -9,13 +8,11 @@ export default {
 };
 
 interface AsthmaHeartAndLungsViewStoryArgs extends AsthmaHeartAndLungsViewProps {
-    language: 'English' | 'Spanish';
     withAlert: boolean;
     alertType: 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
 }
 
 const render = (args: AsthmaHeartAndLungsViewStoryArgs) => {
-    MyDataHelps.setCurrentLanguage(args.language === 'English' ? 'en' : 'es');
     return <AsthmaHeartAndLungsView
         {...args}
         previewState="default"
@@ -26,7 +23,6 @@ const render = (args: AsthmaHeartAndLungsViewStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        language: 'English',
         withAlert: false,
         alertType: 'DaytimeRestingHeartRate'
     },
@@ -35,11 +31,6 @@ export const Default = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        },
-        language: {
-            name: 'language',
-            control: 'radio',
-            options: ['English', 'Spanish']
         },
         withAlert: {
             name: 'with alert'
