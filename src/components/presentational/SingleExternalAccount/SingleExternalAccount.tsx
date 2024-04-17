@@ -8,7 +8,7 @@ import language from '../../../helpers/language';
 import formatRelative from 'date-fns/formatRelative'
 import "./SingleExternalAccount.css"
 import parseISO from 'date-fns/parseISO'
-import { enUS, es } from 'date-fns/locale';
+import { getLocale } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -20,7 +20,7 @@ export interface SingleExternalAccountProps {
 }
 
 export default function (props: SingleExternalAccountProps) {
-	let locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	let locale = getLocale();
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {

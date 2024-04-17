@@ -16,7 +16,7 @@ import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
-import { getLocale } from '../../../helpers/date-helpers';
+import { getLocale } from '../../../helpers/locale';
 import { noop } from '../../../helpers/functions';
 import UnstyledButton from '../UnstyledButton';
 

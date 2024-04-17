@@ -1,7 +1,7 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { add, format, isSameDay } from "date-fns";
-import { es, enUS } from 'date-fns/locale';
 import language from "./language";
+import { getLocale } from "./locale";
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -17,7 +17,7 @@ export function getDatesForMonth(year: number, month: number) {
 }
 
 export function getDayOfWeek(date: Date) {
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	var locale = getLocale();
 	var result = format(date, "EEEE", { locale: locale });
 	if (isSameDay(date, new Date())) {
 		result = language("today");
@@ -29,23 +29,19 @@ export function getDayOfWeek(date: Date) {
 }
 
 export function getFullDateString(date: Date) {
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	var locale = getLocale();
 	return format(date, "MMMM d, yyyy", { locale: locale });
 }
 
 export function getShorterDateString(date: Date) {
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	var locale = getLocale();
 	return format(date, "MMM d, yyyy", { locale: locale });
 }
 
 export function getMonthName(month: number) {
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	var locale = getLocale();
 	function capitalizeFirstLetter(string: string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 	return capitalizeFirstLetter(format(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
-}
-
-export function getLocale(): Locale {
-	return MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
 }
