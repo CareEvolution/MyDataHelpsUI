@@ -1,15 +1,17 @@
 import { es, enUS, nl, de, fr, pt, it, pl } from 'date-fns/locale';
 
 export function getLocaleFromIso(language: string): Locale {
-	const currentLanguage = language.toLowerCase();
+    if (language.length < 2) return enUS;
 
-	if (currentLanguage.startsWith("es")) return es;
-	if (currentLanguage.startsWith("nl")) return nl;
-	if (currentLanguage.startsWith("de")) return de;
-	if (currentLanguage.startsWith("fr")) return fr;
-	if (currentLanguage.startsWith("pt")) return pt;
-	if (currentLanguage.startsWith("it")) return it;
-	if (currentLanguage.startsWith("pl")) return pl;
+	const currentLanguage = language.toLowerCase().slice(0,2);
+
+    if (currentLanguage == "es") return es;
+	if (currentLanguage == "nl") return nl;
+	if (currentLanguage == "de") return de;
+	if (currentLanguage == "fr") return fr;
+	if (currentLanguage == "pt") return pt;
+	if (currentLanguage == "it") return it;
+	if (currentLanguage == "pl") return pl;
 
 	return enUS;
 }
