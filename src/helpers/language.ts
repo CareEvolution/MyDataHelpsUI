@@ -35,6 +35,7 @@ export function getLanguage(language: string): Language {
 
     return "en";
 }
+
 export function getLanguageFromIso(language: string): "" | Language {
     if (language.toLowerCase().startsWith("es")) return "es";
     if (language.toLowerCase().startsWith("nl")) return "nl";
