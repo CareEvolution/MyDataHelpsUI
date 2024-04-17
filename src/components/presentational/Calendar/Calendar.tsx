@@ -1,5 +1,5 @@
 import React from 'react';
-import { getLocale } from '../../../helpers/locale';
+import { getLocaleFromIso } from '../../../helpers/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import "./Calendar.css";
 
@@ -22,7 +22,7 @@ interface CalendarDay {
 
 export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 
 	var daysOfTheWeekIndices = Array.from(Array(7).keys());
 	var weekStartsOn = props.weekStartsOn && props.weekStartsOn < 7 ? props.weekStartsOn : 0;

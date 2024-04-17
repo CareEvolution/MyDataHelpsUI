@@ -1,8 +1,7 @@
-import MyDataHelps from "@careevolution/mydatahelps-js";
 import { es, enUS, nl, de, fr, pt, it, pl } from 'date-fns/locale';
 
-export function getLocale(): Locale {
-	const currentLanguage = MyDataHelps.getCurrentLanguage().toLowerCase();
+export function getLocaleFromIso(language: string): Locale {
+	const currentLanguage = language.toLowerCase();
 
 	if (currentLanguage.startsWith("es")) return es;
 	if (currentLanguage.startsWith("nl")) return nl;

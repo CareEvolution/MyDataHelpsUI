@@ -3,7 +3,7 @@ import "./SingleNotification.css"
 import MyDataHelps, { Notification } from "@careevolution/mydatahelps-js"
 import formatRelative from 'date-fns/formatRelative'
 import parseISO from 'date-fns/parseISO'
-import { getLocale } from '../../../helpers/locale';
+import { getLocaleFromIso } from '../../../helpers/locale';
 
 export interface SingleNotificationProps {
 	notification: Notification
@@ -15,7 +15,7 @@ export default function (props: SingleNotificationProps) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&

@@ -7,7 +7,7 @@ import UnstyledButton from '../UnstyledButton';
 import "./DateRangeNavigator.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
-import { getLocale } from '../../../helpers/locale';
+import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import language from '../../../helpers/language';
 
@@ -42,7 +42,7 @@ export default function (props: DateRangeNavigatorProps) {
 	}
 
 	function getMonthName() {
-		var locale = getLocale();
+		var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 		function capitalizeFirstLetter(string: string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		}

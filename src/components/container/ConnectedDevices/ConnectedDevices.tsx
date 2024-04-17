@@ -11,7 +11,7 @@ import { faWeightScale } from "@fortawesome/free-solid-svg-icons/faWeightScale"
 import formatRelative from 'date-fns/formatRelative'
 import parseISO from 'date-fns/parseISO'
 import * as FeatherIcon from 'react-feather'
-import { getLocale } from '../../../helpers/locale';
+import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -62,7 +62,7 @@ export default function (props: ConnectedDevicesProps) {
 		return null;
 	}
 
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div className="mdhui-connected-devices" ref={props.innerRef}>
 			<CardTitle title={props.providerName+ " " + language("devices")} />

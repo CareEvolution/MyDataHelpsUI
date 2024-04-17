@@ -1,7 +1,7 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { add, format, isSameDay } from "date-fns";
 import language from "./language";
-import { getLocale } from "./locale";
+import { getLocaleFromIso } from "./locale";
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -17,7 +17,7 @@ export function getDatesForMonth(year: number, month: number) {
 }
 
 export function getDayOfWeek(date: Date) {
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	var result = format(date, "EEEE", { locale: locale });
 	if (isSameDay(date, new Date())) {
 		result = language("today");
@@ -29,17 +29,17 @@ export function getDayOfWeek(date: Date) {
 }
 
 export function getFullDateString(date: Date) {
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return format(date, "MMMM d, yyyy", { locale: locale });
 }
 
 export function getShorterDateString(date: Date) {
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return format(date, "MMM d, yyyy", { locale: locale });
 }
 
 export function getMonthName(month: number) {
-	var locale = getLocale();
+	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	function capitalizeFirstLetter(string: string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}

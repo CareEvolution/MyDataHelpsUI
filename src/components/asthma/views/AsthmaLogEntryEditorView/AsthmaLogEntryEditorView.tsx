@@ -7,7 +7,7 @@ import { useInitializeView } from '../../../../helpers/Initialization';
 import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaImpacts, getAsthmaImpactTexts, getAsthmaSymptomLevel, getAsthmaSymptomLevelText, getAsthmaSymptoms, getAsthmaSymptomTexts, getAsthmaTriggers, getAsthmaTriggerTexts } from '../../helpers';
 import { AsthmaLogEntryEditorViewPreviewState, previewData } from './AsthmaLogEntryEditorView.previewData';
 import language from '../../../../helpers/language';
-import { getLocale } from '../../../../helpers/locale';
+import { getLocaleFromIso } from '../../../../helpers/locale';
 
 export interface AsthmaLogEntryEditorViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -112,7 +112,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar
-            title={format(props.date, 'PPP', {locale: getLocale()})}
+            title={format(props.date, 'PPP', {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())})}
             navigationBarLeft={cancelButton}
             navigationBarRight={saveButton}
             variant="compressed"

@@ -3,7 +3,7 @@ import { Card, Layout, NavigationBar, Title } from '../../../presentational';
 import { AsthmaAirQualities, AsthmaBiometrics, AsthmaLogEntryDetails } from '../../components';
 import { format } from 'date-fns';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { getLocale } from '../../../../helpers/locale';
+import { getLocaleFromIso } from '../../../../helpers/locale';
 
 export interface AsthmaDayViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -23,7 +23,7 @@ export default function (props: AsthmaDayViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true}>
             <Title order={2}>
-                {format(props.date, 'PPP', {locale: getLocale()})}
+                {format(props.date, 'PPP', {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())})}
             </Title>
         </NavigationBar>
         <Card>

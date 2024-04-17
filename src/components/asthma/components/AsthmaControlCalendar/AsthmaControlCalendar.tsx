@@ -8,7 +8,7 @@ import { AsthmaControlCalendarPreviewState, previewData } from './AsthmaControlC
 import { Action, Calendar, CalendarDay, CalendarDayStateConfiguration, Card, DateRangeContext, Section } from '../../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language from '../../../../helpers/language';
-import { getLocale } from '../../../../helpers/locale';
+import { getLocaleFromIso } from '../../../../helpers/locale';
 
 export type AsthmaControlCalendarVariant = 'compact' | 'verbose';
 
@@ -147,7 +147,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 let logEntry = logEntryLookup[identifier];
                 return <Card key={index}>
                     <Action
-                        title={format(targetDate, 'PPP', {locale: getLocale()})}
+                        title={format(targetDate, 'PPP', {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())})}
                         subtitle={logEntry ? getAsthmaSymptomLevelText(logEntry.symptomLevel) : differenceInDays(today, targetDate) >= 2 ? language('asthma-control-calendar-daily-entry-missed') : language('asthma-control-calendar-not-logged-yet')}
                         onClick={() => onDayClicked(targetDate)}
                     />
