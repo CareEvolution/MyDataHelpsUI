@@ -8,11 +8,12 @@ import portugueseStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 
-export type Language = "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
+export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
 
 export function language(key: string) {
-	const currentLanguage: "" | Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
+	const currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
 
+	if (currentLanguage == "en") return englishStrings[key];
 	if (currentLanguage == "es") return spanishStrings[key];
 	if (currentLanguage == "nl") return dutchStrings[key];
 	if (currentLanguage == "de") return germanStrings[key];
@@ -24,26 +25,18 @@ export function language(key: string) {
 	return englishStrings[key];
 }
 
-export function getLanguage(language: string): Language {
-    if (language == "es") return "es";
-    if (language == "nl") return "nl";
-    if (language == "de") return "de";
-    if (language == "fr") return "fr";
-    if (language == "pt") return "pt";
-    if (language == "it") return "it";
-    if (language == "pl") return "pl";
+export function getLanguageFromIso(language: string): Language {
+    if (language.length < 2) return "";
 
-    return "en";
-}
-
-export function getLanguageFromIso(language: string): "" | Language {
-    if (language.toLowerCase().startsWith("es")) return "es";
-    if (language.toLowerCase().startsWith("nl")) return "nl";
-    if (language.toLowerCase().startsWith("de")) return "de";
-    if (language.toLowerCase().startsWith("fr")) return "fr";
-    if (language.toLowerCase().startsWith("pt")) return "pt";
-    if (language.toLowerCase().startsWith("it")) return "it";
-    if (language.toLowerCase().startsWith("pl")) return "pl";
+    var beginningOfLanguage = language.slice(0, 2);
+    if (beginningOfLanguage == "en") return "en";
+    if (beginningOfLanguage == "es") return "es";
+    if (beginningOfLanguage == "nl") return "nl";
+    if (beginningOfLanguage == "de") return "de";
+    if (beginningOfLanguage == "fr") return "fr";
+    if (beginningOfLanguage == "pt") return "pt";
+    if (beginningOfLanguage == "it") return "it";
+    if (beginningOfLanguage == "pl") return "pl";
 
     return "";
 }
