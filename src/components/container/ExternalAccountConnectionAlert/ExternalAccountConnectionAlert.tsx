@@ -25,7 +25,7 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: "https://google.com"
+                    logoUrl: ""
                 },
                 status: "fetchingData",
                 lastRefreshDate: new Date().toISOString(),
@@ -39,7 +39,7 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: "https://google.com"
+                    logoUrl: ""
                 },
                 status: "unauthorized",
                 lastRefreshDate: new Date().toISOString(),
