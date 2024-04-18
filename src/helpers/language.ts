@@ -14,13 +14,13 @@ export function language(key: string) {
 	const currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
 
 	if (currentLanguage == "en") return englishStrings[key];
-	if (currentLanguage == "es") return spanishStrings[key];
-	if (currentLanguage == "nl") return dutchStrings[key];
-	if (currentLanguage == "de") return germanStrings[key];
-	if (currentLanguage == "fr") return frenchStrings[key];
-	if (currentLanguage == "pt") return portugueseStrings[key];
-	if (currentLanguage == "it") return italianStrings[key];
-	if (currentLanguage == "pl") return polishStrings[key];
+	if (currentLanguage == "es" && spanishStrings[key] != null) return spanishStrings[key];
+	if (currentLanguage == "nl" && dutchStrings[key] != null) return dutchStrings[key];
+	if (currentLanguage == "de" && germanStrings[key] != null) return germanStrings[key];
+	if (currentLanguage == "fr" && frenchStrings[key] != null) return frenchStrings[key];
+	if (currentLanguage == "pt" && portugueseStrings[key] != null) return portugueseStrings[key];
+	if (currentLanguage == "it" && italianStrings[key] != null) return italianStrings[key];
+	if (currentLanguage == "pl" && polishStrings[key] != null) return polishStrings[key];
 
 	return englishStrings[key];
 }
