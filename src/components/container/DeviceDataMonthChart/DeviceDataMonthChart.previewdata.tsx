@@ -23,6 +23,9 @@ export function getPreviewData(dailyDataType: string, year: number, month: numbe
 	if (dailyDataType == "GoogleFitSteps") {
 		return getPreviewGoogleFitSteps(year, month);
 	}
+	if (dailyDataType == "AppleHealthSleepMinutes") {
+		return getPreviewAppleHealthSleepMinutes(year, month);
+	}
 	return getPreviewFitbitSteps(year, month);
 }
 
@@ -104,6 +107,19 @@ function getPreviewGoogleFitSteps(year: number, month: number) {
 	var result: { [key: string]: number } = {};
 	while (date < monthEnd) {
 		result[getDayKey(date)] = (Math.floor(Math.random() * 500));
+		date = add(date, { hours: 1 });
+	}
+	return result;
+}
+
+function getPreviewAppleHealthSleepMinutes(year: number, month: number) {
+	var date = new Date(year, month, 1, 0, 0, 0, 0);
+
+	var monthEnd = add(date, { months: 1 });
+
+	var result: { [key: string]: number } = {};
+	while (date < monthEnd) {
+		result[getDayKey(date)] = 100 + (Math.floor(Math.random() * 500));
 		date = add(date, { hours: 1 });
 	}
 	return result;

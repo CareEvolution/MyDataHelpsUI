@@ -25,6 +25,9 @@ NotConnected.args = { previewState: "notConnected", title: "Fitbit" };
 export const Unauthorized = Template.bind({});
 Unauthorized.args = { previewState: "unauthorized", title: "Fitbit" };
 
+export const ConnectionError = Template.bind({});
+ConnectionError.args = { previewState: "error", title: "Fitbit" };
+
 export const FetchComplete = Template.bind({});
 FetchComplete.args = { previewState: "fetchComplete", title: "Fitbit" };
 
@@ -39,3 +42,7 @@ NotEnabledHide.args = { previewState: "notEnabled", title: "Fitbit", disabledBeh
 
 export const NotEnabledDisplayError = Template.bind({});
 NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "displayError" };
+
+export const HideConnected = Template.bind({});
+HideConnected.args = { previewState: "fetchComplete", hideWhenConnected: true };
+HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"]}};

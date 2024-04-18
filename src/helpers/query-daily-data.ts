@@ -9,6 +9,9 @@ import {
 	appleHealthMaxHeartRateDataProvider,
 	appleHealthRestingHeartRateDataProvider,
 	appleHealthSleepDataProvider,
+	appleHealthSleepCoreDataProvider,
+	appleHealthSleepDeepDataProvider,
+	appleHealthSleepRemDataProvider,
 	appleHealthStandTimeDataProvider,
 	appleHealthStepsDataProvider,
 	appleHealthActiveEnergyBurned,
@@ -80,6 +83,7 @@ export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
 	return dailyDataType.availabilityCheck(modifiedAfter);
 }
 
+
 export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 	var dailyDataType = dailyDataTypes[type];
 	return dailyDataType.provider(startDate, endDate).then(function (data) {
@@ -117,6 +121,9 @@ export enum DailyDataType {
 	AppleHealthMaxHeartRate = "AppleHealthMaxHeartRate",
 	AppleHealthRestingHeartRate = "AppleHealthRestingHeartRate",
 	AppleHealthSleepMinutes = "AppleHealthSleepMinutes",
+	AppleHealthSleepRemMinutes = "AppleHealthSleepRemMinutes",
+	AppleHealthSleepDeepMinutes = "AppleHealthSleepDeepMinutes",
+	AppleHealthSleepCoreMinutes = "AppleHealthSleepCoreMinutes",
 	AppleHealthInBedMinutes = "AppleHealthInBedMinutes",
 	AppleHealthStandMinutes = "AppleHealthStandMinutes",
 	AppleHealthSteps = "AppleHealthSteps",
@@ -179,6 +186,9 @@ registerDailyDataProvider(DailyDataType.AppleHealthHrv, appleHealthHrvDataProvid
 registerDailyDataProvider(DailyDataType.AppleHealthMaxHeartRate, appleHealthMaxHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]));
 registerDailyDataProvider(DailyDataType.AppleHealthRestingHeartRate, appleHealthRestingHeartRateDataProvider, simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"]));
 registerDailyDataProvider(DailyDataType.AppleHealthSleepMinutes, appleHealthSleepDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
+registerDailyDataProvider(DailyDataType.AppleHealthSleepCoreMinutes, appleHealthSleepCoreDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
+registerDailyDataProvider(DailyDataType.AppleHealthSleepDeepMinutes, appleHealthSleepDeepDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
+registerDailyDataProvider(DailyDataType.AppleHealthSleepRemMinutes, appleHealthSleepRemDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
 registerDailyDataProvider(DailyDataType.AppleHealthInBedMinutes, appleHealthInBedDataProvider, simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]));
 registerDailyDataProvider(DailyDataType.AppleHealthStandMinutes, appleHealthStandTimeDataProvider, simpleAvailabilityCheck("AppleHealth", ["AppleStandTime"]));
 registerDailyDataProvider(DailyDataType.AppleHealthSteps, appleHealthStepsDataProvider, simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]));
@@ -268,3 +278,4 @@ registerDailyDataProvider(DailyDataType.Steps, combinedStepsDataProvider, functi
 		}
 	})
 });
+

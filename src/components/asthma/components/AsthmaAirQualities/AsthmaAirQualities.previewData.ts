@@ -80,7 +80,7 @@ export const previewData: Record<AsthmaAirQualitiesPreviewState, AsthmaAirQualit
             type: 'work',
             status: 'out-of-range',
             value: 130,
-            description: 'Unhealthy'
+            description: 'unhealthy'
         }
     }
 };

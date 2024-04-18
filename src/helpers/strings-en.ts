@@ -23,6 +23,7 @@
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
     "expired-reconnect": "Connection expired.  Please reconnect.",
+    "connect-error-reconnect": "Unexpected error.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",
@@ -313,6 +314,9 @@
     "asthma-log-entry-editor-view-symptoms-title": "Symptoms",
     "asthma-log-entry-editor-view-impacts-title": "Impacts",
     "asthma-log-entry-editor-view-triggers-title": "Triggers",
+    "asthma-air-quality-description-unhealthy": "Unhealthy",
+    "asthma-air-quality-description-very-unhealthy": "Very Unhealthy",
+    "asthma-air-quality-description-hazardous": "Hazardous",
     "blood-type": "Blood Type",
     "device-data-month-chart-no-data": "No Data",
     "device-data-month-chart-daily-average": "Daily Average",
@@ -332,6 +336,8 @@
     "lab-report": "Lab Report",
     "service-performed": "Service Performed",
     "services-performed": "Services Performed",
+    "device-data-month-chart-minutes": "Minutes",
+    "device-data-month-chart-sleep": "Sleep",
 };
 
 export default strings;
