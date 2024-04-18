@@ -52,32 +52,32 @@ export const NotEnabledDisplayError = {
 };
 
 export const Enabled = {
-    args: { previewState: "enabled", applicationUrl: "preview" },
+    args: { previewState: "enabled", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
     render: render
 };
 
 export const EnabledConnected = {
-    args: { previewState: "enabledConnected", applicationUrl: "preview" },
+    args: { previewState: "enabledConnected", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
     render: render
 };
 
 export const EnabledNeedsAttention = {
-    args: { previewState: "enabledNeedsAttention", applicationUrl: "preview" },
+    args: { previewState: "enabledNeedsAttention", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
     render: render
 };
 
 export const Live = {
-    args: { disabledBehavior: "displayError", applicationUrl: "preview" },
+    args: { disabledBehavior: "displayError", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
     render: render
 };
 
 export const CustomConnectedText = {
-    args: { previewState: "enabledConnected", applicationUrl: "preview", title:"Custom title", connectedText: "Thanks for connecting your EHR!" },
+    args: { previewState: "enabledConnected", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") }, title: "Custom title", connectedText: "Thanks for connecting your EHR!" },
     render: render
 };
 
 export const CustomConnectText = {
-    args: { previewState: "enabled", applicationUrl: "preview", title:"Custom title", connectedText: "Connect your EHR title" },
+    args: { previewState: "enabled", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") }, title: "Custom title", connectedText: "Connect your EHR title" },
     render: render
 };
 

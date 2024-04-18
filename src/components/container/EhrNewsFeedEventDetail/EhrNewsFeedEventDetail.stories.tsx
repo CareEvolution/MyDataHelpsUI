@@ -16,7 +16,8 @@ export const ProcedureGroup = {
 
 export const LabReport = {
     args: {
-        previewState: "LabReport"
+        previewState: "LabReport",
+        onViewLabObservationTermInfo: (labObservationID: string) => { }
     },
     render: render
 };
