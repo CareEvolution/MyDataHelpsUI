@@ -13,14 +13,16 @@ export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl
 export function language(key: string) {
 	const currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
 
-	if (currentLanguage == "en") return englishStrings[key];
-	if (currentLanguage == "es" && spanishStrings[key] != null) return spanishStrings[key];
-	if (currentLanguage == "nl" && dutchStrings[key] != null) return dutchStrings[key];
-	if (currentLanguage == "de" && germanStrings[key] != null) return germanStrings[key];
-	if (currentLanguage == "fr" && frenchStrings[key] != null) return frenchStrings[key];
-	if (currentLanguage == "pt" && portugueseStrings[key] != null) return portugueseStrings[key];
-	if (currentLanguage == "it" && italianStrings[key] != null) return italianStrings[key];
-	if (currentLanguage == "pl" && polishStrings[key] != null) return polishStrings[key];
+	let resolvedString = null;
+	if (currentLanguage == "en") resolvedString = englishStrings[key];
+	if (currentLanguage == "es") resolvedString = spanishStrings[key];
+	if (currentLanguage == "nl") resolvedString = dutchStrings[key];
+	if (currentLanguage == "de") resolvedString = germanStrings[key];
+	if (currentLanguage == "fr") resolvedString = frenchStrings[key];
+	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
+	if (currentLanguage == "it") resolvedString = italianStrings[key];
+	if (currentLanguage == "pl") resolvedString = polishStrings[key];
+	if (resolvedString != null) return resolvedString;
 
 	return englishStrings[key];
 }
