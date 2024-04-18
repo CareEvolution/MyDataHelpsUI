@@ -6,12 +6,12 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { format, parseISO } from 'date-fns';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedFeed, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
+import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
 import "./EhrNewsFeedEventDetail.css"
 import language from '../../../helpers/language';
 
 export interface EhrNewsFeedEventDetailProps {
-    feed: EhrNewsFeedFeed
+    feed: EhrNewsFeedType
     pageId?: string
     pageDate?: string
     previewState?: EhrNewsFeedEventType

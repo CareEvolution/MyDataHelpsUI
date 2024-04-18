@@ -7,19 +7,19 @@ import language from '../../../helpers/language';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import "./EhrNewsFeed.css"
-import { EhrNewsFeedEventModel, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
+import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
     onEventSelected(eventReference: EhrNewsFeedEventReference): void
-    feed: EhrNewsFeedFeed
+    feed: EhrNewsFeedType
     onReportSelected(reportID: string): void
 }
 
 export interface EhrNewsFeedEventReference {
-    feed: EhrNewsFeedFeed
+    feed: EhrNewsFeedType
     pageId?: string
     pageDate?: string
 }

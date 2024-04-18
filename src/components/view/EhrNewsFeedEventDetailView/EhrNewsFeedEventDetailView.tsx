@@ -1,10 +1,10 @@
 import React from "react"
 import { Layout, NavigationBar, Title } from "../../presentational"
 import { EhrNewsFeedEventDetail } from "../../container";
-import { EhrNewsFeedEventType, EhrNewsFeedFeed } from "../../../helpers/news-feed/types";
+import { EhrNewsFeedEventType, EhrNewsFeedType } from "../../../helpers/news-feed/types";
 
 export interface EhrNewsFeedEventDetailViewProps {
-    feed: EhrNewsFeedFeed
+    feed: EhrNewsFeedType
     pageId?: string
     pageDate?: string
     previewState?: EhrNewsFeedEventType

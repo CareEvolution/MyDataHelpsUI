@@ -5,7 +5,7 @@ import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../contain
 import EhrNewsFeedView from '../EhrNewsFeedView/EhrNewsFeedView';
 import { EhrNewsFeedEventReference } from '../../container/EhrNewsFeed/EhrNewsFeed';
 import ReportView from '../ReportView/ReportView';
-import { EhrNewsFeedEventType, EhrNewsFeedFeed } from '../../../helpers/news-feed/types';
+import { EhrNewsFeedEventType, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import TermInformationView from '../TermInformationView/TermInformationView';
 import MyDataHelps, { ConnectExternalAccountOptions } from '@careevolution/mydatahelps-js';
 
@@ -130,7 +130,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
 
         if (view.key == "NewsFeedEventDetail") {
             let eventReference = view.properties?.eventReference as EhrNewsFeedEventReference;
-            let feed = eventReference.feed as EhrNewsFeedFeed;
+            let feed = eventReference.feed as EhrNewsFeedType;
 
             let detailPreviewState: EhrNewsFeedEventType | undefined = undefined;
             if (props.previewState) {
