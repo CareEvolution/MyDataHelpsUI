@@ -3,6 +3,7 @@ import Layout from "../../presentational/Layout"
 import RelativeActivityDateRangeCoordinator, { RelativeActivityDateRangeCoordinatorProps } from "./RelativeActivityDateRangeCoordinator";
 import { DailyDataType } from "../../../helpers/query-daily-data";
 import { WeeklyRelativeActivityDataType } from "../RelativeActivityWeekNavigator/RelativeActivityWeekNavigator";
+import DateRangeTitle from "../../presentational/DateRangeTitle";
 
 export default {
     title: "Container/RelativeActivityDateRangeCoordinator",
@@ -14,7 +15,7 @@ export default {
 
 let render = (args: RelativeActivityDateRangeCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityDateRangeCoordinator {...args} /></Layout>
 
-let dataTypes:WeeklyRelativeActivityDataType[] = [
+let dataTypes: WeeklyRelativeActivityDataType[] = [
     {
         dailyDataType: DailyDataType.Steps,
         threshold: 5000,
@@ -44,7 +45,8 @@ let dataTypes:WeeklyRelativeActivityDataType[] = [
 export const Default = {
     args: {
         previewState: "default",
-        dataTypes: dataTypes
+        dataTypes: dataTypes,
+        children: <DateRangeTitle defaultMargin />
     },
     render: render
 };
