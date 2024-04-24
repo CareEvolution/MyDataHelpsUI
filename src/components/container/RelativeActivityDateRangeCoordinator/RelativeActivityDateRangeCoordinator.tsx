@@ -42,7 +42,8 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
             <RelativeActivityWeekNavigator
                 selectedDate={currentContext.intervalStart}
                 onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
-                dataTypes={availableDataTypes} />
+                dataTypes={availableDataTypes}
+                previewState={props.previewState} />
             {props.children}
         </DateRangeContext.Provider>
     );
