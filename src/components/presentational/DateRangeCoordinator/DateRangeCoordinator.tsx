@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-interval-start";
+import { startOfDay } from "date-fns";
 
 export interface DateRangeCoordinatorProps {
     initialIntervalStart?: Date;
@@ -24,6 +25,9 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
     let initialIntervalStart = props.initialIntervalStart || getMonthStart();
     if (props.intervalType === "Week") {
         initialIntervalStart = getWeekStart(props.weekStartsOn);
+    }
+    if (props.intervalType === "Day") {
+        initialIntervalStart = startOfDay(new Date());
     }
 
     const [currentContext, setCurrentContext] = useState<DateRangeContext>({
