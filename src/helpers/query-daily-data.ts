@@ -62,7 +62,8 @@ import {
 	garminSleepScoreDataProvider,
 	garminTotalSleepMinutesDataProvider,
 	homeAirQualityDataProvider,
-	workAirQualityDataProvider
+	workAirQualityDataProvider,
+	combinedSleepDataProvider
 } from "./daily-data-providers";
 import combinedRestingHeartRate from "./daily-data-providers/combined-resting-heart-rate";
 import getDayKey from "./get-day-key";
@@ -175,6 +176,7 @@ export enum DailyDataType {
 	GoogleFitSteps = "GoogleFitSteps",
 	Steps = "Steps",
 	RestingHeartRate = "RestingHeartRate",
+	Sleep = "Sleep",
 	HomeAirQuality = "HomeAirQuality",
 	WorkAirQuality = "WorkAirQuality"
 };
@@ -267,6 +269,24 @@ registerDailyDataProvider(DailyDataType.Steps, combinedStepsDataProvider, functi
 			return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter).then(function (result) {
 				if (!result) {
 					return simpleAvailabilityCheck("Garmin", ["Steps"])(modifiedAfter);
+				}
+				else {
+					return result;
+				}
+			})
+		}
+		else {
+			return result;
+		}
+	})
+});
+
+registerDailyDataProvider(DailyDataType.Sleep, combinedSleepDataProvider, function (modifiedAfter?: Date) {
+	return simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"])(modifiedAfter).then(function (result) {
+		if (!result) {
+			return simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter).then(function (result) {
+				if (!result) {
+					return simpleAvailabilityCheck("Garmin", ["Sleep"])(modifiedAfter);
 				}
 				else {
 					return result;
