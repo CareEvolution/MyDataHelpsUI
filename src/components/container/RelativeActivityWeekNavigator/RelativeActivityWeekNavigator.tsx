@@ -98,9 +98,10 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
             }
         });
 
-        return <SparkBarChart
-            averageFillPercent={50}
-            bars={bars} />
+        return <div style={{ paddingTop: "8px" }}>
+            <SparkBarChart
+                averageFillPercent={50}
+                bars={bars} /></div>
     }
 
     return <WeekCalendar

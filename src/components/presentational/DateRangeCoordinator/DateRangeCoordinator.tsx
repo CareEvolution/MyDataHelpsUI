@@ -8,7 +8,7 @@ export interface DateRangeCoordinatorProps {
     intervalType: "Day" | "Week" | "Month";
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
-    children: React.ReactNode;
+    children?: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
     sticky?: boolean;
 }
