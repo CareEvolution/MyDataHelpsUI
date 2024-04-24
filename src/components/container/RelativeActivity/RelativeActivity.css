@@ -1,0 +1,25 @@
+.mdhui-relative-activity .mdhui-relative-activity-datatype {
+    position: relative;
+}
+
+.mdhui-relative-activity .mdhui-relative-activity-meter {
+    margin: 16px;
+}
+
+.mdhui-relative-activity .mdhui-relative-activity-datatype .mdhui-relative-activity-threshold {
+    position: absolute;
+    width: 100%;
+    top: 8px;
+    left: 0;
+    text-align: center;
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-relative-activity .mdhui-relative-activity-average-marker {
+    text-align: center;
+    margin: 16px;
+    font-size: .7em;
+    margin-bottom: 16px;
+    color: var(--mdhui-text-color-2);
+}

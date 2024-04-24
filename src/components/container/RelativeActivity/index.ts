@@ -1,0 +1,1 @@
+export { default, RelativeActivityDataType } from "./RelativeActivity";

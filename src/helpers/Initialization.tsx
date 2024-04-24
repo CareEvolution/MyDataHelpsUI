@@ -2,9 +2,9 @@
 import { DependencyList, useEffect } from 'react';
 import { debounce } from 'lodash';
 
-export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
+export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList, debounceWait?: number): void {
     useEffect(() => {
-        let debouncedInitialize = debounce(initialize, 500);
+        let debouncedInitialize = debounce(initialize, debounceWait != undefined ? debounceWait : 500);
 
         debouncedInitialize();
 

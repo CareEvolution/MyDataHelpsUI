@@ -6,23 +6,16 @@ import { useEffect, useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import getDayKey from "../../../helpers/get-day-key";
 import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
-import { ActivityMeter, CardTitle } from "../../presentational";
+import { ActivityMeter, CardTitle, Title } from "../../presentational";
 import "./RelativeActivityToday.css"
 import language from "../../../helpers/language";
+import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
-}
-
-export interface RelativeActivityDataType {
-    dailyDataType: string;
-    label: string;
-    icon: React.ReactElement;
-    color: string;
-    formatter: (number: number) => string;
 }
 
 export default function (props: RelativeActivityTodayProps) {
@@ -119,7 +112,7 @@ export default function (props: RelativeActivityTodayProps) {
     }
 
     return <div ref={props.innerRef} className="mdhui-relative-activity-today">
-        {props.title && <CardTitle title={props.title} />}
+        {props.title && <Title order={3} defaultMargin>{props.title}</Title>}
         {computedResults.map(c => {
             let dataType = props.dataTypes.find(dt => dt.dailyDataType === c.dailyDataType)!;
             return <ActivityMeter key={dataType.dailyDataType} className="mdhui-relative-activity-today-meter" label={dataType.label} value={c.value} fillPercent={c.fillPercent} averageFillPercent={0.5} icon={dataType.icon} color={dataType.color} />
@@ -129,7 +122,6 @@ export default function (props: RelativeActivityTodayProps) {
                 <FontAwesomeSvgIcon icon={faChevronUp} />
             </div>
             {language("30-day-average")}
-
         </div>
     </div>
 }

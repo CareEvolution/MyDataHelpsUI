@@ -30,15 +30,15 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
         initialIntervalStart = startOfDay(new Date());
     }
 
-    const [currentContext, setCurrentContext] = useState<DateRangeContext>({
-        intervalStart: initialIntervalStart,
-        intervalType: props.intervalType
-    });
+    //default to null because the initial context will be set in useEffect below
+    const [currentContext, setCurrentContext] = useState<DateRangeContext | null>(null);
 
     //reset the interval if the interval type changes
     useEffect(() => {
         setCurrentContext({ intervalType: props.intervalType, intervalStart: initialIntervalStart });
     }, [props.intervalType, props.weekStartsOn]);
+
+    if (!currentContext) { return null; }
 
     return <div ref={props.innerRef}> <DateRangeContext.Provider value={currentContext}>
         <DateRangeNavigator
