@@ -30,15 +30,16 @@
 .mdhui-week-calendar .mdhui-week-calendar-week {
     min-width: 100%;
     scroll-snap-align: start;
+    display:flex;
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day {
-    width: calc(14.28% - 1px);
     border-left: solid 1px var(--mdhui-border-color-1);
     overflow: hidden;
     position: relative;
     display: inline-block;
     vertical-align: top;
+    flex: 1;
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day:first-child {

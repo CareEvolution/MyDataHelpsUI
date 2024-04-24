@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import "./WeekCalendar.css"
 import { add, format, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
+import { debounce } from 'lodash';
 
 export interface WeekCalendarProps {
 	selectedDate?: Date;
@@ -19,15 +20,15 @@ export default function (props: WeekCalendarProps) {
 
 	useEffect(() => {
 		if (props.onStartDateChange) {
-			var scrollListener = function (ev: Event) {
+			var scrollListener = debounce(function (ev: Event) {
 				if (element.current?.scrollLeft == 0) {
 					props.onStartDateChange!(add(props.startDate, { weeks: -1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
-				} else if (element.current?.scrollLeft == window.innerWidth * 2) {
+				} else if (element.current?.clientWidth && element.current?.scrollLeft == element.current.clientWidth * 2) {
 					props.onStartDateChange!(add(props.startDate, { weeks: 1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
 				}
-			};
+			}, 500);
 			element.current?.addEventListener("scroll", scrollListener);
 			return () => {
 				element.current?.removeEventListener("scroll", scrollListener);
