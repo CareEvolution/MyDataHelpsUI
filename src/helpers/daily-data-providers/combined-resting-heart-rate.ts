@@ -32,7 +32,7 @@ export default function (startDate: Date, endDate: Date) {
 					}
 				});
 				if (heartRates.length > 0) {
-					data[dayKey] = heartRates.reduce((a,b) => a+b) / heartRates.length; // rounding?
+					data[dayKey] = Math.round( heartRates.reduce((a,b) => a+b) / heartRates.length );
 				}
 				startDate = add(startDate, { days: 1 });
 			}

@@ -10,7 +10,7 @@ import { queryDailyData, DailyDataType } from '../../../helpers/query-daily-data
 
 type HeartRateMap = { [key: string]: number };
 
-export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading";
+export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Combined" | "AppleHealth" | "Fitbit" | "Garmin";
 
 export interface RestingHeartRateCalendarProps {
 	month: number,
@@ -26,8 +26,14 @@ export default function (props: RestingHeartRateCalendarProps) {
 	var monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
 	var monthEnd = add(monthStart, { months: 1 });
 
-	function getRestingHeartRates() {
-		return queryDailyData(DailyDataType.RestingHeartRate, monthStart, monthEnd).then(function (result) {
+	function getRestingHeartRates(dataType?: RestingHeartRateCalendarPreviewState) {
+		var dailyDataType: DailyDataType = DailyDataType.RestingHeartRate;
+		
+		if (dataType == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
+		if (dataType == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
+		if (dataType == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
+		
+		return queryDailyData(dailyDataType, monthStart, monthEnd).then(function (result) {
 			setHeartRates(result);
 		});
 	}
@@ -54,21 +60,23 @@ export default function (props: RestingHeartRateCalendarProps) {
 	}
 
 	function initialize() {
-		if (props.showPreviewData) {
-			if (props.showPreviewData === "Loading") {
-				setLoading(true);
-			}
-			else if (props.showPreviewData === "WithData") {
-				var previewData = getPreviewData("FitbitRestingHeartRates", props.year, props.month);
-				if (previewData) {
-					setHeartRates(previewData);
-				}
-			}
+		if (props.showPreviewData === "NoData") {
+			return;
 		}
-		else {
+		if (props.showPreviewData === "Loading") {
 			setLoading(true);
-			getRestingHeartRates().then(() => setLoading(false));
+			return;
 		}
+		if (props.showPreviewData === "WithData") {
+			var previewData = getPreviewData("FitbitRestingHeartRates", props.year, props.month);
+			if (previewData) {
+				setHeartRates(previewData);
+			}
+			return;
+		}
+
+		setLoading(true);
+		getRestingHeartRates(props.showPreviewData).then(() => setLoading(false));
 	}
 
 	useEffect(() => {

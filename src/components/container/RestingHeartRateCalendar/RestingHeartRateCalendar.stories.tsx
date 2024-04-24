@@ -39,3 +39,33 @@ SampleData.args = {
   month: 3,
   showPreviewData: "WithData",
 };
+
+export const Combined = Template.bind({});
+Combined.args = {
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
+  showPreviewData: "Combined",
+};
+
+export const AppleHealth = Template.bind({});
+AppleHealth.args = {
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
+  showPreviewData: "AppleHealth",
+};
+
+export const Fitbit = Template.bind({});
+Fitbit.args = {
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
+  showPreviewData: "Fitbit",
+};
+
+export const Garmin = Template.bind({});
+Garmin.args = {
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
+  showPreviewData: "Garmin",
+};
+
+
