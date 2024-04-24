@@ -25,12 +25,14 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
     let [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
 
     function loadData() {
+        if (!props.dataTypes.length) return;
+
         function queryData() {
             if (props.previewState === "default") {
                 let result = props.dataTypes.map(dataType => {
                     let data: DailyDataQueryResult = {};
                     for (let i = -7; i < 7; i++) {
-                        let dayKey = getDayKey(add(weekStart, {days:i}));
+                        let dayKey = getDayKey(add(weekStart, { days: i }));
                         data[dayKey] = Math.random() * dataType.threshold * 2;
                     }
                     return data;
@@ -38,7 +40,7 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
                 return Promise.resolve(result);
             }
 
-            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, add(weekStart, {days:-7}), add(weekStart, { days: 7 })));
+            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, add(weekStart, { days: -7 }), add(weekStart, { days: 7 })));
             return Promise.all(promises).then(results => {
                 return results;
             });
@@ -69,9 +71,14 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
     }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState]);
 
     let dayRenderer = function (year: number, month: number, day: number, selectedWeek: boolean) {
+        if (!props.dataTypes.length) { return null; }
+
         var date = new Date(year, month, day);
         var dayKey = getDayKey(date);
         let bars: SparkBarChartBar[] = props.dataTypes.map(dataType => {
+            if (!dailyData) {
+                return { color: "var(--mdhui-color-primary)", barFillPercent: 0 };
+            }
             let value = dailyData[dataType.dailyDataType]?.[dayKey] ?? 0;
             let color = dataType.color || "var(--mdhui-color-primary)";
             if (value > dataType.threshold && dataType.overthresholdColor) {
