@@ -15,9 +15,9 @@ export const ffwelCreativeSelfLineChart = {
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        lines: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf", stroke: "#e41a1c" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf", stroke: "#377eb8" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf", stroke: "#4daf4a" }],
+        lines: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {

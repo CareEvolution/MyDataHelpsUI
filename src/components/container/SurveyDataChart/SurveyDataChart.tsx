@@ -12,8 +12,6 @@ export interface SurveyAnswerChartLine {
 	surveyName: string;
 	stepIdentifier: string;
 	resultIdentifier: string;
-	valueConverter?: Function;
-	stroke: string;
 }
 
 export interface SurveyDataChartProps {
@@ -21,8 +19,6 @@ export interface SurveyDataChartProps {
     intervalType?: "Week" | "Month"
     weekStartsOn?: WeekStartsOn
     lines: SurveyAnswerChartLine[],
-    valueConverter?(value: number): number
-    valueFormatter?(value: number): string
     chartType: "Line" | "Bar" | "Area"
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
     hideIfNoData?: boolean
@@ -49,7 +45,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        intervalType = dateRangeContext.intervalType;
+        intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
