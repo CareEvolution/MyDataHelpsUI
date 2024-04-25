@@ -24,7 +24,7 @@ export interface RelativeActivityDataType {
     dailyDataType: string;
     label: string;
     icon: React.ReactElement;
-    color: ColorDefinition;
+    color?: ColorDefinition;
     overThresholdColor?: ColorDefinition;
     formatter: (number: number) => string;
     threshold?: number;
@@ -138,7 +138,7 @@ export default function (props: RelativeActivityProps) {
 
     useInitializeView(() => {
         loadData();
-    }, ["externalAccountSyncComplete"], [dateRangeContext, props.date], 0);
+    }, ["externalAccountSyncComplete"], [dateRangeContext, props.date, props.dataTypes], 0);
 
     if (result == null || !result.length) {
         return null;
