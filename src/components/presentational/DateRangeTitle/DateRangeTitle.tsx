@@ -11,6 +11,7 @@ export interface DateRangeTitleProps extends TitleProps {
     order?: 1 | 2 | 3 | 4 | 5 | 6;
     style?: React.CSSProperties;
     defaultMargin?: boolean
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function DateRangeTitle(props: DateRangeTitleProps) {
@@ -22,7 +23,7 @@ export default function DateRangeTitle(props: DateRangeTitleProps) {
         };
     };
 
-    return <Title defaultMargin={props.defaultMargin} order={props.order || 3} color={props.color} style={props.style}>
+    return <Title defaultMargin={props.defaultMargin} order={props.order || 3} color={props.color} style={props.style} innerRef={props.innerRef}>
         {titleForDateRange(context.intervalType, context.intervalStart, "long")}
     </Title>
 }
