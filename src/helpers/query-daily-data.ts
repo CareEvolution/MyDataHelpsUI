@@ -176,7 +176,7 @@ export enum DailyDataType {
 	GoogleFitSteps = "GoogleFitSteps",
 	Steps = "Steps",
 	RestingHeartRate = "RestingHeartRate",
-	Sleep = "Sleep",
+	SleepMinutes = "SleepMinutes",
 	HomeAirQuality = "HomeAirQuality",
 	WorkAirQuality = "WorkAirQuality"
 };
@@ -281,7 +281,7 @@ registerDailyDataProvider(DailyDataType.Steps, combinedStepsDataProvider, functi
 	})
 });
 
-registerDailyDataProvider(DailyDataType.Sleep, combinedSleepDataProvider, function (modifiedAfter?: Date) {
+registerDailyDataProvider(DailyDataType.SleepMinutes, combinedSleepDataProvider, function (modifiedAfter?: Date) {
 	return simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"])(modifiedAfter).then(function (result) {
 		if (!result) {
 			return simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter).then(function (result) {

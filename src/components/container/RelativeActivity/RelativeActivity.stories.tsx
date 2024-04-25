@@ -81,7 +81,7 @@ export const AverageAsThreshold = {
     args: {
         dataTypes: dataTypes,
         title: "Activity",
-        previewState: "default"
+        previewState: "Default"
     },
     render: render
 };
@@ -98,7 +98,7 @@ export const SpecificThresholds = {
     args: {
         dataTypes: dataTypesWithThresholds,
         title: "Activity",
-        previewState: "default",
+        previewState: "Default",
         specifyThresholds: true
     },
     render: render

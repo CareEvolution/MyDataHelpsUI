@@ -13,7 +13,7 @@ import { ColorDefinition } from "../../../helpers/colors";
 
 export interface RelativeActivityProps {
     dataTypes: RelativeActivityDataType[];
-    previewState?: "default";
+    previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
     specifyThresholds?: boolean;
@@ -50,7 +50,7 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         setResults(null);
         function queryData() {
-            if (props.previewState === "default") {
+            if (props.previewState === "Default") {
                 let result = props.dataTypes.map(dataType => {
                     let data: DailyDataQueryResult = {};
                     for (let i = -31; i < 1; i++) {
