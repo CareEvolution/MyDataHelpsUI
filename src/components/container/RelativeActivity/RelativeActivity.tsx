@@ -60,18 +60,18 @@ export default function (props: RelativeActivityProps) {
                             data[dayKey] = Math.random() * dataType.threshold! * 2;
                         }
                         else if (dataType.dailyDataType.includes("Steps")) {
-                            data[dayKey] = Math.random() * 10000! * 2;
+                            data[dayKey] = 5212;
                         }
                         else if (dataType.dailyDataType.includes("Sleep")) {
-                            data[dayKey] = Math.random() * 60 * 16;
+                            data[dayKey] = 8 * 60 - 25;
                         }
                         else if (dataType.dailyDataType.includes("Minutes")) {
-                            data[dayKey] = Math.random() * 200;
+                            data[dayKey] = 125;
                         }
                         else if (dataType.dailyDataType.includes("HeartRate")) {
-                            data[dayKey] = Math.random() * 150;
+                            data[dayKey] = 90;
                         } else {
-                            data[dayKey] = Math.random() * 5000;
+                            data[dayKey] = 5000;
                         }
                     }
                     return data;
@@ -144,10 +144,23 @@ export default function (props: RelativeActivityProps) {
         return null;
     }
 
+    function getColor(dataType: RelativeActivityDataType, fillPercent: number) {
+        if (props.specifyThresholds && dataType.overThresholdColor && fillPercent > .5) {
+            return dataType.overThresholdColor;
+        }
+        return dataType.color || "var(--mdhui-color-primary)";
+    }
+
     return <div ref={props.innerRef} className="mdhui-relative-activity">
         {props.title && <CardTitle title={props.title} />}
         {result.map(c => <div key={c.dataType.dailyDataType} className="mdhui-relative-activity-datatype">
-            <ActivityMeter className="mdhui-relative-activity-meter" label={c.dataType.label} value={c.value} fillPercent={c.fillPercent} averageFillPercent={0.5} icon={c.dataType.icon} color={c.dataType.color} />
+            <ActivityMeter className="mdhui-relative-activity-meter"
+                label={c.dataType.label}
+                value={c.value}
+                fillPercent={c.fillPercent}
+                averageFillPercent={0.5}
+                icon={c.dataType.icon}
+                color={getColor(c.dataType, c.fillPercent)} />
             {c.dataType.threshold !== undefined &&
                 <div className="mdhui-relative-activity-threshold">
                     {c.dataType.formatter(c.dataType.threshold)}
