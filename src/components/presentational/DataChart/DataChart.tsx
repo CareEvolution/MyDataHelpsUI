@@ -4,7 +4,6 @@ import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import "./DataChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
-import { LineChartOptions } from '../../container'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 
 export interface DataChartProps {
@@ -124,7 +123,7 @@ export default function DataChart(props: DataChartProps) {
 
 
     function getColorFromOptions(i: number, fieldName: string) {
-        var property = props.options ? props.options[fieldName] : null;
+        var property = props.options ? (props.options as any)[fieldName] : null;
         if(!!property){
             if (Array.isArray(property)) {
                 return property[i];

@@ -5,6 +5,7 @@ export { default as Calendar } from "./Calendar"
 export { default as CalendarDay, CalendarDayStateConfiguration } from "./CalendarDay"
 export { default as Card } from "./Card"
 export { default as CardTitle } from "./CardTitle"
+export { default as DataChart, LineChartOptions, BarChartOptions, AreaChartOptions, BarChartThreshold } from "./DataChart";
 export { default as DateRangeCoordinator, DateRangeContext } from "./DateRangeCoordinator"
 export { default as DateRangeNavigator } from "./DateRangeNavigator"
 export { default as DayTrackerSymbol } from "./DayTrackerSymbol"
