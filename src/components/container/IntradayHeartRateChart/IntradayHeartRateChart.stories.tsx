@@ -29,6 +29,7 @@ export const Default = {
     render: renderDefault,
 	args: {
 		previewState: "Default",
+		aggregationOption: "avg",
 		lineColor: "green"
 	},
 };
@@ -37,6 +38,7 @@ export const FullDataThresholds = {
     render: renderDefault,
 	args: {
 		previewState: "CompleteDataWithThresholds",
+		aggregationOption: "avg",
 		thresholds: [
 			{value: 80, referenceLineColor: "green", overThresholdLineColor: "green"},
 			{value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21"},
@@ -49,6 +51,7 @@ export const PartialDataThresholds = {
     render: renderDefault,
 	args: {
 		previewState: "PartialDataWithThresholds",
+		aggregationOption: "avg",
 		thresholds: [
 			{value: 80, referenceLineColor: "green", overThresholdLineColor: "green"},
 			{value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21"},

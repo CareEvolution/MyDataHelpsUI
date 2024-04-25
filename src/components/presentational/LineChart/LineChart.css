@@ -1,21 +1,21 @@
-.mdhui-intraday-hrv-chart {
+.mdhui-line-chart {
     position: relative;
 }
 
-.mdhui-intraday-hrv-chart .title {
+.mdhui-line-chart .title {
     padding: 16px;
     padding-bottom: 0;
     position: relative;
     font-weight: bold;
 }
 
-.mdhui-intraday-hrv-chart .chart-container {
+.mdhui-line-chart .chart-container {
     padding: 16px;
     position: relative;
 }
 
-.mdhui-intraday-hrv-chart .no-data-label,
-.mdhui-intraday-hrv-chart .mdhui-loading-indicator {
+.mdhui-line-chart .no-data-label,
+.mdhui-line-chart .mdhui-loading-indicator {
     position: absolute;
     left: 0;
     top: calc(50% - 40px);
@@ -27,7 +27,7 @@
     padding: 16px;
 }
 
-.mdhui-intraday-hrv-chart .mdhui-intraday-hrv-tooltip {
+.mdhui-line-chart .mdhui-line-tooltip {
     padding: 8px;
     background: var(--mdhui-background-color-0);
     border-radius: var(--mdhui-card-border-radius);
@@ -37,24 +37,24 @@
     -webkit-animation: fadein 1s;
 }
 
-.mdhui-intraday-hrv-chart .mdhui-intraday-hrv-tooltip .mdhui-intraday-hrv-tooltip-value {
+.mdhui-line-chart .mdhui-line-tooltip .mdhui-line-tooltip-value {
     font-weight: bold;
     font-size: 1.5em;
     color: var(--mdhui-text-color-0);
     padding-bottom: 4px;
 }
 
-.mdhui-intraday-hrv-chart .mdhui-intraday-hrv-tooltip .mdhui-intraday-hrv-tooltip-date {
+.mdhui-line-chart .mdhui-line-tooltip .mdhui-line-tooltip-date {
     font-size: .7em;
     color: var(--mdhui-text-color-2);
     line-height: 1em;
 }
 
-.mdhui-intraday-hrv-chart .recharts-cartesian-axis-tick text {
+.mdhui-line-chart .recharts-cartesian-axis-tick text {
     fill: var(--mdhui-text-color-1);
     font-size: 11px;
 }
 
-.mdhui-intraday-hrv-chart .today {
+.mdhui-line-chart .today {
     font-weight: bold;
 }

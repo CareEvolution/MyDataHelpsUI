@@ -1,16 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, format, startOfDay } from 'date-fns'
+import { add, startOfDay } from 'date-fns'
 import { LayoutContext, LoadingIndicator } from '../../presentational'
-import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import "./IntradayHeartRateChart.css"
 import { HalfDayData, FullDayData } from "./IntradayHeartRateChart.data"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
-import { DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
+import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
 import { hrIntradayDataProvider } from '../../../helpers/heart-rate-data-providers'
-import { DeviceDataV2AggregateReduced } from '../../../helpers/heart-rate-data-providers/intraday-aggregates'
-import { Axis } from '../../presentational/DumbbellChart/DumbbellChart'
+import LineChart, { LineChartAxis, LineChartDataPoint } from '../../presentational/LineChart/LineChart'
 
 export type AggregationOption = "avg" | "count" | "min" | "max" | "sum";
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "PartialDataWithThresholds" | "NoData";
@@ -33,9 +30,8 @@ export interface IntradayHeartRateChartProps {
 }
 
 export default function IntradayHeartRateChart(props: IntradayHeartRateChartProps) {
-    const testThresholdKey = "_threshold";
-    const [data, setData] = useState<any[] | undefined>(undefined);
-    const [axis, setAxis] = useState<Axis>({ yRange: { values: [0, 120] }, yIncrement: 30, xIncrement: props.aggregationIntervalAmount });
+    const [data, setData] = useState<LineChartDataPoint[]>([]);
+    const [axis, setAxis] = useState<LineChartAxis>({ yRange: [0, 200], yIncrement: 30, xIncrement: props.aggregationIntervalAmount });
     const dateRangeContext = useContext(DateRangeContext);
     let intervalStart = startOfDay(dateRangeContext?.intervalStart ?? new Date());
     let intervalEnd = add(intervalStart, { days: 1 });
@@ -44,7 +40,7 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
 
     function initialize() {
         if (props.previewState) {
-            var data: DeviceDataV2AggregateReduced[] = [];
+            var data: DeviceDataV2Aggregate[] = [];
             switch (props.previewState) {
                 case "Default":
                 case "CompleteDataWithThresholds":
@@ -57,7 +53,6 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
 
             extractStateData(data);
         } else {
-
             const params: DeviceDataV2AggregateQuery = {
                 type: props.dataSource === "Fitbit" ? "activities-heart-intraday" : "Heart Rate",
                 namespace: props.dataSource,
@@ -68,7 +63,7 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
                 aggregateFunctions: [props.aggregationOption]
             };
 
-            hrIntradayDataProvider(params).then(function (data: DeviceDataV2AggregateReduced[]) {
+            hrIntradayDataProvider(params).then(function (data: DeviceDataV2Aggregate[]) {
                 extractStateData(data);
             }).catch(function (error) {
                 console.log("error");
@@ -77,102 +72,31 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
         }
     }
 
-    function extractStateData(data: DeviceDataV2AggregateReduced[]) {
-        let axis: Axis = { yRange: { values: [0, 120] }, yIncrement: 30, xIncrement: props.aggregationIntervalAmount ?? 3 };
-        let yValues: number[] = data.map(d => d.statisticValue);
-        let yMax = Math.max(...yValues);
-        let yRange = { values: [0, yMax] };
-        axis.yRange = yRange;
+    function extractStateData(data: DeviceDataV2Aggregate[]) {
+        let axis: LineChartAxis = { yRange: [0, 200], yIncrement: 30, xIncrement: props.aggregationIntervalAmount ?? 3 };
+        let dataPoints : LineChartDataPoint[] = data.map(transformToDeviceDataV2AggregateReduced);
+        dataPoints = dataPoints.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+        if (dataPoints.length){
+            let yValues: number[] = dataPoints.map(d => d.value);
+            let yMax = Math.max(...yValues);
+            let yRange = [0, yMax];
+            axis.yRange = yRange;
+        }
+
+        axis.xRange = [intervalStart.getTime(), intervalEnd.getTime()];
         setAxis(axis);
-        setData(data);
+        setData(dataPoints);
     }
 
-    const GraphToolTip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="mdhui-intraday-hrv-tooltip">
-                    <div className="mdhui-intraday-hrv-tooltip-value">{`${Math.round(payload[0].value)} bpm`}
-                    </div>
-                    <div className="mdhui-intraday-hrv-tooltip-date">{format(payload[0].payload.date, "hh:mm:ss aaa")}</div>
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const XAxisTick = ({ x, y, stroke, payload }: any) => {
-        var displayX = format(payload.value, "h aaa");
-        return <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{displayX}</text>;
-    }
-
-    const YAxisTick = ({ x, y, stroke, payload }: any) => {
-        var display = Math.round(payload.value);
-        return <text fill="var(--mdhui-text-color-3)" x={x - 5} y={y + 5} textAnchor="end" fontSize="12">{display}</text>;
-    }
-
-    function getPercent(numerator: number): number {
-        const denominator = axis?.yRange.values[1];
-        return (numerator / denominator) * 100;
-    }
-
-    function createStopsFromThresholds() {
-        let stops: any = [];
-        var lineColor: string = defaultLineColor;
-        var thresholds = props.thresholds ?? [];
-
-        stops.push(<stop offset="0%" stopColor={lineColor} />);
-        for (var i = 0; i < thresholds.length; i++) {
-            if (axis.yRange.values[1] >= thresholds[i].value) {
-                lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdLineColor) || defaultLineColor;
-                var offSet = getPercent(thresholds[i].value);
-                stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
-            }
-        }
-        stops.push(<stop offset="100%" stopColor={lineColor} />);
-
-        return stops;
-    }
-
-    function standardChartComponents() {
-        return <>
-            <defs>
-                {props.thresholds &&
-                    <linearGradient id="thresholds" key={testThresholdKey} x1="0%" y1="100%" x2="0%" y2="0%">
-                        {createStopsFromThresholds()}
-                    </linearGradient>
-                }
-
-                {!props.thresholds &&
-                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%">
-                        <stop offset="0%" stopColor={defaultLineColor} />
-                        <stop offset="100%" stopColor={defaultLineColor} />
-                    </linearGradient>
-                }
-            </defs>
-            <Tooltip wrapperStyle={{ outline: "none" }} content={<GraphToolTip />} />
-            <CartesianGrid vertical strokeDasharray="2 4" />
-            {(props.thresholds)?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                <ReferenceLine key={`threshref_${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
-            )}
-            <YAxis tick={YAxisTick} type='number' domain={axis?.yRange.values} />
-            <XAxis tick={XAxisTick} axisLine={true} dataKey="date" tickMargin={0} minTickGap={0} tickCount={24}
-                type='number' domain={[intervalStart.getTime(), intervalEnd.getTime()]} />
-        </>
+    function transformToDeviceDataV2AggregateReduced( data: DeviceDataV2Aggregate){
+        return { date: new Date(data.date), value: data.statistics[`${props.aggregationOption}`] }
     }
 
     useInitializeView(initialize, [], [props.previewState, props.dataSource, dateRangeContext?.intervalStart]);
 
-    return <div className="mdhui-intraday-hrv-chart" ref={props.innerRef}>
-        {!data && <LoadingIndicator />}
-        {data &&
-            <div className="chart-container">
-                <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={data}>
-                        {standardChartComponents()}
-                        <Line dot={false} strokeWidth={3} key="line" type="monotone" dataKey="statisticValue" stroke={`url(#${props.thresholds ? 'thresholds' : 'gradient'})`}></Line>
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
-        }
+    return <div ref={props.innerRef}>
+        <LineChart data={data} axis={axis} lineColor ={defaultLineColor} 
+                 thresholds ={props.thresholds} innerRef={props.innerRef}></LineChart>
     </div>
 }
