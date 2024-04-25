@@ -41,18 +41,25 @@ export default function (props: AsthmaRecommendedArticleProps) {
                 '21',
                 'asthmacontrol'
             ));
-        } else if (asthmaControlState.status === 'not-controlled') {
+        } else if (asthmaControlState.status === 'not-determined') {
             articles.push(createResourceDefinition(
                 'Is your asthma under control?',
                 '4 questions to assess if your asthma is under control. If you\'re experiencing symptoms more than 2 times a week or if you are waking up at night from asthma symptoms - your asthma is not under control.',
                 '22',
                 'asthmacontrol'
             ));
+        } else if (asthmaControlState.status === 'not-controlled') {
+            articles.push(createResourceDefinition(
+                'Taking charge of your asthma',
+                'When your asthma feels unmanageable, it\'s time to reassess your approach. Steps to take when your asthma is not under control.',
+                '25',
+                'asthmacontrol'
+            ));
         }
 
         if (todayLogEntry.triggers.includes('Seasonal allergens/pollen')) {
             articles.push(createResourceDefinition(
-                'Seasonal allergens/pollen',
+                'Asthma and Seasonal Allergens/Pollen',
                 'Navigate pollen season with ease: Identify your specific pollen triggers, understand their seasonal patterns, and learn how to minimize exposure.',
                 '42',
                 'triggers'
@@ -60,9 +67,73 @@ export default function (props: AsthmaRecommendedArticleProps) {
         }
         if (todayLogEntry.triggers.includes('Air pollution')) {
             articles.push(createResourceDefinition(
-                'Air quality and asthma',
+                'Asthma and Air Quality',
                 'Understand that poor air quality can trigger asthma. Learn how to navigate high AQI days and what AQI levels mean.',
                 '43',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Cold/viral illness')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Respiratory Infections',
+                'Respiratory infections are common asthma triggers. How to prevent them and what to do when they occur.',
+                '43a',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Animal exposure')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Animals',
+                'Animals/Pets can be a trigger for asthma. Learn about how to diagnose an animal/pet allergy and steps to reduce the impact.',
+                '43b',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Smoke (tobacco or wood burning)')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Smoke',
+                'Wildfires and tobacco smoke can trigger asthma. Learn about steps you can take to reduce your exposure.',
+                '43c',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Extreme weather changes')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Weather',
+                'Common weather triggers are cold air, hot and humid air, and rain/thunderstorms. Explore why these can trigger asthma.',
+                '43d',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Strong smells') || todayLogEntry.triggers.includes("Chemicals/cleaning supplies")) {
+            articles.push(createResourceDefinition(
+                'Strong Smells and Chemicals/Cleaning Supplies',
+                'Discover what smells may trigger your asthma and things to think about while cleaning.',
+                '43e',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Dust') || todayLogEntry.triggers.includes('Dust mites')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Dust/Dust Mites',
+                'Dust is a common asthma trigger, but the reason it is a trigger may surprise you! ',
+                '43f',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Mold')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Mold',
+                'Mold needs moisture to grow, so is typically found in damp or wet places. Learn how to prevent mold in your house.',
+                '43g',
+                'triggers'
+            ));
+        }
+        if (todayLogEntry.triggers.includes('Had heartburn')) {
+            articles.push(createResourceDefinition(
+                'Asthma and Heartburn',
+                'What is heartburn and what does it have to do with asthma?',
+                '43h',
                 'triggers'
             ));
         }
@@ -148,7 +219,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
             }
             if (missedDosesReasonsAnswer.answers.includes('Difficulty getting refills')) {
                 articles.push(createResourceDefinition(
-                    'Medication Refills',
+                    'Medication refills',
                     'Stay on top of your asthma medication with easy refill strategies.',
                     '34',
                     'medications'

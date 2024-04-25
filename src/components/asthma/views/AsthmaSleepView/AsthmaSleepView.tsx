@@ -35,8 +35,8 @@ export default function (props: AsthmaSleepViewProps) {
     });
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
-        <NavigationBar showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-sleep-view-title')}</Title>
+        <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
+            <Title order={1}>{language('asthma-sleep-view-title')}</Title>
         </NavigationBar>
         <RecentDailyDataBarChart
             previewState={props.previewState === 'default' ? 'loaded with data' : undefined}

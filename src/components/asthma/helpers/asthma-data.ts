@@ -1,6 +1,6 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
-import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
+import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityDescription, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
 import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers/query-daily-data";
 import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider, sleepDisturbancesDataProvider, stepsDataProvider } from "./daily-data-providers";
@@ -189,19 +189,19 @@ const loadAirQualities = (observedAfter: Date, observedBefore?: Date, pageID?: G
     return MyDataHelps.queryDeviceData(params);
 };
 
-const computeAirQualityStatusAndDescription = (aqi: number | undefined, defaultStatus: AsthmaDataStatus): [AsthmaDataStatus, string | undefined] => {
+const computeAirQualityStatusAndDescription = (aqi: number | undefined, defaultStatus: AsthmaDataStatus): [AsthmaDataStatus, AsthmaAirQualityDescription | undefined] => {
     if (aqi) {
         if (aqi <= 100) {
             return ['in-range', undefined];
         }
         if (aqi <= 200) {
-            return ['out-of-range', 'Unhealthy'];
+            return ['out-of-range', 'unhealthy'];
         }
         if (aqi <= 300) {
-            return ['out-of-range', 'Very Unhealthy'];
+            return ['out-of-range', 'very unhealthy'];
         }
         if (aqi <= 500) {
-            return ['out-of-range', 'Hazardous'];
+            return ['out-of-range', 'hazardous'];
         }
     }
     return [defaultStatus, undefined];

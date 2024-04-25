@@ -56,11 +56,12 @@ export const NoData = {
 export const Live = {
 	args: {
 		surveyDataSource: {
-			surveyName: "Blood Pressure Readings - OPTIONAL",
+			surveyName: "BloodPressure",
 			dateResultIdentifier: "Date of BP",
 			systolicResultIdentifier: "Systolic BP",
 			diastolicResultIdentifier: "Diastolic BP"
-		}
+		},
+		deviceDataSource: ["AppleHealth", "GoogleFit", "Omron"]
 	},
 	render: render
 };

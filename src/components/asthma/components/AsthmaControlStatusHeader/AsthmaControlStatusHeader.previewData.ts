@@ -53,17 +53,17 @@ export const previewData: Record<AsthmaControlStatusHeaderPreviewState, AsthmaCo
     'abnormal home aqi': {
         controlState: {status: 'no-data'},
         biometrics: [],
-        airQualities: [{type: 'home', status: 'out-of-range', description: 'Unhealthy'}]
+        airQualities: [{type: 'home', status: 'out-of-range', description: 'unhealthy'}]
     },
     'abnormal work aqi': {
         controlState: {status: 'no-data'},
         biometrics: [],
-        airQualities: [{type: 'work', status: 'out-of-range', description: 'Unhealthy'}]
+        airQualities: [{type: 'work', status: 'out-of-range', description: 'very unhealthy'}]
     },
     'abnormal multiple': {
         controlState: {status: 'no-data'},
         biometrics: [{type: 'steps', status: 'out-of-range'}],
-        airQualities: [{type: 'work', status: 'out-of-range', description: 'Unhealthy'}]
+        airQualities: [{type: 'work', status: 'out-of-range', description: 'hazardous'}]
     },
     'not determined': {
         controlState: {status: 'not-determined'},

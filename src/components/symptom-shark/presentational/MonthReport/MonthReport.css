@@ -1,0 +1,55 @@
+.ss-month-report {
+    position: relative;
+    width: 100%;
+    font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
+    /* default color for PDF rendering */
+    background: #FFF;
+    background: var(--mdhui-background-color-0);
+}
+
+.ss-month-report>thead>tr>th {
+    text-align: left;
+    font-size: 21px;
+    line-height: 21px;
+    width: 100%;
+    background: var(--mdhui-background-color-0);
+}
+
+.ss-month-report>thead>tr>th>.header {
+    display: block;
+    position: relative;
+    padding: 16px;
+}
+
+.ss-month-report>thead>tr>th>.header .ss-month-report-product {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 40px;
+    height: 32px;
+    line-height: 18px;
+}
+
+.ss-month-report>thead>tr>th>.header .ss-month-report-product .ss-month-report-product-url {
+    font-weight: normal;
+}
+
+.ss-month-report>thead>tr>th>.header .ss-month-report-product img {
+    height: 32px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    vertical-align: middle;
+}
+
+.ss-month-report>tfoot>tr>td {
+    padding: 16px;
+    text-align: center;
+    font-size: 21px;
+    line-height: 21px;
+    width: 100%;
+    background: var(--mdhui-background-color-0);
+    border-top: solid 1px var(--mdhui-border-color-1);
+}

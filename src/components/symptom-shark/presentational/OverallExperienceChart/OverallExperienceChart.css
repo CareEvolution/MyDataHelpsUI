@@ -102,3 +102,47 @@
     border-radius: 3.5px;
     left: calc(50% - 3px);
 }
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-inner {
+    padding-left: calc(25% + 8px);
+}
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-y-axis {
+    left: calc(25% - 56px);
+}
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-x-axis-line {
+    width: calc(75% - 32px);
+    left: calc(25% + 16px);
+}
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-average-wrapper {
+    display: block;
+    padding-top: 16px;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: normal;
+    position: absolute;
+    left: 16px;
+    top: 64px;
+    text-align: left;
+    padding: 0;
+    padding-bottom: 8px;
+    right: auto;
+}
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-average-wrapper .mdhui-ss-oe-chart-average {
+    margin-top: 8px;
+    font-size: 34px;
+    font-weight: bold;
+    display: block;
+    line-height: 34px;
+}
+
+.mdhui-ss-oe-chart.mdhui-ss-oe-chart-month-report .mdhui-ss-oe-chart-average-wrapper .mdhui-ss-oe-chart-average .mdhui-face {
+    height: 34px;
+    width: 34px;
+    vertical-align: top;
+    border-radius: 18px;
+    overflow: hidden;
+}

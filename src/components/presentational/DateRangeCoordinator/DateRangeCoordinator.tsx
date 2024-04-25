@@ -5,7 +5,7 @@ import { WeekStartsOn, getMonthStart, getWeekStart } from "../../../helpers/get-
 
 export interface DateRangeCoordinatorProps {
     initialIntervalStart?: Date;
-    intervalType: "Week" | "Month";
+    intervalType: "Day" | "Week" | "Month";
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
     children: React.ReactNode;
@@ -14,7 +14,7 @@ export interface DateRangeCoordinatorProps {
 }
 
 export interface DateRangeContext {
-    intervalType: "Week" | "Month";
+    intervalType: "Day" | "Week" | "Month";
     intervalStart: Date;
 }
 

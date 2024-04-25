@@ -1,0 +1,6 @@
+.ss-symptom-matrix {
+    background: var(--mdhui-background-color-0);
+    /* Default color for PDF Rendering, since evopdf does not support CSS variables */
+    border-top: solid 1px #ddd;
+    border-top: solid 1px var(--mdhui-border-color-1);
+}
