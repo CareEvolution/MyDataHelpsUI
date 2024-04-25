@@ -4,7 +4,7 @@ import DateRangeTitle, { DateRangeTitleProps } from "./DateRangeTitle";
 import DateRangeCoordinator from "../DateRangeCoordinator";
 
 export default {
-    title: "Container/DateRangeTitle",
+    title: "Presentational/DateRangeTitle",
     component: DateRangeTitle,
     parameters: {
         layout: 'fullscreen',

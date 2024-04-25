@@ -75,7 +75,7 @@
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day-selected {
-    background: var(--mdhui-background-color-2);
+    background: var(--mdhui-background-color-1);
 }
 
 .mdhui-week-calendar .mdhui-week-calendar-day-selected .mdhui-week-calendar-date-label .mdhui-week-calendar-day-of-month {
