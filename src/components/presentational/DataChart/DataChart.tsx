@@ -124,7 +124,7 @@ export default function DataChart(props: DataChartProps) {
 
 
     function getColorFromOptions(i: number, fieldName: string) {
-        var property = props.options[fieldName];
+        var property = props.options ? props.options[fieldName] : null;
         if(!!property){
             if (Array.isArray(property)) {
                 return property[i];
@@ -135,9 +135,9 @@ export default function DataChart(props: DataChartProps) {
         return "var(--mdhui-color-primary)";
     }
 
-    function getBarColor(value: number) {
+    function getBarColor(value: number, index: number) {
         var thresholds = (props.options as BarChartOptions)?.thresholds;
-        if (!thresholds) return `url(#${gradientKey})`;
+        if (!thresholds) return `url(#${gradientKey}${index})`;
 
         let highestThresholdIndex = -1;
         for (var i = 0; i < thresholds?.length; i++) {
@@ -211,7 +211,7 @@ export default function DataChart(props: DataChartProps) {
                         {keys.map((dk, i) =>
                                 <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
                                     {props.data.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={getBarColor(entry.value)} />
+                                        <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
                                     ))}
                                 </Bar>
                             )
