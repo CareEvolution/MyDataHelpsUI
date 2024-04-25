@@ -38,13 +38,15 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
     }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState]);
 
     return (
-        <DateRangeContext.Provider value={currentContext}>
-            <RelativeActivityWeekNavigator
-                selectedDate={currentContext.intervalStart}
-                onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
-                dataTypes={availableDataTypes}
-                previewState={props.previewState} />
-            {props.children}
-        </DateRangeContext.Provider>
+        <div ref={props.innerRef}>
+            <DateRangeContext.Provider value={currentContext}>
+                <RelativeActivityWeekNavigator
+                    selectedDate={currentContext.intervalStart}
+                    onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
+                    dataTypes={availableDataTypes}
+                    previewState={props.previewState} />
+                {props.children}
+            </DateRangeContext.Provider>
+        </div>
     );
 }

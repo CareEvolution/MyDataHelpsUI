@@ -11,10 +11,11 @@ export interface RelativeActivityWeekNavigatorProps {
     onDateSelected(date: Date): void;
     dataTypes: WeeklyRelativeActivityDataType[];
     previewState?: "default";
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface WeeklyRelativeActivityDataType {
-    dailyDataType: DailyDataType;
+    dailyDataType: string;
     threshold: number;
     color?: ColorDefinition;
     overthresholdColor?: ColorDefinition;
@@ -93,6 +94,7 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
     }
 
     return <WeekCalendar
+        innerRef={props.innerRef}
         startDate={weekStart}
         selectedDate={props.selectedDate}
         onDateSelected={(d) => props.onDateSelected(d)}
