@@ -1,1 +1,1 @@
-export { default } from "./RelativeActivityWeekNavigator";
+export { default, WeeklyRelativeActivityDataType } from "./RelativeActivityWeekNavigator";

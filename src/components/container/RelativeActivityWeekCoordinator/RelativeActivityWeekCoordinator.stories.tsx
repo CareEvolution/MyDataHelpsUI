@@ -1,19 +1,19 @@
 import React from "react"
 import Layout from "../../presentational/Layout"
-import RelativeActivityDateRangeCoordinator, { RelativeActivityDateRangeCoordinatorProps } from "./RelativeActivityDateRangeCoordinator";
+import RelativeActivityWeekCoordinator, { RelativeActivityWeekCoordinatorProps } from "./RelativeActivityWeekCoordinator";
 import { DailyDataType } from "../../../helpers/query-daily-data";
 import { WeeklyRelativeActivityDataType } from "../RelativeActivityWeekNavigator/RelativeActivityWeekNavigator";
 import DateRangeTitle from "../../presentational/DateRangeTitle";
 
 export default {
-    title: "Container/RelativeActivityDateRangeCoordinator",
-    component: RelativeActivityDateRangeCoordinator,
+    title: "Container/RelativeActivityWeekCoordinator",
+    component: RelativeActivityWeekCoordinator,
     parameters: {
         layout: 'fullscreen',
     }
 };
 
-let render = (args: RelativeActivityDateRangeCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityDateRangeCoordinator {...args} /></Layout>
+let render = (args: RelativeActivityWeekCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityWeekCoordinator {...args} /></Layout>
 
 let dataTypes: WeeklyRelativeActivityDataType[] = [
     {

@@ -6,14 +6,14 @@ import RelativeActivityWeekNavigator from "../RelativeActivityWeekNavigator";
 import { WeeklyRelativeActivityDataType } from "../RelativeActivityWeekNavigator/RelativeActivityWeekNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
 
-export interface RelativeActivityDateRangeCoordinatorProps {
+export interface RelativeActivityWeekCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;
     dataTypes: WeeklyRelativeActivityDataType[];
     previewState?: "default";
     children?: React.ReactNode;
 }
 
-export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityDateRangeCoordinatorProps) {
+export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityWeekCoordinatorProps) {
     const [availableDataTypes, setAvailableDataTypes] = useState<WeeklyRelativeActivityDataType[]>([]);
     const [currentContext, setCurrentContext] = useState<DateRangeContext>({
         intervalStart: startOfDay(new Date()),

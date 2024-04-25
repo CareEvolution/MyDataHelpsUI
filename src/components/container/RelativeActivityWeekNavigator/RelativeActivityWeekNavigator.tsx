@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
 import { ColorDefinition } from "../../../helpers/colors";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
@@ -61,14 +61,9 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
             return;
         };
     }
-
-    useEffect(() => {
-        loadData();
-    }, [weekStart]);
-
     useInitializeView(() => {
         loadData();
-    }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState]);
+    }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState, weekStart]);
 
     let dayRenderer = function (year: number, month: number, day: number, selectedWeek: boolean) {
         if (!props.dataTypes.length) { return null; }
