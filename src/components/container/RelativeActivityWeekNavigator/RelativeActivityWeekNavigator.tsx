@@ -18,7 +18,7 @@ export interface WeeklyRelativeActivityDataType {
     dailyDataType: string;
     threshold: number;
     color?: ColorDefinition;
-    overthresholdColor?: ColorDefinition;
+    overThresholdColor?: ColorDefinition;
 }
 
 export default function (props: RelativeActivityWeekNavigatorProps) {
@@ -77,8 +77,8 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
             }
             let value = dailyData[dataType.dailyDataType]?.[dayKey] ?? 0;
             let color = dataType.color || "var(--mdhui-color-primary)";
-            if (value > dataType.threshold && dataType.overthresholdColor) {
-                color = dataType.overthresholdColor;
+            if (value > dataType.threshold && dataType.overThresholdColor) {
+                color = dataType.overThresholdColor;
             }
 
             return {
