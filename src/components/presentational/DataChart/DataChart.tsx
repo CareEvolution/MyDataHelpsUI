@@ -145,7 +145,7 @@ export default function DataChart(props: DataChartProps) {
             }
         }
 
-        if (highestThresholdIndex == -1) return `url(#${gradientKey})`;
+        if (highestThresholdIndex == -1) return `url(#${gradientKey}${index})`;
         return `url(#${gradientKey}_threshold${highestThresholdIndex})`;
     }
 
