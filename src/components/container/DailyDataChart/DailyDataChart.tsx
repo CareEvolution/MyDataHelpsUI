@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, queryDailyData } from '../../../helpers/query-daily-data'
+import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDefaultConverter, getDefaultFormatter, queryDailyData } from '../../../helpers/query-daily-data'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
@@ -136,6 +136,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 dataDay.date = currentDate;
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
+                } else if (Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
+                    let defaultConverter = getDefaultConverter(props.dailyDataType as DailyDataType);
+                    if (defaultConverter) {
+                        dataDay.value = defaultConverter(dataDay.value);
+                    }
                 }
                 chartHasData = true;
             }
@@ -146,10 +151,14 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     const GraphToolTip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             var date = payload[0].payload.date;
+            let formatter = props.valueFormatter;
+            if (!formatter && Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
+                formatter = getDefaultFormatter(props.dailyDataType as DailyDataType);
+            }
             return (
                 <div className="mdhui-daily-data-tooltip">
                     <div className="mdhui-daily-data-tooltip-value">
-                        {props.valueFormatter ? props.valueFormatter(payload[0].payload.rawValue) : payload[0].payload.value}
+                        {formatter ? formatter(payload[0].payload.rawValue) : payload[0].payload.value}
                     </div>
                     <div className="mdhui-daily-data-tooltip-date">{format(date, 'MM/dd/yyyy')}</div>
                 </div>
@@ -277,7 +286,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                                 </linearGradient>
                             )}
                         </defs>
-                        {(props.options as BarChartOptions)?.thresholds?.filter(t=>t.referenceLineColor)?.map((threshold, index) =>
+                        {(props.options as BarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                             <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
                         {standardChartComponents()}

@@ -10,9 +10,10 @@ import "./RelativeActivity.css"
 import language from "../../../helpers/language";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { ColorDefinition } from "../../../helpers/colors";
+import { RelativeActivityContext } from "../RelativeActivityWeekCoordinator/RelativeActivityWeekCoordinator";
 
 export interface RelativeActivityProps {
-    dataTypes: RelativeActivityDataType[];
+    dataTypes: RelativeActivityDataType[] | "FromContext";
     previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
@@ -36,8 +37,27 @@ interface RelativeActivityResult {
     value: string;
 }
 
+
 export default function (props: RelativeActivityProps) {
     let [result, setResults] = useState<RelativeActivityResult[] | null>(null);
+
+    let dataTypes = props.dataTypes;
+    if (dataTypes === "FromContext") {
+        dataTypes = useContext(RelativeActivityContext)?.dataTypes.map(dataType => {
+            return {
+                dailyDataType: dataType.dailyDataType,
+                icon: dataType.icon,
+                color: dataType.color,
+                overThresholdColor: dataType.overThresholdColor,
+                formatter: dataType.formatter,
+                threshold: dataType.threshold
+            }
+        
+        });
+    }
+
+    let dataTypeContext = useContext(RelativeActivityContext);
+
 
     let dateRangeContext = useContext(DateRangeContext);
     let date = props.date;

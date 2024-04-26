@@ -18,7 +18,6 @@ export const stepsLineChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             let data: DailyDataQueryResult = {};

@@ -114,6 +114,35 @@ export function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: st
 	}
 }
 
+export function getDefaultFormatter(type: DailyDataType) {
+	if (type.includes("HeartRate")) {
+		return (value: number) => Number(value.toFixed(0)) + " bpm";
+	}
+	if (type.includes("Minutes")) {
+		return (value: number) => {
+			var hours = Math.floor(value / 60);
+			var displayValue = hours > 0 ? (hours + "h ") : "";
+			if (Math.round(value - (hours * 60)) !== 0) {
+				displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
+			}
+			return displayValue;
+		}
+	}
+	if (type.includes("Hrv")) {
+		return (value: number) => Number(value.toFixed(0)) + " ms";
+	}
+	if (type.includes("SpO2")) {
+		return (value: number) => Number(value.toFixed(0)) + " %";
+	}
+	return (value: number) => Number(value.toFixed(0)).toLocaleString();
+}
+
+export function getDefaultConverter(type: DailyDataType) {
+	if (type.includes("Minutes")) {
+		return (value: number) => value / 60.0;
+	}
+}
+
 export enum DailyDataType {
 	AppleHealthDistanceWalkingRunning = "AppleHealthDistanceWalkingRunning",
 	AppleHealthFlightsClimbed = "AppleHealthFlightsClimbed",

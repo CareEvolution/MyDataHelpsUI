@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { checkDailyDataAvailability } from "../../../helpers/query-daily-data";
 import { startOfDay } from "date-fns";
 import { DateRangeContext } from "../../presentational";
@@ -12,6 +12,12 @@ export interface RelativeActivityWeekCoordinatorProps {
     previewState?: "default";
     children?: React.ReactNode;
 }
+
+export interface RelativeActivityContext {
+    dataTypes: WeeklyRelativeActivityDataType[];
+}
+
+export const RelativeActivityContext = createContext<RelativeActivityContext | null>(null);
 
 export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityWeekCoordinatorProps) {
     const [availableDataTypes, setAvailableDataTypes] = useState<WeeklyRelativeActivityDataType[]>([]);
@@ -39,14 +45,16 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
     return (
         <div ref={props.innerRef}>
-            <DateRangeContext.Provider value={currentContext}>
-                <RelativeActivityWeekNavigator
-                    selectedDate={currentContext.intervalStart}
-                    onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
-                    dataTypes={availableDataTypes}
-                    previewState={props.previewState} />
-                {props.children}
-            </DateRangeContext.Provider>
+            <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes }}>
+                <DateRangeContext.Provider value={currentContext}>
+                    <RelativeActivityWeekNavigator
+                        selectedDate={currentContext.intervalStart}
+                        onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
+                        dataTypes={availableDataTypes}
+                        previewState={props.previewState} />
+                    {props.children}
+                </DateRangeContext.Provider>
+            </RelativeActivityContext.Provider>
         </div>
     );
 }
