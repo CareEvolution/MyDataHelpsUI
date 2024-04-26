@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
 import { ColorDefinition } from "../../../helpers/colors";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
-import { add, startOfDay } from "date-fns";
+import { add, addDays, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
 
@@ -81,9 +81,11 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
                 color = dataType.overThresholdColor;
             }
 
+            let fillPercent = value / (dataType.threshold * 2);
+            if (fillPercent > 1) { fillPercent = 1; }
             return {
                 color: color,
-                barFillPercent: value / (dataType.threshold * 2)
+                barFillPercent: fillPercent
             }
         });
 
@@ -93,12 +95,17 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
                 bars={bars} /></div>
     }
 
+    let weekStartChanged = function (weekStart: Date) {
+        setWeekStart(weekStart);
+        props.onDateSelected(addDays(weekStart, 6));
+    }
+
     return <WeekCalendar
         innerRef={props.innerRef}
         startDate={weekStart}
         selectedDate={props.selectedDate}
         onDateSelected={(d) => props.onDateSelected(d)}
-        onStartDateChange={(d) => setWeekStart(d)}
+        onStartDateChange={(d) => weekStartChanged(d)}
         dayRenderer={dayRenderer}
         loading={!dailyData} />
 }
