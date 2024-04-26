@@ -10,12 +10,14 @@ import { queryDailyData, DailyDataType } from '../../../helpers/query-daily-data
 
 type HeartRateMap = { [key: string]: number };
 
-export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Combined" | "AppleHealth" | "Fitbit" | "Garmin";
+export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
+export type RestingHeartRateDataSource = "Combined" | "AppleHealth" | "Fitbit" | "Garmin";
 
 export interface RestingHeartRateCalendarProps {
 	month: number,
 	year: number,
 	showPreviewData: RestingHeartRateCalendarPreviewState
+	dataTypeSource?: RestingHeartRateDataSource
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
@@ -26,12 +28,12 @@ export default function (props: RestingHeartRateCalendarProps) {
 	var monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
 	var monthEnd = add(monthStart, { months: 1 });
 
-	function getRestingHeartRates(dataType?: RestingHeartRateCalendarPreviewState) {
+	function getRestingHeartRates(dataTypeSource?: RestingHeartRateDataSource) {
 		var dailyDataType: DailyDataType = DailyDataType.RestingHeartRate;
 		
-		if (dataType == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
-		if (dataType == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
-		if (dataType == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
+		if (dataTypeSource == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
+		if (dataTypeSource == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
+		if (dataTypeSource == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
 		
 		return queryDailyData(dailyDataType, monthStart, monthEnd).then(function (result) {
 			setHeartRates(result);
@@ -76,7 +78,7 @@ export default function (props: RestingHeartRateCalendarProps) {
 		}
 
 		setLoading(true);
-		getRestingHeartRates(props.showPreviewData).then(() => setLoading(false));
+		getRestingHeartRates(props.dataTypeSource).then(() => setLoading(false));
 	}
 
 	useEffect(() => {

@@ -40,32 +40,18 @@ SampleData.args = {
   showPreviewData: "WithData",
 };
 
-export const Combined = Template.bind({});
-Combined.args = {
+export const Live = Template.bind({});
+Live.args = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
-  showPreviewData: "Combined",
+  showPreviewData: "Live",
+  dataTypeSource: "Combined"
 };
-
-export const AppleHealth = Template.bind({});
-AppleHealth.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  showPreviewData: "AppleHealth",
+Live.argTypes = {
+  dataTypeSource: {
+    name: 'dataTypeSource',
+    control: 'radio',
+    options: ["Combined", "AppleHealth", "Fitbit", "Garmin"],
+    defaultValue: "Combined"
+  }
 };
-
-export const Fitbit = Template.bind({});
-Fitbit.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  showPreviewData: "Fitbit",
-};
-
-export const Garmin = Template.bind({});
-Garmin.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  showPreviewData: "Garmin",
-};
-
-
