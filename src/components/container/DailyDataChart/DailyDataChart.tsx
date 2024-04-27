@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDefaultYAxisConverter, getDefaultFormatter, queryDailyData } from '../../../helpers/query-daily-data'
+import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
@@ -137,7 +137,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
                 } else if (Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
-                    let defaultConverter = getDefaultYAxisConverter(props.dailyDataType as DailyDataType);
+                    let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType as DailyDataType).yAxisConverter;
                     if (defaultConverter) {
                         dataDay.value = defaultConverter(dataDay.value);
                     }
@@ -153,7 +153,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             var date = payload[0].payload.date;
             let formatter = props.valueFormatter;
             if (!formatter && Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
-                formatter = getDefaultFormatter(props.dailyDataType as DailyDataType);
+                formatter = getDailyDataTypeDefinition(props.dailyDataType as DailyDataType).formatter;
             }
             return (
                 <div className="mdhui-daily-data-tooltip">

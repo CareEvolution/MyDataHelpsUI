@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider, DailyDataType } from '../../../../helpers/query-daily-data';
+import { DailyDataProvider, DailyDataType } from '../../../../helpers';
 import { AsthmaAlertTakeoverNotice } from '../../components';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';

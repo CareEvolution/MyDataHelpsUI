@@ -1,10 +1,9 @@
 import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import RelativeActivityToday, { RelativeActivityTodayProps } from "./RelativeActivityToday"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
-import { DailyDataType } from "../../../helpers/query-daily-data"
+import { DailyDataType } from "../../../helpers"
 import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons"
 
 export default {

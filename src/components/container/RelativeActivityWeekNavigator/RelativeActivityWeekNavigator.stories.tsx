@@ -1,9 +1,10 @@
 import React from "react"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import RelativeActivityWeekNavigator, { RelativeActivityWeekNavigatorProps, WeeklyRelativeActivityDataType } from "./RelativeActivityWeekNavigator";
+import RelativeActivityWeekNavigator, { RelativeActivityWeekNavigatorProps } from "./RelativeActivityWeekNavigator";
 import { startOfDay } from "date-fns";
-import { DailyDataType } from "../../../helpers/query-daily-data";
+import { DailyDataType } from "../../../helpers";
+import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export default {
     title: "Container/RelativeActivityWeekNavigator",
@@ -15,7 +16,7 @@ export default {
 
 let render = (args: RelativeActivityWeekNavigatorProps) => <Layout colorScheme="auto"><RelativeActivityWeekNavigator {...args} /></Layout>
 
-let dataTypes:WeeklyRelativeActivityDataType[] = [
+let dataTypes: RelativeActivityDataType[] = [
     {
         dailyDataType: DailyDataType.Steps,
         threshold: 5000,

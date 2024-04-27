@@ -1,5 +1,5 @@
 import React from "react";
-import { DailyDataQueryResult, DailyDataType } from "../../../helpers/query-daily-data";
+import { DailyDataQueryResult, DailyDataType } from "../../../helpers";
 import { Card, Layout } from "../../presentational";
 import DailyDataChart, { DailyDataChartProps } from "./DailyDataChart";
 import getDayKey from "../../../helpers/get-day-key";
