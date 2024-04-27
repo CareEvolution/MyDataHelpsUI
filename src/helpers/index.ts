@@ -9,3 +9,4 @@ export * from './blood-pressure-data-providers'
 export * from './query-all-survey-answers';
 export * from './Initialization';
 export { simpleAvailabilityCheck } from './daily-data-types/availability-check';
+export { default as dailyDataTypeDefinitions } from './daily-data-types/all';
