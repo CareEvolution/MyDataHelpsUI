@@ -224,7 +224,7 @@ export const liveSleepCoreAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepCoreMinutes,
+        dailyDataType: DailyDataType.AppleHealthCoreSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";
@@ -244,7 +244,7 @@ export const liveSleepRemAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepRemMinutes,
+        dailyDataType: DailyDataType.AppleHealthRemSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";
@@ -264,7 +264,7 @@ export const liveSleepDeepAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepDeepMinutes,
+        dailyDataType: DailyDataType.AppleHealthDeepSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";

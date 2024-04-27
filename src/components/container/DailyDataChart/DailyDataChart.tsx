@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDefaultConverter, getDefaultFormatter, queryDailyData } from '../../../helpers/query-daily-data'
+import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDefaultYAxisConverter, getDefaultFormatter, queryDailyData } from '../../../helpers/query-daily-data'
 import { add, format, getWeek, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
@@ -137,7 +137,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
                 } else if (Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
-                    let defaultConverter = getDefaultConverter(props.dailyDataType as DailyDataType);
+                    let defaultConverter = getDefaultYAxisConverter(props.dailyDataType as DailyDataType);
                     if (defaultConverter) {
                         dataDay.value = defaultConverter(dataDay.value);
                     }

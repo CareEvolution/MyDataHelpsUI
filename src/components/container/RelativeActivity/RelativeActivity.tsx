@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import getDayKey from "../../../helpers/get-day-key";
-import { DailyDataQueryResult, queryDailyData } from "../../../helpers/query-daily-data";
+import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
 import { ActivityMeter, CardTitle, DateRangeContext, } from "../../presentational";
 import "./RelativeActivity.css"
 import language from "../../../helpers/language";
@@ -22,12 +22,9 @@ export interface RelativeActivityProps {
 }
 
 export interface RelativeActivityDataType {
-    dailyDataType: string;
-    label: string;
-    icon: React.ReactElement;
+    dailyDataType: DailyDataType;
     color?: ColorDefinition;
     overThresholdColor?: ColorDefinition;
-    formatter: (number: number) => string;
     threshold?: number;
 }
 
