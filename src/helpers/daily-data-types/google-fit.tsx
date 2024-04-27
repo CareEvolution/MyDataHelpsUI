@@ -14,7 +14,8 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", ["Steps"]),
         label: language("steps"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [3000, 6000]
     }
 ];
 googleFitTypeDefinitions.forEach((def) => {

@@ -14,7 +14,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["MinutesSedentary"]),
         label: language("sedentary-time"),
         icon: <FontAwesomeSvgIcon icon={faPerson} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [200, 300]
     },
     {
         type: DailyDataType.FitbitActiveMinutes,
@@ -22,7 +23,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]),
         label: language("active-time"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [50, 200]
     },
     {
         type: DailyDataType.FitbitLightlyActiveMinutes,
@@ -30,7 +32,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["MinutesLightlyActive"]),
         label: language("lightly-active-time"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [25, 100]
     },
     {
         type: DailyDataType.FitbitFairlyActiveMinutes,
@@ -38,7 +41,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["MinutesFairlyActive"]),
         label: language("fairly-active-time"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [25, 100]
     },
     {
         type: DailyDataType.FitbitVeryActiveMinutes,
@@ -46,7 +50,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["MinutesVeryActive"]),
         label: language("very-active-time"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [25, 100]
     },
     {
         type: DailyDataType.FitbitBreathingRate,
@@ -54,7 +59,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["BreathingRate"]),
         label: language("breathing-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [13, 18]
     },
     {
         type: DailyDataType.FitbitCaloriesBurned,
@@ -62,7 +68,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Calories"]),
         label: language("calories-burned"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [1800, 2200]
     },
     {
         type: DailyDataType.FitbitElevatedHeartRateMinutes,
@@ -70,7 +77,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]),
         label: language("elevated-heart-rate-time"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [0, 120]
     },
     {
         type: DailyDataType.FitbitFatBurnHeartRateMinutes,
@@ -78,7 +86,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]),
         label: language("fat-burn-heart-rate-time"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [0, 60]
     },
     {
         type: DailyDataType.FitbitCardioHeartRateMinutes,
@@ -86,7 +95,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]),
         label: language("cardio-heart-rate-time"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [0, 60]
     },
     {
         type: DailyDataType.FitbitPeakHeartRateMinutes,
@@ -94,7 +104,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["HeartRateZone"]),
         label: language("peak-heart-rate-time"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [0, 60]
     },
     {
         type: DailyDataType.FitbitFloors,
@@ -102,7 +113,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Floors"]),
         label: language("floors-climbed"),
         icon: <FontAwesomeSvgIcon icon={faStairs} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [2, 8]
     },
     {
         type: DailyDataType.FitbitHrv,
@@ -110,7 +122,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["HeartRateVariability"]),
         label: language("heart-rate-variability"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: hrvFormatter
+        formatter: hrvFormatter,
+        previewDataRange: [55, 85]
     },
     {
         type: DailyDataType.FitbitRestingHeartRate,
@@ -118,7 +131,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"]),
         label: language("resting-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [60, 70]
     },
     {
         type: DailyDataType.FitbitSleepMinutes,
@@ -127,7 +141,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [400, 540]
     },
     {
         type: DailyDataType.FitbitLightSleepMinutes,
@@ -136,7 +151,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("light-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.FitbitRemSleepMinutes,
@@ -145,7 +161,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("rem-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.FitbitDeepSleepMinutes,
@@ -154,7 +171,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("deep-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.FitbitSpO2,
@@ -163,6 +181,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("spo2"),
         icon: <FontAwesomeSvgIcon icon={faWind} />,
         formatter: (value: number) => Number(value.toFixed(0)) + " %",
+        previewDataRange: [95, 100]
     },
     {
         type: DailyDataType.FitbitSteps,
@@ -170,7 +189,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Steps"]),
         label: language("steps"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000]
     }
 ];
 fitbitTypeDefinitions.forEach((def) => {

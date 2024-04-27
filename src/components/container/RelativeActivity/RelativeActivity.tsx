@@ -56,41 +56,11 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         setResults(null);
         function queryData() {
-            if (props.previewState === "Default") {
-                let result = dataTypes.map(dataType => {
-                    let data: DailyDataQueryResult = {};
-                    for (let i = -31; i < 1; i++) {
-                        let dayKey = getDayKey(add(date!, { days: i }));
-
-                        if (dataType.threshold) {
-                            data[dayKey] = Math.random() * dataType.threshold! * 2;
-                        }
-                        else if (dataType.dailyDataType.includes("Steps")) {
-                            data[dayKey] = 5212;
-                        }
-                        else if (dataType.dailyDataType.includes("Sleep")) {
-                            data[dayKey] = 8 * 60 - 25;
-                        }
-                        else if (dataType.dailyDataType.includes("Minutes")) {
-                            data[dayKey] = 125;
-                        }
-                        else if (dataType.dailyDataType.includes("HeartRate")) {
-                            data[dayKey] = 90;
-                        } else {
-                            data[dayKey] = 5000;
-                        }
-                    }
-                    return data;
-                });
-
-                return Promise.resolve(result);
-            }
-
             let startDate = add(date!, { days: -31 });
             if (props.specifyThresholds) {
                 startDate = add(date!, { days: -1 });
             }
-            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, startDate, add(date!, { days: 1 })));
+            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, startDate, add(date!, { days: 1 }), !!props.previewState));
             return Promise.all(promises);
         }
 

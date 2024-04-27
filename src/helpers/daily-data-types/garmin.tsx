@@ -14,7 +14,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("steps"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000]
     },
     {
         type: DailyDataType.GarminDistance,
@@ -22,7 +23,9 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("distance"),
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
-        formatter: defaultFormatter
+        formatter: (value: number) => Number((value / 1000).toFixed(2)).toLocaleString() + " km",
+        yAxisConverter: (value: number) => value / 1000,
+        previewDataRange: [3000, 5000]
     },
     {
         type: DailyDataType.GarminFloors,
@@ -30,7 +33,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("floors-climbed"),
         icon: <FontAwesomeSvgIcon icon={faStairs} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [2, 6]
     },
     {
         type: DailyDataType.GarminActiveMinutes,
@@ -38,7 +42,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("active-minutes"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [50, 200]
     },
     {
         type: DailyDataType.GarminActiveCalories,
@@ -46,7 +51,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("active-calories"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [200, 500]
     },
     {
         type: DailyDataType.GarminRestingCalories,
@@ -54,7 +60,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("resting-calories"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [1200, 2000]
     },
     {
         type: DailyDataType.GarminTotalCalories,
@@ -62,7 +69,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("total-calories"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [2000, 3000]
     },
     {
         type: DailyDataType.GarminRestingHeartRate,
@@ -70,7 +78,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("resting-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [60, 70]
     },
     {
         type: DailyDataType.GarminMinHeartRate,
@@ -78,7 +87,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("min-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [50, 60]
     },
     {
         type: DailyDataType.GarminMaxHeartRate,
@@ -86,7 +96,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("max-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [110, 180]
     },
     {
         type: DailyDataType.GarminAverageHeartRate,
@@ -94,7 +105,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("average-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [60, 100]
     },
     {
         type: DailyDataType.GarminMaxStressLevel,
@@ -102,7 +114,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("max-stress-level"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [80, 100]
     },
     {
         type: DailyDataType.GarminAverageStressLevel,
@@ -110,7 +123,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("average-stress-level"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [40, 60]
     },
     {
         type: DailyDataType.GarminTotalStressMinutes,
@@ -118,7 +132,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("total-stress-time"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [100, 180]
     },
     {
         type: DailyDataType.GarminLowStressMinutes,
@@ -126,7 +141,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("low-stress-time"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [60, 100]
     },
 
     {
@@ -135,7 +151,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("medium-stress-time"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [20, 40]
     },
     {
         type: DailyDataType.GarminHighStressMinutes,
@@ -143,7 +160,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         label: language("high-stress-time"),
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
-        formatter: minutesFormatter
+        formatter: minutesFormatter,
+        previewDataRange: [20, 40]
     },
     {
         type: DailyDataType.GarminTotalSleepMinutes,
@@ -152,7 +170,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("total-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [400, 540]
     },
     {
         type: DailyDataType.GarminRemSleepMinutes,
@@ -161,7 +180,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("rem-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.GarminDeepSleepMinutes,
@@ -170,7 +190,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("deep-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.GarminLightSleepMinutes,
@@ -179,7 +200,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("light-sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [180, 240]
     },
     {
         type: DailyDataType.GarminAwakeMinutes,
@@ -188,7 +210,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("awake-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [20, 60]
     },
     {
         type: DailyDataType.GarminSleepScore,
@@ -196,7 +219,8 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Sleep"]),
         label: language("sleep-score"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [60, 80]
     }
 ];
 garminTypeDefinitions.forEach((def) => {

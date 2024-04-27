@@ -31,7 +31,8 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         label: language("resting-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-        formatter: heartRateFormatter
+        formatter: heartRateFormatter,
+        previewDataRange: [40, 100]
     },
     {
         type: DailyDataType.Steps,
@@ -55,7 +56,8 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         label: language("steps"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
-        formatter: defaultFormatter
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000]
     },
     {
         type: DailyDataType.SleepMinutes,
@@ -80,7 +82,8 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         label: language("sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter
+        yAxisConverter: sleepYAxisConverter,
+        previewDataRange: [420, 540]
     }
 ];
 export default combinedTypeDefinitions;

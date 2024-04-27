@@ -19,7 +19,10 @@ export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
 	return dailyDataType.availabilityCheck(modifiedAfter);
 }
 
-export function queryDailyData(type: string, startDate: Date, endDate: Date) {
+export function queryDailyData(type: string, startDate: Date, endDate: Date, preview?: boolean) {
+	if (preview) {
+		return Promise.resolve(queryPreviewDailyData(type, startDate, endDate));
+	}
 	var dailyDataType = dailyDataTypes[type];
 	return dailyDataType.provider(startDate, endDate).then(function (data) {
 		var result: DailyDataQueryResult = {};
@@ -33,6 +36,38 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date) {
 		return result;
 	});
 }
+
+export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date) {
+	var result: DailyDataQueryResult = {};
+	let range = [0, 10000];
+	if (Object.values<string>(DailyDataType).includes(type)) {
+		range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
+	}
+
+	//poor man's seeded javascript rng
+	async function randomNumber(message: string) {
+		const encoder = new TextEncoder();
+		const data = encoder.encode(message);
+		const hash = await crypto.subtle.digest("SHA-1", data);
+		const hashArray = Array.from(new Uint8Array(hash)).map(t => t.toString());
+		return parseInt(hashArray.reduce((accumulator, currentValue) => {
+			return accumulator + currentValue
+		}, ""));
+	}
+
+	while (startDate < endDate) {
+		var dayKey = getDayKey(startDate);
+		var value = ((await randomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
+		if (startDate > new Date()) {
+			value = 0;
+		}
+		result[dayKey] = value;
+		startDate = add(startDate, { days: 1 });
+	}
+	console.log(result);
+	return result;
+}
+
 
 let definitionLookup = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])

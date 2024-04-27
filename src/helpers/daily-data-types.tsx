@@ -77,4 +77,5 @@ export interface DailyDataTypeDefinition {
 	icon: ReactElement;
 	formatter: (value: number) => string;
 	yAxisConverter?: (value: number) => number;
+	previewDataRange: [number, number];
 }
