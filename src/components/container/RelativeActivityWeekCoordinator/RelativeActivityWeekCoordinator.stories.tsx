@@ -1,9 +1,9 @@
 import React from "react"
 import Layout from "../../presentational/Layout"
 import RelativeActivityWeekCoordinator, { RelativeActivityWeekCoordinatorProps } from "./RelativeActivityWeekCoordinator";
-import { DailyDataType } from "../../../helpers/query-daily-data";
-import { WeeklyRelativeActivityDataType } from "../RelativeActivityWeekNavigator/RelativeActivityWeekNavigator";
+import { DailyDataType } from "../../../helpers";
 import DateRangeTitle from "../../presentational/DateRangeTitle";
+import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export default {
     title: "Container/RelativeActivityWeekCoordinator",
@@ -15,7 +15,7 @@ export default {
 
 let render = (args: RelativeActivityWeekCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityWeekCoordinator {...args} /></Layout>
 
-let dataTypes: WeeklyRelativeActivityDataType[] = [
+let dataTypes: RelativeActivityDataType[] = [
     {
         dailyDataType: DailyDataType.Steps,
         threshold: 5000,

@@ -1,19 +1,21 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { add, startOfDay } from "date-fns";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import getDayKey from "../../../helpers/get-day-key";
-import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
+import { DailyDataQueryResult, getDailyDataTypeDefinition, queryDailyData } from "../../../helpers/query-daily-data";
 import { ActivityMeter, CardTitle, DateRangeContext, } from "../../presentational";
 import "./RelativeActivity.css"
 import language from "../../../helpers/language";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { ColorDefinition } from "../../../helpers/colors";
 import { RelativeActivityContext } from "../RelativeActivityWeekCoordinator/RelativeActivityWeekCoordinator";
+import { DailyDataType } from "../../../helpers/daily-data-types";
 
 export interface RelativeActivityProps {
-    dataTypes: RelativeActivityDataType[] | "FromContext";
+    dataTypes: RelativeActivityDataType[];
+    useDataTypesFromContext?: boolean;
     previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
@@ -34,27 +36,14 @@ interface RelativeActivityResult {
     value: string;
 }
 
-
 export default function (props: RelativeActivityProps) {
     let [result, setResults] = useState<RelativeActivityResult[] | null>(null);
-
-    let dataTypes = props.dataTypes;
-    if (dataTypes === "FromContext") {
-        dataTypes = useContext(RelativeActivityContext)?.dataTypes.map(dataType => {
-            return {
-                dailyDataType: dataType.dailyDataType,
-                icon: dataType.icon,
-                color: dataType.color,
-                overThresholdColor: dataType.overThresholdColor,
-                formatter: dataType.formatter,
-                threshold: dataType.threshold
-            }
-        
-        });
-    }
-
     let dataTypeContext = useContext(RelativeActivityContext);
 
+    let dataTypes: RelativeActivityDataType[] = props.dataTypes;
+    if (props.useDataTypesFromContext && dataTypeContext?.dataTypes) {
+        dataTypes = dataTypeContext.dataTypes;
+    }
 
     let dateRangeContext = useContext(DateRangeContext);
     let date = props.date;
@@ -68,7 +57,7 @@ export default function (props: RelativeActivityProps) {
         setResults(null);
         function queryData() {
             if (props.previewState === "Default") {
-                let result = props.dataTypes.map(dataType => {
+                let result = dataTypes.map(dataType => {
                     let data: DailyDataQueryResult = {};
                     for (let i = -31; i < 1; i++) {
                         let dayKey = getDayKey(add(date!, { days: i }));
@@ -146,7 +135,7 @@ export default function (props: RelativeActivityProps) {
                 computedResults.push({
                     dataType: dataType,
                     fillPercent: fillPercent,
-                    value: dataType.formatter(data[dayKey])
+                    value: getDailyDataTypeDefinition(dataType.dailyDataType).formatter(data[dayKey])
                 });
                 setResults(computedResults);
             });
@@ -172,15 +161,15 @@ export default function (props: RelativeActivityProps) {
         {props.title && <CardTitle title={props.title} />}
         {result.map(c => <div key={c.dataType.dailyDataType} className="mdhui-relative-activity-datatype">
             <ActivityMeter className="mdhui-relative-activity-meter"
-                label={c.dataType.label}
+                label={getDailyDataTypeDefinition(c.dataType.dailyDataType).label}
                 value={c.value}
                 fillPercent={c.fillPercent}
                 averageFillPercent={0.5}
-                icon={c.dataType.icon}
+                icon={getDailyDataTypeDefinition(c.dataType.dailyDataType).icon}
                 color={getColor(c.dataType, c.fillPercent)} />
             {c.dataType.threshold !== undefined &&
                 <div className="mdhui-relative-activity-threshold">
-                    {c.dataType.formatter(c.dataType.threshold)}
+                    {getDailyDataTypeDefinition(c.dataType.dailyDataType).formatter(c.dataType.threshold)}
                     <div>
                         <FontAwesomeSvgIcon icon={faChevronDown} />
                     </div>

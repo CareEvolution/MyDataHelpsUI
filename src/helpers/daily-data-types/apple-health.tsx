@@ -1,11 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { appleHealthActiveEnergyBurned, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider } from "../daily-data-providers";
-import { DailyDataTypeDefinition } from "../daily-data-types";
-import { DailyDataType, simpleAvailabilityCheck } from "../query-daily-data";
+import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
 import language from "../language";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { simpleAvailabilityCheck } from "./availability-check";
 
 let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
 	{

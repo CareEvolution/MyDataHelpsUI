@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import { DailyDataQueryResult, DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
-import { ColorDefinition } from "../../../helpers/colors";
+import { DailyDataQueryResult, queryDailyData } from "../../../helpers/query-daily-data";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
 import { add, addDays, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
+import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export interface RelativeActivityWeekNavigatorProps {
     selectedDate: Date;
     onDateSelected(date: Date): void;
-    dataTypes: WeeklyRelativeActivityDataType[];
+    dataTypes: RelativeActivityDataType[];
     previewState?: "default";
     innerRef?: React.Ref<HTMLDivElement>;
-}
-
-export interface WeeklyRelativeActivityDataType {
-    dailyDataType: string;
-    threshold: number;
-    color?: ColorDefinition;
-    overThresholdColor?: ColorDefinition;
 }
 
 export default function (props: RelativeActivityWeekNavigatorProps) {

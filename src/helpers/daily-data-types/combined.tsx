@@ -1,12 +1,12 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { DailyDataTypeDefinition } from "../daily-data-types";
-import { DailyDataType, simpleAvailabilityCheck } from "../query-daily-data";
+import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import language from "../language";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import { combinedSleepDataProvider, combinedStepsDataProvider } from "../daily-data-providers";
+import { simpleAvailabilityCheck } from "./availability-check";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {

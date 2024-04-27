@@ -3,24 +3,24 @@ import { checkDailyDataAvailability } from "../../../helpers/query-daily-data";
 import { startOfDay } from "date-fns";
 import { DateRangeContext } from "../../presentational";
 import RelativeActivityWeekNavigator from "../RelativeActivityWeekNavigator";
-import { WeeklyRelativeActivityDataType } from "../RelativeActivityWeekNavigator/RelativeActivityWeekNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
+import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export interface RelativeActivityWeekCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;
-    dataTypes: WeeklyRelativeActivityDataType[];
+    dataTypes: RelativeActivityDataType[];
     previewState?: "default";
     children?: React.ReactNode;
 }
 
 export interface RelativeActivityContext {
-    dataTypes: WeeklyRelativeActivityDataType[];
+    dataTypes: RelativeActivityDataType[];
 }
 
 export const RelativeActivityContext = createContext<RelativeActivityContext | null>(null);
 
 export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityWeekCoordinatorProps) {
-    const [availableDataTypes, setAvailableDataTypes] = useState<WeeklyRelativeActivityDataType[]>([]);
+    const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[]>([]);
     const [currentContext, setCurrentContext] = useState<DateRangeContext>({
         intervalStart: startOfDay(new Date()),
         intervalType: "Day"

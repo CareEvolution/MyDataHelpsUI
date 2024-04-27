@@ -1,11 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { garminActiveCaloriesDataProvider, garminActiveMinutesDataProvider, garminAverageHeartRateDataProvider, garminAverageStressLevelDataProvider, garminAwakeMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminDistanceDataProvider, garminFloorsDataProvider, garminHighStressMinutesDataProvider, garminLightSleepMinutesDataProvider, garminLowStressMinutesDataProvider, garminMaxHeartRateDataProvider, garminMaxStressLevelDataProvider, garminMediumStressMinutesDataProvider, garminMinHeartRateDataProvider, garminRemSleepMinutesDataProvider, garminRestingCaloriesDataProvider, garminRestingHeartRateDataProvider, garminSleepScoreDataProvider, garminStepsDataProvider, garminTotalCaloriesDataProvider, garminTotalSleepMinutesDataProvider, garminTotalStressMinutesDataProvider } from "../daily-data-providers";
-import { DailyDataTypeDefinition } from "../daily-data-types";
-import { DailyDataType, simpleAvailabilityCheck } from "../query-daily-data";
+import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faBoltLightning, faHeartbeat, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
 import language from "../language";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { simpleAvailabilityCheck } from "./availability-check";
 
 let garminTypeDefinitions: DailyDataTypeDefinition[] = [
     {
