@@ -360,6 +360,9 @@
     "high-stress-time": "High Stress Time",
     "awake-time": "Awake Time",
     "sleep-score": "Sleep Score",
+    "bpm": "bpm",
+    "hours-abbreviation": "h",
+    "minutes-abbreviation": "m",
 };
 
 export default strings;

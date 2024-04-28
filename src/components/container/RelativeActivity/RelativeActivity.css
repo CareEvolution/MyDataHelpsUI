@@ -9,11 +9,12 @@
 .mdhui-relative-activity .mdhui-relative-activity-datatype .mdhui-relative-activity-threshold {
     position: absolute;
     width: 100%;
-    top: 8px;
+    top: 18px;
     left: 0;
     text-align: center;
     font-size: .7em;
     color: var(--mdhui-text-color-2);
+    line-height: .8em;
 }
 
 .mdhui-relative-activity .mdhui-relative-activity-average-marker {

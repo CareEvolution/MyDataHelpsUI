@@ -357,7 +357,10 @@
     "medium-stress-time": "Tiempo de Estrés Moderado",
     "high-stress-time": "Tiempo de Alto Estrés",
     "awake-time": "Tiempo Despierto",
-    "sleep-score": "Puntuación de Sueño"
+    "sleep-score": "Puntuación de Sueño",
+    "bpm": "ppm",
+    "hours-abbreviation": "h",
+    "minutes-abbreviation": "m",
 };
 
 export default strings;

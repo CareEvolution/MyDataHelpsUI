@@ -361,7 +361,10 @@ let strings: { [key: string]: string } = {
     "medium-stress-time": "Tempo de Estresse Médio",
     "high-stress-time": "Tempo de Alto Estresse",
     "awake-time": "Tempo Acordado",
-    "sleep-score": "Pontuação do Sono"
+    "sleep-score": "Pontuação do Sono",
+    "bpm": "bpm",
+    "hours-abbreviation": "h",
+    "minutes-abbreviation": "m"
 };
 
 export default strings;
