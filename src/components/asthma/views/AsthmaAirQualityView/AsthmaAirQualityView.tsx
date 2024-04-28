@@ -28,7 +28,7 @@ export default function (props: AsthmaAirQualityViewProps) {
             <RecentDailyDataBarChart
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={previewDataProvider}
-                title={language('asthma-air-quality-view-home-aqi-chart-title')}
+                title={language('air-quality-home')}
                 dailyDataType={DailyDataType.HomeAirQuality}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}

@@ -2,6 +2,7 @@ import React from "react"
 import RelativeActivity, { RelativeActivityDataType, RelativeActivityProps } from "./RelativeActivity";
 import { Card, DateRangeCoordinator, Layout } from "../../presentational";
 import { DailyDataType } from "../../../helpers/daily-data-types";
+import { dailyDataTypeDefinitions } from "../../../helpers";
 
 export default {
     title: "Container/RelativeActivity",
@@ -64,6 +65,21 @@ export const SpecificThresholds = {
         title: "Activity",
         previewState: "Default",
         specifyThresholds: true
+    },
+    render: render
+};
+
+let allDataTypes: RelativeActivityDataType[] = dailyDataTypeDefinitions.map(dailyDataType => {
+    return {
+        dailyDataType: dailyDataType.type,
+        color: "rgba(255, 166, 102, 1)"
+    }
+});        
+export const AllDataTypes = {
+    args: {
+        dataTypes: allDataTypes,
+        title: "Activity",
+        previewState: "Default"
     },
     render: render
 };
