@@ -19,7 +19,6 @@ export interface RelativeActivityProps {
     previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
-    specifyThresholds?: boolean;
     date?: Date;
 }
 
@@ -34,6 +33,7 @@ interface RelativeActivityResult {
     dataType: RelativeActivityDataType;
     fillPercent: number;
     value: string;
+    threshold: string;
 }
 
 export default function (props: RelativeActivityProps) {
@@ -56,11 +56,12 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         setResults(null);
         function queryData() {
-            let startDate = add(date!, { days: -31 });
-            if (props.specifyThresholds) {
-                startDate = add(date!, { days: -1 });
-            }
-            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, startDate, add(date!, { days: 1 }), !!props.previewState));
+            let promises = props.dataTypes.map(dataType =>
+                queryDailyData(
+                    dataType.dailyDataType,
+                    add(date!, { days: dataType.threshold !== undefined ? -1 : -31 }),
+                    add(date!, { days: 1 }), 
+                    !!props.previewState));
             return Promise.all(promises);
         }
 
@@ -77,12 +78,9 @@ export default function (props: RelativeActivityProps) {
                 if (!data || !data[dayKey]) {
                     return;
                 }
-                if (props.specifyThresholds && !dataType.threshold) {
-                    return;
-                }
 
                 let threshold = dataType.threshold;
-                if (!props.specifyThresholds) {
+                if (dataType.threshold === undefined) {
                     let sumValues = 0;
                     let totalValues = 0;
                     for (var i = 1; i < 31; i++) {
@@ -105,7 +103,8 @@ export default function (props: RelativeActivityProps) {
                 computedResults.push({
                     dataType: dataType,
                     fillPercent: fillPercent,
-                    value: getDailyDataTypeDefinition(dataType.dailyDataType).formatter(data[dayKey])
+                    value: getDailyDataTypeDefinition(dataType.dailyDataType).formatter(data[dayKey]),
+                    threshold: getDailyDataTypeDefinition(dataType.dailyDataType).formatter(threshold)
                 });
                 setResults(computedResults);
             });
@@ -121,7 +120,7 @@ export default function (props: RelativeActivityProps) {
     }
 
     function getColor(dataType: RelativeActivityDataType, fillPercent: number) {
-        if (props.specifyThresholds && dataType.overThresholdColor && fillPercent > .5) {
+        if (dataType.threshold !== undefined && dataType.overThresholdColor && fillPercent > .5) {
             return dataType.overThresholdColor;
         }
         return dataType.color || "var(--mdhui-color-primary)";
@@ -137,9 +136,9 @@ export default function (props: RelativeActivityProps) {
                 averageFillPercent={0.5}
                 icon={getDailyDataTypeDefinition(c.dataType.dailyDataType).icon}
                 color={getColor(c.dataType, c.fillPercent)} />
-            {c.dataType.threshold !== undefined &&
+            {props.dataTypes.some(d => d.threshold !== undefined) &&
                 <div className="mdhui-relative-activity-threshold">
-                    {getDailyDataTypeDefinition(c.dataType.dailyDataType).formatter(c.dataType.threshold)}
+                    {c.threshold}
                     <div>
                         <FontAwesomeSvgIcon icon={faChevronDown} />
                     </div>
@@ -148,7 +147,7 @@ export default function (props: RelativeActivityProps) {
         </div>
         )}
 
-        {!props.specifyThresholds &&
+        {props.dataTypes.every(d => d.threshold === undefined) &&
             <div className="mdhui-relative-activity-average-marker">
                 <div>
                     <FontAwesomeSvgIcon icon={faChevronUp} />

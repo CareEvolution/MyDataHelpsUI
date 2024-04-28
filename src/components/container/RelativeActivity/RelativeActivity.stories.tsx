@@ -42,7 +42,7 @@ let dataTypes: RelativeActivityDataType[] = [{
     color: "rgba(239, 132, 129, 1)"
 }];
 
-export const AverageAsThreshold = {
+export const NoThresholds = {
     args: {
         dataTypes: dataTypes,
         title: "Activity",
@@ -51,15 +51,34 @@ export const AverageAsThreshold = {
     render: render
 };
 
+let dataTypesWithSomeThresholds: RelativeActivityDataType[] = [
+    { ...dataTypes[0], threshold: 5000, overThresholdColor: "rgba(255, 0, 0, 1)" },
+    { ...dataTypes[1], threshold: 200, overThresholdColor: "rgba(255, 0, 0, 1)" },
+    { ...dataTypes[2] },
+    { ...dataTypes[3] },
+    { ...dataTypes[4], threshold: 120, overThresholdColor: "rgba(255, 0, 0, 1)" },
+    { ...dataTypes[5], threshold: 120, overThresholdColor: "rgba(255, 0, 0, 1)" }];
+
+export const SomeThresholds = {
+    args: {
+        dataTypes: dataTypesWithSomeThresholds,
+        title: "Activity",
+        previewState: "Default",
+        specifyThresholds: true
+    },
+    render: render
+};
+
+
 let dataTypesWithThresholds: RelativeActivityDataType[] = [
-    { ...dataTypes[0], threshold: 5000 },
-    { ...dataTypes[1], threshold: 200 },
+    { ...dataTypes[0], threshold: 5000, overThresholdColor: "rgba(255, 0, 0, 1)" },
+    { ...dataTypes[1], threshold: 200, overThresholdColor: "rgba(255, 0, 0, 1)" },
     { ...dataTypes[2], threshold: 60 * 8 },
     { ...dataTypes[3], threshold: 60 * 8 },
-    { ...dataTypes[4], threshold: 120 },
-    { ...dataTypes[5], threshold: 120 }];
+    { ...dataTypes[4], threshold: 120, overThresholdColor: "rgba(255, 0, 0, 1)" },
+    { ...dataTypes[5], threshold: 120, overThresholdColor: "rgba(255, 0, 0, 1)" }];
 
-export const SpecificThresholds = {
+export const AllThresholds = {
     args: {
         dataTypes: dataTypesWithThresholds,
         title: "Activity",
@@ -74,7 +93,7 @@ let allDataTypes: RelativeActivityDataType[] = dailyDataTypeDefinitions.map(dail
         dailyDataType: dailyDataType.type,
         color: "rgba(255, 166, 102, 1)"
     }
-});        
+});
 export const AllDataTypes = {
     args: {
         dataTypes: allDataTypes,
