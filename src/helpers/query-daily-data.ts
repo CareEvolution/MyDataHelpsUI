@@ -45,6 +45,8 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 	}
 
 	//poor man's seeded javascript rng
+	//just for generating a relatively large random integer from a string seed,
+	//which then uses modulo to get a number in a range
 	async function randomNumber(message: string) {
 		const encoder = new TextEncoder();
 		const data = encoder.encode(message);
@@ -64,7 +66,6 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 		result[dayKey] = value;
 		startDate = add(startDate, { days: 1 });
 	}
-	console.log(result);
 	return result;
 }
 

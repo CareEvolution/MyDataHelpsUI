@@ -58,11 +58,15 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
             }
             let value = dailyData[dataType.dailyDataType]?.[dayKey] ?? 0;
             let color = dataType.color || "var(--mdhui-color-primary)";
-            if (value > dataType.threshold && dataType.overThresholdColor) {
+            if (dataType.threshold && value > dataType.threshold && dataType.overThresholdColor) {
                 color = dataType.overThresholdColor;
             }
 
-            let fillPercent = value / (dataType.threshold * 2);
+            let maxValue = dailyData[dataType.dailyDataType] ? Math.max(...Object.values(dailyData[dataType.dailyDataType])) : 0;
+            let fillPercent = maxValue ? value / maxValue : 0;
+            if (dataType.threshold != undefined) {
+                fillPercent = value / (dataType.threshold * 2);
+            }
             if (fillPercent > 1) { fillPercent = 1; }
             return {
                 color: color,
@@ -72,7 +76,7 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
 
         return <div style={{ paddingTop: "8px" }}>
             <SparkBarChart
-                averageFillPercent={0.5}
+                averageFillPercent={props.dataTypes.every(dataType => dataType.threshold != undefined) ? 0.5 : undefined}
                 bars={bars} /></div>
     }
 
