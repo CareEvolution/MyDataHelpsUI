@@ -73,7 +73,7 @@ export interface DailyDataTypeDefinition {
 	type: DailyDataType;
 	dataProvider: DailyDataProvider;
 	availabilityCheck: DailyDataAvailabilityCheck;
-	label: string;
+	getLabel(): string;
 	icon: ReactElement;
 	formatter: (value: number) => string;
 	yAxisConverter?: (value: number) => number;

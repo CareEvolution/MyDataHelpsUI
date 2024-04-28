@@ -12,7 +12,7 @@ let airQualityTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.HomeAirQuality,
         dataProvider: homeAirQualityDataProvider,
         availabilityCheck: simpleAvailabilityCheck('AirNowApi', ['HomeAirQuality']),
-        label: language("home-air-quality"),
+        getLabel: () => language("home-air-quality"),
         icon: <FontAwesomeSvgIcon icon={faWind} />,
         formatter: defaultFormatter,
         previewDataRange: [20, 80]
@@ -21,7 +21,7 @@ let airQualityTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.WorkAirQuality,
         dataProvider: workAirQualityDataProvider,
         availabilityCheck: simpleAvailabilityCheck('AirNowApi', ['WorkAirQuality']),
-        label: language("work-air-quality"),
+        getLabel: () => language("work-air-quality"),
         icon: <FontAwesomeSvgIcon icon={faWind} />,
         formatter: defaultFormatter,
         previewDataRange: [20, 80]

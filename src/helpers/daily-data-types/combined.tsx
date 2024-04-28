@@ -29,7 +29,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 }
             })
         },
-        label: language("resting-heart-rate"),
+        getLabel: () => language("resting-heart-rate"),
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
         previewDataRange: [40, 100]
@@ -54,7 +54,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 }
             });
         },
-        label: language("steps"),
+        getLabel: () => language("steps"),
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
@@ -79,7 +79,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 }
             })
         },
-        label: language("sleep-time"),
+        getLabel: () => language("sleep-time"),
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
         yAxisConverter: sleepYAxisConverter,

@@ -131,7 +131,7 @@ export default function (props: RelativeActivityProps) {
         {props.title && <CardTitle title={props.title} />}
         {result.map(c => <div key={c.dataType.dailyDataType} className="mdhui-relative-activity-datatype">
             <ActivityMeter className="mdhui-relative-activity-meter"
-                label={getDailyDataTypeDefinition(c.dataType.dailyDataType).label}
+                label={getDailyDataTypeDefinition(c.dataType.dailyDataType).getLabel()}
                 value={c.value}
                 fillPercent={c.fillPercent}
                 averageFillPercent={0.5}
