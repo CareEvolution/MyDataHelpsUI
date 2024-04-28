@@ -22,6 +22,7 @@ export interface DailyDataChartProps {
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
     hideIfNoData?: boolean
     previewDataProvider?: DailyDataProvider
+    previewState?: "default"
     innerRef?: React.Ref<HTMLDivElement>
 }
 
@@ -84,7 +85,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 });
             return;
         }
-        queryDailyData(props.dailyDataType, intervalStart, intervalEnd)
+        queryDailyData(props.dailyDataType, intervalStart, intervalEnd, !!props.previewState)
             .then((data) => {
                 setCurrentData(data);
             });

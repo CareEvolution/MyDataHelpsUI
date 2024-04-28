@@ -22,19 +22,7 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
         if (!props.dataTypes.length) return;
 
         function queryData() {
-            if (props.previewState === "default") {
-                let result = props.dataTypes.map(dataType => {
-                    let data: DailyDataQueryResult = {};
-                    for (let i = -7; i < 7; i++) {
-                        let dayKey = getDayKey(add(weekStart, { days: i }));
-                        data[dayKey] = Math.random() * dataType.threshold * 2;
-                    }
-                    return data;
-                });
-                return Promise.resolve(result);
-            }
-
-            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, add(weekStart, { days: -7 }), add(weekStart, { days: 7 })));
+            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, add(weekStart, { days: -7 }), add(weekStart, { days: 7 }), !!props.previewState));
             return Promise.all(promises).then(results => {
                 return results;
             });
