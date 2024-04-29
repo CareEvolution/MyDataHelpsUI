@@ -1,7 +1,7 @@
 import { add } from "date-fns";
 import { ColorDefinition } from "./colors";
 import { DailyDataType } from "./daily-data-types";
-import { getDailyDataTypeDefinition, queryDailyData } from "./query-daily-data";
+import { queryDailyData } from "./query-daily-data";
 import getDayKey from "./get-day-key";
 
 export interface RelativeActivityQueryResult {
@@ -41,8 +41,6 @@ export default function queryRelativeActivity(startDate: Date, endDate: Date, da
                     if (fillPercent > 1) {
                         fillPercent = 1;
                     }
-
-                    let typeDefinition = getDailyDataTypeDefinition(dataType.dailyDataType);
 
                     relativeActivityResults[dataType.dailyDataType][dayKey] = {
                         relativePercent: fillPercent,

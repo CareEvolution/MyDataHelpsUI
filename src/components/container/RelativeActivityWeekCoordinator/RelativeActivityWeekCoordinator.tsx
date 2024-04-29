@@ -5,6 +5,7 @@ import { DateRangeContext } from "../../presentational";
 import RelativeActivityWeekNavigator from "../RelativeActivityWeekNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { RelativeActivityDataType } from "../RelativeActivity";
+import { RelativeActivityQueryResult } from "../../../helpers";
 
 export interface RelativeActivityWeekCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -15,12 +16,14 @@ export interface RelativeActivityWeekCoordinatorProps {
 
 export interface RelativeActivityContext {
     dataTypes: RelativeActivityDataType[];
+    data?: { [key: string]: { [key: string]: RelativeActivityQueryResult } };
 }
 
 export const RelativeActivityContext = createContext<RelativeActivityContext | null>(null);
 
 export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityWeekCoordinatorProps) {
     const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[]>([]);
+    const [relativeActivityData, setRelativeActivityData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined>(undefined);
     const [currentContext, setCurrentContext] = useState<DateRangeContext>({
         intervalStart: startOfDay(new Date()),
         intervalType: "Day"
@@ -45,13 +48,14 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
     return (
         <div ref={props.innerRef}>
-            <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes }}>
+            <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
                 <DateRangeContext.Provider value={currentContext}>
                     <RelativeActivityWeekNavigator
                         selectedDate={currentContext.intervalStart}
                         onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
                         dataTypes={availableDataTypes}
-                        previewState={props.previewState} />
+                        previewState={props.previewState}
+                        onDataLoaded={(d) => setRelativeActivityData(d)} />
                     {props.children}
                 </DateRangeContext.Provider>
             </RelativeActivityContext.Provider>

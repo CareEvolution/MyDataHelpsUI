@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { DailyDataQueryResult, queryDailyData } from "../../../helpers/query-daily-data";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
 import { add, addDays, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
@@ -13,7 +12,7 @@ export interface RelativeActivityWeekNavigatorProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "default";
     innerRef?: React.Ref<HTMLDivElement>;
-    onDataLoaded?(): { [key: string]: DailyDataQueryResult };
+    onDataLoaded?(data: { [key: string]: { [key: string]: RelativeActivityQueryResult } }): void;
 }
 
 export default function (props: RelativeActivityWeekNavigatorProps) {
@@ -25,12 +24,8 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
 
         queryRelativeActivity(add(weekStart, { days: -7 }), add(weekStart, { days: 7 }), props.dataTypes, !!props.previewState).then(results => {
             setDailyData(results);
+            props.onDataLoaded?.(results);
         });
-
-        if (props.previewState === "default") {
-            setDailyData({});
-            return;
-        };
     }
     useInitializeView(() => {
         loadData();

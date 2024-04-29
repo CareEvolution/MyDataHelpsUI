@@ -72,7 +72,7 @@ export const WithRelativeActivity = {
         children: <>
             <DateRangeTitle defaultMargin />
             <Card>
-                <RelativeActivity dataTypes={[]} useDataTypesFromContext previewState="Default" />
+                <RelativeActivity dataTypes={[]} useContext previewState="Default" />
             </Card>
         </>
     },
@@ -86,7 +86,7 @@ export const WithRelativeActivityNoThresholds = {
         children: <>
             <DateRangeTitle defaultMargin />
             <Card>
-                <RelativeActivity dataTypes={[]} useDataTypesFromContext previewState="Default" />
+                <RelativeActivity dataTypes={[]} useContext previewState="Default" />
             </Card>
         </>
     },

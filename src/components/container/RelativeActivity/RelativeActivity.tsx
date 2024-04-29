@@ -15,7 +15,7 @@ import queryRelativeActivity from "../../../helpers/relative-activity";
 
 export interface RelativeActivityProps {
     dataTypes: RelativeActivityDataType[];
-    useDataTypesFromContext?: boolean;
+    useContext?: boolean;
     previewState?: "Default";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
@@ -24,11 +24,11 @@ export interface RelativeActivityProps {
 
 export default function (props: RelativeActivityProps) {
     let [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | null>(null);
-    let dataTypeContext = useContext(RelativeActivityContext);
+    let relativeActivityContext = useContext(RelativeActivityContext);
 
     let dataTypes: RelativeActivityDataType[] = [...props.dataTypes];
-    if (props.useDataTypesFromContext && dataTypeContext?.dataTypes) {
-        dataTypes = dataTypeContext.dataTypes;
+    if (props.useContext && relativeActivityContext?.dataTypes) {
+        dataTypes = relativeActivityContext.dataTypes;
     }
 
     let dateRangeContext = useContext(DateRangeContext);
@@ -39,21 +39,35 @@ export default function (props: RelativeActivityProps) {
         date = startOfDay(new Date());
     }
 
+    function transformResults(results: { [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined) {
+        if (!results) return;
+        let computedResult: { [key: string]: RelativeActivityQueryResult } = {};
+        dataTypes.forEach(dataType => {
+            computedResult[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
+        });
+        setResults(computedResult);
+    }
+
     function loadData() {
         setResults(null);
+        if (props.useContext) {
+            console.log(relativeActivityContext);
+            console.log("Setting data from context!!");
+            transformResults(relativeActivityContext!.data);
+            return;
+        }
         queryRelativeActivity(date!, date!, dataTypes, !!props.previewState).then(results => {
-            console.log(results);
-            let computedResult: { [key: string]: RelativeActivityQueryResult } = {};
-            dataTypes.forEach(dataType => {
-                computedResult[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
-            });
-            setResults(computedResult);
+            console.log("Querying data!!");
+            transformResults(results);
         });
     }
 
     useInitializeView(() => {
         loadData();
-    }, ["externalAccountSyncComplete"], [dateRangeContext, dataTypeContext, props.date, props.dataTypes], 0);
+    }, ["externalAccountSyncComplete"], [dateRangeContext, relativeActivityContext, props.date, props.dataTypes], 0);
+
+
+    let contextResults = relativeActivityContext?.data;
 
     if (results == null || !Object.keys(results).length) {
         return null;
