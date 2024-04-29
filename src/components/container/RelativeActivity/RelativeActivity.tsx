@@ -51,13 +51,10 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         setResults(null);
         if (props.useContext) {
-            console.log(relativeActivityContext);
-            console.log("Setting data from context!!");
             transformResults(relativeActivityContext!.data);
             return;
         }
         queryRelativeActivity(date!, date!, dataTypes, !!props.previewState).then(results => {
-            console.log("Querying data!!");
             transformResults(results);
         });
     }
