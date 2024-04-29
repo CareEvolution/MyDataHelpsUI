@@ -42,6 +42,7 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         setResults(null);
         queryRelativeActivity(date!, date!, dataTypes, !!props.previewState).then(results => {
+            console.log(results);
             let computedResult: { [key: string]: RelativeActivityQueryResult } = {};
             dataTypes.forEach(dataType => {
                 computedResult[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
@@ -54,7 +55,7 @@ export default function (props: RelativeActivityProps) {
         loadData();
     }, ["externalAccountSyncComplete"], [dateRangeContext, dataTypeContext, props.date, props.dataTypes], 0);
 
-    if (results == null || !results.length) {
+    if (results == null || !Object.keys(results).length) {
         return null;
     }
 

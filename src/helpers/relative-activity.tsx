@@ -23,7 +23,7 @@ export default function queryRelativeActivity(startDate: Date, endDate: Date, da
         queryDailyData(
             dataType.dailyDataType,
             add(startDate, { days: dataType.threshold == undefined ? -31 : -1 }),
-            endDate,
+            add(endDate, { days: 1 }),
             preview));
     return Promise.all(promises).then((results) => {
         dataTypes.forEach((dataType, index) => {
