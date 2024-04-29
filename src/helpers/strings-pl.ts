@@ -149,7 +149,6 @@ let strings: { [key: string]: string } = {
     "systolic-average": "Średnie ciśnienie skurczowe",
     "diastolic-average": "Średnie ciśnienie rozkurczowe",
     "highest-systolic": "Najwyższe ciśnienie skurczowe",
-    "lowest-diastolic": "Najniższe ciśnienie rozkurczowe",
     "resource-default-button-text": "Otwórz",
     "inbox-message-completed-status": "WIDZIANE",
     "inbox-resource-completed-status": "WIDZIANE",
