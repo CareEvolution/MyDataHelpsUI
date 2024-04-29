@@ -317,7 +317,11 @@
     "device-data-month-chart-no-data": "Sin Datos",
     "device-data-month-chart-daily-average": "Promedio Diario",
     "device-data-month-chart-minutes": "Minutos",
-    "device-data-month-chart-sleep": "Dormir"
+    "device-data-month-chart-sleep": "Dormir",
+    "systolic-average": "Promedio Sistólico",
+    "diastolic-average": "Promedio Diastólico",
+    "highest-systolic": "Sistólica más Alta",
+    "lowest-systolic": "Sistólica más Baja",
 };
 
 export default strings;
