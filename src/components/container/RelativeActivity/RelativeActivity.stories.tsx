@@ -1,8 +1,8 @@
 import React from "react"
-import RelativeActivity, { RelativeActivityDataType, RelativeActivityProps } from "./RelativeActivity";
+import RelativeActivity, { RelativeActivityProps } from "./RelativeActivity";
 import { Card, DateRangeCoordinator, Layout } from "../../presentational";
 import { DailyDataType } from "../../../helpers/daily-data-types";
-import { dailyDataTypeDefinitions } from "../../../helpers";
+import { RelativeActivityDataType, dailyDataTypeDefinitions } from "../../../helpers";
 
 export default {
     title: "Container/RelativeActivity",

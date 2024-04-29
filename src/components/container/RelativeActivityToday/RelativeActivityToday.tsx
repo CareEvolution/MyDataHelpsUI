@@ -1,6 +1,7 @@
 import React from "react";
-import RelativeActivity, { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
+import RelativeActivity from "../RelativeActivity/RelativeActivity";
 import { startOfDay } from "date-fns";
+import { RelativeActivityDataType } from "../RelativeActivity";
 
 export interface RelativeActivityTodayProps {
     dataTypes: RelativeActivityDataType[];

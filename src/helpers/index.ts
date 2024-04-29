@@ -8,5 +8,6 @@ export * from './colors';
 export * from './blood-pressure-data-providers'
 export * from './query-all-survey-answers';
 export * from './Initialization';
+export * from './relative-activity';
 export { simpleAvailabilityCheck } from './daily-data-types/availability-check';
 export { default as dailyDataTypeDefinitions } from './daily-data-types/all';

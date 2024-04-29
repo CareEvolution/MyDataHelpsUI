@@ -4,7 +4,8 @@ import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentatio
 import { add, addDays, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
-import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
+import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
+import queryRelativeActivity from "../../../helpers/relative-activity";
 
 export interface RelativeActivityWeekNavigatorProps {
     selectedDate: Date;
@@ -12,30 +13,18 @@ export interface RelativeActivityWeekNavigatorProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "default";
     innerRef?: React.Ref<HTMLDivElement>;
+    onDataLoaded?(): { [key: string]: DailyDataQueryResult };
 }
 
 export default function (props: RelativeActivityWeekNavigatorProps) {
     let [weekStart, setWeekStart] = useState<Date>(add(startOfDay(new Date()), { days: -6 }));
-    let [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
+    let [dailyData, setDailyData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | null>(null);
 
     function loadData() {
         if (!props.dataTypes.length) return;
 
-        function queryData() {
-            let promises = props.dataTypes.map(dataType => queryDailyData(dataType.dailyDataType, add(weekStart, { days: -7 }), add(weekStart, { days: 7 }), !!props.previewState));
-            return Promise.all(promises).then(results => {
-                return results;
-            });
-        }
-
-        queryData().then((results) => {
-            let resultsMap: { [key: string]: DailyDataQueryResult } = { ...dailyData };
-            let currentDailyData = dailyData || {};
-            results.forEach((result, index) => {
-                let newResult = { ...currentDailyData[props.dataTypes[index].dailyDataType], ...result };
-                resultsMap[props.dataTypes[index].dailyDataType] = newResult;
-            });
-            setDailyData(resultsMap);
+        queryRelativeActivity(add(weekStart, { days: -7 }), add(weekStart, { days: 7 }), props.dataTypes, !!props.previewState).then(results => {
+            setDailyData(results);
         });
 
         if (props.previewState === "default") {
@@ -53,30 +42,27 @@ export default function (props: RelativeActivityWeekNavigatorProps) {
         var date = new Date(year, month, day);
         var dayKey = getDayKey(date);
         let bars: SparkBarChartBar[] = props.dataTypes.map(dataType => {
-            if (!dailyData) {
+            if (!dailyData || !dailyData[dataType.dailyDataType] || !dailyData[dataType.dailyDataType][dayKey]) {
                 return { color: "var(--mdhui-color-primary)", barFillPercent: 0 };
             }
-            let value = dailyData[dataType.dailyDataType]?.[dayKey] ?? 0;
+            let value = dailyData[dataType.dailyDataType]?.[dayKey]?.value || 0;
             let color = dataType.color || "var(--mdhui-color-primary)";
-            if (dataType.threshold && value > dataType.threshold && dataType.overThresholdColor) {
+            if (dataType.threshold != "30DayAverage" &&
+                dataType.threshold !== undefined &&
+                value > dataType.threshold &&
+                dataType.overThresholdColor) {
                 color = dataType.overThresholdColor;
             }
 
-            let maxValue = dailyData[dataType.dailyDataType] ? Math.max(...Object.values(dailyData[dataType.dailyDataType])) : 0;
-            let fillPercent = maxValue ? value / maxValue : 0;
-            if (dataType.threshold != undefined) {
-                fillPercent = value / (dataType.threshold * 2);
-            }
-            if (fillPercent > 1) { fillPercent = 1; }
             return {
                 color: color,
-                barFillPercent: fillPercent
+                barFillPercent: dailyData[dataType.dailyDataType]?.[dayKey]?.relativePercent || 0
             }
         });
 
         return <div style={{ paddingTop: "8px" }}>
             <SparkBarChart
-                averageFillPercent={props.dataTypes.every(dataType => dataType.threshold != undefined) ? 0.5 : undefined}
+                averageFillPercent={0.5}
                 bars={bars} /></div>
     }
 

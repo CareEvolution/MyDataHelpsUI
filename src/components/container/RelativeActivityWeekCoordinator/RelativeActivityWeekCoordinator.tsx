@@ -4,7 +4,7 @@ import { startOfDay } from "date-fns";
 import { DateRangeContext } from "../../presentational";
 import RelativeActivityWeekNavigator from "../RelativeActivityWeekNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
-import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
+import { RelativeActivityDataType } from "../RelativeActivity";
 
 export interface RelativeActivityWeekCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;

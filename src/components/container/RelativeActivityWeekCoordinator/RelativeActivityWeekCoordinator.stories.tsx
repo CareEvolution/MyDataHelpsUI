@@ -1,9 +1,10 @@
 import React from "react"
 import Layout from "../../presentational/Layout"
 import RelativeActivityWeekCoordinator, { RelativeActivityWeekCoordinatorProps } from "./RelativeActivityWeekCoordinator";
-import { DailyDataType } from "../../../helpers";
+import { DailyDataType, RelativeActivityDataType } from "../../../helpers";
 import DateRangeTitle from "../../presentational/DateRangeTitle";
-import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
+import RelativeActivity from "../RelativeActivity/RelativeActivity";
+import { Card } from "../../presentational";
 
 export default {
     title: "Container/RelativeActivityWeekCoordinator",
@@ -51,6 +52,47 @@ export const Default = {
     render: render
 };
 
+let noThresholdsDataTypes = dataTypes.map(dataType => {
+    return { ...dataType, threshold: undefined, overThresholdColor: undefined }
+});
+export const NoThresholds = {
+    args: {
+
+        previewState: "default",
+        dataTypes: noThresholdsDataTypes,
+        children: <DateRangeTitle defaultMargin />
+    },
+    render: render
+};
+
+export const WithRelativeActivity = {
+    args: {
+        previewState: "default",
+        dataTypes: dataTypes,
+        children: <>
+            <DateRangeTitle defaultMargin />
+            <Card>
+                <RelativeActivity dataTypes={[]} useDataTypesFromContext previewState="Default" />
+            </Card>
+        </>
+    },
+    render: render
+};
+
+export const WithRelativeActivityNoThresholds = {
+    args: {
+        previewState: "default",
+        dataTypes: noThresholdsDataTypes,
+        children: <>
+            <DateRangeTitle defaultMargin />
+            <Card>
+                <RelativeActivity dataTypes={[]} useDataTypesFromContext previewState="Default" />
+            </Card>
+        </>
+    },
+    render: render
+};
+
 export const Live = {
     args: {
         dataTypes: dataTypes,
@@ -58,3 +100,4 @@ export const Live = {
     },
     render: render
 };
+

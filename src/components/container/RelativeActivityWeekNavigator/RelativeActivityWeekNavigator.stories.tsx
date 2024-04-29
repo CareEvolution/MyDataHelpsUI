@@ -1,10 +1,8 @@
 import React from "react"
-import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import RelativeActivityWeekNavigator, { RelativeActivityWeekNavigatorProps } from "./RelativeActivityWeekNavigator";
 import { startOfDay } from "date-fns";
 import { DailyDataType } from "../../../helpers";
-import { RelativeActivityDataType } from "../RelativeActivity/RelativeActivity";
 
 export default {
     title: "Container/RelativeActivityWeekNavigator",
@@ -43,12 +41,25 @@ let dataTypes: RelativeActivityDataType[] = [
     }
 ]
 
-export const Default = {
+export const WithThresholds = {
     args: {
         previewState: "default",
         selectedDate: startOfDay(new Date()),
         onDateSelected: (date: Date) => console.log(date),
         dataTypes: dataTypes
+    },
+    render: render
+};
+
+let noThresholdsDataTypes = dataTypes.map(dataType => {
+    return { ...dataType, threshold: undefined, overThresholdColor: undefined }
+});
+export const NoThresholds = {
+    args: {
+        previewState: "default",
+        selectedDate: startOfDay(new Date()),
+        onDateSelected: (date: Date) => console.log(date),
+        dataTypes: noThresholdsDataTypes
     },
     render: render
 };
