@@ -32,12 +32,7 @@ export default function (props: RelativeActivityProps) {
     }
 
     let dateRangeContext = useContext(DateRangeContext);
-    let date = props.date;
-    if (!date && dateRangeContext) {
-        date = dateRangeContext.intervalStart;
-    } else if (!date) {
-        date = startOfDay(new Date());
-    }
+    let date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay( new Date() );
 
     function transformResults(results: { [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined) {
         if (!results) return;
