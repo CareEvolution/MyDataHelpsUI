@@ -58,10 +58,7 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date, pre
 
 export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date) {
 	var result: DailyDataQueryResult = {};
-	let range = [0, 10000];
-	if (Object.values<string>(DailyDataType).includes(type)) {
-		range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
-	}
+	let range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
 
 	//poor man's seeded javascript rng
 	//just for generating a relatively large random integer from a string seed,
@@ -88,7 +85,7 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 let definitionLookup = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
 );
-export function getDailyDataTypeDefinition(dataType: DailyDataType): DailyDataTypeDefinition {
+export function getDailyDataTypeDefinition(dataType: string): DailyDataTypeDefinition {
 	return definitionLookup.get(dataType)!;
 }
 

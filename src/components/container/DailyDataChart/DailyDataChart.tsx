@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { DailyDataProvider, DailyDataQueryResult, DailyDataType, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers'
-import { add, format, getWeek, isToday } from 'date-fns'
+import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers'
+import { add, format, isToday } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
@@ -137,8 +137,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 dataDay.date = currentDate;
                 if (props.valueConverter) {
                     dataDay.value = props.valueConverter(dataDay.value);
-                } else if (Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
-                    let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType as DailyDataType).yAxisConverter;
+                } else {
+                    let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
                     if (defaultConverter) {
                         dataDay.value = defaultConverter(dataDay.value);
                     }
@@ -153,8 +153,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         if (active && payload && payload.length) {
             var date = payload[0].payload.date;
             let formatter = props.valueFormatter;
-            if (!formatter && Object.values<string>(DailyDataType).includes(props.dailyDataType)) {
-                formatter = getDailyDataTypeDefinition(props.dailyDataType as DailyDataType).formatter;
+            if (!formatter) {
+                formatter = getDailyDataTypeDefinition(props.dailyDataType).formatter;
             }
             return (
                 <div className="mdhui-daily-data-tooltip">

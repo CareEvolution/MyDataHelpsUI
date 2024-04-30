@@ -28,7 +28,7 @@ export default function (props: AsthmaAirQualityViewProps) {
             <RecentDailyDataBarChart
                 previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
                 previewDataProvider={previewDataProvider}
-                title={language('air-quality-home')}
+                title={language('asthma-air-quality-view-home-aqi-chart-title')}
                 dailyDataType={DailyDataType.HomeAirQuality}
                 highlight={rawValue => rawValue > 100}
                 emptyDomain={[0, 160]}
@@ -45,10 +45,10 @@ export default function (props: AsthmaAirQualityViewProps) {
             />
         }
         {props.alert === 'HomeAirQuality' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-home-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-home-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'WorkAirQuality' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-work-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-work-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
     </Layout>;
 }

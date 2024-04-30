@@ -1,6 +1,5 @@
 import { add } from "date-fns";
 import { ColorDefinition } from "./colors";
-import { DailyDataType } from "./daily-data-types";
 import { queryDailyData } from "./query-daily-data";
 import getDayKey from "./get-day-key";
 
@@ -11,13 +10,13 @@ export interface RelativeActivityQueryResult {
 }
 
 export interface RelativeActivityDataType {
-    dailyDataType: DailyDataType;
+    dailyDataType: string;
     color?: ColorDefinition;
     overThresholdColor?: ColorDefinition;
     threshold?: number | "30DayAverage";
 }
 
-export default function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes: RelativeActivityDataType[], preview: boolean): Promise<{ [key: string]: { [key: string]: RelativeActivityQueryResult } }> {
+export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes: RelativeActivityDataType[], preview: boolean): Promise<{ [key: string]: { [key: string]: RelativeActivityQueryResult } }> {
     let relativeActivityResults: { [key: string]: { [key: string]: RelativeActivityQueryResult } } = {};
     let promises = dataTypes.map(dataType =>
         queryDailyData(

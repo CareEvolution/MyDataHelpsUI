@@ -4,7 +4,7 @@ import { add, addDays, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
-import queryRelativeActivity from "../../../helpers/relative-activity";
+import { queryRelativeActivity } from "../../../helpers/relative-activity";
 
 export interface RelativeActivityWeekNavigatorProps {
     selectedDate: Date;

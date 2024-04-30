@@ -11,7 +11,7 @@ import language from "../../../helpers/language";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { RelativeActivityContext } from "../RelativeActivityWeekCoordinator/RelativeActivityWeekCoordinator";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
-import queryRelativeActivity from "../../../helpers/relative-activity";
+import { queryRelativeActivity } from "../../../helpers/relative-activity";
 
 export interface RelativeActivityProps {
     dataTypes: RelativeActivityDataType[];
@@ -85,10 +85,7 @@ export default function (props: RelativeActivityProps) {
                 return null;
             }
             let dataTypeDefinition = getDailyDataTypeDefinition(d.dailyDataType);
-            if (!dataTypeDefinition) {
-                return null;
-            }
-
+           
             return <div key={d.dailyDataType} className="mdhui-relative-activity-datatype">
                 <ActivityMeter className="mdhui-relative-activity-meter"
                     label={dataTypeDefinition.getLabel()}
