@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Calendar from '../../presentational/Calendar';
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { LoadingIndicator } from '../../presentational';
-import { getPreviewData } from '../DeviceDataMonthChart/DeviceDataMonthChart.previewdata';
 import { add } from 'date-fns';
 import "./RestingHeartRateCalendar.css";
 import getDayKey from '../../../helpers/get-day-key';
@@ -27,7 +26,7 @@ export default function (props: RestingHeartRateCalendarProps) {
 	var monthEnd = add(monthStart, { months: 1 });
 
 	function getRestingHeartRates() {
-		return queryDailyData(DailyDataType.RestingHeartRate, monthStart, monthEnd).then(function (result) {
+		return queryDailyData(DailyDataType.RestingHeartRate, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
 			setHeartRates(result);
 		});
 	}
@@ -54,16 +53,11 @@ export default function (props: RestingHeartRateCalendarProps) {
 	}
 
 	function initialize() {
-		if (props.showPreviewData) {
-			if (props.showPreviewData === "Loading") {
-				setLoading(true);
-			}
-			else if (props.showPreviewData === "WithData") {
-				var previewData = getPreviewData("FitbitRestingHeartRates", props.year, props.month);
-				if (previewData) {
-					setHeartRates(previewData);
-				}
-			}
+		if (props.showPreviewData === "NoData") {
+			return;
+		}
+		else if (props.showPreviewData === "Loading") {
+			setLoading(true);
 		}
 		else {
 			setLoading(true);

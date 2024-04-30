@@ -57,12 +57,9 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 		}, ""));
 	}
 
-	while (startDate < endDate) {
+	while (startDate < endDate && startDate < new Date()) {
 		var dayKey = getDayKey(startDate);
-		var value = ((await randomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
-		if (startDate > new Date()) {
-			value = 0;
-		}
+		var value: number = ((await randomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
 		result[dayKey] = value;
 		startDate = add(startDate, { days: 1 });
 	}

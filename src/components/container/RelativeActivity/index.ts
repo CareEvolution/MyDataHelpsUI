@@ -1,1 +1,1 @@
-export { default, RelativeActivityDataType } from "./RelativeActivity";
+export { default } from "./RelativeActivity";
