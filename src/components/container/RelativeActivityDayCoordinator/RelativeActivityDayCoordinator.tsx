@@ -2,11 +2,11 @@ import React, { createContext, useState } from "react";
 import { checkDailyDataAvailability } from "../../../helpers/query-daily-data";
 import { startOfDay } from "date-fns";
 import { DateRangeContext } from "../../presentational";
-import RelativeActivityWeekNavigator from "../RelativeActivityWeekNavigator";
+import RelativeActivityDayNavigator from "../RelativeActivityDayNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
 
-export interface RelativeActivityWeekCoordinatorProps {
+export interface RelativeActivityDayCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;
     dataTypes: RelativeActivityDataType[];
     previewState?: "default";
@@ -20,7 +20,7 @@ export interface RelativeActivityContext {
 
 export const RelativeActivityContext = createContext<RelativeActivityContext | null>(null);
 
-export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityWeekCoordinatorProps) {
+export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityDayCoordinatorProps) {
     const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[]>([]);
     const [relativeActivityData, setRelativeActivityData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined>(undefined);
     const [currentContext, setCurrentContext] = useState<DateRangeContext>({
@@ -49,7 +49,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         <div ref={props.innerRef}>
             <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
                 <DateRangeContext.Provider value={currentContext}>
-                    <RelativeActivityWeekNavigator
+                    <RelativeActivityDayNavigator
                         selectedDate={currentContext.intervalStart}
                         onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
                         dataTypes={availableDataTypes}

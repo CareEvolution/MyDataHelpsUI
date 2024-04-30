@@ -1,20 +1,20 @@
 import React from "react"
 import Layout from "../../presentational/Layout"
-import RelativeActivityWeekCoordinator, { RelativeActivityWeekCoordinatorProps } from "./RelativeActivityWeekCoordinator";
+import RelativeActivityDayCoordinator, { RelativeActivityDayCoordinatorProps } from "./RelativeActivityDayCoordinator";
 import { DailyDataType, RelativeActivityDataType } from "../../../helpers";
 import DateRangeTitle from "../../presentational/DateRangeTitle";
 import RelativeActivity from "../RelativeActivity/RelativeActivity";
 import { Card } from "../../presentational";
 
 export default {
-    title: "Container/RelativeActivityWeekCoordinator",
-    component: RelativeActivityWeekCoordinator,
+    title: "Container/RelativeActivityDayCoordinator",
+    component: RelativeActivityDayCoordinator,
     parameters: {
         layout: 'fullscreen',
     }
 };
 
-let render = (args: RelativeActivityWeekCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityWeekCoordinator {...args} /></Layout>
+let render = (args: RelativeActivityDayCoordinatorProps) => <Layout colorScheme="auto"><RelativeActivityDayCoordinator {...args} /></Layout>
 
 let dataTypes: RelativeActivityDataType[] = [
     {

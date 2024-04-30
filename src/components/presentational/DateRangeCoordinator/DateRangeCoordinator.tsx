@@ -31,6 +31,7 @@ export default function DateRangeNavigatorContext(props: DateRangeCoordinatorPro
     }
 
     //default to null because the initial context will be set in useEffect below
+    //otherwise it could cause a double render of child components
     const [currentContext, setCurrentContext] = useState<DateRangeContext | null>(null);
 
     //reset the interval if the interval type changes

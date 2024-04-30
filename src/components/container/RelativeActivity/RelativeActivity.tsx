@@ -1,4 +1,4 @@
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { startOfDay } from "date-fns";
 import React, { useContext } from "react";
 import { useState } from "react";
@@ -9,7 +9,7 @@ import { ActivityMeter, CardTitle, DateRangeContext, } from "../../presentationa
 import "./RelativeActivity.css"
 import language from "../../../helpers/language";
 import { useInitializeView } from "../../../helpers/Initialization";
-import { RelativeActivityContext } from "../RelativeActivityWeekCoordinator/RelativeActivityWeekCoordinator";
+import { RelativeActivityContext } from "../RelativeActivityDayCoordinator/RelativeActivityDayCoordinator";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
 import { queryRelativeActivity } from "../../../helpers/relative-activity";
 
@@ -69,13 +69,13 @@ export default function (props: RelativeActivityProps) {
         return dataType.color || "var(--mdhui-color-primary)";
     }
 
-    function getThresholdLabel(dataType: RelativeActivityDataType) {
-        if (dataType.threshold === undefined || dataType.threshold == "30DayAverage" || !dataTypes.some(d => d.threshold !== undefined)) {
+    function getThresholdLabel(dataType: RelativeActivityDataType, threshold: number) {
+        if (!dataTypes.some(d => d.threshold !== undefined)) {
             return undefined;
         }
 
         let dataTypeDefinition = getDailyDataTypeDefinition(dataType.dailyDataType);
-        return dataTypeDefinition.formatter(dataType.threshold);
+        return dataTypeDefinition.formatter(threshold);
     }
 
     return <div ref={props.innerRef} className="mdhui-relative-activity">
@@ -95,7 +95,7 @@ export default function (props: RelativeActivityProps) {
                     averageFillPercent={0.5}
                     icon={dataTypeDefinition.icon}
                     color={getBarColor(d, dataTypeResult.relativePercent)}
-                    thresholdLabel={getThresholdLabel(d)} />
+                    thresholdLabel={getThresholdLabel(d, dataTypeResult.threshold)} />
             </div>
         })}
 

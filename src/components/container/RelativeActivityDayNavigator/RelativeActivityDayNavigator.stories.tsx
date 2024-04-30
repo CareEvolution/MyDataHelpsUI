@@ -1,18 +1,18 @@
 import React from "react"
 import Layout from "../../presentational/Layout"
-import RelativeActivityWeekNavigator, { RelativeActivityWeekNavigatorProps } from "./RelativeActivityWeekNavigator";
+import RelativeActivityDayNavigator, { RelativeActivityDayNavigatorProps } from "./RelativeActivityDayNavigator";
 import { startOfDay } from "date-fns";
-import { DailyDataType } from "../../../helpers";
+import { DailyDataType, RelativeActivityDataType } from "../../../helpers";
 
 export default {
-    title: "Container/RelativeActivityWeekNavigator",
-    component: RelativeActivityWeekNavigator,
+    title: "Container/RelativeActivityDayNavigator",
+    component: RelativeActivityDayNavigator,
     parameters: {
         layout: 'fullscreen',
     }
 };
 
-let render = (args: RelativeActivityWeekNavigatorProps) => <Layout colorScheme="auto"><RelativeActivityWeekNavigator {...args} /></Layout>
+let render = (args: RelativeActivityDayNavigatorProps) => <Layout colorScheme="auto"><RelativeActivityDayNavigator {...args} /></Layout>
 
 let dataTypes: RelativeActivityDataType[] = [
     {

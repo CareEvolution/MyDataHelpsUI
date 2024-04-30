@@ -6,7 +6,7 @@ import getDayKey from "../../../helpers/get-day-key";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
 import { queryRelativeActivity } from "../../../helpers/relative-activity";
 
-export interface RelativeActivityWeekNavigatorProps {
+export interface RelativeActivityDayNavigatorProps {
     selectedDate: Date;
     onDateSelected(date: Date): void;
     dataTypes: RelativeActivityDataType[];
@@ -15,7 +15,7 @@ export interface RelativeActivityWeekNavigatorProps {
     onDataLoaded?(data: { [key: string]: { [key: string]: RelativeActivityQueryResult } }): void;
 }
 
-export default function (props: RelativeActivityWeekNavigatorProps) {
+export default function (props: RelativeActivityDayNavigatorProps) {
     let [weekStart, setWeekStart] = useState<Date>(add(startOfDay(new Date()), { days: -6 }));
     let [dailyData, setDailyData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | null>(null);
 
