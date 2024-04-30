@@ -2,6 +2,8 @@
 import { LayoutContext, ShinyOverlay } from '..';
 import "./ActivityMeter.css"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 export interface ActivityMeterProps {
 	label: string;
@@ -13,6 +15,7 @@ export interface ActivityMeterProps {
 	message?: string;
 	className?: string;
 	innerRef?: React.Ref<HTMLDivElement>
+	thresholdLabel?: string;
 }
 
 export default function (props: ActivityMeterProps) {
@@ -35,6 +38,14 @@ export default function (props: ActivityMeterProps) {
 					<>&nbsp;</>
 				}
 				{props.message}
+			</div>
+		}
+		{props.thresholdLabel != undefined &&
+			<div className="mdhui-activity-meter-threshold">
+				{props.thresholdLabel}
+				<div>
+					<FontAwesomeSvgIcon icon={faChevronDown} />
+				</div>
 			</div>
 		}
 	</div>;
