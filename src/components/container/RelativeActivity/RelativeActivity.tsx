@@ -37,11 +37,11 @@ export default function (props: RelativeActivityProps) {
     function loadData() {
         function transformResults(results: { [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined) {
             if (!results) return;
-            let computedResult: { [key: string]: RelativeActivityQueryResult } = {};
+            let transformedResults: { [key: string]: RelativeActivityQueryResult } = {};
             dataTypes.forEach(dataType => {
-                computedResult[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
+                transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
             });
-            return computedResult;
+            return transformedResults;
         }
 
         setResults(undefined);

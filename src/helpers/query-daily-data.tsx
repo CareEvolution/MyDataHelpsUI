@@ -15,6 +15,7 @@ let dailyDataTypes = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
 );;
 
+// deprecated.  Instead use registerDailyDataTypeDefinition
 export function registerDailyDataProvider(type: string, provider: DailyDataProvider, availabilityCheck: DailyDataAvailabilityCheck) {
 	dailyDataTypes.set(type, {
 		type: type,
