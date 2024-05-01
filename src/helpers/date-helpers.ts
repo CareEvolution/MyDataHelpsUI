@@ -53,7 +53,7 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month", interv
 	if (intervalType == "Month" && intervalStart.getDate() == 1) {
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
-	else if (intervalType == "Week" || (intervalType == "Month" && intervalStart.getDate() != 1)) {
+	else if (intervalType == "Week" || intervalType == "Month") {
 		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
 	}
 	else if (intervalType == "Day") {
