@@ -23,6 +23,13 @@ export const Default = Template.bind({});
 Default.args = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
+  showPreviewData: "WithData",
+};
+
+export const NoData = Template.bind({});
+NoData.args = {
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
   showPreviewData: "NoData",
 };
 
@@ -33,20 +40,13 @@ Loading.args = {
   showPreviewData: "Loading",
 };
 
-export const SampleData = Template.bind({});
-SampleData.args = {
-  year: 2022,
-  month: 3,
-  showPreviewData: "WithData",
-};
-
 export const Live = Template.bind({});
 Live.args = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
-  showPreviewData: "Live",
   dataTypeSource: "Combined"
 };
+
 Live.argTypes = {
   dataTypeSource: {
     name: 'dataTypeSource',

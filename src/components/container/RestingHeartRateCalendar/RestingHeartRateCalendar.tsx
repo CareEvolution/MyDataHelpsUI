@@ -10,7 +10,7 @@ import { queryDailyData, DailyDataType } from '../../../helpers/query-daily-data
 
 type HeartRateMap = { [key: string]: number };
 
-export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading" | "Live";
+export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading";
 export type RestingHeartRateDataSource = "Combined" | "AppleHealth" | "Fitbit" | "Garmin";
 
 export interface RestingHeartRateCalendarProps {
