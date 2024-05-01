@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { checkDailyDataAvailability } from "../../../helpers/query-daily-data";
 import { startOfDay } from "date-fns";
-import { DateRangeContext } from "../../presentational";
+import { DateRangeContext, LoadingIndicator } from "../../presentational";
 import RelativeActivityDayNavigator from "../RelativeActivityDayNavigator";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
@@ -21,9 +21,9 @@ export interface RelativeActivityContext {
 export const RelativeActivityContext = createContext<RelativeActivityContext | null>(null);
 
 export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityDayCoordinatorProps) {
-    const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[]>([]);
+    const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[] | null>(null);
     const [relativeActivityData, setRelativeActivityData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined>(undefined);
-    const [currentContext, setCurrentContext] = useState<DateRangeContext>({
+    const [currentDateContext, setCurrentContext] = useState<DateRangeContext>({
         intervalStart: startOfDay(new Date()),
         intervalType: "Day"
     });
@@ -47,17 +47,20 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
     return (
         <div ref={props.innerRef}>
-            <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
-                <DateRangeContext.Provider value={currentContext}>
-                    <RelativeActivityDayNavigator
-                        selectedDate={currentContext.intervalStart}
-                        onDateSelected={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
-                        dataTypes={availableDataTypes}
-                        previewState={props.previewState}
-                        onDataLoaded={(d) => setRelativeActivityData(d)} />
-                    {props.children}
-                </DateRangeContext.Provider>
-            </RelativeActivityContext.Provider>
+            {availableDataTypes === null && <LoadingIndicator />}
+            {availableDataTypes !== null &&
+                <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
+                    <DateRangeContext.Provider value={currentDateContext}>
+                        <RelativeActivityDayNavigator
+                            selectedDate={currentDateContext.intervalStart}
+                            onDateSelected={(d) => setCurrentContext({ ...currentDateContext, intervalStart: d })}
+                            dataTypes={availableDataTypes}
+                            previewState={props.previewState}
+                            onDataLoaded={(d) => setRelativeActivityData(d)} />
+                        {relativeActivityData && props.children}
+                    </DateRangeContext.Provider>
+                </RelativeActivityContext.Provider>
+            }
         </div>
     );
 }
