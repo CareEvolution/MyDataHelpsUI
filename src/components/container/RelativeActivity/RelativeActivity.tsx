@@ -56,7 +56,7 @@ export default function (props: RelativeActivityProps) {
 
     useInitializeView(() => {
         loadData();
-    }, ["externalAccountSyncComplete"], [dateRangeContext, relativeActivityContext, props.date, props.dataTypes], 0);
+    }, ["externalAccountSyncComplete"], [dateRangeContext, relativeActivityContext, props.date, props.dataTypes]);
 
     if (!results || !Object.keys(results).length) {
         return null;

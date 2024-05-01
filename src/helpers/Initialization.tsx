@@ -1,12 +1,19 @@
 ﻿import MyDataHelps, { EventName } from '@careevolution/mydatahelps-js';
-import { DependencyList, useEffect } from 'react';
+import { DependencyList, useEffect, useRef } from 'react';
 import { debounce } from 'lodash';
 
-export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList, debounceWait?: number): void {
-    useEffect(() => {
-        let debouncedInitialize = debounce(initialize, debounceWait != undefined ? debounceWait : 500);
+export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
+    const isInitialMount = useRef(true);
 
-        debouncedInitialize();
+    useEffect(() => {
+        let debouncedInitialize = debounce(initialize, 500);
+
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            debouncedInitialize();
+        } else {
+            initialize();
+        }
 
         MyDataHelps.on('applicationDidBecomeVisible', debouncedInitialize);
         additionalEvents?.forEach(additionalEvent => {
