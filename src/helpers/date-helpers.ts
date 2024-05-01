@@ -1,5 +1,5 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { add, format, isSameDay, isToday } from "date-fns";
+import { add, format, isSameDay, sub } from "date-fns";
 import language from "./language";
 import { getLocaleFromIso } from "./locale";
 
@@ -47,11 +47,14 @@ export function getMonthName(month: number) {
 }
 
 export function titleForDateRange(intervalType: "Day" | "Week" | "Month", intervalStart: Date, variant?: "short" | "long") {
+	var duration: Duration = intervalType == "Month" ? { months: 1 } : intervalType == "Day" ? { days: 1 } : { weeks: 1 };
+	var intervalEnd = add(intervalStart, duration);
+
 	if (intervalType == "Month" && intervalStart.getDate() == 1) {
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
 	else if (intervalType == "Week" || (intervalType == "Month" && intervalStart.getDate() != 1)) {
-		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(add(intervalStart, { days: -11 }), "MM/dd/yyyy")}`;
+		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
 	}
 	else if (intervalType == "Day") {
 		if (variant === "long") {
