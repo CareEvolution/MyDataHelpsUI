@@ -70,7 +70,7 @@ export default function (props: RelativeActivityProps) {
     }
 
     function getThresholdLabel(dataType: RelativeActivityDataType, threshold: number) {
-        if (dataTypes.every(d => d.threshold !== undefined)) {
+        if (dataTypes.every(d => d.threshold === undefined)) {
             return undefined;
         }
 
