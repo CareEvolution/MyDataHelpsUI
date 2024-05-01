@@ -152,10 +152,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     const GraphToolTip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             var date = payload[0].payload.date;
-            let formatter = props.valueFormatter;
-            if (!formatter) {
-                formatter = getDailyDataTypeDefinition(props.dailyDataType).formatter;
-            }
+            let formatter = props.valueFormatter || getDailyDataTypeDefinition(props.dailyDataType).formatter;
             return (
                 <div className="mdhui-daily-data-tooltip">
                     <div className="mdhui-daily-data-tooltip-value">

@@ -58,7 +58,7 @@ export default function (props: RelativeActivityProps) {
         loadData();
     }, ["externalAccountSyncComplete"], [dateRangeContext, relativeActivityContext, props.date, props.dataTypes], 0);
 
-    if (results == null || !Object.keys(results).length) {
+    if (!results || !Object.keys(results).length) {
         return null;
     }
 
@@ -90,7 +90,7 @@ export default function (props: RelativeActivityProps) {
             return <div key={d.dailyDataType} className="mdhui-relative-activity-datatype">
                 <ActivityMeter className="mdhui-relative-activity-meter"
                     label={dataTypeDefinition.getLabel()}
-                    value={dataTypeDefinition.formatter(dataTypeResult.value) || dataTypeResult.value.toString()}
+                    value={dataTypeDefinition.formatter ? dataTypeDefinition.formatter(dataTypeResult.value) : dataTypeResult.value.toString()}
                     fillPercent={dataTypeResult.relativePercent}
                     averageFillPercent={0.5}
                     icon={dataTypeDefinition.icon}

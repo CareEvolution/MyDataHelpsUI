@@ -97,7 +97,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		var initialization = currentInitialization.current ?? 0;
 		setLoading(true);
 		var loadData = function () {
-			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd, props.previewState !== undefined));
+			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd, !!props.previewState));
 			Promise.all(dataRequests).then(function (data) {
 				if (initialization != currentInitialization.current) {
 					return;
