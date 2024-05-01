@@ -1,32 +1,32 @@
 import React, { useContext } from 'react'
 import { add, format, isToday } from 'date-fns'
-import { CardTitle, LayoutContext, LoadingIndicator } from '../../presentational'
+import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import "./DataChart.css"
+import "./TimeSeriesChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 
-export interface DataChartProps {
+export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month",
     intervalStart: Date,
     data: any[],
     dataKeys?: string[],
-    hasAnyData: boolean,
+    chartHasData: boolean,
     tooltip: ({ active, payload, label }: any) => React.JSX.Element | null,
     chartType: "Line" | "Bar" | "Area"
     options?: LineChartOptions | BarChartOptions | AreaChartOptions
-    hideIfNoData?: boolean
     innerRef?: React.Ref<HTMLDivElement>
 }
 
 export interface LineChartOptions {
     lineColor?: ColorDefinition | ColorDefinition[],
+    connectNulls?: boolean,
     domainMin?: number | "Auto"
 }
 
 export interface BarChartOptions {
-    barColor?: ColorDefinition
+    barColor?: ColorDefinition | ColorDefinition[],
     thresholds?: BarChartThreshold[]
 }
 
@@ -41,11 +41,9 @@ export interface AreaChartOptions {
     areaColor?: ColorDefinition | ColorDefinition[],
 }
 
-export default function DataChart(props: DataChartProps) {
+export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
-
-    let chartHasData = props.data.length > 0;
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
@@ -94,7 +92,7 @@ export default function DataChart(props: DataChartProps) {
         }
 
         return <>
-            {chartHasData &&
+            {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
             <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
@@ -149,10 +147,6 @@ export default function DataChart(props: DataChartProps) {
         return `url(#${gradientKey}_threshold${highestThresholdIndex})`;
     }
 
-    if (!props.hasAnyData && props.hideIfNoData) {
-        return null;
-    }
-
     const keys = props.dataKeys || ["value"];
 
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
@@ -160,9 +154,9 @@ export default function DataChart(props: DataChartProps) {
             <CardTitle title={props.title}></CardTitle>
         }
         <div className="chart-container">
-            {(!chartHasData) &&
+            {(!props.chartHasData) &&
                 <div>
-                    {props.hasAnyData &&
+                    {!!props.data &&
                         <div className="no-data-label">No Data</div>
                     }
                     {!props.data &&
@@ -175,29 +169,29 @@ export default function DataChart(props: DataChartProps) {
                     </ResponsiveContainer>
                 </div>
             }
-            {chartHasData && props.chartType == "Line" &&
+            {props.chartHasData && props.chartType == "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={props.data} syncId="DailyDataChart">
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                                <Line strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
+                                <Line connectNulls={(props.options as LineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
                             )
                         }
                     </LineChart>
                 </ResponsiveContainer>
             }
-            {chartHasData && props.chartType == "Bar" &&
+            {props.chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={props.data} syncId="DailyDataChart" >
                         <defs>
                             {keys.map((dk, i) =>
-                                <linearGradient id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
+                                <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, getBaseBarColor(i)) || "var(--mdhui-color-primary)"} stopOpacity={1.0} />
                                     <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, getBaseBarColor(i)) || "var(--mdhui-color-primary)"} stopOpacity={0.7} />
                                 </linearGradient>
                             )}
                             {(props.options as BarChartOptions)?.thresholds?.map((threshold, index) =>
-                                <linearGradient id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
+                                <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor={resolveColor(layoutContext.colorScheme, threshold.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={1.0} />
                                     <stop offset="100%" stopColor={resolveColor(layoutContext.colorScheme, threshold.overThresholdBarColor) || "var(--mdhui-color-warning)"} stopOpacity={0.7} />
                                 </linearGradient>
@@ -218,12 +212,12 @@ export default function DataChart(props: DataChartProps) {
                     </BarChart>
                 </ResponsiveContainer>
             }
-            {chartHasData && props.chartType == "Area" &&
+            {props.chartHasData && props.chartType == "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={props.data} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
-                            <linearGradient id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
+                            <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stopColor={getAreaColor(i)} stopOpacity={0.5} />
                                 <stop offset="100%" stopColor={getAreaColor(i)} stopOpacity={0.2} />
                             </linearGradient>

@@ -5,7 +5,7 @@ import { add, format } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
-import DataChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/DataChart/DataChart'
+import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/DataChart/TimeSeriesChart'
 
 export interface DailyDataChartProps {
     title?: string
@@ -131,15 +131,18 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     };
 
-    return <DataChart 
+    if (!hasAnyData && props.hideIfNoData) {
+        return null;
+    }
+
+    return <TimeSeriesChart 
         title={props.title} 
         intervalType={props.intervalType} 
         intervalStart={intervalStart}
         data={data} 
-        hasAnyData={hasAnyData} 
+        chartHasData={chartHasData} 
         tooltip={GraphToolTip}
         chartType={props.chartType}
         options={props.options}
-        hideIfNoData={props.hideIfNoData}
-        />
+    />
 }
