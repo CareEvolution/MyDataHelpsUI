@@ -31,6 +31,7 @@ export const decorators = [(story, context) => {
 	if (context.globals.language) {
 		myDataHelps.setCurrentLanguage(context.globals.language);
 	} else {
+		// MDH.js does not currently support clearing current language
 		myDataHelps.language = "";
 	}
 	
