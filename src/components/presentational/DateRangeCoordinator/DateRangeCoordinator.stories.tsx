@@ -4,7 +4,7 @@ import { Card, Layout } from "../../presentational";
 import DateRangeCoordinator, { DateRangeCoordinatorProps } from "./DateRangeCoordinator";
 import DailyDataChart from "../../container/DailyDataChart/DailyDataChart";
 import getDayKey from "../../../helpers/get-day-key";
-import { add } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { DailyDataType } from "../../../helpers";
 
 export default { title: "Presentational/DateRangeCoordinator", component: DateRangeCoordinator, parameters: { layout: 'fullscreen' } };
@@ -52,6 +52,16 @@ export const month = {
 		variant: "rounded",
 		intervalType: "Month",
 		children: children
+	},
+	render: render
+};
+
+export const monthNotFirstDay = {
+	args: {
+		variant: "rounded",
+		intervalType: "Month",
+		children: children,
+		initialIntervalStart: startOfDay(new Date(2024, 3, 10))
 	},
 	render: render
 };
