@@ -7,40 +7,49 @@ import add from "date-fns/add";
 export default { title: "Container/SurveyDataChart", component: SurveyDataChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><SurveyDataChart {...args} /></Card></Layout>
 
-function getStandardData(start: Date, end: Date) {
-    function generateSurveyResponse(date: Date, identifier: string) : SurveyAnswer | null {
-        if(Math.random() < 0.2) return null;
+function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string): SurveyAnswer {
+    return {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "surveyID": "00000000-0000-0000-0000-000000000000",
+        "surveyResultID": "00000000-0000-0000-0000-000000000000",
+        "surveyVersion": 0,
+        "surveyName": surveyName,
+        "surveyDisplayName": surveyName,
+        "date": date.toISOString(),
+        "stepIdentifier": resultIdentifier,
+        "resultIdentifier": resultIdentifier,
+        "answers": [
+            (Math.random() * 90 + 10).toString()
+        ],
+        "insertedDate": date.toISOString()
+    };
+}
 
-        return {
-            "id": "00000000-0000-0000-0000-000000000000",
-            "surveyID": "00000000-0000-0000-0000-000000000000",
-            "surveyResultID": "00000000-0000-0000-0000-000000000000",
-            "surveyVersion": 0,
-            "surveyName": "FFWEL",
-            "surveyDisplayName": "Five Factor Wellness Inventory",
-            "date": date.toISOString(),
-            "stepIdentifier": identifier,
-            "resultIdentifier": identifier,
-            "answers": [
-                (Math.random() * 90 + 10).toString()
-            ],
-            "insertedDate": date.toISOString()
-        };
-    }
-
+function getRandomFFWELData(start: Date, end: Date) {
     let creativeSelfResponses: (SurveyAnswer | null)[] = [];
     let copingSelfResponses: (SurveyAnswer | null)[] = [];
     let socialSelfResponses: (SurveyAnswer | null)[] = [];
 
     let currentDate = new Date(start);
     while (currentDate < end) {
-        creativeSelfResponses.push(generateSurveyResponse(currentDate, "CreativeSelf"));
-        socialSelfResponses.push(generateSurveyResponse(currentDate, "SocialSelf"));
-        copingSelfResponses.push(generateSurveyResponse(currentDate, "CopingSelf"));
-        currentDate = add(currentDate, { days: 1 });
+        creativeSelfResponses.push(generateSurveyResponse(currentDate, "CreativeSelf", 'FFWEL'));
+        socialSelfResponses.push(generateSurveyResponse(currentDate, "SocialSelf", 'FFWEL'));
+        copingSelfResponses.push(generateSurveyResponse(currentDate, "CopingSelf", 'FFWEL'));
+        currentDate = add(currentDate, { months: 1 });
     }
     function filterNull(arr: any[]) { return arr.filter((a: any) => !!a); }
     let standardData: SurveyAnswer[][] = [filterNull(creativeSelfResponses), filterNull(copingSelfResponses), filterNull(socialSelfResponses)];
+    return standardData;
+}
+
+function getRandomPainData(start: Date, end: Date) {
+    var responses = [];
+    let currentDate = new Date(start);
+    while (currentDate < end) {
+        responses.push(generateSurveyResponse(currentDate, "PainToday", 'Pain Survey'));
+        currentDate = add(currentDate, { days: 1 });
+    }
+    let standardData: SurveyAnswer[][] = [responses];
     return standardData;
 }
 
@@ -53,7 +62,7 @@ export const ffwelLineChart = {
             connectNulls: true,
             lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
-        intervalType: "Week",
+        intervalType: "SixMonth",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -61,28 +70,7 @@ export const ffwelLineChart = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getStandardData(start, end));
-        }
-    },
-    render: render
-};
-
-export const ffwelLineNullGapsChart = {
-    args: {
-        title: "FFWEL Responses Line Chart With Null Gaps",
-        options: {
-            domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
-        },
-        intervalType: "Week",
-        weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
-        chartType: "Line",
-        previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getStandardData(start, end));
+            return Promise.resolve(getRandomFFWELData(start, end));
         }
     },
     render: render
@@ -95,7 +83,7 @@ export const ffwelBarChart = {
             domainMin: 0,
             barColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
-        intervalType: "Week",
+        intervalType: "SixMonth",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -103,7 +91,7 @@ export const ffwelBarChart = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getStandardData(start,end));
+            return Promise.resolve(getRandomFFWELData(start,end));
         }
     },
     render: render
@@ -117,7 +105,7 @@ export const ffwelAreaChart = {
             lineColor: ["#e41a1c", "#377eb8", "#4daf4a"],
             areaColor: ["#d41a1c", "#277eb8", "#3daf4a"]
         },
-        intervalType: "Week",
+        intervalType: "SixMonth",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -125,7 +113,7 @@ export const ffwelAreaChart = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getStandardData(start,end));
+            return Promise.resolve(getRandomFFWELData(start,end));
         }
     },
     render: render
@@ -148,3 +136,55 @@ export const ffwelLive = {
     },
     render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="SixMonth"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
 };
+
+export const dailyPainLineSurvey = {
+    args: {
+        title: "Daily Pain Line Survey",
+        options: {
+            domainMin: 0,
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewDataProvider: (start: Date, end: Date) => {
+            return Promise.resolve(getRandomPainData(start,end));
+        }
+    },
+    render: render
+};
+export const dailyPainBarSurvey = {
+    args: {
+        title: "Daily Pain Bar Survey",
+        options: {
+            domainMin: 0,
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar",
+        previewDataProvider: (start: Date, end: Date) => {
+            return Promise.resolve(getRandomPainData(start,end));
+        }
+    },
+    render: render
+};
+export const dailyPainAreaSurvey = {
+    args: {
+        title: "Daily Pain Area Survey",
+        options: {
+            domainMin: 0,
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Area",
+        previewDataProvider: (start: Date, end: Date) => {
+            return Promise.resolve(getRandomPainData(start,end));
+        }
+    },
+    render: render
+}
