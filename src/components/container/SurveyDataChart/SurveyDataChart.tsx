@@ -142,7 +142,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         if (active && payload && payload.length) {
             return (
                 <div className="mdhui-daily-data-tooltip">
-                    <div className="graph-date">{payload[0].payload.date}</div>
+                    <div className="graph-date">{format(new Date(payload[0].payload.day), 'MM/dd/yyyy')}</div>
                     <table className="payload-values">
                         <tbody>
                             {payload.map((p: any, index: number) =>
