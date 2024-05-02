@@ -8,7 +8,7 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 
 export interface TimeSeriesChartProps {
     title?: string
-    intervalType?: "Week" | "Month",
+    intervalType?: "Week" | "Month" | "SixMonth",
     intervalStart: Date,
     data: any[],
     dataKeys?: string[],
@@ -50,7 +50,15 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType == "Month") {
             let currentDate = new Date(props.intervalStart.getFullYear(), props.intervalStart.getMonth(), value);
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
-        } else {
+        } else if (intervalType == "SixMonth" ){
+            let currentDate = add(props.intervalStart, {days: payload.index});
+            let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
+            let dayLabel = currentDate.getDate() % 7 === 1 ? value : "";
+            return <>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
+            </>;
+        } else if (intervalType == "Week" ){
             let currentDate = props.intervalStart;
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
@@ -65,6 +73,10 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
             </>;
         }
+
+        return <>
+            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
+        </>
     }
 
     function tickFormatter(args: any) {
@@ -95,9 +107,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
-            <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
+            <CartesianGrid vertical={props.chartType != "Bar" && props.intervalType !== "SixMonth"} strokeDasharray="2 4" />
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
-            <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : "preserveStartEnd"} />
+            <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : intervalType === "SixMonth" ? 0 : "preserveStartEnd"} />
         </>
     }
 

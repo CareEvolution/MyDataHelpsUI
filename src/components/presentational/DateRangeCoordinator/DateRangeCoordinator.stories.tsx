@@ -90,6 +90,15 @@ export const month = {
 	render: render
 };
 
+export const sixMonth = {
+	args: {
+		variant: "rounded",
+		intervalType: "SixMonth",
+		children: children
+	},
+	render: render
+};
+
 export const weekStartsSunday = {
 	args: {
 		variant: "rounded",

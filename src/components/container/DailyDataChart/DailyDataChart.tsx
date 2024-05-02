@@ -9,7 +9,7 @@ import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } 
 
 export interface DailyDataChartProps {
     title?: string
-    intervalType?: "Week" | "Month"
+    intervalType?: "Week" | "Month" | "SixMonth"
     weekStartsOn?: WeekStartsOn
     dailyDataType: string
     valueConverter?(value: number): number
@@ -21,7 +21,7 @@ export interface DailyDataChartProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
+function getDefaultIntervalStart(intervalType: "Week" | "Month" | "SixMonth", weekStartsOn?: WeekStartsOn) {
     let intervalStart: Date;
     if (intervalType === "Week") {
         intervalStart = getWeekStart(weekStartsOn);
@@ -47,7 +47,10 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
     }
 
-    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) : add(intervalStart, { months: 1 });
+    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) 
+                        : intervalType == "Month" ? add(intervalStart, { months: 1 })
+                        : intervalType == "SixMonth" ? add(intervalStart, { months: 6 })
+                        : intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
         if (props.previewDataProvider) {
@@ -137,7 +140,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     return <TimeSeriesChart 
         title={props.title} 
-        intervalType={props.intervalType} 
+        intervalType={intervalType} 
         intervalStart={intervalStart}
         data={data} 
         chartHasData={chartHasData} 

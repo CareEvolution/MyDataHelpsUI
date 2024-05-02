@@ -25,7 +25,7 @@ export interface SurveyDataChartProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
+function getDefaultIntervalStart(intervalType: "Week" | "Month" | "SixMonth", weekStartsOn?: WeekStartsOn) {
     let intervalStart: Date;
     if (intervalType === "Week") {
         intervalStart = getWeekStart(weekStartsOn);
@@ -50,7 +50,10 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
     }
     
-    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) : add(intervalStart, { months: 1 });
+    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) 
+                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
+                        : intervalType === "SixMonth" ? add(intervalStart, { months: 6 }) :
+                        intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
         if (props.previewDataProvider) {
