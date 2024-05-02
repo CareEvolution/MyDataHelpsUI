@@ -16,7 +16,7 @@ export interface SurveyAnswerChartParameters {
 
 export interface SurveyDataChartProps {
     title?: string
-    intervalType?: "Week" | "Month"
+    intervalType?: "Week" | "Month" | "SixMonth"
     weekStartsOn?: WeekStartsOn
     charts: SurveyAnswerChartParameters[],
     chartType: "Line" | "Bar" | "Area"
@@ -103,19 +103,18 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
     var data: any[] = [];
     var chartHasData: boolean = false;
     if (currentData !== null) {
-        var currentDate = intervalStart;
-        while (currentDate < intervalEnd) {
-            data.push({
-                day: currentDate.getDate(),
-                date: format(currentDate, 'MM/dd/yyyy')
-            });
-            currentDate = add(currentDate, { days: 1 });
-        }
         props.charts.forEach((line) => {
             var dataKey = getDataKey(line);
             currentData![dataKey].forEach((answer) => {
                 var answerDate = parseISO(answer.date);
-                var dataDay = data.find((d) => d.day === answerDate.getDate());
+                answerDate.setHours(0,0,0,0);
+                var dataDay = data.find((d) => d.day === answerDate.getTime());
+                if(!dataDay) {
+                    dataDay = {
+                        day: answerDate.getTime()
+                    }
+                    data.push(dataDay);
+                }
                 dataDay[line.label] = parseFloat(answer.answers[0]);
                 chartHasData = true;
             });
@@ -162,7 +161,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
 
     return <TimeSeriesChart
         title={props.title}
-        intervalType={props.intervalType}
+        intervalType={intervalType}
         intervalStart={intervalStart}
         data={data}
         dataKeys={props.charts.map((l) => l.label)}

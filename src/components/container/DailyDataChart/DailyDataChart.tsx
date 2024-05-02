@@ -6,6 +6,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/DataChart/TimeSeriesChart'
+import parse from 'date-fns/parse'
 
 export interface DailyDataChartProps {
     title?: string
@@ -96,27 +97,24 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         }
     }, [props.intervalType, props.weekStartsOn, dateRangeContext]);
 
-    var currentDate = intervalStart;
     var data: any[] = [];
     var chartHasData: boolean = false;
     if (currentData) {
-        while (currentDate < intervalEnd) {
+        Object.keys(currentData).forEach((dateStr) => {
+            const currentDate = parse(dateStr, 'yyyy-MM-dd', new Date());
             var dataDay: any = {
-                day: currentDate.getDate()
+                day: currentDate.getTime()
             };
             data.push(dataDay);
             var dayKey = getDayKey(currentDate);
-            if (currentData[dayKey] != undefined && currentData[dayKey] != null) {
-                dataDay.value = currentData[dayKey];
-                dataDay.rawValue = dataDay.value;
-                dataDay.date = currentDate;
-                if (props.valueConverter) {
-                    dataDay.value = props.valueConverter(dataDay.value);
-                }
-                chartHasData = true;
+            dataDay.value = currentData[dayKey];
+            dataDay.rawValue = dataDay.value;
+            dataDay.date = currentDate;
+            if (props.valueConverter) {
+                dataDay.value = props.valueConverter(dataDay.value);
             }
-            currentDate = add(currentDate, { days: 1 });
-        }
+            chartHasData = true;
+        });
     }
 
     const GraphToolTip = ({ active, payload, label }: any) => {

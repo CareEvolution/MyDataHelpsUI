@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
-import { add, format, isToday } from 'date-fns'
+import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import "./TimeSeriesChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
+import getDaysInMonth from 'date-fns/getDaysInMonth'
+import { ceil } from 'lodash'
 
 export interface TimeSeriesChartProps {
     title?: string
@@ -47,22 +49,20 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
+        let currentDate = new Date(value);
         if (intervalType == "Month") {
-            let currentDate = new Date(props.intervalStart.getFullYear(), props.intervalStart.getMonth(), value);
-            return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
+            return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType == "SixMonth" ){
-            let currentDate = add(props.intervalStart, {days: payload.index});
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
-            let dayLabel = currentDate.getDate() % 7 === 1 ? value : "";
+            let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
             </>;
         } else if (intervalType == "Week" ){
-            let currentDate = props.intervalStart;
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
-                if (currentDate.getDate() == value) {
+                if (currentDate.getTime() == value) {
                     dayOfWeek = format(currentDate, "EEEEEE");
                     break;
                 }
@@ -70,13 +70,40 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{value}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         }
 
         return <>
             <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         </>
+    }
+
+    function getXAxisTicks() {
+        const startTime = new Date(props.intervalStart);
+        startTime.setHours(0,0,0,0);
+
+        function generateMonthTicks(s: Date, dayRate: number){
+            var monthLength = getDaysInMonth(s);
+            var numberOfTicks = ceil(monthLength / dayRate);
+            var a = Array.from({ length: numberOfTicks }, (_, i) => addDays(s, i * dayRate).getTime());
+            return a;
+        }
+
+        if(intervalType === "Week") {
+            return Array.from({length: 7}, (_, i) => addDays(startTime, i).getTime() );
+        }
+        else if (intervalType === "Month") {
+            generateMonthTicks(startTime, 2);
+        }
+        else if (intervalType === "SixMonth") { 
+            var ticks = [];
+            for(var i = 0; i < 6; ++i) {
+                ticks.push(...generateMonthTicks(addMonths(startTime, i), 7));
+            }
+
+            return ticks;
+        }
     }
 
     function tickFormatter(args: any) {
@@ -107,9 +134,22 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
-            <CartesianGrid vertical={props.chartType != "Bar" && props.intervalType !== "SixMonth"} strokeDasharray="2 4" />
+            <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
-            <XAxis id="myXAxis" tick={DayTick} axisLine={false} dataKey="day" tickMargin={0} minTickGap={0} tickLine={false} interval={intervalType == "Month" ? 1 : intervalType === "SixMonth" ? 0 : "preserveStartEnd"} />
+            <XAxis id="myXAxis"
+                domain={['auto', 'auto']}
+                tick={DayTick}
+                scale={'time'}
+                type={'number'}
+                axisLine={false}
+                dataKey="day"
+                tickMargin={0}
+                minTickGap={0}
+                tickLine={false}
+                ticks={getXAxisTicks()}
+                includeHidden
+                interval={0}
+            />
         </>
     }
 

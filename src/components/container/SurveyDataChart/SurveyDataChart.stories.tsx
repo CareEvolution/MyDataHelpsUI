@@ -146,5 +146,5 @@ export const ffwelLive = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
     },
-    render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="Month"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
+    render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="SixMonth"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
 };
