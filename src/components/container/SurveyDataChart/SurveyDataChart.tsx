@@ -119,6 +119,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
                 chartHasData = true;
             });
         });
+        data.sort((a, b) => a.day- b.day);
     }
     
     const GraphToolTip = ({ active, payload }: any) => {
