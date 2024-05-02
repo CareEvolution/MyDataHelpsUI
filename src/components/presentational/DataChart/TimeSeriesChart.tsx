@@ -84,23 +84,26 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         startTime.setHours(0,0,0,0);
 
         function generateMonthTicks(s: Date, dayRate: number){
-            var monthLength = getDaysInMonth(s);
-            var numberOfTicks = ceil(monthLength / dayRate);
-            var a = Array.from({ length: numberOfTicks }, (_, i) => addDays(s, i * dayRate).getTime());
-            return a;
+
         }
 
         if(intervalType === "Week") {
             return Array.from({length: 7}, (_, i) => addDays(startTime, i).getTime() );
         }
         else if (intervalType === "Month") {
-            generateMonthTicks(startTime, 2);
+            var monthLength = getDaysInMonth(startTime);
+            var numberOfTicks = ceil(monthLength / 2);
+            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
         else if (intervalType === "SixMonth") { 
             var ticks = [];
             for(var i = 0; i < 5; ++i) {
-                ticks.push(...generateMonthTicks(addMonths(startTime, i), 7));
+                var currentDate = addMonths(startTime, i);
+                ticks.push(currentDate.getTime());
+                currentDate = addDays(currentDate, 14);
+                ticks.push(currentDate.getTime());
             }
+            ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
         }
