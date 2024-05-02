@@ -98,7 +98,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         }
         else if (intervalType === "SixMonth") { 
             var ticks = [];
-            for(var i = 0; i < 6; ++i) {
+            for(var i = 0; i < 5; ++i) {
                 ticks.push(...generateMonthTicks(addMonths(startTime, i), 7));
             }
 
@@ -138,6 +138,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis"
                 domain={['auto', 'auto']}
+                padding={props.chartType == 'Bar' ? 'gap' : { left: 0, right: 0 }}
                 tick={DayTick}
                 scale={'time'}
                 type={'number'}
