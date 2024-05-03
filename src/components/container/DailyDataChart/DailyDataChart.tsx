@@ -103,7 +103,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         Object.keys(currentData).forEach((dateStr) => {
             const currentDate = parse(dateStr, 'yyyy-MM-dd', new Date());
             var dataDay: any = {
-                day: currentDate.getTime()
+                timestamp: currentDate.getTime()
             };
             data!.push(dataDay);
             var dayKey = getDayKey(currentDate);

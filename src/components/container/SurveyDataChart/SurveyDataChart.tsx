@@ -112,7 +112,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
                 var dataDay = data.find((d) => d.day === answerDate.getTime());
                 if(!dataDay) {
                     dataDay = {
-                        day: answerDate.getTime()
+                        timestamp: answerDate.getTime()
                     }
                     data.push(dataDay);
                 }

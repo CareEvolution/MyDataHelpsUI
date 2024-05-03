@@ -154,7 +154,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 scale={'time'}
                 type={'number'}
                 axisLine={false}
-                dataKey="day"
+                dataKey="timestamp"
                 tickMargin={0}
                 minTickGap={0}
                 tickLine={false}

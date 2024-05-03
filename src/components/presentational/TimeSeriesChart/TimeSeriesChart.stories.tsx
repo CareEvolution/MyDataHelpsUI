@@ -17,7 +17,7 @@ function getRandomData(start: Date, end: Date) {
     let currentDate = new Date(start);
     while (currentDate < end) {
         responses.push({
-            day: currentDate.setHours(0,0,0,0),
+            timestamp: currentDate.setHours(0,0,0,0),
             value: parseFloat((Math.random() * 20).toFixed(2))
         });
         currentDate = add(currentDate, { days: 1 });
@@ -31,7 +31,7 @@ function getRandomDataWithGaps(start: Date, end: Date) {
     while (currentDate < end) {
         if (currentDate.getDate() % 3 !== 0) {
             responses.push({
-                day: currentDate.setHours(0, 0, 0, 0),
+                timestamp: currentDate.setHours(0, 0, 0, 0),
                 value: parseFloat((Math.random() * 20).toFixed(2))
             });
         }
@@ -45,7 +45,7 @@ function getRandomMultipointData(start: Date, end: Date) {
     let currentDate = new Date(start);
     while (currentDate < end) {
         responses.push({
-            day: currentDate.setHours(0,0,0,0),
+            timestamp: currentDate.setHours(0,0,0,0),
             key1: parseFloat((Math.random() * 20).toFixed(2)),
             key2: parseFloat((Math.random() * 20).toFixed(2)),
             key3: parseFloat((Math.random() * 20).toFixed(2)),
@@ -64,7 +64,7 @@ function getRandomIntradayData(start: Date) {
     console.log(endTime);
     while (currentTime < endTime) {
         responses.push({
-            day: currentTime,
+            timestamp: currentTime,
             value: parseFloat((Math.random() * 20).toFixed(2))
         });
         currentTime = add(currentTime, { minutes: 5 });
