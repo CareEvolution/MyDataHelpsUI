@@ -3,7 +3,7 @@ import { DateRangeContext } from '../../presentational/DateRangeCoordinator/Date
 import { add, parseISO } from 'date-fns'
 import MyDataHelps, { SurveyAnswer, SurveyAnswersPage } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
-import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/DataChart/TimeSeriesChart'
+import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import format from 'date-fns/format'
 
@@ -20,7 +20,8 @@ export interface SurveyDataChartProps {
     weekStartsOn?: WeekStartsOn
     charts: SurveyAnswerChartParameters[],
     chartType: "Line" | "Bar" | "Area"
-    options?: LineChartOptions | BarChartOptions | AreaChartOptions
+    options?: LineChartOptions | BarChartOptions | AreaChartOptions,
+    dataGap?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     innerRef?: React.Ref<HTMLDivElement>
 }
@@ -165,6 +166,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         intervalType={intervalType}
         intervalStart={intervalStart}
         data={data}
+        dataGap={props.dataGap}
         dataKeys={props.charts.map((l) => l.label)}
         chartHasData={chartHasData}
         tooltip={GraphToolTip}

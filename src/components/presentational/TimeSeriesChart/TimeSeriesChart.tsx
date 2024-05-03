@@ -12,7 +12,8 @@ export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "SixMonth",
     intervalStart: Date,
-    data: any[],
+    data: any[] | undefined,
+    dataGap?: Duration,
     dataKeys?: string[],
     chartHasData: boolean,
     tooltip: ({ active, payload, label }: any) => React.JSX.Element | null,
@@ -72,6 +73,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
+        } else if ( intervalType == "Day"){
+
         }
 
         return <>
@@ -82,10 +85,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     function getXAxisTicks() {
         const startTime = new Date(props.intervalStart);
         startTime.setHours(0,0,0,0);
-
-        function generateMonthTicks(s: Date, dayRate: number){
-
-        }
 
         if(intervalType === "Week") {
             return Array.from({length: 7}, (_, i) => addDays(startTime, i).getTime() );
@@ -205,6 +204,23 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.dataKeys || ["value"];
 
+    if(props.data && props.dataGap) {
+        for(var i = 0; i < props.data.length-1; ++i) {
+            if(props.data[i].value === null) {
+                continue;
+            }
+            var currentPoint = new Date(props.data[i].day);
+            var nextPoint = new Date(props.data[i+1].day);
+            var nextExpectedPoint = add(currentPoint, props.dataGap);
+            if( nextExpectedPoint < nextPoint) {
+                var nullValue = Object.assign({}, props.data[i]);
+                nullValue.day++;
+                nullValue.value = null;
+                props.data?.splice(i+1, 0, nullValue);
+            }
+        }
+    }
+
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
@@ -259,7 +275,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                                 <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
-                                    {props.data.map((entry, index) => (
+                                    {props.data!.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
                                     ))}
                                 </Bar>

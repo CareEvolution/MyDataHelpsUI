@@ -5,7 +5,7 @@ import { add, format } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
-import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/DataChart/TimeSeriesChart'
+import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import parse from 'date-fns/parse'
 
 export interface DailyDataChartProps {
@@ -97,7 +97,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         }
     }, [props.intervalType, props.weekStartsOn, dateRangeContext]);
 
-    var data: any[] = [];
+    var data: any[] | undefined = [];
     var chartHasData: boolean = false;
     if (currentData) {
         Object.keys(currentData).forEach((dateStr) => {
@@ -105,7 +105,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             var dataDay: any = {
                 day: currentDate.getTime()
             };
-            data.push(dataDay);
+            data!.push(dataDay);
             var dayKey = getDayKey(currentDate);
             dataDay.value = currentData[dayKey];
             dataDay.rawValue = dataDay.value;
@@ -115,6 +115,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             }
             chartHasData = true;
         });
+    }else{
+        data = undefined;
     }
 
     const GraphToolTip = ({ active, payload, label }: any) => {
@@ -141,6 +143,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalType={intervalType} 
         intervalStart={intervalStart}
         data={data} 
+        dataGap={{days: 1}}
         chartHasData={chartHasData} 
         tooltip={GraphToolTip}
         chartType={props.chartType}

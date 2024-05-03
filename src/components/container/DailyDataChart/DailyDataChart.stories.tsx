@@ -34,6 +34,34 @@ export const stepsLineChart = {
     render: render
 };
 
+export const stepsWithGapLineChart = {
+    args: {
+        title: "Steps",
+        options: {
+            domainMin: 0,
+            lineColor: "red"
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewDataProvider: (start: Date, end: Date) => {
+            let data: DailyDataQueryResult = {};
+            let currentDate = new Date(start);
+            while (currentDate < end) {
+                if(currentDate.getDate() % 3 !== 0) {
+                    let dayKey = getDayKey(currentDate);
+                    data[dayKey] = Math.random() * 10000 + 3000;
+                }
+                currentDate = add(currentDate, { days: 1 });
+            }
+            return Promise.resolve(data);
+        }
+    },
+    render: render
+};
+
 export const stepsBarChart = {
     args: {
         title: "Steps",
