@@ -1,46 +1,39 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, startOfDay } from 'date-fns'
+import { add, eachMinuteOfInterval, startOfDay } from 'date-fns'
 import { LayoutContext, LoadingIndicator } from '../../presentational'
-import { HalfDayData, FullDayData } from "./IntradayHeartRateChart.data"
+import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRateChart.data"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
-import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
-import { hrIntradayDataProvider } from '../../../helpers/heart-rate-data-providers'
-import LineChart, { LineChartAxis, LineChartDataPoint } from '../../presentational/LineChart/LineChart'
+import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
+import IntradayLineChart, { IntradayChartThreshold, IntradayDataPoint } from '../../presentational/IntradayLineChart/IntradayLineChart'
+import { IntradayHeartRateAggregationOption, combinedIntradayHeartRateDataProvider, getDayKey, queryAllDeviceDataV2 } from '../../..'
+import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers'
 
-export type AggregationOption = "avg" | "count" | "min" | "max" | "sum";
-export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "PartialDataWithThresholds" | "NoData";
-
-export interface IntradayChartThreshold {
-    value: number
-    referenceLineColor?: ColorDefinition
-    overThresholdLineColor?: ColorDefinition
-}
+export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
 
 export interface IntradayHeartRateChartProps {
     previewState?: IntradayHeartRatePreviewState,
-    dataSource: DeviceDataV2Namespace,
-    aggregationOption: AggregationOption,
-    aggregationIntervalAmount: number,
-    aggregationIntervalType: "Hours" | "Minutes",
+    dataSources: DeviceDataV2Namespace[],
+    aggregationOption: IntradayHeartRateAggregationOption,
+    aggregationIntervalMinutes: number,
     lineColor?: ColorDefinition,
     thresholds?: IntradayChartThreshold[],
     innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function IntradayHeartRateChart(props: IntradayHeartRateChartProps) {
-    const [data, setData] = useState<LineChartDataPoint[]>([]);
-    const [axis, setAxis] = useState<LineChartAxis>({ yRange: [0, 200], yIncrement: 30, xIncrement: props.aggregationIntervalAmount });
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<IntradayDataPoint[]>([]);
     const dateRangeContext = useContext(DateRangeContext);
-    let intervalStart = startOfDay(dateRangeContext?.intervalStart ?? new Date());
-    let intervalEnd = add(intervalStart, { days: 1 });
+    const intervalStart = startOfDay(dateRangeContext?.intervalStart ?? new Date());
+    const intervalEnd = startOfDay(add(intervalStart, { days: 1 }));
     let layoutContext = useContext(LayoutContext);
-    const defaultLineColor = resolveColor(layoutContext.colorScheme, props.lineColor) || '#bbb';
+    const lineColor = resolveColor(layoutContext.colorScheme, props.lineColor) || '#bbb';
 
     function initialize() {
         if (props.previewState) {
-            var data: DeviceDataV2Aggregate[] = [];
+            var data: IntradayHeartRateData = {};
             switch (props.previewState) {
                 case "Default":
                 case "CompleteDataWithThresholds":
@@ -49,54 +42,53 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
                 case "PartialDataWithThresholds":
                     data = HalfDayData;
                     break;
+                case "MissingMidDayDataThresholds":
+                    data = MissingMidDayData;
+                    break;
             }
 
-            extractStateData(data);
+            transformToChartData(data);
         } else {
-            const params: DeviceDataV2AggregateQuery = {
-                type: props.dataSource === "Fitbit" ? "activities-heart-intraday" : "Heart Rate",
-                namespace: props.dataSource,
-                observedAfter: intervalStart.toISOString(),
-                observedBefore: intervalEnd.toISOString(),
-                intervalAmount: props.aggregationIntervalAmount ?? 1,
-                intervalType: props.aggregationIntervalType,
-                aggregateFunctions: [props.aggregationOption]
-            };
-
-            hrIntradayDataProvider(params).then(function (data: DeviceDataV2Aggregate[]) {
-                extractStateData(data);
-            }).catch(function (error) {
+            combinedIntradayHeartRateDataProvider(
+                props.dataSources,
+                intervalStart,
+                intervalEnd,
+                props.aggregationOption,
+                props.aggregationIntervalMinutes
+            ).then(function (data: IntradayHeartRateData) {
+                transformToChartData(data);
+            }).catch(function (error: any) {
                 console.log("error");
                 console.log(error);
             });
         }
     }
 
-    function extractStateData(data: DeviceDataV2Aggregate[]) {
-        let axis: LineChartAxis = { yRange: [0, 200], yIncrement: 30, xIncrement: props.aggregationIntervalAmount ?? 3 };
-        let dataPoints : LineChartDataPoint[] = data.map(transformToDeviceDataV2AggregateReduced);
-        dataPoints = dataPoints.sort((a, b) => a.date.getTime() - b.date.getTime());
+    function transformToChartData(data: IntradayHeartRateData) {
+        const start = intervalStart;
+        const end = intervalEnd;
+        const interval: Interval = { start, end };
+        const options: any = { step: 5 };
+        var expectedIntervals = eachMinuteOfInterval(interval, options);
+        var chartData: IntradayDataPoint[] = expectedIntervals.map((date) => transformToDataPoint(date, data));
+        setData(chartData);
+        setLoading(false);
+    }
 
-        if (dataPoints.length){
-            let yValues: number[] = dataPoints.map(d => d.value);
-            let yMax = Math.max(...yValues);
-            let yRange = [0, yMax];
-            axis.yRange = yRange;
+    function transformToDataPoint(date: Date, data: IntradayHeartRateData) {
+        var dayKey = date.getTime();
+        var intradayDataPoint: IntradayDataPoint = { date: date, value: undefined }
+        if (data[dayKey]) {
+            intradayDataPoint.value = (data[dayKey]).statistics[`${props.aggregationOption}`];
         }
-
-        axis.xRange = [intervalStart.getTime(), intervalEnd.getTime()];
-        setAxis(axis);
-        setData(dataPoints);
+        return intradayDataPoint;
     }
 
-    function transformToDeviceDataV2AggregateReduced( data: DeviceDataV2Aggregate){
-        return { date: new Date(data.date), value: data.statistics[`${props.aggregationOption}`] }
-    }
-
-    useInitializeView(initialize, [], [props.previewState, props.dataSource, dateRangeContext?.intervalStart]);
+    useInitializeView(initialize, [], [props.previewState, props.dataSources, dateRangeContext?.intervalStart]);
 
     return <div ref={props.innerRef}>
-        <LineChart data={data} axis={axis} lineColor ={defaultLineColor} 
-                 thresholds ={props.thresholds} innerRef={props.innerRef}></LineChart>
+        {loading && <LoadingIndicator></LoadingIndicator>}
+        {!loading && <IntradayLineChart data={data} lineColor={lineColor} xDomain={[intervalStart, intervalEnd]}
+            thresholds={props.thresholds} toolTipText="bpm" innerRef={props.innerRef}></IntradayLineChart>}
     </div>
 }

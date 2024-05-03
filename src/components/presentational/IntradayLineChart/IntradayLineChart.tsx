@@ -1,73 +1,65 @@
-import { format } from 'date-fns'
+import { eachHourOfInterval, format } from 'date-fns'
 import { LayoutContext } from '..'
-import { CartesianGrid, Line, LineChart as ReChartsLineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import "./LineChart.css"
+import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import "./IntradayLineChart.css"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { useContext } from 'react'
 import React from 'react'
 
-export type LineChartPreviewState = "Default";
-
-export interface LineChartThreshold {
+export interface IntradayChartThreshold {
     value: number
     referenceLineColor?: ColorDefinition
     overThresholdLineColor?: ColorDefinition
 }
 
-export interface LineChartDataPoint {
-    value: number,
+export interface IntradayDataPoint {
+    value: number | undefined
     date: Date
 }
 
-export interface LineChartAxis {
-    yRange?: number[]
-    yIncrement: number;
-    xRange?: number[];
-    xIncrement: number;
-}
-
-export interface LineChartProps {
-    data: LineChartDataPoint[],
-    axis?: LineChartAxis,
-    lineColor?: ColorDefinition,
-    thresholds?: LineChartThreshold[],
+export interface IntradayLineChartProps {
+    data: IntradayDataPoint[]
+    lineColor?: ColorDefinition
+    thresholds?: IntradayChartThreshold[]
+    xDomain: Date[]
+    toolTipText: string
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function MdhLineChart(props: LineChartProps) {
+export default function IntradayLineChart(props: IntradayLineChartProps) {
     const thresholdKey = "_threshold";
-    const data: LineChartDataPoint[] = props.data;
+    const data: IntradayDataPoint[] = props.data;
     let layoutContext = useContext(LayoutContext);
     const defaultLineColor = resolveColor(layoutContext.colorScheme, props.lineColor) || '#bbb';
 
-    var axis: LineChartAxis = props.axis ?? { yRange: [0, 100], yIncrement: 5, xRange: [0, 100], xIncrement: 1 }
-    if (!props.axis || (props.axis && !props.axis.yRange)) {
-        const yValues: number[] = data.map(d => d.value);
-        const yMax = Math.max(...yValues);
-        axis.yRange = [0, yMax];
-    }
-    if (!props.axis || (props.axis && !props.axis?.xRange)) {
-        const xValues: any[] = data.map(d => d.date.getTime());
-        const xMax = Math.max(...xValues);
-        const xMin = Math.min(...xValues);
-        axis.xRange = [xMin, xMax];
+    var yMaxValue = 0;
+    var hasData = false;
+    if (props.data) {
+        var yDomain: number[] = [];
+        Object.values(data).forEach(dataPoint => {
+            dataPoint.value !== undefined && yDomain.push(dataPoint.value);
+        });
+
+        hasData = yDomain.length > 0;
+        yMaxValue = Math.max(...yDomain);
     }
 
     const GraphToolTip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
                 <div className="mdhui-line-tooltip">
-                    <div className="mdhui-line-tooltip-value">{`${Math.round(payload[0].value)}`}</div>
-                    <div className="mdhui-line-tooltip-date">{format(payload[0].payload.date, "hh:mm:ss aaa")}</div>
+                    <div className="mdhui-line-tooltip-value">{`${Math.round(payload[0].value)} ${props.toolTipText}`}</div>
+                    <div className="mdhui-line-tooltip-date">{format(payload[0].payload.date, "h:mm aaa")}</div>
                 </div>
             );
         }
         return null;
     };
 
-    const XAxisTick = ({ x, y, stroke, payload }: any) => {
-        var displayX = format(payload.value, "h aaa");
-        return <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{displayX}</text>;
+    const XAxisTickFormatter = (tick: any) => {
+        const display = format(tick, "h aaa");
+        if (display === '12 am') return "";
+        return display;
     }
 
     const YAxisTick = ({ x, y, stroke, payload }: any) => {
@@ -76,19 +68,17 @@ export default function MdhLineChart(props: LineChartProps) {
     }
 
     function getPercent(numerator: number): number {
-        const denominator = axis?.yRange ? axis.yRange[1] : 100;
-        return (numerator / denominator) * 100;
+        return (numerator / yMaxValue) * 100;
     }
 
     function createStopsFromThresholds() {
-        const y = axis?.yRange ? axis.yRange[1] : 100;
         let stops: any = [];
         var lineColor: string = defaultLineColor;
         var thresholds = props.thresholds ?? [];
 
         stops.push(<stop offset="0%" stopColor={lineColor} />);
         for (var i = 0; i < thresholds.length; i++) {
-            if (y >= thresholds[i].value) {
+            if (yMaxValue >= thresholds[i].value) {
                 lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdLineColor) || defaultLineColor;
                 var offSet = getPercent(thresholds[i].value);
                 stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
@@ -100,9 +90,15 @@ export default function MdhLineChart(props: LineChartProps) {
     }
 
     function standardChartComponents() {
+        const start = props.xDomain[0];
+        const end = props.xDomain[1];
+        const interval: Interval = { start, end };
+        const options: any = { step: 3 };
+        const ticks = eachHourOfInterval(interval, options).map((date) => date.getTime());
+
         return <>
             <defs>
-                {props.thresholds &&
+                {props.thresholds && data.length > 0 &&
                     <linearGradient id="thresholds" key={thresholdKey} x1="0%" y1="100%" x2="0%" y2="0%">
                         {createStopsFromThresholds()}
                     </linearGradient>
@@ -120,19 +116,20 @@ export default function MdhLineChart(props: LineChartProps) {
             {(props.thresholds)?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                 <ReferenceLine key={`threshref_${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
             )}
-            <YAxis tick={YAxisTick} type='number' domain={axis?.yRange ?? [0,100]} />
-            <XAxis tick={XAxisTick} axisLine={true} dataKey="date" tickMargin={0} minTickGap={0} tickCount={24}
-                type='number' domain={axis?.xRange ?? [0,100]} />
+            <YAxis tick={YAxisTick} axisLine={false} interval={0} tickLine={false} width={32} domain={[0, 'dataMax']} />
+            <XAxis dataKey='date' domain={ticks} scale='time' type='number' ticks={ticks} tickFormatter={XAxisTickFormatter}
+                axisLine={false} tickMargin={0} minTickGap={0} tickLine={false} />
         </>
     }
 
     return <div className="mdhui-line-chart" ref={props.innerRef}>
         <div className="chart-container">
+            {!hasData && <div className="no-data-label">No Data</div>}
             <ResponsiveContainer width="100%" height={150}>
-                <ReChartsLineChart width={400} height={400} data={data}>
+                <LineChart width={400} height={400} data={data}>
                     {standardChartComponents()}
-                    <Line dot={false} strokeWidth={3} key="line" type="monotone" dataKey="value" stroke={`url(#${props.thresholds ? 'thresholds' : 'gradient'})`}></Line>
-                </ReChartsLineChart>
+                    <Line dot={false} strokeWidth={2} type="monotone" dataKey="value" stroke={`url(#${props.thresholds ? 'thresholds' : 'gradient'})`}></Line>
+                </LineChart>
             </ResponsiveContainer>
         </div>
     </div>

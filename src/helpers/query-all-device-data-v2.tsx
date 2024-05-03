@@ -25,5 +25,3 @@ export default async function (query: DeviceDataV2AggregateQuery): Promise<Devic
 
     return getDeviceDataV2AggregateData();
 }
-
-

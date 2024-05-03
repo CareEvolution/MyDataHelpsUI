@@ -26,7 +26,7 @@ const renderDRC = (args: IntradayHeartRateChartProps) => <Layout colorScheme='au
 </Layout>;
 
 export const Default = {
-    render: renderDefault,
+	render: renderDefault,
 	args: {
 		previewState: "Default",
 		aggregationOption: "avg",
@@ -35,59 +35,70 @@ export const Default = {
 };
 
 export const FullDataThresholds = {
-    render: renderDefault,
+	render: renderDefault,
 	args: {
 		previewState: "CompleteDataWithThresholds",
 		aggregationOption: "avg",
 		thresholds: [
-			{value: 80, referenceLineColor: "green", overThresholdLineColor: "green"},
-			{value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21"},
-			{value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000"}
+			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
 		]
 	},
 };
 
 export const PartialDataThresholds = {
-    render: renderDefault,
+	render: renderDefault,
 	args: {
 		previewState: "PartialDataWithThresholds",
 		aggregationOption: "avg",
 		thresholds: [
-			{value: 80, referenceLineColor: "green", overThresholdLineColor: "green"},
-			{value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21"},
-			{value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000"}
+			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
+		]
+	},
+};
+
+export const MissingMidDayDataThresholds = {
+	render: renderDefault,
+	args: {
+		previewState: "MissingMidDayDataThresholds",
+		aggregationOption: "avg",
+		thresholds: [
+			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
 		]
 	},
 };
 
 export const NoData = {
-    render: renderDefault,
+	render: renderDefault,
 	args: {
 		previewState: "NoData",
 	},
 };
 
 export const LiveThresholds = {
-    render: renderDRC,
+	render: renderDRC,
 	args: {
-		dataSource: "Fitbit",
-		aggregationIntervalAmount: 5,
-		aggregationIntervalType: "Minutes",
+		dataSources: ["Fitbit", "AppleHealth"],
 		aggregationOption: "max",
+		aggregationIntervalMinutes: 5,
 		thresholds: [
-			{value: 80, referenceLineColor: "green", overThresholdLineColor: "green"},
-			{value: 120, referenceLineColor: "yellow", overThresholdLineColor: "#ffdd21"},
-			{value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000"}
+			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
+			{ value: 120, referenceLineColor: "yellow", overThresholdLineColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
 		]
 	},
 };
 
 export const LiveDRCNoThresholds = {
-    render: renderDRC,
+	render: renderDRC,
 	args: {
-		dataSource: "Fitbit",
-		aggregationIntervalAmount: 5,
-		aggregationIntervalType: "Minutes",
-		aggregationOption: "max"
+		dataSources: ["Fitbit", "AppleHealth"],
+		aggregationOption: "max",
+		aggregationIntervalMinutes: 5,
 	},
 };
