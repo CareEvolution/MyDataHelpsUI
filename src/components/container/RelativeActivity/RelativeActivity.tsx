@@ -39,7 +39,9 @@ export default function (props: RelativeActivityProps) {
             if (!results) return;
             let transformedResults: { [key: string]: RelativeActivityQueryResult } = {};
             dataTypes.forEach(dataType => {
-                transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
+                if (results[dataType.dailyDataType]) {
+                    transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
+                }
             });
             return transformedResults;
         }
