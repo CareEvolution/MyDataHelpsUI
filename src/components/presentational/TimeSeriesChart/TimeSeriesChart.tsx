@@ -219,12 +219,12 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         for(var i = 0; i < props.data.length-1; ++i) {
             dataToDisplay.push(props.data[i]);
 
-            var currentPoint = new Date(props.data[i].day);
-            var nextPoint = new Date(props.data[i+1].day);
+            var currentPoint = new Date(props.data[i].timestamp);
+            var nextPoint = new Date(props.data[i+1].timestamp);
             var nextExpectedPoint = add(currentPoint, props.dataGap);
             if( nextExpectedPoint < nextPoint) {
                 var nullValue = {
-                    day: props.data[i].day + 1
+                    timestamp: props.data[i].timestamp + 1
                 }
                 dataToDisplay.push(nullValue);
             }
