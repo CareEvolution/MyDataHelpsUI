@@ -12,7 +12,7 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.GoogleFitSteps,
         dataProvider: googleFitStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", ["Steps"]),
-        getLabel: () => language("steps"),
+        labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [3000, 6000]

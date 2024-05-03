@@ -94,7 +94,7 @@ export default function (props: RelativeActivityProps) {
 
             return <div key={d.dailyDataType} className="mdhui-relative-activity-datatype">
                 <ActivityMeter className="mdhui-relative-activity-meter"
-                    label={dataTypeDefinition.getLabel()}
+                    label={dataTypeDefinition.labelKey ? language(dataTypeDefinition.labelKey) : d.dailyDataType}
                     value={dataTypeDefinition.formatter ? dataTypeDefinition.formatter(dataTypeResult.value) : dataTypeResult.value.toString()}
                     fillPercent={dataTypeResult.relativePercent}
                     averageFillPercent={0.5}

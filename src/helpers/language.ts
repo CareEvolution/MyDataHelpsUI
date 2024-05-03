@@ -10,8 +10,8 @@ import polishStrings from "./strings-pl"
 
 export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
 
-export function language(key: string) {
-	const currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
+export function language(key: string, specifiedLanguage?: string): string {
+	const currentLanguage: Language = getLanguageFromIso(specifiedLanguage || MyDataHelps.getCurrentLanguage());
 
 	let resolvedString = null;
 	if (currentLanguage == "en") resolvedString = englishStrings[key];
@@ -28,19 +28,19 @@ export function language(key: string) {
 }
 
 export function getLanguageFromIso(language: string): Language {
-    if (language.length < 2) return "";
+	if (language.length < 2) return "";
 
-    var beginningOfLanguage = language.slice(0, 2);
-    if (beginningOfLanguage == "en") return "en";
-    if (beginningOfLanguage == "es") return "es";
-    if (beginningOfLanguage == "nl") return "nl";
-    if (beginningOfLanguage == "de") return "de";
-    if (beginningOfLanguage == "fr") return "fr";
-    if (beginningOfLanguage == "pt") return "pt";
-    if (beginningOfLanguage == "it") return "it";
-    if (beginningOfLanguage == "pl") return "pl";
+	var beginningOfLanguage = language.slice(0, 2);
+	if (beginningOfLanguage == "en") return "en";
+	if (beginningOfLanguage == "es") return "es";
+	if (beginningOfLanguage == "nl") return "nl";
+	if (beginningOfLanguage == "de") return "de";
+	if (beginningOfLanguage == "fr") return "fr";
+	if (beginningOfLanguage == "pt") return "pt";
+	if (beginningOfLanguage == "it") return "it";
+	if (beginningOfLanguage == "pl") return "pl";
 
-    return "";
+	return "";
 }
 
 export default language;
