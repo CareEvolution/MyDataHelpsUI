@@ -109,7 +109,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
             currentData![dataKey].forEach((answer) => {
                 var answerDate = parseISO(answer.date);
                 answerDate.setHours(0,0,0,0);
-                var dataDay = data.find((d) => d.day === answerDate.getTime());
+                var dataDay = data.find((d) => d.timestamp === answerDate.getTime());
                 if(!dataDay) {
                     dataDay = {
                         timestamp: answerDate.getTime()
@@ -120,7 +120,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
                 chartHasData = true;
             });
         });
-        data.sort((a, b) => a.day- b.day);
+        data.sort((a, b) => a.timestamp - b.timestamp);
     }
     
     const GraphToolTip = ({ active, payload }: any) => {
@@ -143,7 +143,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         if (active && payload && payload.length) {
             return (
                 <div className="mdhui-daily-data-tooltip">
-                    <div className="graph-date">{format(new Date(payload[0].payload.day), 'MM/dd/yyyy')}</div>
+                    <div className="graph-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                     <table className="payload-values">
                         <tbody>
                             {payload.map((p: any, index: number) =>
