@@ -204,21 +204,25 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.dataKeys || ["value"];
 
+    let dataToDisplay: any[] | undefined;
     if(props.data && props.dataGap) {
+        dataToDisplay = [];
         for(var i = 0; i < props.data.length-1; ++i) {
-            if(props.data[i].value === null) {
-                continue;
-            }
+            dataToDisplay.push(props.data[i]);
+
             var currentPoint = new Date(props.data[i].day);
             var nextPoint = new Date(props.data[i+1].day);
             var nextExpectedPoint = add(currentPoint, props.dataGap);
             if( nextExpectedPoint < nextPoint) {
-                var nullValue = Object.assign({}, props.data[i]);
-                nullValue.day++;
-                nullValue.value = null;
-                props.data?.splice(i+1, 0, nullValue);
+                var nullValue = {
+                    day: props.data[i].day + 1
+                }
+                dataToDisplay.push(nullValue);
             }
         }
+        dataToDisplay.push(props.data[props.data.length-1])
+    }else{
+        dataToDisplay = props.data;
     }
 
     return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
@@ -228,14 +232,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         <div className="chart-container">
             {(!props.chartHasData) &&
                 <div>
-                    {!!props.data &&
+                    {!!dataToDisplay &&
                         <div className="no-data-label">No Data</div>
                     }
-                    {!props.data &&
+                    {!dataToDisplay &&
                         <LoadingIndicator />
                     }
                     <ResponsiveContainer width="100%" height={150}>
-                        <LineChart width={400} height={400} data={props.data} syncId="DailyDataChart">
+                        <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                             {standardChartComponents()}
                         </LineChart>
                     </ResponsiveContainer>
@@ -243,7 +247,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={props.data} syncId="DailyDataChart">
+                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                                 <Line connectNulls={(props.options as LineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
@@ -254,7 +258,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={props.data} syncId="DailyDataChart" >
+                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" >
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -275,7 +279,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                                 <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
-                                    {props.data!.map((entry, index) => (
+                                    {dataToDisplay!.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
                                     ))}
                                 </Bar>
@@ -286,7 +290,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={props.data} syncId="DailyDataChart">
+                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                             <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
