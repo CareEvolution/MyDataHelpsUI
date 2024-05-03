@@ -11,34 +11,28 @@ export default {
     }
 };
 
+let getRenderFunction = (intervalType: "Week" | "Day" | "Month") => (args: DateRangeTitleProps) => <Layout colorScheme="auto">
+    <DateRangeCoordinator intervalType={intervalType}>
+        <DateRangeTitle {...args} defaultMargin />
+    </DateRangeCoordinator>
+</Layout>;
+
 export const Week = {
     args: {
     },
-    render: (args: DateRangeTitleProps) => <Layout colorScheme="auto">
-        <DateRangeCoordinator intervalType="Week">
-            <DateRangeTitle {...args} defaultMargin />
-        </DateRangeCoordinator>
-    </Layout>
+    render: getRenderFunction("Week")
 };
 
 
 export const Month = {
     args: {
     },
-    render: (args: DateRangeTitleProps) => <Layout colorScheme="auto">
-        <DateRangeCoordinator intervalType="Month">
-            <DateRangeTitle {...args} defaultMargin />
-        </DateRangeCoordinator>
-    </Layout>
+    render: getRenderFunction("Month")
 };
 
 
 export const Day = {
     args: {
     },
-    render: (args: DateRangeTitleProps) => <Layout colorScheme="auto">
-        <DateRangeCoordinator intervalType="Day">
-            <DateRangeTitle {...args} defaultMargin />
-        </DateRangeCoordinator>
-    </Layout>
+    render: getRenderFunction("Day")
 };
