@@ -91,14 +91,15 @@ export default function (props: RelativeActivityProps) {
                 return null;
             }
             let dataTypeDefinition = getDailyDataTypeDefinition(d.dailyDataType);
+            let formatter = d.formatter || dataTypeDefinition.formatter;
 
             return <div key={d.dailyDataType} className="mdhui-relative-activity-datatype">
                 <ActivityMeter className="mdhui-relative-activity-meter"
-                    label={dataTypeDefinition.labelKey ? language(dataTypeDefinition.labelKey) : d.dailyDataType}
-                    value={dataTypeDefinition.formatter ? dataTypeDefinition.formatter(dataTypeResult.value) : dataTypeResult.value.toString()}
+                    label={d.label || (dataTypeDefinition.labelKey ? language(dataTypeDefinition.labelKey) : d.dailyDataType)}
+                    value={formatter ? formatter(dataTypeResult.value) : dataTypeResult.value.toString()}
                     fillPercent={dataTypeResult.relativePercent}
                     averageFillPercent={0.5}
-                    icon={dataTypeDefinition.icon}
+                    icon={d.icon || dataTypeDefinition.icon}
                     color={getBarColor(d, dataTypeResult.relativePercent)}
                     thresholdLabel={getThresholdLabel(d, dataTypeResult.threshold)} />
             </div>

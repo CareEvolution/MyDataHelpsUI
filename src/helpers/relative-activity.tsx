@@ -14,6 +14,9 @@ export interface RelativeActivityDataType {
     color?: ColorDefinition;
     overThresholdColor?: ColorDefinition;
     threshold?: number | "30DayAverage";
+    label?: string;
+    icon?: React.ReactElement;
+    formatter?: (number: number) => string;
 }
 
 export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes: RelativeActivityDataType[], preview: boolean): Promise<{ [key: string]: { [key: string]: RelativeActivityQueryResult } }> {
