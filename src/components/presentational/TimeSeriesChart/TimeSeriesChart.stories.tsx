@@ -55,6 +55,25 @@ function getRandomMultipointData(start: Date, end: Date) {
     return responses;
 }
 
+function getRandomIntradayData(start: Date) {
+    var responses: any[] = [];
+    let currentTime = new Date(start);
+    currentTime.setHours(0,0,0,0);
+    let endTime = add(currentTime, {hours: 24});
+    console.log(currentTime);
+    console.log(endTime);
+    while (currentTime < endTime) {
+        responses.push({
+            day: currentTime,
+            value: parseFloat((Math.random() * 20).toFixed(2))
+        });
+        currentTime = add(currentTime, { minutes: 5 });
+        console.log(currentTime);
+        console.log(endTime);
+    }
+    return responses;
+}
+
 var tooltip = function ({ active, payload, label }: any): React.JSX.Element | null {
     if(active && payload && payload.length){
         return <table className="mdhui-daily-data-tooltip">
@@ -97,6 +116,19 @@ export const lineChartWithGaps : TimeSeriesChartTest = {
     render: render
 };
 
+export const lineChartIntraday : TimeSeriesChartTest = {
+    args: {
+        title: "Intraday Chart",
+        intervalType: "Day",
+        chartType: "Line",
+        chartHasData: true,
+        dataGap: {minutes: 5},
+        data: getRandomIntradayData(new Date()),
+        intervalStart: new Date(),
+        tooltip: tooltip
+    },
+    render: render
+};
 
 export const barChart : TimeSeriesChartTest = {
     args: {

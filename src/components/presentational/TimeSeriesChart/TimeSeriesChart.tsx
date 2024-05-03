@@ -7,10 +7,11 @@ import { AxisDomain } from 'recharts/types/util/types'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
+import addHours from 'date-fns/addHours'
 
 export interface TimeSeriesChartProps {
     title?: string
-    intervalType?: "Week" | "Month" | "SixMonth",
+    intervalType?: "Week" | "Month" | "SixMonth" | "Day",
     intervalStart: Date,
     data: any[] | undefined,
     dataGap?: Duration,
@@ -74,9 +75,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         } else if ( intervalType == "Day"){
-
+            const startTime = new Date(props.intervalStart);
+            startTime.setHours(0, 0, 0, 0);
+            return <>
+                {currentDate.getTime() === startTime.getTime() && <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{format(currentDate, "EEEEEE")}</text>}
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{format(currentDate, "hh:mm aaa")}</text>
+            </>;
         }
-
         return <>
             <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
         </>
@@ -105,6 +110,10 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
+        }
+        else if (intervalType === "Day") {
+            var ticks = [];
+            return Array.from({length: 9}, (_, i) => addHours(startTime, i*3).getTime() );
         }
     }
 
@@ -247,7 +256,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                                 <Line connectNulls={(props.options as LineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={getStrokeColor(i)} />
@@ -258,7 +267,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" >
+                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}} >
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -290,7 +299,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType == "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
                         <defs>
                             {keys.map((dk, i) =>
                             <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
