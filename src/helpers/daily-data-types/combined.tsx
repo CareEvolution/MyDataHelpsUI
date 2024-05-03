@@ -10,6 +10,7 @@ import { simpleAvailabilityCheck } from "./availability-check";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
+        dataSource: "All Sources",
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
         availabilityCheck: function (modifiedAfter?: Date) {
@@ -35,6 +36,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         previewDataRange: [40, 100]
     },
     {
+        dataSource: "All Sources",
         type: DailyDataType.Steps,
         dataProvider: combinedStepsDataProvider,
         availabilityCheck: function (modifiedAfter?: Date) {
@@ -60,6 +62,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         previewDataRange: [4000, 8000]
     },
     {
+        dataSource: "All Sources",
         type: DailyDataType.SleepMinutes,
         dataProvider: combinedSleepDataProvider,
         availabilityCheck: function (modifiedAfter?: Date) {

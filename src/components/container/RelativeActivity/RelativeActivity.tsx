@@ -46,6 +46,9 @@ export default function (props: RelativeActivityProps) {
 
         setResults(undefined);
         if (props.useContext) {
+            if (!relativeActivityContext?.data) {
+                return;
+            }
             setResults(transformResults(relativeActivityContext!.data));
             return;
         }

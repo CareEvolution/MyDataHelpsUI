@@ -69,7 +69,7 @@ export enum DailyDataType {
 };
 
 export interface DailyDataTypeDefinition {
-	dataSource?: "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality";
+	dataSource?: "All Sources" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality";
 	type: string;
 	dataProvider: DailyDataProvider;
 	availabilityCheck: DailyDataAvailabilityCheck;
