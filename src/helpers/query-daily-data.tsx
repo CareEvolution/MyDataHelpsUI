@@ -13,7 +13,7 @@ export type DailyDataAvailabilityCheck = (modifiedAfter?: Date) => Promise<boole
 
 let dailyDataTypes = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
-);;
+);
 
 // deprecated.  Instead use registerDailyDataTypeDefinition
 export function registerDailyDataProvider(type: string, provider: DailyDataProvider, availabilityCheck: DailyDataAvailabilityCheck) {
@@ -81,6 +81,10 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 		startDate = add(startDate, { days: 1 });
 	}
 	return result;
+}
+
+export function getAllDailyDataTypes() {
+	return Array.from(dailyDataTypes.values());
 }
 
 let definitionLookup = new Map(

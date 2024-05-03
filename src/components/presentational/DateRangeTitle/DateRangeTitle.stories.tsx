@@ -23,13 +23,11 @@ export const Week = {
     render: getRenderFunction("Week")
 };
 
-
 export const Month = {
     args: {
     },
     render: getRenderFunction("Month")
 };
-
 
 export const Day = {
     args: {
