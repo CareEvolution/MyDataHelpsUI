@@ -79,8 +79,9 @@ export default function IntradayLineChart(props: IntradayLineChartProps) {
         stops.push(<stop offset="0%" stopColor={lineColor} />);
         for (var i = 0; i < thresholds.length; i++) {
             if (yMaxValue >= thresholds[i].value) {
-                lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdLineColor) || defaultLineColor;
                 var offSet = getPercent(thresholds[i].value);
+                stops.push(<stop offset={`${offSet - 1}%`} stopColor={lineColor} />);
+                lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdLineColor) || defaultLineColor;
                 stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
             }
         }
