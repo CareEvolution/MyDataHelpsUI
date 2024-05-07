@@ -27,7 +27,7 @@ export default function (startDate: Date, endDate: Date) {
 				var dayKey = getDayKey(startDate);
 				var steps: number | null = null;
 				values.forEach((value) => {
-					if (value[dayKey] || steps == null || steps < value[dayKey]) {
+					if (value[dayKey] && (steps == null || steps < value[dayKey])) {
 						steps = value[dayKey];
 					}
 				});

@@ -27,7 +27,7 @@ export default function (startDate: Date, endDate: Date) {
                 var dayKey = getDayKey(startDate);
                 var sleep: number | null = null;
                 values.forEach((value) => {
-                    if (value[dayKey] || sleep == null || sleep < value[dayKey]) {
+                    if (value[dayKey] && (sleep == null || sleep < value[dayKey])) {
                         sleep = value[dayKey];
                     }
                 });
