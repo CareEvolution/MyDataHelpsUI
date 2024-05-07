@@ -143,7 +143,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalType={intervalType} 
         intervalStart={intervalStart}
         data={data} 
-        dataGap={{days: 1}}
+        expectedDataInterval={{days: 1}}
         chartHasData={chartHasData} 
         tooltip={GraphToolTip}
         chartType={props.chartType}

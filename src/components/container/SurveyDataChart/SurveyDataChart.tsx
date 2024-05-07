@@ -21,7 +21,7 @@ export interface SurveyDataChartProps {
     charts: SurveyAnswerChartParameters[],
     chartType: "Line" | "Bar" | "Area"
     options?: LineChartOptions | BarChartOptions | AreaChartOptions,
-    dataGap?: Duration,
+    expectedDataInterval?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     innerRef?: React.Ref<HTMLDivElement>
 }
@@ -166,7 +166,7 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         intervalType={intervalType}
         intervalStart={intervalStart}
         data={data}
-        dataGap={props.dataGap}
+        expectedDataInterval={props.expectedDataInterval}
         dataKeys={props.charts.map((l) => l.label)}
         chartHasData={chartHasData}
         tooltip={GraphToolTip}

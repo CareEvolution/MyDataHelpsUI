@@ -108,7 +108,7 @@ export const lineChartWithGaps : TimeSeriesChartTest = {
         intervalType: "Week",
         chartType: "Line",
         chartHasData: true,
-        dataGap: {days: 1},
+        expectedDataInterval: {days: 1},
         data: getRandomDataWithGaps(new Date(), addDays(new Date(), 6)),
         intervalStart: new Date(),
         tooltip: tooltip
@@ -122,7 +122,7 @@ export const lineChartIntraday : TimeSeriesChartTest = {
         intervalType: "Day",
         chartType: "Line",
         chartHasData: true,
-        dataGap: {minutes: 5},
+        expectedDataInterval: {minutes: 5},
         data: getRandomIntradayData(new Date()),
         intervalStart: new Date(),
         tooltip: tooltip

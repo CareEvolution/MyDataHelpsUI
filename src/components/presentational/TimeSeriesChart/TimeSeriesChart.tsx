@@ -14,7 +14,7 @@ export interface TimeSeriesChartProps {
     intervalType?: "Week" | "Month" | "SixMonth" | "Day",
     intervalStart: Date,
     data: any[] | undefined,
-    dataGap?: Duration,
+    expectedDataInterval?: Duration,
     dataKeys?: string[],
     chartHasData: boolean,
     tooltip: ({ active, payload, label }: any) => React.JSX.Element | null,
@@ -214,14 +214,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     const keys = props.dataKeys || ["value"];
 
     let dataToDisplay: any[] | undefined;
-    if(props.data && props.dataGap) {
+    if(props.data && props.expectedDataInterval) {
         dataToDisplay = [];
         for(var i = 0; i < props.data.length-1; ++i) {
             dataToDisplay.push(props.data[i]);
 
             var currentPoint = new Date(props.data[i].timestamp);
             var nextPoint = new Date(props.data[i+1].timestamp);
-            var nextExpectedPoint = add(currentPoint, props.dataGap);
+            var nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
             if( nextExpectedPoint < nextPoint) {
                 var nullValue = {
                     timestamp: props.data[i].timestamp + 1
