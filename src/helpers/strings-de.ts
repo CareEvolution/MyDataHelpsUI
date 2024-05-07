@@ -149,6 +149,7 @@ let strings: { [key: string]: string } = {
     "systolic-average": "Durchschnittlicher systolischer Blutdruck",
     "diastolic-average": "Durchschnittlicher diastolischer Blutdruck",
     "highest-systolic": "Höchster systolischer Blutdruck",
+    "lowest-systolic": "Niedrigster systolischer Blutdruck",
     "resource-default-button-text": "Öffnen",
     "inbox-message-completed-status": "ANGEGUCKT",
     "inbox-resource-completed-status": "ANGEGUCKT",
