@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { add, parseISO } from 'date-fns'
-import MyDataHelps, { SurveyAnswer, SurveyAnswersPage } from '@careevolution/mydatahelps-js'
+import { SurveyAnswer } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import format from 'date-fns/format'
+import { useInitializeView } from '../../../helpers/Initialization'
 
 export interface SurveyAnswerChartParameters {
     label: string;
@@ -90,16 +91,9 @@ export default function SurveyDataChart(props:SurveyDataChartProps) {
         return newDailyData;
     }
     
-    useEffect(() => {
+    useInitializeView(() => {
         loadCurrentInterval();
-        MyDataHelps.on("applicationDidBecomeVisible", loadCurrentInterval);
-        MyDataHelps.on("externalAccountSyncComplete", loadCurrentInterval);
-        
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", loadCurrentInterval);
-            MyDataHelps.off("externalAccountSyncComplete", loadCurrentInterval);
-        }
-    }, [props.intervalType, props.weekStartsOn, dateRangeContext]);
+    }, [], [props.intervalType, props.weekStartsOn, dateRangeContext]);
     
     var data: any[] = [];
     var chartHasData: boolean = false;
