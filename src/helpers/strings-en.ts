@@ -149,7 +149,7 @@
     "systolic-average": "Systolic Average",
     "diastolic-average": "Diastolic Average",
     "highest-systolic": "Highest Systolic",
-    "lowest-diastolic": "Lowest Diastolic",
+    "lowest-systolic": "Lowest Systolic",
     "resource-default-button-text": "Open",
     "inbox-message-completed-status": "VIEWED",
     "inbox-resource-completed-status": "VIEWED",

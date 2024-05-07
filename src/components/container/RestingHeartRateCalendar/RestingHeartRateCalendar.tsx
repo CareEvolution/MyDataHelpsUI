@@ -10,11 +10,13 @@ import { queryDailyData, DailyDataType } from '../../../helpers';
 type HeartRateMap = { [key: string]: number };
 
 export type RestingHeartRateCalendarPreviewState = "WithData" | "NoData" | "Loading";
+export type RestingHeartRateDataSource = "Combined" | "AppleHealth" | "Fitbit" | "Garmin";
 
 export interface RestingHeartRateCalendarProps {
 	month: number,
 	year: number,
 	showPreviewData: RestingHeartRateCalendarPreviewState
+	dataTypeSource?: RestingHeartRateDataSource
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
@@ -25,8 +27,14 @@ export default function (props: RestingHeartRateCalendarProps) {
 	var monthStart = new Date(props.year, props.month, 1, 0, 0, 0, 0);
 	var monthEnd = add(monthStart, { months: 1 });
 
-	function getRestingHeartRates() {
-		return queryDailyData(DailyDataType.RestingHeartRate, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
+	function getRestingHeartRates(dataTypeSource?: RestingHeartRateDataSource) {
+		var dailyDataType: DailyDataType = DailyDataType.RestingHeartRate;
+		
+		if (dataTypeSource == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
+		if (dataTypeSource == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
+		if (dataTypeSource == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
+		
+		return queryDailyData(dailyDataType, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
 			setHeartRates(result);
 		});
 	}
@@ -56,13 +64,13 @@ export default function (props: RestingHeartRateCalendarProps) {
 		if (props.showPreviewData === "NoData") {
 			return;
 		}
-		else if (props.showPreviewData === "Loading") {
+		if (props.showPreviewData === "Loading") {
 			setLoading(true);
+			return;
 		}
-		else {
-			setLoading(true);
-			getRestingHeartRates().then(() => setLoading(false));
-		}
+
+		setLoading(true);
+		getRestingHeartRates(props.dataTypeSource).then(() => setLoading(false));
 	}
 
 	useEffect(() => {

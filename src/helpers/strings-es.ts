@@ -361,6 +361,10 @@
     "bpm": "ppm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
+    "systolic-average": "Promedio Sistólico",
+    "diastolic-average": "Promedio Diastólico",
+    "highest-systolic": "Sistólica más Alta",
+    "lowest-systolic": "Sistólica más Baja",
 };
 
 export default strings;
