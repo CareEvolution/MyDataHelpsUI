@@ -30,7 +30,7 @@ export function getDayOfWeek(date: Date) {
 
 export function getFullDateString(date: Date) {
 	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-	return format(date, "MMMM d, yyyy", { locale: locale });
+	return format(date, "MMMM do, yyyy", { locale: locale });
 }
 
 export function getShorterDateString(date: Date) {
