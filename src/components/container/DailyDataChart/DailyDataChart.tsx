@@ -10,7 +10,7 @@ import parse from 'date-fns/parse'
 
 export interface DailyDataChartProps {
     title?: string
-    intervalType?: "Week" | "Month" | "SixMonth"
+    intervalType?: "Week" | "Month"
     weekStartsOn?: WeekStartsOn
     dailyDataType: string
     valueConverter?(value: number): number
@@ -22,7 +22,7 @@ export interface DailyDataChartProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-function getDefaultIntervalStart(intervalType: "Week" | "Month" | "SixMonth", weekStartsOn?: WeekStartsOn) {
+function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
     let intervalStart: Date;
     if (intervalType === "Week") {
         intervalStart = getWeekStart(weekStartsOn);
@@ -41,7 +41,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
+        if(dateRangeContext.intervalType === "SixMonth") {
+            intervalType = "Week"
+        }else{
+            intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
+        }
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
@@ -50,7 +54,6 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) 
                         : intervalType == "Month" ? add(intervalStart, { months: 1 })
-                        : intervalType == "SixMonth" ? add(intervalStart, { months: 6 })
                         : intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
