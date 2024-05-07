@@ -149,6 +149,7 @@ let strings: { [key: string]: string } = {
     "systolic-average": "Media sistolica",
     "diastolic-average": "Media diastolica",
     "highest-systolic": "Sistolica più alta",
+    "lowest-systolic": "Sistolica più bassa",
     "resource-default-button-text": "Apri",
     "inbox-message-completed-status": "VISTO",
     "inbox-resource-completed-status": "VISTO",
