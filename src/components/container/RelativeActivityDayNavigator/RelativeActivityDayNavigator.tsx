@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
-import { add, startOfDay } from "date-fns";
+import { add, isSameDay, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
@@ -30,7 +30,7 @@ export default function (props: RelativeActivityDayNavigatorProps) {
     }
     useInitializeView(() => {
         //ensure we reload when it passes midnight
-        if (today != startOfDay(new Date())) {
+        if (!isSameDay(today, startOfDay(new Date()))) {
             setWeekStart(add(startOfDay(new Date()), { days: -6 }));
             setToday(startOfDay(new Date()));
         }
