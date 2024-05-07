@@ -40,7 +40,7 @@ export default function (props: RelativeActivityDayNavigatorProps) {
             if (!dailyData || !dailyData[dataType.dailyDataType] || !dailyData[dataType.dailyDataType][dayKey]) {
                 return { color: "var(--mdhui-color-primary)", barFillPercent: 0 };
             }
-            let value = dailyData[dataType.dailyDataType]?.[dayKey]?.value || 0;
+            let value = dailyData[dataType.dailyDataType][dayKey].value || 0;
             let color = dataType.color || "var(--mdhui-color-primary)";
             if (dataType.threshold != "30DayAverage" &&
                 dataType.threshold !== undefined &&
