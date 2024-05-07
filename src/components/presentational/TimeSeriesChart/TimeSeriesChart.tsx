@@ -78,8 +78,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             const startTime = new Date(props.intervalStart);
             startTime.setHours(0, 0, 0, 0);
             return <>
-                {currentDate.getTime() === startTime.getTime() && <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{format(currentDate, "EEEEEE")}</text>}
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{format(currentDate, "hh:mm aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{format(currentDate, "hh:mm aaa")}</text>
             </>;
         }
         return <>
