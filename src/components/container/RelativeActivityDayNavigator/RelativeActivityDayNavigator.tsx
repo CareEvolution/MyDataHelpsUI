@@ -51,7 +51,7 @@ export default function (props: RelativeActivityDayNavigatorProps) {
 
             return {
                 color: color,
-                barFillPercent: dailyData[dataType.dailyDataType]?.[dayKey]?.relativePercent || 0
+                barFillPercent: dailyData[dataType.dailyDataType][dayKey].relativePercent
             }
         });
 
