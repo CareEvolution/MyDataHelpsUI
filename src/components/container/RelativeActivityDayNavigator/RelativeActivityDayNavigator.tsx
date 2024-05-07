@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SparkBarChart, SparkBarChartBar, WeekCalendar } from "../../presentational";
-import { add, addDays, startOfDay } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { useInitializeView } from "../../../helpers/Initialization";
 import getDayKey from "../../../helpers/get-day-key";
 import { RelativeActivityDataType, RelativeActivityQueryResult } from "../../../helpers";
@@ -63,7 +63,7 @@ export default function (props: RelativeActivityDayNavigatorProps) {
 
     let weekStartChanged = function (weekStart: Date) {
         setWeekStart(weekStart);
-        props.onDateSelected(addDays(weekStart, 6));
+        props.onDateSelected(add(weekStart, { days: 6 }));
     }
 
     return <WeekCalendar
