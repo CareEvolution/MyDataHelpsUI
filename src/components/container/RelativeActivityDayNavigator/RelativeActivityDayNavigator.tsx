@@ -16,6 +16,7 @@ export interface RelativeActivityDayNavigatorProps {
 }
 
 export default function (props: RelativeActivityDayNavigatorProps) {
+    let [today, setToday] = useState<Date>(startOfDay(new Date()));
     let [weekStart, setWeekStart] = useState<Date>(add(startOfDay(new Date()), { days: -6 }));
     let [dailyData, setDailyData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } } | null>(null);
 
@@ -28,6 +29,12 @@ export default function (props: RelativeActivityDayNavigatorProps) {
         });
     }
     useInitializeView(() => {
+        //ensure we reload when it passes midnight
+        if (today != startOfDay(new Date())) {
+            setWeekStart(add(startOfDay(new Date()), { days: -6 }));
+            setToday(startOfDay(new Date()));
+        }
+
         loadData();
     }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState, weekStart]);
 
