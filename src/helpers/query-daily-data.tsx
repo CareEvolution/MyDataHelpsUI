@@ -19,7 +19,6 @@ let dailyDataTypes = new Map(
 export function registerDailyDataProvider(type: string, provider: DailyDataProvider, availabilityCheck: DailyDataAvailabilityCheck) {
 	dailyDataTypes.set(type, {
 		type: type,
-		getLabel: () => type,
 		dataProvider: provider,
 		availabilityCheck: availabilityCheck,
 		icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
