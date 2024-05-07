@@ -1,5 +1,5 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { add, format, isSameDay } from "date-fns";
+import { add, format, isSameDay, sub } from "date-fns";
 import language from "./language";
 import { getLocaleFromIso } from "./locale";
 
@@ -30,7 +30,7 @@ export function getDayOfWeek(date: Date) {
 
 export function getFullDateString(date: Date) {
 	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-	return format(date, "MMMM d, yyyy", { locale: locale });
+	return format(date, "MMMM do, yyyy", { locale: locale });
 }
 
 export function getShorterDateString(date: Date) {
@@ -44,4 +44,22 @@ export function getMonthName(month: number) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 	return capitalizeFirstLetter(format(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
+}
+
+export function titleForDateRange(intervalType: "Day" | "Week" | "Month", intervalStart: Date, variant?: "short" | "long") {
+	var duration: Duration = intervalType == "Month" ? { months: 1 } : intervalType == "Day" ? { days: 1 } : { weeks: 1 };
+	var intervalEnd = add(intervalStart, duration);
+
+	if (intervalType == "Month" && intervalStart.getDate() == 1) {
+		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
+	}
+	else if (intervalType == "Week" || intervalType == "Month") {
+		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
+	}
+	else if (intervalType == "Day") {
+		if (variant === "long") {
+			return `${getDayOfWeek(intervalStart)}, ${getFullDateString(intervalStart)}`;
+		}
+		return `${getDayOfWeek(intervalStart)}, ${format(intervalStart, "MM/dd/yyyy")}`;
+	}
 }

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Calendar from '../../presentational/Calendar';
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { LoadingIndicator } from '../../presentational';
-import { getPreviewData } from '../DeviceDataMonthChart/DeviceDataMonthChart.previewdata';
 import { add } from 'date-fns';
 import "./RestingHeartRateCalendar.css";
 import getDayKey from '../../../helpers/get-day-key';
-import { queryDailyData, DailyDataType } from '../../../helpers/query-daily-data';
+import { queryDailyData, DailyDataType } from '../../../helpers';
 
 type HeartRateMap = { [key: string]: number };
 
@@ -35,7 +34,7 @@ export default function (props: RestingHeartRateCalendarProps) {
 		if (dataTypeSource == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
 		if (dataTypeSource == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
 		
-		return queryDailyData(dailyDataType, monthStart, monthEnd).then(function (result) {
+		return queryDailyData(dailyDataType, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
 			setHeartRates(result);
 		});
 	}
@@ -67,13 +66,6 @@ export default function (props: RestingHeartRateCalendarProps) {
 		}
 		if (props.showPreviewData === "Loading") {
 			setLoading(true);
-			return;
-		}
-		if (props.showPreviewData === "WithData") {
-			var previewData = getPreviewData("FitbitRestingHeartRates", props.year, props.month);
-			if (previewData) {
-				setHeartRates(previewData);
-			}
 			return;
 		}
 

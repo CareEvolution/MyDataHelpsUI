@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataMonthChart, { DeviceDataMonthChartProps } from "./DeviceDataMonthChart"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { DailyDataType } from "../../../helpers/query-daily-data"
+import { DailyDataType } from "../../../helpers"
 
 export default {
 	title: "Container/DeviceDataMonthChart",
