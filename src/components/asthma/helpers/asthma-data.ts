@@ -251,6 +251,8 @@ export interface AsthmaDataService {
 
     loadSurveyAnswers(surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]>;
 
+    checkSurveyAnswerExists(surveyName: string | string[]): Promise<boolean>;
+
     loadAsthmaActionPlan(): Promise<AsthmaActionPlan | undefined>;
 }
 
@@ -363,6 +365,10 @@ const service: AsthmaDataService = {
             query.insertedAfter = formatISO(fromDate);
         }
         return queryAllSurveyAnswers(query);
+    },
+    checkSurveyAnswerExists: function (surveyName: string | string[]): Promise<boolean> {
+        let query: SurveyAnswersQuery = {surveyName: surveyName, limit: 1};
+        return MyDataHelps.querySurveyAnswers(query).then(result => !!result.surveyAnswers.length);
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);
