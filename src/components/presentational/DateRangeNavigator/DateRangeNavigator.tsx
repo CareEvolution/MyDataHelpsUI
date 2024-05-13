@@ -10,6 +10,7 @@ import add from 'date-fns/add'
 import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import language from '../../../helpers/language';
+import { titleForDateRange } from '../../../helpers/date-helpers';
 
 export interface DateRangeNavigatorProps {
 	intervalType: "Day" | "Week" | "Month" | "SixMonth";
@@ -43,15 +44,7 @@ export default function (props: DateRangeNavigatorProps) {
 	if (props.intervalStart <= currentDate && currentDate < intervalEnd) {
 		isCurrentInterval = true;
 	}
-
-	function getMonthName(d: Date) {
-		var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-		function capitalizeFirstLetter(string: string) {
-			return string.charAt(0).toUpperCase() + string.slice(1);
-		}
-		return capitalizeFirstLetter(format(new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
-	}
-
+	
 	let classes = ["mdhui-date-range-navigator"]
 	if (props.variant == "rounded") {
 		classes.push("mdhui-date-range-navigator-rounded");
@@ -69,27 +62,7 @@ export default function (props: DateRangeNavigatorProps) {
 				<UnstyledButton title="Previous" className="navigator-button navigate-previous" onClick={() => previousInterval()}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
 				</UnstyledButton>
-				{props.intervalType == "SixMonth" && props.intervalStart.getDate() == 1 &&
-					<div>
-						{getMonthName(props.intervalStart)} - {getMonthName(sub(intervalEnd, { months: 1}))}
-					</div>
-				}
-				{props.intervalType == "Month" && props.intervalStart.getDate() == 1 &&
-					<div>
-						{getMonthName(props.intervalStart)} {props.intervalStart.getFullYear()}
-					</div>
-				}
-				{(props.intervalType == "Week" || ((props.intervalType == "Month" || props.intervalType == "SixMonth") && props.intervalStart.getDate() != 1)) &&
-					<div>
-						{format(props.intervalStart, "MM/dd/yyyy")}&nbsp;-&nbsp;
-						{format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}
-					</div>
-				}
-				{(props.intervalType == "Day") &&
-					<div>
-						{isToday(props.intervalStart) ? language("today") : format(props.intervalStart, "MM/dd/yyyy")}
-					</div>
-				}
+				{titleForDateRange(props.intervalType, props.intervalStart)}
 				{!isCurrentInterval &&
 					<UnstyledButton title="Next" className="navigator-button navigate-next" onClick={() => nextInterval()}>
 						<FontAwesomeSvgIcon icon={faChevronRight} />

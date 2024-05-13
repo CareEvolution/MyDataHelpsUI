@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { useInitializeView } from '../../../../helpers';
 import { asthmaDataService } from '../../helpers';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
@@ -7,10 +7,25 @@ export interface AsthmaPostEnrollmentSurveyTriggerProps {
     previewState?: boolean;
     postEnrollmentSurveyName: string;
     postEnrollmentMobileSurveyName: string;
+    logTodayEntrySurveyName: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: AsthmaPostEnrollmentSurveyTriggerProps) {
+
+    const launchLoggingIfNecessary = () => {
+        asthmaDataService.checkSurveyAnswerExists(props.logTodayEntrySurveyName).then(surveyAnswerExists => {
+            if (!surveyAnswerExists) {
+                MyDataHelps.queryDeviceData({namespace: 'Project', type: 'LogAutoLaunched'}).then(results => {
+                    if (!results.deviceDataPoints.length) {
+                        MyDataHelps.persistDeviceData([{type: 'LogAutoLaunched', value: new Date().toISOString()}]).then(() => {
+                            MyDataHelps.startSurvey(props.logTodayEntrySurveyName);
+                        });
+                    }
+                });
+            }
+        });
+    };
 
     useInitializeView(() => {
         if (props.previewState) return;
@@ -22,8 +37,12 @@ export default function (props: AsthmaPostEnrollmentSurveyTriggerProps) {
                 MyDataHelps.getDeviceInfo().then(deviceInfo => {
                     if (['iOS', 'Android'].includes(deviceInfo.platform)) {
                         MyDataHelps.startSurvey(props.postEnrollmentMobileSurveyName);
+                    } else {
+                        launchLoggingIfNecessary();
                     }
-                })
+                });
+            } else {
+                launchLoggingIfNecessary();
             }
         });
     });

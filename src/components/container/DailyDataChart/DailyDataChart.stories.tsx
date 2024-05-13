@@ -1,8 +1,7 @@
 import React from "react";
-import { DailyDataQueryResult, DailyDataType } from "../../../helpers/query-daily-data";
+import { DailyDataQueryResult, DailyDataType, getDayKey, queryPreviewDailyData } from "../../../helpers";
 import { Card, Layout } from "../../presentational";
 import DailyDataChart, { DailyDataChartProps } from "./DailyDataChart";
-import getDayKey from "../../../helpers/get-day-key";
 import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
@@ -18,18 +17,8 @@ export const stepsLineChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 10000 + 3000;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -73,16 +62,7 @@ export const stepsBarChart = {
         dailyDataType: DailyDataType.Steps,
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 10000 + 3000;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -94,12 +74,12 @@ export const stepsBarWithThresholdsChart = {
         options: {
             thresholds: [
                 {
-                    value: 8000,
+                    value: 5000,
                     referenceLineColor: "red",
                     overThresholdBarColor: "green",
                 },
                 {
-                    value: 10000,
+                    value: 7000,
                     referenceLineColor: "blue",
                     overThresholdBarColor: "red",
                 }
@@ -111,16 +91,7 @@ export const stepsBarWithThresholdsChart = {
         dailyDataType: DailyDataType.Steps,
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 10000 + 3000;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -153,16 +124,7 @@ export const stepsAreaChart = {
         dailyDataType: DailyDataType.Steps,
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 10000 + 3000;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -184,16 +146,7 @@ export const sleepBarChart = {
             return value / 60.0;
         },
         chartType: "Bar",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 50 + 100;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -214,16 +167,7 @@ export const sleepAppleHealthBarChart = {
             return value / 60.0;
         },
         chartType: "Bar",
-        previewDataProvider: (start: Date, end: Date) => {
-            let data: DailyDataQueryResult = {};
-            let currentDate = new Date(start);
-            while (currentDate < end) {
-                let dayKey = getDayKey(currentDate);
-                data[dayKey] = Math.random() * 300 + 200;
-                currentDate = add(currentDate, { days: 1 });
-            }
-            return Promise.resolve(data);
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -253,7 +197,7 @@ export const liveSleepCoreAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepCoreMinutes,
+        dailyDataType: DailyDataType.AppleHealthCoreSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";
@@ -273,7 +217,7 @@ export const liveSleepRemAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepRemMinutes,
+        dailyDataType: DailyDataType.AppleHealthRemSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";
@@ -293,7 +237,7 @@ export const liveSleepDeepAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepDeepMinutes,
+        dailyDataType: DailyDataType.AppleHealthDeepSleepMinutes,
         valueFormatter: (value: number) => {
             var hours = Math.floor(value / 60);
             var displayValue = hours > 0 ? (hours + "h ") : "";

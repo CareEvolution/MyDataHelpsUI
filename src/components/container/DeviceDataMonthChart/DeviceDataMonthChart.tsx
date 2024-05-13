@@ -5,7 +5,6 @@ import add from 'date-fns/add'
 import { format } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { LoadingIndicator } from '../../presentational'
-import { getPreviewData } from './DeviceDataMonthChart.previewdata'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
 import language from "../../../helpers/language"
@@ -79,14 +78,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 		if (props.previewState == "Loading") {
 			setLoading(true);
-		}
-		if (props.previewState == "WithData") {
-			var previewData: { [key: string]: { [key: string]: number } } = {};
-			props.lines.forEach((l) => {
-				var newData = getPreviewData(l.dailyDataType, props.year, props.month);
-				previewData[l.dailyDataType] = newData;
-			})
-			setDailyData(previewData);
+			return;
 		}
 
 		if (props.previewState == "NoData") {
@@ -96,8 +88,8 @@ export default function (props: DeviceDataMonthChartProps) {
 			})
 			setDailyData(previewData);
 			setLoading(false);
+			return;
 		}
-		if (props.previewState) { return; }
 
 		checkForAnyData();
 
@@ -105,7 +97,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		var initialization = currentInitialization.current ?? 0;
 		setLoading(true);
 		var loadData = function () {
-			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd));
+			var dataRequests = props.lines.map(l => queryDailyData(l.dailyDataType, monthStart, monthEnd, !!props.previewState));
 			Promise.all(dataRequests).then(function (data) {
 				if (initialization != currentInitialization.current) {
 					return;
