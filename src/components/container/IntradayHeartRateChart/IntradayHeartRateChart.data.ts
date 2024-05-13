@@ -23,7 +23,7 @@ function loadForTest(data: DeviceDataV2Aggregate[]) {
 
 let testData: DeviceDataV2Aggregate[] = [];
 for (let i = 0; i < 48; i++) {
-    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(40, 100) } });
+    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(80, 185) } });
 }
 const halfDayData = loadForTest(testData);
 

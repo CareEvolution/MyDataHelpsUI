@@ -33,6 +33,7 @@ export default function IntradayLineChart(props: IntradayLineChartProps) {
     const defaultLineColor = resolveColor(layoutContext.colorScheme, props.lineColor) || '#bbb';
 
     var yMaxValue = 0;
+    var yMinValue = 0;
     var hasData = false;
     if (props.data) {
         var yDomain: number[] = [];
@@ -42,6 +43,7 @@ export default function IntradayLineChart(props: IntradayLineChartProps) {
 
         hasData = yDomain.length > 0;
         yMaxValue = Math.max(...yDomain);
+        yMinValue = Math.min(...yDomain);
     }
 
     const GraphToolTip = ({ active, payload, label }: any) => {
@@ -68,7 +70,7 @@ export default function IntradayLineChart(props: IntradayLineChartProps) {
     }
 
     function getPercent(numerator: number): number {
-        return (numerator / yMaxValue) * 100;
+        return (numerator - yMinValue) / (yMaxValue - yMinValue) * 100;
     }
 
     function createStopsFromThresholds() {
@@ -76,11 +78,17 @@ export default function IntradayLineChart(props: IntradayLineChartProps) {
         var lineColor: string = defaultLineColor;
         var thresholds = props.thresholds ?? [];
 
+        thresholds.sort((a, b) => a.value - b.value);
+
+        if (thresholds.length && yMinValue >= thresholds[0].value) {
+            lineColor = resolveColor(layoutContext.colorScheme, thresholds[0].overThresholdLineColor) || defaultLineColor;
+        }
         stops.push(<stop offset="0%" stopColor={lineColor} />);
+ 
         for (var i = 0; i < thresholds.length; i++) {
             if (yMaxValue >= thresholds[i].value) {
                 var offSet = getPercent(thresholds[i].value);
-                stops.push(<stop offset={`${offSet - 1}%`} stopColor={lineColor} />);
+                stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
                 lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdLineColor) || defaultLineColor;
                 stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
             }

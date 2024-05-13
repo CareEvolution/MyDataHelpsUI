@@ -29,8 +29,7 @@ export const Default = {
 	render: renderDefault,
 	args: {
 		previewState: "Default",
-		aggregationOption: "avg",
-		lineColor: "green"
+		aggregationOption: "avg"
 	},
 };
 
