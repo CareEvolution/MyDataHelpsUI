@@ -22,6 +22,8 @@ export interface RelativeActivityProps {
     date?: Date;
 }
 
+let currentRequestID = 0;
+
 export default function (props: RelativeActivityProps) {
     let [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
     let relativeActivityContext = useContext(RelativeActivityContext);
@@ -39,7 +41,7 @@ export default function (props: RelativeActivityProps) {
             if (!results) return;
             let transformedResults: { [key: string]: RelativeActivityQueryResult } = {};
             dataTypes.forEach(dataType => {
-                if (results[dataType.dailyDataType]) {
+                if (results[dataType.dailyDataType]?.[getDayKey(date)]?.value) {
                     transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
                 }
             });
@@ -54,8 +56,13 @@ export default function (props: RelativeActivityProps) {
             setResults(transformResults(relativeActivityContext!.data));
             return;
         }
+
+        //prevent requests from returning back out of order, since some of these can be long running
+        let requestID = ++currentRequestID;
         queryRelativeActivity(date!, date!, dataTypes, !!props.previewState).then(results => {
-            setResults(transformResults(results));
+            if (requestID == currentRequestID) {
+                setResults(transformResults(results));
+            }
         });
     }
 
