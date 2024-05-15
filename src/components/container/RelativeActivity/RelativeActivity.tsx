@@ -42,7 +42,7 @@ export default function (props: RelativeActivityProps) {
             let transformedResults: { [key: string]: RelativeActivityQueryResult } = {};
             dataTypes.forEach(dataType => {
                 if (results[dataType.dailyDataType]?.[getDayKey(date)]?.value) {
-                    transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date!)];
+                    transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date)];
                 }
             });
             return transformedResults;
@@ -59,7 +59,7 @@ export default function (props: RelativeActivityProps) {
 
         //prevent requests from returning back out of order, since some of these can be long running
         let requestID = ++currentRequestID;
-        queryRelativeActivity(date!, date!, dataTypes, !!props.previewState).then(results => {
+        queryRelativeActivity(date, date, dataTypes, !!props.previewState).then(results => {
             if (requestID == currentRequestID) {
                 setResults(transformResults(results));
             }
