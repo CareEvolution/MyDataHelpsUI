@@ -126,10 +126,19 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         }
 
         if (active && payload && payload.length) {
+            if(payload.length == 1){
+                return (
+                    <div className="mdhui-time-series-tooltip">
+                        <div className="mdhui-single-value-tooltip-value">
+                            {parseFloat(payload[0].value).toFixed(2)}
+                        </div>
+                        <div className="mdhui-time-series-tooltip-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                    </div>
+                );
+            }
             return (
-                <div className="mdhui-daily-data-tooltip">
-                    <div className="graph-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
-                    <table className="payload-values">
+                <div className="mdhui-time-series-tooltip">
+                    <table className="mdhui-multiple-value-tooltip">
                         <tbody>
                             {payload.map((p: any, index: number) =>
                                 <tr key={p.dataKey}>
@@ -139,6 +148,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                             )}
                         </tbody>
                     </table>
+                    <div className="mdhui-time-series-tooltip-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                 </div>
             );
         }

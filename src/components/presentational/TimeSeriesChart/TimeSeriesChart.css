@@ -27,7 +27,7 @@
     padding: 16px;
 }
 
-.mdhui-time-series-chart .mdhui-daily-data-tooltip {
+.mdhui-time-series-chart .mdhui-time-series-tooltip {
     padding: 8px;
     background: var(--mdhui-background-color-0);
     border-radius: var(--mdhui-card-border-radius);
@@ -37,17 +37,29 @@
     -webkit-animation: fadein 1s;
 }
 
-.mdhui-time-series-chart .mdhui-daily-data-tooltip .mdhui-daily-data-tooltip-value {
+.mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-single-value-tooltip-value {
     font-weight: bold;
     font-size: 1.5em;
     color: var(--mdhui-text-color-0);
     padding-bottom: 4px;
 }
 
-.mdhui-time-series-chart .mdhui-daily-data-tooltip .mdhui-daily-data-tooltip-date {
+.mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-time-series-tooltip-date {
     font-size: .7em;
     color: var(--mdhui-text-color-2);
     line-height: 1em;
+}
+
+.mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-multiple-value-tooltip {
+    font-size: 1em;
+    border-spacing: 0;
+    padding-bottom: 4px;
+}
+.mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-multiple-value-tooltip th {
+    text-align: left;
+    position: relative;
+    left: -2px;
+    padding-right: var(--mdhui-padding-xs);
 }
 
 .mdhui-time-series-chart .recharts-cartesian-axis-tick text {
