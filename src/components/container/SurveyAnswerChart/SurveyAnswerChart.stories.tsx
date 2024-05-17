@@ -76,6 +76,33 @@ export const ffwelLineChart = {
     render: render
 };
 
+export const ffwelLineChartWithDataGap = {
+    args: {
+        title: "FFWEL Responses Line Chart",
+        options: {
+            domainMin: 0,
+            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
+        },
+        intervalType: "6Month",
+        weekStartsOn: "6DaysAgo",
+        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }
+        ],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        expectedDataInterval: {months: 1},
+        previewDataProvider: (start: Date, end: Date) => {
+            var data = getRandomFFWELData(start,end);
+            data[0].splice(data[0].length/2,1);
+            data[1].splice(data[1].length/2,1);
+            data[2].splice(data[2].length/2,1);
+            return Promise.resolve(data);
+        }
+    },
+    render: render
+};
+
 export const ffwelBarChart = {
     args: {
         title: "FFWEL Response Bar Chart",
