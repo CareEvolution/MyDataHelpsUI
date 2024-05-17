@@ -97,20 +97,21 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         loadCurrentInterval();
     }, [], [props.intervalType, props.weekStartsOn, dateRangeContext]);
     
-    var data: any[] = [];
+    var data: any[] | undefined = undefined;
     var chartHasData: boolean = false;
     if (currentData !== null) {
+        data = [];
         props.charts.forEach((line) => {
             var dataKey = getDataKey(line);
             currentData![dataKey].forEach((answer) => {
                 var answerDate = parseISO(answer.date);
                 answerDate.setHours(0,0,0,0);
-                var dataDay = data.find((d) => d.timestamp === answerDate.getTime());
+                var dataDay = data!.find((d) => d.timestamp === answerDate.getTime());
                 if(!dataDay) {
                     dataDay = {
                         timestamp: answerDate.getTime()
                     }
-                    data.push(dataDay);
+                    data!.push(dataDay);
                 }
                 dataDay[line.label] = parseFloat(answer.answers[0]);
                 chartHasData = true;
