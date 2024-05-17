@@ -244,7 +244,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         dataToDisplay = props.data;
     }
 
-    return <div className="mdhui-daily-data-chart" ref={props.innerRef}>
+    return <div className="mdhui-time-series-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
         }
