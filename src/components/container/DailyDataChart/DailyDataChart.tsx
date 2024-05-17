@@ -42,10 +42,12 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        if(dateRangeContext.intervalType === "SixMonth") {
-            intervalType = "Week"
-        }else{
-            intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
+        if(dateRangeContext.intervalType === "6Month") {
+            intervalType = "Month";
+        } else if(dateRangeContext.intervalType === "Day"){
+            intervalType = "Week";
+        } else {
+            intervalType = dateRangeContext.intervalType;
         }
         intervalStart = dateRangeContext.intervalStart;
     }
@@ -111,7 +113,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
             };
             data!.push(dataDay);
             var dayKey = getDayKey(currentDate);
-            dataDay.value = currentData[dayKey];
+            dataDay.value = currentData![dayKey];
             dataDay.rawValue = dataDay.value;
             dataDay.date = currentDate;
             if (props.valueConverter) {
