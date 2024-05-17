@@ -15,7 +15,7 @@ export interface SurveyAnswerChartParameters {
     resultIdentifier: string | string[];
 }
 
-export interface SurveyDataChartProps {
+export interface SurveyAnswerChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month"
     weekStartsOn?: WeekStartsOn
@@ -37,7 +37,7 @@ function getDefaultIntervalStart(intervalType: "Week" | "Month" | "6Month", week
     return intervalStart;
 }
 
-export default function SurveyDataChart(props:SurveyDataChartProps) {
+export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
     let [currentData, setCurrentData] = useState<{ [key: string]: SurveyAnswer[] } | null>(null);
     
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);

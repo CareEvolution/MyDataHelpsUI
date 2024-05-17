@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, DateRangeCoordinator, Layout } from "../../presentational";
-import SurveyDataChart, { SurveyDataChartProps } from "./SurveyDataChart";
+import SurveyAnswerChart, { SurveyAnswerChartProps } from "./SurveyAnswerChart";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 import add from "date-fns/add";
 
-export default { title: "Container/SurveyDataChart", component: SurveyDataChart, parameters: { layout: 'fullscreen' } };
-let render = (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><SurveyDataChart {...args} /></Card></Layout>
+export default { title: "Container/SurveyAnswerChart", component: SurveyAnswerChart, parameters: { layout: 'fullscreen' } };
+let render = (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><SurveyAnswerChart {...args} /></Card></Layout>
 
 function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string): SurveyAnswer {
     return {
@@ -134,7 +134,7 @@ export const ffwelLive = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
     },
-    render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
+    render: (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyAnswerChart {...args} /></DateRangeCoordinator></Card></Layout>
 };
 
 export const dailyPainLineSurvey = {

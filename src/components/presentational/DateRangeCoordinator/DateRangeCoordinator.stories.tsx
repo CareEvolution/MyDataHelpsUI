@@ -6,7 +6,7 @@ import DailyDataChart from "../../container/DailyDataChart/DailyDataChart";
 import getDayKey from "../../../helpers/get-day-key";
 import { add, startOfDay } from "date-fns";
 import { DailyDataType } from "../../../helpers";
-import { SurveyDataChart } from "../../container";
+import { SurveyAnswerChart } from "../../container";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 
 export default { title: "Presentational/DateRangeCoordinator", component: DateRangeCoordinator, parameters: { layout: 'fullscreen' } };
@@ -19,7 +19,7 @@ let children = <Card>
 		dailyDataType={DailyDataType.Steps}
 		chartType="Line"
 		previewState="default" />
-	<SurveyDataChart title="Pain Score"
+	<SurveyAnswerChart title="Pain Score"
 		intervalType="Week"
 		weekStartsOn="6DaysAgo"
 		chartType="Line"
