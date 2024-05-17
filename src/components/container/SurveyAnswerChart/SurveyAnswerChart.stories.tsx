@@ -3,11 +3,14 @@ import { Card, DateRangeCoordinator, Layout } from "../../presentational";
 import SurveyAnswerChart, { SurveyAnswerChartProps } from "./SurveyAnswerChart";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 import add from "date-fns/add";
+import { predicatableRandomNumber } from "../../../helpers/predictableRandomNumber";
+import { getDayKey } from "../../../helpers";
 
 export default { title: "Container/SurveyAnswerChart", component: SurveyAnswerChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><SurveyAnswerChart {...args} /></Card></Layout>
 
-function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string): SurveyAnswer {
+async function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string, rangeStart: number, rangeEnd: number): Promise<SurveyAnswer> {
+    var answer = await predicatableRandomNumber(getDayKey(date)+resultIdentifier);
     return {
         "id": "00000000-0000-0000-0000-000000000000",
         "surveyID": "00000000-0000-0000-0000-000000000000",
@@ -19,22 +22,22 @@ function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName
         "stepIdentifier": resultIdentifier,
         "resultIdentifier": resultIdentifier,
         "answers": [
-            (Math.random() * 90 + 10).toString()
+            (answer % (rangeEnd - rangeStart) + rangeStart).toString()
         ],
         "insertedDate": date.toISOString()
     };
 }
 
-function getRandomFFWELData(start: Date, end: Date) {
+async function getRandomFFWELData(start: Date, end: Date) {
     let creativeSelfResponses: (SurveyAnswer | null)[] = [];
     let copingSelfResponses: (SurveyAnswer | null)[] = [];
     let socialSelfResponses: (SurveyAnswer | null)[] = [];
 
     let currentDate = new Date(start);
     while (currentDate < end) {
-        creativeSelfResponses.push(generateSurveyResponse(currentDate, "CreativeSelf", 'FFWEL'));
-        socialSelfResponses.push(generateSurveyResponse(currentDate, "SocialSelf", 'FFWEL'));
-        copingSelfResponses.push(generateSurveyResponse(currentDate, "CopingSelf", 'FFWEL'));
+        creativeSelfResponses.push(await generateSurveyResponse(currentDate, "CreativeSelf", 'FFWEL', 10, 100));
+        socialSelfResponses.push(await generateSurveyResponse(currentDate, "SocialSelf", 'FFWEL', 10, 100));
+        copingSelfResponses.push(await generateSurveyResponse(currentDate, "CopingSelf", 'FFWEL', 10, 100));
         currentDate = add(currentDate, { months: 1 });
     }
     function filterNull(arr: any[]) { return arr.filter((a: any) => !!a); }
@@ -42,11 +45,11 @@ function getRandomFFWELData(start: Date, end: Date) {
     return standardData;
 }
 
-function getRandomPainData(start: Date, end: Date) {
+async function getRandomPainData(start: Date, end: Date) {
     var responses = [];
     let currentDate = new Date(start);
     while (currentDate < end) {
-        responses.push(generateSurveyResponse(currentDate, "PainToday", 'Pain Survey'));
+        responses.push(await generateSurveyResponse(currentDate, "PainToday", 'Pain Survey', 0, 10));
         currentDate = add(currentDate, { days: 1 });
     }
     let standardData: SurveyAnswer[][] = [responses];
@@ -92,8 +95,8 @@ export const ffwelLineChartWithDataGap = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         expectedDataInterval: {months: 1},
-        previewDataProvider: (start: Date, end: Date) => {
-            var data = getRandomFFWELData(start,end);
+        previewDataProvider: async (start: Date, end: Date) => {
+            var data = await getRandomFFWELData(start,end);
             data[0].splice(data[0].length/2,1);
             data[1].splice(data[1].length/2,1);
             data[2].splice(data[2].length/2,1);
