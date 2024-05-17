@@ -1,4 +1,5 @@
 import { add } from "date-fns";
+import subMonths from "date-fns/subMonths";
 
 let dayOfWeekLookup = {
     "Sunday": 0,
@@ -36,4 +37,8 @@ export function getMonthStart() {
     let today = new Date();
     let monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
     return monthStart;
+}
+
+export function get6MonthStart() {
+   return subMonths(getMonthStart(), 5);
 }

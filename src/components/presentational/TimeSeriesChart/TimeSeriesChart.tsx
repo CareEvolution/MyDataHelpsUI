@@ -8,6 +8,7 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
+import startOfMonth from 'date-fns/startOfMonth'
 
 export interface TimeSeriesChartProps {
     title?: string
@@ -100,13 +101,23 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         }
         else if (intervalType === "6Month") { 
             var ticks = [];
-            for(var i = 0; i < 5; ++i) {
-                var currentDate = addMonths(startTime, i);
-                ticks.push(currentDate.getTime());
-                currentDate = addDays(currentDate, 14);
-                ticks.push(currentDate.getTime());
+            var currentTick : Date;
+            if( startTime.getDate() === 1){
+                currentTick = startTime;
+            }else if( startTime.getDate() <= 15) {
+                var firstTick = addDays(startOfMonth(startTime), 14);
+                ticks.push(firstTick.getTime());
+                currentTick = startOfMonth(addMonths(startTime, 1));
+            }else{
+                currentTick = startOfMonth(addMonths(startTime, 1));
             }
-            ticks.push(addMonths(startTime, 5).getTime());
+            var endOfGraph = addMonths(startTime, 6);
+            while (currentTick < endOfGraph) {
+                ticks.push(currentTick.getTime());
+                ticks.push(addDays(currentTick, 14).getTime());
+                currentTick = addMonths(currentTick, 1);
+            }
+            //ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
         }

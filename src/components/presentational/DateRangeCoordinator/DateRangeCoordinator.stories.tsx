@@ -123,3 +123,23 @@ export const sixMonth = {
 	},
 	render: render
 };
+
+export const sixMonthNotFirstDayFirstHalf = {
+	args: {
+		variant: "rounded",
+		intervalType: "6Month",
+		children: children,
+		initialIntervalStart: startOfDay(new Date(2024, 3, 10))
+	},
+	render: render
+};
+
+export const sixMonthNotFirstDaySecondHalf = {
+	args: {
+		variant: "rounded",
+		intervalType: "6Month",
+		children: children,
+		initialIntervalStart: startOfDay(new Date(2024, 3, 20))
+	},
+	render: render
+};
