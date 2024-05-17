@@ -11,7 +11,7 @@ import addHours from 'date-fns/addHours'
 
 export interface TimeSeriesChartProps {
     title?: string
-    intervalType?: "Week" | "Month" | "SixMonth" | "Day",
+    intervalType?: "Week" | "Month" | "6Month" | "Day",
     intervalStart: Date,
     data: any[] | undefined,
     expectedDataInterval?: Duration,
@@ -54,7 +54,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         let currentDate = new Date(value);
         if (intervalType == "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
-        } else if (intervalType == "SixMonth" ){
+        } else if (intervalType == "6Month" ){
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
@@ -98,7 +98,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             var numberOfTicks = ceil(monthLength / 2);
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
-        else if (intervalType === "SixMonth") { 
+        else if (intervalType === "6Month") { 
             var ticks = [];
             for(var i = 0; i < 5; ++i) {
                 var currentDate = addMonths(startTime, i);

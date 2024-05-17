@@ -62,7 +62,7 @@ export const ffwelLineChart = {
             connectNulls: true,
             lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
-        intervalType: "SixMonth",
+        intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -83,7 +83,7 @@ export const ffwelBarChart = {
             domainMin: 0,
             barColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
-        intervalType: "SixMonth",
+        intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -105,7 +105,7 @@ export const ffwelAreaChart = {
             lineColor: ["#e41a1c", "#377eb8", "#4daf4a"],
             areaColor: ["#d41a1c", "#277eb8", "#3daf4a"]
         },
-        intervalType: "SixMonth",
+        intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
@@ -134,7 +134,7 @@ export const ffwelLive = {
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
     },
-    render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="SixMonth"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
+    render: (args: SurveyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
 };
 
 export const dailyPainLineSurvey = {

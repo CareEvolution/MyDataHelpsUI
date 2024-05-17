@@ -33,7 +33,7 @@ Month.args = {
 export const SixMonth = Template.bind({});
 SixMonth.args = {
 	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
-	intervalType: "SixMonth"
+	intervalType: "6Month"
 }
 
 

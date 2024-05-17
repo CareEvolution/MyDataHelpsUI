@@ -118,7 +118,7 @@ export const weekStarts6DaysAgo = {
 export const sixMonth = {
 	args: {
 		variant: "rounded",
-		intervalType: "SixMonth",
+		intervalType: "6Month",
 		children: children
 	},
 	render: render
