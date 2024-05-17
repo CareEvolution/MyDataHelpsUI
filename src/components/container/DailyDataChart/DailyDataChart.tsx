@@ -4,7 +4,7 @@ import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, ge
 import { add, format } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
-import { WeekStartsOn, getMonthStart, getWeekStart } from '../../../helpers/get-interval-start'
+import { WeekStartsOn, getMonthStart, getWeekStart, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import parse from 'date-fns/parse'
 
@@ -21,16 +21,6 @@ export interface DailyDataChartProps {
     previewDataProvider?: DailyDataProvider
     previewState?: "default"
     innerRef?: React.Ref<HTMLDivElement>
-}
-
-function getDefaultIntervalStart(intervalType: "Week" | "Month", weekStartsOn?: WeekStartsOn) {
-    let intervalStart: Date;
-    if (intervalType === "Week") {
-        intervalStart = getWeekStart(weekStartsOn);
-    } else {
-        intervalStart = getMonthStart();
-    }
-    return intervalStart;
 }
 
 export default function DailyDataChart(props: DailyDataChartProps) {

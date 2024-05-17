@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { add, parseISO } from 'date-fns'
 import { SurveyAnswer } from '@careevolution/mydatahelps-js'
-import { WeekStartsOn, getMonthStart, getWeekStart, get6MonthStart } from '../../../helpers/get-interval-start'
+import { WeekStartsOn, getMonthStart, getWeekStart, get6MonthStart, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import format from 'date-fns/format'
@@ -25,18 +25,6 @@ export interface SurveyAnswerChartProps {
     expectedDataInterval?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     innerRef?: React.Ref<HTMLDivElement>
-}
-
-function getDefaultIntervalStart(intervalType: "Week" | "Month" | "6Month", weekStartsOn?: WeekStartsOn) {
-    let intervalStart: Date;
-    if (intervalType === "Week") {
-        intervalStart = getWeekStart(weekStartsOn);
-    } else if (intervalType === "Month") {
-        intervalStart = getMonthStart();
-    } else { //intervalType === "6Month"
-        intervalStart = get6MonthStart();
-    }
-    return intervalStart;
 }
 
 export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
