@@ -33,6 +33,7 @@ export { default as fitbitBreathingRateDataProvider } from "./fitbit-breathing-r
 export { default as fitbitHrvDataProvider } from "./fitbit-hrv"
 export { default as fitbitSpO2DataProvider } from "./fitbit-spo2"
 export { default as combinedStepsDataProvider } from "./combined-steps"
+export { default as combinedSleepDataProvider } from "./combined-sleep"
 export { default as googleFitStepsDataProvider } from "./google-fit-steps"
 export { default as appleHealthDistanceDataProvider } from "./apple-health-distance"
 export { default as garminStepsDataProvider } from "./garmin-steps"

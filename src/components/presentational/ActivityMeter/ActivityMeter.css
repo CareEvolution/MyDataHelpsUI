@@ -59,3 +59,14 @@
     font-size: .7em;
     margin-top: 4px;
 }
+
+.mdhui-activity-meter .mdhui-activity-meter-threshold {
+    position: absolute;
+    width: 100%;
+    top: 18px;
+    left: 0;
+    text-align: center;
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+    line-height: .8em;
+}
