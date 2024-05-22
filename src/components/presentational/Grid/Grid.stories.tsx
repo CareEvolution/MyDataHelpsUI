@@ -4,6 +4,7 @@ import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { Grid, GridProps } from "./Grid";
 import DailyDataGoal from "../../container/DailyDataGoal/DailyDataGoal";
+import { DailyDataType } from "../../../helpers";
 
 export default {
     title: "Presentational/Grid",
@@ -44,7 +45,6 @@ export const Numbers = {
     render: render
 };
 
-
 let dailyDataGoals: GridProps = {
     children: [
         <>
@@ -52,17 +52,49 @@ let dailyDataGoals: GridProps = {
                 <DailyDataGoal
                     previewState="Default"
                     goal={1}
-                    dailyDataType="FitbitSleepMinutes"
+                    dailyDataType={DailyDataType.FitbitSleepMinutes}
                     title="Worn to Sleep"
-                    subtitle="200 points" />
+                    subtitle="200 points"
+                    messages={[
+                        {
+                            threshold: 0,
+                            message: "No points yet"
+                        },
+                        {
+                            threshold: 1,
+                            message: "Complete!"
+                        }
+                    ]} />
             </Grid.Column>
             <Grid.Column span={6}>
                 <DailyDataGoal
                     previewState="Default"
-                    goal={1}
-                    dailyDataType="FitbitSleepMinutes"
-                    title="Worn to Sleep"
-                    subtitle="200 points" />
+                    goal={600}
+                    dailyDataType={DailyDataType.FitbitWearMinutes}
+                    title="Worn 10 Hours"
+                    subtitle="100 points"
+                    messages={[
+                        {
+                            threshold: 0,
+                            message: "No points yet"
+                        },
+                        {
+                            threshold: 150,
+                            message: "Keep going!"
+                        },
+                        {
+                            threshold: 300,
+                            message: "Halfway there!"
+                        },
+                        {
+                            threshold: 450,
+                            message: "Almost there!"
+                        },
+                        {
+                            threshold: 600,
+                            message: "Complete!"
+                        }
+                    ]} />
             </Grid.Column>
         </>
     ],
@@ -70,7 +102,6 @@ let dailyDataGoals: GridProps = {
         margin: "16px"
     }
 }
-
 
 export const DailyDataGoals = {
     args: dailyDataGoals,

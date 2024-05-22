@@ -1,6 +1,5 @@
 
 .mdhui-daily-data-goal {
-    width: calc(50% - 8px);
     display: flex;
     gap: 8px;
     align-items: center;
@@ -17,7 +16,6 @@
 .mdhui-daily-data-goal .mdhui-daily-data-goal-message {
     font-size: .7em;
 }
-
 
 .mdhui-daily-data-goal .mdhui-daily-data-goal-progress {
     z-index: 1;

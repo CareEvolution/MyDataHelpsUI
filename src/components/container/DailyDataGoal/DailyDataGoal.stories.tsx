@@ -20,12 +20,20 @@ const render = (args: DailyDataGoalProps) => <Layout colorScheme='auto'>
 export const SleepGoal = {
     args: {
         previewState: "Default",
-        type: "allOrNothing",
         goal: 1,
         dailyDataType: DailyDataType.FitbitSleepMinutes,
         title: "Worn to Sleep",
         subtitle: "200 points",
-        message: "Complete"
+        messages: [
+            {
+                threshold: 0,
+                message: "No points yet"
+            },
+            {
+                threshold: 1,
+                message: "Complete!"
+            }
+        ]
     },
     render: render
 };
@@ -33,7 +41,6 @@ export const SleepGoal = {
 export const WearTimeGoal = {
     args: {
         previewState: "Default",
-        type: "percentProgress",
         goal: 10000,
         dailyDataType: DailyDataType.FitbitSteps, // TODO Wear time 
         title: "Worn 10 Hours",
@@ -64,31 +71,24 @@ export const WearTimeGoal = {
     render: render
 };
 
-
-
-// export const Zeros = {
-//     args: {
-//         previewState: "Default",
-//         title: "Today's Fitbit Wear",
-//         date: startOfDay(add(new Date(), { days: 2 })),
-//         goals: [
-//             {
-//                 type: "allOrNothing",
-//                 goal: 1,
-//                 dailyDataType: DailyDataType.FitbitSleepMinutes,
-//                 title: "Worn to Sleep",
-//                 subtitle: "200 points",
-//                 message: "Complete"
-//             },
-//             {
-//                 type: "percentProgress",
-//                 goal: 8000,
-//                 dailyDataType: DailyDataType.FitbitSteps, // TODO add intraday minute count
-//                 title: "Worn 10 Hours",
-//                 subtitle: "100 points",
-//                 message: "Almost there!"
-//             }
-//         ]
-//     },
-//     render: render
-// };
+export const Zero = {
+    args: {
+        previewState: "Default",
+        date: startOfDay(add(new Date(), { days: 2 })),
+        goal: 1,
+        dailyDataType: DailyDataType.FitbitSleepMinutes,
+        title: "Worn to Sleep",
+        subtitle: "200 points",
+        messages: [
+            {
+                threshold: 0,
+                message: "No points yet"
+            },
+            {
+                threshold: 1,
+                message: "Complete!"
+            }
+        ]
+    },
+    render: render
+};

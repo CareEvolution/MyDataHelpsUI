@@ -43,16 +43,14 @@ export default function (props: DailyDataGoalProps) {
     let goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
     let goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
 
-    if (dailyValue == null) return null;
+    let goalProgress: number | null = dailyValue == null ? null : dailyValue / props.goal;
+    if (goalProgress != null && goalProgress > 1) goalProgress = 1;
 
-    let goalProgress = dailyValue / props.goal;
-    if (goalProgress > 1) goalProgress = 1;
-
-    let formattedProgress = Math.round(goalProgress * 100) + "%";
+    let formattedProgress = goalProgress == null ? "0%" : Math.round(goalProgress * 100) + "%";
     let color = goalProgress === 1 ? goalCompleteColor : goalIncompleteColor;
 
     let message: string | undefined = undefined;
-    if (props.messages) {
+    if (props.messages && dailyValue != null) {
         let messages = [...props.messages]?.sort((a, b) => b.threshold - a.threshold);
         message = messages?.find(m => dailyValue! >= m.threshold)?.message;
     }
@@ -64,11 +62,14 @@ export default function (props: DailyDataGoalProps) {
             {goalProgress === 1 &&
                 <FontAwesomeSvgIcon icon={faCheck} />
             }
-            {goalProgress !== 1 && goalProgress !== 0 &&
+            {goalProgress !== 1 && goalProgress !== 0 && goalProgress != null &&
                 <div className="mdhui-daily-data-goal-progress">{formattedProgress}</div>
             }
             {goalProgress === 0 &&
                 <FontAwesomeSvgIcon icon={faClose} />
+            }
+            {goalProgress === null &&
+                <LoadingIndicator />
             }
             <ShinyOverlay />
         </div>
@@ -81,11 +82,10 @@ export default function (props: DailyDataGoalProps) {
                     {props.subtitle}
                 </div>
             }
-            {message &&
-                <div className="mdhui-daily-data-goal-message" style={{ color: resolveColor(layoutContext.colorScheme, color) }}>
-                    {message}
-                </div>
-            }
+            <div className="mdhui-daily-data-goal-message" style={{ color: resolveColor(layoutContext.colorScheme, color) }}>
+                {message}
+                {goalProgress == null && props.messages && <>&nbsp;</>}
+            </div>
         </div>
     </div>
 

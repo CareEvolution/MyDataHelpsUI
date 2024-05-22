@@ -366,7 +366,8 @@
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
     "points-until-next-badge": "{{points}} points to next badge",
-    "current-points": "Current Points"
+    "current-points": "Current Points",
+    "fitbit-wear-time": "Fitbit Wear Time"
 };
 
 export default strings;
