@@ -13,6 +13,7 @@ export interface TitleProps {
     autosizeImage?: boolean;
     imageAlignment?: "top" | "left"
     defaultMargin?: boolean
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 export default function (props: TitleProps) {
@@ -61,7 +62,7 @@ export default function (props: TitleProps) {
         }
     }
 
-    return <div className={classes.join(" ")}>
+    return <div className={classes.join(" ")} ref={props.innerRef}>
         {props.image &&
             <div className={"mdhui-title-image " + (props.autosizeImage ? "mdhui-title-image-autosize" : "")} style={{ width: imageWidth + "px" }}>
                 {props.image}

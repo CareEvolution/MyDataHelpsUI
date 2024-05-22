@@ -16,7 +16,8 @@ import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
-import { getLocale } from '../../../helpers/date-helpers';
+import MyDataHelps from "@careevolution/mydatahelps-js";
+import { getLocaleFromIso } from '../../../helpers/locale';
 import { noop } from '../../../helpers/functions';
 import UnstyledButton from '../UnstyledButton';
 
@@ -54,7 +55,7 @@ export default function (props: SingleSurveyTaskProps) {
 			dueDateString = language('overdue');
 			dueDateClasses.push('danger');
 		} else {
-			dueDateString = language('due-in') + ' ' + formatDistanceToNow(dueDate, {locale: getLocale()});
+			dueDateString = language('due-in') + ' ' + formatDistanceToNow(dueDate, {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())});
 		}
 
 		return <div className={dueDateClasses.join(' ')}>{dueDateString}</div>;
@@ -95,7 +96,7 @@ export default function (props: SingleSurveyTaskProps) {
 		return <Action renderAs='div' className="mdhui-single-survey-task complete" indicator={<img src={checkMark} alt="check mark"></img>} innerRef={props.innerRef}>
 			<div className="survey-name">{props.task.surveyDisplayName}</div>
 			{props.task.endDate &&
-				<div className="completed-date">{language('completed')} {formatRelative(parseISO(props.task.endDate), new Date(), {locale: getLocale()})}</div>
+				<div className="completed-date">{language('completed')} {formatRelative(parseISO(props.task.endDate), new Date(), {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())})}</div>
 			}
 		</Action>;
 	};

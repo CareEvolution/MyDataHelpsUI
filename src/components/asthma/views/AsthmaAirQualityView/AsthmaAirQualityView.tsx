@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider, DailyDataType } from '../../../../helpers/query-daily-data';
+import { DailyDataProvider, DailyDataType } from '../../../../helpers';
 import { AsthmaAlertTakeoverNotice } from '../../components';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
@@ -21,8 +21,8 @@ export default function (props: AsthmaAirQualityViewProps) {
     }
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
-        <NavigationBar showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1} style={{paddingTop: '32px'}}>{language('asthma-air-quality-view-title')}</Title>
+        <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
+            <Title order={1}>{language('asthma-air-quality-view-title')}</Title>
         </NavigationBar>
         {(!props.alert || props.alert === 'HomeAirQuality') &&
             <RecentDailyDataBarChart
@@ -45,10 +45,10 @@ export default function (props: AsthmaAirQualityViewProps) {
             />
         }
         {props.alert === 'HomeAirQuality' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-home-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-home-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'WorkAirQuality' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-work-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-air-quality-view-work-aqi-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
     </Layout>;
 }

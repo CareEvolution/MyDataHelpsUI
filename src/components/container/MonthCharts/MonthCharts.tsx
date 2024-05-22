@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { DateRangeNavigator } from '../../presentational';
 import DeviceDataMonthChart, { DeviceDataChartLine } from '../DeviceDataMonthChart'
-import language from '../../../helpers/language';
-import { DailyDataType } from '../../../helpers/query-daily-data';
 
 export interface MonthChartsProps {
 	previewState?: MonthChartsPreviewState

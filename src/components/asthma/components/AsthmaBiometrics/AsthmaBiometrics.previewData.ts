@@ -47,12 +47,12 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
         daytimeRestingHeartRate: {
             type: 'daytime-resting-heart-rate',
             status: 'in-range',
-            value: 64
+            value: 64.45
         },
         nighttimeRestingHeartRate: {
             type: 'nighttime-resting-heart-rate',
             status: 'offline',
-            value: 60
+            value: 60.975
         },
         respiratoryRate: {
             type: 'respiratory-rate',
@@ -74,24 +74,24 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
         nighttimeBloodOxygenLevel: {
             type: 'nighttime-blood-oxygen-level',
             status: 'in-range',
-            value: 0.96999999999999997
+            value: 0.96899999999999997
         }
     },
     'all data': {
         daytimeRestingHeartRate: {
             type: 'daytime-resting-heart-rate',
             status: 'in-range',
-            value: 64
+            value: 64.45
         },
         nighttimeRestingHeartRate: {
             type: 'nighttime-resting-heart-rate',
             status: 'offline',
-            value: 60
+            value: 60.975
         },
         respiratoryRate: {
             type: 'respiratory-rate',
             status: 'in-range',
-            value: 20
+            value: 20.223
         },
         steps: {
             type: 'steps',
@@ -106,12 +106,12 @@ export const previewData: Record<AsthmaBiometricsPreviewState, AsthmaBiometricsP
         daytimeBloodOxygenLevel: {
             type: 'daytime-blood-oxygen-level',
             status: 'in-range',
-            value: 0.95
+            value: 0.954456
         },
         nighttimeBloodOxygenLevel: {
             type: 'nighttime-blood-oxygen-level',
             status: 'in-range',
-            value: 0.96999999999999997
+            value: 0.96899999999999997
         }
     }
 };
