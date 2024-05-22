@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, ShinyOverlay, Title } from "../../presentational";
+import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import language from "../../../helpers/language";
 import MyDataHelps from "@careevolution/mydatahelps-js";
@@ -17,6 +17,7 @@ export interface BasicPointsForBadgesProps {
     progressBarFillColor?: ColorDefinition;
     pointsLabelColor?: ColorDefinition;
     awardBadgesViewUrl: string;
+    showTotalPoints?: boolean;
 }
 
 interface PointsAndBadgesState {
@@ -113,7 +114,7 @@ export default function (props: BasicPointsForBadgesProps) {
         <Title order={4} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
         {pointsAndBadges &&
             <>
-                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.pointsForBadge - pointsUntilNextBadge()}pts</Title>
+                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? pointsAndBadges!.points : (props.pointsForBadge - pointsUntilNextBadge())}pts</Title>
                 <ProgressBar fillPercent={(props.pointsForBadge - pointsUntilNextBadge()) / (props.pointsForBadge * 1.0) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
                     percent: 100,
                     icon:

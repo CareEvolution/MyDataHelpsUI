@@ -1,6 +1,6 @@
 import MyDataHelps, { SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import { DailyDataType, queryDailyData } from "../../../helpers/query-daily-data";
-import { add } from "date-fns";
+import { queryDailyData } from "../../../helpers/query-daily-data";
+import { add, startOfDay } from "date-fns";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 
 export interface BasicPointsForBadgesGoal {
@@ -9,11 +9,11 @@ export interface BasicPointsForBadgesGoal {
     points: number;
 }
 
-export interface DailyDataGoal extends BasicPointsForBadgesGoal {
+export interface DailyDataPointsForBadgesGoal extends BasicPointsForBadgesGoal {
     type: "dailyData";
     activationDate: Date;
     awardThreshold: number;
-    dailyDataType: DailyDataType;
+    dailyDataType: string;
 }
 
 export interface SurveyCompletedGoal extends BasicPointsForBadgesGoal {
@@ -72,10 +72,10 @@ async function pointsForSurveyCompletedGoal(goal: SurveyCompletedGoal, goalState
     return newUniqueResults.length * goal.points;
 }
 
-async function pointsForDailyDataGoal(goal: DailyDataGoal, goalState?: string) {
+async function pointsForDailyDataGoal(goal: DailyDataPointsForBadgesGoal, goalState?: string) {
     let daysAwarded = JSON.parse(goalState || "[]") as string[];
 
-    let startDate = add(new Date(), { days: -30 });
+    let startDate = startOfDay(new Date());
     if (!goalState) {
         startDate = goal.activationDate;
     }
@@ -101,7 +101,7 @@ export async function pointsForGoal(goal: BasicPointsForBadgesGoal, goalState?: 
     let points = 0;
     switch (goal.type) {
         case "dailyData":
-            points = await pointsForDailyDataGoal(goal as DailyDataGoal, goalState);
+            points = await pointsForDailyDataGoal(goal as DailyDataPointsForBadgesGoal, goalState);
             break;
         case "surveyCompleted":
             points = await pointsForSurveyCompletedGoal(goal as SurveyCompletedGoal, goalState);
