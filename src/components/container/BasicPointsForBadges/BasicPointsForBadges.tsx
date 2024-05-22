@@ -82,6 +82,8 @@ export default function (props: BasicPointsForBadgesProps) {
             awardBadges(badgesToAward);
         }
 
+        //keep badges the same such that points animate to fill the progress bar.  
+        //after the points modal dismisses the page will refresh again to show the new badge
         let newState = { points: newPoints, badges: currentState.badges };
         await persistCurrentPointsAndBadges(newState);
         setPointsAndBadges(newState);
