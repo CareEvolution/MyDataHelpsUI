@@ -9,7 +9,7 @@ export default {
 
 const render = (args: NewBadgeViewProps) => <NewBadgeView {...args} />
 
-export const Single = {
+export const Default = {
     args: {
         badgeNumber: 3,
         pointsPerBadge: 1000

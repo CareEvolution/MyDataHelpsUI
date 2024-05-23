@@ -23,111 +23,111 @@ export async function persistCurrentPointsAndBadges(state: PointsAndBadgesState)
     }]);
 }
 
-export interface BasicPointsForBadgesGoal {
+export interface BasicPointsForBadgesActivity {
     key: string;
     type: "dailyData" | "surveyCompleted" | "connectExternalAccount";
     points: number;
 }
 
-interface DailyDataPointsForBadgesGoal extends BasicPointsForBadgesGoal {
+export interface DailyDataActivity extends BasicPointsForBadgesActivity {
     type: "dailyData";
     activationDate: Date;
     awardThreshold: number;
     dailyDataType: string;
 }
 
-interface SurveyCompletedPointsForBadgesGoal extends BasicPointsForBadgesGoal {
+export interface SurveyCompletionActivity extends BasicPointsForBadgesActivity {
     type: "surveyCompleted";
     surveyName: string;
     limit?: number;
 }
 
-interface ConnectExternalAccountPointsForBadgesGoal extends BasicPointsForBadgesGoal {
+export interface ConnectExternalAccountActivity extends BasicPointsForBadgesActivity {
     type: "connectExternalAccount";
     category: string;
 }
 
-async function pointsForConnectExternalAccountGoal(goal: ConnectExternalAccountPointsForBadgesGoal, goalState?: string) {
-    let pastConnectedProviders = goalState ? JSON.parse(goalState) as number[] : [];
+async function pointsForConnectExternalAccountActivity(activity: ConnectExternalAccountActivity, activityState?: string) {
+    let pastConnectedProviders = activityState ? JSON.parse(activityState) as number[] : [];
     let connectedAccounts = await MyDataHelps.getExternalAccounts();
-    let newProviders = connectedAccounts.filter(account => account.provider.category == goal.category && !pastConnectedProviders.includes(account.provider.id));
-    let allProviders = connectedAccounts.map(account => account.provider.category == goal.category && account.id);
+    let newProviders = connectedAccounts.filter(account => account.provider.category == activity.category && !pastConnectedProviders.includes(account.provider.id));
+    let allProviders = connectedAccounts.map(account => account.provider.category == activity.category && account.id);
     if (newProviders.length > 0) {
-        storeGoalState(goal.key, allProviders);
+        storeActivityState(activity.key, allProviders);
     }
-    return newProviders.length * goal.points;
+    return newProviders.length * activity.points;
 }
 
-interface SurveyCompletedGoalState {
+interface SurveyCompletionActivityState {
     countCompleted: number;
     lastQueryDate?: string;
 }
 
-async function pointsForSurveyCompletedGoal(goal: SurveyCompletedPointsForBadgesGoal, goalState?: string) {
-    let state = goalState ? JSON.parse(goalState) as SurveyCompletedGoalState : { countCompleted: 0, lastQueryDate: undefined };
+async function pointsForSurveyCompletionActivity(activity: SurveyCompletionActivity, activityState?: string) {
+    let state = activityState ? JSON.parse(activityState) as SurveyCompletionActivityState : { countCompleted: 0, lastQueryDate: undefined };
 
     var parameters: SurveyAnswersQuery = {
-        surveyName: goal.surveyName
+        surveyName: activity.surveyName
     };
 
     if (state.lastQueryDate) {
         parameters.insertedAfter = state.lastQueryDate;
     }
 
-    if (goal.limit != undefined && state.countCompleted >= goal.limit) {
+    if (activity.limit != undefined && state.countCompleted >= activity.limit) {
         return 0;
     }
 
     let answers = await queryAllSurveyAnswers(parameters);
     let newUniqueResults = answers.map(answer => answer.surveyResultID).filter((value, index, self) => self.indexOf(value) === index);
-    if (goal.limit != undefined && newUniqueResults.length + state.countCompleted > goal.limit) {
-        newUniqueResults = newUniqueResults.slice(0, goal.limit - state.countCompleted);
+    if (activity.limit != undefined && newUniqueResults.length + state.countCompleted > activity.limit) {
+        newUniqueResults = newUniqueResults.slice(0, activity.limit - state.countCompleted);
     }
 
     if (newUniqueResults.length > 0) {
         state.countCompleted += newUniqueResults.length;
         state.lastQueryDate = answers.length > 0 ? answers[0].insertedDate : state.lastQueryDate;
-        storeGoalState(goal.key, state);
+        storeActivityState(activity.key, state);
     }
-    return newUniqueResults.length * goal.points;
+    return newUniqueResults.length * activity.points;
 }
 
-async function pointsForDailyDataGoal(goal: DailyDataPointsForBadgesGoal, goalState?: string) {
-    let daysAwarded = JSON.parse(goalState || "[]") as string[];
+async function pointsForDailyDataActivity(activity: DailyDataActivity, activityState?: string) {
+    let daysAwarded = JSON.parse(activityState || "[]") as string[];
 
     let startDate = startOfDay(new Date());
-    if (!goalState) {
-        startDate = goal.activationDate;
+    if (!activityState) {
+        startDate = activity.activationDate;
     }
 
-    let dailyData = await queryDailyData(goal.dailyDataType, startDate, new Date());
+    let dailyData = await queryDailyData(activity.dailyDataType, startDate, new Date());
     let days = Object.keys(dailyData);
-    let daysToAward = days.filter(day => !daysAwarded.includes(day) && dailyData[day] >= goal.awardThreshold);
+    let daysToAward = days.filter(day => !daysAwarded.includes(day) && dailyData[day] >= activity.awardThreshold);
     if (daysToAward.length > 0) {
         daysAwarded.push(...daysToAward);
-        storeGoalState(goal.key, JSON.stringify(daysAwarded));
+        storeActivityState(activity.key, JSON.stringify(daysAwarded));
     }
-    return daysToAward.length * goal.points;
+    return daysToAward.length * activity.points;
 }
 
-async function storeGoalState(goalKey: string, state: any) {
+async function storeActivityState(activityKey: string, state: any) {
     MyDataHelps.persistDeviceData([{
-        type: `BasicGoal_${goalKey}`,
+        type: `BasicActivity_${activityKey}`,
         value: JSON.stringify(state)
     }]);
 }
 
-export async function pointsForGoal(goal: BasicPointsForBadgesGoal, goalState?: string) {
+export async function pointsForActivity(activity: BasicPointsForBadgesActivity, activityState?: string) {
     let points = 0;
-    switch (goal.type) {
+    switch (activity.type) {
         case "dailyData":
-            points = await pointsForDailyDataGoal(goal as DailyDataPointsForBadgesGoal, goalState);
+            points = await pointsForDailyDataActivity(activity as DailyDataActivity, activityState);
             break;
         case "surveyCompleted":
-            points = await pointsForSurveyCompletedGoal(goal as SurveyCompletedPointsForBadgesGoal, goalState);
+            points = await pointsForSurveyCompletionActivity(activity as SurveyCompletionActivity, activityState);
             break;
         case "connectExternalAccount":
-            points = await pointsForConnectExternalAccountGoal(goal as ConnectExternalAccountPointsForBadgesGoal, goalState);
+            points = await pointsForConnectExternalAccountActivity(activity as ConnectExternalAccountActivity, activityState);
             break;
     }
     return points;
