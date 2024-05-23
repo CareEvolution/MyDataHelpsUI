@@ -132,9 +132,3 @@ export async function pointsForGoal(goal: BasicPointsForBadgesGoal, goalState?: 
     }
     return points;
 }
-
-let badgeColors = ["#c4291c", "#e35c33", "#5db37e", "#429bdf", "#7b88c6"];
-
-export function getBadgeColor(badge: number): string {
-    return badgeColors[badge % badgeColors.length];
-}

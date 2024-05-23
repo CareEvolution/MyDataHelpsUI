@@ -1,7 +1,7 @@
 import React from "react";
-import { language, useInitializeView } from "../../../helpers";
+import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import { BasicBadge, Title } from "../../presentational";
-import { getBadgeColor, getCurrentPointsAndBadges } from "../../../helpers/PointsAndBadges/PointsAndBadges";
+import { getCurrentPointsAndBadges } from "../../../helpers/PointsAndBadges/PointsAndBadges";
 import "./BasicBadges.css"
 
 export interface BasicBadgesProps {
@@ -26,7 +26,7 @@ export default function (props: BasicBadgesProps) {
             <Title order={3}>{props.title || language("my-badges").replace("{{badges}}", "5")}</Title>
             <div className="mdhui-basic-badges-list">
                 {badgeCount && Array.from({ length: badgeCount }).map((_, index) =>
-                    <BasicBadge key={index} backgroundColor={getBadgeColor(index)} />
+                    <BasicBadge key={index} backgroundColor={getColorFromAssortment(index)} />
                 )}
             </div>
         </div>
