@@ -8,6 +8,7 @@ import "./BasicPointsForBadges.css"
 import { BasicPointsForBadgesGoal, pointsForGoal } from "./Goals";
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { PointsAndBadgesState, getCurrentPointsAndBadges, persistCurrentPointsAndBadges } from "../../../helpers/PointsAndBadges/PointsAndBadges";
 
 export interface BasicPointsForBadgesProps {
     pointsForBadge: number;
@@ -18,26 +19,6 @@ export interface BasicPointsForBadgesProps {
     pointsLabelColor?: ColorDefinition;
     awardBadgesViewUrl: string;
     showTotalPoints?: boolean;
-}
-
-interface PointsAndBadgesState {
-    points: number;
-    badges: number;
-}
-
-async function getCurrentPointsAndBadges(): Promise<PointsAndBadgesState> {
-    let state = (await MyDataHelps.queryDeviceData({ type: "BasicPointsAndBadges", namespace: "Project" })).deviceDataPoints;
-    if (state.length > 0) {
-        return JSON.parse(state[0].value);
-    }
-    return { points: 0, badges: 0 };
-}
-
-async function persistCurrentPointsAndBadges(state: PointsAndBadgesState) {
-    await MyDataHelps.persistDeviceData([{
-        type: "BasicPointsAndBadges",
-        value: JSON.stringify(state)
-    }]);
 }
 
 export default function (props: BasicPointsForBadgesProps) {

@@ -1,0 +1,9 @@
+.mdhui-basic-badges {
+    padding: 16px;
+}
+
+.mdhui-basic-badges .mdhui-basic-badges-list {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
