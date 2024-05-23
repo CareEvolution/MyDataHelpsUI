@@ -368,7 +368,10 @@
     "points-until-next-badge": "{{points}} points to next badge",
     "current-points": "Current Points",
     "fitbit-wear-time": "Fitbit Wear Time",
-	"my-badges": "My Badges ({{badges}})"
+    "my-badges": "My Badges ({{badges}})",
+    "new-badge-title": "Great job!",
+    "new-badge-text": "You got a new badge!",
+    "get-badge": "Get Badge",
 };
 
 export default strings;
