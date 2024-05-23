@@ -1,1 +1,1 @@
-export { default as DailyDataGoal } from './DailyDataGoal';
+export { default } from './DailyDataGoal';
