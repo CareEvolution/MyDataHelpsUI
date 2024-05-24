@@ -1,6 +1,6 @@
 import React from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
-import { getCurrentPointsAndBadges } from "../../../helpers/PointsAndBadges/PointsAndBadges";
+import { getCurrentPointsAndBadges } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { BasicBadge, Button, Layout, TextBlock, Title } from "../../presentational";
 import "./NewBadgeView.css";

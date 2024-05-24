@@ -1,7 +1,7 @@
 import React from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import { BasicBadge, Title } from "../../presentational";
-import { getCurrentPointsAndBadges } from "../../../helpers/PointsAndBadges/PointsAndBadges";
+import { getCurrentPointsAndBadges } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
 import "./BasicBadges.css"
 
 export interface BasicBadgesProps {

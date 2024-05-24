@@ -7,12 +7,12 @@ import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity as BasicPointsForBadgesActivity, PointsAndBadgesState, getCurrentPointsAndBadges, persistCurrentPointsAndBadges, pointsForActivity } from "../../../helpers/PointsAndBadges/PointsAndBadges";
+import { BasicPointsForBadgesActivity as BasicPointsForBadgesActivity, PointsAndBadgesState, getCurrentPointsAndBadges, persistCurrentPointsAndBadges, pointsForActivity } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
     activities: BasicPointsForBadgesActivity[];
-    previewState?: "Default";
+    previewState?: "default";
     titleColor?: ColorDefinition;
     progressBarFillColor?: ColorDefinition;
     pointsLabelColor?: ColorDefinition;
@@ -25,7 +25,7 @@ export default function (props: BasicPointsForBadgesProps) {
     let layoutContext = useContext<LayoutContext>(LayoutContext);
 
     async function awardPointsAndBadges() {
-        if (props.previewState === "Default") {
+        if (props.previewState === "default") {
             setPointsAndBadges({ points: 550 + (3 * props.pointsPerBadge), badges: 3 });
             await new Promise(resolve => setTimeout(resolve, 1000));
             setPointsAndBadges({ points: 1200 + (3 * props.pointsPerBadge), badges: 3 });
@@ -38,9 +38,9 @@ export default function (props: BasicPointsForBadgesProps) {
         let newPoints = currentState.points;
         props.activities.forEach(async goal => {
             let serializedGoalState: string | undefined = undefined;
-            let goalStateDataPoint = (await MyDataHelps.queryDeviceData({ type: `BasicGoal_${goal.key}`, namespace: "Project" })).deviceDataPoints;
-            if (goalStateDataPoint.length > 0) {
-                serializedGoalState = goalStateDataPoint[0].value;
+            let activityStateDataPoint = (await MyDataHelps.queryDeviceData({ type: `BasicActivity_${goal.key}`, namespace: "Project" })).deviceDataPoints;
+            if (activityStateDataPoint.length > 0) {
+                serializedGoalState = activityStateDataPoint[0].value;
             }
             let points = await pointsForActivity(goal, serializedGoalState);
             newPoints += points;
