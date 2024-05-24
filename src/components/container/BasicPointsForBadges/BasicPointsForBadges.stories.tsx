@@ -3,6 +3,7 @@ import BasicPointsForBadges, { BasicPointsForBadgesProps } from "./BasicPointsFo
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers";
+import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
 
 export default {
     title: "Container/BasicPointsForBadges",
@@ -21,17 +22,17 @@ const render = (args: BasicPointsForBadgesProps) => <Layout colorScheme='auto'>
 export const Default = {
     args: {
         previewState: "default",
-        goals: [
+        activities: [
             {
-                type: "fitbitDailyData",
+                type: "dailyData",
                 key: "steps",
                 points: 100,
                 activationDate: new Date("2024-01-01"),
                 awardThreshold: 10000,
                 dailyDataType: DailyDataType.FitbitSteps
-            }
+            } as DailyDataActivity
         ],
-        pointsForBadge: 1000
+        pointsPerBadge: 1000
     },
     render: render
 };
@@ -41,17 +42,17 @@ export const ShowTotalPoints = {
     args: {
         previewState: "default",
         showTotalPoints: true,
-        goals: [
+        activities: [
             {
-                type: "fitbitDailyData",
+                type: "dailyData",
                 key: "steps",
                 points: 100,
                 activationDate: new Date("2024-01-01"),
                 awardThreshold: 10000,
                 dailyDataType: DailyDataType.FitbitSteps
-            }
+            } as DailyDataActivity
         ],
-        pointsForBadge: 1000
+        pointsPerBadge: 1000
     },
     render: render
 };
@@ -85,7 +86,7 @@ export const Live = {
                 limit: 1
             },
             {
-                key: "ConnectProvider",
+                key: "ConnectEhr",
                 type: "connectExternalAccount",
                 points: 250,
                 providerCategories: ["Provider", "Health Plan"]

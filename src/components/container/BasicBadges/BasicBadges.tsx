@@ -1,8 +1,8 @@
 import React from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import { BasicBadge, Title } from "../../presentational";
-import { getCurrentPointsAndBadges } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
 import "./BasicBadges.css"
+import { getCurrentBadges } from "../../../helpers/BasicPointsAndBadges/Badges";
 
 export interface BasicBadgesProps {
     badgeCount?: number;
@@ -14,8 +14,8 @@ export default function (props: BasicBadgesProps) {
 
     useInitializeView(() => {
         if (props.badgeCount !== undefined) { setBadgeCount(props.badgeCount); return; }
-        getCurrentPointsAndBadges().then(function (pointsAndBadges) {
-            setBadgeCount(pointsAndBadges.badges);
+        getCurrentBadges().then(function (badges) {
+            setBadgeCount(badges.length);
         });
     }, [], [props.badgeCount]);
 

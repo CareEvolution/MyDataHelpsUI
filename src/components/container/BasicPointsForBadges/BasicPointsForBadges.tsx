@@ -35,17 +35,19 @@ export default function (props: BasicPointsForBadgesProps) {
         if (props.previewState === "default") {
             let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
             props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + (3 * props.pointsPerBadge) : 0 };
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + (2 * props.pointsPerBadge) : 0 };
             });
+            console.log(previewActivityStates);
             setPoints(sumActivityPoints(previewActivityStates));
-            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3]);
+            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2]);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + props.pointsPerBadge + (3 * props.pointsPerBadge) : 0 };
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? (500 + props.pointsPerBadge + (2 * props.pointsPerBadge)) : 0 };
             });
             setPoints(sumActivityPoints(previewActivityStates));
-            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3, props.pointsPerBadge * 4]);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3]);
             return;
         };
 
@@ -73,7 +75,6 @@ export default function (props: BasicPointsForBadgesProps) {
             }
             await persistCurrentBadges(newBadges);
             MyDataHelps.openApplication(props.awardBadgesViewUrl);
-            await new Promise(resolve => setTimeout(resolve, 1000));
             setBadges(newBadges);
         }
     }
@@ -102,7 +103,7 @@ export default function (props: BasicPointsForBadgesProps) {
         {badges != undefined && points != undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
-                <ProgressBar fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
+                <ProgressBar key={badges.length} fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
                     percent: 100,
                     icon:
                         <ProgressBarStep borderColor={nextBadgeColor()} backgroundColor={nextBadgeColor()} height="24px">
