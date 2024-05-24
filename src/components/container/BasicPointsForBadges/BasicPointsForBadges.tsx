@@ -7,7 +7,9 @@ import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity as BasicPointsForBadgesActivity, PointsAndBadgesState, getCurrentPointsAndBadges, persistCurrentPointsAndBadges, pointsForActivity } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { awardPointsForActivities, getActivityStates } from "../../../helpers";
+import { getCurrentBadges, persistCurrentBadges } from "../../../helpers/BasicPointsAndBadges/Badges";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
@@ -21,51 +23,58 @@ export interface BasicPointsForBadgesProps {
 }
 
 export default function (props: BasicPointsForBadgesProps) {
-    let [pointsAndBadges, setPointsAndBadges] = React.useState<PointsAndBadgesState | undefined>(undefined);
+    let [badges, setBadges] = React.useState<number[] | undefined>(undefined);
+    let [points, setPoints] = React.useState<number | undefined>(undefined);
     let layoutContext = useContext<LayoutContext>(LayoutContext);
+
+    function sumActivityPoints(activityStates: { [key: string]: BasicPointsForBadgesActivityState }) {
+        return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
+    }
 
     async function awardPointsAndBadges() {
         if (props.previewState === "default") {
-            setPointsAndBadges({ points: 550 + (3 * props.pointsPerBadge), badges: 3 });
+            let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
+            props.activities.forEach((activity, index) => {
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + (3 * props.pointsPerBadge) : 0 };
+            });
+            setPoints(sumActivityPoints(previewActivityStates));
+            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3]);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            setPointsAndBadges({ points: 1200 + (3 * props.pointsPerBadge), badges: 3 });
+
+            props.activities.forEach((activity, index) => {
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + props.pointsPerBadge + (3 * props.pointsPerBadge) : 0 };
+            });
+            setPoints(sumActivityPoints(previewActivityStates));
+            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3, props.pointsPerBadge * 4]);
             return;
         };
 
-        let currentState = await getCurrentPointsAndBadges();
-        setPointsAndBadges(currentState);
+        let badges = await getCurrentBadges();
+        let currentActivityStates = await getActivityStates(props.activities);
 
-        let newPoints = currentState.points;
-        props.activities.forEach(async goal => {
-            let serializedGoalState: string | undefined = undefined;
-            let activityStateDataPoint = (await MyDataHelps.queryDeviceData({ type: `BasicActivity_${goal.key}`, namespace: "Project" })).deviceDataPoints;
-            if (activityStateDataPoint.length > 0) {
-                serializedGoalState = activityStateDataPoint[0].value;
+        let lastBadge = Math.max(...badges);
+        let nextBadge = lastBadge + props.pointsPerBadge;
+
+        setBadges(badges);
+        setPoints(sumActivityPoints(currentActivityStates));
+
+        let updatedStates = await awardPointsForActivities(props.activities, currentActivityStates);
+        let newPointTotal = sumActivityPoints(updatedStates);
+
+        setPoints(sumActivityPoints(currentActivityStates));
+        //allow time for animation of progress bar
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        if (newPointTotal >= nextBadge) {
+            let newBadges = [...badges];
+            while (newPointTotal >= nextBadge) {
+                newBadges = [...newBadges, nextBadge]
+                nextBadge = nextBadge + props.pointsPerBadge;
             }
-            let points = await pointsForActivity(goal, serializedGoalState);
-            newPoints += points;
-        });
-
-        if (newPoints == 0) { return; }
-
-        let lastBadgeThreshold = 0;
-        for (var i = 0; i < currentState.points; i += props.pointsPerBadge) {
-            lastBadgeThreshold = i;
-        }
-
-        let badgesToAward = 0;
-        for (var i = lastBadgeThreshold; i < newPoints; i += props.pointsPerBadge) {
-            badgesToAward++;
-        }
-
-        //keep badges the same such that points animate to fill the progress bar.  
-        //after the points modal dismisses the page will refresh again to show the new badge
-        let newState = { points: newPoints, badges: currentState.badges, pointsPerBadge: props.pointsPerBadge };
-        await persistCurrentPointsAndBadges(newState);
-        setPointsAndBadges(newState);
-
-        if (badgesToAward > 0) {
-            awardBadges(badgesToAward);
+            await persistCurrentBadges(newBadges);
+            MyDataHelps.openApplication(props.awardBadgesViewUrl);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setBadges(newBadges);
         }
     }
 
@@ -73,30 +82,26 @@ export default function (props: BasicPointsForBadgesProps) {
         awardPointsAndBadges()
     }, [], []);
 
-    async function awardBadges(badges: number) {
-        // Wait for progress bar animation
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        MyDataHelps.openApplication(props.awardBadgesViewUrl);
-    }
-
     function pointsUntilNextBadge() {
-        let nextBadge = (pointsAndBadges!.badges + 1) * props.pointsPerBadge;
-        var points = nextBadge - pointsAndBadges!.points;
-        if (points < 0) {
-            points = 0;
+        if (badges == undefined || points == undefined) { return 0; }
+        let lastBadge = Math.max(...badges);
+        let nextBadge = lastBadge + props.pointsPerBadge;
+        let pointsNeeded = nextBadge - points;
+        if (pointsNeeded < 0) {
+            pointsNeeded = 0;
         }
-        return points;
+        return pointsNeeded;
     }
 
     function nextBadgeColor() {
-        return getColorFromAssortment(pointsAndBadges!.badges + 1)
+        return getColorFromAssortment((badges?.length || 0) + 1)
     }
 
     return <div className="mdhui-basic-points-for-badges">
         <Title order={4} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
-        {pointsAndBadges &&
+        {badges != undefined && points != undefined &&
             <>
-                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? pointsAndBadges!.points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
+                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
                 <ProgressBar fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
                     percent: 100,
                     icon:
@@ -107,7 +112,7 @@ export default function (props: BasicPointsForBadgesProps) {
                 <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge").replace("{{points}}", pointsUntilNextBadge().toString())}</div>
             </>
         }
-        {!pointsAndBadges &&
+        {!badges == undefined || points == undefined &&
             <LoadingIndicator />
         }
     </div>

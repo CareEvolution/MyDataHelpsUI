@@ -1,16 +1,16 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
-export async function getCurrentBadges(): Promise<Number> {
+export async function getCurrentBadges(): Promise<number[]> {
     let state = (await MyDataHelps.queryDeviceData({ type: "BasicBadges", namespace: "Project" })).deviceDataPoints;
     if (state.length > 0) {
-        return parseInt(state[0].value);
+        return JSON.parse(state[0].value);
     }
-    return 0;
+    return [];
 }
 
-export async function persistCurrentBadges(badges: Number) {
+export async function persistCurrentBadges(badges: number[]) {
     await MyDataHelps.persistDeviceData([{
         type: "BasicBadges",
-        value: badges.toString()
+        value: JSON.stringify(badges)
     }]);
 }
