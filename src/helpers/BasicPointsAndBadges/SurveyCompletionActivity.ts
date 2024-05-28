@@ -24,7 +24,9 @@ export async function awardSurveyCompletionActivityPoints(activity: SurveyComple
         parameters.insertedAfter = activityState.lastQueryDate;
     }
 
-    if (activity.limit != undefined && countCompleted >= activity.limit) {
+    if (activity.limit !== undefined && countCompleted >= activity.limit) {
+    let answers = (await queryAllSurveyAnswers(parameters)).filter(answer => answer.insertedDate !== activityState.lastQueryDate);
+    if (activity.limit !== undefined && newUniqueResults.length + countCompleted > activity.limit) {
         return activityState;
     }
 
