@@ -6,6 +6,7 @@ export interface GridProps {
     gap?: number;
     style?: React.CSSProperties;
     className?: string;
+    defaultMargin?: boolean;
 }
 
 export interface GridColumnProps {
@@ -24,6 +25,9 @@ export function Grid(props: GridProps) {
     let classes = ["mdhui-grid"];
     if (props.className) {
         classes.push(props.className);
+    }
+    if (props.defaultMargin) {
+        classes.push("mdhui-grid-default-margin");
     }
 
     let style = { ...props.style };

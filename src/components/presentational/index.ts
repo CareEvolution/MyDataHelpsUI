@@ -10,6 +10,7 @@ export { default as DateRangeCoordinator, DateRangeContext } from "./DateRangeCo
 export { default as DateRangeNavigator } from "./DateRangeNavigator"
 export { default as DateRangeTitle } from "./DateRangeTitle"
 export { default as DayTrackerSymbol } from "./DayTrackerSymbol"
+export { default as Divider } from "./Divider"
 export { default as DumbbellChart } from "./DumbbellChart"
 export { default as Face } from "./Face"
 export { Grid, GridColumnProps, GridProps } from "./Grid"

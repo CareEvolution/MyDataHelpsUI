@@ -101,7 +101,7 @@ export default function (props: BasicPointsForBadgesProps) {
         return getColorFromAssortment((badges?.length || 0) + 1)
     }
 
-    return <div className="mdhui-basic-points-for-badges">
+    return <div className={"mdhui-basic-points-for-badges"}>
         <Title order={4} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
         {badges != undefined && points != undefined &&
             <>
