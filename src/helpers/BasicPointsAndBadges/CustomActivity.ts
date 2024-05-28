@@ -7,9 +7,9 @@ export interface CustomActivity extends BasicPointsForBadgesActivity {
 }
 
 export async function awardCustomActivityPoints(activity: CustomActivity, activityState: BasicPointsForBadgesActivityState, participantInfo: ParticipantInfo) {
-    let customField = participantInfo.customFields[activity.customField];
-    let activityCompletions = customField ? JSON.parse(customField) : 0;
-    let newPoints = activityCompletions * activity.points;
-    let newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints };
+    const customField = participantInfo.customFields[activity.customField];
+    const activityCompletions = customField ? JSON.parse(customField) : 0;
+    const newPoints = activityCompletions * activity.points;
+    const newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints };
     return newActivityState;
 }
