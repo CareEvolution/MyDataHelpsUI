@@ -76,10 +76,12 @@ export default function (props: BasicPointsForBadgesProps) {
         let newPointTotal = sumActivityPoints(updatedState.activityStates);
         setPoints(newPointTotal);
 
-        MyDataHelps.openApplication(props.awardBadgesViewUrl);
-        //wait for the new badges view to open before setting the new point total
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setBadges(updatedState.badges);
+        if (currentState.badges.length < updatedState.badges.length) {
+            MyDataHelps.openApplication(props.awardBadgesViewUrl);
+            //wait for the new badges view to open before setting the new point total
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            setBadges(updatedState.badges);
+        }
     }
 
     useInitializeView(() => {
