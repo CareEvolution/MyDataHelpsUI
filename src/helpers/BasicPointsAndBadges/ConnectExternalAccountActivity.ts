@@ -1,5 +1,5 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
+import type { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
 
 export interface ConnectExternalAccountActivity extends BasicPointsForBadgesActivity {
     type: "connectExternalAccount";

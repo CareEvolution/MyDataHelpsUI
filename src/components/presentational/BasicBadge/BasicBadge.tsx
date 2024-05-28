@@ -16,7 +16,7 @@ export interface BasicBadgeProps {
 
 export default function (props: BasicBadgeProps) {
     const layoutContext = useContext<LayoutContext>(LayoutContext);
-    let classes = ["mdhui-basic-badge"];
+    const classes = ["mdhui-basic-badge"];
     if (props.size === "xl") classes.push("mdhui-basic-badge-xl");
 
     return (
