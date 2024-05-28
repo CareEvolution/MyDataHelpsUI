@@ -27,36 +27,36 @@ export interface DailyDataGoalMessage {
 }
 
 export default function (props: DailyDataGoalProps) {
-    let [dailyValue, setDailyValue] = useState<number | null>(null);
-    let layoutContext = useContext<LayoutContext>(LayoutContext);
-    let dateRangeContext = useContext(DateRangeContext);
-    let date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
+    const [dailyValue, setDailyValue] = useState<number | null>(null);
+    const layoutContext = useContext<LayoutContext>(LayoutContext);
+    const dateRangeContext = useContext(DateRangeContext);
+    const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
 
     useInitializeView(() => {
-        let startDate = add(date, { days: -1 });
-        let endDate = add(date, { days: 2 });
+        const startDate = add(date, { days: -1 });
+        const endDate = add(date, { days: 2 });
 
         queryDailyData(props.dailyDataType, startDate, endDate, props.previewState === "Default").then((results) => {
             setDailyValue(results[getDayKey(date)]);
         });
     }, [], []);
 
-    let goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
-    let goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
+    const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
+    const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
 
     let goalProgress: number | null = dailyValue == null ? null : dailyValue / props.goal;
     if (goalProgress != null && goalProgress > 1) goalProgress = 1;
 
-    let formattedProgress = goalProgress == null ? "0%" : Math.round(goalProgress * 100) + "%";
-    let color = goalProgress === 1 ? goalCompleteColor : goalIncompleteColor;
+    const formattedProgress = goalProgress == null ? "0%" : Math.round(goalProgress * 100) + "%";
+    const color = goalProgress === 1 ? goalCompleteColor : goalIncompleteColor;
 
     let message: string | undefined = undefined;
     if (props.messages && dailyValue != null) {
-        let messages = [...props.messages]?.sort((a, b) => b.threshold - a.threshold);
+        const messages = [...props.messages]?.sort((a, b) => b.threshold - a.threshold);
         message = messages?.find(m => dailyValue! >= m.threshold)?.message;
     }
 
-    let classes = ["mdhui-daily-data-goal"];
+    const classes = ["mdhui-daily-data-goal"];
     if (props.defaultMargin) {
         classes.push("mdhui-daily-data-goal-default-margin");
     }
