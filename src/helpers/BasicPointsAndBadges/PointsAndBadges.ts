@@ -1,10 +1,12 @@
+import { ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState } from "./Activities";
 import { ConnectExternalAccountActivity, awardConnectExternalAccountActivityPoints } from "./ConnectExternalAccountActivity";
 import { DailyDataActivity, awardDailyDataActivityPoints } from "./DailyDataActivity";
 import { SurveyCompletionActivity, awardSurveyCompletionActivityPoints } from "./SurveyCompletionActivity";
+import { CustomActivity, awardCustomActivityPoints } from "./CustomActivity";
 
-export async function awardPointsAndBadges(activities: BasicPointsForBadgesActivity[], state: BasicPointsForBadgesState, pointsPerBadge: number): Promise<BasicPointsForBadgesState> {
-    let awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, state.activityStates[activity.key]));
+export async function awardPointsAndBadges(activities: BasicPointsForBadgesActivity[], state: BasicPointsForBadgesState, pointsPerBadge: number, participantInfo: ParticipantInfo): Promise<BasicPointsForBadgesState> {
+    let awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, state.activityStates[activity.key], participantInfo));
     let updatedActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
     await Promise.all(awardPointsPromises).then((newActivityStatesArray) => {
         newActivityStatesArray.forEach((state, index) => {
@@ -25,7 +27,7 @@ export async function awardPointsAndBadges(activities: BasicPointsForBadgesActiv
     return { badges: newBadges, activityStates: updatedActivityStates };
 }
 
-async function awardPointsForActivity(activity: BasicPointsForBadgesActivity, activityState: BasicPointsForBadgesActivityState) {
+async function awardPointsForActivity(activity: BasicPointsForBadgesActivity, activityState: BasicPointsForBadgesActivityState, participantInfo: ParticipantInfo) {
     switch (activity.type) {
         case "dailyData":
             return await awardDailyDataActivityPoints(activity as DailyDataActivity, activityState);
@@ -33,5 +35,7 @@ async function awardPointsForActivity(activity: BasicPointsForBadgesActivity, ac
             return await awardSurveyCompletionActivityPoints(activity as SurveyCompletionActivity, activityState);
         case "connectExternalAccount":
             return await awardConnectExternalAccountActivityPoints(activity as ConnectExternalAccountActivity, activityState);
+        case "custom":
+            return await awardCustomActivityPoints(activity as CustomActivity, activityState, participantInfo);
     }
 }

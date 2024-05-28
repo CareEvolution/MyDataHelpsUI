@@ -7,7 +7,7 @@ import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState, getPointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
 import { awardPointsAndBadges } from "../../../helpers";
 
 export interface BasicPointsForBadgesProps {
@@ -50,16 +50,18 @@ export default function (props: BasicPointsForBadgesProps) {
             return;
         };
 
-        let currentState = await getPointsAndBadgesState(props.customField, props.activities);
+        let participantInfo = await MyDataHelps.getParticipantInfo();
+        let currentState = parsePointsAndBadgesState(props.customField, props.activities, participantInfo);
         setBadges(currentState.badges);
         setPoints(sumActivityPoints(currentState.activityStates));
 
-        let updatedState = await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge);
+        let updatedState = await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge, participantInfo);
         await persistPointsAndBadgesState(props.customField, updatedState);
         let newPointTotal = sumActivityPoints(updatedState.activityStates);
         setPoints(newPointTotal);
 
         MyDataHelps.openApplication(props.awardBadgesViewUrl);
+        //wait for the new badges view to open before setting the new point total
         await new Promise(resolve => setTimeout(resolve, 3000));
         setBadges(updatedState.badges);
     }

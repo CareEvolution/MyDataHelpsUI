@@ -1,8 +1,8 @@
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
 
 export interface BasicPointsForBadgesActivity {
     key: string;
-    type: "dailyData" | "surveyCompleted" | "connectExternalAccount";
+    type: "dailyData" | "surveyCompleted" | "connectExternalAccount" | "custom";
     points: number;
 }
 
@@ -15,8 +15,7 @@ export interface BasicPointsForBadgesActivityState {
     pointsAwarded: number;
 }
 
-export async function getPointsAndBadgesState(customField: string, activities: BasicPointsForBadgesActivity[]): Promise<BasicPointsForBadgesState> {
-    let participantInfo = await MyDataHelps.getParticipantInfo();
+export function parsePointsAndBadgesState(customField: string, activities: BasicPointsForBadgesActivity[], participantInfo: ParticipantInfo): BasicPointsForBadgesState {
     let stateString = participantInfo.customFields[customField];
     if (stateString) {
         return JSON.parse(stateString) as BasicPointsForBadgesState;
