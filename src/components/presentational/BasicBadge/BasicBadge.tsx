@@ -2,7 +2,6 @@ import type { ReactElement } from "react";
 import { useContext } from "react";
 import type { ColorDefinition } from "../../../helpers";
 import { resolveColor } from "../../../helpers";
-import { ColorDefinition, resolveColor } from "../../../helpers";
 import { LayoutContext } from "../Layout";
 import React from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
