@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.mdhui-daily-data-goal.mdhui-daily-data-goal-default-margin {
+    margin: 16px;
+}
+
 .mdhui-daily-data-goal .mdhui-daily-data-goal-title {
     font-size: .7em;
 }

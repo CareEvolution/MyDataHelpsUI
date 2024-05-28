@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import language from "../../../helpers/language";
 import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
@@ -9,6 +8,7 @@ import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
 import { awardPointsAndBadges } from "../../../helpers";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
@@ -89,7 +89,7 @@ export default function (props: BasicPointsForBadgesProps) {
     }, [], []);
 
     function pointsUntilNextBadge() {
-        if (badges == undefined || points == undefined) { return 0; }
+        if (badges === undefined || points === undefined) { return 0; }
         let lastBadge = badges.length ? Math.max(...badges) : 0;
         let nextBadge = lastBadge + props.pointsPerBadge;
         let pointsNeeded = nextBadge - points;
@@ -105,7 +105,7 @@ export default function (props: BasicPointsForBadgesProps) {
 
     return <div className={"mdhui-basic-points-for-badges"}>
         <Title order={4} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
-        {badges != undefined && points != undefined &&
+        {badges !== undefined && points !== undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
@@ -115,7 +115,7 @@ export default function (props: BasicPointsForBadgesProps) {
                         percent: 100,
                         icon:
                             <ProgressBarStep borderColor={nextBadgeColor()} backgroundColor={nextBadgeColor()} height="24px">
-                                <FontAwesomeIcon icon={faStar as any} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
+                                <FontAwesomeSvgIcon icon={faStar} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
                             </ProgressBarStep>
                     }]} />
                 <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge").replace("{{points}}", pointsUntilNextBadge().toString())}</div>

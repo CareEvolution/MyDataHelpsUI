@@ -6,7 +6,7 @@ import { DailyDataType } from "../../../helpers";
 import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
 import { DailyDataGoals } from "../../presentational/Grid/Grid.stories";
 import DailyDataGoal from "../DailyDataGoal";
-import { Grid } from "../../presentational";
+import { Grid, Title } from "../../presentational";
 import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
 
@@ -83,9 +83,11 @@ export const WithGoalsAndBadges = {
         <Card>
             <BasicPointsForBadges {...args} />
             <Divider />
-            <Grid defaultMargin>
+            <Title order={3} style={{ margin: "16px", marginBottom:"0" }} >Fitbit Wear</Title>
+            <Grid>
                 <Grid.Column span={6}>
                     <DailyDataGoal
+                        defaultMargin
                         previewState="Default"
                         goal={1}
                         dailyDataType={DailyDataType.FitbitSleepMinutes}
@@ -104,6 +106,7 @@ export const WithGoalsAndBadges = {
                 </Grid.Column>
                 <Grid.Column span={6}>
                     <DailyDataGoal
+                        defaultMargin
                         previewState="Default"
                         goal={600}
                         dailyDataType={DailyDataType.FitbitWearMinutes}

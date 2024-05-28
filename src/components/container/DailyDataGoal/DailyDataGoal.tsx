@@ -18,6 +18,7 @@ export interface DailyDataGoalProps {
     goalCompleteColor?: ColorDefinition;
     messages?: DailyDataGoalMessage[];
     innerRef?: React.Ref<HTMLDivElement>;
+    defaultMargin?: boolean;
 }
 
 export interface DailyDataGoalMessage {
@@ -55,7 +56,12 @@ export default function (props: DailyDataGoalProps) {
         message = messages?.find(m => dailyValue! >= m.threshold)?.message;
     }
 
-    return <div className="mdhui-daily-data-goal" ref={props.innerRef}>
+    let classes = ["mdhui-daily-data-goal"];
+    if (props.defaultMargin) {
+        classes.push("mdhui-daily-data-goal-default-margin");
+    }
+
+    return <div className={classes.join(" ")} ref={props.innerRef}>
         <div className="mdhui-daily-data-goal-circle">
             <div className="mdhui-daily-data-goal-circle-fill" style={{ height: formattedProgress, backgroundColor: resolveColor(layoutContext.colorScheme, color) }}>
             </div>
