@@ -7,12 +7,12 @@ import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "../../../helpers/BasicPointsAndBadges/Activities";
-import { awardPointsForActivities, getActivityStates } from "../../../helpers";
-import { getCurrentBadges, persistCurrentBadges } from "../../../helpers/BasicPointsAndBadges/Badges";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState, getPointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { awardPointsAndBadges } from "../../../helpers";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
+    customField: string;
     activities: BasicPointsForBadgesActivity[];
     previewState?: "default";
     titleColor?: ColorDefinition;
@@ -31,19 +31,18 @@ export default function (props: BasicPointsForBadgesProps) {
         return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
     }
 
-    async function awardPointsAndBadges() {
+    async function initialize() {
         if (props.previewState === "default") {
             let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
             props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 500 + (2 * props.pointsPerBadge) : 0 };
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 300 + (2 * props.pointsPerBadge) : 0 };
             });
-            console.log(previewActivityStates);
             setPoints(sumActivityPoints(previewActivityStates));
             setBadges([props.pointsPerBadge, props.pointsPerBadge * 2]);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? (500 + props.pointsPerBadge + (2 * props.pointsPerBadge)) : 0 };
+                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? (300 + props.pointsPerBadge + (2 * props.pointsPerBadge)) : 0 };
             });
             setPoints(sumActivityPoints(previewActivityStates));
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -51,41 +50,27 @@ export default function (props: BasicPointsForBadgesProps) {
             return;
         };
 
-        let badges = await getCurrentBadges();
-        let currentActivityStates = await getActivityStates(props.activities);
+        let currentState = await getPointsAndBadgesState(props.customField, props.activities);
+        setBadges(currentState.badges);
+        setPoints(sumActivityPoints(currentState.activityStates));
 
-        let lastBadge = Math.max(...badges);
-        let nextBadge = lastBadge + props.pointsPerBadge;
+        let updatedState = await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge);
+        await persistPointsAndBadgesState(props.customField, updatedState);
+        let newPointTotal = sumActivityPoints(updatedState.activityStates);
+        setPoints(newPointTotal);
 
-        setBadges(badges);
-        setPoints(sumActivityPoints(currentActivityStates));
-
-        let updatedStates = await awardPointsForActivities(props.activities, currentActivityStates);
-        let newPointTotal = sumActivityPoints(updatedStates);
-
-        setPoints(sumActivityPoints(currentActivityStates));
-        //allow time for animation of progress bar
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        if (newPointTotal >= nextBadge) {
-            let newBadges = [...badges];
-            while (newPointTotal >= nextBadge) {
-                newBadges = [...newBadges, nextBadge]
-                nextBadge = nextBadge + props.pointsPerBadge;
-            }
-            await persistCurrentBadges(newBadges);
-            MyDataHelps.openApplication(props.awardBadgesViewUrl);
-            setBadges(newBadges);
-        }
+        MyDataHelps.openApplication(props.awardBadgesViewUrl);
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setBadges(updatedState.badges);
     }
 
     useInitializeView(() => {
-        awardPointsAndBadges()
+        initialize()
     }, [], []);
 
     function pointsUntilNextBadge() {
         if (badges == undefined || points == undefined) { return 0; }
-        let lastBadge = Math.max(...badges);
+        let lastBadge = badges.length ? Math.max(...badges) : 0;
         let nextBadge = lastBadge + props.pointsPerBadge;
         let pointsNeeded = nextBadge - points;
         if (pointsNeeded < 0) {
@@ -103,13 +88,16 @@ export default function (props: BasicPointsForBadgesProps) {
         {badges != undefined && points != undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
-                <ProgressBar key={badges.length} fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100} fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"} backgroundColor="var(--mdhui-background-color-2)" steps={[{
-                    percent: 100,
-                    icon:
-                        <ProgressBarStep borderColor={nextBadgeColor()} backgroundColor={nextBadgeColor()} height="24px">
-                            <FontAwesomeIcon icon={faStar as any} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
-                        </ProgressBarStep>
-                }]} />
+                <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
+                    fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
+                    fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"}
+                    backgroundColor="var(--mdhui-background-color-2)" steps={[{
+                        percent: 100,
+                        icon:
+                            <ProgressBarStep borderColor={nextBadgeColor()} backgroundColor={nextBadgeColor()} height="24px">
+                                <FontAwesomeIcon icon={faStar as any} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
+                            </ProgressBarStep>
+                    }]} />
                 <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge").replace("{{points}}", pointsUntilNextBadge().toString())}</div>
             </>
         }

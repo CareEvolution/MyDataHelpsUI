@@ -1,5 +1,5 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, storeActivityState } from "./Activities";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
 
 export interface ConnectExternalAccountActivity extends BasicPointsForBadgesActivity {
     type: "connectExternalAccount";
@@ -17,7 +17,6 @@ export async function awardConnectExternalAccountActivityPoints(activity: Connec
     if (newProviders.length > 0) {
         let newPoints = newProviders.length * activity.points;
         let newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints, providersConnected: allProviders };
-        storeActivityState(activity.key, newActivityState);
         return newActivityState;
     }
     return activityState;

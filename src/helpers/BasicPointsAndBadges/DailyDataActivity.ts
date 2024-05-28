@@ -1,5 +1,5 @@
 import { startOfDay } from "date-fns";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, storeActivityState } from "./Activities";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
 import { queryDailyData } from "../query-daily-data";
 
 export interface DailyDataActivity extends BasicPointsForBadgesActivity {
@@ -26,7 +26,6 @@ export async function awardDailyDataActivityPoints(activity: DailyDataActivity, 
     if (daysToAward.length > 0) {
         let newPoints = daysToAward.length * activity.points;
         let newState = { pointsAwarded: activityState.pointsAwarded + newPoints, daysAwarded: daysAwarded.concat(daysToAward) };
-        storeActivityState(activity.key, newState);
         return newState;
     }
     return activityState;

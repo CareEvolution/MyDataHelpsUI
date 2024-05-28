@@ -60,7 +60,7 @@ export const ShowTotalPoints = {
 
 export const Live = {
     args: {
-        pointsForBadge: 1000,
+        pointsPerBadge: 1000,
         activities: [
             {
                 key: "FitbitSleepData",
@@ -80,10 +80,9 @@ export const Live = {
             },
             {
                 key: "FitbitOrder",
-                type: "survey",
+                type: "surveyCompleted",
                 points: 800,
-                surveyName: "OrderDevice",
-                limit: 1
+                surveyName: "OrderDevice"
             },
             {
                 key: "ConnectEhr",
@@ -91,7 +90,8 @@ export const Live = {
                 points: 250,
                 providerCategories: ["Provider", "Health Plan"]
             },
-        ]
+        ],
+        customField: "PointsAndBadges",
     },
     render: render
 };
