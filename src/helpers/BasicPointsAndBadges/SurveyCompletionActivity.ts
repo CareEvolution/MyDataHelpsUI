@@ -28,7 +28,12 @@ export async function awardSurveyCompletionActivityPoints(activity: SurveyComple
         return activityState;
     }
 
-    let answers = await queryAllSurveyAnswers(parameters);
+    // inserted after is really "inserted on or after"
+    let answers = (await queryAllSurveyAnswers(parameters)).filter(answer => answer.insertedDate != activityState.lastQueryDate);
+
+    //sory by latest inserteddate first
+    answers.sort((a, b) => new Date(b.insertedDate).getTime() - new Date(a.insertedDate).getTime());
+
     let newUniqueResults = answers.map(answer => answer.surveyResultID).filter((value, index, self) => self.indexOf(value) === index);
     if (activity.limit != undefined && newUniqueResults.length + countCompleted > activity.limit) {
         newUniqueResults = newUniqueResults.slice(0, activity.limit - countCompleted);
