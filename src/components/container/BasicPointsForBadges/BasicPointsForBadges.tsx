@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import language from "../../../helpers/language";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
@@ -12,7 +12,6 @@ import { awardPointsAndBadges } from "../../../helpers";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
-    customField: string;
     activities: BasicPointsForBadgesActivity[];
     previewState?: "default";
     titleColor?: ColorDefinition;
@@ -20,6 +19,7 @@ export interface BasicPointsForBadgesProps {
     pointsLabelColor?: ColorDefinition;
     awardBadgesViewUrl: string;
     showTotalPoints?: boolean;
+    customField: string;
 }
 
 export default function (props: BasicPointsForBadgesProps) {
@@ -31,32 +31,48 @@ export default function (props: BasicPointsForBadgesProps) {
         return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
     }
 
+    function previewParticipantInfo(): ParticipantInfo {
+        let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
+        props.activities.forEach((activity, index) => {
+            previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 300 + (2 * props.pointsPerBadge) : 0 };
+        });
+        return {
+            participantID: "1",
+            participantIdentifier: "1",
+            //@ts-ignore
+            demographics: {},
+            customFields: {
+                [props.customField]: JSON.stringify({
+                    badges: [props.pointsPerBadge, props.pointsPerBadge * 2],
+                    activityStates: previewActivityStates
+                })
+            }
+        }
+    }
+
+    async function previewAwardPointsAndBadges(
+        activities: BasicPointsForBadgesActivity[],
+        state: BasicPointsForBadgesState): Promise<BasicPointsForBadgesState> {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        let newState = { ...state };
+        activities.forEach((activity, index) => {
+            newState.activityStates[activity.key].pointsAwarded += 250;
+        });
+        return newState;
+    }
+
     async function initialize() {
-        if (props.previewState === "default") {
-            let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
-            props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 300 + (2 * props.pointsPerBadge) : 0 };
-            });
-            setPoints(sumActivityPoints(previewActivityStates));
-            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2]);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            props.activities.forEach((activity, index) => {
-                previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? (300 + props.pointsPerBadge + (2 * props.pointsPerBadge)) : 0 };
-            });
-            setPoints(sumActivityPoints(previewActivityStates));
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setBadges([props.pointsPerBadge, props.pointsPerBadge * 2, props.pointsPerBadge * 3]);
-            return;
-        };
-
-        let participantInfo = await MyDataHelps.getParticipantInfo();
+        let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo();
         let currentState = parsePointsAndBadgesState(props.customField, props.activities, participantInfo);
         setBadges(currentState.badges);
         setPoints(sumActivityPoints(currentState.activityStates));
 
-        let updatedState = await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge, participantInfo);
-        await persistPointsAndBadgesState(props.customField, updatedState);
+        let updatedState = !props.previewState ?
+            await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge, participantInfo) :
+            await previewAwardPointsAndBadges(props.activities, currentState);
+        if (!props.previewState) {
+            await persistPointsAndBadgesState(props.customField, updatedState);
+        }
         let newPointTotal = sumActivityPoints(updatedState.activityStates);
         setPoints(newPointTotal);
 

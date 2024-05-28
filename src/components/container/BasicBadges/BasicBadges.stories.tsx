@@ -35,6 +35,7 @@ export const ZeroBadges = {
 
 export const Live = {
     args: {
+        pointsForBadgesCustomField: "PointsAndBadges",
     },
     render: render
 };
