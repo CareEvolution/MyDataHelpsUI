@@ -31,7 +31,7 @@ export default function (props: BasicBadgesProps) {
             <Title order={3}>{(props.title || language("my-badges")).replace("{{badges}}", badgeCount.toString())}</Title>
             <div className="mdhui-basic-badges-list">
                 {badgeCount && Array.from({ length: badgeCount }).map((_, index) =>
-                    <BasicBadge key={index} backgroundColor={getColorFromAssortment(index)} />
+                    <BasicBadge key={`badge-${index}`} backgroundColor={getColorFromAssortment(index)} />
                 )}
             </div>
         </div>
