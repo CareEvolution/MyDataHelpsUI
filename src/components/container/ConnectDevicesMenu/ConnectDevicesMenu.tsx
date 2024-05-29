@@ -1,4 +1,4 @@
-import MyDataHelps, { DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
@@ -21,6 +21,7 @@ export interface ConnectDevicesMenuProps {
     text?: string
     previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
     headerVariant?: "large" | "medium"
+    connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -97,21 +98,21 @@ export default function (props: ConnectDevicesMenuProps) {
         if (!accountTypes.includes("Fitbit")) {
             return null;
         }
-        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), <img src={FitbitLogo}/>);
+        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), <img src={FitbitLogo} />);
     }
 
     function getGarminMenuItem() {
         if (!accountTypes.includes("Garmin")) {
             return null;
         }
-        return getExternalAccountMenuItem("Garmin", getGarminProviderID(), <img src={GarminLogo}/>);
+        return getExternalAccountMenuItem("Garmin", getGarminProviderID(), <img src={GarminLogo} />);
     }
 
     function getOmronMenuItem() {
         if (!accountTypes.includes("Omron")) {
             return null;
         }
-        return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img src={OmronLogo}/>);
+        return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img src={OmronLogo} />);
     }
 
     function getExternalAccountMenuItem(providerName: string, providerID: number, image: ReactNode) {
@@ -119,7 +120,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         let action: (() => void) | undefined = () => {
-            MyDataHelps.connectExternalAccount(providerID, { openNewWindow: true });
+            MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true });
         };
 
         if (externalAccount) {
@@ -211,7 +212,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
 
     return <div className="mdhui-connect-devices-menu-device">
         <Action onClick={action} indicator={indicator}>
-            <Title autosizeImage image={<img src={AppleHealthLogo} />}  order={4}>Apple Health</Title>
+            <Title autosizeImage image={<img src={AppleHealthLogo} />} order={4}>Apple Health</Title>
         </Action>
         {expanded &&
             <div className="mdhui-connect-devices-menu-help">

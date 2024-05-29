@@ -17,7 +17,7 @@ export interface NavigationBarProps {
 	closeButtonText?: string;
 	backButtonText?: string;
 	className?: string;
-	variant?: 'default' | 'compressed';
+	variant?: "default" | "compressed" | "compressedModal";
 	titleColor?: ColorDefinition;
 	subtitleColor?: ColorDefinition;
 	buttonColor?: ColorDefinition;
@@ -38,7 +38,7 @@ export default function (props: NavigationBarProps) {
 	}
 
 	useLayoutEffect(() => {
-		const {current} = navBar;
+		const { current } = navBar;
 
 		function scrollListener() {
 			if (window.scrollY > 0) {
@@ -61,14 +61,17 @@ export default function (props: NavigationBarProps) {
 	if (props.variant == 'compressed') {
 		classes.push('mdhui-navigation-bar-compressed');
 	}
+	if (props.variant == "compressedModal") {
+		classes.push("mdhui-navigation-bar-compressed-modal");
+	}
 
 	let layoutContext = useContext(LayoutContext);
 
 	return (
-		<div className={classes.join(' ')} ref={navBar} style={{background: resolveColor(layoutContext?.colorScheme, props.backgroundColor)}}>
+		<div className={classes.join(' ')} ref={navBar} style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
 			{props.showBackButton &&
-				<div className="button back-button" onClick={() => back()} style={{color: resolveColor(layoutContext?.colorScheme, props.buttonColor)}}>
-					<FontAwesomeSvgIcon icon={faChevronLeft}/>
+				<div className="button back-button" onClick={() => back()} style={{ color: resolveColor(layoutContext?.colorScheme, props.buttonColor) }}>
+					<FontAwesomeSvgIcon icon={faChevronLeft} />
 					{props.backButtonText ? props.backButtonText : language('back')}
 				</div>
 			}
@@ -78,12 +81,12 @@ export default function (props: NavigationBarProps) {
 				</div>
 			}
 			{props.title &&
-				<div className="title" style={{color: resolveColor(layoutContext?.colorScheme, props.titleColor)}}>
+				<div className="title" style={{ color: resolveColor(layoutContext?.colorScheme, props.titleColor) }}>
 					<span>{props.title}</span>
 				</div>
 			}
 			{props.subtitle &&
-				<div className="subtitle" style={{color: resolveColor(layoutContext?.colorScheme, props.subtitleColor)}}>
+				<div className="subtitle" style={{ color: resolveColor(layoutContext?.colorScheme, props.subtitleColor), marginTop: props.title ? "var(--mdhui-padding-sm)" : "0" }}>
 					<span>{props.subtitle}</span>
 				</div>
 			}
@@ -93,7 +96,7 @@ export default function (props: NavigationBarProps) {
 				</div>
 			}
 			{props.showCloseButton &&
-				<div className="button close-button" onClick={() => close()} style={{color: resolveColor(layoutContext?.colorScheme, props.buttonColor)}}>
+				<div className="button close-button" onClick={() => close()} style={{ color: resolveColor(layoutContext?.colorScheme, props.buttonColor) }}>
 					{props.closeButtonText ? props.closeButtonText : language('close')}
 				</div>
 			}

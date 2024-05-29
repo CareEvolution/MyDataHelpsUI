@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline"
+import { TermInformationReference } from "../TermInformation/TermInformation";
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import { useMyDataHelps } from "../../../helpers/useMyDataHelps"
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
@@ -8,14 +8,14 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
 
 export interface MedicationsListProps {
     previewState?: "default"
-    onViewTermInfo(termInfo: TermInformation): void
+    onViewTermInfo(termInfo: TermInformationReference): void
     innerRef?: React.Ref<HTMLDivElement>
 }
 
 interface Medication {
     DisplayName: string;
     OrderText?: string;
-    TermInformation?: TermInformation;
+    TermInformation?: TermInformationReference;
 }
 
 export default function (props: MedicationsListProps) {

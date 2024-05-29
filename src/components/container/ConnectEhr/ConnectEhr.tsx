@@ -12,7 +12,7 @@ import ConnectEHR from "../../../assets/connect-ehr.svg";
 import { ColorDefinition } from '../../../helpers/colors';
 
 export interface ConnectEhrProps {
-	applicationUrl: ConnectEhrApplicationUrl,
+	applicationUrl?: string,
 	previewState?: ConnectEhrPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
@@ -23,9 +23,9 @@ export interface ConnectEhrProps {
 	connectedText?: string
 	hideWhenConnected?: boolean
 	buttonColor?: ColorDefinition
+	onClick?: () => void
 }
 
-export type ConnectEhrApplicationUrl = "preview" | string;
 export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnected" | "enabledNeedsAttention";
 
 export default function (props: ConnectEhrProps) {
@@ -69,9 +69,9 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	function connectToEhr() {
-		if (props.applicationUrl == "preview") {
-			console.log("PREVIEW: Opening the connect EHR application.");
-		} else {
+		if (props.onClick) {
+			props.onClick();
+		} else if (props.applicationUrl) {
 			MyDataHelps.openApplication(props.applicationUrl);
 		}
 	}

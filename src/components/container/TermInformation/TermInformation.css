@@ -1,0 +1,8 @@
+.mdhui-term-information .mdhui-term-information-html h2 {
+    font-size: 1.2em;
+}
+
+.mdhui-term-information .mdhui-term-information-disclaimer {
+    color: var(--mdhui-text-color-2);
+    font-size: .7em;
+}

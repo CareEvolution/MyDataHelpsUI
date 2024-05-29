@@ -1,5 +1,5 @@
 ﻿import React from 'react'
-import { ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import { ConnectExternalAccountOptions, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
 import { getGarminProviderID } from '../../../helpers/providerIDs';
 import GarminLogo from '../../../assets/garmin-logo.svg';
@@ -11,6 +11,7 @@ export interface ConnectGarminProps {
 	disabledBehavior?: 'hide' | 'displayError'
 	innerRef?: React.Ref<HTMLDivElement>
 	hideWhenConnected?: boolean
+	connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -28,5 +29,6 @@ export default function (props: ConnectGarminProps) {
 		providerID={getInternalGarminProviderID()}
 		previewState={props.previewState}
 		disabledBehavior={props.disabledBehavior}
-		hideWhenConnected={props.hideWhenConnected} />);
+		hideWhenConnected={props.hideWhenConnected}
+		connectExternalAccountOptions={props.connectExternalAccountOptions} />);
 }

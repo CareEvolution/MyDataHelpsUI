@@ -2,17 +2,17 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 import React, { useEffect, useState } from "react";
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational";
 import "./LabResultsSummary.css";
-import icon from './icon-labreport.svg';
+import icon from '../../../assets/icon-labreport.svg';
 import LabResultWithSparkline from "../../presentational/LabResultWithSparkline";
 import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
-import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
+import { TermInformationReference } from "../TermInformation/TermInformation";
 
 export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
     onClick(): void;
-    onViewTermInfo(termInfo: TermInformation): void
+    onViewTermInfo(termInfo: TermInformationReference): void
     innerRef?: React.Ref<HTMLDivElement>
 }
 

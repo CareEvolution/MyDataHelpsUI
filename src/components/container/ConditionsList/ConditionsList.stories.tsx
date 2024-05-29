@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Layout } from "../../presentational";
 import ConditionsList, { ConditionsListProps } from "./ConditionsList";
-import { TermInformation } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline";
+import { TermInformationReference } from "../TermInformation/TermInformation";
 
 export default { title: "Container/ConditionsList", component: ConditionsList, parameters: { layout: 'fullscreen' } };
 let render = (args: ConditionsListProps) => <Layout colorScheme="auto"><Card><ConditionsList {...args} /></Card></Layout>
@@ -9,7 +9,7 @@ let render = (args: ConditionsListProps) => <Layout colorScheme="auto"><Card><Co
 export const Default = {
     args: {
         previewState: "default",
-        onViewTermInfo: (termInfo: TermInformation) => {
+        onViewTermInfo: (termInfo: TermInformationReference) => {
             console.log(termInfo);
         }
     },
@@ -18,7 +18,7 @@ export const Default = {
 
 export const Live = {
     args: {
-        onViewTermInfo: (termInfo: TermInformation) => {
+        onViewTermInfo: (termInfo: TermInformationReference) => {
             console.log(termInfo);
         }
     },
