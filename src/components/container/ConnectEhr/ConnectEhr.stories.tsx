@@ -51,38 +51,40 @@ export const NotEnabledDisplayError = {
     render: render
 };
 
+let onClick = () => { console.log("PREVIEW: Opening the connect EHR application.") };
+
 export const Enabled = {
-    args: { previewState: "enabled", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
+    args: { previewState: "enabled", onClick: onClick },
     render: render
 };
 
 export const EnabledConnected = {
-    args: { previewState: "enabledConnected", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
+    args: { previewState: "enabledConnected", onClick: onClick },
     render: render
 };
 
 export const EnabledNeedsAttention = {
-    args: { previewState: "enabledNeedsAttention", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
+    args: { previewState: "enabledNeedsAttention", onClick: onClick },
     render: render
 };
 
 export const Live = {
-    args: { disabledBehavior: "displayError", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") } },
+    args: { disabledBehavior: "displayError", onClick: onClick },
     render: render
 };
 
 export const CustomConnectedText = {
-    args: { previewState: "enabledConnected", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") }, title: "Custom title", connectedText: "Thanks for connecting your EHR!" },
+    args: { previewState: "enabledConnected", onClick: onClick, title: "Custom title", connectedText: "Thanks for connecting your EHR!" },
     render: render
 };
 
 export const CustomConnectText = {
-    args: { previewState: "enabled", onClick: () => { console.log("PREVIEW: Opening the connect EHR application.") }, title: "Custom title", connectedText: "Connect your EHR title" },
+    args: { previewState: "enabled", onClick: onClick, title: "Custom title", connectedText: "Connect your EHR title" },
     render: render
 };
 
 export const HideConnected = {
     args: { previewState: "enabledConnected", applicationUrl: "preview", hideWhenConnected: true },
-    argTypes: { previewState: { name: "Connection State", control: "radio", options: ["enabled", "enabledConnected", "enabledNeedsAttention", "notEnabled"]}},
+    argTypes: { previewState: { name: "Connection State", control: "radio", options: ["enabled", "enabledConnected", "enabledNeedsAttention", "notEnabled"] } },
     render: render
 };
