@@ -2,6 +2,7 @@ export * from './query-daily-data';
 export * from './daily-data-types';
 export * from './language';
 export * from './locale';
+export * from './BasicPointsAndBadges';
 export { default as getDayKey } from './get-day-key';
 export * from './get-interval-start';
 export * from './colors';
