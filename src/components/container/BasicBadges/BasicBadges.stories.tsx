@@ -24,6 +24,21 @@ export const FiveBadges = {
     render: render
 };
 
+export const TenBadges = {
+    args: {
+        badgeCount:10
+    },
+    render: render
+};
+
+
+export const FiftyBadges = {
+    args: {
+        badgeCount: 50
+    },
+    render: render
+};
+
 
 export const ZeroBadges = {
     args: {

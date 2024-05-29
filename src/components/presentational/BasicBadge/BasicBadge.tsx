@@ -10,7 +10,7 @@ import "./BasicBadge.css"
 
 export interface BasicBadgeProps {
     backgroundColor?: ColorDefinition;
-    size?: "small" | "xl";
+    size?: "xs" | "small" | "xl";
     children?: ReactElement;
 }
 
@@ -18,6 +18,7 @@ export default function (props: BasicBadgeProps) {
     const layoutContext = useContext<LayoutContext>(LayoutContext);
     const classes = ["mdhui-basic-badge"];
     if (props.size === "xl") classes.push("mdhui-basic-badge-xl");
+    if (props.size === "xs") classes.push("mdhui-basic-badge-xs");
 
     return (
         <div className={classes.join(" ")} style={{ backgroundColor: resolveColor(layoutContext.colorScheme, props.backgroundColor), color: "#FFD379" }}>

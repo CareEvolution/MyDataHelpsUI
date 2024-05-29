@@ -28,7 +28,6 @@ var colorAssortment = [
     "#f686ae",
     "#af9fd7",
     "#6e4b3f",
-    "#aa92d6",
     "#9d9083",
     "#565656",
     "#eec04c",

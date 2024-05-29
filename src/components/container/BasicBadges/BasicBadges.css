@@ -2,8 +2,15 @@
     padding: 16px;
 }
 
-.mdhui-basic-badges .mdhui-basic-badges-list {
+.mdhui-basic-badges .mdhui-basic-badges-first-row {
     display: flex;
     gap: 16px;
     margin-top: 16px;
+}
+
+.mdhui-basic-badges .mdhui-basic-badges-remaining {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
 }
