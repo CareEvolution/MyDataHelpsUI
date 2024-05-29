@@ -14,7 +14,6 @@ export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
     activities: BasicPointsForBadgesActivity[];
     previewState?: "default";
-    titleColor?: ColorDefinition;
     progressBarFillColor?: ColorDefinition;
     pointsLabelColor?: ColorDefinition;
     awardBadgesViewUrl: string;
@@ -104,7 +103,6 @@ export default function (props: BasicPointsForBadgesProps) {
     }
 
     return <div className={"mdhui-basic-points-for-badges"}>
-        <Title order={3} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
         {badges !== undefined && points !== undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
