@@ -1,4 +1,4 @@
-import { startOfDay } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
 import { queryDailyData } from "../query-daily-data";
 
@@ -15,8 +15,12 @@ interface DailyDataActivityState extends BasicPointsForBadgesActivityState {
 
 export async function awardDailyDataActivityPoints(activity: DailyDataActivity, activityState: DailyDataActivityState) {
     let daysAwarded = activityState.daysAwarded || [];
-    let startDate = startOfDay(new Date());
-    if (!activityState) {
+
+    //by default, look back 14 days for new data
+    //if no days awarded yet, or if the activation date is more recent than 14 days ago, use the activation date
+    //to ensure that historical points are awarded when the user first connects a device (e.g. a Fitbit)
+    let startDate = add(startOfDay(new Date()), { days: -14 });
+    if (!activityState.daysAwarded || activityState.daysAwarded.length === 0 || startDate < activity.activationDate) {
         startDate = activity.activationDate;
     }
 
