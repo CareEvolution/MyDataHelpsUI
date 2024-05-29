@@ -42,7 +42,6 @@ export const Default = {
     render: render
 };
 
-
 export const ShowTotalPoints = {
     args: {
         previewState: "default",
