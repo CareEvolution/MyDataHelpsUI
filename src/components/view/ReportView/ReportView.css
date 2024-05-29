@@ -1,0 +1,9 @@
+.mdhui-report-view {
+    height: calc(100dvh - 8px);
+    display: flex;
+    flex-direction: column;
+}
+
+.mdhui-report-view .mdhui-report-content {
+    flex-grow: 1;
+}

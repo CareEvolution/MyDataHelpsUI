@@ -80,6 +80,16 @@ export const CompressedWithSubtitle = {
 	render: render
 }
 
+export const CompressedModal = {
+	args: {
+		title: "My Title",
+		showCloseButton: true,
+		showBackButton: true,
+		variant: "compressedModal"
+	},
+	render: render
+}
+
 export const WithDateRangeNavigator = {
 	args: {
 		title: 'Migraine',

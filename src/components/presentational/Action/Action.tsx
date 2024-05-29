@@ -64,16 +64,27 @@ export default function (props: ActionProps) {
 		</div>
 	</>;
 
+	let classes = ["mdhui-action"];
+	if (props.bottomBorder) {
+		classes.push("mdhui-action-bottom-border");
+	}
+	if(props.className){
+		classes.push(props.className);
+	}
+	if (props.onClick) {
+		classes.push("mdhui-action-clickable");
+	}
+
 	if (props.renderAs == "div") {
 		return (
-			<div className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} ref={props.innerRef} onClick={() => onClick()}>
+			<div className={classes.join(" ")} ref={props.innerRef} onClick={() => onClick()}>
 				{innerContent}
 			</div>
 		)
 	} else {
 		return (
 			<div ref={props.innerRef}>
-				<UnstyledButton className={(props.className || "") + " mdhui-action" + (props.bottomBorder ? " mdhui-action-bottom-border" : "")} onClick={() => onClick()}>
+				<UnstyledButton className={classes.join(" ")} onClick={() => onClick()}>
 					{innerContent}
 				</UnstyledButton>
 			</div>

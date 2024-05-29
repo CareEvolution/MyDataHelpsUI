@@ -4,10 +4,9 @@ import language from '../../../helpers/language'
 import {ProviderSearch} from '../../container'
 import {TextBlock} from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
-import {ExternalAccountsApplicationUrl} from "../../container/ExternalAccountsPreview/ExternalAccountsPreview";
 
 export interface ConnectEhrViewProps {
-    externalAccountsApplicationUrl: ExternalAccountsApplicationUrl,
+    externalAccountsApplicationUrl: string,
     excludeProviders?: boolean,
     excludeHealthPlans?: boolean,
     presentation?: ViewPresentationType,

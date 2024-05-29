@@ -12,6 +12,7 @@ export interface ExternalAccountsLoadingIndicatorProps {
     previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
     externalAccountCategories?: string[];
     innerRef?: React.Ref<HTMLDivElement>
+    triggerWebExternalAccountSyncComplete?: boolean;
 }
 
 let previewStateAccounts: ExternalAccount[] = [{
@@ -53,6 +54,18 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
                     account.status = 'fetchingData';
                 }
             });
+
+            if (props.triggerWebExternalAccountSyncComplete) {
+                let accountsChanged = externalAccounts.some((account, index) => {
+                    let newAccount = accounts.find(a => a.id == account.id);
+                    if (account.status == "fetchingData" && newAccount?.status == "fetchComplete") {
+                        return true;
+                    }
+                });
+                if (accountsChanged) {
+                    MyDataHelps.triggerEvent({ type: "externalAccountSyncComplete" });
+                }
+            }
             setExternalAccounts(accounts);
         });
     }

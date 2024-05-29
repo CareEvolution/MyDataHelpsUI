@@ -51,38 +51,40 @@ export const NotEnabledDisplayError = {
     render: render
 };
 
+let onClick = () => { console.log("PREVIEW: Opening the connect EHR application.") };
+
 export const Enabled = {
-    args: { previewState: "enabled", applicationUrl: "preview" },
+    args: { previewState: "enabled", onClick: onClick },
     render: render
 };
 
 export const EnabledConnected = {
-    args: { previewState: "enabledConnected", applicationUrl: "preview" },
+    args: { previewState: "enabledConnected", onClick: onClick },
     render: render
 };
 
 export const EnabledNeedsAttention = {
-    args: { previewState: "enabledNeedsAttention", applicationUrl: "preview" },
+    args: { previewState: "enabledNeedsAttention", onClick: onClick },
     render: render
 };
 
 export const Live = {
-    args: { disabledBehavior: "displayError", applicationUrl: "preview" },
+    args: { disabledBehavior: "displayError", onClick: onClick },
     render: render
 };
 
 export const CustomConnectedText = {
-    args: { previewState: "enabledConnected", applicationUrl: "preview", title:"Custom title", connectedText: "Thanks for connecting your EHR!" },
+    args: { previewState: "enabledConnected", onClick: onClick, title: "Custom title", connectedText: "Thanks for connecting your EHR!" },
     render: render
 };
 
 export const CustomConnectText = {
-    args: { previewState: "enabled", applicationUrl: "preview", title:"Custom title", connectedText: "Connect your EHR title" },
+    args: { previewState: "enabled", onClick: onClick, title: "Custom title", connectedText: "Connect your EHR title" },
     render: render
 };
 
 export const HideConnected = {
     args: { previewState: "enabledConnected", applicationUrl: "preview", hideWhenConnected: true },
-    argTypes: { previewState: { name: "Connection State", control: "radio", options: ["enabled", "enabledConnected", "enabledNeedsAttention", "notEnabled"]}},
+    argTypes: { previewState: { name: "Connection State", control: "radio", options: ["enabled", "enabledConnected", "enabledNeedsAttention", "notEnabled"] } },
     render: render
 };

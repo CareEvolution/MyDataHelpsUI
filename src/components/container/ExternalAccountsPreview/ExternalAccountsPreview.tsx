@@ -9,12 +9,12 @@ export interface ExternalAccountsPreviewProps {
     excludeProviders?: boolean;
     excludeHealthPlans?: boolean;
     excludeDeviceManufacturers?: boolean;
-    applicationUrl: ExternalAccountsApplicationUrl;
+    applicationUrl?: string;
     previewState?: ExternalAccountsPreviewPreviewState;
     innerRef?: React.Ref<HTMLDivElement>
+    onClick?: () => void;
 }
 
-export type ExternalAccountsApplicationUrl = "preview" | string;
 export type ExternalAccountsPreviewPreviewState = "Default";
 
 export default function (props: ExternalAccountsPreviewProps) {
@@ -61,9 +61,9 @@ export default function (props: ExternalAccountsPreviewProps) {
     }
 
     function manageExternalAccounts() {
-        if (props.applicationUrl == "preview") {
-            console.log("PREVIEW: Opening the external accounts application.");
-        } else {
+        if (props.onClick) {
+            props.onClick();
+        } else if (props.applicationUrl) {
             MyDataHelps.openApplication(props.applicationUrl);
         }
     }
@@ -82,7 +82,7 @@ export default function (props: ExternalAccountsPreviewProps) {
 
     return (
         <div ref={props.innerRef} className="mdhui-external-accounts-preview">
-            <Action title={title} onClick={() => manageExternalAccounts()}>
+            <Action bottomBorder title={title} onClick={() => manageExternalAccounts()}>
                 {externalAccounts.map((account) =>
                     <div key={account.id} className="external-account-title">{account.provider.name}</div>
                 )}
