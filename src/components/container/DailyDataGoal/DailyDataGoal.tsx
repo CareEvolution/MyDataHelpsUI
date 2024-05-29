@@ -37,7 +37,7 @@ export default function (props: DailyDataGoalProps) {
         const endDate = add(date, { days: 2 });
 
         queryDailyData(props.dailyDataType, startDate, endDate, props.previewState === "Default").then((results) => {
-            setDailyValue(results[getDayKey(date)]);
+            setDailyValue(results[getDayKey(date)] || 0);
         });
     }, [], []);
 

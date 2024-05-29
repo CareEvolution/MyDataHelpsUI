@@ -92,3 +92,56 @@ export const Zero = {
     },
     render: render
 };
+
+
+export const SleepGoalLive = {
+    args: {
+        goal: 1,
+        dailyDataType: DailyDataType.FitbitSleepMinutes,
+        title: "Worn to Sleep",
+        subtitle: "200 points",
+        messages: [
+            {
+                threshold: 0,
+                message: "No points yet"
+            },
+            {
+                threshold: 1,
+                message: "Complete!"
+            }
+        ]
+    },
+    render: render
+};
+
+export const WearTimeGoalLive = {
+    args: {
+        goal: 10000,
+        dailyDataType: DailyDataType.FitbitSteps, // TODO Wear time 
+        title: "Worn 10 Hours",
+        subtitle: "100 points",
+        messages: [
+            {
+                threshold: 0,
+                message: "No points yet"
+            },
+            {
+                threshold: 2500,
+                message: "Keep going!"
+            },
+            {
+                threshold: 5000,
+                message: "Halfway there!"
+            },
+            {
+                threshold: 7500,
+                message: "Almost there!"
+            },
+            {
+                threshold: 10000,
+                message: "Complete!"
+            }
+        ]
+    },
+    render: render
+};
