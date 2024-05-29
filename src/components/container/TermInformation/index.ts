@@ -1,1 +1,1 @@
-export { default } from "./TermInformation";
+export { default, TermInformationReference } from "./TermInformation";
