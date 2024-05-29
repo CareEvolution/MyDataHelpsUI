@@ -1,9 +1,9 @@
 import React from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
-import { getCurrentPointsAndBadges } from "../../../helpers/BasicPointsAndBadges/PointsAndBadges";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { BasicBadge, Button, Layout, TextBlock, Title } from "../../presentational";
 import "./NewBadgeView.css";
+import { parsePointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
 
 export interface NewBadgeViewProps {
     badgeNumber?: number;
@@ -12,6 +12,7 @@ export interface NewBadgeViewProps {
     text?: string;
     colorScheme?: 'auto' | 'light' | 'dark';
     primaryColor?: string;
+    customField: string;
 }
 
 export default function (props: NewBadgeViewProps) {
@@ -19,8 +20,9 @@ export default function (props: NewBadgeViewProps) {
 
     useInitializeView(() => {
         if (props.badgeNumber !== undefined) { setBadgeNumber(props.badgeNumber); return; }
-        getCurrentPointsAndBadges().then(function (pointsAndBadges) {
-            setBadgeNumber(pointsAndBadges.badges);
+        MyDataHelps.getParticipantInfo().then(participantInfo => {
+            let pointsAndBadgesState = parsePointsAndBadgesState(props.customField!, [], participantInfo);
+            setBadgeNumber(pointsAndBadgesState.badges.length);
         });
     }, [], [props.badgeNumber]);
 
