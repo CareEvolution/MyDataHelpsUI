@@ -10,6 +10,8 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
+import { getLocaleFromIso } from '../../../helpers';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -164,7 +166,7 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = format(parseISO(props.event.Date), "h:mm a");
+    let date = format(parseISO(props.event.Date), "h:mm a", { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
     if (date === "12:00 AM") {
         date = "";
     }

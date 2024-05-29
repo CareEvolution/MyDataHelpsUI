@@ -9,6 +9,8 @@ import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefini
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
 import "./EhrNewsFeedEventDetail.css"
 import language from '../../../helpers/language';
+import { getLocaleFromIso } from '../../../helpers';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface EhrNewsFeedEventDetailProps {
     feed: EhrNewsFeedType
@@ -63,7 +65,7 @@ function NewsFeedDetailTitle(props: { event: EhrNewsFeedEventModel }) {
     if (!title) { return null; }
 
     let date = parseISO(props.event.Date);
-    let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do, y h:mm a")} • ${props.event.Patient.RecordAuthority}`
+    let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do, y h:mm a", { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) })} • ${props.event.Patient.RecordAuthority}`
     if (format(date, "h:mm a") == "12:00 AM") {
         subtitle = props.event.Patient.RecordAuthority;
     }
