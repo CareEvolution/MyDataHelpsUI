@@ -104,7 +104,7 @@ export default function (props: BasicPointsForBadgesProps) {
     }
 
     return <div className={"mdhui-basic-points-for-badges"}>
-        <Title order={4} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
+        <Title order={3} style={{ color: resolveColor(layoutContext.colorScheme, props.titleColor) }}>{language("current-points")}</Title>
         {badges !== undefined && points !== undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points : (props.pointsPerBadge - pointsUntilNextBadge())}pts</Title>
