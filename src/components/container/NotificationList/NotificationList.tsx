@@ -13,6 +13,7 @@ export interface NotificationListProps {
 
 export type NotificationListPreviewState = "Default" | "NoData";
 
+/** Notification List. Can be filtered by Email/Push/SMS */
 export default function (props: NotificationListProps) {
 	const [loading, setLoading] = useState(false);
 	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
@@ -21,7 +22,7 @@ export default function (props: NotificationListProps) {
 
 	function loadNextPage() {
 		if (props.previewState == "Default") {
-			setNotifications(previewNotifications);
+			setNotifications(previewNotifications.filter(n => !props.notificationType || n.type === props.notificationType));
 		}
 
 		if (props.previewState) {
@@ -65,7 +66,7 @@ export default function (props: NotificationListProps) {
 		return () => {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 		}
-	}, []);
+	}, [props.notificationType]);
 
 	return (
 		<div ref={props.innerRef} className="mdhui-notification-list">
