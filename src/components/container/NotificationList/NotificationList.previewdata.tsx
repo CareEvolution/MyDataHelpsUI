@@ -71,7 +71,7 @@ export var previewNotifications: Notification[] =
 		"type": "Sms",
 		"content": {
 			"title": "SMS Title - complete daily survey",
-			"body": "Visit MDH to complete you daily survey"
+			"body": "Visit MDH to complete your daily survey"
 		},
 		recipients: [],
 		contentVersion: 1
