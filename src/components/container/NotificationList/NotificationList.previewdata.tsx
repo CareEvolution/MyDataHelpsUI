@@ -62,7 +62,6 @@ export var previewNotifications: Notification[] =
 		recipients: [],
 		contentVersion: 1
 	},
-	,
 	{
 		"id": "7",
 		"identifier": "SMSSurveyReminder",
