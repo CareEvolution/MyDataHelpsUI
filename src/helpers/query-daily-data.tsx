@@ -86,11 +86,8 @@ export function getAllDailyDataTypes() {
 	return Array.from(dailyDataTypes.values());
 }
 
-let definitionLookup = new Map(
-	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
-);
 export function getDailyDataTypeDefinition(dataType: string): DailyDataTypeDefinition {
-	return definitionLookup.get(dataType)!;
+	return dailyDataTypes.get(dataType)!;
 }
 
 allTypeDefinitions.forEach(function (typeDefinition) {
