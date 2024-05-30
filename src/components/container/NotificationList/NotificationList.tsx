@@ -22,7 +22,7 @@ export default function (props: NotificationListProps) {
 
 	function loadNextPage() {
 		if (props.previewState == "Default") {
-			setNotifications(previewNotifications.filter(n => !props.notificationType || n.type == props.notificationType));
+			setNotifications(previewNotifications.filter(n => !props.notificationType || n.type === props.notificationType));
 		}
 
 		if (props.previewState) {
