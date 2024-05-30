@@ -15,7 +15,7 @@ export default function (props: SingleNotificationProps) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
+	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
