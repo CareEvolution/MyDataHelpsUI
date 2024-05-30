@@ -3,13 +3,19 @@ import { DateRangeContext } from '../../presentational/DateRangeCoordinator/Date
 import { add, parseISO } from 'date-fns'
 import { SurveyAnswer } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getMonthStart, getWeekStart, get6MonthStart, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
-import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
+import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import format from 'date-fns/format'
 import { useInitializeView } from '../../../helpers/Initialization'
+import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
-export interface SurveyAnswerChartParameters {
-    label: string;
+export interface SurveyAnswerChartSeries extends ChartSeries {
+    surveyName?: string | string[];
+    stepIdentifier?: string | string[];
+    resultIdentifier: string | string[];
+}
+
+export interface SurveyAnswerAreaChartSeries extends AreaChartSeries {
     surveyName?: string | string[];
     stepIdentifier?: string | string[];
     resultIdentifier: string | string[];
@@ -19,9 +25,9 @@ export interface SurveyAnswerChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month"
     weekStartsOn?: WeekStartsOn
-    charts: SurveyAnswerChartParameters[],
+    series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[],
     chartType: "Line" | "Bar" | "Area"
-    options?: LineChartOptions | BarChartOptions | AreaChartOptions,
+    options?: MultiSeriesLineChartOptions| MultiSeriesBarChartOptions | MultiSeriesBarChartOptions,
     expectedDataInterval?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     innerRef?: React.Ref<HTMLDivElement>
@@ -56,7 +62,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             return;
         }
         
-        var dataRequests = props.charts.map(l => queryAllSurveyAnswers({
+        var dataRequests = props.series.map(l => queryAllSurveyAnswers({
             surveyName: l.surveyName, 
             stepIdentifier: l.stepIdentifier, 
             resultIdentifier: l.resultIdentifier,
@@ -68,14 +74,14 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         })
     }
     
-    function getDataKey(line: SurveyAnswerChartParameters) {
+    function getDataKey(line: SurveyAnswerChartSeries | SurveyAnswerAreaChartSeries) {
         return `${line.surveyName}-${line.stepIdentifier}-${line.resultIdentifier}`;
     }
     
     function processPages(pages: SurveyAnswer[][]) {
         var newDailyData: { [key: string]: SurveyAnswer[] } = {};
-        for (var i = 0; i < props.charts.length; i++) {
-            newDailyData[getDataKey(props.charts[i])] = pages[i];
+        for (var i = 0; i < props.series.length; i++) {
+            newDailyData[getDataKey(props.series[i])] = pages[i];
         }
         
         return newDailyData;
@@ -89,8 +95,8 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
     var chartHasData: boolean = false;
     if (currentData !== null) {
         data = [];
-        props.charts.forEach((line) => {
-            var dataKey = getDataKey(line);
+        props.series.forEach((series) => {
+            var dataKey = getDataKey(series);
             currentData![dataKey].forEach((answer) => {
                 var answerDate = parseISO(answer.date);
                 answerDate.setHours(0,0,0,0);
@@ -101,7 +107,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                     }
                     data!.push(dataDay);
                 }
-                dataDay[line.label] = parseFloat(answer.answers[0]);
+                dataDay[series.dataKey] = parseFloat(answer.answers[0]);
                 chartHasData = true;
             });
         });
@@ -162,7 +168,17 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         intervalStart={intervalStart}
         data={data}
         expectedDataInterval={props.expectedDataInterval}
-        dataKeys={props.charts.map((l) => l.label)}
+        series={props.series.map(series => {
+            const newSeries: any = {
+                dataKey: series.dataKey,
+                color: series.color
+            };
+            if("areaColor" in series) {
+                newSeries.areaColor = series.areaColor;
+            }
+
+            return newSeries;
+        })}
         chartHasData={chartHasData}
         tooltip={GraphToolTip}
         chartType={props.chartType}

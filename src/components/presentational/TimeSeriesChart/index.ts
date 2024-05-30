@@ -1,1 +1,1 @@
-export { default, LineChartOptions, BarChartOptions, AreaChartOptions, BarChartThreshold } from "./TimeSeriesChart";
+export { default } from "./TimeSeriesChart";

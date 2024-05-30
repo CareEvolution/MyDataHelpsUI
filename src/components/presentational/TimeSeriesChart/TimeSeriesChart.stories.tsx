@@ -103,6 +103,7 @@ export const lineChart : TimeSeriesChartTest = {
         intervalType: "Week",
         chartType: "Line",
         chartHasData: true,
+        series: [{dataKey: 'value'}],
         data: undefined, 
         intervalStart: new Date(),
         tooltip: tooltip
@@ -123,6 +124,7 @@ export const lineChartWithGaps : TimeSeriesChartTest = {
         chartType: "Line",
         chartHasData: true,
         expectedDataInterval: {days: 1},
+        series: [ { dataKey: 'value' }],
         data: undefined,
         intervalStart: new Date(),
         tooltip: tooltip
@@ -142,6 +144,7 @@ export const lineChartIntraday : TimeSeriesChartTest = {
         chartType: "Line",
         chartHasData: true,
         expectedDataInterval: {minutes: 5},
+        series: [{dataKey: 'value'}],
         data: undefined,
         intervalStart: new Date(),
         tooltip: tooltip
@@ -160,6 +163,7 @@ export const barChart : TimeSeriesChartTest = {
         intervalType: "Week",
         chartType: "Bar",
         chartHasData: true,
+        series: [{dataKey: 'value'}],
         data: undefined,
         intervalStart: new Date(),
         tooltip
@@ -178,6 +182,7 @@ export const areaChart : TimeSeriesChartTest = {
         intervalType: "Week",
         chartType: "Area",
         chartHasData: true,
+        series: [{dataKey: 'value'}],
         data: undefined,
         intervalStart: new Date(),
         tooltip
@@ -196,8 +201,8 @@ export const multipleLineChart : TimeSeriesChartTest = {
         intervalType: "Week",
         chartType: "Line",
         chartHasData: true,
+        series: [{dataKey: 'key1', color: 'red'},{dataKey: 'key2', color: 'green'},{dataKey: 'key3'}],
         data: undefined,
-        dataKeys: ['key1', 'key2', 'key3'],
         intervalStart: new Date(),
         tooltip
     },
@@ -216,7 +221,7 @@ export const multipleBarChart : TimeSeriesChartTest = {
         chartType: "Bar",
         chartHasData: true,
         data: undefined,
-        dataKeys: ['key1', 'key2', 'key3'],
+        series: [{dataKey: 'key1', color: 'red'},{dataKey: 'key2', color: 'green'},{dataKey: 'key3'}],
         intervalStart: new Date(),
         tooltip
     },
@@ -235,28 +240,8 @@ export const multipleAreaChart : TimeSeriesChartTest = {
         chartType: "Area",
         chartHasData: true,
         data: undefined,
-        dataKeys: ['key1', 'key2', 'key3'],
+        series: [{dataKey: 'key1', color: 'red', areaColor: 'blue'},{dataKey: 'key2', color: 'green', areaColor: 'green'},{dataKey: 'key3', color: 'blue', areaColor: 'red'}],
         intervalStart: new Date(),
-        tooltip
-    },
-    render: render,
-    loaders: [
-        async()=>({
-            randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
-        })
-    ]
-};
-
-export const multipleLineColoredChart : TimeSeriesChartTest = {
-    args: {
-        title: "Multiple Line Colored Chart",
-        intervalType: "Week",
-        chartType: "Line",
-        chartHasData: true,
-        data: undefined,
-        dataKeys: ['key1', 'key2', 'key3'],
-        intervalStart: new Date(),
-        options: { lineColor: ['red', 'green', 'blue']},
         tooltip
     },
     render: render,
@@ -272,11 +257,10 @@ export const noData : TimeSeriesChartTest = {
         title: "No Data Chart",
         intervalType: "Week",
         chartType: "Line",
-        chartHasData: false,
+        chartHasData: true,
         data: [],
-        dataKeys: ['key1', 'key2', 'key3'],
+        series: [{dataKey: 'value'}],
         intervalStart: new Date(),
-        options: { lineColor: ['red', 'green', 'blue']},
         tooltip
     },
     render: render
@@ -289,9 +273,8 @@ export const loading : TimeSeriesChartTest = {
         chartType: "Line",
         chartHasData: false,
         data: undefined,
-        dataKeys: ['key1', 'key2', 'key3'],
+        series: [{dataKey: 'value'}],
         intervalStart: new Date(),
-        options: { lineColor: ['red', 'green', 'blue']},
         tooltip
     },
     render: render

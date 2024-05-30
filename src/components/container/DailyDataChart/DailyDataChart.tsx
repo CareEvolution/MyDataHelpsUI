@@ -4,9 +4,10 @@ import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, ge
 import { add, format } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
-import { WeekStartsOn, getMonthStart, getWeekStart, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
-import TimeSeriesChart, { AreaChartOptions, BarChartOptions, LineChartOptions } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
+import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
+import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import parse from 'date-fns/parse'
+import { AreaChartOptions, AreaChartSeries, BarChartOptions, ChartSeries, LineChartOptions, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
 export interface DailyDataChartProps {
     title?: string
@@ -140,6 +141,48 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
+    function generateSeriesAndOptions() : [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
+        if(props.chartType === "Line") {
+            const lineOptions = props.options as LineChartOptions;
+            return [
+                [{
+                    dataKey: 'value',
+                    color: lineOptions?.lineColor
+                }],
+                {
+                    domainMin: lineOptions?.domainMin
+                }
+            ];
+        }
+        else if(props.chartType === "Area") {
+            const areaOptions = props.options as AreaChartOptions;
+            return [
+                [{
+                    dataKey: 'value',
+                    color: areaOptions?.lineColor,
+                    areaColor: areaOptions?.areaColor
+                }],
+                undefined
+            ];
+        }
+        else if(props.chartType === "Bar") {
+            const barOptions = props.options as BarChartOptions;
+            return [
+                [{
+                    dataKey: 'value',
+                    color: barOptions?.barColor
+                }],
+                {
+                    thresholds: barOptions?.thresholds?.map((t) => { return { value: t.value, overThresholdColor: t.overThresholdBarColor, referenceLineColor: t.referenceLineColor }; })
+                }
+            ];
+        }
+
+        return [[], undefined];
+    }
+
+    const [series, options] = generateSeriesAndOptions();
+
     return <TimeSeriesChart 
         title={props.title} 
         intervalType={intervalType} 
@@ -147,8 +190,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         data={data} 
         expectedDataInterval={{days: 1}}
         chartHasData={chartHasData} 
+        series={series}
         tooltip={GraphToolTip}
         chartType={props.chartType}
-        options={props.options}
+        options={options}
     />
 }

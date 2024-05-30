@@ -62,14 +62,13 @@ export const ffwelLineChart = {
         title: "FFWEL Responses Line Chart",
         options: {
             domainMin: 0,
-            connectNulls: true,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
+            connectNulls: true
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
@@ -84,14 +83,12 @@ export const ffwelLineChartWithDataGap = {
         title: "FFWEL Responses Line Chart",
         options: {
             domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }
-        ],
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         expectedDataInterval: {months: 1},
@@ -111,13 +108,12 @@ export const ffwelBarChart = {
         title: "FFWEL Response Bar Chart",
         options: {
             domainMin: 0,
-            barColor: ["#e41a1c", "#377eb8", "#4daf4a"]
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewDataProvider: (start: Date, end: Date) => {
@@ -132,14 +128,12 @@ export const ffwelAreaChart = {
         title: "FFWEL Response Area Chart",
         options: {
             domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"],
-            areaColor: ["#d41a1c", "#277eb8", "#3daf4a"]
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        series: [{ color: "#e41a1c", areaColor: '#d41a1c', dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", areaColor: '#277eb8', dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", areaColor: '#3daf4a', dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewDataProvider: (start: Date, end: Date) => {
@@ -158,9 +152,9 @@ export const ffwelLive = {
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
-                { label: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
-                { label: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
     },
@@ -175,7 +169,7 @@ export const dailyPainLineSurvey = {
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
@@ -192,7 +186,7 @@ export const dailyPainBarSurvey = {
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewDataProvider: (start: Date, end: Date) => {
@@ -209,7 +203,7 @@ export const dailyPainAreaSurvey = {
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        charts: [{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewDataProvider: (start: Date, end: Date) => {
