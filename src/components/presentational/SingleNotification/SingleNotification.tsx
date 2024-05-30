@@ -21,6 +21,9 @@ export default function (props: SingleNotificationProps) {
 			{props.notification.content?.title &&
 				<div className="notification-title">{props.notification.content.title}</div>
 			}
+			{props.notification.content?.subject &&
+				<div className="notification-title">{props.notification.content.subject}</div>
+			}
 			{props.notification.content?.body &&
 				<div className="notification-body">{props.notification.content.body}</div>
 			}
