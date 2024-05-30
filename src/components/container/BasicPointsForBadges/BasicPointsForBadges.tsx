@@ -76,7 +76,7 @@ export default function (props: BasicPointsForBadgesProps) {
         setPoints(newPointTotal);
 
         if (currentState.badges.length < updatedState.badges.length) {
-            MyDataHelps.openApplication(props.awardBadgesViewUrl);
+            MyDataHelps.openApplication(props.awardBadgesViewUrl, { modal: true });
             //wait for the new badges view to open before setting the new point total
             await new Promise(resolve => setTimeout(resolve, 3000));
             setBadges(updatedState.badges);
