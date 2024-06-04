@@ -28,12 +28,12 @@ export default function (props: DateRangeNavigatorProps) {
 							: props.intervalType === "6Month" ? { months: 6 }
 							: { weeks: 1 };
 
-	var nextInterval = function () {
+	const nextInterval = () => {
 		var newIntervalStart = add(props.intervalStart, duration);
 		props.onIntervalChange(newIntervalStart, add(newIntervalStart, duration));
 	}
 
-	var previousInterval = function () {
+	var previousInterval = () => {
 		var newIntervalStart = sub(props.intervalStart, duration);
 		props.onIntervalChange(newIntervalStart, add(newIntervalStart, duration));
 	}

@@ -32,7 +32,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
         let currentDate = new Date(value);
-        if (intervalType == "Month") {
+        if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month" ){
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
@@ -44,7 +44,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         } else if (intervalType === "Week" ){
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
-                if (currentDate.getTime() == value) {
+                if (currentDate.getTime() === value) {
                     dayOfWeek = format(currentDate, "EEEEEE");
                     break;
                 }
@@ -74,23 +74,24 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return Array.from({length: 7}, (_, i) => addDays(startTime, i).getTime() );
         }
         else if (intervalType === "Month") {
-            var monthLength = getDaysInMonth(startTime);
-            var numberOfTicks = ceil(monthLength / 2);
+            const monthLength = getDaysInMonth(startTime);
+            const numberOfTicks = ceil(monthLength / 2);
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
         else if (intervalType === "6Month") { 
-            var ticks = [];
-            var currentTick : Date;
+            const ticks = [];
+            let currentTick : Date;
+            let endOfGraph = addMonths(startTime, 6);
+
             if( startTime.getDate() === 1){
                 currentTick = startTime;
             }else if( startTime.getDate() <= 15) {
-                var firstTick = addDays(startOfMonth(startTime), 14);
+                const firstTick = addDays(startOfMonth(startTime), 14);
                 ticks.push(firstTick.getTime());
                 currentTick = startOfMonth(addMonths(startTime, 1));
             }else{
                 currentTick = startOfMonth(addMonths(startTime, 1));
             }
-            var endOfGraph = addMonths(startTime, 6);
             while (currentTick < endOfGraph) {
                 ticks.push(currentTick.getTime());
                 ticks.push(addDays(currentTick, 14).getTime());
@@ -101,7 +102,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return ticks;
         }
         else if (intervalType === "Day") {
-            var ticks = [];
             return Array.from({length: 9}, (_, i) => addHours(startTime, i*3).getTime() );
         }
     }
@@ -110,9 +110,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (args >= 10000) {
             return Number((args / 1000).toFixed(1)) + 'K';
         } else {
-            return Number(args.toFixed(1));
+            return Number(args).toFixed(1);
         }
-        return args;
     }
 
     //ensures that gradients are unique for each chart
@@ -120,11 +119,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
-            if (props.chartType == "Line") {
+            if (props.chartType === "Line") {
                 let domainMin = (props.options as MultiSeriesLineChartOptions).domainMin;
-                if (domainMin == "Auto") {
+                if (domainMin === "Auto") {
                     domain = ["auto", "auto"];
-                } else if (domainMin != undefined) {
+                } else if (domainMin !== undefined) {
                     domain = [domainMin, "auto"];
                 }
             }
@@ -134,11 +133,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
-            <CartesianGrid vertical={props.chartType != "Bar"} strokeDasharray="2 4" />
+            <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis"
                 domain={['auto', 'auto']}
-                padding={props.chartType == 'Bar' ? 'gap' : { left: 0, right: 0 }}
+                padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
                 tick={DayTick}
                 scale={'time'}
                 type={'number'}
@@ -167,17 +166,17 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     function getBarColor(value: number, index: number) {
-        var thresholds = (props.options as MultiSeriesBarChartOptions)?.thresholds;
+        let thresholds = (props.options as MultiSeriesBarChartOptions)?.thresholds;
         if (!thresholds) return `url(#${gradientKey}${index})`;
 
         let highestThresholdIndex = -1;
         for (var i = 0; i < thresholds?.length; i++) {
-            if (value > thresholds[i].value && (highestThresholdIndex == -1 || thresholds[i].value > thresholds[highestThresholdIndex].value)) {
+            if (value > thresholds[i].value && (highestThresholdIndex === -1 || thresholds[i].value > thresholds[highestThresholdIndex].value)) {
                 highestThresholdIndex = i;
             }
         }
 
-        if (highestThresholdIndex == -1) return `url(#${gradientKey}${index})`;
+        if (highestThresholdIndex === -1) return `url(#${gradientKey}${index})`;
         return `url(#${gradientKey}_threshold${highestThresholdIndex})`;
     }
 
@@ -224,7 +223,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     </ResponsiveContainer>
                 </div>
             }
-            {props.chartHasData && props.chartType == "Line" &&
+            {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
                         {standardChartComponents()}
@@ -235,7 +234,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     </LineChart>
                 </ResponsiveContainer>
             }
-            {props.chartHasData && props.chartType == "Bar" &&
+            {props.chartHasData && props.chartType === "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}} >
                         <defs>
@@ -267,7 +266,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     </BarChart>
                 </ResponsiveContainer>
             }
-            {props.chartHasData && props.chartType == "Area" &&
+            {props.chartHasData && props.chartType === "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
                         <defs>

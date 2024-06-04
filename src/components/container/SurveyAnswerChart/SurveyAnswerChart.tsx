@@ -52,7 +52,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                         : intervalType === "Month" ? add(intervalStart, { months: 1 })
                         : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
                         intervalStart;
-    function loadCurrentInterval() {
+    const loadCurrentInterval = () => {
         setCurrentData(null);
         if (props.previewDataProvider) {
             props.previewDataProvider(intervalStart, intervalEnd)
@@ -69,7 +69,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             after: intervalStart.toISOString(),
             before: intervalEnd.toISOString()
         }));
-        Promise.all(dataRequests).then(function (data) {
+        Promise.all(dataRequests).then((data) => {
             setCurrentData(processPages(data));
         })
     }

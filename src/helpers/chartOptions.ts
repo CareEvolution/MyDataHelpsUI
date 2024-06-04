@@ -1,4 +1,4 @@
-import { ColorDefinition } from "./colors"
+import type { ColorDefinition } from "./colors"
 
 export interface LineChartOptions {
     lineColor?: string

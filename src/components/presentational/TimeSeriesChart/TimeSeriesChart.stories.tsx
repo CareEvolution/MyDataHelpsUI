@@ -4,21 +4,17 @@ import add from "date-fns/add";
 import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
 import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default { 
+const meta: Meta<typeof TimeSeriesChart> = { 
     title: "Presentational/TimeSeriesChart", 
     component: TimeSeriesChart, 
     parameters: { layout: 'fullscreen' },
+    render: (args: TimeSeriesChartProps, { loaded: { randomData } }) => <Layout colorScheme="auto"><Card><TimeSeriesChart {...args} data={randomData} /></Card></Layout>
 };
-const render = (args: TimeSeriesChartProps, { loaded: { randomData } }: any) => <Layout colorScheme="auto"><Card><TimeSeriesChart {...args} data={randomData} /></Card></Layout>
 
-interface TimeSeriesChartTest {
-    args: TimeSeriesChartProps,
-    render: (args: TimeSeriesChartProps, { loaded: { data } }: any) => React.JSX.Element,
-    loaders?: any[]
-}
-
-
+export default meta;
+type Story = StoryObj<typeof TimeSeriesChart>;
 
 async function getRandomData(start: Date, end: Date) {
     const responses = [];
@@ -64,7 +60,7 @@ async function getRandomMultipointData(start: Date, end: Date) {
 }
 
 async function getRandomIntradayData(start: Date) {
-    var responses: any[] = [];
+    var responses: { timestamp: Date, value: number }[] = [];
     let currentTime = new Date(start);
     currentTime.setHours(0,0,0,0);
     let endTime = add(currentTime, {hours: 24});
@@ -82,7 +78,7 @@ async function getRandomIntradayData(start: Date) {
     return responses;
 }
 
-var tooltip = ({ active, payload, label }: any): React.JSX.Element | null => {
+var tooltip = ({ active, payload, _label }: any): React.JSX.Element | null => {
     if(active && payload && payload.length){
         return <table className="mdhui-daily-data-tooltip">
             {payload.map((p: any, index: number) =>
@@ -97,7 +93,7 @@ var tooltip = ({ active, payload, label }: any): React.JSX.Element | null => {
 }
 
 
-export const lineChart : TimeSeriesChartTest = {
+export const lineChart : Story = {
     args: {
         title: "Line Chart",
         intervalType: "Week",
@@ -108,7 +104,6 @@ export const lineChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip: tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomData(new Date(), addDays(new Date(), 6))
@@ -117,7 +112,7 @@ export const lineChart : TimeSeriesChartTest = {
 };
 
 
-export const lineChartWithGaps : TimeSeriesChartTest = {
+export const lineChartWithGaps : Story = {
     args: {
         title: "Line Chart",
         intervalType: "Week",
@@ -129,7 +124,6 @@ export const lineChartWithGaps : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip: tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomDataWithGaps(new Date(), addDays(new Date(), 6)),
@@ -137,7 +131,7 @@ export const lineChartWithGaps : TimeSeriesChartTest = {
     ]
 };
 
-export const lineChartIntraday : TimeSeriesChartTest = {
+export const lineChartIntraday : Story = {
     args: {
         title: "Intraday Chart",
         intervalType: "Day",
@@ -149,7 +143,6 @@ export const lineChartIntraday : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip: tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomIntradayData(new Date())
@@ -157,7 +150,7 @@ export const lineChartIntraday : TimeSeriesChartTest = {
     ]
 };
 
-export const barChart : TimeSeriesChartTest = {
+export const barChart : Story = {
     args: {
         title: "Bar Chart",
         intervalType: "Week",
@@ -168,7 +161,6 @@ export const barChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomData(new Date(), addDays(new Date(), 6))
@@ -176,7 +168,7 @@ export const barChart : TimeSeriesChartTest = {
     ]
 };
 
-export const areaChart : TimeSeriesChartTest = {
+export const areaChart : Story = {
     args: {
         title: "Area Chart",
         intervalType: "Week",
@@ -187,7 +179,6 @@ export const areaChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomData(new Date(), addDays(new Date(), 6))
@@ -195,7 +186,7 @@ export const areaChart : TimeSeriesChartTest = {
     ]
 };
 
-export const multipleLineChart : TimeSeriesChartTest = {
+export const multipleLineChart : Story = {
     args: {
         title: "Multiple Line Chart",
         intervalType: "Week",
@@ -206,7 +197,6 @@ export const multipleLineChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
@@ -214,7 +204,7 @@ export const multipleLineChart : TimeSeriesChartTest = {
     ]
 };
 
-export const multipleBarChart : TimeSeriesChartTest = {
+export const multipleBarChart : Story = {
     args: {
         title: "Multiple Bar Chart",
         intervalType: "Week",
@@ -225,7 +215,6 @@ export const multipleBarChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
@@ -233,7 +222,7 @@ export const multipleBarChart : TimeSeriesChartTest = {
     ]
 };
 
-export const multipleAreaChart : TimeSeriesChartTest = {
+export const multipleAreaChart : Story = {
     args: {
         title: "Multiple Area Chart",
         intervalType: "Week",
@@ -244,7 +233,6 @@ export const multipleAreaChart : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render,
     loaders: [
         async()=>({
             randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
@@ -252,7 +240,7 @@ export const multipleAreaChart : TimeSeriesChartTest = {
     ]
 };
 
-export const noData : TimeSeriesChartTest = {
+export const noData : Story = {
     args: {
         title: "No Data Chart",
         intervalType: "Week",
@@ -263,10 +251,9 @@ export const noData : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render
 };
 
-export const loading : TimeSeriesChartTest = {
+export const loading : Story = {
     args: {
         title: "Loading Chart",
         intervalType: "Week",
@@ -277,5 +264,4 @@ export const loading : TimeSeriesChartTest = {
         intervalStart: new Date(),
         tooltip
     },
-    render: render
 };

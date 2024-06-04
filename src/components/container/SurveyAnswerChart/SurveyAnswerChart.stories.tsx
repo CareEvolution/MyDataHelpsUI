@@ -29,9 +29,9 @@ async function generateSurveyResponse(date: Date, resultIdentifier: string, surv
 }
 
 async function getRandomFFWELData(start: Date, end: Date) {
-    let creativeSelfResponses: (SurveyAnswer | null)[] = [];
-    let copingSelfResponses: (SurveyAnswer | null)[] = [];
-    let socialSelfResponses: (SurveyAnswer | null)[] = [];
+    let creativeSelfResponses: SurveyAnswer[] = [];
+    let copingSelfResponses: SurveyAnswer[] = [];
+    let socialSelfResponses: SurveyAnswer[] = [];
 
     let currentDate = new Date(start);
     while (currentDate < end) {
@@ -40,8 +40,7 @@ async function getRandomFFWELData(start: Date, end: Date) {
         copingSelfResponses.push(await generateSurveyResponse(currentDate, "CopingSelf", 'FFWEL', 10, 100));
         currentDate = add(currentDate, { months: 1 });
     }
-    function filterNull(arr: any[]) { return arr.filter((a: any) => !!a); }
-    let standardData: SurveyAnswer[][] = [filterNull(creativeSelfResponses), filterNull(copingSelfResponses), filterNull(socialSelfResponses)];
+    let standardData: SurveyAnswer[][] = [creativeSelfResponses, copingSelfResponses, socialSelfResponses];
     return standardData;
 }
 
