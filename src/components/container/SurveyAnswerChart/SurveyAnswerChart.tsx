@@ -48,7 +48,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
     }
     
-    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) 
+    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
                         : intervalType === "Month" ? add(intervalStart, { months: 1 })
                         : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
                         intervalStart;
@@ -132,7 +132,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         }
 
         if (active && payload && payload.length) {
-            if(payload.length == 1){
+            if(payload.length === 1){
                 return (
                     <div className="mdhui-time-series-tooltip">
                         <div className="mdhui-single-value-tooltip-value">

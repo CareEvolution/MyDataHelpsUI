@@ -15,7 +15,7 @@ export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month" | "Day",
     intervalStart: Date,
-    data: any[] | undefined,
+    data: Record<string,any>[] | undefined,
     expectedDataInterval?: Duration,
     series: ChartSeries[] | AreaChartSeries[],
     chartHasData: boolean,
@@ -34,14 +34,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         let currentDate = new Date(value);
         if (intervalType == "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
-        } else if (intervalType == "6Month" ){
+        } else if (intervalType === "6Month" ){
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
             </>;
-        } else if (intervalType == "Week" ){
+        } else if (intervalType === "Week" ){
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() == value) {
@@ -54,7 +54,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
-        } else if ( intervalType == "Day"){
+        } else if ( intervalType === "Day"){
             const startTime = new Date(props.intervalStart);
             startTime.setHours(0, 0, 0, 0);
             return <>
@@ -183,7 +183,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.series.map( s => s.dataKey);
 
-    let dataToDisplay: any[] | undefined;
+    let dataToDisplay: Record<string,any>[] | undefined;
     if(props.data && props.expectedDataInterval) {
         dataToDisplay = [];
         for(var i = 0; i < props.data.length-1; ++i) {

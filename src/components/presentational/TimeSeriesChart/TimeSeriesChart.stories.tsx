@@ -3,14 +3,14 @@ import { Card, Layout } from "..";
 import add from "date-fns/add";
 import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
 import addDays from "date-fns/addDays";
-import { predicatableRandomNumber } from "../../../helpers/predictableRandomNumber";
+import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 
 export default { 
     title: "Presentational/TimeSeriesChart", 
     component: TimeSeriesChart, 
     parameters: { layout: 'fullscreen' },
 };
-let render = (args: TimeSeriesChartProps, { loaded: { randomData } }: any) => <Layout colorScheme="auto"><Card><TimeSeriesChart {...args} data={randomData} /></Card></Layout>
+const render = (args: TimeSeriesChartProps, { loaded: { randomData } }: any) => <Layout colorScheme="auto"><Card><TimeSeriesChart {...args} data={randomData} /></Card></Layout>
 
 interface TimeSeriesChartTest {
     args: TimeSeriesChartProps,
@@ -21,12 +21,12 @@ interface TimeSeriesChartTest {
 
 
 async function getRandomData(start: Date, end: Date) {
-    var responses = [];
+    const responses = [];
     let currentDate = new Date(start);
     while (currentDate < end) {
         responses.push({
             timestamp: currentDate.setHours(0,0,0,0),
-            value: (await predicatableRandomNumber(currentDate.toISOString())) % 200
+            value: (await predictableRandomNumber(currentDate.toISOString())) % 200
         });
         currentDate = add(currentDate, { days: 1 });
     }
@@ -40,7 +40,7 @@ async function getRandomDataWithGaps(start: Date, end: Date) {
         if (currentDate.getDate() % 3 !== 0) {
             responses.push({
                 timestamp: currentDate.setHours(0, 0, 0, 0),
-                value: (await predicatableRandomNumber(currentDate.toISOString())) % 200
+                value: (await predictableRandomNumber(currentDate.toISOString())) % 200
             });
         }
         currentDate = add(currentDate, { days: 1 });
@@ -54,9 +54,9 @@ async function getRandomMultipointData(start: Date, end: Date) {
     while (currentDate < end) {
         responses.push({
             timestamp: currentDate.setHours(0,0,0,0),
-            key1: (await predicatableRandomNumber(currentDate.toISOString()+"key1")) % 200,
-            key2: (await predicatableRandomNumber(currentDate.toISOString()+"key2")) % 200,
-            key3: (await predicatableRandomNumber(currentDate.toISOString()+"key3")) % 200,
+            key1: (await predictableRandomNumber(`${currentDate.toISOString()}key1`)) % 200,
+            key2: (await predictableRandomNumber(`${currentDate.toISOString()}key2`)) % 200,
+            key3: (await predictableRandomNumber(`${currentDate.toISOString()}key3`)) % 200,
         });
         currentDate = add(currentDate, { days: 1 });
     }
@@ -73,7 +73,7 @@ async function getRandomIntradayData(start: Date) {
     while (currentTime < endTime) {
         responses.push({
             timestamp: currentTime,
-            value: (await predicatableRandomNumber(currentTime.toISOString())) % 200
+            value: (await predictableRandomNumber(currentTime.toISOString())) % 200
         });
         currentTime = add(currentTime, { minutes: 5 });
         console.log(currentTime);
@@ -82,7 +82,7 @@ async function getRandomIntradayData(start: Date) {
     return responses;
 }
 
-var tooltip = function ({ active, payload, label }: any): React.JSX.Element | null {
+var tooltip = ({ active, payload, label }: any): React.JSX.Element | null => {
     if(active && payload && payload.length){
         return <table className="mdhui-daily-data-tooltip">
             {payload.map((p: any, index: number) =>

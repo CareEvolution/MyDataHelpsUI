@@ -46,8 +46,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
     }
 
-    let intervalEnd = intervalType == "Week" ? add(intervalStart, { days: 7 }) 
-                        : intervalType == "Month" ? add(intervalStart, { months: 1 })
+    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
+                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
                         : intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
@@ -94,7 +94,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         }
     }, [props.intervalType, props.weekStartsOn, dateRangeContext]);
 
-    var data: any[] | undefined = [];
+    var data: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
     var chartHasData: boolean = false;
     if (currentData) {
         Object.keys(currentData).forEach((dateStr) => {

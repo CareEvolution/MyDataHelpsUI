@@ -23,7 +23,7 @@ let children = <Card>
 		intervalType="Week"
 		weekStartsOn="6DaysAgo"
 		chartType="Line"
-		charts={[{ label: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }]}
+		series={[{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }]}
 		previewDataProvider={(start: Date, end: Date) => {
 			function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string): SurveyAnswer {
 				return {
@@ -42,7 +42,7 @@ let children = <Card>
 					"insertedDate": date.toISOString()
 				};
 			}
-			var data = [];
+			let data = [];
 			let currentDate = new Date(start);
 			while (currentDate < end) {
 				data.push(generateSurveyResponse(currentDate, "PainToday", 'Pain Survey'));

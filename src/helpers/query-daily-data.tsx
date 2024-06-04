@@ -6,7 +6,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./daily-data-types/formatters";
-import { predicatableRandomNumber } from "./predictableRandomNumber";
+import { predictableRandomNumber } from "./predictableRandomNumber";
 
 export type DailyDataQueryResult = { [key: string]: number };
 export type DailyDataProvider = (startDate: Date, endDate: Date) => Promise<DailyDataQueryResult>;
@@ -63,8 +63,8 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 
 	//Modulo repeatable random numbers to get a value in range.
 	while (startDate < endDate && startDate < new Date()) {
-		var dayKey = getDayKey(startDate);
-		var value: number = ((await predicatableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
+		const dayKey = getDayKey(startDate);
+		const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
 		result[dayKey] = value;
 		startDate = add(startDate, { days: 1 });
 	}

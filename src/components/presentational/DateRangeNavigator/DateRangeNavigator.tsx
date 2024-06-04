@@ -23,9 +23,9 @@ export interface DateRangeNavigatorProps {
 }
 
 export default function (props: DateRangeNavigatorProps) {
-	var duration: Duration = props.intervalType == "Month" ? { months: 1 } 
-							: props.intervalType == "Day" ? { days: 1 } 
-							: props.intervalType == "6Month" ? { months: 6 }
+	const duration: Duration = props.intervalType === "Month" ? { months: 1 } 
+							: props.intervalType === "Day" ? { days: 1 } 
+							: props.intervalType === "6Month" ? { months: 6 }
 							: { weeks: 1 };
 
 	var nextInterval = function () {
