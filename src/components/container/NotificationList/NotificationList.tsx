@@ -4,6 +4,7 @@ import { LoadingIndicator, SingleNotification, Card, TextBlock } from '../../pre
 import { previewNotifications } from './NotificationList.previewdata'
 import language from '../../../helpers/language';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger'
+import PropTypes, { oneOf } from 'prop-types';
 
 export interface NotificationListProps {
 	notificationType?: NotificationType,
@@ -13,8 +14,15 @@ export interface NotificationListProps {
 
 export type NotificationListPreviewState = "Default" | "NoData";
 
-/** Notification List. Can be filtered by Email/Push/SMS */
-export default function (props: NotificationListProps) {
+/** Notification List. Can be filtered by Email/Push/SMS 
+ * 
+ * @component
+ * @param {NotificationListProps} props	- Props for the component)
+ * @param {NotificationType} props.notificationType	- Type of notification to filter by
+ * @param {React.Ref<HTMLDivElement>} props.innerRef	- Reference to the div element
+ * 
+*/
+const NotificationList = function (props: NotificationListProps) {
 	const [loading, setLoading] = useState(false);
 	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
 	const [finishedLoading, setFinishedLoading] = useState(false);
@@ -89,3 +97,16 @@ export default function (props: NotificationListProps) {
 		</div>
 	);
 }
+
+NotificationList.propTypes = {
+	/**
+	 * Type of notification to filter by. Leave undefined to show all notifications
+	 */
+	NotificationType: PropTypes.oneOf(['Sms', 'Push', "Email"]).isRequired,
+}
+  
+NotificationList.defaultProps = {
+	NotificationType: undefined
+}
+
+export default NotificationList;
