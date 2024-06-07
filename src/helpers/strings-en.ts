@@ -381,6 +381,7 @@
     "bpm": "bpm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
+    "glucose-view-title": "Glucose Readings"
 };
 
 export default strings;

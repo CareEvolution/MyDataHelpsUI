@@ -1,0 +1,3 @@
+.mdhui-glucose {
+    padding: calc(env(safe-area-inset-top, 0px)) 0 calc(env(safe-area-inset-bottom, 0px) + 20px);
+}
