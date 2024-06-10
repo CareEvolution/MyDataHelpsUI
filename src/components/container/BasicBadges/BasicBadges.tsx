@@ -4,6 +4,8 @@ import { BasicBadge, Title } from "../../presentational";
 import "./BasicBadges.css"
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { parsePointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export interface BasicBadgesProps {
     badgeCount?: number;
@@ -36,7 +38,10 @@ export default function (props: BasicBadgesProps) {
                     <BasicBadge key={`badge-${index}`} backgroundColor={getColorFromAssortment(badgeCount! - index - 1)} />
                 )}
                 {remainingCount > 0 &&
-                    <span className="mdhui-basic-badges-more">+{remainingCount} more</span>
+                    <div className="mdhui-basic-badges-more">
+                        <BasicBadge backgroundColor="#429bdf" />
+                        +{remainingCount} {language("more").toLowerCase()}
+                    </div>
                 }
             </div>
         </div>

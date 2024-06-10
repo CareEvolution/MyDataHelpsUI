@@ -20,16 +20,6 @@
     font-size: 58px;
 }
 
-.mdhui-basic-badge.mdhui-basic-badge-xs {
-    width: 16px;
-    height: 16px;
-    font-size: 4px;
-}
-
-.mdhui-basic-badge.mdhui-basic-badge-xs .mdhui-basic-badge-icon {
-    filter: none;
-}
-
 
 .mdhui-basic-badge .mdhui-basic-badge-children {
     display: none;
