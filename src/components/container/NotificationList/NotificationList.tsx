@@ -22,7 +22,7 @@ export type NotificationListPreviewState = "Default" | "NoData";
  * @param {React.Ref<HTMLDivElement>} props.innerRef	- Reference to the div element
  * 
 */
-const NotificationList = function (props: NotificationListProps) {
+export default function NotificationList (props: NotificationListProps) {
 	const [loading, setLoading] = useState(false);
 	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
 	const [finishedLoading, setFinishedLoading] = useState(false);
@@ -97,16 +97,3 @@ const NotificationList = function (props: NotificationListProps) {
 		</div>
 	);
 }
-
-NotificationList.propTypes = {
-	/**
-	 * Type of notification to filter by. Leave undefined to show all notifications
-	 */
-	NotificationType: PropTypes.oneOf(['Sms', 'Push', "Email"]).isRequired,
-}
-  
-NotificationList.defaultProps = {
-	NotificationType: undefined
-}
-
-export default NotificationList;

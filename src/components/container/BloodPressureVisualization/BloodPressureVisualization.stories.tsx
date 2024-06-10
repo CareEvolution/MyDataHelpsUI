@@ -7,6 +7,7 @@ import { DateRangeCoordinator } from "../../presentational"
 
 export default {
 	title: "Container/BloodPressureVisualization",
+	tags: ['Blood Pressure', 'Visualization', "chart", "bp"],
 	component: BloodPressureVisualization,
 	parameters: {
 		layout: 'fullscreen',

@@ -37,7 +37,14 @@ interface BloodPressureMetrics {
     minSystolicAlertClass: string
 }
 
-export default function (props: BloodPressureVisualizationProps) {
+/** Blood Pressure Visualization. Displays daily systolic and diastolic blood pressure readings in a dumbbell chart 
+ * 
+ * @component
+ * @param {BloodPressureVisualizationProps} props	- Props for the component)
+ * @returns {JSX.Element}
+ * 
+*/
+export default function BloodPressureVisualization (props: BloodPressureVisualizationProps) {
     const _minSystolic = 0;
     const _maxSystolic = 250;
     const yInterval: ClosedInterval = { values: [_minSystolic, _maxSystolic] };

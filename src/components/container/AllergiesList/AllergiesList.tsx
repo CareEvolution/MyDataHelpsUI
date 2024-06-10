@@ -18,7 +18,14 @@ interface Allergy {
     Reactions: string[];
 }
 
-export default function (props: AllergiesListProps) {
+/** A listing of allergies. 
+ * 
+ * @component
+ * @param {AllergiesListProps}  properties for the component
+ * @returns {JSX.Element}
+ * 
+*/
+export default function AllergiesList(props: AllergiesListProps) {
     const [allergies, setAllergies] = useState<Allergy[] | null>(null);
 
     function load() {
