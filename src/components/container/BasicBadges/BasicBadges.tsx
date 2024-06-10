@@ -26,20 +26,18 @@ export default function (props: BasicBadgesProps) {
 
     // Intentionally hiding badge list if it's 0 badges
     if (!badgeCount) return null;
-    let firstRowCount = Math.min(badgeCount, 5);
-    let remainingCount = badgeCount - firstRowCount;
+    let displayedCount = Math.min(badgeCount, 5);
+    let remainingCount = badgeCount - displayedCount;
     return (
         <div className="mdhui-basic-badges">
             <Title order={3}>{(props.title || language("my-badges")).replace("{{badges}}", badgeCount.toString())}</Title>
             <div className="mdhui-basic-badges-first-row">
-                {badgeCount && Array.from({ length: firstRowCount }).map((_, index) =>
+                {badgeCount && Array.from({ length: displayedCount }).map((_, index) =>
                     <BasicBadge key={`badge-${index}`} backgroundColor={getColorFromAssortment(badgeCount! - index - 1)} />
                 )}
-            </div>
-            <div className="mdhui-basic-badges-remaining">
-                {badgeCount && Array.from({ length: remainingCount }).map((_, index) =>
-                    <BasicBadge key={`badge-${index}`} size="xs" backgroundColor={getColorFromAssortment(badgeCount! - (index + 5) - 1)} />
-                )}
+                {remainingCount > 0 &&
+                    <span className="mdhui-basic-badges-more">+{remainingCount} more</span>
+                }
             </div>
         </div>
     )

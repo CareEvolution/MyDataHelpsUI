@@ -6,6 +6,7 @@
     display: flex;
     gap: 16px;
     margin-top: 16px;
+    align-items: center;
 }
 
 .mdhui-basic-badges .mdhui-basic-badges-remaining {
@@ -13,4 +14,8 @@
     gap: 8px;
     margin-top: 16px;
     flex-wrap: wrap;
+}
+
+.mdhui-basic-badges .mdhui-basic-badges-more {
+    font-weight: bold;
 }
