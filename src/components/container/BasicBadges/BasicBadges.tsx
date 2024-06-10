@@ -28,7 +28,7 @@ export default function (props: BasicBadgesProps) {
 
     // Intentionally hiding badge list if it's 0 badges
     if (!badgeCount) return null;
-    let displayedCount = Math.min(badgeCount, 5);
+    let displayedCount = Math.min(badgeCount, 4);
     let remainingCount = badgeCount - displayedCount;
     return (
         <div className="mdhui-basic-badges">
