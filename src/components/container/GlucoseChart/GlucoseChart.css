@@ -1,20 +1,21 @@
-.mdhui-glucose-chart-navigation {
+/* .mdhui-glucose-chart-navigation {
     display: grid;
     grid-template-columns: auto 180px auto;
     align-items: center;
     height: 50px;
-}
+} */
 
-.mdhui-glucose-chart-nav, .mdhui-glucose-chart-nav-disabled {
+.mdhui-glucose-chart-nav,
+.mdhui-glucose-chart-nav-disabled {
     margin-top: 2px;
 }
 
-.mdhui-glucose-chart-nav:nth-child(1), .mdhui-glucose-chart-nav-disabled:nth-child(2) {
+.mdhui-glucose-chart-nav:nth-child(1),
+.mdhui-glucose-chart-nav-disabled:nth-child(2) {
     text-align: right;
 }
 
-.mdhui-glucose-chart-nav-disabled {
-}
+.mdhui-glucose-chart-nav-disabled {}
 
 .mdhui-glucose-chart-day {
     text-align: center;
@@ -35,4 +36,14 @@
 .meals-list {
     padding: 0;
     min-height: 200px;
+}
+
+
+.mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
+    font-size: 11px;
+    fill: var(--mdhui-text-color-1);
+}
+
+.mdhui-glucose-chart-chart {
+    padding: 16px;
 }
