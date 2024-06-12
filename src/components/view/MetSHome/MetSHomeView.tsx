@@ -2,7 +2,8 @@ import React from 'react'
 import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment, ValueSelector } from "../../.."
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
-import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBowlFood, faClose, faCookie, faDroplet, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
+import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBoltLightning, faBowlFood, faClose, faCookie, faDroplet, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
+import { transform } from 'lodash'
 
 export interface MetSHomeViewProps {
 
@@ -52,6 +53,34 @@ export default function (props: MetSHomeViewProps) {
 							<ActivityMeter label='Sleep' value='7h 25m' icon={<FontAwesomeSvgIcon icon={faBed} />} color="#7b88c6" />
 						</div>
 					</div>
+					<div style={{ margin: "16px" }}>
+						<div style={{ fontSize: ".7em", textTransform: "uppercase", color: "var(--mdhui-text-color-2)" }}>
+							Stress
+						</div>
+						<input style={{ width: "100%", marginTop: "8px" }} type="range" id="stress" name="stress" min="0" max="6" step="1" value={undefined} list="markers" />
+						<datalist id="markers">
+							<option value="0"></option>
+							<option value="1"></option>
+							<option value="2"></option>
+							<option value="3"></option>
+							<option value="4"></option>
+							<option value="5"></option>
+							<option value="6"></option>
+						</datalist>
+						<div style={{ display: "flex", justifyContent: "space-between" }}>
+							<div style={{ fontSize: ".7em", color: "var(--mdhui-text-color-2)" }}>
+								No Stress
+							</div>
+							<div style={{ fontSize: ".7em", color: "var(--mdhui-text-color-2)" }}>
+								Extremely Stressed
+							</div>
+						</div>
+					</div>
+					<div style={{ display: "flex", gap: "16px", margin: "16px" }}>
+						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faHamburger} /> Meal</Button>
+						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
+						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
+					</div>
 				</Card>
 				<Card>
 					<Title defaultMargin order={3} style={{ marginBottom: "-16px" }}>Meal Log</Title>
@@ -60,16 +89,6 @@ export default function (props: MetSHomeViewProps) {
 					<Action bottomBorder icon={foodIcon(faCookie, 1)} title={"Snack"} subtitle="2:30 PM" indicatorIcon={faClose} />
 					<Action bottomBorder icon={foodIcon(faHamburger, 2)} title={"Meal"} subtitle="5:30 PM" indicatorIcon={faClose} />
 					<Action bottomBorder icon={foodIcon(faWineBottle, 3)} title={"Drink"} subtitle="8:30 PM" indicatorIcon={faClose} />
-					<div style={{ display: "flex", gap: "16px", margin: "16px" }}>
-						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faHamburger} /> Meal</Button>
-						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
-						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
-					</div>
-				</Card>
-				<Card>
-					<Title defaultMargin order={3} style={{ marginBottom: "-16px" }}>How stressed do you feel today?</Title>
-					<ValueSelector valueBackgroundColor="var(--mdhui-background-color-1)" values={["Not at all", "A little", "Moderately", "Very", "Extremely"]} />
-
 				</Card>
 				<Card>
 					<ConnectEhr previewState='enabled' variant="medium" hideWhenConnected />
