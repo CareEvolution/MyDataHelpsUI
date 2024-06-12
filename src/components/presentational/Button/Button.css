@@ -10,6 +10,7 @@
     cursor: pointer;
     font-weight: bold;
     text-align: center;
+    flex-grow: 1;
 }
 
 .mdhui-button:disabled {

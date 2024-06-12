@@ -23,8 +23,7 @@
 }
 
 .mdhui-glucose-chart-chart {
-    height: 220px;
-    padding-bottom: 4px;
+    height: 150px;
 }
 
 .mdhui-glucose-chart-chart-empty {
@@ -45,5 +44,6 @@
 }
 
 .mdhui-glucose-chart-chart {
-    padding: 16px;
+    margin: 16px;
+    margin-bottom: 0;
 }

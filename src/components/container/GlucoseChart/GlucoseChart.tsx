@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
@@ -19,8 +19,6 @@ export interface GlucoseChartProps {
 
 export default function (props: GlucoseChartProps) {
     const dateRangeContext = useContext(DateRangeContext);
-
-    const mealColors = ['#800000', '#9a6324', '#808000', '#469990', '#dcbeff', '#e6194b', '#f58231', '#ffe119', '#3cb44b', '#42d4f4', '#4363d8', '#911eb4', '#a9a9a9', '#fabed4', '#ffd8b1', '#fffac8'];
 
     const [loading, setLoading] = useState<boolean>(true);
     const [meals, setMeals] = useState<Meal[]>();
@@ -135,7 +133,7 @@ export default function (props: GlucoseChartProps) {
         if (mealIndex < 0) return <></>;
 
         return <svg>
-            <circle cx={cx} cy={cy} r={6} fill={mealColors[mealIndex % mealColors.length]} />
+            <circle cx={cx} cy={cy} r={6} fill={getColorFromAssortment(mealIndex)} />
         </svg>;
     };
 
@@ -153,7 +151,7 @@ export default function (props: GlucoseChartProps) {
 
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={150}>
                 <LineChart data={chartData}>
 
                     <CartesianGrid vertical strokeDasharray="2 4" />
@@ -168,11 +166,11 @@ export default function (props: GlucoseChartProps) {
                         interval={0}
                     />
                     <YAxis
-                        width={32}
+                        width={24}
                         axisLine={false}
                         tickLine={false}
                         domain={[50, 220]}
-                        ticks={[60, 80, 100, 120, 140, 160, 180, 200, 220]}
+                        ticks={[60, 100, 140, 180, 220]}
                         interval={0}
                     />
                     <ReferenceLine
@@ -222,7 +220,7 @@ export default function (props: GlucoseChartProps) {
                         key={index}
                         meal={meal}
                         number={index + 1}
-                        color={mealColors[index % mealColors.length]}
+                        color={getColorFromAssortment(index)}
                         onClick={() => setSelectedMeal(selectedMeal === meal ? undefined : meal)}
                         selected={selectedMeal === meal}
                     />;
