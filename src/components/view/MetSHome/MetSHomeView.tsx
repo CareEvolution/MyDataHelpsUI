@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment, ValueSelector, WeekCalendar, SparkBarChart, RelativeActivityDataType, DailyDataType } from "../../.."
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
-import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBoltLightning, faBowlFood, faClose, faCookie, faDroplet, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
+import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBoltLightning, faBowlFood, faClose, faCookie, faDroplet, faFileEdit, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
 import { transform } from 'lodash'
 import { add, startOfDay } from 'date-fns'
 import "./MetSHomeView.css"
@@ -11,8 +11,6 @@ import RelativeActivityDateRangeCoordinator from '../../container/RelativeActivi
 export interface MetSHomeViewProps {
 
 }
-
-
 
 
 export default function (props: MetSHomeViewProps) {
@@ -113,10 +111,10 @@ export default function (props: MetSHomeViewProps) {
 				<Card>
 					<Title defaultMargin order={3} style={{ marginBottom: "-16px" }}>Meal Log</Title>
 					{/* <TextBlock>No food logged. Tap the buttons below to log a meal, drink, or snack.</TextBlock> */}
-					<Action bottomBorder icon={foodIcon(faHamburger, 0)} title={"Meal"} subtitle="11:45 AM" indicatorIcon={faClose} />
-					<Action bottomBorder icon={foodIcon(faCookie, 1)} title={"Snack"} subtitle="2:30 PM" indicatorIcon={faClose} />
-					<Action bottomBorder icon={foodIcon(faHamburger, 2)} title={"Meal"} subtitle="5:30 PM" indicatorIcon={faClose} />
-					<Action bottomBorder icon={foodIcon(faWineBottle, 3)} title={"Drink"} subtitle="8:30 PM" indicatorIcon={faClose} />
+					<Action bottomBorder icon={foodIcon(faHamburger, 0)} title={"Meal"} subtitle="11:45 AM" />
+					<Action bottomBorder icon={foodIcon(faCookie, 1)} title={"Snack"} subtitle="2:32 PM" />
+					<Action bottomBorder icon={foodIcon(faHamburger, 2)} title={"Meal"} subtitle="5:35 PM" />
+					<Action bottomBorder icon={foodIcon(faWineBottle, 3)} title={"Drink"} subtitle="8:31 PM" />
 				</Card>
 				<Card>
 					<ConnectEhr previewState='enabled' variant="medium" hideWhenConnected />

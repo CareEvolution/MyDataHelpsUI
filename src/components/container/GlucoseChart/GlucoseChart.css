@@ -23,8 +23,17 @@
 }
 
 .mdhui-glucose-chart-chart {
-    height: 150px;
+    height: 160px;
+    position: relative;
 }
+
+.mdhui-glucose-chart-chart .steps-icon {
+    position: absolute;
+    left: 5px;
+    top: 132px;
+    font-size: 12px;
+}
+
 
 .mdhui-glucose-chart-chart-empty {
     padding-top: 65px;

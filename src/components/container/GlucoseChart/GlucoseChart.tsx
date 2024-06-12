@@ -3,10 +3,14 @@ import './GlucoseChart.css';
 import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator } from '../../presentational';
-import { add, compareAsc, format, startOfToday } from 'date-fns';
-import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
+import { Bar, BarChart, CartesianGrid, ComposedChart, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
+import { max } from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -115,7 +119,7 @@ export default function (props: GlucoseChartProps) {
     ];
     let chartTickFormatter = (value: number) => {
         let date = new Date(value);
-        if(date.getHours() === 0) {
+        if (date.getHours() === 0) {
             return "";
         }
         return format(new Date(value), 'h aaa');
@@ -157,11 +161,82 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
+    let steps: { date: Date, value: number }[] = [];
+    let currentStepData = startOfDay(selectedDate);
+    while (currentStepData < add(startOfDay(selectedDate), { days: 1 })) {
+
+        let graphMax = maxGlucose || 0;
+        let value = Math.round(Math.random() * (graphMax / 2));
+        if (currentStepData.getHours() < 7 || currentStepData.getHours() > 22){
+            value = 0;
+        }
+
+        steps.push({ date: currentStepData, value: value });
+        currentStepData = add(currentStepData, { minutes: 30 });
+    }
+
+    let range = (maxGlucose || 0) - (minGlucose || 0);
+
+
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
-            <ResponsiveContainer width="100%" height={150}>
-                <LineChart data={chartData}>
+            <ResponsiveContainer width="100%" height={120}>
+                <ComposedChart data={chartData}>
 
+                    <CartesianGrid vertical strokeDasharray="2 4" />
+
+                    <YAxis
+                        width={24}
+                        axisLine={false}
+                        tickLine={false}
+                        domain={[60, 220]}
+                        ticks={[60, 100, 140, 180, 220]}
+                        interval={0}
+                    />
+                    <XAxis
+                        height={0}
+                        axisLine={false}
+                        tickLine={false}
+                        type="number"
+                        dataKey="date"
+                        domain={chartDomain}
+                        ticks={chartTicks}
+                        tickFormatter={chartTickFormatter}
+                        interval={0}
+                    />
+                    <ReferenceLine
+                        y={(maxGlucose || 0) - (range / 2)}
+                        stroke="var(--mdhui-color-primary)"
+                        strokeWidth={1}
+                        label={{
+                            value: Number(maxGlucose).toFixed(0),
+                            fill: 'var(--mdhui-color-primary)',
+                            fontSize: 9,
+                            position: 'right'
+                        }}
+                    />
+
+                    <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#aaa"
+                        dot={customDot}
+                        label={customDotLabel}
+                        animationDuration={500}
+                    />
+                </ComposedChart>
+            </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={70} style={{ marginTop: "-10px" }}>
+                <ComposedChart data={chartData}>
+
+                    <YAxis
+                        tick={({ x, y, stroke, payload }: any) => <text x={x} y={y}> <FontAwesomeSvgIcon size="sm" icon={faShoePrints} /></text>}
+                        width={24}
+                        axisLine={false}
+                        tickLine={false}
+                        ticks={[0]}
+                        interval={0}
+                    />
                     <CartesianGrid vertical strokeDasharray="2 4" />
                     <XAxis
                         axisLine={false}
@@ -173,46 +248,17 @@ export default function (props: GlucoseChartProps) {
                         tickFormatter={chartTickFormatter}
                         interval={0}
                     />
-                    <YAxis
-                        width={24}
-                        axisLine={false}
-                        tickLine={false}
-                        domain={[50, 220]}
-                        ticks={[60, 100, 140, 180, 220]}
-                        interval={0}
-                    />
-                    <ReferenceLine
-                        y={maxGlucose}
-                        stroke="var(--mdhui-color-primary)"
-                        strokeWidth={1}
-                        label={{
-                            value: Number(maxGlucose).toFixed(0),
-                            fill: 'var(--mdhui-color-primary)',
-                            fontSize: 9,
-                            position: 'right'
-                        }}
-                    />
-                    <ReferenceLine
-                        y={minGlucose}
-                        stroke="var(--mdhui-color-primary)"
-                        strokeWidth={1}
-                        label={{
-                            value: Number(minGlucose).toFixed(0),
-                            fill: 'var(--mdhui-color-primary)',
-                            fontSize: 9,
-                            position: 'right'
-                        }}
-                    />
-                    <Line
+                    <Bar
+                        data={steps}
                         type="monotone"
                         dataKey="value"
-                        stroke="#aaa"
-                        dot={customDot}
-                        label={customDotLabel}
-                        animationDuration={500}
+                        fill="rgb(245, 183, 34)"
+                        opacity={0.5}
+                        radius={[2, 2, 0, 0]}
                     />
-                </LineChart>
+                </ComposedChart>
             </ResponsiveContainer>
+            <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
         </div>
         <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucoseReadings?.length ? 'block' : 'none' }}>No blood glucose readings</div>
         <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>

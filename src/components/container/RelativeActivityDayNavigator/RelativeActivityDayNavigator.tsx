@@ -70,9 +70,9 @@ export default function (props: RelativeActivityDayNavigatorProps) {
                 {props.keyTypeIcon}
                 <div>{keyValue.value}</div>
             </div>}
-            <SparkBarChart
+            {/* <SparkBarChart
                 averageFillPercent={0.5}
-                bars={bars} />
+                bars={bars} /> */}
         </div>
     }
 
