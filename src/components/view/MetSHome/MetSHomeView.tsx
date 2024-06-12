@@ -83,7 +83,7 @@ export default function (props: MetSHomeViewProps) {
 					</div>
 					<div style={{ margin: "16px" }}>
 						<div style={{ fontSize: ".7em", textTransform: "uppercase", color: "var(--mdhui-text-color-2)" }}>
-							Stress
+							Overall Stress
 						</div>
 						<input style={{ width: "100%", marginTop: "8px" }} type="range" id="stress" name="stress" min="0" max="6" step="1" value={undefined} list="markers" />
 						<datalist id="markers">
