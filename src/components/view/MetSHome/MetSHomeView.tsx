@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment } from "../../.."
+import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment, ValueSelector } from "../../.."
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBowlFood, faClose, faCookie, faDroplet, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
@@ -65,6 +65,11 @@ export default function (props: MetSHomeViewProps) {
 						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
 						<Button variant="light" onClick={() => { }} fullWidth={false}><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
 					</div>
+				</Card>
+				<Card>
+					<Title defaultMargin order={3} style={{ marginBottom: "-16px" }}>How stressed do you feel today?</Title>
+					<ValueSelector valueBackgroundColor="var(--mdhui-background-color-1)" values={["Not at all", "A little", "Moderately", "Very", "Extremely"]} />
+
 				</Card>
 				<Card>
 					<ConnectEhr previewState='enabled' variant="medium" hideWhenConnected />

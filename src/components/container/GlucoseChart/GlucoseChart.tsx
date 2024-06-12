@@ -104,14 +104,22 @@ export default function (props: GlucoseChartProps) {
     let chartDomain = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
     let chartTicks = [
         selectedDate.valueOf(),
-        add(selectedDate, { hours: 4 }).valueOf(),
-        add(selectedDate, { hours: 8 }).valueOf(),
+        add(selectedDate, { hours: 3 }).valueOf(),
+        add(selectedDate, { hours: 6 }).valueOf(),
+        add(selectedDate, { hours: 9 }).valueOf(),
         add(selectedDate, { hours: 12 }).valueOf(),
-        add(selectedDate, { hours: 16 }).valueOf(),
-        add(selectedDate, { hours: 20 }).valueOf(),
+        add(selectedDate, { hours: 15 }).valueOf(),
+        add(selectedDate, { hours: 18 }).valueOf(),
+        add(selectedDate, { hours: 21 }).valueOf(),
         add(selectedDate, { hours: 24 }).valueOf()
     ];
-    let chartTickFormatter = (value: number) => format(new Date(value), 'haaa');
+    let chartTickFormatter = (value: number) => {
+        let date = new Date(value);
+        if(date.getHours() === 0) {
+            return "";
+        }
+        return format(new Date(value), 'h aaa');
+    }
 
     if (selectedMeal) {
         chartDomain = [selectedMeal.observationDate.valueOf(), add(selectedMeal.observationDate, { hours: 2 }).valueOf()];
