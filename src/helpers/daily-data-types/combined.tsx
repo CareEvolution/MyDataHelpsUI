@@ -59,7 +59,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
-        previewDataRange: [4000, 8000]
+        previewDataRange: [2000, 8000]
     },
     {
         dataSource: "Unified",

@@ -13,6 +13,8 @@ export interface RelativeActivityDayNavigatorProps {
     previewState?: "default";
     innerRef?: React.Ref<HTMLDivElement>;
     onDataLoaded?(data: { [key: string]: { [key: string]: RelativeActivityQueryResult } }): void;
+    keyType?: RelativeActivityDataType;
+    keyTypeIcon?: React.ReactNode;
 }
 
 export default function (props: RelativeActivityDayNavigatorProps) {
@@ -43,7 +45,7 @@ export default function (props: RelativeActivityDayNavigatorProps) {
 
         var date = new Date(year, month, day);
         var dayKey = getDayKey(date);
-        let bars: SparkBarChartBar[] = props.dataTypes.map(dataType => {
+        let bars: SparkBarChartBar[] = props.dataTypes.filter(d => d != props.keyType).map(dataType => {
             if (!dailyData || !dailyData[dataType.dailyDataType] || !dailyData[dataType.dailyDataType][dayKey]) {
                 return { color: "var(--mdhui-color-primary)", barFillPercent: 0 };
             }
@@ -62,10 +64,16 @@ export default function (props: RelativeActivityDayNavigatorProps) {
             }
         });
 
+        let keyValue = dailyData && props.keyType && dailyData[props.keyType.dailyDataType] && dailyData[props.keyType.dailyDataType][dayKey];
         return <div style={{ paddingTop: "8px" }}>
+            {keyValue && <div style={{ alignItems: "center", fontSize: "12px", display: "flex", justifyContent: "center", gap: "4px", marginBottom: "4px" }}>
+                {props.keyTypeIcon}
+                <div>{keyValue.value}</div>
+            </div>}
             <SparkBarChart
                 averageFillPercent={0.5}
-                bars={bars} /></div>
+                bars={bars} />
+        </div>
     }
 
     let weekStartChanged = function (weekStart: Date) {

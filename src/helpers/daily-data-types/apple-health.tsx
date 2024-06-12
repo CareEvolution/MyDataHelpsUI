@@ -1,7 +1,7 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { appleHealthActiveEnergyBurned, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faDroplet, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
 import language from "../language";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
@@ -129,7 +129,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
-        previewDataRange: [4000, 8000]
+        previewDataRange: [2000, 8000]
     },
     {
         type: DailyDataType.AppleHealthWalkingHeartRateAverage,
@@ -148,6 +148,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
+    },
+    {
+        type: DailyDataType.AppleHealthBloodGlucose,
+        dataProvider: appleHealthActiveEnergyBurned,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["BloodGlucose"]),
+        labelKey: "blood-glucose",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [40, 180]
     }
 ];
 appleHealthTypeDefinitions.forEach((def) => {

@@ -1,9 +1,12 @@
 import React from 'react'
-import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment, ValueSelector } from "../../.."
+import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu, GlucoseChart, Title, TextBlock, Button, ConnectEhr, DateRangeCoordinator, DateRangeTitle, Section, SingleDataPoint, ActivityMeter, Action, getColorFromAssortment, ValueSelector, WeekCalendar, SparkBarChart, RelativeActivityDataType, DailyDataType } from "../../.."
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 import { IconDefinition, fa1, fa2, fa3, fa4, faBed, faBoltLightning, faBowlFood, faClose, faCookie, faDroplet, faHamburger, faShoePrints, faTrash, faWineBottle } from '@fortawesome/free-solid-svg-icons'
 import { transform } from 'lodash'
+import { add, startOfDay } from 'date-fns'
+import "./MetSHomeView.css"
+import RelativeActivityDateRangeCoordinator from '../../container/RelativeActivityDayCoordinator/RelativeActivityDayCoordinator'
 
 export interface MetSHomeViewProps {
 
@@ -21,6 +24,30 @@ export default function (props: MetSHomeViewProps) {
 		</div>
 	}
 
+
+	let dailyDataTypes: RelativeActivityDataType[] = [
+		{
+			dailyDataType: DailyDataType.Steps,
+			color: "#f5b722",
+			threshold: "30DayAverage"
+		},
+		{
+			dailyDataType: DailyDataType.SleepMinutes,
+			color: "#7b88c6",
+			threshold: "30DayAverage"
+		},
+		{
+			dailyDataType: DailyDataType.GarminMaxStressLevel,
+			color: "#e35c33",
+			threshold: "30DayAverage"
+		},
+		{
+			dailyDataType: DailyDataType.AppleHealthBloodGlucose,
+			color: "#e35c33",
+			threshold: "30DayAverage"
+		}
+	]
+
 	return (
 		<Layout>
 			<StatusBarBackground color='#FFFFFF' />
@@ -34,8 +61,9 @@ export default function (props: MetSHomeViewProps) {
 				<TextBlock>To get started, connect your Dexcom account.</TextBlock>
 				<Button defaultMargin onClick={() => MyDataHelps.connectExternalAccount(564)}>Connect Dexcom Account</Button>
 			</Card> */}
-			<DateRangeCoordinator intervalType='Day' variant='rounded'>
-				<Card style={{ marginTop: 0 }}>
+			<RelativeActivityDateRangeCoordinator dataTypes={dailyDataTypes} previewState='default' keyType={dailyDataTypes[3]} keyTypeIcon={<FontAwesomeSvgIcon icon={faDroplet} color={"#e35c33"} />}>
+				<DateRangeTitle defaultMargin />
+				<Card>
 					<GlucoseChart previewState='with data and meals' />
 					<div style={{ display: "flex", gap: "16px", margin: "16px" }}>
 						<div style={{ width: "50%" }}>
@@ -96,7 +124,7 @@ export default function (props: MetSHomeViewProps) {
 				<Card>
 					<ConnectDevicesMenu previewState='iOS' headerVariant='medium' />
 				</Card>
-			</DateRangeCoordinator>
+			</RelativeActivityDateRangeCoordinator>
 		</Layout>
 	)
 }

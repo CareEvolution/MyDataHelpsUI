@@ -11,6 +11,8 @@ export interface RelativeActivityDayCoordinatorProps {
     dataTypes: RelativeActivityDataType[];
     previewState?: "default";
     children?: React.ReactNode;
+    keyType?: RelativeActivityDataType;
+    keyTypeIcon?: React.ReactNode;
 }
 
 export interface RelativeActivityContext {
@@ -56,7 +58,9 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
                             onDateSelected={(d) => setCurrentContext({ ...currentDateContext, intervalStart: d })}
                             dataTypes={availableDataTypes}
                             previewState={props.previewState}
-                            onDataLoaded={(d) => setRelativeActivityData(d)} />
+                            onDataLoaded={(d) => setRelativeActivityData(d)}
+                            keyType={props.keyType}
+                            keyTypeIcon={props.keyTypeIcon} />
                         {relativeActivityData && props.children}
                     </DateRangeContext.Provider>
                 </RelativeActivityContext.Provider>

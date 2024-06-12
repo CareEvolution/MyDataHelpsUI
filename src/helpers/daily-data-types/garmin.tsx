@@ -115,7 +115,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "max-stress-level",
         icon: <FontAwesomeSvgIcon icon={faBoltLightning} />,
         formatter: defaultFormatter,
-        previewDataRange: [80, 100]
+        previewDataRange: [0, 6]
     },
     {
         type: DailyDataType.GarminAverageStressLevel,
