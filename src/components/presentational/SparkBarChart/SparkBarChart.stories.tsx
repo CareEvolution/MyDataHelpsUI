@@ -53,3 +53,39 @@ Default.args = {
 			color: "#e35c33"
 		}]
 }
+
+
+export const Horizontal = Template.bind({});
+Horizontal.args = {
+	averageFillPercent: .3,
+	horizontal: true,
+	bars: [
+		{
+			barFillPercent: .5,
+			color: "#f5b722"
+		},
+		{
+			barFillPercent: .1,
+			color: "#f5b722"
+		},
+		{
+			barFillPercent: .2,
+			color: "#7b88c6"
+		},
+		{
+			barFillPercent: .7,
+			color: "#7b88c6"
+		},
+		{
+			barFillPercent: .6,
+			color: "#7b88c6"
+		},
+		{
+			barFillPercent: .8,
+			color: "#e35c33"
+		},
+		{
+			barFillPercent: .9,
+			color: "#e35c33"
+		}]
+}
