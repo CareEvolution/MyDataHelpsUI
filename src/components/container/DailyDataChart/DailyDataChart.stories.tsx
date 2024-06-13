@@ -1,7 +1,8 @@
 import React from "react";
-import { DailyDataType } from "../../../helpers";
+import { DailyDataQueryResult, DailyDataType, getDayKey, queryPreviewDailyData } from "../../../helpers";
 import { Card, Layout } from "../../presentational";
 import DailyDataChart, { DailyDataChartProps } from "./DailyDataChart";
+import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
 let render = (args: DailyDataChartProps) => <Layout colorScheme="auto"><Card><DailyDataChart {...args} /></Card></Layout>
@@ -18,6 +19,34 @@ export const stepsLineChart = {
         dailyDataType: DailyDataType.Steps,
         chartType: "Line",
         previewState: "default"
+    },
+    render: render
+};
+
+export const stepsWithGapLineChart = {
+    args: {
+        title: "Steps",
+        options: {
+            domainMin: 0,
+            lineColor: "red"
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewDataProvider: (start: Date, end: Date) => {
+            let data: DailyDataQueryResult = {};
+            let currentDate = new Date(start);
+            while (currentDate < end) {
+                if(currentDate.getDate() % 3 !== 0) {
+                    let dayKey = getDayKey(currentDate);
+                    data[dayKey] = Math.random() * 10000 + 3000;
+                }
+                currentDate = add(currentDate, { days: 1 });
+            }
+            return Promise.resolve(data);
+        }
     },
     render: render
 };

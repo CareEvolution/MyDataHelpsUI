@@ -1,1 +1,1 @@
-export { default, LineChartOptions, BarChartOptions, AreaChartOptions, BarChartThreshold } from "./DailyDataChart";
+export { default } from "./DailyDataChart";

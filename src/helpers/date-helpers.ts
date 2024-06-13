@@ -46,17 +46,20 @@ export function getMonthName(month: number) {
 	return capitalizeFirstLetter(format(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
 }
 
-export function titleForDateRange(intervalType: "Day" | "Week" | "Month", intervalStart: Date, variant?: "short" | "long") {
-	var duration: Duration = intervalType == "Month" ? { months: 1 } : intervalType == "Day" ? { days: 1 } : { weeks: 1 };
+export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Month", intervalStart: Date, variant?: "short" | "long") {
+	var duration: Duration = intervalType === "Month" ? { months: 1 } : intervalType === "Day" ? { days: 1 } : { weeks: 1 };
 	var intervalEnd = add(intervalStart, duration);
 
-	if (intervalType == "Month" && intervalStart.getDate() == 1) {
+	if(intervalType === "6Month" && intervalStart.getDate() === 1){
+		return `${getMonthName(intervalStart.getMonth())} - ${getMonthName(sub(intervalEnd, { months: 1}).getMonth())}`;
+	}
+	else if (intervalType === "Month" && intervalStart.getDate() === 1) {
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
-	else if (intervalType == "Week" || intervalType == "Month") {
+	else if (intervalType === "Week" || intervalType === "Month" || intervalType === "6Month") {
 		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
 	}
-	else if (intervalType == "Day") {
+	else if (intervalType === "Day") {
 		if (variant === "long") {
 			return `${getDayOfWeek(intervalStart)}, ${getFullDateString(intervalStart)}`;
 		}

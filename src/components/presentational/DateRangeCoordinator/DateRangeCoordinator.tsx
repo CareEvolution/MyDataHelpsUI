@@ -6,7 +6,7 @@ import { startOfDay } from "date-fns";
 
 export interface DateRangeCoordinatorProps {
     initialIntervalStart?: Date;
-    intervalType: "Day" | "Week" | "Month";
+    intervalType: "Day" | "Week" | "Month" | "6Month";
     weekStartsOn?: WeekStartsOn;
     variant?: "default" | "rounded";
     children?: React.ReactNode;
@@ -15,7 +15,7 @@ export interface DateRangeCoordinatorProps {
 }
 
 export interface DateRangeContext {
-    intervalType: "Day" | "Week" | "Month";
+    intervalType: "Day" | "Week" | "Month" | "6Month";
     intervalStart: Date;
 }
 
