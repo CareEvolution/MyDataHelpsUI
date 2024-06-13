@@ -4,7 +4,7 @@ import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings,
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator } from '../../presentational';
 import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
-import { Bar, BarChart, CartesianGrid, ComposedChart, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ComposedChart, Label, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { max } from 'lodash';
@@ -164,11 +164,9 @@ export default function (props: GlucoseChartProps) {
     let steps: { date: Date, value: number }[] = [];
     let currentStepData = startOfDay(selectedDate);
     while (currentStepData < add(startOfDay(selectedDate), { days: 1 })) {
-
-        let graphMax = maxGlucose || 0;
-        let value = Math.round(Math.random() * (graphMax / 2));
-        if (currentStepData.getHours() < 7 || currentStepData.getHours() > 22){
-            value = 0;
+        let value = Math.round(Math.random() * (200) + 20);
+        if (currentStepData.getHours() < 7 || currentStepData.getHours() > 22) {
+            value = 20;
         }
 
         steps.push({ date: currentStepData, value: value });
@@ -180,7 +178,7 @@ export default function (props: GlucoseChartProps) {
 
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
-            <ResponsiveContainer width="100%" height={120}>
+            <ResponsiveContainer width="100%" height={166}>
                 <ComposedChart data={chartData}>
 
                     <CartesianGrid vertical strokeDasharray="2 4" />
@@ -189,12 +187,11 @@ export default function (props: GlucoseChartProps) {
                         width={24}
                         axisLine={false}
                         tickLine={false}
-                        domain={[60, 220]}
+                        domain={[20, 220]}
                         ticks={[60, 100, 140, 180, 220]}
                         interval={0}
                     />
                     <XAxis
-                        height={0}
                         axisLine={false}
                         tickLine={false}
                         type="number"
@@ -209,52 +206,30 @@ export default function (props: GlucoseChartProps) {
                         stroke="var(--mdhui-color-primary)"
                         strokeWidth={1}
                         label={{
-                            value: Number(maxGlucose).toFixed(0),
+                            value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
                             fill: 'var(--mdhui-color-primary)',
                             fontSize: 9,
-                            position: 'right'
+                            position: 'insideTopRight',
+                            fontWeight: 'bold'
                         }}
-                    />
-
-                    <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#aaa"
-                        dot={customDot}
-                        label={customDotLabel}
-                        animationDuration={500}
-                    />
-                </ComposedChart>
-            </ResponsiveContainer>
-            <ResponsiveContainer width="100%" height={70} style={{ marginTop: "-10px" }}>
-                <ComposedChart data={chartData}>
-
-                    <YAxis
-                        tick={({ x, y, stroke, payload }: any) => <text x={x} y={y}> <FontAwesomeSvgIcon size="sm" icon={faShoePrints} /></text>}
-                        width={24}
-                        axisLine={false}
-                        tickLine={false}
-                        ticks={[0]}
-                        interval={0}
-                    />
-                    <CartesianGrid vertical strokeDasharray="2 4" />
-                    <XAxis
-                        axisLine={false}
-                        tickLine={false}
-                        type="number"
-                        dataKey="date"
-                        domain={chartDomain}
-                        ticks={chartTicks}
-                        tickFormatter={chartTickFormatter}
-                        interval={0}
-                    />
+                    >
+                    </ReferenceLine>
                     <Bar
                         data={steps}
                         type="monotone"
                         dataKey="value"
                         fill="rgb(245, 183, 34)"
-                        opacity={0.5}
+                        opacity={0.3}
                         radius={[2, 2, 0, 0]}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#999"
+                        strokeWidth={1.5}
+                        dot={customDot}
+                        label={customDotLabel}
+                        animationDuration={500}
                     />
                 </ComposedChart>
             </ResponsiveContainer>

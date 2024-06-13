@@ -64,12 +64,30 @@ export default function (props: RelativeActivityDayNavigatorProps) {
             }
         });
 
+
+        function getGlucoseRangeThing() {
+            let glucoseMin = Math.random() * 50;
+            let glucoseMax = glucoseMin + 50 + Math.random() * 90;
+            let randomAverage = glucoseMin + (glucoseMax - glucoseMin) / 2 - 10 + Math.random() * 20;
+
+            return <div className="glucose-range-container">
+                <div className="average-line"></div>
+                <div className="glucose-range" style={{ bottom: (glucoseMin / 170) * 100 + "%", height: ((glucoseMax - glucoseMin) / 170) * 100 + "%" }}>
+                    <div className="glucose-range-mid" style={{ bottom: Math.random() * 40 + 30 + "%" }}></div>
+                    <div className="glucose-range-top"></div>
+                    <div className="glucose-range-bottom"></div>
+                </div>
+            </div>
+        }
+
         let keyValue = dailyData && props.keyType && dailyData[props.keyType.dailyDataType] && dailyData[props.keyType.dailyDataType][dayKey];
         return <div style={{ paddingTop: "8px" }}>
-            {keyValue && <div style={{ alignItems: "center", fontSize: "12px", display: "flex", justifyContent: "center", gap: "4px", marginBottom: "4px" }}>
+            {getGlucoseRangeThing()}
+
+            {/* {keyValue && <div style={{ alignItems: "center", fontSize: "12px", display: "flex", justifyContent: "center", gap: "4px", marginBottom: "4px" }}>
                 {props.keyTypeIcon}
                 <div>{keyValue.value}</div>
-            </div>}
+            </div>} */}
             {/* <SparkBarChart
                 averageFillPercent={0.5}
                 bars={bars} /> */}

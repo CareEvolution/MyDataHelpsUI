@@ -1,3 +1,53 @@
 input[type='range'] {
     accent-color: #e35c33;
 }
+
+.glucose-range-container {
+    height: 36px;
+    position: relative;
+}
+
+.glucose-range-container .glucose-range {
+    width: 2px;
+    position: absolute;
+    left: calc(50% - 1px);
+    background: rgb(196, 41, 28);
+    border-radius: 8px;
+}
+
+.glucose-range-container .glucose-range-top {
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    border-top: solid 1px rgb(196, 41, 28);
+}
+
+.glucose-range-container .glucose-range-bottom {
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    border-bottom: solid 1px rgb(196, 41, 28);
+}
+.glucose-range-container .glucose-range-mid {
+    position: absolute;
+    bottom: -2px;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    background: rgb(196, 41, 28);
+    border-radius: 8px;
+    margin-bottom:-4px;
+}
+
+.glucose-range-container .average-line {
+
+    border-top: dashed 1px var(--mdhui-border-color-1);
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 50%;
+}
