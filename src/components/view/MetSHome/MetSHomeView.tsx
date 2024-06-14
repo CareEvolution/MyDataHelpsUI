@@ -49,17 +49,17 @@ export default function (props: MetSHomeViewProps) {
 	return (
 		<Layout>
 			<StatusBarBackground color='#FFFFFF' />
-			{/* <Card>
+			<Card>
 				<Title image={<img src="https://orgimages.careevolutionapps.com/d1ff5a48-dd5d-4171-84d6-321d085e9746/082917c8-dbcf-4504-8fe4-3ed9972e284b.png"></img>}
 					defaultMargin
 					order={3}
 					imageAlignment="top"
 					autosizeImage
 				>Connect to Dexcom</Title>
-				<TextBlock>To get started, connect your Dexcom account.</TextBlock>
+				<TextBlock>Connect to your Dexcom account to start viewing your CGM data.</TextBlock>
 				<Button defaultMargin onClick={() => MyDataHelps.connectExternalAccount(564)}>Connect Dexcom Account</Button>
-			</Card> */}
-			<RelativeActivityDateRangeCoordinator dataTypes={dailyDataTypes} previewState='default' keyType={dailyDataTypes[3]} keyTypeIcon={<FontAwesomeSvgIcon icon={faDroplet} color={"#e35c33"} />}>
+			</Card>
+			{/* <RelativeActivityDateRangeCoordinator dataTypes={dailyDataTypes} previewState='default' keyType={dailyDataTypes[3]} keyTypeIcon={<FontAwesomeSvgIcon icon={faDroplet} color={"#e35c33"} />}>
 				<DateRangeTitle defaultMargin />
 				<Card>
 					<GlucoseChart previewState='with data and meals' />
@@ -97,7 +97,7 @@ export default function (props: MetSHomeViewProps) {
 							<div style={{ fontSize: ".7em", color: "var(--mdhui-text-color-2)" }}>
 								No Stress
 							</div>
-							<div style={{ fontSize: ".7em", color: "var(--mdhui-text-color-2)", textAlign:"right" }}>
+							<div style={{ fontSize: ".7em", color: "var(--mdhui-text-color-2)", textAlign: "right" }}>
 								Extremely Stressed
 							</div>
 						</div>
@@ -110,19 +110,18 @@ export default function (props: MetSHomeViewProps) {
 				</Card>
 				<Card>
 					<Title defaultMargin order={3} style={{ marginBottom: "-16px" }}>Meal Log</Title>
-					{/* <TextBlock>No food logged. Tap the buttons below to log a meal, drink, or snack.</TextBlock> */}
 					<Action bottomBorder icon={foodIcon(faHamburger, 0)} title={"Meal"} subtitle="11:45 AM" indicatorIcon={faEdit} />
 					<Action bottomBorder icon={foodIcon(faCookie, 1)} title={"Snack"} subtitle="2:32 PM" indicatorIcon={faEdit} />
 					<Action bottomBorder icon={foodIcon(faHamburger, 2)} title={"Meal"} subtitle="5:35 PM" indicatorIcon={faEdit} />
 					<Action bottomBorder icon={foodIcon(faWineBottle, 3)} title={"Drink"} subtitle="8:31 PM" indicatorIcon={faEdit} />
 				</Card>
-				<Card>
-					<ConnectEhr previewState='enabled' variant="medium" hideWhenConnected />
-				</Card>
-				<Card>
-					<ConnectDevicesMenu previewState='iOS' headerVariant='medium' />
-				</Card>
-			</RelativeActivityDateRangeCoordinator>
+			</RelativeActivityDateRangeCoordinator> */}
+			<Card>
+				<ConnectEhr previewState='enabled' variant="medium" hideWhenConnected notConnectedText="Connect to your electronic health records from your doctor and/or health plan"  />
+			</Card>
+			<Card>
+				<ConnectDevicesMenu previewState='iOS' headerVariant='medium' text='Connect to your smartwatch or wearable activity tracker to see how your activity is associated with your CGM data' />
+			</Card>
 		</Layout>
 	)
 }
