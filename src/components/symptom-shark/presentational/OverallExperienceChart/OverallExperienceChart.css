@@ -2,6 +2,14 @@
     position: relative;
 }
 
+.mdhui-ss-oe-chart .container {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap: wrap;
+}
+
 .mdhui-ss-oe-chart .mdhui-ss-oe-chart-face {
     width: 16px;
     height: 16px;
