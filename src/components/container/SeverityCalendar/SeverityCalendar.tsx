@@ -34,7 +34,7 @@ interface SeverityLogEntry {
  * @param {string} props.severityResultIdentifier - The identifier for the result that contains the severity value. Defaults are Mild, Moderate, Severe though any values can be mapped to these categories.
  * @param {date} props.intervalStart - The start date for the calendar. If used with a DateRangeCoordinator, this value can be left undefined.
 */
-export default function (props: SeverityCalendarProps) {
+export default function SeverityCalendar (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
         surveyName: props.surveyName,
         resultIdentifier: props.dateRecordedResultIdentifier ? [props.dateRecordedResultIdentifier, props.severityResultIdentifier] : [props.severityResultIdentifier]

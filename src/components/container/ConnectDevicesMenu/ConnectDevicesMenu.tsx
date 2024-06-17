@@ -33,7 +33,7 @@ export interface ConnectDevicesMenuProps {
  * @param {string} props.text - Text that shows under the title
  * @param {string} props.headerVariant - The size of the title. "large" or "medium"
 */
-export default function (props: ConnectDevicesMenuProps) {
+export default function ConnectDevicesMenu (props: ConnectDevicesMenuProps) {
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);

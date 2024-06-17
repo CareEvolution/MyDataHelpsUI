@@ -16,10 +16,8 @@ export type NotificationListPreviewState = "Default" | "NoData";
 
 /** Notification List. Can be filtered by Email/Push/SMS 
  * 
- * @component
  * @param {NotificationListProps} props	- Props for the component)
- * @param {NotificationType} props.notificationType	- Type of notification to filter by
- * @param {React.Ref<HTMLDivElement>} props.innerRef	- Reference to the div element
+ * @param {NotificationType} props.notificationType	- Type of notification to filter by Sms/Email/Push
  * 
 */
 export default function NotificationList (props: NotificationListProps) {

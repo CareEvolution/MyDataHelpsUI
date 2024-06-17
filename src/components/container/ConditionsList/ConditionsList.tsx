@@ -22,7 +22,7 @@ interface Condition {
  * @param {ConditionsListProps} props - Property object for the component. Configure to use survey and/or device data
  * @param {event} props.onViewTermInfo - A function that is called when the user clicks on the condition
 */
-export default function (props: ConditionsListProps) {
+export default function ConditionsList (props: ConditionsListProps) {
     const [conditions, setConditions] = useState<Condition[] | null>(null);
 
     function load() {

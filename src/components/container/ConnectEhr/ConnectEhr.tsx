@@ -40,7 +40,7 @@ export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnecte
  * @param {string} props.connectedText - Customize the text displayed when the user is connected to an EHR
  * @param {boolean} props.hideWhenConnected - Boolean value. Hides the component when the state is connected
 */
-export default function (props: ConnectEhrProps) {
+export default function ConnectEhr(props: ConnectEhrProps) {
 	const [loading, setLoading] = useState(true);
 	const [ehrEnabled, setEhrEnabled] = useState(false);
 	const [projectName, setProjectName] = useState<null | string>(null);
