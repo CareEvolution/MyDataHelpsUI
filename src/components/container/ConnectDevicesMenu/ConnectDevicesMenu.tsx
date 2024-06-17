@@ -24,6 +24,15 @@ export interface ConnectDevicesMenuProps {
     connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
+
+/** Connect Devices Menu. Allows the user to establish connections for sharing data from wearables, apps, and other devices.
+ * 
+ * @param {ConnectDevicesMenuProps} props - Property object for the component.
+ * @param {string[]} props.accountTypes - One or more of the following account types. Fitbit, Garmin, AppleHealth, GoogleFit, "Omron
+ * @param {string} props.title - A title for the component
+ * @param {string} props.text - Text that shows under the title
+ * @param {string} props.headerVariant - The size of the title. "large" or "medium"
+*/
 export default function (props: ConnectDevicesMenuProps) {
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);

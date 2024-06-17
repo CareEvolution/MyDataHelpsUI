@@ -28,6 +28,18 @@ export interface ConnectEhrProps {
 
 export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnected" | "enabledNeedsAttention";
 
+/** Connect EHR Menu. Allows the user to establish connections to their EHR.
+ * 
+ * @param {ConnectEhrProps} props - Property object for the component.
+ * @param {string} props.applicationUrl - The url that the user will be directed to when they click the Connect Provider button. Use as an alternative to onClick
+ * @param {event} props.onClick - A custom onClick event for the Connect Provider button. Use as an alternative to applicationUrl
+ * @param {string} props.disabledBehavior - Use 'hide' or 'displayError' to determine how the component behaves when EHR is not enabled
+ * @param {string} props.title - Text to show as the Title of the component
+ * @param {string} props.variant - The size of the presentation. 'large' | 'medium' | 'small'
+ * @param {string} props.notConnectedText - Customize the text displayed when the user is not connected to an EHR
+ * @param {string} props.connectedText - Customize the text displayed when the user is connected to an EHR
+ * @param {boolean} props.hideWhenConnected - Boolean value. Hides the component when the state is connected
+*/
 export default function (props: ConnectEhrProps) {
 	const [loading, setLoading] = useState(true);
 	const [ehrEnabled, setEhrEnabled] = useState(false);

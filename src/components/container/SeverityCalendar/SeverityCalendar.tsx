@@ -26,6 +26,14 @@ interface SeverityLogEntry {
     dateEntered: string
 }
 
+/** Severity Calendar. A calendar that color codes a survey step response to reflects Mild/Moderate/Severe.
+ * 
+ * @param {SeverityCalendarProps} props - Property object for the component.
+ * @param {string} props.surveyName - The name of the survey
+ * @param {string} props.dateRecordedResultIdentifier - The identifier for the date recorded result. If not provided, the date the survey was submitted will be used.
+ * @param {string} props.severityResultIdentifier - The identifier for the result that contains the severity value. Defaults are Mild, Moderate, Severe though any values can be mapped to these categories.
+ * @param {date} props.intervalStart - The start date for the calendar. If used with a DateRangeCoordinator, this value can be left undefined.
+*/
 export default function (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
         surveyName: props.surveyName,

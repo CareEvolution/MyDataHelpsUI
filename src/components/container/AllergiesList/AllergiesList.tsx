@@ -18,12 +18,10 @@ interface Allergy {
     Reactions: string[];
 }
 
-/** A listing of allergies. 
+/** Allergy List. Displays a list of participant allergies derived from EHR Data
  * 
- * @component
- * @param {AllergiesListProps}  properties for the component
- * @returns {JSX.Element}
- * 
+ * @param {AllergiesListProps} props - Property object for the component.
+ * @param {event} props.onViewTermInfo - A function that is called when the user clicks on the term information
 */
 export default function AllergiesList(props: AllergiesListProps) {
     const [allergies, setAllergies] = useState<Allergy[] | null>(null);

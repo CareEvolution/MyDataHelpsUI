@@ -37,11 +37,12 @@ interface BloodPressureMetrics {
     minSystolicAlertClass: string
 }
 
-/** Blood Pressure Visualization. Displays daily systolic and diastolic blood pressure readings in a dumbbell chart 
+/** Blood Pressure Visualization. Displays daily systolic and diastolic blood pressure readings in a dumbbell chart. Most ofen used with a DateRangeCoordinator to navigate through time. 
  * 
- * @component
- * @param {BloodPressureVisualizationProps} props	- Props for the component)
- * @returns {JSX.Element}
+ * @param {BloodPressureVisualizationProps} props - Property object for the component. Configure to use survey and/or device data
+ * @param {string} props.surveyDataSource - The survey that is the source of data. Required fields are surveyName, dateResultIdentifier, systolicResultIdentifier, and diastolicResultIdentifier
+ * @param {string} props.weekStartsOn - The weekday name that the chart should start on. Default is Monday
+ * @param {string} props.deviceDataSource - An array of supported devices. AppleHealth, GoogleFit, and Omron are supported
  * 
 */
 export default function BloodPressureVisualization (props: BloodPressureVisualizationProps) {

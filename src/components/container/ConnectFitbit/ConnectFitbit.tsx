@@ -16,6 +16,7 @@ export interface ConnectFitbitProps {
 
 export type ConnectFitbitPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
+
 export default function (props: ConnectFitbitProps) {
 	function getInternalFitbitProviderID() {
 		return props.fitbitProviderID || getFitbitProviderID();

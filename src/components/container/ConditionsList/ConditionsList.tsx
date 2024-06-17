@@ -17,6 +17,11 @@ interface Condition {
     TermInformation?: TermInformationReference;
 }
 
+/** Conditions List. Displays a list of participant conditions derived from EHR Data
+ * 
+ * @param {ConditionsListProps} props - Property object for the component. Configure to use survey and/or device data
+ * @param {event} props.onViewTermInfo - A function that is called when the user clicks on the condition
+*/
 export default function (props: ConditionsListProps) {
     const [conditions, setConditions] = useState<Condition[] | null>(null);
 
