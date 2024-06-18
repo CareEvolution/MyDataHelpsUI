@@ -6,6 +6,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./daily-data-types/formatters";
+import { predictableRandomNumber } from "./predictableRandomNumber";
 
 export type DailyDataQueryResult = { [key: string]: number };
 export type DailyDataProvider = (startDate: Date, endDate: Date) => Promise<DailyDataQueryResult>;
@@ -60,25 +61,13 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 	var result: DailyDataQueryResult = {};
 	let range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
 
-	//poor man's seeded javascript rng
-	//just for generating a relatively large random integer from a string seed,
-	//which then uses modulo to get a number in a range
-	async function randomNumber(message: string) {
-		const encoder = new TextEncoder();
-		const data = encoder.encode(message);
-		const hash = await crypto.subtle.digest("SHA-1", data);
-		const hashArray = Array.from(new Uint8Array(hash)).map(t => t.toString());
-		return parseInt(hashArray.reduce((accumulator, currentValue) => {
-			return accumulator + currentValue
-		}, ""));
-	}
-
-	while (startDate < endDate) {
-		var dayKey = getDayKey(startDate);
+	//Modulo repeatable random numbers to get a value in range.
+	while (startDate < endDate && startDate < new Date()) {
+		const dayKey = getDayKey(startDate);
 		if (startDate >= new Date()) {
 			result[dayKey] = 0;
 		} else {
-			var value: number = ((await randomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
+			const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
 			result[dayKey] = value;
 		}
 		startDate = add(startDate, { days: 1 });
@@ -90,11 +79,8 @@ export function getAllDailyDataTypes() {
 	return Array.from(dailyDataTypes.values());
 }
 
-let definitionLookup = new Map(
-	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
-);
 export function getDailyDataTypeDefinition(dataType: string): DailyDataTypeDefinition {
-	return definitionLookup.get(dataType)!;
+	return dailyDataTypes.get(dataType)!;
 }
 
 allTypeDefinitions.forEach(function (typeDefinition) {
