@@ -19,11 +19,19 @@ export interface NewBadgeViewProps {
 export default function (props: NewBadgeViewProps) {
     let [badges, setBadges] = React.useState<number[] | null>(null);
 
+    function runConfetti() {
+        startConfetti();
+        window.setTimeout(function () {
+            stopConfetti();
+        }, 1200);
+    }
+
     useInitializeView(() => {
-        if (props.previewState == "default") { setBadges([1000, 2000, 3000]); return; }
+        if (props.previewState == "default") { setBadges([1000, 2000, 3000]); runConfetti(); return; }
         MyDataHelps.getParticipantInfo().then(participantInfo => {
             let pointsAndBadgesState = parsePointsAndBadgesState(props.customField!, [], participantInfo);
             setBadges(pointsAndBadgesState.badges);
+            runConfetti();
         });
     }, [], []);
 
@@ -31,22 +39,6 @@ export default function (props: NewBadgeViewProps) {
         MyDataHelps.dismiss();
         return null;
     }
-
-    function runConfetti() {
-        if (window.innerWidth === 0 || window.innerHeight === 0) {
-            window.setTimeout(runConfetti, 50);
-            return;
-        }
-
-        startConfetti();
-        window.setTimeout(function () {
-            stopConfetti();
-        }, 1200);
-    }
-
-    useEffect(() => {
-        runConfetti();
-    }, []);
 
     return <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
         <div className="mdhui-new-badge-view">
