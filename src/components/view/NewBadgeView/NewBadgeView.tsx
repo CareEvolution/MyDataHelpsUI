@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { BasicBadge, Button, Layout, LoadingIndicator, TextBlock, Title } from "../../presentational";
 import "./NewBadgeView.css";
 import { parsePointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { startConfetti, stopConfetti } from '../../../helpers/confetti';
 
 export interface NewBadgeViewProps {
     title?: string;
@@ -12,6 +13,7 @@ export interface NewBadgeViewProps {
     primaryColor?: string;
     customField: string;
     previewState?: "default";
+    showBadgePoints?: boolean;
 }
 
 export default function (props: NewBadgeViewProps) {
@@ -30,6 +32,22 @@ export default function (props: NewBadgeViewProps) {
         return null;
     }
 
+    function runConfetti() {
+        if (window.innerWidth === 0 || window.innerHeight === 0) {
+            window.setTimeout(runConfetti, 50);
+            return;
+        }
+
+        startConfetti();
+        window.setTimeout(function () {
+            stopConfetti();
+        }, 1200);
+    }
+
+    useEffect(() => {
+        runConfetti();
+    }, []);
+
     return <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
         <div className="mdhui-new-badge-view">
             {badges == null && <LoadingIndicator />}
@@ -37,7 +55,9 @@ export default function (props: NewBadgeViewProps) {
                 <div className="mdhui-new-badge-view-badge-container">
                     <BasicBadge size="xl" backgroundColor={getColorFromAssortment(badges.length - 1)}>
                         <>
-                            <>{Math.max(...badges).toLocaleString()}<br />points</>
+                            {props.showBadgePoints &&
+                                <>{Math.max(...badges).toLocaleString()}<br />points</>
+                            }
                         </>
                     </BasicBadge>
                 </div>
