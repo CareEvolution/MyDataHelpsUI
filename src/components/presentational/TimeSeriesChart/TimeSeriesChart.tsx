@@ -38,7 +38,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
             </>;
         } else if (intervalType === "Week") {
@@ -51,7 +51,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 currentDate = add(currentDate, { days: 1 });
             }
             return <>
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         } else if (intervalType === "Day") {
