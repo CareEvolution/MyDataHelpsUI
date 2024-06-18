@@ -15,7 +15,7 @@ export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month" | "Day",
     intervalStart: Date,
-    data: Record<string,any>[] | undefined,
+    data: Record<string, any>[] | undefined,
     expectedDataInterval?: Duration,
     series: ChartSeries[] | AreaChartSeries[],
     chartHasData: boolean,
@@ -34,14 +34,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         let currentDate = new Date(value);
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
-        } else if (intervalType === "6Month" ){
+        } else if (intervalType === "6Month") {
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
             </>;
-        } else if (intervalType === "Week" ){
+        } else if (intervalType === "Week") {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
@@ -54,11 +54,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
-        } else if ( intervalType === "Day"){
+        } else if (intervalType === "Day") {
             const startTime = new Date(props.intervalStart);
             startTime.setHours(0, 0, 0, 0);
+            if (currentDate.getHours() === 0) {
+                return null;
+            }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{format(currentDate, "hh:mm aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{format(currentDate, "h aaa")}</text>
             </>;
         }
         return <>
@@ -68,28 +71,28 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     function getXAxisTicks() {
         const startTime = new Date(props.intervalStart);
-        startTime.setHours(0,0,0,0);
+        startTime.setHours(0, 0, 0, 0);
 
-        if(intervalType === "Week") {
-            return Array.from({length: 7}, (_, i) => addDays(startTime, i).getTime() );
+        if (intervalType === "Week") {
+            return Array.from({ length: 7 }, (_, i) => addDays(startTime, i).getTime());
         }
         else if (intervalType === "Month") {
             const monthLength = getDaysInMonth(startTime);
             const numberOfTicks = ceil(monthLength / 2);
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
-        else if (intervalType === "6Month") { 
+        else if (intervalType === "6Month") {
             const ticks = [];
-            let currentTick : Date;
+            let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
-            if( startTime.getDate() === 1){
+            if (startTime.getDate() === 1) {
                 currentTick = startTime;
-            }else if( startTime.getDate() <= 15) {
+            } else if (startTime.getDate() <= 15) {
                 const firstTick = addDays(startOfMonth(startTime), 14);
                 ticks.push(firstTick.getTime());
                 currentTick = startOfMonth(addMonths(startTime, 1));
-            }else{
+            } else {
                 currentTick = startOfMonth(addMonths(startTime, 1));
             }
             while (currentTick < endOfGraph) {
@@ -102,7 +105,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return ticks;
         }
         else if (intervalType === "Day") {
-            return Array.from({length: 9}, (_, i) => addHours(startTime, i*3).getTime() );
+            return Array.from({ length: 9 }, (_, i) => addHours(startTime, i * 3).getTime());
         }
     }
 
@@ -153,7 +156,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         </>
     }
 
-    function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string){
+    function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string) {
         return resolveColor(layoutContext.colorScheme, color) || "var(--mdhui-color-primary)";
     }
 
@@ -180,26 +183,26 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         return `url(#${gradientKey}_threshold${highestThresholdIndex})`;
     }
 
-    const keys = props.series.map( s => s.dataKey);
+    const keys = props.series.map(s => s.dataKey);
 
-    let dataToDisplay: Record<string,any>[] | undefined;
-    if(props.data && props.expectedDataInterval) {
+    let dataToDisplay: Record<string, any>[] | undefined;
+    if (props.data && props.expectedDataInterval) {
         dataToDisplay = [];
-        for(var i = 0; i < props.data.length-1; ++i) {
+        for (var i = 0; i < props.data.length - 1; ++i) {
             dataToDisplay.push(props.data[i]);
 
             var currentPoint = new Date(props.data[i].timestamp);
-            var nextPoint = new Date(props.data[i+1].timestamp);
+            var nextPoint = new Date(props.data[i + 1].timestamp);
             var nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
-            if( nextExpectedPoint < nextPoint) {
+            if (nextExpectedPoint < nextPoint) {
                 var nullValue = {
                     timestamp: props.data[i].timestamp + 1
                 }
                 dataToDisplay.push(nullValue);
             }
         }
-        dataToDisplay.push(props.data[props.data.length-1])
-    }else{
+        dataToDisplay.push(props.data[props.data.length - 1])
+    } else {
         dataToDisplay = props.data;
     }
 
@@ -228,8 +231,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                                <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
-                            )
+                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
+                        )
                         }
                     </LineChart>
                 </ResponsiveContainer>
@@ -251,17 +254,17 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                 </linearGradient>
                             )}
                         </defs>
-                        {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t=>t.referenceLineColor)?.map((threshold, index) =>
+                        {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                             <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                                <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
-                                    {dataToDisplay!.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
-                                    ))}
-                                </Bar>
-                            )
+                            <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
+                                {dataToDisplay!.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
+                                ))}
+                            </Bar>
+                        )
                         }
                     </BarChart>
                 </ResponsiveContainer>
@@ -271,16 +274,16 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
-                            <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.5} />
-                                <stop offset="100%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.2} />
-                            </linearGradient>
+                                <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.5} />
+                                    <stop offset="100%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.2} />
+                                </linearGradient>
                             )}
                         </defs>
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                                <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey}${i})`} stroke={colorOrDefault(getAreaColorForSeries(i), "var(--mdhui-color-primary)")} />
-                            )
+                            <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey}${i})`} stroke={colorOrDefault(getAreaColorForSeries(i), "var(--mdhui-color-primary)")} />
+                        )
                         }
                     </AreaChart>
                 </ResponsiveContainer>
