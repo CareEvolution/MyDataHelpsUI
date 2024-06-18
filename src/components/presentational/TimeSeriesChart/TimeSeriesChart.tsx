@@ -110,7 +110,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (args >= 10000) {
             return Number((args / 1000).toFixed(1)) + 'K';
         } else {
-            return Number(args).toFixed(1);
+            return Number(args.toFixed(1)).toString();
         }
     }
 
@@ -225,7 +225,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
+                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                                 <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
@@ -236,7 +236,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}} >
+                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -268,7 +268,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{left: 5, top: 5, bottom: 5, right: 40}}>
+                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                             <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
