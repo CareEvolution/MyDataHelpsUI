@@ -39,7 +39,7 @@ export default function (props: DailyDataGoalProps) {
         queryDailyData(props.dailyDataType, startDate, endDate, props.previewState === "Default").then((results) => {
             setDailyValue(results[getDayKey(date)] || 0);
         });
-    }, [], []);
+    }, ["externalAccountSyncComplete"], []);
 
     const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
     const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
