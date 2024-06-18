@@ -100,7 +100,7 @@ export default function (props: BasicPointsForBadgesProps) {
     }
 
     function nextBadgeColor() {
-        return getColorFromAssortment((badges?.length || 0) + 1)
+        return getColorFromAssortment(badges?.length || 0)
     }
 
     return <div className={"mdhui-basic-points-for-badges"}>
