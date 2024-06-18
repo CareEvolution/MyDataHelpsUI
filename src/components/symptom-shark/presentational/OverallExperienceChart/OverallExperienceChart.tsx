@@ -79,7 +79,17 @@ export default function (props: OverallExperienceChartProps) {
     let overallFeelingAverage = calculateOverallFeelingAverage();
 
     return <div ref={props.innerRef} className={"mdhui-ss-oe-chart" + (props.variant == "monthReport" ? " mdhui-ss-oe-chart-month-report" : "")}>
-        <CardTitle title={language("daily-overall-experience")} />
+        <div className="mdhui-ss-oe-chart-title-container">
+            <CardTitle title={language("daily-overall-experience")} />
+            {overallFeelingAverage &&
+                <div className="mdhui-ss-oe-chart-average-wrapper">
+                    {language("average")}: <div className="mdhui-ss-oe-chart-average">
+                        {overallFeelingAverage!.toFixed(1)}
+                        <Face className="mdhui-ss-oe-chart-face" selected={true} faceValue={parseInt(overallFeelingAverage!.toFixed(0))} />
+                    </div>
+                </div>
+            }
+        </div>
         <div className="mdhui-ss-oe-chart-inner">
             <div className="mdhui-ss-oe-chart-y-axis">
                 <div className="mdhui-ss-oe-chart-face-total">
@@ -138,13 +148,5 @@ export default function (props: OverallExperienceChartProps) {
                 )}
             </div>
         </div>
-        {overallFeelingAverage &&
-            <div className="mdhui-ss-oe-chart-average-wrapper">
-                {language("average")}: <div className="mdhui-ss-oe-chart-average">
-                    {overallFeelingAverage!.toFixed(1)}
-                    <Face className="mdhui-ss-oe-chart-face" selected={true} faceValue={parseInt(overallFeelingAverage!.toFixed(0))} />
-                </div>
-            </div>
-        }
     </div>;
 }
