@@ -381,8 +381,12 @@
     "bpm": "ppm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
-    "points-until-next-badge": "{{points}} puntos para el próximo distintivo",
-    "current-points": "Puntos actuales"
+    "points-until-next-badge": "{{points}} puntos para la próxima medalla",
+    "fitbit-wear-time": "Tiempo de Uso del Fitbit",
+    "my-badges": "Mis medallas ({{badges}})",
+    "new-badge-title": "¡Buen trabajo!",
+    "new-badge-text": "¡Has conseguido una nueva insignia!",
+    "get-badge": "Obtener medalla",
 };
 
 export default strings;

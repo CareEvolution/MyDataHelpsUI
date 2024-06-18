@@ -382,7 +382,6 @@
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
     "points-until-next-badge": "{{points}} points to next badge",
-    "current-points": "Current Points",
     "fitbit-wear-time": "Fitbit Wear Time",
     "my-badges": "My Badges ({{badges}})",
     "new-badge-title": "Great job!",

@@ -381,6 +381,12 @@ let strings: { [key: string]: string } = {
     "bpm": "bpm",
     "hours-abbreviation": " godz.",
     "minutes-abbreviation": " min.",
+    "points-until-next-badge": "{{points}} punktów do następnej odznaki",
+    "fitbit-wear-time": "Czas noszenia Fitbit",
+    "my-badges": "Moje odznaki ({{badges}})",
+    "new-badge-title": "Świetna robota!",
+    "new-badge-text": "Zdobyłeś nową odznakę!",
+    "get-badge": "Zdobyć odznakę"
 };
 
 export default strings;
