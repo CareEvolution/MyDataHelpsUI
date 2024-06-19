@@ -5,6 +5,7 @@
 
 .mdhui-glucose-chart-chart {
     height: 150px;
+    margin-bottom: 32px;
     position: relative;
 }
 
@@ -15,11 +16,18 @@
     font-size: 12px;
 }
 
-
 .mdhui-glucose-chart-chart-empty {
+    height: 182px;
     padding-top: 65px;
+    box-sizing: border-box;
     color: #aaa;
     text-align: center;
+}
+
+.mdhui-glucose-chart-chart-placeholder {
+    height: 182px;
+    padding-top: 48px;
+    box-sizing: border-box;
 }
 
 .meals-list {
@@ -27,12 +35,7 @@
     min-height: 200px;
 }
 
-
 .mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
     font-size: 11px;
     fill: var(--mdhui-text-color-1);
-}
-
-.mdhui-glucose-chart-chart {
-    margin-bottom: 32px;
 }
