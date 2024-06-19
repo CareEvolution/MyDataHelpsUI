@@ -10,8 +10,8 @@
 
 .mdhui-glucose-chart-chart .steps-icon {
     position: absolute;
-    left: 5px;
-    top: 126px;
+    left: 21px;
+    top: 142px;
     font-size: 12px;
 }
 
@@ -34,6 +34,5 @@
 }
 
 .mdhui-glucose-chart-chart {
-    margin: 16px;
-    margin-bottom: 0;
+    margin-bottom: 32px;
 }

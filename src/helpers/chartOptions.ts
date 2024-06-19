@@ -1,4 +1,8 @@
 import type { ColorDefinition } from "./colors"
+import { LineProps } from "recharts";
+import { LineDot } from "recharts/types/cartesian/Line";
+import { ImplicitLabelType } from "recharts/types/component/Label";
+import { AnimationDuration, AxisDomain } from "recharts/types/util/types";
 
 export interface LineChartOptions {
     lineColor?: string
@@ -32,7 +36,18 @@ export interface AreaChartSeries extends ChartSeries {
 
 export interface MultiSeriesLineChartOptions {
     connectNulls?: boolean,
-    domainMin?: number | "Auto"
+    yAxisWidth?: number,
+    yAxisDomain?: AxisDomain,
+    yAxisTicks?: number[],
+    xAxisDomain?: AxisDomain,
+    xAxisTicks?: number[],
+    xAxisTickFormatter?: (value: number ) => string,
+    domainMin?: number | "Auto",
+    dot?: LineDot,
+    label?: ImplicitLabelType,
+    strokeWidth?: number,
+    animationDuration?: AnimationDuration,
+    thresholds?: ChartThreshold[]
 }
 
 export interface MultiSeriesBarChartOptions {
@@ -43,5 +58,6 @@ export interface ChartThreshold {
     value: number
     referenceLineColor?: ColorDefinition
     overThresholdColor?: ColorDefinition
+    label?: ImplicitLabelType
 }
 

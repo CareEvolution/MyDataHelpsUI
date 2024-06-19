@@ -1,14 +1,12 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, MultiSeriesLineChartOptions, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, LoadingIndicator } from '../../presentational';
+import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
-import { Bar, BarChart, CartesianGrid, ComposedChart, Label, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { Bar } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
-import { max } from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 
@@ -88,22 +86,22 @@ export default function (props: GlucoseChartProps) {
         meal.maxGlucose = Math.floor(computeBestFitGlucoseValue(add(meal.observationDate, { minutes: 60 }), filteredGlucoseReadings));
     });
 
-    let chartData: { date: Date, value: number, meal?: boolean }[] = [];
+    let chartData: { timestamp: Date, value: number, meal?: boolean }[] = [];
 
     filteredGlucoseReadings.forEach(reading => {
-        chartData.push({ date: reading.observationDate, value: reading.value });
+        chartData.push({ timestamp: reading.observationDate, value: reading.value });
     });
 
     filteredMeals.forEach(meal => {
-        let entry = chartData.find(entry => entry.date === meal.observationDate);
+        let entry = chartData.find(entry => entry.timestamp === meal.observationDate);
         if (!entry) {
-            entry = { date: meal.observationDate, value: computeBestFitGlucoseValue(meal.observationDate, filteredGlucoseReadings) }
+            entry = { timestamp: meal.observationDate, value: computeBestFitGlucoseValue(meal.observationDate, filteredGlucoseReadings) }
             chartData.push(entry);
         }
         entry.meal = true;
     });
 
-    chartData.sort((a, b) => compareAsc(a.date, b.date));
+    chartData.sort((a, b) => compareAsc(a.timestamp, b.timestamp));
 
     let chartDomain = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
     let chartTicks = [
@@ -118,8 +116,7 @@ export default function (props: GlucoseChartProps) {
         add(selectedDate, { hours: 24 }).valueOf()
     ];
     let chartTickFormatter = (value: number) => {
-        let date = new Date(value);
-        if (date.getHours() === 0) {
+        if (value === chartDomain[0] || value === chartDomain[1]) {
             return "";
         }
         return format(new Date(value), 'h aaa');
@@ -134,14 +131,19 @@ export default function (props: GlucoseChartProps) {
             add(selectedMeal.observationDate, { minutes: 90 }).valueOf(),
             add(selectedMeal.observationDate, { minutes: 120 }).valueOf()
         ];
-        chartTickFormatter = (value: number) => format(new Date(value), 'h:mmaaa');
+        chartTickFormatter = (value: number) => {
+            if (value === chartDomain[0] || value === chartDomain[1]) {
+                return "";
+            }
+            return format(new Date(value), 'h:mmaaa');
+        }
     }
 
-    const customDot = (props: { cx: number, cy?: number, payload: { date: Date, meal?: boolean } }) => {
+    const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, meal?: boolean } }) => {
         const { cx, cy, payload } = props;
         if (!cy || !payload.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.observationDate === payload.date);
+        let mealIndex = meals!.findIndex(meal => meal.observationDate === payload.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <svg>
@@ -155,13 +157,13 @@ export default function (props: GlucoseChartProps) {
         let entry = chartData[index];
         if (!entry.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.observationDate === entry.date);
+        let mealIndex = meals!.findIndex(meal => meal.observationDate === entry.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
-    let steps: { date: Date, value: number }[] = [];
+    let steps: { timestamp: Date, value: number }[] = [];
     let currentStepData = startOfDay(selectedDate);
     while (currentStepData < add(startOfDay(selectedDate), { days: 1 })) {
         let value = Math.round(Math.random() * (200) + 20);
@@ -169,70 +171,68 @@ export default function (props: GlucoseChartProps) {
             value = 20;
         }
 
-        steps.push({ date: currentStepData, value: value });
+        steps.push({ timestamp: currentStepData, value: value });
         currentStepData = add(currentStepData, { minutes: 30 });
     }
+    steps = steps.filter(stepEntry => {
+        if (filteredGlucoseReadings.length === 0) return false;
+        if (!selectedMeal) return true;
+
+        let minDate = selectedMeal.observationDate;
+        let maxDate = add(selectedMeal.observationDate, { hours: 2 });
+
+        return stepEntry.timestamp >= minDate && stepEntry.timestamp <= maxDate;
+    }) ?? [];
 
     let range = (maxGlucose || 0) - (minGlucose || 0);
 
-
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
-            <ResponsiveContainer width="100%" height={166}>
-                <ComposedChart data={chartData}>
-
-                    <CartesianGrid vertical strokeDasharray="2 4" />
-
-                    <YAxis
-                        width={24}
-                        axisLine={false}
-                        tickLine={false}
-                        domain={[20, 220]}
-                        ticks={[60, 100, 140, 180, 220]}
-                        interval={0}
-                    />
-                    <XAxis
-                        axisLine={false}
-                        tickLine={false}
-                        type="number"
-                        dataKey="date"
-                        domain={chartDomain}
-                        ticks={chartTicks}
-                        tickFormatter={chartTickFormatter}
-                        interval={0}
-                    />
-                    <ReferenceLine
-                        y={(maxGlucose || 0) - (range / 2)}
-                        stroke="var(--mdhui-color-primary)"
-                        strokeWidth={1}
-                        label={{
-                            value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
-                            fill: 'var(--mdhui-color-primary)',
-                            fontSize: 9,
-                            position: 'insideTopRight',
-                            fontWeight: 'bold'
-                        }}
-                    >
-                    </ReferenceLine>
-                    <Bar
-                        data={steps}
-                        type="monotone"
-                        dataKey="value"
-                        fill="rgb(245, 183, 34)"
-                        opacity={0.3}
-                        radius={[2, 2, 0, 0]}
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#999"
-                        strokeWidth={1.5}
-                        dot={customDot}
-                        label={customDotLabel}
-                        animationDuration={500}
-                    />
-                </ComposedChart>
-            </ResponsiveContainer>
+            <TimeSeriesChart
+                height={166}
+                intervalType="Day"
+                intervalStart={selectedDate}
+                data={chartData}
+                series={[{ dataKey: 'value', color: '#999' }]}
+                chartHasData={!!glucoseReadings && glucoseReadings.length > 0}
+                chartType="Line"
+                options={
+                    {
+                        yAxisDomain: [20, 220],
+                        yAxisTicks: [60, 100, 140, 180, 220],
+                        yAxisWidth: 24,
+                        xAxisDomain: chartDomain,
+                        xAxisTicks: chartTicks,
+                        xAxisTickFormatter: chartTickFormatter,
+                        dot: customDot,
+                        label: customDotLabel,
+                        strokeWidth: 1.5,
+                        animationDuration: 500,
+                        thresholds: [
+                            {
+                                value: Number((maxGlucose || 0) - (range / 2)),
+                                referenceLineColor: 'var(--mdhui-color-primary)',
+                                label: {
+                                    value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
+                                    fill: 'var(--mdhui-color-primary)',
+                                    fontSize: 9,
+                                    position: 'insideTopRight',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        ]
+                    } as MultiSeriesLineChartOptions
+                }
+            >
+                <Bar
+                    data={steps}
+                    type="monotone"
+                    dataKey="value"
+                    fill="rgb(245, 183, 34)"
+                    opacity={0.3}
+                    radius={[2, 2, 0, 0]}
+                />
+            </TimeSeriesChart>
             <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
         </div>
         <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucoseReadings?.length ? 'block' : 'none' }}>No blood glucose readings</div>
