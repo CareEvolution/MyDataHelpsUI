@@ -13,7 +13,7 @@ import language from '../../../helpers/language';
 import { titleForDateRange } from '../../../helpers/date-helpers';
 
 export interface DateRangeNavigatorProps {
-	intervalType: "Day" | "Week" | "Month";
+	intervalType: "Day" | "Week" | "Month" | "6Month";
 	intervalStart: Date;
 	variant?: "default" | "rounded";
 	onIntervalChange(newIntervalStart: Date, newIntervalEnd: Date): void;
@@ -23,14 +23,17 @@ export interface DateRangeNavigatorProps {
 }
 
 export default function (props: DateRangeNavigatorProps) {
-	var duration: Duration = props.intervalType == "Month" ? { months: 1 } : props.intervalType == "Day" ? { days: 1 } : { weeks: 1 };
+	const duration: Duration = props.intervalType === "Month" ? { months: 1 } 
+							: props.intervalType === "Day" ? { days: 1 } 
+							: props.intervalType === "6Month" ? { months: 6 }
+							: { weeks: 1 };
 
-	var nextInterval = function () {
+	const nextInterval = () => {
 		var newIntervalStart = add(props.intervalStart, duration);
 		props.onIntervalChange(newIntervalStart, add(newIntervalStart, duration));
 	}
 
-	var previousInterval = function () {
+	var previousInterval = () => {
 		var newIntervalStart = sub(props.intervalStart, duration);
 		props.onIntervalChange(newIntervalStart, add(newIntervalStart, duration));
 	}

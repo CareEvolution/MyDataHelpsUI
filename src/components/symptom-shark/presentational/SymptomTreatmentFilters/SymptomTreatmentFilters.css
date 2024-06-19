@@ -2,7 +2,7 @@
     width: 50%;
     display: inline-block;
     box-sizing: border-box;
-    padding: 16px;
+    padding: 16px 8px;
     background: var(--mdhui-color-primary);
     text-align: center;
     font-size: .88em;
