@@ -246,7 +246,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={chartHeight}>
-                    <ComposedChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <ComposedChart data={dataToDisplay} syncId="DailyDataChart">
                         {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                             <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} label={threshold.label} />
                         )}
@@ -270,7 +270,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Bar" &&
                 <ResponsiveContainer width="100%" height={chartHeight}>
-                    <ComposedChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <ComposedChart data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -302,7 +302,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Area" &&
                 <ResponsiveContainer width="100%" height={chartHeight}>
-                    <ComposedChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <ComposedChart data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
