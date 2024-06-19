@@ -248,7 +248,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <ResponsiveContainer width="100%" height={chartHeight}>
                     <ComposedChart data={dataToDisplay} syncId="DailyDataChart">
                         {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} label={threshold.label} />
+                            <ReferenceLine key={index} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} label={threshold.label} />
                         )}
                         {standardChartComponents()}
                         {keys.map((dk, i) => {
@@ -279,14 +279,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                 </linearGradient>
                             )}
                             {(props.options as MultiSeriesBarChartOptions)?.thresholds?.map((threshold, index) =>
-                                <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
+                                <linearGradient key={`lg_thresh_${gradientKey}_${index}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
                                     <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
                                 </linearGradient>
                             )}
                         </defs>
                         {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                            <ReferenceLine key={index} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
@@ -295,8 +295,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                     <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
                                 ))}
                             </Bar>
-                        )
-                        }
+                        )}
                     </ComposedChart>
                 </ResponsiveContainer>
             }
@@ -314,8 +313,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                             <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey}${i})`} stroke={colorOrDefault(getAreaColorForSeries(i), "var(--mdhui-color-primary)")} />
-                        )
-                        }
+                        )}
                     </ComposedChart>
                 </ResponsiveContainer>
             }
