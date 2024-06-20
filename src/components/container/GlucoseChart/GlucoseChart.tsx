@@ -4,7 +4,7 @@ import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings,
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
-import { Bar, ReferenceLine } from 'recharts';
+import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -189,13 +189,15 @@ export default function (props: GlucoseChartProps) {
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
             <TimeSeriesChart
-                height={166}
                 intervalType="Day"
                 intervalStart={selectedDate}
                 data={chartData}
                 series={[{ dataKey: 'value', color: '#999' }]}
                 chartHasData={!!glucoseReadings && glucoseReadings.length > 0}
                 chartType="Line"
+                containerProps={{
+                    height: 166
+                } as ResponsiveContainerProps}
                 xAxisProps={{
                     domain: chartDomain,
                     ticks: chartTicks,

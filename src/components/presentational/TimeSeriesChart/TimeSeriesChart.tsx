@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
-import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, LineProps, ReferenceLine, ResponsiveContainer, ResponsiveContainerProps, Tooltip, XAxis, XAxisProps, YAxis, YAxisProps } from 'recharts'
 import './TimeSeriesChart.css'
 import { AxisDomain } from 'recharts/types/util/types'
 import { AreaChartSeries, ChartSeries, ColorDefinition, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
@@ -9,10 +9,6 @@ import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
-import { Props as ResponsiveContainerProps } from 'recharts/types/component/ResponsiveContainer'
-import { Props as XAxisProps } from 'recharts/types/cartesian/XAxis'
-import { Props as YAxisProps } from 'recharts/types/cartesian/YAxis'
-import { Props as LineProps } from 'recharts/types/cartesian/Line'
 
 export interface TimeSeriesChartProps {
     title?: string
@@ -27,7 +23,6 @@ export interface TimeSeriesChartProps {
     options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions,
     innerRef?: React.Ref<HTMLDivElement>,
     children?: React.ReactNode,
-    height?: number,
     containerProps?: ResponsiveContainerProps,
     xAxisProps?: XAxisProps,
     yAxisProps?: YAxisProps,
