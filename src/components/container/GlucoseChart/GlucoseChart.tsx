@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, MultiSeriesLineChartOptions, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
-import { Bar } from 'recharts';
+import { Bar, ReferenceLine } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -196,34 +196,35 @@ export default function (props: GlucoseChartProps) {
                 series={[{ dataKey: 'value', color: '#999' }]}
                 chartHasData={!!glucoseReadings && glucoseReadings.length > 0}
                 chartType="Line"
-                options={
-                    {
-                        yAxisDomain: [20, 220],
-                        yAxisTicks: [60, 100, 140, 180, 220],
-                        yAxisWidth: 24,
-                        xAxisDomain: chartDomain,
-                        xAxisTicks: chartTicks,
-                        xAxisTickFormatter: chartTickFormatter,
-                        dot: customDot,
-                        label: customDotLabel,
-                        strokeWidth: 1.5,
-                        animationDuration: 500,
-                        thresholds: [
-                            {
-                                value: Number((maxGlucose || 0) - (range / 2)),
-                                referenceLineColor: 'var(--mdhui-color-primary)',
-                                label: {
-                                    value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
-                                    fill: 'var(--mdhui-color-primary)',
-                                    fontSize: 9,
-                                    position: 'insideTopRight',
-                                    fontWeight: 'bold'
-                                }
-                            }
-                        ]
-                    } as MultiSeriesLineChartOptions
-                }
+                xAxisProps={{
+                    domain: chartDomain,
+                    ticks: chartTicks,
+                    tickFormatter: chartTickFormatter
+                }}
+                yAxisProps={{
+                    width: 24,
+                    domain: [20, 220],
+                    ticks: [60, 100, 140, 180, 220]
+                }}
+                lineProps={{
+                    dot: customDot,
+                    label: customDotLabel,
+                    strokeWidth: 1.5,
+                    animationDuration: 500
+                }}
             >
+                <ReferenceLine
+                    y={(maxGlucose || 0) - (range / 2)}
+                    stroke="var(--mdhui-color-primary)"
+                    strokeWidth={1}
+                    label={{
+                        value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
+                        fill: 'var(--mdhui-color-primary)',
+                        fontSize: 9,
+                        position: 'insideTopRight',
+                        fontWeight: 'bold'
+                    }}
+                />
                 <Bar
                     data={steps}
                     type="monotone"

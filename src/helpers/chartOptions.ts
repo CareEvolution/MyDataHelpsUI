@@ -36,18 +36,7 @@ export interface AreaChartSeries extends ChartSeries {
 
 export interface MultiSeriesLineChartOptions {
     connectNulls?: boolean,
-    yAxisWidth?: number,
-    yAxisDomain?: AxisDomain,
-    yAxisTicks?: number[],
-    xAxisDomain?: AxisDomain,
-    xAxisTicks?: number[],
-    xAxisTickFormatter?: (value: number ) => string,
-    domainMin?: number | "Auto",
-    dot?: LineDot,
-    label?: ImplicitLabelType,
-    strokeWidth?: number,
-    animationDuration?: AnimationDuration,
-    thresholds?: ChartThreshold[]
+    domainMin?: number | "Auto"
 }
 
 export interface MultiSeriesBarChartOptions {

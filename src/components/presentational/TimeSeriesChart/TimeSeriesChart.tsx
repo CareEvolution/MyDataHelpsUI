@@ -9,6 +9,9 @@ import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
+import { Props as XAxisProps } from 'recharts/types/cartesian/XAxis'
+import { Props as YAxisProps } from 'recharts/types/cartesian/YAxis'
+import { Props as LineProps } from 'recharts/types/cartesian/Line'
 
 export interface TimeSeriesChartProps {
     title?: string
@@ -23,14 +26,17 @@ export interface TimeSeriesChartProps {
     options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions,
     innerRef?: React.Ref<HTMLDivElement>,
     children?: React.ReactNode,
-    height?: number
+    height?: number,
+    xAxisProps?: XAxisProps,
+    yAxisProps?: YAxisProps,
+    lineProps?: LineProps
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
 
-    const DefaultXAxisTick = ({ x, y, payload }: any) => {
+    const DayTick = ({ x, y, payload }: any) => {
         let value = payload.value;
         let currentDate = new Date(value);
         if (intervalType === "Month") {
@@ -68,7 +74,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         </>;
     }
 
-    function computeXAxisTicks(): number[] {
+    function getXAxisTicks(): number[] {
         const startTime = new Date(props.intervalStart);
         startTime.setHours(0, 0, 0, 0);
 
@@ -79,7 +85,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             const numberOfTicks = ceil(monthLength / 2);
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         } else if (intervalType === "6Month") {
-            const ticks: number[] = [];
+            const ticks = [];
             let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
@@ -106,7 +112,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         return [];
     }
 
-    function defaultYAxisTickFormatter(args: any) {
+    function tickFormatter(args: any) {
         if (args >= 10000) {
             return Number((args / 1000).toFixed(1)) + 'K';
         } else {
@@ -118,32 +124,16 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let gradientKey = `gradient_${Math.random()}`;
 
     function standardChartComponents() {
-        let yAxisDomain: AxisDomain | undefined = undefined;
-        let yAxisTicks: number[] | undefined = undefined;
-        let yAxisWidth: number = 32;
-
-        let xAxisDomain: AxisDomain = ['auto', 'auto'];
-        let xAxisTicks: number[] = computeXAxisTicks();
-        let xAxisTickFormatter: ((value: number) => string) | undefined = undefined;
-
-        if (props.options && props.chartType === "Line") {
-            let options = props.options as MultiSeriesLineChartOptions;
-            if (options?.yAxisDomain) {
-                yAxisDomain = options.yAxisDomain;
-            } else {
-                let domainMin = options?.domainMin;
+        let domain: AxisDomain | undefined = undefined;
+        if (props.options) {
+            if (props.chartType === "Line") {
+                let domainMin = (props.options as MultiSeriesLineChartOptions).domainMin;
                 if (domainMin === "Auto") {
-                    yAxisDomain = ["auto", "auto"];
+                    domain = ["auto", "auto"];
                 } else if (domainMin !== undefined) {
-                    yAxisDomain = [domainMin, "auto"];
+                    domain = [domainMin, "auto"];
                 }
             }
-            yAxisTicks = options?.yAxisTicks;
-            yAxisWidth = options?.yAxisWidth ?? yAxisWidth;
-
-            xAxisDomain = options?.xAxisDomain ?? xAxisDomain;
-            xAxisTicks = options?.xAxisTicks ?? xAxisTicks;
-            xAxisTickFormatter = options?.xAxisTickFormatter;
         }
 
         return <>
@@ -151,22 +141,31 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
             <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
-            <YAxis tickFormatter={defaultYAxisTickFormatter} axisLine={false} interval={0} tickLine={false} width={yAxisWidth} domain={yAxisDomain} ticks={yAxisTicks} />
-            <XAxis id="myXAxis"
-                   domain={xAxisDomain}
-                   padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
-                   tick={xAxisTickFormatter ? undefined : DefaultXAxisTick}
-                   scale={'time'}
-                   type={'number'}
-                   axisLine={false}
-                   dataKey="timestamp"
-                   tickMargin={0}
-                   minTickGap={0}
-                   tickLine={false}
-                   ticks={xAxisTicks}
-                   tickFormatter={xAxisTickFormatter}
-                   includeHidden
-                   interval={0}
+            <YAxis
+                tickFormatter={tickFormatter}
+                axisLine={false}
+                interval={0}
+                tickLine={false}
+                width={32}
+                domain={domain}
+                {...props.yAxisProps}
+            />
+            <XAxis
+                id="myXAxis"
+                domain={['auto', 'auto']}
+                padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
+                tick={DayTick}
+                scale={'time'}
+                type={'number'}
+                axisLine={false}
+                dataKey="timestamp"
+                tickMargin={0}
+                minTickGap={0}
+                tickLine={false}
+                ticks={getXAxisTicks()}
+                includeHidden
+                interval={0}
+                {...props.xAxisProps}
             />
             {props.children}
         </>
@@ -247,24 +246,10 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={chartHeight}>
                     <ComposedChart data={dataToDisplay} syncId="DailyDataChart">
-                        {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                            <ReferenceLine key={index} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} label={threshold.label} />
-                        )}
                         {standardChartComponents()}
-                        {keys.map((dk, i) => {
-                            let options = props.options as MultiSeriesLineChartOptions;
-                            return <Line
-                                connectNulls={options?.connectNulls}
-                                strokeWidth={options?.strokeWidth ?? 2}
-                                key={`line-${dk}`}
-                                type="monotone"
-                                dataKey={dk}
-                                stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")}
-                                dot={options?.dot}
-                                label={options?.label}
-                                animationDuration={options?.animationDuration}
-                            />;
-                        })}
+                        {keys.map((dk, i) =>
+                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} {...props.lineProps as any} />
+                        )}
                     </ComposedChart>
                 </ResponsiveContainer>
             }

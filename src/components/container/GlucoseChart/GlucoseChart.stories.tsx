@@ -23,7 +23,7 @@ const render = (args: GlucoseChartStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        previewState: 'with data',
+        previewState: 'with data and meals',
         showStats: true,
         showMeals: true
     },
