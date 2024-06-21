@@ -113,21 +113,10 @@
 .mdh-assistant .ai-message:before,
 .mdh-assistant .user-message:before,
 .mdh-assistant #loading:before {
-    font-family: 'Font Awesome 6 Free';
     color: var(--ce-grey-50);
     position: absolute;
     left: 20px;
     margin: .25rem 0;
-}
-
-.mdh-assistant .ai-message:before {
-    content: "\f185";
-}
-
-.mdh-assistant .user-message:before {
-    font-family: 'Font Awesome 6 Free';
-    content: "\f2bd";
-    font-weight: 700;
 }
 
 .mdh-assistant #loading:before {

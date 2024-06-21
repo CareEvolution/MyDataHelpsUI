@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
+import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faGears } from '@fortawesome/free-solid-svg-icons/faGears';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import "./MyDataHelpsAssistant.css";
@@ -70,10 +72,16 @@ export default function(props: MyDataHelpsAssistantProps) {
             <div id="log">
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
-                        return <div className="user-message" key={index}><p>{message.content}</p></div>
+                        return <div className="user-message" key={index}>
+                            <FontAwesomeSvgIcon icon={faUser} />
+                            <p>{message.content}</p>
+                        </div>
                     }
                     else if (message.type === 'ai') {
-                        return <div className="ai-message" key={index}><p>{message.content}</p></div>
+                        return <div className="ai-message" key={index}>
+                            <FontAwesomeSvgIcon icon={faGears} />
+                            <p>{message.content}</p>
+                        </div>
                     }
                 })}
                 {loading && <div id="loading">{loading}</div>}
