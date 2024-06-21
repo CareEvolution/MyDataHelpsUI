@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import "./MyDataHelpsAssistant.css";
 
 export interface MyDataHelpsAssistantProps {
@@ -66,9 +66,7 @@ export default function(props: MyDataHelpsAssistantProps) {
     }
 
     return (
-        <>
-            <div>{currentUserMessage}</div>
-            <div>{JSON.stringify(messages)}</div>
+        <div className="mdh-assistant">
             <div id="log">
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
@@ -93,6 +91,6 @@ export default function(props: MyDataHelpsAssistantProps) {
                     </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
