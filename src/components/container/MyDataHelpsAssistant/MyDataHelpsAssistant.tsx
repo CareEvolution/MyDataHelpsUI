@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPlane } from '@fortawesome/free-solid-svg-icons/faPlane';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 
 import "./MyDataHelpsAssistant.css";
 
@@ -33,7 +33,7 @@ export default function(props: MyDataHelpsAssistantProps) {
     const addUserMessage = async function() {
 
         let newMessage = currentUserMessage;
-        setMessages([...messages, { type: 'user', content: newMessage }]);
+        setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
 
         setCurrentUserMessage('');
 
@@ -41,21 +41,22 @@ export default function(props: MyDataHelpsAssistantProps) {
 
         await MyDataHelps.addUserMessage(newMessage, async function(event) {
 
-            console.log(event);
-            console.log(messages);
-
             setLoading(event.loading);
 
             if (event.event === "on_llm_start") {
                 currentAIMessage = "";
-                setMessages([...messages, { type: 'ai', content: currentAIMessage }])
+                setMessages(prevMessages => [...prevMessages, { type: 'ai', content: currentAIMessage }])
             }
             else if (event.event === "on_llm_end") {
             }
 
             if (event.text) {
                 currentAIMessage += event.text;
-                setMessages([...messages.slice(0, -1), { type: 'ai', content: currentAIMessage }])
+                setMessages(prevMessages => {
+                    const newMessages = [...prevMessages];
+                    newMessages[newMessages.length - 1] = { type: 'ai', content: currentAIMessage };
+                    return newMessages;
+                });
             }
         });
     }
@@ -88,7 +89,7 @@ export default function(props: MyDataHelpsAssistantProps) {
                         }
                     }} />
                     <button type="button" id="send">
-                        <FontAwesomeSvgIcon icon={faPlane} />
+                        <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </button>
                 </div>
             </div>
