@@ -29,8 +29,8 @@ export default function(props: MyDataHelpsAssistantProps) {
 
     const addUserMessage = async function() {
 
-        let newMessage= currentUserMessage;
-        setMessages([...messages, { type: 'user', content: currentUserMessage }]);
+        let newMessage = currentUserMessage;
+        setMessages([...messages, { type: 'user', content: newMessage }]);
 
         setCurrentUserMessage('');
 
@@ -59,9 +59,9 @@ export default function(props: MyDataHelpsAssistantProps) {
     return (
         <>
             <div id="log">
-                {messages && messages.map((message: MyDataHelpsAssistantMessage) => {
+                {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
-                        return <div className="user-message"><p>{message.content}</p></div>
+                        return <div className="user-message" key={index}><p>{message.content}</p></div>
                     }
                     else if (message.type === 'ai') {
                         return <div className="ai-message"><p>{message.content}</p></div>
