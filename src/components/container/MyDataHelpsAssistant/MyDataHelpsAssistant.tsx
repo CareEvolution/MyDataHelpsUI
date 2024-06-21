@@ -25,7 +25,7 @@ export default function(props: MyDataHelpsAssistantProps) {
 
     useEffect(() => {
         initialize();
-    });
+    }, []);
 
     const addUserMessage = async function() {
 
