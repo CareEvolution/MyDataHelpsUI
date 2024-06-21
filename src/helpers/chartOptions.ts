@@ -7,13 +7,13 @@ export interface LineChartOptions {
 
 export interface BarChartOptions {
     barColor?: ColorDefinition
-    thresholds?: BarChartThreshold[]
+    thresholds?: ChartThreshold[]
 }
 
-export interface BarChartThreshold {
+export interface ChartThreshold {
     value: number
     referenceLineColor?: ColorDefinition
-    overThresholdBarColor?: ColorDefinition
+    overThresholdColor?: ColorDefinition
 }
 
 export interface AreaChartOptions {
@@ -31,8 +31,11 @@ export interface AreaChartSeries extends ChartSeries {
 } 
 
 export interface MultiSeriesLineChartOptions {
-    connectNulls?: boolean,
+    connectNulls?: boolean
+    showDots? : boolean
+    thresholds?: ChartThreshold[]
     domainMin?: number | "Auto"
+    domainMax?: number | "Auto"
 }
 
 export interface MultiSeriesBarChartOptions {

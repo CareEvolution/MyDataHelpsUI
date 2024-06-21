@@ -5,6 +5,7 @@ import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
 import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
+import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 
 const meta: Meta<typeof TimeSeriesChart> = { 
     title: "Presentational/TimeSeriesChart", 
@@ -55,6 +56,30 @@ async function getRandomMultipointData(start: Date, end: Date) {
             key3: (await predictableRandomNumber(`${currentDate.toISOString()}key3`)) % 200,
         });
         currentDate = add(currentDate, { days: 1 });
+    }
+    return responses;
+}
+
+
+function getRandomInt(min : number, max : number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomIntradayWithinDomainMultipointData(start: Date) {
+    var responses = [];
+    let currentTime = new Date(start);
+    currentTime.setHours(0,0,0,0);
+    let endTime = add(currentTime, {hours: 24});
+    while (currentTime < endTime) {
+        responses.push({
+            timestamp: currentTime,
+            key1: (getRandomInt(0, 200)),
+            key2: (getRandomInt(0, 200)),
+            key3: (getRandomInt(0, 200)),
+        });
+        currentTime = add(currentTime, { minutes: 5 });
     }
     return responses;
 }
@@ -200,6 +225,32 @@ export const multipleLineChart : Story = {
     loaders: [
         async()=>({
             randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
+        })
+    ]
+};
+
+const thresholds : ChartThreshold[] = [
+    { value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+	{ value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
+	{ value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
+];
+const multiSeriesLineOptions : MultiSeriesLineChartOptions = { domainMin: 0, domainMax: 200, thresholds: thresholds, connectNulls: false };
+
+export const multipleLineChartWithThresholds : Story = {
+    args: {
+        title: "Multiple Line Chart with Thresholds",
+        intervalType: "Day",
+        chartType: "Line",
+        chartHasData: true,
+        series: [{dataKey: 'key1', color: 'blue'},{dataKey: 'key2', color: 'purple'},{dataKey: 'key3', color: 'black'}], 
+        data: undefined,
+        intervalStart: new Date(),
+        options: multiSeriesLineOptions,
+        tooltip
+    },
+    loaders: [
+        async()=>({
+            randomData: await getRandomIntradayWithinDomainMultipointData(new Date())
         })
     ]
 };

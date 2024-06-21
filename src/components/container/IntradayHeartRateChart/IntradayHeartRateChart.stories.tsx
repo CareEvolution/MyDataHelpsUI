@@ -39,9 +39,9 @@ export const FullDataThresholds = {
 		previewState: "CompleteDataWithThresholds",
 		aggregationOption: "avg",
 		thresholds: [
-			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
-			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
-			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
+			{ value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 		]
 	},
 };
@@ -52,9 +52,9 @@ export const PartialDataThresholds = {
 		previewState: "PartialDataWithThresholds",
 		aggregationOption: "avg",
 		thresholds: [
-			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
-			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
-			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
+			{ value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 		]
 	},
 };
@@ -65,9 +65,9 @@ export const MissingMidDayDataThresholds = {
 		previewState: "MissingMidDayDataThresholds",
 		aggregationOption: "avg",
 		thresholds: [
-			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
-			{ value: 120, referenceLineColor: "orange", overThresholdLineColor: "#ffdd21" },
-			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
+			{ value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+			{ value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 		]
 	},
 };
@@ -86,9 +86,9 @@ export const LiveThresholds = {
 		aggregationOption: "max",
 		aggregationIntervalMinutes: 5,
 		thresholds: [
-			{ value: 80, referenceLineColor: "green", overThresholdLineColor: "green" },
-			{ value: 120, referenceLineColor: "yellow", overThresholdLineColor: "#ffdd21" },
-			{ value: 180, referenceLineColor: "red", overThresholdLineColor: "#ff0000" }
+			{ value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+			{ value: 120, referenceLineColor: "yellow", overThresholdColor: "#ffdd21" },
+			{ value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 		]
 	},
 };
