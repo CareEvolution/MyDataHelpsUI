@@ -2,6 +2,8 @@ import React from 'react'
 import './GlucoseStats.css'
 import { GlucoseReading } from '../../../helpers';
 import LoadingIndicator from '../LoadingIndicator';
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faDroplet } from "@fortawesome/free-solid-svg-icons"
 
 export interface GlucoseStatsProps {
     loading: boolean;
@@ -23,34 +25,38 @@ export default function (props: GlucoseStatsProps) {
 
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
         <div className="mdhui-glucose-stat">
-            {props.loading && <LoadingIndicator/>}
+            <div className="mdhui-glucose-stat-label">BLOOD GLUCOSE RANGE</div>
+            {props.loading && <LoadingIndicator />}
             {!props.loading &&
                 <div className="mdhui-glucose-stat-value">
                     {minGlucose &&
-                        <span>{Number(minGlucose).toFixed(0)} - {Number(maxGlucose).toFixed(0)} mg/dl</span>
+                        <>
+                            <FontAwesomeSvgIcon className="mdhui-glucose-stat-icon" icon={faDroplet} /> <span>{Number(minGlucose).toFixed(0)} - {Number(maxGlucose).toFixed(0)} mg/dL</span>
+                        </>
                     }
                     {!minGlucose &&
                         <span>n/a</span>
                     }
                 </div>
             }
-            <div className="mdhui-glucose-stat-label">Blood Glucose Range (Min-Max)</div>
         </div>
         <div className="mdhui-glucose-stat">
+            <div className="mdhui-glucose-stat-label">AVG BLOOD GLUCOSE</div>
             {props.loading &&
-                <LoadingIndicator/>
+                <LoadingIndicator />
             }
             {!props.loading &&
                 <div className="mdhui-glucose-stat-value">
                     {avgGlucose &&
-                        <span>{Number(avgGlucose).toFixed(0)} mg/dl</span>
+                        <>
+                            <FontAwesomeSvgIcon className="mdhui-glucose-stat-icon" icon={faDroplet} /> <span>{Number(avgGlucose).toFixed(0)} mg/dL</span>
+                        </>
                     }
                     {!avgGlucose &&
                         <span>n/a</span>
                     }
                 </div>
             }
-            <div className="mdhui-glucose-stat-label">Avg Blood Glucose</div>
         </div>
     </div>;
 }

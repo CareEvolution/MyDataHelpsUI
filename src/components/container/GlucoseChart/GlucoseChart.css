@@ -1,3 +1,7 @@
+.mdhui-glucose-chart .mdhui-card:first-child {
+    margin-top: 0;
+}
+
 .mdhui-glucose-chart-day {
     text-align: center;
     color: #aaa;

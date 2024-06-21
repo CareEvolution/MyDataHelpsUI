@@ -13,9 +13,13 @@ export interface GlucoseViewProps {
 
 export default function (props: GlucoseViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'} className="mdhui-glucose">
-        <NavigationBar title={language('glucose-view-title')} showCloseButton={true} variant="compressedModal"/>
+        <NavigationBar title={language('glucose-view-title')} showCloseButton={true} variant="compressedModal" />
         <DateRangeCoordinator intervalType="Day" variant="rounded">
-            <GlucoseChart previewState={props.previewState === 'default' ? 'with data and meals' : undefined}/>
+            <GlucoseChart
+                previewState={props.previewState === 'default' ? 'with data and meals' : undefined}
+                showStats={true}
+                showMeals={true}
+            />
         </DateRangeCoordinator>
     </Layout>;
 }

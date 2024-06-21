@@ -2,9 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    background: var(--mdhui-background-color-2);
-    font-size: 0.8em;
-    padding: 12px 0;
+    padding: 0 16px 16px;
     height: 32px;
 }
 
@@ -12,14 +10,18 @@
     padding: 2px;
 }
 
-.mdhui-glucose-stat-value {
-    font-weight: bold;
-    color: var(--mdhui-color-primary);
-    text-align: center;
+.mdhui-glucose-stat-label {
+    font-size: 0.65em;
     margin-bottom: 4px;
 }
 
-.mdhui-glucose-stat-label {
-    text-align: center;
-    font-size: 0.8em;
+.mdhui-glucose-stat-icon {
+    color: #d36540;
+}
+
+.mdhui-glucose-stat-value {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-0);
+    margin-bottom: 4px;
 }

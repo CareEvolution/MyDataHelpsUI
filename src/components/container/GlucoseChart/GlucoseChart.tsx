@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, GlucoseReading, Meal, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { Card, DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
@@ -187,64 +187,66 @@ export default function (props: GlucoseChartProps) {
     let range = (maxGlucose || 0) - (minGlucose || 0);
 
     return <div className="mdhui-glucose-chart">
-        <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
-            <TimeSeriesChart
-                intervalType="Day"
-                intervalStart={selectedDate}
-                data={chartData}
-                series={[{ dataKey: 'value', color: '#999' }]}
-                chartHasData={!!glucoseReadings && glucoseReadings.length > 0}
-                chartType="Line"
-                containerProps={{
-                    height: 166
-                } as ResponsiveContainerProps}
-                xAxisProps={{
-                    domain: chartDomain,
-                    ticks: chartTicks,
-                    tickFormatter: chartTickFormatter
-                }}
-                yAxisProps={{
-                    width: 24,
-                    domain: [20, 220],
-                    ticks: [60, 100, 140, 180, 220]
-                }}
-                lineProps={{
-                    dot: customDot,
-                    label: customDotLabel,
-                    strokeWidth: 1.5,
-                    animationDuration: 500
-                }}
-            >
-                <ReferenceLine
-                    y={(maxGlucose || 0) - (range / 2)}
-                    stroke="var(--mdhui-color-primary)"
-                    strokeWidth={1}
-                    label={{
-                        value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
-                        fill: 'var(--mdhui-color-primary)',
-                        fontSize: 9,
-                        position: 'insideTopRight',
-                        fontWeight: 'bold'
+        <Card>
+            <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucoseReadings && glucoseReadings.length > 0 ? 'block' : 'none' }}>
+                <TimeSeriesChart
+                    intervalType="Day"
+                    intervalStart={selectedDate}
+                    data={chartData}
+                    series={[{ dataKey: 'value', color: '#999' }]}
+                    chartHasData={!!glucoseReadings && glucoseReadings.length > 0}
+                    chartType="Line"
+                    containerProps={{
+                        height: 166
+                    } as ResponsiveContainerProps}
+                    xAxisProps={{
+                        domain: chartDomain,
+                        ticks: chartTicks,
+                        tickFormatter: chartTickFormatter
                     }}
-                />
-                <Bar
-                    data={steps}
-                    type="monotone"
-                    dataKey="value"
-                    fill="rgb(245, 183, 34)"
-                    opacity={0.3}
-                    radius={[2, 2, 0, 0]}
-                />
-            </TimeSeriesChart>
-            <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
-        </div>
-        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucoseReadings?.length ? 'block' : 'none' }}>No blood glucose readings</div>
-        <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
-            <LoadingIndicator />
-        </div>
-        {props.showStats &&
-            <GlucoseStats loading={loading} glucoseReadings={filteredGlucoseReadings} />
-        }
+                    yAxisProps={{
+                        width: 24,
+                        domain: [20, 220],
+                        ticks: [60, 100, 140, 180, 220]
+                    }}
+                    lineProps={{
+                        dot: customDot,
+                        label: customDotLabel,
+                        strokeWidth: 1.5,
+                        animationDuration: 500
+                    }}
+                >
+                    <ReferenceLine
+                        y={(maxGlucose || 0) - (range / 2)}
+                        stroke="var(--mdhui-color-primary)"
+                        strokeWidth={1}
+                        label={{
+                            value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
+                            fill: 'var(--mdhui-color-primary)',
+                            fontSize: 9,
+                            position: 'insideTopRight',
+                            fontWeight: 'bold'
+                        }}
+                    />
+                    <Bar
+                        data={steps}
+                        type="monotone"
+                        dataKey="value"
+                        fill="rgb(245, 183, 34)"
+                        opacity={0.3}
+                        radius={[2, 2, 0, 0]}
+                    />
+                </TimeSeriesChart>
+                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+            </div>
+            <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucoseReadings?.length ? 'block' : 'none' }}>No blood glucose readings</div>
+            <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
+                <LoadingIndicator />
+            </div>
+            {props.showStats &&
+                <GlucoseStats loading={loading} glucoseReadings={filteredGlucoseReadings} />
+            }
+        </Card>
         {props.showMeals && meals &&
             <div className="meals-list">
                 {meals.map((meal, index) => {
