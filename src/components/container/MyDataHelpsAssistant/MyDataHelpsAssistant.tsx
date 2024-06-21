@@ -76,7 +76,6 @@ export default function(props: MyDataHelpsAssistantProps) {
                         if (event.key === "Enter") {
                             addUserMessage();
                         }
-                        addUserMessage();
                     }} />
                     <button type="button" id="send">
                         <i className="fa-solid fa-paper-plane"></i>
