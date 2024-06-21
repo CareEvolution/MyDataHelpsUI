@@ -37,7 +37,7 @@ export interface SurveyAnswerChartProps {
 }
 
 export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
-    let [currentData, setCurrentData] = useState<{ [key: string]: SurveyAnswer[] } | null>(null);
+    let [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer[][] | null>(null);
     
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
@@ -56,16 +56,16 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                         : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
                         intervalStart;
     const loadCurrentInterval = () => {
-        setCurrentData(null);
+        setSurveyAnswers(null);
         if (props.previewDataProvider) {
             props.previewDataProvider(intervalStart, intervalEnd)
             .then((data) => {
-                setCurrentData(processPages(data));
+                setSurveyAnswers(data);
             });
             return;
         }else if(!!props.previewState){
             getDefaultPreviewData(intervalStart, intervalEnd, props.series).then((data) => {
-                setCurrentData(processPages(data))
+                setSurveyAnswers(data);
             });
             return;
         }
@@ -78,7 +78,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             before: intervalEnd.toISOString()
         }));
         Promise.all(dataRequests).then((data) => {
-            setCurrentData(processPages(data));
+            setSurveyAnswers(data);
         })
     }
     
@@ -89,7 +89,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
     function processPages(pages: SurveyAnswer[][]) {
         var newDailyData: { [key: string]: SurveyAnswer[] } = {};
         for (var i = 0; i < props.series.length; i++) {
-            newDailyData[getDataKey(props.series[i])] = pages[i];
+            newDailyData[getDataKey(props.series[i])] = pages[i] || [];
         }
         
         return newDailyData;
@@ -98,6 +98,8 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
     useInitializeView(() => {
         loadCurrentInterval();
     }, [], [props.intervalType, props.weekStartsOn, dateRangeContext]);
+
+    let currentData = processPages(surveyAnswers || []);
     
     var data: any[] | undefined = undefined;
     var chartHasData: boolean = false;
