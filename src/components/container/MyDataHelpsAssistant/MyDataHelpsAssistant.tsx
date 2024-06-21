@@ -21,7 +21,6 @@ export default function(props: MyDataHelpsAssistantProps) {
 
     function initialize() {
         MyDataHelps.initializeAssistant();
-
     }
 
     useEffect(() => {
