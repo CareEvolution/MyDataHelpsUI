@@ -96,6 +96,32 @@ export const ffwelBarChart = {
     render: render
 };
 
+
+export const ffwelBarChartThresholds = {
+    args: {
+        title: "FFWEL Response Bar Chart with Thresholds",
+        options: {
+            domainMin: 0,
+            thresholds: [
+                {
+                    value: 50,
+                    referenceLineColor: 'red',
+                    overThresholdColor: 'red'
+                }
+            ]
+        },
+        intervalType: "6Month",
+        weekStartsOn: "6DaysAgo",
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar",
+        previewState: 'default'
+    },
+    render: render
+};
+
 export const ffwelAreaChart = {
     args: {
         title: "FFWEL Response Area Chart",

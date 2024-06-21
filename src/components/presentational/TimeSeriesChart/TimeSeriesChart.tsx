@@ -261,7 +261,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {keys.map((dk, i) =>
                             <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
                                 {dataToDisplay!.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
+                                    <Cell key={`cell-${index}`} fill={getBarColor(entry[dk], i)} />
                                 ))}
                             </Bar>
                         )
