@@ -55,6 +55,7 @@
     border-spacing: 0;
     padding-bottom: 4px;
 }
+
 .mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-multiple-value-tooltip th {
     text-align: left;
     position: relative;
@@ -69,4 +70,8 @@
 
 .mdhui-time-series-chart .today {
     font-weight: bold;
+}
+
+.mdhui-time-series-chart .recharts-surface {
+    overflow: visible;
 }

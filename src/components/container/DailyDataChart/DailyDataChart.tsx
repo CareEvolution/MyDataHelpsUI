@@ -33,9 +33,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        if(dateRangeContext.intervalType === "6Month") {
+        if (dateRangeContext.intervalType === "6Month") {
             intervalType = "Month";
-        } else if(dateRangeContext.intervalType === "Day"){
+        } else if (dateRangeContext.intervalType === "Day") {
             intervalType = "Week";
         } else {
             intervalType = dateRangeContext.intervalType;
@@ -46,9 +46,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
     }
 
-    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
-                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
-                        : intervalStart;
+    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 })
+        : intervalType === "Month" ? add(intervalStart, { months: 1 })
+            : intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
         if (props.previewDataProvider) {
@@ -111,13 +111,13 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 dataDay.value = props.valueConverter(dataDay.value);
             } else {
                 let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
-                if(defaultConverter) {
+                if (defaultConverter) {
                     dataDay.value = defaultConverter(dataDay.value);
                 }
             }
             chartHasData = true;
         });
-    }else{
+    } else {
         data = undefined;
     }
 
@@ -141,8 +141,8 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
-    function generateSeriesAndOptions() : [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
-        if(props.chartType === "Line") {
+    function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
+        if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
             const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = { domainMin: lineOptions?.domainMin, showDots: true };
             return [
@@ -153,7 +153,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 multiSeriesLineChartOptions
             ];
         }
-        else if(props.chartType === "Area") {
+        else if (props.chartType === "Area") {
             const areaOptions = props.options as AreaChartOptions;
             return [
                 [{
@@ -164,7 +164,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 undefined
             ];
         }
-        else if(props.chartType === "Bar") {
+        else if (props.chartType === "Bar") {
             const barOptions = props.options as BarChartOptions;
             return [
                 [{
@@ -182,16 +182,17 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     const [series, options] = generateSeriesAndOptions();
 
-    return <TimeSeriesChart 
-        title={props.title} 
-        intervalType={intervalType} 
+    return <TimeSeriesChart
+        title={props.title}
+        intervalType={intervalType}
         intervalStart={intervalStart}
-        data={data} 
-        expectedDataInterval={{days: 1}}
-        chartHasData={chartHasData} 
+        data={data}
+        expectedDataInterval={{ days: 1 }}
+        chartHasData={chartHasData}
         series={series}
         tooltip={GraphToolTip}
         chartType={props.chartType}
         options={options}
+        innerRef={props.innerRef}
     />
 }

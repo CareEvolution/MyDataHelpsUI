@@ -40,7 +40,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{monthLabel}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
             </>;
         } else if (intervalType === "Week") {
@@ -53,14 +53,17 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 currentDate = add(currentDate, { days: 1 });
             }
             return <>
-                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 8} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
+                <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{dayOfWeek}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         } else if (intervalType === "Day") {
             const startTime = new Date(props.intervalStart);
             startTime.setHours(0, 0, 0, 0);
+            if (currentDate.getHours() === 0) {
+                return <></>;
+            }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{format(currentDate, "hh:mm aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{format(currentDate, "h aaa")}</text>
             </>;
         }
         return <>
@@ -296,7 +299,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{ left: 5, top: 5, bottom: 5, right: 40 }} >
+                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -328,7 +331,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{ left: 5, top: 5, bottom: 5, right: 40 }}>
+                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
