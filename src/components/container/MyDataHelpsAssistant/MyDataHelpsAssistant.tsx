@@ -48,8 +48,7 @@ export default function(props: MyDataHelpsAssistantProps) {
 
             if (event.text) {
                 currentAIMessage += event.text;
-                messages[messages.length - 1].content = currentAIMessage;
-                setMessages([...messages]);
+                setMessages([...messages.slice(0, -1), { type: 'ai', content: currentAIMessage }])
             }
         });
     }
