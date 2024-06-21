@@ -1,32 +1,11 @@
 import React from "react";
 import { Card, DateRangeCoordinator, Layout } from "../../presentational";
-import SurveyAnswerChart, { SurveyAnswerChartProps } from "./SurveyAnswerChart";
+import SurveyAnswerChart, { generateSurveyResponse, SurveyAnswerChartProps } from "./SurveyAnswerChart";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 import add from "date-fns/add";
-import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
-import { getDayKey } from "../../../helpers";
 
 export default { title: "Container/SurveyAnswerChart", component: SurveyAnswerChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><SurveyAnswerChart {...args} /></Card></Layout>
-
-async function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string, rangeStart: number, rangeEnd: number): Promise<SurveyAnswer> {
-    var answer = await predictableRandomNumber(getDayKey(date)+resultIdentifier);
-    return {
-        "id": "00000000-0000-0000-0000-000000000000",
-        "surveyID": "00000000-0000-0000-0000-000000000000",
-        "surveyResultID": "00000000-0000-0000-0000-000000000000",
-        "surveyVersion": 0,
-        "surveyName": surveyName,
-        "surveyDisplayName": surveyName,
-        "date": date.toISOString(),
-        "stepIdentifier": resultIdentifier,
-        "resultIdentifier": resultIdentifier,
-        "answers": [
-            (answer % (rangeEnd - rangeStart) + rangeStart).toString()
-        ],
-        "insertedDate": date.toISOString()
-    };
-}
 
 async function getRandomFFWELData(start: Date, end: Date) {
     let creativeSelfResponses: SurveyAnswer[] = [];
@@ -55,7 +34,6 @@ async function getRandomPainData(start: Date, end: Date) {
     return standardData;
 }
 
-
 export const ffwelLineChart = {
     args: {
         title: "FFWEL Responses Line Chart",
@@ -70,9 +48,7 @@ export const ffwelLineChart = {
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
-        previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getRandomFFWELData(start, end));
-        }
+        previewState: "default"
     },
     render: render
 };
@@ -115,9 +91,7 @@ export const ffwelBarChart = {
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
-        previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getRandomFFWELData(start,end));
-        }
+        previewState: 'default'
     },
     render: render
 };
@@ -135,9 +109,7 @@ export const ffwelAreaChart = {
                 {  color: "#4daf4a", areaColor: '#3daf4a', dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
         valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
-        previewDataProvider: (start: Date, end: Date) => {
-            return Promise.resolve(getRandomFFWELData(start,end));
-        }
+        previewState: 'default'
     },
     render: render
 };
