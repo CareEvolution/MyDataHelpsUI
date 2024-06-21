@@ -66,6 +66,8 @@ export default function(props: MyDataHelpsAssistantProps) {
 
     return (
         <>
+            <div>{currentUserMessage}</div>
+            <div>{JSON.stringify(messages)}</div>
             <div id="log">
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
