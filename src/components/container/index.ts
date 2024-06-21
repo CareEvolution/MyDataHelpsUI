@@ -42,3 +42,4 @@ export { default as TermInformation, TermInformationReference } from "./TermInfo
 export { default as ViewEhr } from "./ViewEhr"
 export { default as InboxItemList } from "./InboxItemList"
 export { default as InboxItemListCoordinator } from "./InboxItemListCoordinator"
+export { default as MyDataHelpsAssistant } from "./MyDataHelpsAssistant"
