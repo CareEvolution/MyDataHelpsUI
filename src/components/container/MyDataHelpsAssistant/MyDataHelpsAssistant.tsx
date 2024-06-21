@@ -41,13 +41,15 @@ export default function(props: MyDataHelpsAssistantProps) {
 
             if (event.event === "on_llm_start") {
                 currentAIMessage = "";
+                setMessages([...messages, { type: 'ai', content: currentAIMessage }])
             }
             else if (event.event === "on_llm_end") {
             }
 
             if (event.text) {
                 currentAIMessage += event.text;
-                setMessages([...messages.slice(0, -1), { type: 'ai', content: currentAIMessage }])
+                messages[messages.length - 1].content = currentAIMessage;
+                setMessages([...messages]);
             }
         });
     }
@@ -64,7 +66,7 @@ export default function(props: MyDataHelpsAssistantProps) {
                         return <div className="user-message" key={index}><p>{message.content}</p></div>
                     }
                     else if (message.type === 'ai') {
-                        return <div className="ai-message"><p>{message.content}</p></div>
+                        return <div className="ai-message" key={index}><p>{message.content}</p></div>
                     }
                 })}
                 {loading && <div id="loading">{loading}</div>}
