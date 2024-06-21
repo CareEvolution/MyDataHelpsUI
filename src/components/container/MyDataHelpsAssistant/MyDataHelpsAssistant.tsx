@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js";
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faPlane } from '@fortawesome/free-solid-svg-icons/faPlane';
 
 import "./MyDataHelpsAssistant.css";
 
@@ -37,6 +40,10 @@ export default function(props: MyDataHelpsAssistantProps) {
         let currentAIMessage = "";
 
         await MyDataHelps.addUserMessage(newMessage, async function(event) {
+
+            console.log(event);
+            console.log(messages);
+
             setLoading(event.loading);
 
             if (event.event === "on_llm_start") {
@@ -79,7 +86,7 @@ export default function(props: MyDataHelpsAssistantProps) {
                         }
                     }} />
                     <button type="button" id="send">
-                        <i className="fa-solid fa-paper-plane"></i>
+                        <FontAwesomeSvgIcon icon={faPlane} />
                     </button>
                 </div>
             </div>
