@@ -64,9 +64,9 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
                 intervalEnd,
                 props.aggregationOption,
                 props.aggregationIntervalMinutes
-            ).then(function (data: IntradayHeartRateData) {
+            ).then((data: IntradayHeartRateData) => {
                 transformToChartData(data);
-            }).catch(function (error: any) {
+            }).catch((error: any) => {
                 console.log("error");
                 console.log(error);
             });
