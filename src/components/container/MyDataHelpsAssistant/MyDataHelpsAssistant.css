@@ -107,21 +107,18 @@
 }
 
 .mdh-assistant .user-message {
-    background: var(--ce-grey-4);
+    background: var(--ce-grey-30);
 }
 
-.mdh-assistant .ai-message:before,
-.mdh-assistant .user-message:before,
-.mdh-assistant #loading:before {
+.mdh-assistant .ai-message .svg-inline--fa,
+.mdh-assistant .user-message .svg-inline--fa,
+.mdh-assistant #loading .svg-inline--fa {
     color: var(--ce-grey-50);
     position: absolute;
     left: 20px;
     margin: .25rem 0;
 }
 
-.mdh-assistant #loading:before {
-    content: "\f110";
-    font-family: 'Font Awesome 6 Free';
+.mdh-assistant #loading .svg-inline--fa {
     font-weight: 700;
-    animation: fa-spin 2s infinite linear;
 }

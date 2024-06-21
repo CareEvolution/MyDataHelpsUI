@@ -3,7 +3,8 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
-import { faGears } from '@fortawesome/free-solid-svg-icons/faGears';
+import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import "./MyDataHelpsAssistant.css";
@@ -79,12 +80,15 @@ export default function(props: MyDataHelpsAssistantProps) {
                     }
                     else if (message.type === 'ai') {
                         return <div className="ai-message" key={index}>
-                            <FontAwesomeSvgIcon icon={faGears} />
+                            <FontAwesomeSvgIcon icon={faGear} />
                             <p>{message.content}</p>
                         </div>
                     }
                 })}
-                {loading && <div id="loading">{loading}</div>}
+                {loading && <div id="loading">
+                    <FontAwesomeSvgIcon icon={faSpinner} spin={true} />
+                    {loading}
+                </div>}
             </div>
 
             <div className="input">
