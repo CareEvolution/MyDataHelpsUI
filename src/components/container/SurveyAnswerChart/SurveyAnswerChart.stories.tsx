@@ -1,8 +1,9 @@
 import React from "react";
 import { Card, DateRangeCoordinator, Layout } from "../../presentational";
-import SurveyAnswerChart, { generateSurveyResponse, SurveyAnswerChartProps } from "./SurveyAnswerChart";
+import SurveyAnswerChart, { SurveyAnswerChartProps } from "./SurveyAnswerChart";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 import add from "date-fns/add";
+import { generateSurveyResponse } from "./SurveyAnswerData.previewdata";
 
 export default { title: "Container/SurveyAnswerChart", component: SurveyAnswerChart, parameters: { layout: 'fullscreen' } };
 let render = (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><SurveyAnswerChart {...args} /></Card></Layout>
