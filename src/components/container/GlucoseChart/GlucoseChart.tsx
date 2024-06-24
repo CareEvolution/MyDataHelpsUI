@@ -189,7 +189,15 @@ export default function (props: GlucoseChartProps) {
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
 
-    let range = (maxGlucose || 0) - (minGlucose || 0);
+    let glucoseRange = (maxGlucose || 0) - (minGlucose || 0);
+
+    let maxSteps = Math.max(...filteredSteps.map(r => r.value));
+    let stepsScale = 220 / (maxSteps * 0.8);
+    let overlaySteps = filteredSteps
+        .filter(r => r.value > 0)
+        .map(r => {
+            return { ...r, value: r.value * stepsScale }
+        });
 
     return <div className="mdhui-glucose-chart">
         <Card>
@@ -222,11 +230,11 @@ export default function (props: GlucoseChartProps) {
                     }}
                 >
                     <ReferenceLine
-                        y={(maxGlucose || 0) - (range / 2)}
+                        y={(maxGlucose || 0) - (glucoseRange / 2)}
                         stroke="var(--mdhui-color-primary)"
                         strokeWidth={1}
                         label={{
-                            value: Number((maxGlucose || 0) - (range / 2)).toFixed(0),
+                            value: Number((maxGlucose || 0) - (glucoseRange / 2)).toFixed(0),
                             fill: 'var(--mdhui-color-primary)',
                             fontSize: 9,
                             position: 'insideTopRight',
@@ -234,10 +242,10 @@ export default function (props: GlucoseChartProps) {
                         }}
                     />
                     <Bar
-                        data={filteredSteps}
+                        data={overlaySteps}
                         type="monotone"
                         dataKey="value"
-                        fill="rgb(245, 183, 34)"
+                        fill="#f5b722"
                         opacity={0.3}
                         radius={[2, 2, 0, 0]}
                     />
