@@ -1,12 +1,7 @@
 import MyDataHelps, { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
 import { compareAsc, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
-
-export type GlucoseReading = {
-    observationDate: Date;
-    value: number;
-    source?: string;
-}
+import { Reading } from './types';
 
 export async function getGlucoseReadings(date: Date) {
     let deviceInfo = await MyDataHelps.getDeviceInfo();
@@ -20,8 +15,8 @@ export async function getGlucoseReadings(date: Date) {
     let dataPoints = await queryAllDeviceData(queryParameters);
 
     return dataPoints.map(dataPoint => {
-        let reading: GlucoseReading = {
-            observationDate: parseISO(dataPoint.observationDate!),
+        let reading: Reading = {
+            timestamp: parseISO(dataPoint.observationDate!),
             value: parseFloat(dataPoint.value)
         };
 
@@ -33,28 +28,28 @@ export async function getGlucoseReadings(date: Date) {
         }
 
         return reading;
-    }).sort((a, b) => compareAsc(a.observationDate, b.observationDate));
+    }).sort((a, b) => compareAsc(a.timestamp, b.timestamp));
 }
 
-export function computeBestFitGlucoseValue(observationDate: Date, glucoseReadings: GlucoseReading[]) {
-    let reading1 = glucoseReadings[0];
-    let reading2 = glucoseReadings[glucoseReadings.length - 1];
+export function computeBestFitGlucoseValue(observationDate: Date, readings: Reading[]) {
+    let reading1 = readings[0];
+    let reading2 = readings[readings.length - 1];
 
-    for (let reading of glucoseReadings) {
-        if (reading.observationDate > observationDate) {
+    for (let reading of readings) {
+        if (reading.timestamp > observationDate) {
             reading2 = reading;
             break;
         }
         reading1 = reading;
     }
 
-    if (reading1.observationDate === reading2.observationDate) {
+    if (reading1.timestamp === reading2.timestamp) {
         return reading1.value;
     }
 
-    let x1 = reading1.observationDate.getTime();
+    let x1 = reading1.timestamp.getTime();
     let y1 = reading1.value;
-    let x2 = reading2.observationDate.getTime();
+    let x2 = reading2.timestamp.getTime();
     let y2 = reading2.value;
     let d = observationDate.getTime() - x1
     let D = Math.sqrt((Math.pow(x2 - x1, 2) + (Math.pow(y2 - y1, 2))))

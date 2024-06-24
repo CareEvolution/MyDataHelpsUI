@@ -5,7 +5,7 @@ import { DateRangeCoordinator, Layout } from '../../presentational';
 export default {
     title: 'Container/GlucoseChart',
     component: GlucoseChart,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface GlucoseChartStoryArgs extends GlucoseChartProps {

@@ -1,13 +1,16 @@
 import React from 'react'
 import './GlucoseStats.css'
-import { GlucoseReading } from '../../../helpers';
+import { Reading } from '../../../helpers';
 import LoadingIndicator from '../LoadingIndicator';
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faDroplet } from "@fortawesome/free-solid-svg-icons"
+import { faBed, faDroplet, faShoePrints } from "@fortawesome/free-solid-svg-icons"
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 export interface GlucoseStatsProps {
     loading: boolean;
-    glucoseReadings: GlucoseReading[];
+    glucoseReadings: Reading[];
+    steps: Reading[];
+    sleep: Reading[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -23,40 +26,64 @@ export default function (props: GlucoseStatsProps) {
         avgGlucose = glucoseValues.reduce((s, a) => s + a, 0) / glucoseValues.length;
     }
 
+    let steps: number | undefined;
+    if (props.steps && props.steps.length > 0) {
+        steps = props.steps.reduce((a, c) => a + c.value, 0);
+    }
+
+    let sleepHours: number | undefined;
+    let sleepMinutes: number | undefined;
+    if (props.sleep) {
+        let totalSleepMinutes = props.sleep.reduce((a, c) => a + c.value, 0)
+        sleepHours = Math.floor(totalSleepMinutes / 60);
+        sleepMinutes = totalSleepMinutes % 60;
+    }
+
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
-        <div className="mdhui-glucose-stat">
-            <div className="mdhui-glucose-stat-label">BLOOD GLUCOSE RANGE</div>
-            {props.loading && <LoadingIndicator />}
-            {!props.loading &&
-                <div className="mdhui-glucose-stat-value">
-                    {minGlucose &&
-                        <>
-                            <FontAwesomeSvgIcon className="mdhui-glucose-stat-icon" icon={faDroplet} /> <span>{Number(minGlucose).toFixed(0)} - {Number(maxGlucose).toFixed(0)} mg/dL</span>
-                        </>
-                    }
-                    {!minGlucose &&
-                        <span>n/a</span>
-                    }
-                </div>
-            }
-        </div>
-        <div className="mdhui-glucose-stat">
-            <div className="mdhui-glucose-stat-label">AVG BLOOD GLUCOSE</div>
-            {props.loading &&
-                <LoadingIndicator />
-            }
-            {!props.loading &&
-                <div className="mdhui-glucose-stat-value">
-                    {avgGlucose &&
-                        <>
-                            <FontAwesomeSvgIcon className="mdhui-glucose-stat-icon" icon={faDroplet} /> <span>{Number(avgGlucose).toFixed(0)} mg/dL</span>
-                        </>
-                    }
-                    {!avgGlucose &&
-                        <span>n/a</span>
-                    }
-                </div>
-            }
-        </div>
+        <SingleGlucoseStat
+            loading={props.loading}
+            label="BLOOD GLUCOSE RANGE"
+            icon={faDroplet}
+            iconColor="#d36540"
+            value={minGlucose ? `${minGlucose.toFixed(0)} - ${maxGlucose!.toFixed(0)} mg/dL` : undefined}
+        />
+        <SingleGlucoseStat
+            loading={props.loading}
+            label="AVG BLOOD GLUCOSE"
+            icon={faDroplet}
+            iconColor="#d36540"
+            value={avgGlucose ? `${avgGlucose.toFixed(0)} mg/dL` : undefined}
+        />
+        <SingleGlucoseStat
+            loading={props.loading}
+            label="STEPS"
+            icon={faShoePrints}
+            iconColor="#f5b722"
+            value={steps ? `${steps.toLocaleString()} mg/dL` : undefined}
+        />
+        <SingleGlucoseStat
+            loading={props.loading}
+            label="SLEEP"
+            icon={faBed}
+            iconColor="#8287bb"
+            value={sleepHours ? `${sleepHours}h ${sleepMinutes}m` : undefined}
+        />
+    </div>;
+}
+
+function SingleGlucoseStat(props: { loading: boolean, label: string, icon: IconDefinition, iconColor?: string, value?: string }) {
+    return <div className="mdhui-glucose-stat">
+        <div className="mdhui-glucose-stat-label">{props.label}</div>
+        {props.loading &&
+            <LoadingIndicator />
+        }
+        {!props.loading && props.value &&
+            <div className="mdhui-glucose-stat-value">
+                <FontAwesomeSvgIcon icon={props.icon} color={props.iconColor} /> {props.value}
+            </div>
+        }
+        {!props.loading && !props.value &&
+            <div className="mdhui-glucose-stat-value-not-available">--</div>
+        }
     </div>;
 }

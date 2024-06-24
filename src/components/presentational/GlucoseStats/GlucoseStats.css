@@ -2,12 +2,17 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
+    grid-row-gap: 16px;
     padding: 0 16px 16px;
-    height: 32px;
 }
 
 .mdhui-glucose-stats .mdhui-loading-indicator {
     padding: 2px;
+    text-align: left;
+}
+
+.mdhui-glucose-stat {
+    height: 46px;
 }
 
 .mdhui-glucose-stat-label {
@@ -15,13 +20,16 @@
     margin-bottom: 4px;
 }
 
-.mdhui-glucose-stat-icon {
-    color: #d36540;
-}
-
 .mdhui-glucose-stat-value {
     font-size: 0.95em;
     font-weight: bold;
     color: var(--mdhui-text-color-0);
+    margin-bottom: 4px;
+}
+
+.mdhui-glucose-stat-value-not-available {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-2);
     margin-bottom: 4px;
 }

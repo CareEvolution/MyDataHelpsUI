@@ -1,13 +1,13 @@
 ﻿import React from 'react';
 import { Layout } from '../../presentational';
 import GlucoseStats, { GlucoseStatsProps } from './GlucoseStats';
-import { GlucoseReading } from '../../../helpers';
-import { add, startOfToday } from 'date-fns';
+import { generateGlucose, generateSleep, generateSteps } from '../../../helpers';
+import { startOfToday } from 'date-fns';
 
 export default {
     title: 'Presentational/GlucoseStats',
     component: GlucoseStats,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface GlucoseStatsStoryArgs extends GlucoseStatsProps {
@@ -15,16 +15,14 @@ interface GlucoseStatsStoryArgs extends GlucoseStatsProps {
     previewState: 'no data' | 'with data';
 }
 
-const generateReadings = (): GlucoseReading[] => {
-    return [
-        {observationDate: add(startOfToday(), {hours: 10}), value: 100},
-        {observationDate: add(startOfToday(), {hours: 11}), value: 150}
-    ]
-};
-
 const render = (args: GlucoseStatsStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <GlucoseStats {...args} glucoseReadings={args.previewState === 'with data' ? generateReadings() : []}/>
+        <GlucoseStats
+            {...args}
+            glucoseReadings={args.previewState === 'with data' ? generateGlucose(startOfToday()) : []}
+            steps={args.previewState === 'with data' ? generateSteps(startOfToday()) : []}
+            sleep={args.previewState === 'with data' ? generateSleep(startOfToday()) : []}
+        />
     </Layout>;
 };
 

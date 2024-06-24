@@ -1,27 +1,35 @@
-import { add, isSameDay, startOfDay } from 'date-fns';
-import { GlucoseReading, Meal } from '../../../helpers';
+import { add, startOfDay } from 'date-fns';
+import { generateGlucose, generateSleep, generateSteps, Meal, Reading } from '../../../helpers';
 
 export type GlucoseChartPreviewState = 'no data' | 'with data' | 'with data and meals';
 
 export interface GlucoseChartPreviewData {
-    glucoseReadings: GlucoseReading[];
+    glucose: Reading[];
+    steps: Reading[];
+    sleep: Reading[];
     meals: Meal[];
 }
 
 export const previewData = (previewState: GlucoseChartPreviewState, date: Date): GlucoseChartPreviewData => {
     if (previewState === 'no data') {
         return {
-            glucoseReadings: [],
+            glucose: [],
+            steps: [],
+            sleep: [],
             meals: []
         };
     } else if (previewState === 'with data') {
         return {
-            glucoseReadings: generateGlucoseReadings(date),
+            glucose: generateGlucose(date),
+            steps: generateSteps(date),
+            sleep: generateSleep(date),
             meals: []
         };
     } else if (previewState === 'with data and meals') {
         return {
-            glucoseReadings: generateGlucoseReadings(date),
+            glucose: generateGlucose(date),
+            steps: generateSteps(date),
+            sleep: generateSleep(date),
             meals: [{
                 'nutrients': {
                     'dietaryFatTotal': { 'values': [6.0004, 3.7439999999999998, 4.9979999999999993, 0.22120000000000004, 5.92825, 6.3539999999999992], 'total': 27.245849999999997, 'units': 'g' },
@@ -59,29 +67,6 @@ export const previewData = (previewState: GlucoseChartPreviewState, date: Date):
     }
     return {} as GlucoseChartPreviewData;
 };
-
-function generateGlucoseReadings(date: Date, source?: string): GlucoseReading[] {
-    let readings: GlucoseReading[] = [];
-
-    let observationDate = date;
-    let previousValue = 60;
-    while (isSameDay(observationDate, date)) {
-        let newValue = previousValue + (Math.random() * 50) - 25;
-        while (newValue < 60 || newValue > 180) {
-            newValue = previousValue + (Math.random() * 50) - 25;
-        }
-        readings.push({
-            observationDate: observationDate,
-            value: newValue,
-            source: source
-        });
-        previousValue = newValue;
-
-        observationDate = add(observationDate, { minutes: 15 });
-    }
-
-    return readings;
-}
 
 function createObservationDate(baseDate: Date, hours: number, minutes: number): Date {
     let date = startOfDay(baseDate);
