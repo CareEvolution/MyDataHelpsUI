@@ -30,7 +30,7 @@ export default function (props: RelativeActivityProps) {
 
     let dataTypes: RelativeActivityDataType[] = props.dataTypes || [];
     if (props.useContext && relativeActivityContext?.dataTypes) {
-        dataTypes = relativeActivityContext.dataTypes;
+        dataTypes = [...relativeActivityContext.dataTypes];
     }
 
     let dateRangeContext = useContext(DateRangeContext);
