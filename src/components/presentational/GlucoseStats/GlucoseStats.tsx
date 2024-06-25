@@ -66,7 +66,7 @@ export default function (props: GlucoseStatsProps) {
             label="SLEEP"
             icon={faBed}
             iconColor="#8287bb"
-            value={sleepHours ? `${sleepHours}h ${sleepMinutes}m` : undefined}
+            value={(sleepHours || sleepMinutes) ? `${sleepHours}h ${sleepMinutes}m` : undefined}
         />
     </div>;
 }

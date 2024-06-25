@@ -260,7 +260,7 @@ export default function (props: GlucoseChartProps) {
                 />
             }
         </Card>
-        {props.showMeals && meals &&
+        {props.showMeals && meals && meals.length > 0 &&
             <Card className="mdhui-glucose-chart-meal-log">
                 <Title order={3}>Meal Log</Title>
                 {meals.map((meal, index) => {
