@@ -1,0 +1,55 @@
+.mdhui-daily-data-goal {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.mdhui-daily-data-goal.mdhui-daily-data-goal-default-margin {
+    margin: 16px;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-title {
+    font-size: .7em;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-subtitle {
+    font-size: .88em;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-message {
+    font-size: .7em;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-progress {
+    z-index: 1;
+    position: relative;
+    font-weight: bold;
+    font-size: .7em;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-circle {
+    width: 32px;
+    height: 32px;
+    background: #ddd;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    color: #152850;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-circle .mdhui-daily-data-goal-circle-fill {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #99c1dd;
+    opacity: 0.3;
+}
+
+.mdhui-daily-data-goal .mdhui-daily-data-goal-circle .svg-inline--fa {
+    position: relative;
+    z-index: 1;
+}

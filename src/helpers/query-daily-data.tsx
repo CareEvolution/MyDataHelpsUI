@@ -64,8 +64,12 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 	//Modulo repeatable random numbers to get a value in range.
 	while (startDate < endDate && startDate < new Date()) {
 		const dayKey = getDayKey(startDate);
-		const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
-		result[dayKey] = value;
+		if (startDate >= new Date()) {
+			result[dayKey] = 0;
+		} else {
+			const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
+			result[dayKey] = value;
+		}
 		startDate = add(startDate, { days: 1 });
 	}
 	return result;

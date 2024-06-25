@@ -1,0 +1,4 @@
+.mdhui-divider {
+    height: 0x;
+    border-bottom: solid 1px var(--mdhui-border-color-0);
+}

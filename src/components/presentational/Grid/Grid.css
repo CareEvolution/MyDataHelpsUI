@@ -1,0 +1,13 @@
+.mdhui-grid {
+    display: flex;
+    gap: 16px;
+}
+
+.mdhui-grid.mdhui-grid-default-margin {
+    margin: 16px;
+}
+
+.mdhui-grid .mdhui-grid-column {
+    flex-grow: 0;
+    flex-shrink: 0;
+}

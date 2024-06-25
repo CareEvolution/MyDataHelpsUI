@@ -1,0 +1,48 @@
+.mdhui-basic-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ddd;
+    color: #152850;
+    position: relative;
+    overflow: hidden;
+    font-size: 8px;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
+    color: #FFD379;
+}
+
+.mdhui-basic-badge.mdhui-basic-badge-xl {
+    width: 150px;
+    height: 150px;
+    font-size: 58px;
+}
+
+
+.mdhui-basic-badge .mdhui-basic-badge-children {
+    display: none;
+}
+
+.mdhui-basic-badge.mdhui-basic-badge-xl .mdhui-basic-badge-children {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000;
+    text-align: center;
+    font-size: 17px;
+    top: 58px;
+    font-weight: bold;
+}
+
+.mdhui-basic-badge .mdhui-basic-badge-icon {
+    filter: drop-shadow(1px 1px 1px #666);
+    margin-top: -1px;
+}
+
+.mdhui-basic-badge.mdhui-basic-badge-xl .mdhui-basic-badge-icon {
+    margin-top: -7px;
+}
