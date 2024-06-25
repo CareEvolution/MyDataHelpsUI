@@ -1,83 +1,34 @@
 .mdhui-meal {
-    padding: 16px;
-}
-
-.mdhui-meal .mdhui-unstyled-button {
-    width: 100%
-}
-
-.mdhui-meal-header {
     display: grid;
     grid-template-columns: max-content auto;
     align-items: center;
+    grid-column-gap: 16px;
+    padding: 16px;
+    border-bottom: 1px solid var(--mdhui-border-color-0);
+}
+
+.mdhui-meal:last-child {
+    border: none;
+}
+
+.mdhui-meal.mdhui-unstyled-button {
+    width: 100%
+}
+
+.mdhui-meal-number {
+    font-size: 0.8em;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 8px;
+    color: #fff;
+    border-radius: 12px;
+}
+
+.mdhui-meal-type {
+    text-transform: capitalize;
+    font-weight: bold;
 }
 
 .mdhui-meal-time {
-    text-align: right;
-}
-
-.mdhui-meal-name {
-    font-weight: bold;
-}
-
-.mdhui-meal-color {
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -2px;
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-}
-
-.mdhui-meal-calories {
-    margin-top: 10px;
-}
-
-.mdhui-meal-more-info-link, .mdhui-meal-less-info-link {
-    text-decoration: underline;
-    color: var(--mdhui-color-primary);
-    grid-column: 1 / span 2;
-    margin-top: 10px;
-}
-
-.mdhui-meal-more-info {
-    grid-column: 1 / span 2;
-    margin-top: 16px;
-}
-
-.mdhui-meal-more-info-nutrients {
-    display: grid;
-    grid-template-columns: 1fr max-content 1fr max-content 1fr;
-    align-items: center;
-    padding: 16px 0;
-    background: var(--mdhui-background-color-1);
-}
-
-.mdhui-meal-more-info-nutrient {
-    text-align: center;
-}
-
-.mdhui-meal-more-info-nutrient-value {
-    font-weight: bold;
-}
-
-.mdhui-meal-more-info-nutrient-name {
-}
-
-.mdhui-meal-more-info-nutrient-divider {
-    background: var(--mdhui-background-color-2);
-    height: 100%;
-    width: 2px;
-}
-
-.mdhui-meal-more-info-nutrient-glucose {
-    margin: 16px 0;
-}
-
-.mdhui-meal-more-info-nutrient-glucose-value {
-    font-weight: bold;
-}
-
-.mdhui-meal-more-info-nutrient-glucose-time {
-    font-weight: bold;
+    font-size: 0.9em;
 }

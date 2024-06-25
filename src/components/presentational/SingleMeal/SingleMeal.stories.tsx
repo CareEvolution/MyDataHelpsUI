@@ -17,7 +17,7 @@ interface SingleMealStoryArgs {
 
 const render = (args: SingleMealStoryArgs) => {
     const meal = {
-        observationDate: new Date(),
+        timestamp: new Date(),
         nutrients: {
             'dietaryEnergyConsumed': {'total': 525.498, values: [], 'units': 'kcal'},
             'dietaryFatTotal': {'total': 20.232770000000002, values: [], 'units': 'g'},

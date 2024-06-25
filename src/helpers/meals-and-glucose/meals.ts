@@ -7,6 +7,6 @@ export async function getMeals(date: Date): Promise<Meal[]> {
     if (!response?.deviceDataPoints.length) return [];
 
     let meals = JSON.parse(response.deviceDataPoints[0].value) as Meal[];
-    let filteredMeals = meals.filter(meal => isSameDay(meal.observationDate, date));
-    return filteredMeals.sort((a, b) => compareAsc(a.observationDate, b.observationDate));
+    let filteredMeals = meals.filter(meal => isSameDay(meal.timestamp, date));
+    return filteredMeals.sort((a, b) => compareAsc(a.timestamp, b.timestamp));
 }

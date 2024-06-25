@@ -4,15 +4,10 @@ export interface Reading {
     source?: string;
 }
 
-export interface MealNutrient {
-    total: number;
-    values: number[];
-    units?: string;
-}
+export type MealType = 'meal' | 'snack' | 'drink';
 
 export interface Meal {
-    observationDate: Date;
-    nutrients: { [key: string]: MealNutrient };
-    minGlucose?: number;
-    maxGlucose?: number;
+    timestamp: Date;
+    type: MealType;
+    description?: string;
 }

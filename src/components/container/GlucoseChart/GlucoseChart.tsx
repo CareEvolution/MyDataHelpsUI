@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, Meal, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { Card, DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { Card, DateRangeContext, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
@@ -62,8 +62,8 @@ export default function (props: GlucoseChartProps) {
     let filteredGlucose = glucose?.filter(reading => {
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.observationDate;
-        let maxDate = add(selectedMeal.observationDate, { hours: 2 });
+        let minDate = selectedMeal.timestamp;
+        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
@@ -81,16 +81,11 @@ export default function (props: GlucoseChartProps) {
         if (filteredGlucose.length === 0) return false;
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.observationDate;
-        let maxDate = add(selectedMeal.observationDate, { hours: 2 });
+        let minDate = selectedMeal.timestamp;
+        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
-        return meal.observationDate >= minDate && meal.observationDate <= maxDate;
+        return meal.timestamp >= minDate && meal.timestamp <= maxDate;
     }) ?? [];
-
-    filteredMeals.forEach(meal => {
-        meal.minGlucose = Math.floor(computeBestFitGlucoseValue(meal.observationDate, filteredGlucose));
-        meal.maxGlucose = Math.floor(computeBestFitGlucoseValue(add(meal.observationDate, { minutes: 60 }), filteredGlucose));
-    });
 
     let chartData: { timestamp: Date, value: number, meal?: boolean }[] = [];
 
@@ -99,9 +94,9 @@ export default function (props: GlucoseChartProps) {
     });
 
     filteredMeals.forEach(meal => {
-        let entry = chartData.find(entry => entry.timestamp === meal.observationDate);
+        let entry = chartData.find(entry => entry.timestamp === meal.timestamp);
         if (!entry) {
-            entry = { timestamp: meal.observationDate, value: computeBestFitGlucoseValue(meal.observationDate, filteredGlucose) }
+            entry = { timestamp: meal.timestamp, value: computeBestFitGlucoseValue(meal.timestamp, filteredGlucose) }
             chartData.push(entry);
         }
         entry.meal = true;
@@ -129,13 +124,13 @@ export default function (props: GlucoseChartProps) {
     }
 
     if (selectedMeal) {
-        chartDomain = [selectedMeal.observationDate.valueOf(), add(selectedMeal.observationDate, { hours: 2 }).valueOf()];
+        chartDomain = [selectedMeal.timestamp.valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];
         chartTicks = [
-            selectedMeal.observationDate.valueOf(),
-            add(selectedMeal.observationDate, { minutes: 30 }).valueOf(),
-            add(selectedMeal.observationDate, { minutes: 60 }).valueOf(),
-            add(selectedMeal.observationDate, { minutes: 90 }).valueOf(),
-            add(selectedMeal.observationDate, { minutes: 120 }).valueOf()
+            selectedMeal.timestamp.valueOf(),
+            add(selectedMeal.timestamp, { minutes: 30 }).valueOf(),
+            add(selectedMeal.timestamp, { minutes: 60 }).valueOf(),
+            add(selectedMeal.timestamp, { minutes: 90 }).valueOf(),
+            add(selectedMeal.timestamp, { minutes: 120 }).valueOf()
         ];
         chartTickFormatter = (value: number) => {
             if (value === chartDomain[0] || value === chartDomain[1]) {
@@ -149,7 +144,7 @@ export default function (props: GlucoseChartProps) {
         const { cx, cy, payload } = props;
         if (!cy || !payload.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.observationDate === payload.timestamp);
+        let mealIndex = meals!.findIndex(meal => meal.timestamp === payload.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <svg>
@@ -163,7 +158,7 @@ export default function (props: GlucoseChartProps) {
         let entry = chartData[index];
         if (!entry.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.observationDate === entry.timestamp);
+        let mealIndex = meals!.findIndex(meal => meal.timestamp === entry.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
@@ -173,8 +168,8 @@ export default function (props: GlucoseChartProps) {
         if (filteredGlucose.length === 0) return false;
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.observationDate;
-        let maxDate = add(selectedMeal.observationDate, { hours: 2 });
+        let minDate = selectedMeal.timestamp;
+        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
@@ -183,8 +178,8 @@ export default function (props: GlucoseChartProps) {
         if (filteredGlucose.length === 0) return false;
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.observationDate;
-        let maxDate = add(selectedMeal.observationDate, { hours: 2 });
+        let minDate = selectedMeal.timestamp;
+        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
@@ -266,7 +261,8 @@ export default function (props: GlucoseChartProps) {
             }
         </Card>
         {props.showMeals && meals &&
-            <div className="meals-list">
+            <Card className="mdhui-glucose-chart-meal-log">
+                <Title order={3}>Meal Log</Title>
                 {meals.map((meal, index) => {
                     return <SingleMeal
                         key={index}
@@ -277,7 +273,7 @@ export default function (props: GlucoseChartProps) {
                         selected={selectedMeal === meal}
                     />;
                 })}
-            </div>
+            </Card>
         }
     </div>;
 }

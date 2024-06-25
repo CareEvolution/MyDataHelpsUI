@@ -34,12 +34,15 @@
     box-sizing: border-box;
 }
 
-.meals-list {
-    padding: 0;
-    min-height: 200px;
-}
-
 .mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
     font-size: 11px;
     fill: var(--mdhui-text-color-1);
+}
+
+.mdhui-glucose-chart-meal-log {
+    padding: 16px 0;
+}
+
+.mdhui-glucose-chart-meal-log .mdhui-title {
+    padding: 0 16px;
 }
