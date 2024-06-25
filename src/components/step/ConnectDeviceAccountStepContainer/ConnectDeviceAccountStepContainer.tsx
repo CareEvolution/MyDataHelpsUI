@@ -9,7 +9,7 @@ export default function () {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
-    const [deviceType, setDeviceType] = useState<deviceType | undefined>(undefined);
+    const [deviceType, setDeviceType] = useState<deviceType>();
     const [loading, setLoading] = useState<boolean>(true);
 
     function onConnect() {
