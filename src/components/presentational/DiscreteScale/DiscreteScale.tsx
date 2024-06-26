@@ -6,8 +6,8 @@ import UnstyledButton from "../UnstyledButton";
 
 export interface DiscreteScaleProps {
     tickCount: number;
-    minLabel: string;
-    maxLabel: string;
+    minLabel?: string;
+    maxLabel?: string;
     value?: number;
     onChange?: (value: number) => void;
     sliderColor?: ColorDefinition;
@@ -20,6 +20,8 @@ export default function (props: DiscreteScaleProps) {
     const values = [...Array(props.tickCount).keys()];
 
     let selectedValue = props.value ?? 0;
+    if (selectedValue < 0) selectedValue = 0;
+    if (selectedValue >= props.tickCount) selectedValue = props.tickCount - 1;
 
     let sliderColor = props.sliderColor ? resolveColor(layoutContext.colorScheme, props.sliderColor) : 'var(--mdhui-color-primary)';
     let sliderStop = `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${selectedValue}) + 8px)`;

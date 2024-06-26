@@ -41,7 +41,11 @@ export const Default = {
         },
         tickCount: {
             name: 'tick count',
-            control: 'number'
+            control: {
+                type: 'number',
+                min: 2,
+                max: 21
+            }
         },
         minLabel: {
             name: 'minimum value label'
