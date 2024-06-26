@@ -35,7 +35,7 @@ export { default as RelativeActivityDayNavigator } from "./RelativeActivityDayNa
 export { default as RelativeActivity } from "./RelativeActivity"
 export { default as RelativeActivityToday } from "./RelativeActivityToday"
 export { default as RestingHeartRateCalendar } from "./RestingHeartRateCalendar"
-export { default as SurveyAnswerChart } from "./SurveyAnswerChart"
+export { default as SurveyAnswerChart, SurveyAnswerChartSeries, SurveyAnswerAreaChartSeries } from "./SurveyAnswerChart"
 export { default as SurveyTaskList } from "./SurveyTaskList"
 export { default as SeverityCalendar } from "./SeverityCalendar"
 export { default as TermInformation, TermInformationReference } from "./TermInformation"
