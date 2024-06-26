@@ -13,12 +13,13 @@ export interface SingleMealProps {
     color: ColorDefinition;
     onClick: () => void;
     selected: boolean;
+    innerRef?: React.Ref<HTMLButtonElement>;
 }
 
 export default function (props: SingleMealProps) {
     const layoutContext = useContext(LayoutContext);
 
-    return <UnstyledButton className="mdhui-meal" onClick={() => props.onClick()}>
+    return <UnstyledButton className="mdhui-meal" onClick={() => props.onClick()} innerRef={props.innerRef}>
         <div className="mdhui-meal-number" style={{ background: resolveColor(layoutContext.colorScheme, props.color) }}>
             {props.number}&nbsp;
             {props.meal.type === 'meal' && <FontAwesomeSvgIcon icon={faBurger} />}
