@@ -1,0 +1,48 @@
+.mdhui-discrete-scale {
+    padding: 16px;
+}
+
+.mdhui-discrete-scale-slider {
+    height: 10px;
+    border: 1px solid var(--mdhui-border-color-2);
+    border-radius: 5px;
+    margin-bottom: 4px;
+}
+
+.mdhui-discrete-scale-ticks {
+    padding: 0 8px;
+    display: grid;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mdhui-discrete-scale-ticks-section {
+    position: relative;
+    height: 5px;
+    border-right: 2px solid black;
+}
+
+.mdhui-discrete-scale-ticks-section:first-child {
+    border-left: 2px solid black;
+}
+
+.mdhui-discrete-scale-ticks-section-button.mdhui-unstyled-button {
+    position: absolute;
+    top: -20px;
+    left: -11px;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+}
+
+.mdhui-discrete-scale-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    font-size: 0.8em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-discrete-scale-labels-max {
+    text-align: right;
+}
