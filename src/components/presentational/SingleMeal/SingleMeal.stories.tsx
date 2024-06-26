@@ -7,7 +7,7 @@ import { noop } from '../../../helpers/functions';
 export default {
     title: 'Presentational/SingleMeal',
     component: SingleMeal,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface SingleMealStoryArgs {
@@ -18,16 +18,11 @@ interface SingleMealStoryArgs {
 const render = (args: SingleMealStoryArgs) => {
     const meal = {
         timestamp: new Date(),
-        nutrients: {
-            'dietaryEnergyConsumed': {'total': 525.498, values: [], 'units': 'kcal'},
-            'dietaryFatTotal': {'total': 20.232770000000002, values: [], 'units': 'g'},
-            'dietaryCarbohydrates': {'total': 64.460090000000008, values: [], 'units': 'g'},
-            'dietaryProtein': {'total': 24.27504, values: [], 'units': 'g'}
-        }
+        type: 'meal'
     } as Meal;
 
     return <Layout colorScheme={args.colorScheme}>
-        <SingleMeal meal={meal} number={2} color='cyan' selected={args.selected} onClick={noop}/>
+        <SingleMeal meal={meal} number={2} color='cyan' selected={args.selected} onClick={noop} />
     </Layout>;
 };
 

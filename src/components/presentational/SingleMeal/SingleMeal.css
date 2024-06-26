@@ -1,4 +1,5 @@
-.mdhui-meal {
+.mdhui-meal.mdhui-unstyled-button {
+    width: 100%;
     display: grid;
     grid-template-columns: max-content auto;
     align-items: center;
@@ -9,10 +10,6 @@
 
 .mdhui-meal:last-child {
     border: none;
-}
-
-.mdhui-meal.mdhui-unstyled-button {
-    width: 100%
 }
 
 .mdhui-meal-number {

@@ -33,5 +33,5 @@ export default function (props: SingleMealProps) {
             </div>
             <div className="mdhui-meal-time">{format(props.meal.timestamp, 'K:mm bb')}</div>
         </div>
-    </UnstyledButton>
+    </UnstyledButton>;
 }
