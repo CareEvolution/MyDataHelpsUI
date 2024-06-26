@@ -39,6 +39,11 @@
     fill: var(--mdhui-text-color-1);
 }
 
+.mdhui-glucose-chart-stress-label {
+    margin: 0 16px;
+    font-size: 0.75em;
+}
+
 .mdhui-glucose-chart-meal-log {
     padding: 16px 0;
 }

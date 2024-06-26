@@ -8,10 +8,10 @@ export interface DiscreteScaleProps {
     tickCount: number;
     minLabel: string;
     maxLabel: string;
-    value: number;
+    value?: number;
     onChange?: (value: number) => void;
     sliderColor?: ColorDefinition;
-    innerRef: React.RefObject<HTMLDivElement>;
+    innerRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default function (props: DiscreteScaleProps) {
@@ -19,8 +19,10 @@ export default function (props: DiscreteScaleProps) {
 
     const values = [...Array(props.tickCount).keys()];
 
+    let selectedValue = props.value ?? 0;
+
     let sliderColor = props.sliderColor ? resolveColor(layoutContext.colorScheme, props.sliderColor) : 'var(--mdhui-color-primary)';
-    let sliderStop = `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${props.value}) + 8px)`;
+    let sliderStop = `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${selectedValue}) + 8px)`;
     let sliderStyle = {
         background: `linear-gradient(to right, ${sliderColor} 0%, ${sliderColor} ${sliderStop}, var(--mdhui-background-color-2) ${sliderStop}, var(--mdhui-background-color-2) 100%)`
     } as CSSProperties;
@@ -48,7 +50,7 @@ export default function (props: DiscreteScaleProps) {
                         className="mdhui-discrete-scale-ticks-section-button"
                         onClick={() => onClick(value)}
                         style={{
-                            background: value === props.value ? sliderColor : 'transparent'
+                            background: value === selectedValue ? sliderColor : 'transparent'
                         }}
                     >&nbsp;</UnstyledButton>
                     {index === props.tickCount - 2 &&
@@ -56,7 +58,7 @@ export default function (props: DiscreteScaleProps) {
                             className="mdhui-discrete-scale-ticks-section-button"
                             onClick={() => onClick(value + 1)}
                             style={{
-                                background: value + 1 === props.value ? sliderColor : 'transparent',
+                                background: value + 1 === selectedValue ? sliderColor : 'transparent',
                                 left: `calc(100% - 9px)`
                             }}
                         >&nbsp;</UnstyledButton>

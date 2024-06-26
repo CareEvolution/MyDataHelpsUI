@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, Meal, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { Card, DateRangeContext, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
+import { Card, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
@@ -28,6 +28,7 @@ export default function (props: GlucoseChartProps) {
     const [sleep, setSleep] = useState<Reading[]>();
     const [meals, setMeals] = useState<Meal[]>();
     const [selectedMeal, setSelectedMeal] = useState<Meal>();
+    const [stressLevel, setStressLevel] = useState<number>();
 
     let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
 
@@ -44,6 +45,7 @@ export default function (props: GlucoseChartProps) {
             setSteps(previewData(props.previewState, selectedDate).steps);
             setSleep(previewData(props.previewState, selectedDate).sleep);
             setSelectedMeal(undefined);
+            setStressLevel(2);
             setLoading(false);
             return;
         }
@@ -259,6 +261,15 @@ export default function (props: GlucoseChartProps) {
                     sleep={filteredSleep}
                 />
             }
+            <div className="mdhui-glucose-chart-stress-label">OVERALL STRESS</div>
+            <DiscreteScale
+                tickCount={7}
+                minLabel="No Stress"
+                maxLabel="Extremely Stressed"
+                value={stressLevel}
+                onChange={setStressLevel}
+                sliderColor="#d36540"
+            />
         </Card>
         {props.showMeals && meals && meals.length > 0 &&
             <Card className="mdhui-glucose-chart-meal-log">
