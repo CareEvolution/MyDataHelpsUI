@@ -17,16 +17,17 @@ const render = (args: DiscreteScaleStoryArgs) => {
 
     return <Layout colorScheme={args.colorScheme}>
         <DiscreteScale {...args} value={value} onChange={setValue} />
+        <div style={{ padding: '16px 0', textAlign: 'center' }}>The current value is {value}.</div>
     </Layout>;
 };
 
 export const Default = {
     args: {
         colorScheme: 'auto',
-        sliderColor: '#d36540',
-        tickCount: 7,
-        minLabel: 'No Stress',
-        maxLabel: 'Extremely Stressed'
+        sliderColor: '#51d521',
+        tickCount: 11,
+        minLabel: 'Min Label',
+        maxLabel: 'Max Label'
     },
     argTypes: {
         colorScheme: {
