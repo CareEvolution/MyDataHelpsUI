@@ -52,18 +52,32 @@ export default function (props: DiscreteScaleProps) {
                         className="mdhui-discrete-scale-ticks-section-button"
                         onClick={() => onClick(value)}
                         style={{
-                            background: value === selectedValue ? sliderColor : 'transparent'
+                            left: index === 0 ? '-11px' : undefined,
+                            width: index === 0 ? '20px' : undefined
                         }}
-                    >&nbsp;</UnstyledButton>
+                    >
+                        <div
+                            className="mdhui-discrete-scale-ticks-section-marker"
+                            style={{
+                                background: value === selectedValue ? sliderColor : 'transparent',
+                            }}
+                        >&nbsp;</div>
+                    </UnstyledButton>
                     {index === props.tickCount - 2 &&
                         <UnstyledButton
                             className="mdhui-discrete-scale-ticks-section-button"
                             onClick={() => onClick(value + 1)}
                             style={{
-                                background: value + 1 === selectedValue ? sliderColor : 'transparent',
-                                left: `calc(100% - 9px)`
+                                left: '10px'
                             }}
-                        >&nbsp;</UnstyledButton>
+                        >
+                            <div
+                                className="mdhui-discrete-scale-ticks-section-marker"
+                                style={{
+                                    background: value + 1 === selectedValue ? sliderColor : 'transparent',
+                                }}
+                            >&nbsp;</div>
+                        </UnstyledButton>
                     }
                 </div>;
             })}
