@@ -51,10 +51,6 @@ export default function (props: DiscreteScaleProps) {
                     <UnstyledButton
                         className="mdhui-discrete-scale-ticks-section-button"
                         onClick={() => onClick(value)}
-                        style={{
-                            left: index === 0 ? '-11px' : undefined,
-                            width: index === 0 ? '20px' : undefined
-                        }}
                     >
                         <div
                             className="mdhui-discrete-scale-ticks-section-marker"
@@ -68,7 +64,7 @@ export default function (props: DiscreteScaleProps) {
                             className="mdhui-discrete-scale-ticks-section-button"
                             onClick={() => onClick(value + 1)}
                             style={{
-                                left: '10px'
+                                left: 'calc(50% + 2px)'
                             }}
                         >
                             <div
