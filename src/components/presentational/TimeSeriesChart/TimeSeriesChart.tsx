@@ -196,7 +196,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             var nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
             if (nextExpectedPoint < nextPoint) {
                 var nullValue = {
-                    timestamp: props.data[i].timestamp + 1
+                    timestamp: nextExpectedPoint.getTime()
                 }
                 dataToDisplay.push(nullValue);
             }
