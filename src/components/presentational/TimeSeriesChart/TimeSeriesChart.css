@@ -71,7 +71,3 @@
 .mdhui-time-series-chart .today {
     font-weight: bold;
 }
-
-.mdhui-time-series-chart .recharts-surface {
-    overflow: visible;
-}
