@@ -1,6 +1,6 @@
-import { add, addMinutes, startOfDay } from "date-fns";
+import { addMinutes, startOfDay } from "date-fns";
 import { DeviceDataV2Aggregate } from "@careevolution/mydatahelps-js";
-export type IntradayHeartRateData = { [key: string]: DeviceDataV2Aggregate };
+import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-avg-intraday-heart-rate-providers'
 const today = startOfDay(new Date());
 
 function getRandomInt(min : number, max : number) {
@@ -12,7 +12,7 @@ function getRandomInt(min : number, max : number) {
 function loadForTest(data: DeviceDataV2Aggregate[]) {
     var testData : IntradayHeartRateData = {};
     data.forEach((data) => {
-        testData[(new Date(data.date)).getTime()] = data;
+        testData[(new Date(data.date)).getTime()] = data.statistics.avg;
     });
     return testData;
 }

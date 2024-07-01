@@ -172,7 +172,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     color: barOptions?.barColor
                 }],
                 {
-                    thresholds: barOptions?.thresholds?.map((t) => { return { value: t.value, overThresholdColor: t.overThresholdColor, referenceLineColor: t.referenceLineColor }; })
+                    thresholds: barOptions?.thresholds?.map((t) => { return { value: t.value, overThresholdColor: t.overThresholdBarColor, referenceLineColor: t.referenceLineColor }; })
                 }
             ];
         }

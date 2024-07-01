@@ -2,21 +2,19 @@ import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { add, eachMinuteOfInterval, format, startOfDay } from 'date-fns'
 import { LayoutContext, LoadingIndicator } from '../../presentational'
-import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRateChart.data"
+import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRateChart.previewdata"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
-import { ChartThreshold, IntradayHeartRateAggregationOption, MultiSeriesLineChartOptions, combinedIntradayHeartRateDataProvider } from '../../..'
-import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers'
+import { ChartThreshold, MultiSeriesLineChartOptions, combinedAvgIntradayHeartRateDataProvider } from '../../..'
+import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-avg-intraday-heart-rate-providers'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart'
-import { isNumber } from 'lodash'
 
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
 
 export interface IntradayHeartRateChartProps {
     previewState?: IntradayHeartRatePreviewState,
     dataSources: DeviceDataV2Namespace[],
-    aggregationOption: IntradayHeartRateAggregationOption,
     aggregationIntervalMinutes: number,
     lineColor?: ColorDefinition,
     thresholds?: ChartThreshold[],
@@ -24,21 +22,18 @@ export interface IntradayHeartRateChartProps {
 }
 
 export interface IntradayDataPoint {
-    timestamp: number 
+    timestamp: number
     date: Date
     value?: number
-    rawValue?: number
 }
 
-export default function IntradayHeartRateChart(props: IntradayHeartRateChartProps) {
+export default function (props: IntradayHeartRateChartProps) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<IntradayDataPoint[] | undefined>(undefined);
     const [options, setOptions] = useState<MultiSeriesLineChartOptions | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
-    const intervalStart = startOfDay(dateRangeContext?.intervalStart ?? new Date());
+    const intervalStart = dateRangeContext?.intervalStart ?? startOfDay(new Date());
     const intervalEnd = startOfDay(add(intervalStart, { days: 1 }));
-    let layoutContext = useContext(LayoutContext);
-    const lineColor = resolveColor(layoutContext.colorScheme, props.lineColor) || '#bbb';
 
     function initialize() {
         if (props.previewState) {
@@ -58,11 +53,10 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
 
             transformToChartData(data);
         } else {
-            combinedIntradayHeartRateDataProvider(
+            combinedAvgIntradayHeartRateDataProvider(
                 props.dataSources,
                 intervalStart,
                 intervalEnd,
-                props.aggregationOption,
                 props.aggregationIntervalMinutes
             ).then((data: IntradayHeartRateData) => {
                 transformToChartData(data);
@@ -77,9 +71,8 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
         const start = intervalStart;
         const end = intervalEnd;
         const interval: Interval = { start, end };
-        const options: any = { step: 5 };
-        var expectedIntervals = eachMinuteOfInterval(interval, options);
-        var chartData: any[] = expectedIntervals.map((date) => transformToDataPoint(date, data));
+        var expectedIntervals = eachMinuteOfInterval(interval, { step: 5 });
+        var chartData: IntradayDataPoint[] = expectedIntervals.map(date => transformToDataPoint(date, data));
 
         var yDomain: number[] = [];
         Object.values(chartData).forEach(dataPoint => {
@@ -95,11 +88,10 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
     }
 
     function transformToDataPoint(date: Date, data: IntradayHeartRateData) {
-        var dayKey = date.getTime();
-        var intradayDataPoint: IntradayDataPoint = { timestamp: dayKey, date: date };
+        const dayKey = date.getTime();
+        let intradayDataPoint: IntradayDataPoint = { timestamp: dayKey, date: date };
         if (data[dayKey]) {
-            intradayDataPoint.value = (data[dayKey]).statistics[`${props.aggregationOption}`];
-            intradayDataPoint.rawValue = intradayDataPoint.value;
+            intradayDataPoint.value = data[dayKey];
         }
 
         return intradayDataPoint;
@@ -120,13 +112,13 @@ export default function IntradayHeartRateChart(props: IntradayHeartRateChartProp
     useInitializeView(initialize, [], [props.previewState, props.dataSources, dateRangeContext?.intervalStart]);
 
     return <div ref={props.innerRef}>
-        {loading && <LoadingIndicator></LoadingIndicator>}
-        {!loading &&
+        {loading && <LoadingIndicator />}
+        {!loading && data &&
             <>
-                {data && <TimeSeriesChart intervalType='Day' intervalStart={intervalStart} data={data}
-                    chartHasData={(!loading && isNumber(options?.domainMax) && options?.domainMax > 0)} 
-                    chartType={"Line"} series={[{ dataKey: 'value', color: lineColor }]} tooltip={IntradayHrToolTip}
-                    options={options}  ></TimeSeriesChart>}
+                <TimeSeriesChart intervalType='Day' intervalStart={intervalStart} data={data}
+                    chartHasData={(!loading && (options?.domainMax ?? 0) > 0)}
+                    chartType="Line" series={[{ dataKey: 'value', color: props.lineColor }]} tooltip={IntradayHrToolTip}
+                    options={options} />
             </>
         }
     </div>

@@ -29,7 +29,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
     let gradientKey = `gradient_${Math.random()}_`;
-    let lineKeyPrefix = props.chartType === "Line" && props.options && (props.options as MultiSeriesLineChartOptions)?.thresholds ? gradientKey : "line_";
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
@@ -84,7 +83,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
         else if (intervalType === "6Month") {
-            const ticks : number[] = [];
+            const ticks: number[] = [];
             let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
@@ -149,8 +148,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
-        let nDomainMin: number | undefined = undefined;
-        let nDomainMax: number | undefined = undefined;
         if (props.options) {
             if (props.chartType === "Line") {
                 let domainMin = (props.options as MultiSeriesLineChartOptions).domainMin;
@@ -159,36 +156,10 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 } else if (domainMin !== undefined) {
                     domain = [domainMin, "auto"];
                 }
-
-                if (isNumber(domainMin)) nDomainMin = domainMin;
-                let domainMax = (props.options as MultiSeriesLineChartOptions).domainMax ?? 'auto';
-                if (isNumber(domainMax)) nDomainMax = domainMax;
             }
         }
 
         return <>
-            <defs>
-                {props.chartType === 'Line' &&
-                    keys.map((dk, i) => {
-                        let lineColor = colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary");
-                        if (props.options && (props.options as MultiSeriesLineChartOptions)?.thresholds && 
-                                nDomainMin !== undefined && nDomainMax !== undefined) {
-                            return (
-                                <linearGradient id={`${lineKeyPrefix}${i}`} key={`${lineKeyPrefix}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
-                                    {createStopsFromThresholds(lineColor, nDomainMin, nDomainMax, (props.options as MultiSeriesLineChartOptions).thresholds)}
-                                </linearGradient>
-                            )
-                        } else {
-                            return (
-                                <linearGradient id={`line_${i}`} key={`line_${i}`} x1="0" y1="0" x2="0" y2="100%">
-                                    <stop offset="0%" stopColor={lineColor} />
-                                    <stop offset="100%" stopColor={lineColor} />
-                                </linearGradient>
-                            )
-                        }
-                    })}
-            </defs>
-
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
@@ -210,6 +181,37 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 interval={0}
             />
         </>
+    }
+
+    function createLineChartDefs() {
+        let nDomainMin: number | undefined = undefined;
+        let nDomainMax: number | undefined = undefined;
+        if (props.options) {
+            const opts = (props.options as MultiSeriesLineChartOptions);
+            if (isNumber(opts.domainMin)) nDomainMin = opts.domainMin;
+            nDomainMax = opts.domainMax;
+        }
+
+        const defs = keys.map((dk, i) => {
+            let lineColor = colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary");
+            if (props.options && (props.options as MultiSeriesLineChartOptions)?.thresholds &&
+                nDomainMin !== undefined && nDomainMax !== undefined) {
+                return (
+                    <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
+                        {createStopsFromThresholds(lineColor, nDomainMin, nDomainMax, (props.options as MultiSeriesLineChartOptions).thresholds)}
+                    </linearGradient>
+                )
+            } else {
+                return (
+                    <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="100%">
+                        <stop offset="0%" stopColor={lineColor} />
+                        <stop offset="100%" stopColor={lineColor} />
+                    </linearGradient>
+                )
+            }
+        });
+
+        return <defs>{defs}</defs>;
     }
 
     function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string) {
@@ -284,15 +286,16 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart" margin={{ left: 5, top: 5, bottom: 5, right: 40 }}>
+                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
                         {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                             <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
+                        {createLineChartDefs()}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                             <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2}
-                                key={`${lineKeyPrefix}${i}`} type="monotone" dataKey={dk} dot={(props.options as MultiSeriesLineChartOptions)?.showDots ?? false}
-                                stroke={`url(#${lineKeyPrefix}${i})`} />
+                                key={`${gradientKey}${i}`} type="monotone" dataKey={dk} dot={(props.options as MultiSeriesLineChartOptions)?.showDots ?? false}
+                                stroke={`url(#${gradientKey}${i})`} />
                         )}
                     </LineChart>
                 </ResponsiveContainer>

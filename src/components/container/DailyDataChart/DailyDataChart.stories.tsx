@@ -1,5 +1,5 @@
 import React from "react";
-import { DailyDataQueryResult, DailyDataType, getDayKey, queryPreviewDailyData } from "../../../helpers";
+import { DailyDataQueryResult, DailyDataType, getDayKey } from "../../../helpers";
 import { Card, Layout } from "../../presentational";
 import DailyDataChart, { DailyDataChartProps } from "./DailyDataChart";
 import { add } from "date-fns";
@@ -76,12 +76,12 @@ export const stepsBarWithThresholdsChart = {
                 {
                     value: 5000,
                     referenceLineColor: "red",
-                    overThresholdColor: "green",
+                    overThresholdBarColor: "green",
                 },
                 {
                     value: 7000,
                     referenceLineColor: "blue",
-                    overThresholdColor: "red",
+                    overThresholdBarColor: "red",
                 }
             ],
             barColor: "#bbb"
