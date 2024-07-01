@@ -12,3 +12,4 @@ export * from './relative-activity';
 export { simpleAvailabilityCheck } from './daily-data-types/availability-check';
 export { default as dailyDataTypeDefinitions } from './daily-data-types/all';
 export * from './chartOptions';
+export * from './heart-rate-data-providers';

@@ -6,10 +6,10 @@ import "./TimeSeriesChart.css"
 import { AxisDomain } from 'recharts/types/util/types'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
-import { ceil } from 'lodash'
+import { ceil, isNumber } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
-import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
+import { AreaChartSeries, ChartSeries, ChartThreshold, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
 export interface TimeSeriesChartProps {
     title?: string
@@ -28,6 +28,7 @@ export interface TimeSeriesChartProps {
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
+    let gradientKey = `gradient_${Math.random()}_`;
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
@@ -82,7 +83,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
         else if (intervalType === "6Month") {
-            const ticks = [];
+            const ticks: number[] = [];
             let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
@@ -100,7 +101,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
-            //ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
         }
@@ -117,8 +117,35 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         }
     }
 
-    //ensures that gradients are unique for each chart
-    let gradientKey = `gradient_${Math.random()}`;
+    function getPercent(numerator: number, domainMin: number, domainMax: number): number {
+        return (numerator - domainMin) / (domainMax - domainMin) * 100;
+    }
+
+    function createStopsFromThresholds(defaultLineColor: string, domainMin: number, domainMax: number, chartThresholds?: ChartThreshold[]) {
+        let stops: any = [];
+        var lineColor: string = defaultLineColor;
+        var thresholds = chartThresholds ?? [];
+
+        thresholds.sort((a, b) => a.value - b.value);
+
+        if (thresholds.length && domainMin >= thresholds[0].value) {
+            lineColor = resolveColor(layoutContext.colorScheme, thresholds[0].overThresholdColor) || defaultLineColor;
+        }
+        stops.push(<stop offset="0%" stopColor={lineColor} />);
+
+        for (var i = 0; i < thresholds.length; i++) {
+            if (domainMax >= thresholds[i].value) {
+                var offSet = getPercent(thresholds[i].value, domainMin, domainMax);
+                stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
+                lineColor = resolveColor(layoutContext.colorScheme, thresholds[i].overThresholdColor) || defaultLineColor;
+                stops.push(<stop offset={`${offSet}%`} stopColor={lineColor} />);
+            }
+        }
+        stops.push(<stop offset="100%" stopColor={lineColor} />);
+
+        return stops;
+    }
+
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
@@ -154,6 +181,37 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 interval={0}
             />
         </>
+    }
+
+    function createLineChartDefs() {
+        let nDomainMin: number | undefined = undefined;
+        let nDomainMax: number | undefined = undefined;
+        if (props.options) {
+            const opts = (props.options as MultiSeriesLineChartOptions);
+            if (isNumber(opts.domainMin)) nDomainMin = opts.domainMin;
+            nDomainMax = opts.domainMax;
+        }
+
+        const defs = keys.map((dk, i) => {
+            let lineColor = colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary");
+            if (props.options && (props.options as MultiSeriesLineChartOptions)?.thresholds &&
+                nDomainMin !== undefined && nDomainMax !== undefined) {
+                return (
+                    <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
+                        {createStopsFromThresholds(lineColor, nDomainMin, nDomainMax, (props.options as MultiSeriesLineChartOptions).thresholds)}
+                    </linearGradient>
+                )
+            } else {
+                return (
+                    <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="100%">
+                        <stop offset="0%" stopColor={lineColor} />
+                        <stop offset="100%" stopColor={lineColor} />
+                    </linearGradient>
+                )
+            }
+        });
+
+        return <defs>{defs}</defs>;
     }
 
     function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string) {
@@ -229,11 +287,16 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                        {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
+                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                        )}
+                        {createLineChartDefs()}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
-                        )
-                        }
+                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2}
+                                key={`${gradientKey}${i}`} type="monotone" dataKey={dk} dot={(props.options as MultiSeriesLineChartOptions)?.showDots ?? false}
+                                stroke={`url(#${gradientKey}${i})`} />
+                        )}
                     </LineChart>
                 </ResponsiveContainer>
             }
