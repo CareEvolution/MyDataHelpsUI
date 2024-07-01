@@ -100,7 +100,6 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let currentDate = intervalStart;
     if (currentData) {
         while (currentDate < intervalEnd) {
-            //const currentDate = parse(dateStr, 'yyyy-MM-dd', new Date());
             let dayKey = getDayKey(currentDate);
             let dataDay: any = {
                 timestamp: currentDate.getTime()
