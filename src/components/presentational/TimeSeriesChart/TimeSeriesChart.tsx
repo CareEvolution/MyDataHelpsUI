@@ -21,7 +21,8 @@ export interface TimeSeriesChartProps {
     chartHasData: boolean,
     tooltip: ({ active, payload, label }: any) => React.JSX.Element | null,
     chartType: "Line" | "Bar" | "Area"
-    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions
+    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions,
+    syncId?: string,
     innerRef?: React.Ref<HTMLDivElement>
 }
 
@@ -220,7 +221,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         <LoadingIndicator />
                     }
                     <ResponsiveContainer width="100%" height={150}>
-                        <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                        <LineChart width={400} height={400} data={dataToDisplay} syncId={props.syncId}>
                             {standardChartComponents()}
                         </LineChart>
                     </ResponsiveContainer>
@@ -228,7 +229,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <LineChart width={400} height={400} data={dataToDisplay} syncId={props.syncId}>
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                             <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
@@ -239,7 +240,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Bar" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <BarChart width={400} height={400} data={dataToDisplay} syncId={props.syncId}>
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -271,7 +272,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
             {props.chartHasData && props.chartType === "Area" &&
                 <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
+                    <AreaChart width={400} height={400} data={dataToDisplay} syncId={props.syncId}>
                         <defs>
                             {keys.map((dk, i) =>
                                 <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">

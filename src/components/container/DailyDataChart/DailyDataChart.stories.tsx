@@ -1,6 +1,6 @@
 import React from "react";
 import { DailyDataQueryResult, DailyDataType, getDayKey, queryPreviewDailyData } from "../../../helpers";
-import { Card, Layout } from "../../presentational";
+import { Card, DateRangeCoordinator, Layout } from "../../presentational";
 import DailyDataChart, { DailyDataChartProps } from "./DailyDataChart";
 import { add } from "date-fns";
 
@@ -51,6 +51,40 @@ export const stepsWithGapLineChart = {
     render: render
 };
 
+export const stepsWithGapLineChartTooltipSync = {
+    args: {
+        title: "Steps",
+        options: {
+            domainMin: 0,
+            lineColor: "red"
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewDataProvider: (start: Date, end: Date) => {
+            let data: DailyDataQueryResult = {};
+            let currentDate = new Date(start);
+            while (currentDate < end) {
+                if(currentDate.getDate() % 3 !== 0) {
+                    let dayKey = getDayKey(currentDate);
+                    data[dayKey] = Math.random() * 10000 + 3000;
+                }
+                currentDate = add(currentDate, { days: 1 });
+            }
+            return Promise.resolve(data);
+        }
+    },
+    render: (args: DailyDataChartProps) => <Layout colorScheme="auto">
+        <Card>
+            <DateRangeCoordinator intervalType="Week">
+                <DailyDataChart {...args} />
+                <DailyDataChart {...{ ...args, title: "Sleep", previewDataProvider: undefined, previewState: 'default' }} />
+            </DateRangeCoordinator>
+        </Card>
+    </Layout>
+};
 export const stepsBarChart = {
     args: {
         title: "Steps",
@@ -111,6 +145,29 @@ export const stepsLiveBarChart = {
     },
     render: render
 };
+
+export const stepsLiveBarChartTooltipSync = {
+    args: {
+        title: "Steps",
+        options: {
+
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Bar"
+    },
+    render: (args: DailyDataChartProps) => <Layout colorScheme="auto">
+        <Card>
+            <DateRangeCoordinator intervalType="Month">
+                <DailyDataChart {...args} />
+                <DailyDataChart {...{ ...args, title: "Sleep", dailyDataType: DailyDataType.SleepMinutes, previewDataProvider: undefined }} />
+            </DateRangeCoordinator>
+        </Card>
+    </Layout>
+};
+
 
 export const stepsAreaChart = {
     args: {
