@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, Meal, MealType, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, getSleep, getSteps, Meal, MealType, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { Button, Card, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
@@ -50,11 +50,15 @@ export default function (props: GlucoseChartProps) {
             return;
         }
 
-        Promise.all([getGlucoseReadings(selectedDate), getMeals(selectedDate)]).then(results => {
+        let glucoseReadingLoader = getGlucoseReadings(selectedDate);
+        let mealLoader = getMeals(selectedDate);
+        let stepsLoader = getSteps(selectedDate);
+        let sleepLoader = getSleep(selectedDate);
+        Promise.all([glucoseReadingLoader, mealLoader, stepsLoader, sleepLoader]).then(results => {
             setGlucose(results[0]);
             setMeals(results[1]);
-            setSteps([]); // TODO: Load steps.
-            setSleep([]); // TODO: Load sleep minutes.
+            setSteps(results[2]);
+            setSleep(results[3]);
             setSelectedMeal(undefined);
             setLoading(false);
         });
