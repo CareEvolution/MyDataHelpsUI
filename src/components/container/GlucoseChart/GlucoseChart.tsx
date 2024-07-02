@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, Meal, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, Meal, MealType, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { Card, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
+import { Button, Card, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
 import SingleMeal from '../../presentational/SingleMeal';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faBurger, faCookie, faShoePrints, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -196,6 +196,10 @@ export default function (props: GlucoseChartProps) {
             return { ...r, value: r.value * stepsScale }
         });
 
+    const addMeal = (mealType: MealType) => {
+        // TODO: Add meal logic.
+    };
+
     return <div className="mdhui-glucose-chart">
         <Card>
             <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
@@ -270,6 +274,11 @@ export default function (props: GlucoseChartProps) {
                 onChange={setStressLevel}
                 sliderColor="#d36540"
             />
+            <div className="mdhui-glucose-chart-meal-buttons">
+                <Button onClick={() => addMeal('meal')} variant="light"><FontAwesomeSvgIcon icon={faBurger} /> Meal</Button>
+                <Button onClick={() => addMeal('drink')} variant="light"><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
+                <Button onClick={() => addMeal('snack')} variant="light"><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
+            </div>
         </Card>
         {props.showMeals && meals && meals.length > 0 &&
             <Card className="mdhui-glucose-chart-meal-log">

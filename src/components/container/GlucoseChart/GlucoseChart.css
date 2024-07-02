@@ -41,7 +41,15 @@
 
 .mdhui-glucose-chart-stress-label {
     margin: 0 16px;
-    font-size: 0.75em;
+    font-size: 0.65em;
+}
+
+.mdhui-glucose-chart-meal-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+    padding: 0 16px 16px;
 }
 
 .mdhui-glucose-chart-meal-log {
