@@ -147,15 +147,15 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let dataToDisplay: Record<string, any>[] | undefined;
     if (props.data && props.expectedDataInterval) {
         dataToDisplay = [];
-        for (var i = 0; i < props.data.length - 1; ++i) {
+        for (let i = 0; i < props.data.length - 1; ++i) {
             dataToDisplay.push(props.data[i]);
 
             var currentPoint = new Date(props.data[i].timestamp);
             var nextPoint = new Date(props.data[i + 1].timestamp);
             var nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
             if (nextExpectedPoint < nextPoint) {
-                var nullValue = {
-                    timestamp: props.data[i].timestamp + 1
+                let nullValue = {
+                    timestamp: nextExpectedPoint.getTime()
                 }
                 dataToDisplay.push(nullValue);
             }

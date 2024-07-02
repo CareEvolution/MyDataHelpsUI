@@ -66,7 +66,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     useEffect(() => {
         function checkAvailability() {
-            if (props.previewDataProvider) {
+            if (props.previewDataProvider || props.previewState === "default") {
                 setHasAnyData(true);
                 return;
             }

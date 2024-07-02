@@ -1,1 +1,1 @@
-export { default } from "./SurveyAnswerChart";
+export { default, SurveyAnswerChartSeries, SurveyAnswerAreaChartSeries } from "./SurveyAnswerChart";
