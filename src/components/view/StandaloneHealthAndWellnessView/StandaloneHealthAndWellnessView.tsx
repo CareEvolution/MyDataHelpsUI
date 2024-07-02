@@ -180,7 +180,7 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         }
 
         if (view.key == "ReportDetail") {
-            return <ReportView previewState={"html"} reportId={view.properties?.reportId} />
+            return <ReportView previewState={props.previewState ? "html" : undefined} reportId={view.properties?.reportId} />
         }
 
         if (view.key == "ExternalAccounts") {
