@@ -1,7 +1,7 @@
 import { Reading } from './types';
 import { add, isSameDay, startOfDay } from 'date-fns';
 
-export function generateGlucose(date: Date, source?: string): Reading[] {
+export function generateGlucose(date: Date): Reading[] {
     let readings: Reading[] = [];
 
     let timestamp = date;
@@ -14,9 +14,9 @@ export function generateGlucose(date: Date, source?: string): Reading[] {
 
         readings.push({
             timestamp: timestamp,
-            value: newValue,
-            source: source
+            value: newValue
         });
+
         previousValue = newValue;
 
         timestamp = add(timestamp, { minutes: 15 });
@@ -25,10 +25,10 @@ export function generateGlucose(date: Date, source?: string): Reading[] {
     return readings;
 }
 
-export function generateSteps(date: Date, source?: string) {
+export function generateSteps(date: Date) {
     let steps: Reading[] = [];
 
-    let timestamp = startOfDay(date);
+    let timestamp = add(startOfDay(date), { minutes: 15 });
     while (isSameDay(timestamp, date)) {
         let newValue = Math.round((Math.random() * 200) + 20);
         if (timestamp.getHours() < 7 || timestamp.getHours() > 22) {
@@ -37,8 +37,7 @@ export function generateSteps(date: Date, source?: string) {
 
         steps.push({
             timestamp: timestamp,
-            value: newValue,
-            source: source
+            value: newValue
         });
 
         timestamp = add(timestamp, { minutes: 30 });
@@ -47,7 +46,7 @@ export function generateSteps(date: Date, source?: string) {
     return steps;
 }
 
-export function generateSleep(date: Date, source?: string) {
+export function generateSleep(date: Date) {
     let sleep: Reading[] = [];
 
     let timestamp = startOfDay(date);
@@ -59,8 +58,7 @@ export function generateSleep(date: Date, source?: string) {
 
         sleep.push({
             timestamp: timestamp,
-            value: newValue,
-            source: source
+            value: newValue
         });
 
         timestamp = add(timestamp, { minutes: 30 });

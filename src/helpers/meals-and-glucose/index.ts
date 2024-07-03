@@ -4,3 +4,4 @@ export { getSteps } from './steps';
 export { getSleep } from './sleep';
 export { Reading, Meal, MealType } from './types';
 export { generateGlucose, generateSteps, generateSleep } from './sample-data';
+export { readingTimestampSort } from './util';

@@ -1,6 +1,7 @@
 import React from 'react';
 import GlucoseChart, { GlucoseChartProps } from './GlucoseChart';
 import { DateRangeCoordinator, Layout } from '../../presentational';
+import { GlucoseChartPreviewState } from "./GlucoseChart.previewData";
 
 export default {
     title: 'Container/GlucoseChart',
@@ -10,12 +11,13 @@ export default {
 
 interface GlucoseChartStoryArgs extends GlucoseChartProps {
     colorScheme: 'auto' | 'light' | 'dark';
+    state: GlucoseChartPreviewState | 'live';
 }
 
 const render = (args: GlucoseChartStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <DateRangeCoordinator intervalType='Day' variant='rounded'>
-            <GlucoseChart {...args} />
+            <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
         </DateRangeCoordinator>
     </Layout>;
 };
@@ -23,7 +25,7 @@ const render = (args: GlucoseChartStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        previewState: 'with data and meals',
+        state: 'with data and meals',
         showStats: true,
         showMeals: true
     },
@@ -33,10 +35,10 @@ export const Default = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
-        previewState: {
+        state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data', 'with data and meals']
+            options: ['loading', 'no data', 'with data', 'with data and meals', 'live']
         },
         showStats: {
             name: 'show stats'

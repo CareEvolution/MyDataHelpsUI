@@ -1,34 +1,70 @@
 import MyDataHelps, { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
-import { compareAsc, endOfDay, parseISO, startOfDay } from 'date-fns';
+import { endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { Reading } from './types';
+import { readingTimestampSort } from './util';
 
-export async function getGlucoseReadings(date: Date) {
-    let deviceInfo = await MyDataHelps.getDeviceInfo();
-
-    let queryParameters: DeviceDataPointQuery = {
-        namespace: deviceInfo.platform === 'iOS' ? 'AppleHealth' : 'GoogleFit',
+export async function appleHealthBloodGlucoseDataProvider(date: Date): Promise<Reading[]> {
+    const params: DeviceDataPointQuery = {
+        namespace: 'AppleHealth',
         type: 'BloodGlucose',
         observedAfter: startOfDay(date).toISOString(),
-        observedBefore: endOfDay(date).toISOString()
+        observedBefore: endOfDay(date).toISOString(),
     };
-    let dataPoints = await queryAllDeviceData(queryParameters);
 
-    return dataPoints.map(dataPoint => {
-        let reading: Reading = {
-            timestamp: parseISO(dataPoint.observationDate!),
-            value: parseFloat(dataPoint.value)
-        };
+    return queryAllDeviceData(params).then(dataPoints => {
+        return dataPoints.map(dataPoint => {
+            return {
+                timestamp: parseISO(dataPoint.observationDate!),
+                value: parseInt(dataPoint.value)
+            };
+        }).sort(readingTimestampSort);
+    });
+}
 
-        let properties = dataPoint.source?.properties ?? {};
-        if ('SourceIdentifier' in properties) {
-            reading.source = properties['SourceIdentifier'];
-        } else if ('OriginalDataSourceAppPackageName' in properties) {
-            reading.source = properties['OriginalDataSourceAppPackageName'];
+export async function googleFitBloodGlucoseDataProvider(date: Date): Promise<Reading[]> {
+    const params: DeviceDataPointQuery = {
+        namespace: 'GoogleFit',
+        type: 'BloodGlucose',
+        observedAfter: startOfDay(date).toISOString(),
+        observedBefore: endOfDay(date).toISOString(),
+    };
+
+    return queryAllDeviceData(params).then(dataPoints => {
+        return dataPoints.map(dataPoint => {
+            return {
+                timestamp: parseISO(dataPoint.observationDate!),
+                value: parseInt(dataPoint.value)
+            };
+        }).sort(readingTimestampSort);
+    });
+}
+
+export async function getGlucoseReadings(date: Date): Promise<Reading[]> {
+    let providers: Promise<Reading[]>[] = [];
+
+    return MyDataHelps.getDataCollectionSettings().then((settings) => {
+        if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "BloodGlucose")) {
+            providers.push(appleHealthBloodGlucoseDataProvider(date));
+        }
+        if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "GoogleFit" && dt.type == "BloodGlucose")) {
+            providers.push(googleFitBloodGlucoseDataProvider(date));
         }
 
-        return reading;
-    }).sort((a, b) => compareAsc(a.timestamp, b.timestamp));
+        if (providers.length === 0) return [];
+
+        return Promise.all(providers).then(results => {
+            let readings: Reading[] = [];
+            results.forEach(result => {
+                result.forEach(reading => {
+                    if (!readings.find(r => r.timestamp === reading.timestamp)) {
+                        readings.push(reading);
+                    }
+                });
+            });
+            return readings;
+        });
+    });
 }
 
 export function computeBestFitGlucoseValue(observationDate: Date, readings: Reading[]) {
