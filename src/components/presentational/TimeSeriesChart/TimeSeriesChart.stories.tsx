@@ -139,7 +139,7 @@ export const lineChart: Story = {
 
 export const lineChartWithGaps: Story = {
     args: {
-        title: "Line Chart",
+        title: "Line Chart with Gaps",
         intervalType: "Week",
         chartType: "Line",
         chartHasData: true,
@@ -156,7 +156,34 @@ export const lineChartWithGaps: Story = {
     ]
 };
 
-export const lineChartIntraday: Story = {
+export const lineChartsWithGapsAndTooltipSync : Story = {
+    args: {
+        title: "Line Charts Tooltip Syncing",
+        intervalType: "Week",
+        chartType: "Line",
+        chartHasData: true,
+        expectedDataInterval: {days: 1},
+        series: [ { dataKey: 'value' }],
+        data: undefined,
+        intervalStart: new Date(),
+        tooltip: tooltip
+    },
+    loaders: [
+        async()=>({
+            randomDataWithGaps: await getRandomDataWithGaps(new Date(), addDays(new Date(), 6)),
+            randomData: await getRandomData(new Date(), addDays(new Date(), 6)),
+        })
+    ],
+    render: (args: TimeSeriesChartProps, { loaded: { randomDataWithGaps, randomData } }) => <Layout colorScheme="auto">
+        <Card>
+            <TimeSeriesChart {...args} data={randomDataWithGaps} syncId="A" />
+            <TimeSeriesChart {...args} data={randomData}  syncId="A"/>
+        </Card>
+    </Layout>
+};
+
+
+export const lineChartIntraday : Story = {
     args: {
         title: "Intraday Chart",
         intervalType: "Day",

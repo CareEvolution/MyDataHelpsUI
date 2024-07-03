@@ -14,17 +14,5 @@ const Template: ComponentStory<typeof ConnectDeviceAccountStepContainer> = (
     args: ConnectDeviceAccountStepContainerProps
 ) => <ConnectDeviceAccountStepContainer {...args}/>;
 
-export const ConnectDeviceAccountStepContainerGarmin = Template.bind({});
-ConnectDeviceAccountStepContainerGarmin.args = {
-    deviceType: "Garmin"
-};
-
-export const ConnectDeviceAccountStepContainerOmron = Template.bind({});
-ConnectDeviceAccountStepContainerOmron.args = {
-    deviceType: "Omron"
-};
-
-export const ConnectDeviceAccountStepContainerFitbit = Template.bind({});
-ConnectDeviceAccountStepContainerFitbit.args = {
-    deviceType: "Fitbit"
-};
+export const ConnectDeviceAccountStepContainerDefault = Template.bind({});
+ConnectDeviceAccountStepContainerDefault.args = {};
