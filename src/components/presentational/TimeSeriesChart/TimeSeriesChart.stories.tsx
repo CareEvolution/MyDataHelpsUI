@@ -5,7 +5,7 @@ import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
 import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
-import { BarChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
+import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -229,10 +229,10 @@ export const multipleLineChart: Story = {
     ]
 };
 
-const thresholds: BarChartThreshold[] = [
-    { value: 80, referenceLineColor: "green", overThresholdBarColor: "green" },
-    { value: 120, referenceLineColor: "orange", overThresholdBarColor: "#ffdd21" },
-    { value: 180, referenceLineColor: "red", overThresholdBarColor: "#ff0000" }
+const thresholds: ChartThreshold[] = [
+    { value: 80, referenceLineColor: "green", overThresholdColor: "green" },
+    { value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
+    { value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 ];
 const multiSeriesLineOptions: MultiSeriesLineChartOptions = { domainMin: 0, domainMax: 200, thresholds: thresholds, connectNulls: false };
 

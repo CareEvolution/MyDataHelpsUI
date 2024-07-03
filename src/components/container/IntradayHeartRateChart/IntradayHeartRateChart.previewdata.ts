@@ -1,6 +1,6 @@
 import { addMinutes, startOfDay } from "date-fns";
 import { DeviceDataV2Aggregate } from "@careevolution/mydatahelps-js";
-import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-avg-intraday-heart-rate-providers'
+import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers'
 const today = startOfDay(new Date());
 
 function getRandomInt(min : number, max : number) {

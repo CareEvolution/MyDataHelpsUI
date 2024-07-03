@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { add, eachMinuteOfInterval, format, startOfDay } from 'date-fns'
-import { LayoutContext, LoadingIndicator } from '../../presentational'
+import { LoadingIndicator } from '../../presentational'
 import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRateChart.previewdata"
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
-import { ChartThreshold, MultiSeriesLineChartOptions, combinedAvgIntradayHeartRateDataProvider } from '../../..'
-import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-avg-intraday-heart-rate-providers'
+import { ChartThreshold, MultiSeriesLineChartOptions, combinedIntradayHeartRateDataProvider } from '../../..'
+import { IntradayHeartRateAggregationOption, IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart'
 
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
@@ -15,6 +15,7 @@ export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresho
 export interface IntradayHeartRateChartProps {
     previewState?: IntradayHeartRatePreviewState,
     dataSources: DeviceDataV2Namespace[],
+    aggregationIntervalOption?: IntradayHeartRateAggregationOption,
     aggregationIntervalMinutes: number,
     lineColor?: ColorDefinition,
     thresholds?: ChartThreshold[],
@@ -36,6 +37,7 @@ export default function (props: IntradayHeartRateChartProps) {
     const intervalEnd = startOfDay(add(intervalStart, { days: 1 }));
 
     function initialize() {
+        setLoading(true);
         if (props.previewState) {
             var data: IntradayHeartRateData = {};
             switch (props.previewState) {
@@ -53,16 +55,14 @@ export default function (props: IntradayHeartRateChartProps) {
 
             transformToChartData(data);
         } else {
-            combinedAvgIntradayHeartRateDataProvider(
+            combinedIntradayHeartRateDataProvider(
                 props.dataSources,
                 intervalStart,
                 intervalEnd,
+                props.aggregationIntervalOption ?? "max",
                 props.aggregationIntervalMinutes
             ).then((data: IntradayHeartRateData) => {
                 transformToChartData(data);
-            }).catch((error: any) => {
-                console.log("error");
-                console.log(error);
             });
         }
     }
@@ -88,10 +88,10 @@ export default function (props: IntradayHeartRateChartProps) {
     }
 
     function transformToDataPoint(date: Date, data: IntradayHeartRateData) {
-        const dayKey = date.getTime();
-        let intradayDataPoint: IntradayDataPoint = { timestamp: dayKey, date: date };
-        if (data[dayKey]) {
-            intradayDataPoint.value = data[dayKey];
+        const dataKey = date.getTime();
+        let intradayDataPoint: IntradayDataPoint = { timestamp: dataKey, date: date };
+        if (data[dataKey]) {
+            intradayDataPoint.value = data[dataKey];
         }
 
         return intradayDataPoint;
