@@ -14,7 +14,10 @@ export function createLineChartDefs(layoutContext: LayoutContext, gradientKey: s
     }
 
     const getPercent = function (numerator: number, domainMin: number, domainMax: number): number {
-        return (numerator - domainMin) / (domainMax - domainMin) * 100;
+        if ((domainMax - domainMin) > 0){
+            return (numerator - domainMin) / (domainMax - domainMin) * 100;
+        }
+        return 0;
     }
 
     const createStopsFromThresholds = function (defaultLineColor: string, domainMin: number, domainMax: number, chartThresholds?: ChartThreshold[]) {

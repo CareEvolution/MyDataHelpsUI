@@ -1,1 +1,1 @@
-export { default as combinedIntradayHeartRateDataProvider } from "./combined-intraday-heart-rate-providers";
+export { default as combinedIntradayHeartRateDataProvider, IntradayHeartRateData, IntradayHeartRateAggregationOption } from "./combined-intraday-heart-rate-providers";
