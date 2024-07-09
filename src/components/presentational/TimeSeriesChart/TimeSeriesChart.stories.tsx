@@ -261,7 +261,7 @@ const thresholds: ChartThreshold[] = [
     { value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
     { value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 ];
-const multiSeriesLineOptions: MultiSeriesLineChartOptions = { domainMin: 0, domainMax: 200, thresholds: thresholds, connectNulls: false };
+const multiSeriesLineOptions: MultiSeriesLineChartOptions = { domainMin: 0, domainMax: 200, thresholds: thresholds, connectNulls: false, hideDots: true };
 
 export const multipleLineChartWithThresholds: Story = {
     args: {

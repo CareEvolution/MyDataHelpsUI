@@ -5,7 +5,7 @@ import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRate
 import { ColorDefinition } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
-import { ChartThreshold, IntradayHeartRateAggregationOption, IntradayHeartRateData, combinedIntradayHeartRateDataProvider } from '../../..'
+import { ChartThreshold, IntradayHeartRateAggregationOption, IntradayHeartRateData, MultiSeriesLineChartOptions, combinedIntradayHeartRateDataProvider } from '../../..'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart'
 
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
@@ -32,7 +32,13 @@ export default function (props: IntradayHeartRateChartProps) {
     const intervalStart = dateRangeContext?.intervalStart ?? startOfDay(new Date());
     const intervalEnd = startOfDay(add(intervalStart, { days: 1 }));
 
+    let iHrData: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
+    let yMaxValue = 0;
+    let yMinValue = 0;
+    let chartHasData: boolean = false;
+
     function initialize() {
+        setData(null);
         if (props.previewState) {
             var useData: IntradayHeartRateData = {};
             switch (props.previewState) {
@@ -61,16 +67,6 @@ export default function (props: IntradayHeartRateChartProps) {
         }
     }
 
-    function transformToDataPoint(date: Date, data: IntradayHeartRateData | null) {
-        const dataKey = date.getTime();
-        let intradayDataPoint: IntradayDataPoint = { timestamp: dataKey, date: date };
-        if (data && data[dataKey]) {
-            intradayDataPoint.value = data[dataKey];
-        }
-
-        return intradayDataPoint;
-    }
-
     const IntradayHrToolTip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
@@ -85,35 +81,35 @@ export default function (props: IntradayHeartRateChartProps) {
 
     useInitializeView(initialize, [], [dateRangeContext?.intervalStart]);
 
-    var iHrData: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
-    const interval: Interval = { start: intervalStart, end: intervalEnd };
-    var expectedIntervals = eachMinuteOfInterval(interval, { step: 5 });
-    let yMaxValue = 0;
-    let yMinValue = 0;
-
     if (data) {
-        iHrData = expectedIntervals.map(date => transformToDataPoint(date, data));
-
         var yDomain: number[] = [];
-        Object.values(iHrData).forEach(dataPoint => {
-            dataPoint.value !== undefined && yDomain.push(dataPoint.value);
-        });
+        var keys = Object.keys(data).map((key) => parseInt(key));
+        keys.sort();
 
-        yMaxValue = Math.max(...yDomain);
-        yMinValue = Math.min(...yDomain);
+        for (var i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            iHrData?.push({ timestamp: key, date: new Date(key), value: data[key] });
+            yDomain.push(data[key]);
+            chartHasData = true;
+        }
+
+        if (yDomain.length > 0) {
+            yMaxValue = Math.max(...yDomain);
+            yMinValue = Math.min(...yDomain);
+        }
     } else {
         iHrData = undefined;
     }
 
-    const options = { domainMin: yMinValue, domainMax: yMaxValue, thresholds: props.thresholds, connectNulls: false };
+    const options: MultiSeriesLineChartOptions = { connectNulls: false, hideDots: true, thresholds: props.thresholds, domainMin: yMinValue, domainMax: yMaxValue };
 
     return <div ref={props.innerRef}>
         <TimeSeriesChart
             intervalType='Day'
             intervalStart={intervalStart}
             data={iHrData}
-            expectedDataInterval={{ days: 1 }}
-            chartHasData={options?.domainMax > 0}
+            expectedDataInterval={{ minutes: 5 }}
+            chartHasData={chartHasData}
             chartType="Line"
             series={[{ dataKey: 'value', color: props.lineColor }]}
             tooltip={IntradayHrToolTip}

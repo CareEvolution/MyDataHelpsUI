@@ -2,7 +2,7 @@ import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespac
 import queryAllDeviceDataV2 from "../query-all-device-data-v2";
 
 export type IntradayHeartRateAggregationOption = "avg" | "min" | "max";
-export type IntradayHeartRateData = { [key: string]: number };
+export type IntradayHeartRateData = { [key: number]: number };
 
 export default async function (dataSources: DeviceDataV2Namespace[], startDate: Date, endDate: Date,
     aggregationOption: IntradayHeartRateAggregationOption, aggregationIntervalMinutes: number): Promise<IntradayHeartRateData> {

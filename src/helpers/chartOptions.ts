@@ -32,7 +32,7 @@ export interface AreaChartSeries extends ChartSeries {
 
 export interface MultiSeriesLineChartOptions {
     connectNulls?: boolean
-    showDots?: boolean
+    hideDots?: boolean
     thresholds?: ChartThreshold[]
     domainMin?: number | "Auto"
     domainMax?: number

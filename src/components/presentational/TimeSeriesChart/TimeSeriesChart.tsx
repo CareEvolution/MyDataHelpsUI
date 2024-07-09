@@ -245,7 +245,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                             <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2}
-                                key={`${gradientKey}${i}`} type="monotone" dataKey={dk} dot={(props.options as MultiSeriesLineChartOptions)?.showDots ?? false}
+                                key={`${gradientKey}${i}`} type="monotone" dataKey={dk} dot={((props.options as MultiSeriesLineChartOptions)?.hideDots ?? false) ? false : true}
                                 stroke={`url(#${gradientKey}${i})`} />
                         )}
                     </LineChart>
