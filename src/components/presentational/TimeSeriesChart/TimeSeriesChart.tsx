@@ -11,11 +11,20 @@ import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
+export interface TimeSeriesDataPoint {
+    timestamp: number; // Unix Timestamp in ms since epoch
+    // Other properties of this object are either either:
+    //  - Named the same as a dataKey property of the configured ChartSeries for the graph
+    //  - Arbitrary properties you want access to in places such as the tooltip callback.
+    [key: string]: any;
+}
+
+
 export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month" | "Day",
     intervalStart: Date,
-    data: Record<string, any>[] | undefined,
+    data: TimeSeriesDataPoint[] | undefined,
     expectedDataInterval?: Duration,
     series: ChartSeries[] | AreaChartSeries[],
     chartHasData: boolean,
