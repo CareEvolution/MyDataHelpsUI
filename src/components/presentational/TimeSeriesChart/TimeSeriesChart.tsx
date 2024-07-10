@@ -11,11 +11,20 @@ import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
+export interface TimeSeriesDataPoint {
+    timestamp: number; // Unix Timestamp in ms since epoch
+    // Other properties of this object are either either:
+    //  - Named the same as a dataKey property of the configured ChartSeries for the graph
+    //  - Arbitrary properties you want access to in places such as the tooltip callback.
+    [key: string]: any;
+}
+
+
 export interface TimeSeriesChartProps {
     title?: string
     intervalType?: "Week" | "Month" | "6Month" | "Day",
     intervalStart: Date,
-    data: Record<string, any>[] | undefined,
+    data: TimeSeriesDataPoint[] | undefined,
     expectedDataInterval?: Duration,
     series: ChartSeries[] | AreaChartSeries[],
     chartHasData: boolean,
@@ -101,7 +110,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
-            //ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
         }
@@ -133,6 +141,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
         }
 
+        const xTicks = getXAxisTicks();
+
         return <>
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
@@ -140,7 +150,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis"
-                domain={['auto', 'auto']}
+                domain={[xTicks![0], xTicks![xTicks!.length - 1]]}
                 padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
                 tick={DayTick}
                 scale={'time'}
@@ -186,7 +196,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.series.map(s => s.dataKey);
 
-    let dataToDisplay: Record<string, any>[] | undefined;
+    let dataToDisplay: TimeSeriesDataPoint[] | undefined;
     if (props.data && props.expectedDataInterval) {
         dataToDisplay = [];
         for (let i = 0; i < props.data.length - 1; ++i) {
