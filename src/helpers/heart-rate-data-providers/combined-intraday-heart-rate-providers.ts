@@ -39,6 +39,8 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
             });
         });
 
-        return data;
+        let entries = Object.entries(data);
+        entries.sort((a, b) => Number(a[0]) - Number(b[0]));
+        return Object.fromEntries(entries);
     });
 }

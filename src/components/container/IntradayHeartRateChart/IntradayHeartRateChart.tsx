@@ -83,15 +83,13 @@ export default function (props: IntradayHeartRateChartProps) {
 
     if (data) {
         var yDomain: number[] = [];
-        var keys = Object.keys(data).map((key) => parseInt(key));
-        keys.sort();
 
-        for (var i = 0; i < keys.length; i++) {
-            let key = keys[i];
+        Object.keys(data).forEach(k => {
+            let key = parseInt(k);
             iHrData?.push({ timestamp: key, date: new Date(key), value: data[key] });
             yDomain.push(data[key]);
             chartHasData = true;
-        }
+        });
 
         if (yDomain.length > 0) {
             yMaxValue = Math.max(...yDomain);
