@@ -196,7 +196,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.series.map(s => s.dataKey);
 
-    let dataToDisplay: Record<string, any>[] | undefined;
+    let dataToDisplay: TimeSeriesDataPoint[] | undefined;
     if (props.data && props.expectedDataInterval) {
         dataToDisplay = [];
         for (let i = 0; i < props.data.length - 1; ++i) {
