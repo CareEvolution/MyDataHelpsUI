@@ -54,6 +54,27 @@ export const ffwelLineChart = {
     render: render
 };
 
+export const ffwelLineChartDRC = {
+    args: {
+        title: "FFWEL Responses Line Chart Date Range Coordinator",
+        options: {
+            domainMin: 0,
+            connectNulls: true
+        },
+        intervalType: "6Month",
+        weekStartsOn: "6DaysAgo",
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
+        chartType: "Line",
+        previewState: "default"
+    },
+    render: (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyAnswerChart {...args} /></DateRangeCoordinator></Card></Layout>
+};
+
+
+
 export const ffwelLineChartWithDataGap = {
     args: {
         title: "FFWEL Responses Line Chart",

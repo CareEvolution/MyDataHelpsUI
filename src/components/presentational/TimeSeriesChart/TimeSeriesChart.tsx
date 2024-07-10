@@ -101,7 +101,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
-            //ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
         }
@@ -133,6 +132,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             }
         }
 
+        const xTicks = getXAxisTicks();
+
         return <>
             {props.chartHasData &&
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
@@ -140,7 +141,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
             <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis"
-                domain={['auto', 'auto']}
+                domain={[xTicks![0], xTicks![xTicks!.length - 1]]}
                 padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
                 tick={DayTick}
                 scale={'time'}

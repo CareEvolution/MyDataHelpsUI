@@ -6,6 +6,7 @@ import { add } from "date-fns";
 
 export default { title: "Container/DailyDataChart", component: DailyDataChart, parameters: { layout: 'fullscreen' } };
 let render = (args: DailyDataChartProps) => <Layout colorScheme="auto"><Card><DailyDataChart {...args} /></Card></Layout>
+let renderDRC = (args: DailyDataChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="Week"><DailyDataChart {...args} /></DateRangeCoordinator></Card></Layout>
 
 export const stepsLineChart = {
     args: {
@@ -22,6 +23,23 @@ export const stepsLineChart = {
     },
     render: render
 };
+
+export const stepsLineChartDRC = {
+    args: {
+        title: "Steps with Date Range Coordinator",
+        options: {
+            domainMin: 0,
+            lineColor: "red"
+        },
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.Steps,
+        chartType: "Line",
+        previewState: "default"
+    },
+    render: renderDRC
+};
+
 
 export const stepsWithGapLineChart = {
     args: {

@@ -102,7 +102,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         while (currentDate < intervalEnd) {
             let dayKey = getDayKey(currentDate);
             let dataDay: any = {
-                timestamp: currentDate.getTime()
+                timestamp: currentDate.setHours(0,0,0,0)
             };
 
             if(currentData[dayKey] !== undefined && currentData[dayKey] !== null){
