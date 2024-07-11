@@ -10,6 +10,7 @@ import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
+import { createLineChartDefs } from '../../../helpers'
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -38,6 +39,16 @@ export interface TimeSeriesChartProps {
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
+
+    //ensures that gradients are unique for each chart
+    let gradientKey = `gradient_${Math.random()}_`;
+
+    let seriesLineColors: string[] = [];
+    if (props.chartType === "Line") {
+        seriesLineColors = props.series.map((s, i) => {
+            return colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary");
+        });
+    }
 
     const DayTick = ({ x, y, stroke, payload }: any) => {
         var value = payload.value;
@@ -92,7 +103,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
         }
         else if (intervalType === "6Month") {
-            const ticks = [];
+            const ticks: number[] = [];
             let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
@@ -126,8 +137,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         }
     }
 
-    //ensures that gradients are unique for each chart
-    let gradientKey = `gradient_${Math.random()}`;
     function standardChartComponents() {
         let domain: AxisDomain | undefined = undefined;
         if (props.options) {
@@ -240,11 +249,16 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {props.chartHasData && props.chartType === "Line" &&
                 <ResponsiveContainer width="100%" height={150}>
                     <LineChart width={400} height={400} data={dataToDisplay} syncId={props.syncId}>
+                        {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
+                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                        )}
+                        {createLineChartDefs(layoutContext, gradientKey, seriesLineColors, props.options)}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
-                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
-                        )
-                        }
+                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2}
+                                key={`${gradientKey}${i}`} type="monotone" dataKey={dk} dot={((props.options as MultiSeriesLineChartOptions)?.hideDots ?? false) ? false : true}
+                                stroke={`url(#${gradientKey}${i})`} />
+                        )}
                     </LineChart>
                 </ResponsiveContainer>
             }
@@ -260,8 +274,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                             )}
                             {(props.options as MultiSeriesBarChartOptions)?.thresholds?.map((threshold, index) =>
                                 <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
-                                    <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
+                                    <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdBarColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
+                                    <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdBarColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
                                 </linearGradient>
                             )}
                         </defs>

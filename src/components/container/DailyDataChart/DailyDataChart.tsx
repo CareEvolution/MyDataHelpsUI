@@ -150,14 +150,13 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
         if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
+            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = { domainMin: lineOptions?.domainMin, showDots: true };
             return [
                 [{
                     dataKey: 'value',
                     color: lineOptions?.lineColor
                 }],
-                {
-                    domainMin: lineOptions?.domainMin
-                }
+                multiSeriesLineChartOptions
             ];
         }
         else if (props.chartType === "Area") {

@@ -24,19 +24,22 @@ export interface AreaChartOptions {
 export interface ChartSeries {
     dataKey: string
     color?: ColorDefinition
-} 
+}
 
 export interface AreaChartSeries extends ChartSeries {
     areaColor?: ColorDefinition
-} 
+}
 
 export interface MultiSeriesLineChartOptions {
-    connectNulls?: boolean,
+    connectNulls?: boolean
+    hideDots?: boolean
+    thresholds?: ChartThreshold[]
     domainMin?: number | "Auto"
+    domainMax?: number
 }
 
 export interface MultiSeriesBarChartOptions {
-    thresholds?: ChartThreshold[]
+    thresholds?: BarChartThreshold[]
 }
 
 export interface ChartThreshold {
