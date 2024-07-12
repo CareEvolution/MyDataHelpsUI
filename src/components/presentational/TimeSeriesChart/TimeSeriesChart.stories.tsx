@@ -323,12 +323,17 @@ export const noData: Story = {
         title: "No Data Chart",
         intervalType: "Week",
         chartType: "Line",
-        chartHasData: true,
+        chartHasData: false,
         data: [],
         series: [{ dataKey: 'value' }],
         intervalStart: new Date(),
         tooltip
     },
+    loaders: [
+        async () => ({
+            randomData: []
+        })
+    ]
 };
 
 export const loading: Story = {
