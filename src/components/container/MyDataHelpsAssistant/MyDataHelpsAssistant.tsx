@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import React, { useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
+import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import "./MyDataHelpsAssistant.css";
@@ -25,13 +25,7 @@ export default function(props: MyDataHelpsAssistantProps) {
     const [messages, setMessages] = useState<MyDataHelpsAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
 
-    function initialize() {
-        MyDataHelps.initializeAssistant();
-    }
-
-    useEffect(() => {
-        initialize();
-    }, []);
+    const assistant = new MyDataHelpsAssistant();
 
     const addUserMessage = async function() {
 
@@ -42,7 +36,7 @@ export default function(props: MyDataHelpsAssistantProps) {
 
         let currentAIMessage = "";
 
-        await MyDataHelps.addUserMessage(newMessage, async function(event) {
+        await assistant.ask(newMessage, async function(event) {
 
             setLoading(event.loading);
 
