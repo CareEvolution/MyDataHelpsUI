@@ -170,7 +170,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 minTickGap={0}
                 tickLine={false}
                 ticks={getXAxisTicks()}
-                includeHidden
                 interval={0}
             />
         </>
