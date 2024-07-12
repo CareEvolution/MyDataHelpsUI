@@ -63,7 +63,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             });
             return;
         }else if(!!props.previewState){
-            getDefaultPreviewData(intervalStart, intervalEnd, props.series).then((data) => {
+            getDefaultPreviewData(intervalStart, intervalEnd, props.series, props.expectedDataInterval || { days: 1 }).then((data) => {
                 setSurveyAnswers(data);
             });
             return;
