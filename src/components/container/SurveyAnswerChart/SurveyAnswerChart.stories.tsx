@@ -70,7 +70,7 @@ export const ffwelLineChartDRC = {
         chartType: "Line",
         previewState: "default"
     },
-    render: (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyAnswerChart {...args} /></DateRangeCoordinator></Card></Layout>
+    render: (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType={args.intervalType || "6Month"}><SurveyAnswerChart {...args} /></DateRangeCoordinator></Card></Layout>
 };
 
 

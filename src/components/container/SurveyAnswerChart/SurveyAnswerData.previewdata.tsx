@@ -23,7 +23,7 @@ export async function generateSurveyResponse(date: Date, resultIdentifier: strin
     };
 }
 
-export const getDefaultPreviewData = async(start: Date, end: Date, series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[]) => {
+export const getDefaultPreviewData = async(start: Date, end: Date, series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[], dataCadence: Duration) => {
     const standardData: SurveyAnswer[][] = [];
     series.forEach(s => standardData.push([]));
 
@@ -34,7 +34,7 @@ export const getDefaultPreviewData = async(start: Date, end: Date, series: Surve
             standardData[i].push(v);
             
         };
-        currentDate = add(currentDate, { months: 1 });
+        currentDate = add(currentDate, dataCadence);
     }
     return standardData;
 }
