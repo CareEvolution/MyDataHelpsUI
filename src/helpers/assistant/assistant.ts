@@ -29,7 +29,7 @@ export class MyDataHelpsAssistant {
 
     constructor(additionalInstructions: string = "", tools: StructuredTool[] = []) {
         this.additionalInstructions = additionalInstructions;
-        this.tools = tools || this.defaultTools;
+        this.tools = tools.length ? tools : this.defaultTools;
     }
 
     async ask(userMessage: string, onEvent: (event: any) => void) {
