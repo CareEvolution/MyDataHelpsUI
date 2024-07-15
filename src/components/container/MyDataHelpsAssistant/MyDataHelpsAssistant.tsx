@@ -75,7 +75,7 @@ export default function (props: MyDataHelpsAssistantProps) {
             let existingMessage = prevMessages.find((msg) => msg.runId === runId);
             if (existingMessage) {
                 existingMessage.content += message;
-                return prevMessages;
+                return [...prevMessages];
             }
             else {
                 return [...prevMessages, { type: 'ai', content: message, runId: runId }];
