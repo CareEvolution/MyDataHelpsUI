@@ -4,6 +4,8 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
+import { StreamEvent } from '@langchain/core/tracers/log_stream';
+import { AIMessageChunk } from '@langchain/core/messages';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -12,14 +14,16 @@ import "./MyDataHelpsAssistant.css";
 export interface MyDataHelpsAssistantProps {
     innerRef?: React.Ref<HTMLDivElement>;
     previewState?: "default";
+    debug: boolean;
 }
 
 export interface MyDataHelpsAssistantMessage {
     type: string;
     content: string;
+    runId?: string;
 }
 
-export default function(props: MyDataHelpsAssistantProps) {
+export default function (props: MyDataHelpsAssistantProps) {
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const [messages, setMessages] = useState<MyDataHelpsAssistantMessage[]>([]);
@@ -27,38 +31,54 @@ export default function(props: MyDataHelpsAssistantProps) {
 
     const assistant = new MyDataHelpsAssistant();
 
-    const addUserMessage = async function() {
+    const addUserMessage = async function () {
 
         let newMessage = currentUserMessage;
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
 
         setCurrentUserMessage('');
 
-        let currentAIMessage = "";
+        await assistant.ask(newMessage, function (streamEvent: StreamEvent) {
 
-        console.log("Asking assistant: " + newMessage);
-        console.log(messages);
+            const [kind, type] = streamEvent.event.split("_").slice(1);
 
-        await assistant.ask(newMessage, function(event) {
+            if (type === "stream" && kind !== "chain") {
+                const chunk = streamEvent.data?.chunk;
+                let msg = chunk.message as AIMessageChunk;
 
-            console.log(event);
-
-            setLoading(event.loading);
-
-            if (event.event === "on_llm_start") {
-                currentAIMessage = "";
-                setMessages(prevMessages => [...prevMessages, { type: 'ai', content: currentAIMessage }])
+                if (msg.content && typeof msg.content === "string") {
+                    addMessageChunk(streamEvent.run_id, msg.content);
+                }
+                else if (props.debug && msg.tool_call_chunks && msg.tool_call_chunks.length > 0) {
+                    if (msg.tool_call_chunks[0].args) {
+                        addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].args);
+                    }
+                    else if (msg.tool_call_chunks[0].name) {
+                        addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].name + " ");
+                    }
+                }
             }
-            else if (event.event === "on_llm_end") {
-            }
 
-            if (event.text) {
-                currentAIMessage += event.text;
-                setMessages(prevMessages => {
-                    const newMessages = [...prevMessages];
-                    newMessages[newMessages.length - 1] = { type: 'ai', content: currentAIMessage };
-                    return newMessages;
-                });
+            if (kind === "tool") {
+                if (type === "start") {
+                    setLoading(`Calling ${streamEvent.name}...`);
+                }
+                else if (type === "end") {
+                    setLoading("");
+                }
+            }
+        });
+    }
+
+    const addMessageChunk = function (runId: string, message: string) {
+        setMessages(prevMessages => {
+            let existingMessage = prevMessages.find((msg) => msg.runId === runId);
+            if (existingMessage) {
+                existingMessage.content += message;
+                return prevMessages;
+            }
+            else {
+                return [...prevMessages, { type: 'ai', content: message, runId: runId }];
             }
         });
     }

@@ -5,6 +5,7 @@ import { ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate } 
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { StateGraphArgs } from "@langchain/langgraph";
 import { RunnableConfig } from "@langchain/core/runnables";
+import { StructuredTool } from "@langchain/core/tools";
 
 import MyDataHelps, { Guid, ParticipantInfo } from "@careevolution/mydatahelps-js";
 
@@ -18,7 +19,7 @@ import {
     QueryNotificationsTool,
     QuerySurveyAnswersTool
 } from "./tools";
-import { StructuredTool } from "@langchain/core/tools";
+
 
 export interface IAssistantState {
     messages: BaseMessage[];
