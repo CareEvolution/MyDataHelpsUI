@@ -36,7 +36,12 @@ export default function(props: MyDataHelpsAssistantProps) {
 
         let currentAIMessage = "";
 
-        await assistant.ask(newMessage, async function(event) {
+        console.log("Asking assistant: " + newMessage);
+        console.log(messages);
+
+        await assistant.ask(newMessage, function(event) {
+
+            console.log(event);
 
             setLoading(event.loading);
 
@@ -92,7 +97,7 @@ export default function(props: MyDataHelpsAssistantProps) {
                             addUserMessage();
                         }
                     }} />
-                    <button type="button" id="send">
+                    <button type="button" id="send" onClick={addUserMessage}>
                         <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </button>
                 </div>
