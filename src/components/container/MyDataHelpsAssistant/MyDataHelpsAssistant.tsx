@@ -71,6 +71,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     const addMessageChunk = function (runId: string, message: string) {
+        console.log(`Adding message chunk: ${message} on run id ${runId}.`);
         setMessages(prevMessages => {
             let existingMessage = prevMessages.find((msg) => msg.runId === runId);
             if (existingMessage) {
