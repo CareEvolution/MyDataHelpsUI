@@ -32,7 +32,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     const assistantRef = useRef<MyDataHelpsAssistant>();
 
     useEffect(() => {
-        if (assistantRef.current === null) {
+        if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAssistant();
         }
     }, []);
