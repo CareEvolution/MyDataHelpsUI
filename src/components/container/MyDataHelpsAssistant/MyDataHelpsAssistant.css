@@ -97,17 +97,18 @@
 .mdh-assistant input {
     background: var(--ce-grey-4);
     padding: 15px 20px;
+    box-sizing: border-box;
 }
 
 .mdh-assistant .ai-message,
 .mdh-assistant .user-message,
 .mdh-assistant #loading {
-    padding: 10px 20px 10px 55px;
+    padding: 5px 10px 5px 35px;
     position: relative;
 }
 
 .mdh-assistant .user-message {
-    background: var(--ce-grey-30);
+    background: var(--ce-grey-5);
 }
 
 .mdh-assistant .ai-message .svg-inline--fa,
@@ -115,7 +116,7 @@
 .mdh-assistant #loading .svg-inline--fa {
     color: var(--ce-grey-50);
     position: absolute;
-    left: 20px;
+    left: 10px;
     margin: .25rem 0;
 }
 
