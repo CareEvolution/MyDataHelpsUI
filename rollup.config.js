@@ -9,8 +9,28 @@ const packageJson = require("./package.json");
 import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
+import { readFile } from 'node:fs/promises';
 
 const limitBytes = 4e6
+
+function raw() {
+	return {
+		name: 'raw',
+		load(id) {
+			if(!id?.endsWith('?raw')) return null;
+
+			return readFile(id.replace('?raw', ''), 'utf-8');
+		},
+		transform(code, id) {
+			if(!id?.endsWith('?raw')) return null;
+
+			return {
+				code: `export default ${JSON.stringify(code)};`,
+				map: { mappings: '' }
+			};
+		}
+	}
+}
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -36,6 +56,7 @@ export default [
 		plugins: [
 			peerDepsExternal(),
 			resolve(),
+			raw(),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json", sourceMap: false }),
 			postcss(),
