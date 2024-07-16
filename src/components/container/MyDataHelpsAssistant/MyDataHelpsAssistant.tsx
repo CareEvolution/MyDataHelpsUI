@@ -101,13 +101,13 @@ export default function (props: MyDataHelpsAssistantProps) {
                     if (message.type === 'user') {
                         return <div className="user-message" key={index}>
                             <FontAwesomeSvgIcon icon={faUser} />
-                            <Markdown>{message.content}</Markdown>
+                            <p>{message.content}</p>
                         </div>
                     }
                     else if (message.type === 'ai') {
                         return <div className="ai-message" key={index}>
                             <FontAwesomeSvgIcon icon={faGear} />
-                            <p>{message.content}</p>
+                            <Markdown>{message.content}</Markdown>
                         </div>
                     }
                 })}
