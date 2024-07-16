@@ -46,4 +46,7 @@ export const parameters = {
 			date: /Date$/,
 		},
 	},
+	fetchMock: {
+		mocks: [],
+	}
 }

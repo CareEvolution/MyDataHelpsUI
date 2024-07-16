@@ -55,6 +55,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
     "storybook": "^7.0.12",
+    "storybook-addon-fetch-mock": "^2.0.0",
     "typescript": "^4.6.2"
   },
   "dependencies": {

@@ -1,0 +1,101 @@
+/* variable declarations */
+:root {
+    --mdhui-title-font-size: 1.7em;
+    --mdhui-title-text-align: center;
+    --mdhui-title-color: inherit;
+    --mdhui-title-font-weight: normal;
+
+    --mdhui-text-font-size: 1em;
+    --mdhui-text-text-align: center;
+    --mdhui-text-color: inherit;
+    --mdhui-text-font-weight: normal;
+
+    --mdhui-next-button-color: #FFF;
+    --mdhui-next-button-background-color: #5381c3;
+    --mdhui-next-button-font-weight: bold;
+    --mdhui-next-button-letter-spacing: 0.5px;
+    --mdhui-next-button-text-transform: uppercase;
+    --mdhui-next-button-background-image: none;
+}
+
+.mdhui-step-title {
+  text-align: var(--mdhui-title-text-align);
+  font-size: var(--mdhui-title-font-size);
+  line-height: 1.2em;
+  font-weight: var(--mdhui-title-font-weight);
+  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 20px;  
+  position: relative;
+  display: block;
+  color: var(--mdhui-title-color);
+}
+
+.mdhui-step-text {
+  font-size: var(--mdhui-text-font-size);
+  line-height: 1.3em;
+  text-align: var(--mdhui-text-text-align);
+  font-weight: var(--mdhui-text-font-weight);
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 20px;  
+  white-space: pre-line;
+  color: var(--mdhui-text-color);
+}
+
+.mdhui-step-next-button {
+  margin: 20px;
+  padding: 16px;
+  background: var(--mdhui-next-button-background-color);
+  background-image: var(--mdhui-next-button-background-image);
+  font-size: 1em;
+  color: var(--mdhui-next-button-color);
+  font-weight: var(--mdhui-next-button-font-weight);
+  letter-spacing: var(--mdhui-next-button-letter-spacing);
+  text-transform: var(--mdhui-next-button-text-transform);
+  border: solid 1px var(--mdhui-color-primary);
+  border-radius: 5px;
+  cursor: pointer;
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.mdhui-step-next-button:disabled,
+.mdhui-step-next-button[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.mdhui-step-image {
+    text-align: center;
+}
+
+.mdhui-step-image img {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.mdhui-step-spinner {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #2c62ce;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 2em auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
