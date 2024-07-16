@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
-import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
+import { faFlask } from '@fortawesome/free-solid-svg-icons/faFlask';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import Markdown from 'react-markdown';
@@ -29,6 +30,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const [messages, setMessages] = useState<MyDataHelpsAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
+    const [collapsed, setCollapsed] = useState(true);
 
     const assistantRef = useRef<MyDataHelpsAssistant>();
 
@@ -94,19 +96,23 @@ export default function (props: MyDataHelpsAssistantProps) {
         setCurrentUserMessage(event.target.value);
     }
 
-    return (
-        <div className="mdh-assistant">
+    return <>
+        {collapsed && <FontAwesomeSvgIcon icon={faFlask} className="mdh-assistant-collapsed" onClick={() => setCollapsed(false)} />}
+        {!collapsed && <div className="mdh-assistant">
+            <div className="mdh-assistant-header">
+                <FontAwesomeSvgIcon icon={faFlask} />
+                <h3>MyDataHelps Assistant</h3>
+                <FontAwesomeSvgIcon icon={faChevronDown} onClick={() => setCollapsed(true)} />
+            </div>
             <div id="log">
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
                         return <div className="user-message" key={index}>
-                            <FontAwesomeSvgIcon icon={faUser} />
                             <p>{message.content}</p>
                         </div>
                     }
                     else if (message.type === 'ai') {
                         return <div className="ai-message" key={index}>
-                            <FontAwesomeSvgIcon icon={faGear} />
                             <Markdown>{message.content}</Markdown>
                         </div>
                     }
@@ -130,5 +136,6 @@ export default function (props: MyDataHelpsAssistantProps) {
                 </div>
             </div>
         </div>
-    );
+        }
+    </>
 }

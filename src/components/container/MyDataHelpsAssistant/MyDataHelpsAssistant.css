@@ -40,8 +40,15 @@
     --lg-padding: 20px;
 }
 
+.mdh-assistant-collapsed {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
 .mdh-assistant #log {
     overflow: auto;
+    height: 80vh;
 }
 
 /* typography */
