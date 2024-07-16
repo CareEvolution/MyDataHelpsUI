@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.24.3-MdhAssistantComponent.8",
+  "version": "2.24.3-MdhAssistantComponent.9",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
