@@ -43,11 +43,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     useEffect(() => {
         if (logRef.current) {
-            console.log("scrolling");
-            logRef.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'end'
-            });
+            logRef.current.scrollTop = logRef.current.scrollHeight;
         }
     }, [messages]);
 
