@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
@@ -29,7 +29,13 @@ export default function (props: MyDataHelpsAssistantProps) {
     const [messages, setMessages] = useState<MyDataHelpsAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
 
-    const assistant = new MyDataHelpsAssistant();
+    const assistantRef = useRef<MyDataHelpsAssistant>();
+
+    useEffect(() => {
+        if (assistantRef.current === null) {
+            assistantRef.current = new MyDataHelpsAssistant();
+        }
+    }, []);
 
     const addUserMessage = async function () {
 
@@ -38,7 +44,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
         setCurrentUserMessage('');
 
-        await assistant.ask(newMessage, function (streamEvent: StreamEvent) {
+        await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
 
             const [kind, type] = streamEvent.event.split("_").slice(1);
 
