@@ -97,10 +97,10 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     return <>
-        {collapsed && <FontAwesomeSvgIcon icon={faFlask} className="mdh-assistant-collapsed" onClick={() => setCollapsed(false)} />}
+        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="2x" className="mdh-assistant-collapsed" onClick={() => setCollapsed(false)} />}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
-                <FontAwesomeSvgIcon icon={faFlask} />
+                <FontAwesomeSvgIcon icon={faFlask} display="inline" />
                 <h3>MyDataHelps Assistant</h3>
                 <FontAwesomeSvgIcon icon={faChevronDown} onClick={() => setCollapsed(true)} />
             </div>

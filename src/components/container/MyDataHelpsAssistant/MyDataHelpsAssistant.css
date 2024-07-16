@@ -41,9 +41,14 @@
 }
 
 .mdh-assistant-collapsed {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+}
+
+.mdh-assistant {
+    position: fixed;
+    bottom: 0;
 }
 
 .mdh-assistant #log {
