@@ -49,6 +49,8 @@
 .mdh-assistant {
     position: fixed;
     bottom: 0;
+    background-color: white;
+    font-size: 14px;
 }
 
 .mdh-assistant #log {
@@ -115,7 +117,7 @@
 .mdh-assistant .ai-message,
 .mdh-assistant .user-message,
 .mdh-assistant #loading {
-    padding: 5px 10px 5px 35px;
+    padding: 4px 8px;
     position: relative;
 }
 
