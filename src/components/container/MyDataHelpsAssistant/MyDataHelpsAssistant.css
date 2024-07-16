@@ -55,7 +55,8 @@
 }
 
 .mdh-assistant #log {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: 80vh;
 }
 
