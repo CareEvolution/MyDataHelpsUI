@@ -34,7 +34,6 @@ export default function (props: HtmlStepProps) {
 
     return (
         <>
-            <p>step top</p>
             <EmotionGlobal styles={elementsCSS} />
             <EmotionGlobal styles={classesCSS} />
             {customStyleVars &&
@@ -45,7 +44,6 @@ export default function (props: HtmlStepProps) {
                 />
             }
             {props.html && <InnerHTML html={props.html} />}
-            <p>step bottom (full html: {JSON.stringify(props.html)})</p>
         </>
     );
 }

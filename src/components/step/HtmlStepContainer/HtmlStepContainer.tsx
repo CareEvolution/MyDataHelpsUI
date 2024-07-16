@@ -23,5 +23,5 @@ export default function () {
         });
     }, []);
 
-    return <><p>container top</p><HtmlStep html={html} styles={styles} /><p>container bottom</p></>;
+    return <HtmlStep html={html} styles={styles} />;
 }
