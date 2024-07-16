@@ -6,6 +6,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
+import Markdown from 'react-markdown';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -100,7 +101,7 @@ export default function (props: MyDataHelpsAssistantProps) {
                     if (message.type === 'user') {
                         return <div className="user-message" key={index}>
                             <FontAwesomeSvgIcon icon={faUser} />
-                            <p>{message.content}</p>
+                            <Markdown>{message.content}</Markdown>
                         </div>
                     }
                     else if (message.type === 'ai') {
