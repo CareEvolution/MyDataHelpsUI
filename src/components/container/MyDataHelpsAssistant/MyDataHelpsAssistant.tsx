@@ -33,12 +33,22 @@ export default function (props: MyDataHelpsAssistantProps) {
     const [collapsed, setCollapsed] = useState(true);
 
     const assistantRef = useRef<MyDataHelpsAssistant>();
+    const logRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAssistant();
         }
     }, []);
+
+    useEffect(() => {
+        if (logRef.current) {
+            logRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
+        }
+    }, [messages]);
 
     const addUserMessage = async function () {
 
@@ -104,7 +114,7 @@ export default function (props: MyDataHelpsAssistantProps) {
                 MyDataHelps Assistant
                 <FontAwesomeSvgIcon icon={faChevronDown} onClick={() => setCollapsed(true)} />
             </div>
-            <div id="log">
+            <div id="log" ref={logRef}>
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
                         return <div className="user-message" key={index}>
