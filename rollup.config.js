@@ -10,7 +10,7 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 6e6;
+const limitBytes = 12e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -43,7 +43,8 @@ export default [
 			image(),
 			json(),
 			analyze({ onAnalysis, summaryOnly: true })
-		]
+		],
+		inlineDynamicImports: true
 	},
 	{
 		input: "dist/esm/types/index.d.ts",
