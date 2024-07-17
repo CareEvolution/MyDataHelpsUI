@@ -49,6 +49,9 @@ export default function (props: MyDataHelpsAssistantProps) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
 
             async function renderMermaid() {
+
+                logRef?.current?.removeAttribute("data-processed");
+
                 let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as ArrayLike<HTMLElement>;
                 if (mermaidNodes && mermaidNodes.length > 0) {
                     await mermaid.run({
