@@ -133,7 +133,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     return <>
-        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={handleExpandClick} />}
+        {collapsed && <div className="mdh-assistant-collapsed"><FontAwesomeSvgIcon icon={faFlask} size="lg" onClick={handleExpandClick} /></div>}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <div>

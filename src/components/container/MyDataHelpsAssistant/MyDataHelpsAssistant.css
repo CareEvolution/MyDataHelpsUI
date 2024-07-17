@@ -117,15 +117,16 @@
     align-items: center;
     width: 100%;
     background: #fff;
-    border: var(--border);
+    border-top: var(--border);
     border-radius: var(--border-radius);
 }
 
 /* other */
 .mdh-assistant input {
-    background: var(--ce-grey-4);
     padding: 15px 20px;
     box-sizing: border-box;
+    margin: 2px 3px;
+    width: calc(100% - 6px);
 }
 
 .mdh-assistant .ai-message,
