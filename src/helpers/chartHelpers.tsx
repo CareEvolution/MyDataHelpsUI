@@ -36,10 +36,6 @@ export function createLineChartDefs(
             lineColor = resolveColor(layoutContext.colorScheme, thresholds[0].overThresholdColor) || defaultLineColor;
         }
 
-        console.log()
-
-        console.log(`Index: ${index}, lineMin: ${lineRange.min}, lineMax, ${lineRange.max}`);
-
         stops.push(<stop offset="0%" stopColor={lineColor} />);
         for (var i = 0; i < thresholds.length; i++) {
             if (lineRange.max >= thresholds[i].value) {
