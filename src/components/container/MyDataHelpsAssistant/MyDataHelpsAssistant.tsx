@@ -126,8 +126,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     const handleExpandClick = async () => {
-        console.log('expandign');
-        setCollapsed(true);
+        setCollapsed(false);
         await renderMermaid();
     }
 
