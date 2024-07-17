@@ -42,8 +42,17 @@
 
 .mdh-assistant-collapsed {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 20px;
+    right: 20px;
+    width: var(--touch);
+    height: var(--touch);
+    background: var(--mdh-blue-40);
+    display: flex;
+    box-shadow: var(--mdhui-box-shadow-1);
+    border-radius: 200px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
 }
 
 .mdh-assistant {
@@ -56,6 +65,14 @@
     border-radius: 12px;
     overflow: hidden;
     margin: .5rem;
+    z-index: 3;
+}
+
+.mdh-assistant p,
+.mdh-assistant ul {
+    line-height: 1.4;
+    font-size: 15px;
+    color: var(--ce-grey-80);
 }
 
 .mdh-assistant-header {
@@ -64,6 +81,11 @@
     height: 44px;
     padding: 0 12px;
     justify-content: space-between;
+    border-bottom: var(--border);
+}
+
+.mdh-assistant-header svg {
+    padding-right: 0.5rem
 }
 
 .mdh-assistant #log {
@@ -118,12 +140,11 @@
     width: 100%;
     background: #fff;
     border-top: var(--border);
-    border-radius: var(--border-radius);
 }
 
 /* other */
 .mdh-assistant input {
-    padding: 15px 20px;
+    padding: 15px 35px 15px 15px;
     box-sizing: border-box;
     margin: 2px 3px;
     width: calc(100% - 6px);
