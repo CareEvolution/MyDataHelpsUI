@@ -8,6 +8,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import Markdown from 'react-markdown';
+import mermaid from 'mermaid';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -39,11 +40,25 @@ export default function (props: MyDataHelpsAssistantProps) {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAssistant();
         }
+
+        mermaid.initialize({ startOnLoad: false });
     }, []);
 
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
+
+            async function renderMermaid() {
+                let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as ArrayLike<HTMLElement>;
+                if (mermaidNodes && mermaidNodes.length > 0) {
+                    await mermaid.run({
+                        nodes: mermaidNodes,
+                        suppressErrors: true
+                    });
+                }
+            }
+
+            renderMermaid();
         }
     }, [messages]);
 
