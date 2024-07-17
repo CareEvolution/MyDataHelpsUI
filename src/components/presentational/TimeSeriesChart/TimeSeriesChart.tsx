@@ -147,6 +147,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 } else if (domainMin !== undefined) {
                     domain = [domainMin, "auto"];
                 }
+
+                let domainMax = (props.options as MultiSeriesLineChartOptions).domainMax;
+                if( domainMax ) {
+                    domain![1] = domainMax;
+                }
             }
         }
 
@@ -157,7 +162,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
             }
             <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
-            <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
+            <YAxis allowDataOverflow tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
             <XAxis id="myXAxis"
                 domain={[xTicks![0], xTicks![xTicks!.length - 1]]}
                 padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
@@ -170,6 +175,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 minTickGap={0}
                 tickLine={false}
                 ticks={getXAxisTicks()}
+                allowDataOverflow
                 interval={0}
             />
         </>
@@ -251,7 +257,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
                             <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                         )}
-                        {createLineChartDefs(layoutContext, gradientKey, seriesLineColors, props.options)}
+                        {createLineChartDefs(layoutContext, gradientKey, seriesLineColors, props.options, keys, dataToDisplay!)}
                         {standardChartComponents()}
                         {keys.map((dk, i) =>
                             <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2}
