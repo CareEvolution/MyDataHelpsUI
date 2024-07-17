@@ -52,18 +52,18 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     const renderMermaid = async function () {
 
-        try {
-            let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
-            if (mermaidNodes && mermaidNodes.length > 0) {
-                mermaidNodes.forEach(n => n.removeAttribute("data-processed"));
+        console.log(`Calling renderMermaid`);
 
-                await mermaid.run({
-                    nodes: mermaidNodes,
-                    suppressErrors: true
-                });
-            }
-        } catch (e) {
-            console.log(e);
+        let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
+        if (mermaidNodes && mermaidNodes.length > 0) {
+            mermaidNodes.forEach(n => n.removeAttribute("data-processed"));
+
+            console.log(`Mermaid run`);
+
+            await mermaid.run({
+                nodes: mermaidNodes,
+                suppressErrors: true
+            });
         }
     }
 
@@ -75,6 +75,8 @@ export default function (props: MyDataHelpsAssistantProps) {
         setCurrentUserMessage('');
 
         await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
+
+            console.log(streamEvent);
 
             const [kind, type] = streamEvent.event.split("_").slice(1);
 
