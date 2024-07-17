@@ -46,7 +46,7 @@
     right: 20px;
     width: var(--touch);
     height: var(--touch);
-    background: var(--mdh-blue-40);
+    background: var(--mdhui-color-primary);
     display: flex;
     box-shadow: var(--mdhui-box-shadow-1);
     border-radius: 200px;
@@ -68,13 +68,6 @@
     z-index: 3;
 }
 
-.mdh-assistant p,
-.mdh-assistant ul {
-    line-height: 1.4;
-    font-size: 15px;
-    color: var(--ce-grey-80);
-}
-
 .mdh-assistant-header {
     display: flex;
     align-items: center;
@@ -82,6 +75,12 @@
     padding: 0 12px;
     justify-content: space-between;
     border-bottom: var(--border);
+    font-weight: 600;
+    color: var(--ce-grey-55);
+}
+
+.mdh-assistant-header .collapse-button {
+    color: var(--mdhui-color-primary);
 }
 
 .mdh-assistant-header svg {
@@ -99,6 +98,9 @@
 .mdh-assistant ul {
     margin: .25rem 0;
     word-break: break-word;
+    line-height: 1.4;
+    font-size: 15px;
+    color: var(--ce-grey-80);
 }
 
 /* form elements */
@@ -155,10 +157,11 @@
 .mdh-assistant #loading {
     padding: 4px 8px;
     position: relative;
+    border-bottom: 1px solid var(--ce-grey-5);
 }
 
 .mdh-assistant .user-message {
-    background: var(--ce-grey-5);
+    background: var(--ce-grey-3);
 }
 
 .mdh-assistant .ai-message .svg-inline--fa,
@@ -172,4 +175,8 @@
 
 .mdh-assistant #loading .svg-inline--fa {
     font-weight: 700;
+}
+
+.mdh-assistant input:focus-visible {
+    outline: 1px solid var(--mdhui-color-primary);
 }

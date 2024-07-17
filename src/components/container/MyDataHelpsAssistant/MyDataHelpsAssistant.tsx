@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faFlask } from '@fortawesome/free-solid-svg-icons/faFlask';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
@@ -137,20 +138,22 @@ export default function (props: MyDataHelpsAssistantProps) {
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <div>
-                    <FontAwesomeSvgIcon icon={faFlask} display="inline" />
+                    <FontAwesomeSvgIcon icon={faFlask} />
                     MyDataHelps Assistant
                 </div>
-                <FontAwesomeSvgIcon icon={faChevronDown} onClick={() => setCollapsed(true)} />
+                <FontAwesomeSvgIcon icon={faChevronDown} className="collapse-button" onClick={() => setCollapsed(true)} />
             </div>
             <div id="log" ref={logRef}>
                 {messages && messages.map((message: MyDataHelpsAssistantMessage, index: number) => {
                     if (message.type === 'user') {
                         return <div className="user-message" key={index}>
+                            <FontAwesomeSvgIcon icon={faUser} />
                             <p>{message.content}</p>
                         </div>
                     }
                     else if (message.type === 'ai') {
                         return <div className="ai-message" key={index}>
+                            <FontAwesomeSvgIcon icon={faGear} />
                             <Markdown>{message.content}</Markdown>
                         </div>
                     }
