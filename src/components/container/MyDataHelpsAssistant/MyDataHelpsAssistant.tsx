@@ -54,14 +54,18 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     const renderMermaid = async function () {
 
-        let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
-        if (mermaidNodes && mermaidNodes.length > 0) {
-            mermaidNodes.forEach( n => n.removeAttribute("data-processed"));
+        try {
+            let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
+            if (mermaidNodes && mermaidNodes.length > 0) {
+                mermaidNodes.forEach(n => n.removeAttribute("data-processed"));
 
-            await mermaid.run({
-                nodes: mermaidNodes,
-                suppressErrors: true
-            });
+                await mermaid.run({
+                    nodes: mermaidNodes,
+                    suppressErrors: true
+                });
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -121,13 +125,14 @@ export default function (props: MyDataHelpsAssistantProps) {
         setCurrentUserMessage(event.target.value);
     }
 
-    const onExpandClick = async() => {
+    const handleExpandClick = async () => {
+        console.log('expandign');
         setCollapsed(true);
         await renderMermaid();
     }
 
     return <>
-        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={onExpandClick} />}
+        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={handleExpandClick} />}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <FontAwesomeSvgIcon icon={faFlask} display="inline" />
