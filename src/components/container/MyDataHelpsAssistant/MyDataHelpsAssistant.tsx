@@ -48,22 +48,34 @@ export default function (props: MyDataHelpsAssistantProps) {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
 
-            async function renderMermaid() {
-
-                logRef?.current?.removeAttribute("data-processed");
-
-                let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as ArrayLike<HTMLElement>;
-                if (mermaidNodes && mermaidNodes.length > 0) {
-                    await mermaid.run({
-                        nodes: mermaidNodes,
-                        suppressErrors: true
-                    });
-                }
-            }
-
             renderMermaid();
         }
     }, [messages]);
+
+    const renderMermaid = async function () {
+
+        if (logRef && logRef.current) {
+            for (const attr of logRef.current.attributes) {
+                console.log(`${attr.name} -> ${attr.value}`);
+            }
+        }
+
+        logRef?.current?.removeAttribute("data-processed");
+
+        if (logRef && logRef.current) {
+            for (const attr of logRef.current.attributes) {
+                console.log(`${attr.name} -> ${attr.value}`);
+            }
+        }
+
+        let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as ArrayLike<HTMLElement>;
+        if (mermaidNodes && mermaidNodes.length > 0) {
+            await mermaid.run({
+                nodes: mermaidNodes,
+                suppressErrors: true
+            });
+        }
+    }
 
     const addUserMessage = async function () {
 
@@ -122,7 +134,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     return <>
-        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={() => setCollapsed(false)} />}
+        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={() => { setCollapsed(false); renderMermaid(); }} />}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <FontAwesomeSvgIcon icon={faFlask} display="inline" />
