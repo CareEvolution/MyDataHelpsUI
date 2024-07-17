@@ -121,8 +121,13 @@ export default function (props: MyDataHelpsAssistantProps) {
         setCurrentUserMessage(event.target.value);
     }
 
+    const onExpandClick = async() => {
+        setCollapsed(true);
+        await renderMermaid();
+    }
+
     return <>
-        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={() => { setCollapsed(false); renderMermaid(); }} />}
+        {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={onExpandClick} />}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <FontAwesomeSvgIcon icon={faFlask} display="inline" />
