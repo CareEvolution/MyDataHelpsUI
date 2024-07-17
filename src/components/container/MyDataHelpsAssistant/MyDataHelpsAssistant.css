@@ -51,7 +51,19 @@
     bottom: 0;
     background-color: white;
     font-size: 14px;
-    width: 100%;
+    width: calc(100% - 1rem);
+    border: var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: .5rem;
+}
+
+.mdh-assistant-header {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 12px;
+    justify-content: space-between;
 }
 
 .mdh-assistant #log {

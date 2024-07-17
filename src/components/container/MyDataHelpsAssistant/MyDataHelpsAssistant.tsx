@@ -76,8 +76,6 @@ export default function (props: MyDataHelpsAssistantProps) {
 
         await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
 
-            console.log(streamEvent);
-
             const [kind, type] = streamEvent.event.split("_").slice(1);
 
             if (type === "stream" && kind !== "chain") {
@@ -138,8 +136,10 @@ export default function (props: MyDataHelpsAssistantProps) {
         {collapsed && <FontAwesomeSvgIcon icon={faFlask} size="lg" className="mdh-assistant-collapsed" onClick={handleExpandClick} />}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
-                <FontAwesomeSvgIcon icon={faFlask} display="inline" />
-                MyDataHelps Assistant
+                <div>
+                    <FontAwesomeSvgIcon icon={faFlask} display="inline" />
+                    MyDataHelps Assistant
+                </div>
                 <FontAwesomeSvgIcon icon={faChevronDown} onClick={() => setCollapsed(true)} />
             </div>
             <div id="log" ref={logRef}>
