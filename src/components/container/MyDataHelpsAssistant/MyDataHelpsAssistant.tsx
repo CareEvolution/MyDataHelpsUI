@@ -47,8 +47,6 @@ export default function (props: MyDataHelpsAssistantProps) {
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
-
-            renderMermaid();
         }
     }, [messages]);
 
@@ -104,6 +102,10 @@ export default function (props: MyDataHelpsAssistantProps) {
                 else if (type === "end") {
                     setLoading("");
                 }
+            }
+
+            if (type === "end" && kind === "llm") {
+                renderMermaid();
             }
         });
     }
