@@ -78,6 +78,5 @@ export interface ChartThreshold {
     value: number
     referenceLineColor?: ColorDefinition
     overThresholdColor?: ColorDefinition
-    label?: TimeSeriesChartLabel
 }
 
