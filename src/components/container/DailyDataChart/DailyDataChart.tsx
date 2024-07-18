@@ -96,27 +96,33 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     var data: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
     var chartHasData: boolean = false;
+
+    let currentDate = intervalStart;
     if (currentData) {
-        Object.keys(currentData).forEach((dateStr) => {
-            const currentDate = parse(dateStr, 'yyyy-MM-dd', new Date());
-            var dataDay: any = {
-                timestamp: currentDate.getTime()
+        while (currentDate < intervalEnd) {
+            let dayKey = getDayKey(currentDate);
+            let dataDay: any = {
+                timestamp: currentDate.setHours(0,0,0,0)
             };
-            data!.push(dataDay);
-            var dayKey = getDayKey(currentDate);
-            dataDay.value = currentData![dayKey];
-            dataDay.rawValue = dataDay.value;
-            dataDay.date = currentDate;
-            if (props.valueConverter) {
-                dataDay.value = props.valueConverter(dataDay.value);
-            } else {
-                let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
-                if (defaultConverter) {
-                    dataDay.value = defaultConverter(dataDay.value);
+
+            if(currentData[dayKey] !== undefined && currentData[dayKey] !== null){
+                dataDay.value = currentData![dayKey];
+                dataDay.rawValue = dataDay.value;
+                dataDay.date = currentDate;
+                if (props.valueConverter) {
+                    dataDay.value = props.valueConverter(dataDay.value);
+                } else {
+                    let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
+                    if (defaultConverter) {
+                        dataDay.value = defaultConverter(dataDay.value);
+                    }
                 }
-            }
-            chartHasData = true;
-        });
+                chartHasData = true;
+            };
+
+            data!.push(dataDay);
+            currentDate = add(currentDate, { days: 1 });
+        }
     } else {
         data = undefined;
     }
@@ -144,14 +150,13 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
         if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
+            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = { domainMin: lineOptions?.domainMin, showDots: true };
             return [
                 [{
                     dataKey: 'value',
                     color: lineOptions?.lineColor
                 }],
-                {
-                    domainMin: lineOptions?.domainMin
-                }
+                multiSeriesLineChartOptions
             ];
         }
         else if (props.chartType === "Area") {
@@ -194,6 +199,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         tooltip={GraphToolTip}
         chartType={props.chartType}
         options={options}
+        syncId="DailyDataChart"
         innerRef={props.innerRef}
     />
 }

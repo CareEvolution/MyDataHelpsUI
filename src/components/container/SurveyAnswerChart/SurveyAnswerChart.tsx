@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { add, parseISO } from 'date-fns'
-import { SurveyAnswer } from '@careevolution/mydatahelps-js'
+import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getMonthStart, getWeekStart, get6MonthStart, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
@@ -63,19 +63,23 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             });
             return;
         }else if(!!props.previewState){
-            getDefaultPreviewData(intervalStart, intervalEnd, props.series).then((data) => {
+            getDefaultPreviewData(intervalStart, intervalEnd, props.series, props.expectedDataInterval || { days: 1 }).then((data) => {
                 setSurveyAnswers(data);
             });
             return;
         }
-        
-        var dataRequests = props.series.map(l => queryAllSurveyAnswers({
-            surveyName: l.surveyName, 
-            stepIdentifier: l.stepIdentifier, 
-            resultIdentifier: l.resultIdentifier,
-            after: intervalStart.toISOString(),
-            before: intervalEnd.toISOString()
-        }));
+
+        var dataRequests = props.series.map(l => {
+            var params: SurveyAnswersQuery = {
+                after: intervalStart.toISOString(),
+                before: intervalEnd.toISOString()
+            }
+            if(l.surveyName) params.surveyName = l.surveyName;
+            if(l.resultIdentifier) params.resultIdentifier = l.resultIdentifier;
+            if(l.stepIdentifier) params.stepIdentifier = l.stepIdentifier;
+
+            return queryAllSurveyAnswers(params);
+        });
         Promise.all(dataRequests).then((data) => {
             setSurveyAnswers(data);
         })
