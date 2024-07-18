@@ -91,16 +91,12 @@ async function getRandomIntradayData(start: Date, intervalMinutes?: number) {
     let currentTime = new Date(start);
     currentTime.setHours(0, 0, 0, 0);
     let endTime = add(currentTime, { hours: 24 });
-    console.log(currentTime);
-    console.log(endTime);
     while (currentTime < endTime) {
         responses.push({
             timestamp: currentTime,
             value: (await predictableRandomNumber(currentTime.toISOString())) % 200
         });
         currentTime = add(currentTime, { minutes: intervalMinutes ?? 5 });
-        console.log(currentTime);
-        console.log(endTime);
     }
     return responses;
 }
