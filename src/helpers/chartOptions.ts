@@ -1,10 +1,5 @@
 import type { ColorDefinition } from "./colors"
-import { LineProps } from "recharts";
-import { LineDot } from "recharts/types/cartesian/Line";
-import { ImplicitLabelType } from "recharts/types/component/Label";
-import { AnimationDuration, AxisDomain } from "recharts/types/util/types";
 import { ReactElement } from "react";
-import { Props as DotProps } from "recharts/types/shape/Dot";
 
 export interface LineChartOptions {
     lineColor?: string
@@ -36,19 +31,46 @@ export interface AreaChartSeries extends ChartSeries {
     areaColor?: ColorDefinition
 }
 
-export interface MultiSeriesLineChartOptions {
-    connectNulls?: boolean
-    hideDots?: boolean
-    dot?: ReactElement<SVGElement> | ((props: any) => ReactElement<SVGElement>) | boolean;
-    label?: ReactElement<SVGElement> | ((props: any) => ReactElement<SVGElement>) | boolean | string | number;
-    strokeWidth?: number | string;
-    animationDuration?: number;
-    thresholds?: ChartThreshold[]
-    domainMin?: number | "Auto"
-    domainMax?: number
+export interface TimeSeriesChartContainerOptions {
+    height?: string | number;
 }
 
-export interface MultiSeriesBarChartOptions {
+export interface TimeSeriesChartXAxisOptions {
+    domain?: [number, number];
+    ticks?: (string | number)[];
+    tickFormatter?: (value: any, index: number) => string;
+}
+
+export interface TimeSeriesChartYAxisOptions {
+    width?: number;
+    domain?: [number, number];
+    ticks?: (string | number)[];
+}
+
+export type TimeSeriesChartLabel = ReactElement<SVGElement> | ((props: any) => ReactElement<SVGElement>) | boolean | string | number;
+export type TimeSeriesChartLineDot = ReactElement<SVGElement> | ((props: any) => ReactElement<SVGElement>) | boolean;
+
+export interface TimeSeriesChartLineOptions {
+    dot?: TimeSeriesChartLineDot;
+    label?: TimeSeriesChartLabel;
+    strokeWidth?: number;
+    animationDuration?: number;
+}
+
+export interface TimeSeriesChartOptions {
+    containerOptions?: TimeSeriesChartContainerOptions;
+    xAxisOptions?: TimeSeriesChartXAxisOptions;
+    yAxisOptions?: TimeSeriesChartYAxisOptions;
+}
+
+export interface MultiSeriesLineChartOptions extends TimeSeriesChartOptions {
+    thresholds?: ChartThreshold[]
+    domainMin?: number | "Auto"
+    domainMax?: number,
+    lineOptions?: TimeSeriesChartLineOptions;
+}
+
+export interface MultiSeriesBarChartOptions extends TimeSeriesChartOptions {
     thresholds?: BarChartThreshold[]
 }
 
@@ -56,6 +78,6 @@ export interface ChartThreshold {
     value: number
     referenceLineColor?: ColorDefinition
     overThresholdColor?: ColorDefinition
-    label?: ImplicitLabelType
+    label?: TimeSeriesChartLabel
 }
 

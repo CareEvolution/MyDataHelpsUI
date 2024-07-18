@@ -32,9 +32,6 @@ export interface TimeSeriesChartProps {
     syncId?: string;
     children?: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
-    containerProps?: ResponsiveContainerProps;
-    xAxisProps?: XAxisProps;
-    yAxisProps?: YAxisProps;
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
@@ -191,7 +188,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         <div className="chart-container">
             {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">No Data</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
-            <ResponsiveContainer width="100%" height={150} {...props.containerProps}>
+            <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
@@ -204,13 +201,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         tickLine={false}
                         width={32}
                         domain={yAxisDomain}
-                        {...props.yAxisProps}
+                        {...props.options?.yAxisOptions}
                     />
                     <XAxis
                         id="myXAxis"
                         domain={[xAxisTicks![0], xAxisTicks![xAxisTicks!.length - 1]]}
                         padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
-                        tick={!props.xAxisProps?.tickFormatter ? DayTick : undefined}
+                        tick={!props.options?.xAxisOptions?.tickFormatter ? DayTick : undefined}
                         scale={'time'}
                         type={'number'}
                         axisLine={false}
@@ -221,7 +218,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         ticks={xAxisTicks}
                         includeHidden
                         interval={0}
-                        {...props.xAxisProps}
+                        {...props.options?.xAxisOptions}
                     />
                     {props.children}
                     {props.chartHasData &&
@@ -238,9 +235,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             key={`${gradientKey}${i}`}
                                             type="monotone"
                                             dataKey={dk}
-                                            dot={!((props.options as MultiSeriesLineChartOptions)?.hideDots ?? false)}
                                             stroke={`url(#${gradientKey}${i})`}
-                                            {...props.options}
+                                            {...(props.options as MultiSeriesLineChartOptions)?.lineOptions}
                                         />
                                     )}
                                 </>

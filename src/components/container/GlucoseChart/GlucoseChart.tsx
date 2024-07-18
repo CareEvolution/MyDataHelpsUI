@@ -110,7 +110,7 @@ export default function (props: GlucoseChartProps) {
 
     chartData.sort((a, b) => compareAsc(a.timestamp, b.timestamp));
 
-    let chartDomain = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
+    let chartDomain: [number, number] = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
     let chartTicks = [
         selectedDate.valueOf(),
         add(selectedDate, { hours: 3 }).valueOf(),
@@ -215,23 +215,25 @@ export default function (props: GlucoseChartProps) {
                     chartHasData={!!glucose && glucose.length > 0}
                     chartType="Line"
                     options={{
-                        dot: customDot,
-                        label: customDotLabel,
-                        strokeWidth: 1.5,
-                        animationDuration: 500
-                    }}
-                    containerProps={{
-                        height: 166
-                    } as ResponsiveContainerProps}
-                    xAxisProps={{
-                        domain: chartDomain,
-                        ticks: chartTicks,
-                        tickFormatter: chartTickFormatter
-                    }}
-                    yAxisProps={{
-                        width: 24,
-                        domain: [20, 220],
-                        ticks: [60, 100, 140, 180, 220]
+                        lineOptions: {
+                            dot: customDot,
+                            label: customDotLabel,
+                            strokeWidth: 1.5,
+                            animationDuration: 500
+                        },
+                        containerOptions: {
+                            height: 166
+                        },
+                        xAxisOptions: {
+                            domain: chartDomain,
+                            ticks: chartTicks,
+                            tickFormatter: chartTickFormatter
+                        },
+                        yAxisOptions: {
+                            width: 24,
+                            domain: [20, 220],
+                            ticks: [60, 100, 140, 180, 220]
+                        }
                     }}
                 >
                     <ReferenceLine
