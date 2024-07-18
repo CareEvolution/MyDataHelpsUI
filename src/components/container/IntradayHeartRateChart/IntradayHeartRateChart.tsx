@@ -99,7 +99,15 @@ export default function (props: IntradayHeartRateChartProps) {
         iHrData = undefined;
     }
 
-    const options: MultiSeriesLineChartOptions = { connectNulls: false, hideDots: true, thresholds: props.thresholds, domainMin: yMinValue, domainMax: yMaxValue };
+    const options: MultiSeriesLineChartOptions = {
+        thresholds: props.thresholds,
+        domainMin: yMinValue,
+        domainMax: yMaxValue,
+        lineOptions: {
+            connectNulls: false,
+            dot: false
+        }
+    };
 
     return <div ref={props.innerRef}>
         <TimeSeriesChart

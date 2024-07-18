@@ -67,8 +67,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         } else if (intervalType === "Day") {
-            const startTime = new Date(props.intervalStart);
-            startTime.setHours(0, 0, 0, 0);
             if (currentDate.getHours() === 0) {
                 return <></>;
             }
@@ -194,7 +192,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         <div className="chart-container">
             {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">No Data</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
-            <ResponsiveContainer width="100%" height={150}>
+            <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
@@ -208,12 +206,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         width={32}
                         domain={yAxisDomain}
                         allowDataOverflow
+                        {...props.options?.yAxisOptions}
                     />
                     <XAxis
                         id="myXAxis"
                         domain={[xAxisTicks![0], xAxisTicks![xAxisTicks!.length - 1]]}
                         padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
-                        tick={DayTick}
+                        tick={!props.options?.xAxisOptions?.tickFormatter ? DayTick : undefined}
                         scale={'time'}
                         type={'number'}
                         axisLine={false}
@@ -224,6 +223,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         ticks={xAxisTicks}
                         allowDataOverflow
                         interval={0}
+                        {...props.options?.xAxisOptions}
                     />
                     {props.children}
                     {props.chartHasData &&
@@ -236,12 +236,12 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                     )}
                                     {keys.map((dk, i) =>
                                         <Line
-                                            connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls}
                                             strokeWidth={2}
                                             key={`${gradientKey}${i}`}
-                                            type="monotone" dataKey={dk}
-                                            dot={!((props.options as MultiSeriesLineChartOptions)?.hideDots ?? false)}
+                                            type="monotone"
+                                            dataKey={dk}
                                             stroke={`url(#${gradientKey}${i})`}
+                                            {...(props.options as MultiSeriesLineChartOptions)?.lineOptions}
                                         />
                                     )}
                                 </>

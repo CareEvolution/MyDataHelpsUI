@@ -7,6 +7,7 @@ import { predictableRandomNumber } from "../../../helpers/predictableRandomNumbe
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 import { Bar } from "recharts";
+import { format, startOfToday } from "date-fns";
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -257,7 +258,15 @@ const thresholds: ChartThreshold[] = [
     { value: 120, referenceLineColor: "orange", overThresholdColor: "#ffdd21" },
     { value: 180, referenceLineColor: "red", overThresholdColor: "#ff0000" }
 ];
-const multiSeriesLineOptions: MultiSeriesLineChartOptions = { domainMin: 0, domainMax: 200, thresholds: thresholds, connectNulls: false, hideDots: true };
+const multiSeriesLineOptions: MultiSeriesLineChartOptions = {
+    thresholds: thresholds,
+    domainMin: 0,
+    domainMax: 200,
+    lineOptions: {
+        connectNulls: false,
+        dot: false
+    }
+};
 
 export const multipleLineChartWithThresholds: Story = {
     args: {
@@ -372,7 +381,11 @@ export const overlay: Story = {
         chartHasData: true,
         series: [{ dataKey: 'value' }],
         intervalStart: new Date(),
-        options: { hideDots: true }
+        options: {
+            lineOptions: {
+                dot: false
+            }
+        }
     },
     loaders: [
         async () => {
@@ -403,4 +416,80 @@ export const overlay: Story = {
             <TimeSeriesChart {...args} data={randomData} children={children} />
         </Card>
     </Layout>
+};
+
+export const customizedLineChart: StoryObj = {
+    args: {},
+    loaders: [
+        async () => {
+            return {
+                randomData: await getRandomIntradayData(new Date(), 60),
+            };
+        }
+    ],
+    render: (_, { loaded: { randomData } }) => {
+        let selectedDate = startOfToday();
+
+        const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date } }) => {
+            return <svg>
+                <circle cx={props.cx} cy={props.cy} r={8} fill="red" />
+            </svg>;
+        };
+
+        const customDotLabel = (props: any) => {
+            return <text x={props.x} y={props.y} dy={3} fill="#fff" fontSize={9} textAnchor="middle">{props.index}</text>;
+        };
+
+        let chartDomain: [number, number] = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
+
+        let chartTicks = [
+            selectedDate.valueOf(),
+            add(selectedDate, { hours: 6 }).valueOf(),
+            add(selectedDate, { hours: 12 }).valueOf(),
+            add(selectedDate, { hours: 18 }).valueOf(),
+            add(selectedDate, { hours: 24 }).valueOf()
+        ];
+
+        let chartTickFormatter = (value: number) => {
+            if (value === chartDomain[0] || value === chartDomain[1]) {
+                return "";
+            }
+            return format(new Date(value), 'h aaa');
+        }
+
+        return <Layout colorScheme="auto">
+            <Card>
+                <TimeSeriesChart
+                    title="Customized Line Chart"
+                    intervalType="Day"
+                    chartType="Line"
+                    chartHasData={true}
+                    series={[{ dataKey: 'value' }]}
+                    intervalStart={selectedDate}
+                    data={randomData}
+                    options={{
+                        lineOptions: {
+                            dot: customDot,
+                            label: customDotLabel,
+                            strokeWidth: 2,
+                            animationDuration: 500
+                        },
+                        containerOptions: {
+                            height: 200
+                        },
+                        xAxisOptions: {
+                            domain: chartDomain,
+                            ticks: chartTicks,
+                            tickFormatter: chartTickFormatter
+                        },
+                        yAxisOptions: {
+                            width: 40,
+                            domain: [20, 260],
+                            ticks: [-100, -60, -20, 20, 60, 100, 140, 180, 220, 260]
+                        }
+                    }}
+                />
+            </Card>
+        </Layout>;
+    }
 };
