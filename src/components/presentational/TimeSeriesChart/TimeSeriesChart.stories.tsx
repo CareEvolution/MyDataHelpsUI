@@ -6,7 +6,6 @@ import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
-import { isSameDay, startOfDay } from "date-fns";
 import { Bar } from "recharts";
 
 const meta: Meta<typeof TimeSeriesChart> = {
@@ -342,36 +341,6 @@ export const loading: Story = {
     },
 };
 
-const generateSteps = (date: Date) => {
-    let steps: { timestamp: Date, value: number }[] = [];
-
-    let timestamp = add(startOfDay(date), { minutes: 15 });
-    while (isSameDay(timestamp, date)) {
-        let newValue = Math.round((Math.random() * 200) + 20);
-        if (timestamp.getHours() < 7 || timestamp.getHours() > 22) {
-            newValue = 0;
-        }
-
-        steps.push({
-            timestamp: timestamp,
-            value: newValue
-        });
-
-        timestamp = add(timestamp, { minutes: 30 });
-    }
-
-    return steps;
-};
-
-let steps = generateSteps(new Date());
-let maxSteps = Math.max(...steps.map(r => r.value));
-let stepsScale = 220 / (maxSteps * 0.8);
-let overlaySteps = steps
-    .filter(r => r.value > 0)
-    .map(r => {
-        return { ...r, value: r.value * stepsScale }
-    });
-
 export const overlay: Story = {
     args: {
         title: "Line Chart With Overlay",
@@ -380,12 +349,35 @@ export const overlay: Story = {
         chartHasData: true,
         series: [{ dataKey: 'value' }],
         intervalStart: new Date(),
-        options: { hideDots: true },
-        children: <Bar data={overlaySteps} type="monotone" dataKey="value" fill="#f5b722" opacity={0.3} radius={[2, 2, 0, 0]} />
+        options: { hideDots: true }
     },
     loaders: [
-        async () => ({
-            randomData: await getRandomIntradayData(new Date(), 15)
-        })
-    ]
+        async () => {
+            let steps = await getRandomIntradayData(new Date(), 30);
+
+            steps.forEach(s => {
+                if (s.timestamp.getHours() < 7 || s.timestamp.getHours() > 22) {
+                    s.value = 0;
+                } else {
+                    s.value += 20;
+                }
+            });
+
+            let maxSteps = Math.max(...steps.map(r => r.value));
+            let stepsScale = 220 / (maxSteps * 0.8);
+            let overlaySteps = steps.filter(r => r.value > 0).map(r => {
+                return { ...r, value: r.value * stepsScale }
+            });
+
+            return {
+                randomData: await getRandomIntradayData(new Date(), 15),
+                children: <Bar data={overlaySteps} type="monotone" dataKey="value" fill="#f5b722" opacity={0.3} radius={[2, 2, 0, 0]} />
+            };
+        }
+    ],
+    render: (args: TimeSeriesChartProps, { loaded: { randomData, children } }) => <Layout colorScheme="auto">
+        <Card>
+            <TimeSeriesChart {...args} data={randomData} children={children} />
+        </Card>
+    </Layout>
 };
