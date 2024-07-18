@@ -51,6 +51,7 @@ export type TimeSeriesChartLabel = ReactElement<SVGElement> | ((props: any) => R
 export type TimeSeriesChartLineDot = ReactElement<SVGElement> | ((props: any) => ReactElement<SVGElement>) | boolean;
 
 export interface TimeSeriesChartLineOptions {
+    connectNulls?: boolean;
     dot?: TimeSeriesChartLineDot;
     label?: TimeSeriesChartLabel;
     strokeWidth?: number;
