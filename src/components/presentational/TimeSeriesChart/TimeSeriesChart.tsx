@@ -205,6 +205,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         tickLine={false}
                         width={32}
                         domain={yAxisDomain}
+                        {...props.yAxisProps}
                     />
                     <XAxis
                         id="myXAxis"
