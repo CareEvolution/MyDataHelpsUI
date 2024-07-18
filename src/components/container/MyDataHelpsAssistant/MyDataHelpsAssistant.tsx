@@ -53,13 +53,9 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     const renderMermaid = async function () {
 
-        console.log(`Calling renderMermaid`);
-
         let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
         if (mermaidNodes && mermaidNodes.length > 0) {
             mermaidNodes.forEach(n => n.removeAttribute("data-processed"));
-
-            console.log(`Mermaid run`);
 
             await mermaid.run({
                 nodes: mermaidNodes,
