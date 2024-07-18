@@ -35,7 +35,6 @@ export interface TimeSeriesChartProps {
     containerProps?: ResponsiveContainerProps;
     xAxisProps?: XAxisProps;
     yAxisProps?: YAxisProps;
-    lineProps?: LineProps;
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
@@ -235,13 +234,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                     )}
                                     {keys.map((dk, i) =>
                                         <Line
-                                            connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls}
                                             strokeWidth={2}
                                             key={`${gradientKey}${i}`}
-                                            type="monotone" dataKey={dk}
+                                            type="monotone"
+                                            dataKey={dk}
                                             dot={!((props.options as MultiSeriesLineChartOptions)?.hideDots ?? false)}
                                             stroke={`url(#${gradientKey}${i})`}
-                                            {...props.lineProps as any}
+                                            {...props.options}
                                         />
                                     )}
                                 </>

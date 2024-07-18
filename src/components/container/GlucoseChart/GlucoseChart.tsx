@@ -210,10 +210,16 @@ export default function (props: GlucoseChartProps) {
                 <TimeSeriesChart
                     intervalType="Day"
                     intervalStart={selectedDate}
-                    data={chartData}
+                    data={chartData as any}
                     series={[{ dataKey: 'value', color: '#999' }]}
                     chartHasData={!!glucose && glucose.length > 0}
                     chartType="Line"
+                    options={{
+                        dot: customDot,
+                        label: customDotLabel,
+                        strokeWidth: 1.5,
+                        animationDuration: 500
+                    }}
                     containerProps={{
                         height: 166
                     } as ResponsiveContainerProps}
@@ -226,12 +232,6 @@ export default function (props: GlucoseChartProps) {
                         width: 24,
                         domain: [20, 220],
                         ticks: [60, 100, 140, 180, 220]
-                    }}
-                    lineProps={{
-                        dot: customDot,
-                        label: customDotLabel,
-                        strokeWidth: 1.5,
-                        animationDuration: 500
                     }}
                 >
                     <ReferenceLine
