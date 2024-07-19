@@ -1,101 +1,218 @@
+html {
+  font-size: 16px;
+}
+
+@supports (font: -apple-system-body) {
+  html {
+    font: -apple-system-body;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.3;
+}
+
 /* variable declarations */
 :root {
-    --mdhui-title-font-size: 1.7em;
-    --mdhui-title-text-align: center;
-    --mdhui-title-color: inherit;
-    --mdhui-title-font-weight: normal;
+  --mdhui-title-font-size: 1.5em;
+  --mdhui-title-text-align: center;
+  --mdhui-title-color: inherit;
+  --mdhui-title-font-weight: normal;
 
-    --mdhui-text-font-size: 1em;
-    --mdhui-text-text-align: center;
-    --mdhui-text-color: inherit;
-    --mdhui-text-font-weight: normal;
+  --mdhui-text-font-size: 1em;
+  --mdhui-text-text-align: center;
+  --mdhui-text-color: inherit;
+  --mdhui-text-font-weight: normal;
 
-    --mdhui-next-button-color: #FFF;
-    --mdhui-next-button-background-color: #5381c3;
-    --mdhui-next-button-font-weight: bold;
-    --mdhui-next-button-letter-spacing: 0.5px;
-    --mdhui-next-button-text-transform: uppercase;
-    --mdhui-next-button-background-image: none;
+  --mdhui-next-button-color: #FFF;
+  --mdhui-next-button-background-color: #5381c3;
+  --mdhui-next-button-font-weight: bold;
+  --mdhui-next-button-letter-spacing: 0.5px;
+  --mdhui-next-button-text-transform: none;
+  --mdhui-next-button-background-image: none;
 }
 
-.mdhui-step-title {
-  text-align: var(--mdhui-title-text-align);
-  font-size: var(--mdhui-title-font-size);
-  line-height: 1.2em;
-  font-weight: var(--mdhui-title-font-weight);
-  margin-top: 20px;
-  margin-bottom: 15px;
-  margin-left: 20px;
-  margin-right: 20px;  
-  position: relative;
-  display: block;
-  color: var(--mdhui-title-color);
+.mdhui-html-step {
+  margin: 20px;
+  margin-top: 10px;
 }
 
-.mdhui-step-text {
-  font-size: var(--mdhui-text-font-size);
+.mdhui-html-step a {
+  color: rgba(0, 127, 249, 1);
+  text-decoration: none;
+}
+
+.mdhui-html-step p {
+  font-size: 1em;
   line-height: 1.3em;
-  text-align: var(--mdhui-text-text-align);
-  font-weight: var(--mdhui-text-font-weight);
+  text-align: center;
   margin-top: 15px;
   margin-bottom: 15px;
-  margin-left: 20px;
-  margin-right: 20px;  
-  white-space: pre-line;
+  font-size: var(--mdhui-text-font-size);
+  text-align: var(--mdhui-text-text-align);
+  font-weight: var(--mdhui-text-font-weight);
   color: var(--mdhui-text-color);
 }
 
-.mdhui-step-next-button {
-  margin: 20px;
-  padding: 16px;
-  background: var(--mdhui-next-button-background-color);
+.mdhui-html-step .title {
+  text-align: var(--mdhui-title-text-align);
+  font-size: var(--mdhui-title-font-size);
+  font-weight: var(--mdhui-title-font-weight);
+  color: var(--mdhui-title-color);
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.mdhui-html-step h1,
+.mdhui-html-step h2,
+.mdhui-html-step h3,
+.mdhui-html-step h4,
+.mdhui-html-step h5,
+.mdhui-html-step h6 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.mdhui-html-step h1 {
+  font-size: 2em;
+}
+
+.mdhui-html-step h2 {
+  font-size: 1.5em;
+}
+
+.mdhui-html-step h3 {
+  font-size: 1.17em;
+}
+
+.mdhui-html-step h4 {
+  font-size: 1em;
+}
+
+.mdhui-html-step h5 {
+  font-size: 0.83em;
+}
+
+.mdhui-html-step h6 {
+  font-size: 0.67em;
+}
+
+.mdhui-html-step button {
+  padding: 15px;
+  background-color: var(--mdhui-next-button-background-color);
   background-image: var(--mdhui-next-button-background-image);
   font-size: 1em;
   color: var(--mdhui-next-button-color);
   font-weight: var(--mdhui-next-button-font-weight);
   letter-spacing: var(--mdhui-next-button-letter-spacing);
   text-transform: var(--mdhui-next-button-text-transform);
-  border: solid 1px var(--mdhui-color-primary);
+  border: solid 1px var(--mdhui-next-button-background-color);
   border-radius: 5px;
   cursor: pointer;
-  width: calc(100% - 40px);
   box-sizing: border-box;
   text-align: center;
+  width: 100%;
+  margin-top: 20px;
+  display: block;
 }
 
-.mdhui-step-next-button:disabled,
-.mdhui-step-next-button[disabled] {
-  opacity: 0.65;
+.mdhui-html-step button:disabled,
+.mdhui-html-step button[disabled] {
+  background: #FFF !important;
+  color: #999 !important;
+  border-color: #ccc !important;
   cursor: not-allowed;
 }
 
-.mdhui-step-image {
-    text-align: center;
+.mdhui-html-step .form-item {
+  margin-bottom: 24px;
 }
 
-.mdhui-step-image img {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    padding-top: 40px;
-    padding-bottom: 40px;
+.mdhui-html-step .form-item label {
+  margin-bottom: 8px;
+  margin-top: 8px;
+  font-weight: normal;
+  display: block;
 }
 
-.mdhui-step-spinner {
-    border: 10px solid #f3f3f3;
-    border-top: 10px solid #2c62ce;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-    margin: 2em auto;
+.mdhui-html-step input[type="text"],
+.mdhui-html-step input[type="date"],
+.mdhui-html-step input[type="datetime-local"],
+.mdhui-html-step input[type="number"],
+.mdhui-html-step input[type="tel"],
+.mdhui-html-step input[type="time"] {
+  border: 1px solid #C6CAD5;
+  border-radius: 6px;
+  padding: 12px 16px;
+  line-height: 1.2em;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  appearance: none;
+  outline-offset: -1px;
+  background: none;
+  text-align: left;
+  display: block;
+  font-family: inherit;
+}
+
+.mdhui-html-step input[type="text"]:placeholder,
+.mdhui-html-step input[type="date"]:placeholder,
+.mdhui-html-step input[type="datetime-local"]:placeholder,
+.mdhui-html-step input[type="number"]:placeholder,
+.mdhui-html-step input[type="tel"]:placeholder,
+.mdhui-html-step input[type="time"]:placeholder {
+  color: #8E90A6;
+  /* Firefox */
+  opacity: 1;
+}
+
+.mdhui-html-step select {
+  border: 1px solid #C6CAD5;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  line-height: 1.2em;
+  outline-offset: -1px;
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.mdhui-html-step textarea {
+  border: 1px solid #C6CAD5;
+  border-radius: 6px;
+  padding: 12px 16px;
+  line-height: 1.2em;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  appearance: none;
+  outline-offset: -1px;
+  background: none;
+  text-align: left;
+  display: block;
+  font-family: inherit;
+  min-height: 150px;
+}
+
+.mdhui-html-step .mdhui-step-spinner {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #2c62ce;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 2em auto;
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
 }

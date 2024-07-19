@@ -1,7 +1,6 @@
 import React from "react";
 import "@careevolution/mydatahelps-js";
 import { Global as EmotionGlobal, css } from "@emotion/react";
-import elementsCSS from "./elements.css?raw";
 import classesCSS from "./classes.css?raw";
 import { InnerHTML } from "./InnerHtml";
 
@@ -33,8 +32,7 @@ export default function (props: HtmlStepProps) {
     const customStyleVars = makeCustomStyleVars(props.styles);
 
     return (
-        <>
-            <EmotionGlobal styles={elementsCSS} />
+        <div className="mdhui-html-step">
             <EmotionGlobal styles={classesCSS} />
             {customStyleVars &&
                 <EmotionGlobal
@@ -44,7 +42,7 @@ export default function (props: HtmlStepProps) {
                 />
             }
             {props.html && <InnerHTML html={props.html} />}
-        </>
+        </div>
     );
 }
 
