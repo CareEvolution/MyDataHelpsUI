@@ -68,7 +68,7 @@ function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomIntradayWithinDomainMultipointData(start: Date) {
+function getRandomIntradayWithinDomainMultipointData(start: Date, domainMin: number = 0, domainMax: number = 200) {
     var responses = [];
     let currentTime = new Date(start);
     currentTime.setHours(0, 0, 0, 0);
@@ -76,9 +76,8 @@ function getRandomIntradayWithinDomainMultipointData(start: Date) {
     while (currentTime < endTime) {
         responses.push({
             timestamp: currentTime,
-            key1: (getRandomInt(0, 200)),
-            key2: (getRandomInt(0, 200)),
-            key3: (getRandomInt(0, 200)),
+            key1: (getRandomInt(domainMin - 6, domainMax + 15)),
+            key2: (getRandomInt(domainMin - 2, domainMax + 5)),
         });
         currentTime = add(currentTime, { minutes: 5 });
     }
@@ -279,6 +278,25 @@ export const multipleLineChartWithThresholds: Story = {
     ]
 };
 
+export const multipleLineChartWithThresholdsSmallRange: Story = {
+    args: {
+        title: "Multiple Line Chart with Thresholds",
+        intervalType: "Day",
+        chartType: "Line",
+        chartHasData: true,
+        series: [{ dataKey: 'key1', color: 'blue' }, { dataKey: 'key2', color: 'purple' }, { dataKey: 'key3', color: 'black' }],
+        data: undefined,
+        intervalStart: new Date(),
+        options: multiSeriesLineOptions,
+        tooltip
+    },
+    loaders: [
+        async () => ({
+            randomData: await getRandomIntradayWithinDomainMultipointData(new Date(), 20, 150)
+        })
+    ]
+};
+
 export const multipleBarChart: Story = {
     args: {
         title: "Multiple Bar Chart",
@@ -320,12 +338,17 @@ export const noData: Story = {
         title: "No Data Chart",
         intervalType: "Week",
         chartType: "Line",
-        chartHasData: true,
+        chartHasData: false,
         data: [],
         series: [{ dataKey: 'value' }],
         intervalStart: new Date(),
         tooltip
     },
+    loaders: [
+        async () => ({
+            randomData: []
+        })
+    ]
 };
 
 export const loading: Story = {

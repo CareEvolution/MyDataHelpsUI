@@ -174,11 +174,15 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let yAxisDomain: AxisDomain | undefined = undefined;
     if (props.options && props.chartType === "Line") {
         let domainMin = (props.options as MultiSeriesLineChartOptions)?.domainMin;
-        if (domainMin === "Auto") {
-            yAxisDomain = ["auto", "auto"];
-        } else if (domainMin !== undefined) {
-            yAxisDomain = [domainMin, "auto"];
+        let domainMax = (props.options as MultiSeriesLineChartOptions)?.domainMax;
+        const getDomainValue = (v: number | "Auto" | undefined) => {
+            if(v === "Auto" || v === undefined) return "auto";
+            return v;
         }
+        yAxisDomain = [
+            getDomainValue(domainMin),
+            getDomainValue(domainMax)
+        ];
     }
 
     const xAxisTicks = getXAxisTicks();
@@ -203,6 +207,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         tickLine={false}
                         width={32}
                         domain={yAxisDomain}
+                        allowDataOverflow
                     />
                     <XAxis
                         id="myXAxis"
@@ -217,7 +222,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         minTickGap={0}
                         tickLine={false}
                         ticks={xAxisTicks}
-                        includeHidden
+                        allowDataOverflow
                         interval={0}
                     />
                     {props.children}
@@ -225,7 +230,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         <>
                             {props.chartType === "Line" &&
                                 <>
-                                    {createLineChartDefs(layoutContext, gradientKey, props.series, props.options)}
+                                    {createLineChartDefs(layoutContext, gradientKey, props.series, props.options, keys, dataToDisplay!)}
                                     {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map(threshold =>
                                         <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                                     )}
