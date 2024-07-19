@@ -101,8 +101,9 @@ export default function (props: IntradayHeartRateChartProps) {
 
     const options: MultiSeriesLineChartOptions = {
         thresholds: props.thresholds,
-        domainMin: yMinValue,
-        domainMax: yMaxValue,
+        yAxisOptions: {
+            domain: [yMinValue, yMaxValue]
+        },
         lineOptions: {
             connectNulls: false,
             dot: false

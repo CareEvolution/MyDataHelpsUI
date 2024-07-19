@@ -28,7 +28,7 @@ export interface SurveyAnswerChartProps {
     weekStartsOn?: WeekStartsOn
     series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[],
     chartType: "Line" | "Bar" | "Area"
-    options?: MultiSeriesLineChartOptions| MultiSeriesBarChartOptions | MultiSeriesBarChartOptions,
+    options?: MultiSeriesLineChartOptions| MultiSeriesBarChartOptions,
     expectedDataInterval?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     previewState?: "default"

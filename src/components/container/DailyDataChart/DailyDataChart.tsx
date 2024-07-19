@@ -150,7 +150,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
         if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
-            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = { domainMin: lineOptions?.domainMin };
+            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = {
+                yAxisOptions: {
+                    domain: [lineOptions?.domainMin === "Auto" ? 'auto' : lineOptions?.domainMin ?? "auto", "auto"]
+                }
+            };
             return [
                 [{
                     dataKey: 'value',

@@ -260,8 +260,9 @@ const thresholds: ChartThreshold[] = [
 ];
 const multiSeriesLineOptions: MultiSeriesLineChartOptions = {
     thresholds: thresholds,
-    domainMin: 0,
-    domainMax: 200,
+    yAxisOptions: {
+        domain: [0, 200]
+    },
     lineOptions: {
         connectNulls: false,
         dot: false

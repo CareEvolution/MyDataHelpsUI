@@ -36,14 +36,14 @@ export interface TimeSeriesChartContainerOptions {
 }
 
 export interface TimeSeriesChartXAxisOptions {
-    domain?: [number, number];
+    domain?: [number | string, number | string];
     ticks?: (string | number)[];
     tickFormatter?: (value: any, index: number) => string;
 }
 
 export interface TimeSeriesChartYAxisOptions {
     width?: number;
-    domain?: [number, number];
+    domain?: [number | string, number | string];
     ticks?: (string | number)[];
 }
 
@@ -66,8 +66,6 @@ export interface TimeSeriesChartOptions {
 
 export interface MultiSeriesLineChartOptions extends TimeSeriesChartOptions {
     thresholds?: ChartThreshold[];
-    domainMin?: number | "Auto";
-    domainMax?: number;
     lineOptions?: TimeSeriesChartLineOptions;
 }
 
