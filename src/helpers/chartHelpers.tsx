@@ -24,7 +24,7 @@ export function createLineChartDefs(
         return 0;
     }
 
-    const createStopsFromThresholds = function (defaultLineColor: string, chartThresholds: ChartThreshold[] | undefined, index: number) {
+    const createStopsFromThresholds = function (defaultLineColor: string, chartThresholds: ChartThreshold[] | undefined, dataKey: string) {
         let stops: any[] = [];
         let lineColor: string = defaultLineColor;
         let thresholds = chartThresholds ?? [];
@@ -32,10 +32,10 @@ export function createLineChartDefs(
         thresholds.sort((a, b) => a.value - b.value);
 
         const lineRange = data.reduce((result, dataPoint) => ({
-            min: (dataPoint[dataKeys[index]] < result.min || result.min === 0) ? dataPoint[dataKeys[index]] : result.min,
-            max: (dataPoint[dataKeys[index]] > result.max || result.max === 0) ? dataPoint[dataKeys[index]] : result.max,
-        }), { min: 0, max: 0 });
-
+            min: (dataPoint[dataKey] < result.min) ? dataPoint[dataKey] : result.min,
+            max: (dataPoint[dataKey] > result.max) ? dataPoint[dataKey] : result.max,
+        }), { min: data[0][dataKey], max: data[0][dataKey] });
+        
         if (thresholds.length && lineRange.min >= thresholds[0].value) {
             lineColor = colorOrDefault(thresholds[0].overThresholdColor, defaultLineColor);
         }
@@ -59,7 +59,7 @@ export function createLineChartDefs(
             let lineColor = colorOrDefault(s.color, "var(--mdhui-color-primary");
 
             return <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
-                {createStopsFromThresholds(lineColor, options?.thresholds, i)}
+                {createStopsFromThresholds(lineColor, options?.thresholds, dataKeys[i])}
             </linearGradient>;
         })}
     </defs>;
