@@ -6,6 +6,7 @@ import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
+import { Bar } from "recharts";
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -83,21 +84,17 @@ function getRandomIntradayWithinDomainMultipointData(start: Date, domainMin: num
     return responses;
 }
 
-async function getRandomIntradayData(start: Date) {
+async function getRandomIntradayData(start: Date, intervalMinutes?: number) {
     var responses: { timestamp: Date, value: number }[] = [];
     let currentTime = new Date(start);
     currentTime.setHours(0, 0, 0, 0);
     let endTime = add(currentTime, { hours: 24 });
-    console.log(currentTime);
-    console.log(endTime);
     while (currentTime < endTime) {
         responses.push({
             timestamp: currentTime,
             value: (await predictableRandomNumber(currentTime.toISOString())) % 200
         });
-        currentTime = add(currentTime, { minutes: 5 });
-        console.log(currentTime);
-        console.log(endTime);
+        currentTime = add(currentTime, { minutes: intervalMinutes ?? 5 });
     }
     return responses;
 }
@@ -155,20 +152,20 @@ export const lineChartWithGaps: Story = {
     ]
 };
 
-export const lineChartsWithGapsAndTooltipSync : Story = {
+export const lineChartsWithGapsAndTooltipSync: Story = {
     args: {
         title: "Line Charts Tooltip Syncing",
         intervalType: "Week",
         chartType: "Line",
         chartHasData: true,
-        expectedDataInterval: {days: 1},
-        series: [ { dataKey: 'value' }],
+        expectedDataInterval: { days: 1 },
+        series: [{ dataKey: 'value' }],
         data: undefined,
         intervalStart: new Date(),
         tooltip: tooltip
     },
     loaders: [
-        async()=>({
+        async () => ({
             randomDataWithGaps: await getRandomDataWithGaps(new Date(), addDays(new Date(), 6)),
             randomData: await getRandomData(new Date(), addDays(new Date(), 6)),
         })
@@ -176,13 +173,13 @@ export const lineChartsWithGapsAndTooltipSync : Story = {
     render: (args: TimeSeriesChartProps, { loaded: { randomDataWithGaps, randomData } }) => <Layout colorScheme="auto">
         <Card>
             <TimeSeriesChart {...args} data={randomDataWithGaps} syncId="A" />
-            <TimeSeriesChart {...args} data={randomData}  syncId="A"/>
+            <TimeSeriesChart {...args} data={randomData} syncId="A" />
         </Card>
     </Layout>
 };
 
 
-export const lineChartIntraday : Story = {
+export const lineChartIntraday: Story = {
     args: {
         title: "Intraday Chart",
         intervalType: "Day",
@@ -365,4 +362,45 @@ export const loading: Story = {
         intervalStart: new Date(),
         tooltip
     },
+};
+
+export const overlay: Story = {
+    args: {
+        title: "Line Chart With Overlay",
+        intervalType: "Day",
+        chartType: "Line",
+        chartHasData: true,
+        series: [{ dataKey: 'value' }],
+        intervalStart: new Date(),
+        options: { hideDots: true }
+    },
+    loaders: [
+        async () => {
+            let steps = await getRandomIntradayData(new Date(), 30);
+
+            steps.forEach(s => {
+                if (s.timestamp.getHours() < 7 || s.timestamp.getHours() > 22) {
+                    s.value = 0;
+                } else {
+                    s.value += 20;
+                }
+            });
+
+            let maxSteps = Math.max(...steps.map(r => r.value));
+            let stepsScale = 220 / (maxSteps * 0.8);
+            let overlaySteps = steps.filter(r => r.value > 0).map(r => {
+                return { ...r, value: r.value * stepsScale }
+            });
+
+            return {
+                randomData: await getRandomIntradayData(new Date(), 15),
+                children: <Bar data={overlaySteps} type="monotone" dataKey="value" fill="#f5b722" opacity={0.3} radius={[2, 2, 0, 0]} />
+            };
+        }
+    ],
+    render: (args: TimeSeriesChartProps, { loaded: { randomData, children } }) => <Layout colorScheme="auto">
+        <Card>
+            <TimeSeriesChart {...args} data={randomData} children={children} />
+        </Card>
+    </Layout>
 };
