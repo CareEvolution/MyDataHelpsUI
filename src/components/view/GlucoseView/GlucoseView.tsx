@@ -3,8 +3,9 @@ import './GlucoseView.css';
 import Layout from '../../presentational/Layout';
 import NavigationBar from '../../presentational/NavigationBar';
 import language from '../../../helpers/language';
-import { DateRangeCoordinator } from "../../presentational";
+import { Card, DateRangeCoordinator, MealLog } from '../../presentational';
 import GlucoseChart from '../../container/GlucoseChart';
+import { MealCoordinator } from '../../container';
 
 export interface GlucoseViewProps {
     previewState?: 'default'
@@ -15,11 +16,14 @@ export default function (props: GlucoseViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'} className="mdhui-glucose">
         <NavigationBar title={language('glucose-view-title')} showCloseButton={true} variant="compressedModal" />
         <DateRangeCoordinator intervalType="Day" variant="rounded">
-            <GlucoseChart
-                previewState={props.previewState === 'default' ? 'with data and meals' : undefined}
-                showStats={true}
-                showMeals={true}
-            />
+            <MealCoordinator previewState={props.previewState === 'default' ? 'with data' : undefined}>
+                <Card>
+                    <GlucoseChart previewState={props.previewState === 'default' ? 'with data' : undefined} showStats={true} />
+                </Card>
+                <Card>
+                    <MealLog />
+                </Card>
+            </MealCoordinator>
         </DateRangeCoordinator>
     </Layout>;
 }

@@ -51,11 +51,3 @@
     grid-column-gap: 16px;
     padding: 0 16px 16px;
 }
-
-.mdhui-glucose-chart-meal-log {
-    padding: 16px 0;
-}
-
-.mdhui-glucose-chart-meal-log .mdhui-title {
-    padding: 0 16px;
-}

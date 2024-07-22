@@ -1,7 +1,8 @@
 import React from 'react';
 import GlucoseChart, { GlucoseChartProps } from './GlucoseChart';
-import { DateRangeCoordinator, Layout } from '../../presentational';
-import { GlucoseChartPreviewState } from "./GlucoseChart.previewData";
+import { Card, DateRangeCoordinator, Layout } from '../../presentational';
+import { GlucoseChartPreviewState } from './GlucoseChart.previewData';
+import { MealCoordinator } from '../../container';
 
 export default {
     title: 'Container/GlucoseChart',
@@ -12,12 +13,24 @@ export default {
 interface GlucoseChartStoryArgs extends GlucoseChartProps {
     colorScheme: 'auto' | 'light' | 'dark';
     state: GlucoseChartPreviewState | 'live';
+    withMeals: true;
 }
 
 const render = (args: GlucoseChartStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <DateRangeCoordinator intervalType='Day' variant='rounded'>
-            <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+            {!args.withMeals &&
+                <Card>
+                    <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                </Card>
+            }
+            {args.withMeals &&
+                <MealCoordinator previewState={args.state !== 'live' ? 'with data' : undefined}>
+                    <Card>
+                        <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                    </Card>
+                </MealCoordinator>
+            }
         </DateRangeCoordinator>
     </Layout>;
 };
@@ -25,9 +38,9 @@ const render = (args: GlucoseChartStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        state: 'with data and meals',
-        showStats: true,
-        showMeals: true
+        state: 'with data',
+        withMeals: true,
+        showStats: true
     },
     argTypes: {
         colorScheme: {
@@ -38,13 +51,13 @@ export const Default = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data', 'with data and meals', 'live']
+            options: ['loading', 'no data', 'with data', 'live']
+        },
+        withMeals: {
+            name: 'with meals'
         },
         showStats: {
             name: 'show stats'
-        },
-        showMeals: {
-            name: 'show meals'
         }
     },
     render: render

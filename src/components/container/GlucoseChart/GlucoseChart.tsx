@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getMeals, getSleep, getSteps, Meal, MealType, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleep, getSteps, MealType, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { Button, Card, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart, Title } from '../../presentational';
+import { Button, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
-import { Bar, ReferenceLine, ResponsiveContainerProps } from 'recharts';
-import SingleMeal from '../../presentational/SingleMeal';
+import { Bar, ReferenceLine } from 'recharts';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faShoePrints, faWineBottle } from '@fortawesome/free-solid-svg-icons';
+import { MealContext } from '../../container';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -16,21 +16,21 @@ export interface GlucoseChartProps {
     maxDate?: Date;
     innerRef?: React.Ref<HTMLDivElement>;
     showStats?: boolean;
-    showMeals?: boolean;
 }
 
 export default function (props: GlucoseChartProps) {
     const dateRangeContext = useContext(DateRangeContext);
+    const mealContext = useContext(MealContext);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [glucose, setGlucose] = useState<Reading[]>();
     const [steps, setSteps] = useState<Reading[]>();
     const [sleep, setSleep] = useState<Reading[]>();
-    const [meals, setMeals] = useState<Meal[]>();
-    const [selectedMeal, setSelectedMeal] = useState<Meal>();
     const [stressLevel, setStressLevel] = useState<number>();
 
     let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
+    let meals = mealContext?.meals ?? [];
+    let selectedMeal = mealContext?.selectedMeal;
 
     useInitializeView(() => {
         setLoading(true);
@@ -40,26 +40,21 @@ export default function (props: GlucoseChartProps) {
         }
 
         if (props.previewState) {
-            setMeals(previewData(props.previewState, selectedDate).meals);
             setGlucose(previewData(props.previewState, selectedDate).glucose)
             setSteps(previewData(props.previewState, selectedDate).steps);
             setSleep(previewData(props.previewState, selectedDate).sleep);
-            setSelectedMeal(undefined);
             setStressLevel(2);
             setLoading(false);
             return;
         }
 
         let glucoseReadingLoader = getGlucoseReadings(selectedDate);
-        let mealLoader = getMeals(selectedDate);
         let stepsLoader = getSteps(selectedDate);
         let sleepLoader = getSleep(selectedDate);
-        Promise.all([glucoseReadingLoader, mealLoader, stepsLoader, sleepLoader]).then(results => {
+        Promise.all([glucoseReadingLoader, stepsLoader, sleepLoader]).then(results => {
             setGlucose(results[0]);
-            setMeals(results[1]);
-            setSteps(results[2]);
-            setSleep(results[3]);
-            setSelectedMeal(undefined);
+            setSteps(results[1]);
+            setSleep(results[2]);
             setLoading(false);
         });
 
@@ -83,7 +78,7 @@ export default function (props: GlucoseChartProps) {
         maxGlucose = Math.max(...glucoseValues);
     }
 
-    let filteredMeals = meals?.filter(meal => {
+    let filteredMeals = meals.filter(meal => {
         if (filteredGlucose.length === 0) return false;
         if (!selectedMeal) return true;
 
@@ -91,7 +86,7 @@ export default function (props: GlucoseChartProps) {
         let maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return meal.timestamp >= minDate && meal.timestamp <= maxDate;
-    }) ?? [];
+    });
 
     let chartData: { timestamp: Date, value: number, meal?: boolean }[] = [];
 
@@ -150,7 +145,7 @@ export default function (props: GlucoseChartProps) {
         const { cx, cy, payload } = props;
         if (!cy || !payload.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.timestamp === payload.timestamp);
+        let mealIndex = meals.findIndex(meal => meal.timestamp === payload.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <svg>
@@ -164,7 +159,7 @@ export default function (props: GlucoseChartProps) {
         let entry = chartData[index];
         if (!entry.meal) return <></>;
 
-        let mealIndex = meals!.findIndex(meal => meal.timestamp === entry.timestamp);
+        let mealIndex = meals.findIndex(meal => meal.timestamp === entry.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
@@ -205,101 +200,86 @@ export default function (props: GlucoseChartProps) {
     };
 
     return <div className="mdhui-glucose-chart">
-        <Card>
-            <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
-                <TimeSeriesChart
-                    intervalType="Day"
-                    intervalStart={selectedDate}
-                    data={chartData as any}
-                    series={[{ dataKey: 'value', color: '#999' }]}
-                    chartHasData={!!glucose && glucose.length > 0}
-                    chartType="Line"
-                    options={{
-                        lineOptions: {
-                            dot: customDot,
-                            label: customDotLabel,
-                            strokeWidth: 1.5,
-                            animationDuration: 500
-                        },
-                        containerOptions: {
-                            height: 166
-                        },
-                        xAxisOptions: {
-                            domain: chartDomain,
-                            ticks: chartTicks,
-                            tickFormatter: chartTickFormatter
-                        },
-                        yAxisOptions: {
-                            width: 24,
-                            domain: [20, 220],
-                            ticks: [60, 100, 140, 180, 220]
-                        }
+        <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
+            <TimeSeriesChart
+                intervalType="Day"
+                intervalStart={selectedDate}
+                data={chartData as any}
+                series={[{ dataKey: 'value', color: '#999' }]}
+                chartHasData={!!glucose && glucose.length > 0}
+                chartType="Line"
+                options={{
+                    lineOptions: {
+                        dot: customDot,
+                        label: customDotLabel,
+                        strokeWidth: 1.5,
+                        animationDuration: 500
+                    },
+                    containerOptions: {
+                        height: 166
+                    },
+                    xAxisOptions: {
+                        domain: chartDomain,
+                        ticks: chartTicks,
+                        tickFormatter: chartTickFormatter
+                    },
+                    yAxisOptions: {
+                        width: 24,
+                        domain: [20, 220],
+                        ticks: [60, 100, 140, 180, 220]
+                    }
+                }}
+            >
+                <ReferenceLine
+                    y={(maxGlucose || 0) - (glucoseRange / 2)}
+                    stroke="var(--mdhui-color-primary)"
+                    strokeWidth={1}
+                    label={{
+                        value: Number((maxGlucose || 0) - (glucoseRange / 2)).toFixed(0),
+                        fill: 'var(--mdhui-color-primary)',
+                        fontSize: 9,
+                        position: 'insideTopRight',
+                        fontWeight: 'bold'
                     }}
-                >
-                    <ReferenceLine
-                        y={(maxGlucose || 0) - (glucoseRange / 2)}
-                        stroke="var(--mdhui-color-primary)"
-                        strokeWidth={1}
-                        label={{
-                            value: Number((maxGlucose || 0) - (glucoseRange / 2)).toFixed(0),
-                            fill: 'var(--mdhui-color-primary)',
-                            fontSize: 9,
-                            position: 'insideTopRight',
-                            fontWeight: 'bold'
-                        }}
-                    />
-                    <Bar
-                        data={overlaySteps}
-                        type="monotone"
-                        dataKey="value"
-                        fill="#f5b722"
-                        opacity={0.3}
-                        radius={[2, 2, 0, 0]}
-                    />
-                </TimeSeriesChart>
-                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
-            </div>
-            <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>No blood glucose readings</div>
-            <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
-                <LoadingIndicator />
-            </div>
-            {props.showStats &&
-                <GlucoseStats
-                    loading={loading}
-                    glucoseReadings={filteredGlucose}
-                    steps={filteredSteps}
-                    sleep={filteredSleep}
                 />
-            }
-            <div className="mdhui-glucose-chart-stress-label">OVERALL STRESS</div>
-            <DiscreteScale
-                tickCount={7}
-                minLabel="No Stress"
-                maxLabel="Extremely Stressed"
-                value={stressLevel}
-                onChange={setStressLevel}
-                sliderColor="#d36540"
+                <Bar
+                    data={overlaySteps}
+                    type="monotone"
+                    dataKey="value"
+                    fill="#f5b722"
+                    opacity={0.3}
+                    radius={[2, 2, 0, 0]}
+                />
+            </TimeSeriesChart>
+            <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+        </div>
+        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>No blood glucose readings</div>
+        <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
+            <LoadingIndicator />
+        </div>
+        {props.showStats &&
+            <GlucoseStats
+                loading={loading}
+                glucoseReadings={filteredGlucose}
+                steps={filteredSteps}
+                sleep={filteredSleep}
             />
+        }
+        <div className="mdhui-glucose-chart-stress-label">OVERALL STRESS</div>
+        <DiscreteScale
+            tickCount={7}
+            minLabel="No Stress"
+            maxLabel="Extremely Stressed"
+            value={stressLevel}
+            onChange={setStressLevel}
+            sliderColor="#d36540"
+        />
+        {mealContext &&
             <div className="mdhui-glucose-chart-meal-buttons">
                 <Button onClick={() => addMeal('meal')} variant="light"><FontAwesomeSvgIcon icon={faBurger} /> Meal</Button>
                 <Button onClick={() => addMeal('drink')} variant="light"><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
                 <Button onClick={() => addMeal('snack')} variant="light"><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
             </div>
-        </Card>
-        {props.showMeals && meals && meals.length > 0 &&
-            <Card className="mdhui-glucose-chart-meal-log">
-                <Title order={3}>Meal Log</Title>
-                {meals.map((meal, index) => {
-                    return <SingleMeal
-                        key={index}
-                        meal={meal}
-                        number={index + 1}
-                        color={getColorFromAssortment(index)}
-                        onClick={() => setSelectedMeal(selectedMeal === meal ? undefined : meal)}
-                        selected={selectedMeal === meal}
-                    />;
-                })}
-            </Card>
         }
     </div>;
 }
