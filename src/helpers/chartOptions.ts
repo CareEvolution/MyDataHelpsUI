@@ -2,33 +2,33 @@ import type { ColorDefinition } from "./colors"
 import { ReactElement } from "react";
 
 export interface LineChartOptions {
-    lineColor?: string
-    domainMin?: number | "Auto"
+    lineColor?: string;
+    domainMin?: number | "Auto";
 }
 
 export interface BarChartOptions {
-    barColor?: ColorDefinition
-    thresholds?: BarChartThreshold[]
+    barColor?: ColorDefinition;
+    thresholds?: BarChartThreshold[];
 }
 
 export interface BarChartThreshold {
-    value: number
-    referenceLineColor?: ColorDefinition
-    overThresholdBarColor?: ColorDefinition
+    value: number;
+    referenceLineColor?: ColorDefinition;
+    overThresholdBarColor?: ColorDefinition;
 }
 
 export interface AreaChartOptions {
-    lineColor?: ColorDefinition
-    areaColor?: ColorDefinition
+    lineColor?: ColorDefinition;
+    areaColor?: ColorDefinition;
 }
 
 export interface ChartSeries {
-    dataKey: string
-    color?: ColorDefinition
+    dataKey: string;
+    color?: ColorDefinition;
 }
 
 export interface AreaChartSeries extends ChartSeries {
-    areaColor?: ColorDefinition
+    areaColor?: ColorDefinition;
 }
 
 export interface TimeSeriesChartContainerOptions {
@@ -36,14 +36,14 @@ export interface TimeSeriesChartContainerOptions {
 }
 
 export interface TimeSeriesChartXAxisOptions {
-    domain?: [number, number];
+    domain?: [number | string, number | string];
     ticks?: (string | number)[];
     tickFormatter?: (value: any, index: number) => string;
 }
 
 export interface TimeSeriesChartYAxisOptions {
     width?: number;
-    domain?: [number, number];
+    domain?: [number | string, number | string];
     ticks?: (string | number)[];
 }
 
@@ -65,19 +65,17 @@ export interface TimeSeriesChartOptions {
 }
 
 export interface MultiSeriesLineChartOptions extends TimeSeriesChartOptions {
-    thresholds?: ChartThreshold[]
-    domainMin?: number | "Auto"
-    domainMax?: number,
+    thresholds?: ChartThreshold[];
     lineOptions?: TimeSeriesChartLineOptions;
 }
 
 export interface MultiSeriesBarChartOptions extends TimeSeriesChartOptions {
-    thresholds?: BarChartThreshold[]
+    thresholds?: BarChartThreshold[];
 }
 
 export interface ChartThreshold {
-    value: number
-    referenceLineColor?: ColorDefinition
-    overThresholdColor?: ColorDefinition
+    value: number;
+    referenceLineColor?: ColorDefinition;
+    overThresholdColor?: ColorDefinition;
 }
 

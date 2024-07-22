@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, eachMinuteOfInterval, format, startOfDay } from 'date-fns'
+import { add, format, startOfDay } from 'date-fns'
 import { HalfDayData, FullDayData, MissingMidDayData } from "./IntradayHeartRateChart.previewdata"
 import { ColorDefinition } from '../../../helpers/colors'
 import { useInitializeView } from '../../../helpers/Initialization'
@@ -33,8 +33,6 @@ export default function (props: IntradayHeartRateChartProps) {
     const intervalEnd = startOfDay(add(intervalStart, { days: 1 }));
 
     let iHrData: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
-    let yMaxValue = 0;
-    let yMinValue = 0;
     let chartHasData: boolean = false;
 
     function initialize() {
@@ -82,24 +80,26 @@ export default function (props: IntradayHeartRateChartProps) {
     useInitializeView(initialize, [], [dateRangeContext?.intervalStart]);
 
     if (data) {
-        var yDomain: number[] = [];
 
         Object.keys(data).forEach(k => {
             let key = parseInt(k);
             iHrData?.push({ timestamp: key, date: new Date(key), value: data[key] });
-            yDomain.push(data[key]);
             chartHasData = true;
         });
-
-        if (yDomain.length > 0) {
-            yMaxValue = Math.max(...yDomain);
-            yMinValue = Math.min(...yDomain);
-        }
     } else {
         iHrData = undefined;
     }
 
-    const options: MultiSeriesLineChartOptions = { connectNulls: false, hideDots: true, thresholds: props.thresholds, domainMin: yMinValue, domainMax: yMaxValue };
+    const options: MultiSeriesLineChartOptions = {
+        thresholds: props.thresholds,
+        yAxisOptions: {
+            domain: [0, 'auto']
+        },
+        lineOptions: {
+            connectNulls: false,
+            dot: false
+        }
+    };
 
     return <div ref={props.innerRef}>
         <TimeSeriesChart

@@ -3,7 +3,6 @@ import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, LineProps, ReferenceLine, ResponsiveContainer, ResponsiveContainerProps, Tooltip, XAxis, XAxisProps, YAxis, YAxisProps } from 'recharts'
 import './TimeSeriesChart.css'
-import { AxisDomain } from 'recharts/types/util/types'
 import { AreaChartSeries, ChartSeries, ColorDefinition, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
@@ -169,16 +168,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         dataToDisplay = props.data;
     }
 
-    let yAxisDomain: AxisDomain | undefined = undefined;
-    if (props.options && props.chartType === "Line") {
-        let domainMin = (props.options as MultiSeriesLineChartOptions)?.domainMin;
-        if (domainMin === "Auto") {
-            yAxisDomain = ["auto", "auto"];
-        } else if (domainMin !== undefined) {
-            yAxisDomain = [domainMin, "auto"];
-        }
-    }
-
     const xAxisTicks = getXAxisTicks();
 
     return <div className="mdhui-time-series-chart" ref={props.innerRef}>
@@ -200,7 +189,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         interval={0}
                         tickLine={false}
                         width={32}
-                        domain={yAxisDomain}
+                        domain={['auto', 'auto']}
+                        allowDataOverflow
                         {...props.options?.yAxisOptions}
                     />
                     <XAxis
@@ -216,7 +206,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         minTickGap={0}
                         tickLine={false}
                         ticks={xAxisTicks}
-                        includeHidden
+                        allowDataOverflow
                         interval={0}
                         {...props.options?.xAxisOptions}
                     />
@@ -225,14 +215,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         <>
                             {props.chartType === "Line" &&
                                 <>
-                                    {createLineChartDefs(layoutContext, gradientKey, props.series, props.options)}
-                                    {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map(threshold =>
-                                        <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                    {createLineChartDefs(layoutContext, gradientKey, props.series, props.options, keys, dataToDisplay!)}
+                                    {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
+                                        <ReferenceLine key={`line-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                                     )}
                                     {keys.map((dk, i) =>
                                         <Line
+                                            key={`line-${dk}`}
                                             strokeWidth={2}
-                                            key={`${gradientKey}${i}`}
                                             type="monotone"
                                             dataKey={dk}
                                             stroke={`url(#${gradientKey}${i})`}
@@ -245,11 +235,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                 <>
                                     {createBarChartDefs(layoutContext, gradientKey, props.series, props.options)}
                                     {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                                        <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                        <ReferenceLine key={`bar-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                                     )}
                                     {keys.map((dk, i) =>
                                         <Bar
-                                            key={`line-${dk}`}
+                                            key={`bar-${dk}`}
                                             type="monotone"
                                             dataKey={dk}
                                             fill={`url(#${gradientKey}${i})`}

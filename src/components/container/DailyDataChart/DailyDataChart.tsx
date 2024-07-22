@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers/query-daily-data'
-import { add, format } from 'date-fns'
+import { add, format, startOfDay } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
@@ -43,7 +43,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
-        intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
+        intervalStart = startOfDay(getDefaultIntervalStart(intervalType, props.weekStartsOn));
     }
 
     let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 })
@@ -150,7 +150,11 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
         if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
-            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = { domainMin: lineOptions?.domainMin };
+            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = {
+                yAxisOptions: {
+                    domain: [lineOptions?.domainMin === "Auto" ? 'auto' : lineOptions?.domainMin ?? "auto", "auto"]
+                }
+            };
             return [
                 [{
                     dataKey: 'value',

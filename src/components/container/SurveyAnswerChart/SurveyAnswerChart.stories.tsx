@@ -39,15 +39,18 @@ export const ffwelLineChart = {
     args: {
         title: "FFWEL Responses Line Chart",
         options: {
-            domainMin: 0,
-            connectNulls: true
+            yAxisOptions: {
+                domain: [0, 'auto']
+            },
+            lineOptions : {
+                connectNulls: true
+            }
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewState: "default"
     },
@@ -58,15 +61,18 @@ export const ffwelLineChartDRC = {
     args: {
         title: "FFWEL Responses Line Chart Date Range Coordinator",
         options: {
-            domainMin: 0,
-            connectNulls: true
+            yAxisOptions: {
+                domain: [0, 'auto']
+            },
+            lineOptions : {
+                connectNulls: true
+            }
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewState: "default"
     },
@@ -79,14 +85,15 @@ export const ffwelLineChartWithDataGap = {
     args: {
         title: "FFWEL Responses Line Chart",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         expectedDataInterval: {months: 1},
         previewDataProvider: async (start: Date, end: Date) => {
@@ -104,14 +111,15 @@ export const ffwelBarChart = {
     args: {
         title: "FFWEL Response Bar Chart",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewState: 'default'
     },
@@ -123,7 +131,9 @@ export const ffwelBarChartThresholds = {
     args: {
         title: "FFWEL Response Bar Chart with Thresholds",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            },
             thresholds: [
                 {
                     value: 50,
@@ -137,7 +147,6 @@ export const ffwelBarChartThresholds = {
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewState: 'default'
     },
@@ -148,14 +157,15 @@ export const ffwelAreaChart = {
     args: {
         title: "FFWEL Response Area Chart",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "6Month",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", areaColor: '#d41a1c', dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", areaColor: '#277eb8', dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", areaColor: '#3daf4a', dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewState: 'default'
     },
@@ -166,15 +176,15 @@ export const ffwelLive = {
     args: {
         title: "FFWEL Live",
         options: {
-            domainMin: 0,
-            lineColor: ["#e41a1c", "#377eb8", "#4daf4a"]
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
                 {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
                 {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
     },
     render: (args: SurveyAnswerChartProps) => <Layout colorScheme="auto"><Card><DateRangeCoordinator intervalType="6Month"><SurveyAnswerChart {...args} /></DateRangeCoordinator></Card></Layout>
@@ -184,12 +194,13 @@ export const dailyPainLineSurvey = {
     args: {
         title: "Daily Pain Line Survey",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             return Promise.resolve(getRandomPainData(start,end));
@@ -201,12 +212,13 @@ export const dailyPainBarSurvey = {
     args: {
         title: "Daily Pain Bar Survey",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewDataProvider: (start: Date, end: Date) => {
             return Promise.resolve(getRandomPainData(start,end));
@@ -218,12 +230,13 @@ export const dailyPainAreaSurvey = {
     args: {
         title: "Daily Pain Area Survey",
         options: {
-            domainMin: 0,
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
         },
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewDataProvider: (start: Date, end: Date) => {
             return Promise.resolve(getRandomPainData(start,end));
