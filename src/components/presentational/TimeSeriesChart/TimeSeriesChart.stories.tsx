@@ -485,7 +485,7 @@ export const customizedLineChart: StoryObj = {
                         },
                         yAxisOptions: {
                             width: 40,
-                            domain: [20, 260],
+                            domain: [-100, 260],
                             ticks: [-100, -60, -20, 20, 60, 100, 140, 180, 220, 260]
                         }
                     }}
