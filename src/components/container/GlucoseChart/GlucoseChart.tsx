@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleep, getSteps, MealType, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleep, getSteps, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { Button, DateRangeContext, DiscreteScale, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faBurger, faCookie, faShoePrints, faWineBottle } from '@fortawesome/free-solid-svg-icons';
+import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { MealContext } from '../../container';
 
 export interface GlucoseChartProps {
@@ -26,7 +26,6 @@ export default function (props: GlucoseChartProps) {
     const [glucose, setGlucose] = useState<Reading[]>();
     const [steps, setSteps] = useState<Reading[]>();
     const [sleep, setSleep] = useState<Reading[]>();
-    const [stressLevel, setStressLevel] = useState<number>();
 
     let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
     let meals = mealContext?.meals ?? [];
@@ -43,7 +42,6 @@ export default function (props: GlucoseChartProps) {
             setGlucose(previewData(props.previewState, selectedDate).glucose)
             setSteps(previewData(props.previewState, selectedDate).steps);
             setSleep(previewData(props.previewState, selectedDate).sleep);
-            setStressLevel(2);
             setLoading(false);
             return;
         }
@@ -195,10 +193,6 @@ export default function (props: GlucoseChartProps) {
             return { ...r, value: r.value * stepsScale }
         });
 
-    const addMeal = (mealType: MealType) => {
-        // TODO: Add meal logic.
-    };
-
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
             <TimeSeriesChart
@@ -264,22 +258,6 @@ export default function (props: GlucoseChartProps) {
                 steps={filteredSteps}
                 sleep={filteredSleep}
             />
-        }
-        <div className="mdhui-glucose-chart-stress-label">OVERALL STRESS</div>
-        <DiscreteScale
-            tickCount={7}
-            minLabel="No Stress"
-            maxLabel="Extremely Stressed"
-            value={stressLevel}
-            onChange={setStressLevel}
-            sliderColor="#d36540"
-        />
-        {mealContext &&
-            <div className="mdhui-glucose-chart-meal-buttons">
-                <Button onClick={() => addMeal('meal')} variant="light"><FontAwesomeSvgIcon icon={faBurger} /> Meal</Button>
-                <Button onClick={() => addMeal('drink')} variant="light"><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
-                <Button onClick={() => addMeal('snack')} variant="light"><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
-            </div>
         }
     </div>;
 }
