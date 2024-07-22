@@ -217,7 +217,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                 <>
                                     {createLineChartDefs(layoutContext, gradientKey, props.series, props.options, keys, dataToDisplay!)}
                                     {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                                        <ReferenceLine key={index} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                        <ReferenceLine key={`line-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                                     )}
                                     {keys.map((dk, i) =>
                                         <Line
@@ -235,7 +235,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                 <>
                                     {createBarChartDefs(layoutContext, gradientKey, props.series, props.options)}
                                     {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                                        <ReferenceLine key={index} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                        <ReferenceLine key={`bar-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
                                     )}
                                     {keys.map((dk, i) =>
                                         <Bar
