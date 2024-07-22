@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
-import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, LineProps, ReferenceLine, ResponsiveContainer, ResponsiveContainerProps, Tooltip, XAxis, XAxisProps, YAxis, YAxisProps } from 'recharts'
+import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, ColorDefinition, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
