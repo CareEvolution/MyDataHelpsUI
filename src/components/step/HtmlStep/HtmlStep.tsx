@@ -1,7 +1,6 @@
 import React from "react";
 import "@careevolution/mydatahelps-js";
 import { Global as EmotionGlobal, css } from "@emotion/react";
-import elementsCSS from "./elements.css?raw";
 import classesCSS from "./classes.css?raw";
 import { InnerHTML } from "./InnerHtml";
 
@@ -34,7 +33,6 @@ export default function (props: HtmlStepProps) {
 
     return (
         <>
-            <EmotionGlobal styles={elementsCSS} />
             <EmotionGlobal styles={classesCSS} />
             {customStyleVars &&
                 <EmotionGlobal

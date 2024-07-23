@@ -26,7 +26,6 @@ export const HtmlStepElementStyles: StoryObj<typeof HtmlStep> = {
 <p>paragraph</p>
 <p>paragraph<br />with line break</p>
 <a href="#">anchor</a>
-<img src="https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg" />
 <button>button (completes step)</button>
 <ul>
         <li>ulist item 1</li>
@@ -51,14 +50,11 @@ export const HtmlStepElementStyles: StoryObj<typeof HtmlStep> = {
 export const HtmlStepDefaultClassStyles: StoryObj<typeof HtmlStep> = {
     args: {
         html: `
-<div class="mdhui-step-title">title</div>
-<div class="mdhui-step-text">text</div>
-<button class="mdhui-step-next-button">next</button>
-<button class="mdhui-step-next-button" disabled>disabled next</button>
-<div class="mdhui-step-image">
-    <img src="https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg" />
-</div>
-<div class="mdhui-step-spinner"></div>
+<div class="title">title</div>
+<p>text</p>
+<button>Next</button>
+<button disabled>Disabled Next</button>
+<div class="spinner"></div>
 `,
     },
 };
@@ -66,10 +62,10 @@ export const HtmlStepDefaultClassStyles: StoryObj<typeof HtmlStep> = {
 export const HtmlStepCustomClassStyles: StoryObj<typeof HtmlStep> = {
     args: {
         html: `
-<div class="mdhui-step-title">title</div>
-<div class="mdhui-step-text">text</div>
-<button class="mdhui-step-next-button">NEXT</button>
-<button class="mdhui-step-next-button" disabled>DISABLED next</button>
+<div class="title">title</div>
+<p>text</p>
+<button>NEXT</button>
+<button disabled>DISABLED next</button>
 `,
         styles: {
             titleFontSize: "3em",
@@ -94,14 +90,70 @@ export const HtmlStepCustomClassStyles: StoryObj<typeof HtmlStep> = {
     }
 };
 
+
+export const QuestionStepDefaultStyles: StoryObj<typeof HtmlStep> = {
+    args: {
+        html: `
+<div class="title">Question Step</div>
+<p>This is a question step with one text answer.</p>
+<input type="text" placeholder="Required"/>
+<button>Next</button>
+`,
+        styles: {},
+    }
+};
+
+
+export const FormStepDefaultStyles: StoryObj<typeof HtmlStep> = {
+    args: {
+        html: `
+<div class="title">Form Step</div>
+<p>This is a form step with the following answer types:</p>
+<ul>
+<li>Text</li>
+<li>Date</li>
+<li>Number</li>
+<li>Dropdown</li>
+<li>Text Area</li>
+</ul>
+<div class="form-item">
+<label for="text">Text</label>
+<input id="text" type="text" placeholder="Required"/>
+</div>
+<div class="form-item">
+<label for="number">Number</label>
+<input id="number" type="number" placeholder="Required"/>
+</div>
+<div class="form-item">
+<label for="date">Date</label>
+<input id="date" type="date" placeholder="Required"/>
+</div>
+<div class="form-item">
+<label for="dropdown">Dropdown</label>
+<select id="dropdown">
+<option>Test</option>
+<option>Test 2</option>
+</select>
+</div>
+<div class="form-item">
+<label for="textarea">Textarea</label>
+<textarea id="textarea" placeholder="Required"></textarea>
+</div>
+</div>
+<button>Next</button>
+`,
+        styles: {},
+    }
+};
+
 export const HtmlStepDocumentOnload: StoryObj<typeof HtmlStep> = {
     args: {
         html: `
-<div class="mdhui-step-title">Participant Status</div>
-<div id="spinner" class="mdhui-step-spinner"></div>
-<div id="statusText" class="mdhui-step-text" style="visibility:hidden">
+<div class="title">Participant Status</div>
+<div class="spinner" id="spinner"></div>
+<p id="statusText" style="visibility:hidden">
         <p>You have been enrolled for <span id="enrollmentDays">X</span> days.</p>
-</div>
+</p>
 <script type="text/javascript">
 MyDataHelps.setParticipantAccessToken({access_token: "unused", expires_in: 3600});
 MyDataHelps.getParticipantInfo().then(function (participantInfo) {
