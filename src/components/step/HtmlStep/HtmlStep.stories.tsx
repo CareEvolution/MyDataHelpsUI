@@ -26,7 +26,6 @@ export const HtmlStepElementStyles: StoryObj<typeof HtmlStep> = {
 <p>paragraph</p>
 <p>paragraph<br />with line break</p>
 <a href="#">anchor</a>
-<img src="https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg" />
 <button>button (completes step)</button>
 <ul>
         <li>ulist item 1</li>
@@ -55,9 +54,6 @@ export const HtmlStepDefaultClassStyles: StoryObj<typeof HtmlStep> = {
 <p>text</p>
 <button>Next</button>
 <button disabled>Disabled Next</button>
-<div class="mdhui-step-image">
-    <img src="https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/MDH-Logo-2022.svg" />
-</div>
 <div class="mdhui-step-spinner"></div>
 `,
     },

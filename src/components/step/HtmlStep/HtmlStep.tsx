@@ -32,7 +32,7 @@ export default function (props: HtmlStepProps) {
     const customStyleVars = makeCustomStyleVars(props.styles);
 
     return (
-        <div className="mdhui-html-step">
+        <>
             <EmotionGlobal styles={classesCSS} />
             {customStyleVars &&
                 <EmotionGlobal
@@ -42,7 +42,7 @@ export default function (props: HtmlStepProps) {
                 />
             }
             {props.html && <InnerHTML html={props.html} />}
-        </div>
+        </>
     );
 }
 

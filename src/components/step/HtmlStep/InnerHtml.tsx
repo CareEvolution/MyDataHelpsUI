@@ -15,34 +15,34 @@ function getMutationDetectedPromise(divElement: HTMLDivElement) {
         const observer = new MutationObserver((mutations, observer) => {
             //Only run each observer once
             observer.disconnect();
-            
-            let newExternalScripts: HTMLScriptElement[] = [];
-            for(const mutation of mutations) {
-                if(mutation.type !== "childList") continue;
 
-                for(const node of mutation.addedNodes) {
-                    if(!(node instanceof HTMLScriptElement)) continue;
-                    if(!node.src) continue;
+            let newExternalScripts: HTMLScriptElement[] = [];
+            for (const mutation of mutations) {
+                if (mutation.type !== "childList") continue;
+
+                for (const node of mutation.addedNodes) {
+                    if (!(node instanceof HTMLScriptElement)) continue;
+                    if (!node.src) continue;
 
                     newExternalScripts.push(node);
 
                     node.onload = () => {
                         newExternalScripts = newExternalScripts.filter((el) => el !== node);
-                        if(newExternalScripts.length === 0) {
+                        if (newExternalScripts.length === 0) {
                             resolve();
                         }
                     };
                     node.onerror = (err) => {
                         console.error(err);
                         newExternalScripts = newExternalScripts.filter((el) => el !== node);
-                        if(newExternalScripts.length === 0) {
+                        if (newExternalScripts.length === 0) {
                             resolve();
                         }
                     };
                 }
             }
 
-            if(newExternalScripts.length === 0) {
+            if (newExternalScripts.length === 0) {
                 resolve();
             }
         });
@@ -57,15 +57,15 @@ export function InnerHTML(props: { html: string }) {
 
     useEffect(() => {
         async function asyncEffect() {
-            if(!divRef.current) return;
+            if (!divRef.current) return;
 
             const documentFragment = document.createRange().createContextualFragment(html);
 
             //Clear existing children
             divRef.current.replaceChildren();
-    
+
             //The appendChild operation modifies the source array, so iterate over a shallow copy.
-            for(const child of [...documentFragment.children]) {
+            for (const child of [...documentFragment.children]) {
                 //Append elements one at a time, ensuring the current element is fully loaded
                 //before proceeding to the next one.
                 //The purpose of this is to allow external scripts to load and execute before
@@ -76,9 +76,9 @@ export function InnerHTML(props: { html: string }) {
                 await mutationDetected;
             }
         }
-        
+
         asyncEffect();
     }, [divRef, html]);
 
-    return <div ref={divRef}></div>;
+    return <div className="mdhui-html-step" ref={divRef}></div>;
 }
