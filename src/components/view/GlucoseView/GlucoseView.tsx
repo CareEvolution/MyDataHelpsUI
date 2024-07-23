@@ -1,9 +1,8 @@
 import React from 'react';
 import './GlucoseView.css';
 import Layout from '../../presentational/Layout';
-import NavigationBar from '../../presentational/NavigationBar';
 import language from '../../../helpers/language';
-import { Card, DateRangeCoordinator, MealButtons, MealLog } from '../../presentational';
+import { Card, DateRangeCoordinator, MealButtons, MealLog, Title } from '../../presentational';
 import GlucoseChart from '../../container/GlucoseChart';
 import { MealCoordinator, StressLevel } from '../../container';
 
@@ -19,10 +18,10 @@ export default function (props: GlucoseViewProps) {
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} className="mdhui-glucose">
-        <NavigationBar title={language('glucose-view-title')} showCloseButton={true} variant="compressedModal" />
+        <Title order={2} style={{ padding: '16px' }}>{language('glucose-view-title')}</Title>
         <DateRangeCoordinator intervalType="Day" variant="rounded">
             <MealCoordinator previewState={props.previewState === 'default' ? 'with data' : undefined}>
-                <Card>
+                <Card style={{ paddingTop: 0, marginTop: 0 }}>
                     <GlucoseChart previewState={props.previewState === 'default' ? 'with data' : undefined} showStats={true} />
                     <StressLevel previewState={props.previewState === 'default' ? 'loaded' : undefined} />
                     <MealButtons preview={!!props.previewState} onEditMeal={() => onEditMeal()} />

@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Layout } from '../../presentational';
+import { Card, Layout } from '../../presentational';
 import GlucoseStats, { GlucoseStatsProps } from './GlucoseStats';
 import { generateGlucose, generateSleep, generateSteps } from '../../../helpers';
 import { startOfToday } from 'date-fns';
@@ -17,12 +17,14 @@ interface GlucoseStatsStoryArgs extends GlucoseStatsProps {
 
 const render = (args: GlucoseStatsStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <GlucoseStats
-            {...args}
-            glucoseReadings={args.previewState === 'with data' ? generateGlucose(startOfToday()) : []}
-            steps={args.previewState === 'with data' ? generateSteps(startOfToday()) : []}
-            sleep={args.previewState === 'with data' ? generateSleep(startOfToday()) : []}
-        />
+        <Card>
+            <GlucoseStats
+                {...args}
+                glucoseReadings={args.previewState === 'with data' ? generateGlucose(startOfToday()) : []}
+                steps={args.previewState === 'with data' ? generateSteps(startOfToday()) : []}
+                sleep={args.previewState === 'with data' ? generateSleep(startOfToday()) : []}
+            />
+        </Card>
     </Layout>;
 };
 

@@ -2,17 +2,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    grid-row-gap: 8px;
-    padding: 0 16px 16px;
+    grid-row-gap: 16px;
+    padding: 16px;
 }
 
 .mdhui-glucose-stats .mdhui-loading-indicator {
     padding: 2px;
     text-align: left;
-}
-
-.mdhui-glucose-stat {
-    height: 46px;
 }
 
 .mdhui-glucose-stat-label {

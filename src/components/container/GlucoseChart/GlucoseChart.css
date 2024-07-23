@@ -9,8 +9,12 @@
 
 .mdhui-glucose-chart-chart {
     height: 150px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     position: relative;
+}
+
+.mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
+    padding-top: 20px;
 }
 
 .mdhui-glucose-chart-chart .steps-icon {
