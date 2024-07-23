@@ -5,7 +5,7 @@ import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { timestampSortAsc } from './util';
 
-export async function fitbitHalfHourlyStepsDataProvider(date: Date): Promise<Reading[]> {
+export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
         namespace: 'Fitbit',
         type: 'activities_steps_intraday',
@@ -22,15 +22,11 @@ export async function fitbitHalfHourlyStepsDataProvider(date: Date): Promise<Rea
                 timestamp: add(parseISO(aggregate.date), { minutes: -15 }),
                 value: aggregate.statistics['sum']
             };
-        }).sort(timestampSortAsc);
+        });
     });
 }
 
-export async function garminHalfHourlyStepsDataProvider(date: Date): Promise<Reading[]> {
-    return [];  // TODO: Query for Garmin steps.
-}
-
-export async function appleHealthHalfHourlyStepsDataProvider(date: Date): Promise<Reading[]> {
+export async function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
         namespace: 'AppleHealth',
         type: 'HalfHourSteps',
@@ -44,7 +40,7 @@ export async function appleHealthHalfHourlyStepsDataProvider(date: Date): Promis
                 timestamp: add(parseISO(dataPoint.observationDate!), { minutes: -15 }),
                 value: parseInt(dataPoint.value)
             };
-        }).sort(timestampSortAsc);
+        });
     });
 }
 
@@ -53,13 +49,10 @@ export async function getSteps(date: Date): Promise<Reading[]> {
 
     return MyDataHelps.getDataCollectionSettings().then((settings) => {
         if (settings.fitbitEnabled) {
-            providers.push(fitbitHalfHourlyStepsDataProvider(date));
+            providers.push(fitbitHalfHourStepsDataProvider(date));
         }
-        if (settings.garminEnabled) {
-            providers.push(garminHalfHourlyStepsDataProvider(date));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "HalfHourlySteps")) {
-            providers.push(appleHealthHalfHourlyStepsDataProvider(date));
+        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "HalfHourSteps")) {
+            providers.push(appleHealthHalfHourStepsDataProvider(date));
         }
 
         if (providers.length === 0) return [];
@@ -68,12 +61,15 @@ export async function getSteps(date: Date): Promise<Reading[]> {
             let readings: Reading[] = [];
             results.forEach(result => {
                 result.forEach(reading => {
-                    if (!readings.find(r => r.timestamp === reading.timestamp)) {
+                    let existingReading = readings.find(r => r.timestamp === reading.timestamp);
+                    if (!existingReading) {
                         readings.push(reading);
+                    } else if (existingReading.value < reading.value) {
+                        existingReading.value = reading.value;
                     }
                 });
             });
-            return readings;
+            return readings.sort(timestampSortAsc);
         });
     });
 }
