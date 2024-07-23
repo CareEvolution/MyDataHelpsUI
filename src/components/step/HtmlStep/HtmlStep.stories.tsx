@@ -54,7 +54,7 @@ export const HtmlStepDefaultClassStyles: StoryObj<typeof HtmlStep> = {
 <p>text</p>
 <button>Next</button>
 <button disabled>Disabled Next</button>
-<div class="mdhui-step-spinner"></div>
+<div class="spinner"></div>
 `,
     },
 };
@@ -149,11 +149,11 @@ export const FormStepDefaultStyles: StoryObj<typeof HtmlStep> = {
 export const HtmlStepDocumentOnload: StoryObj<typeof HtmlStep> = {
     args: {
         html: `
-<div class="mdhui-step-title">Participant Status</div>
-<div class="mdhui-step-spinner" id="spinner"></div>
-<div id="statusText" class="mdhui-step-text" style="visibility:hidden">
+<div class="title">Participant Status</div>
+<div class="spinner" id="spinner"></div>
+<p id="statusText" style="visibility:hidden">
         <p>You have been enrolled for <span id="enrollmentDays">X</span> days.</p>
-</div>
+</p>
 <script type="text/javascript">
 MyDataHelps.setParticipantAccessToken({access_token: "unused", expires_in: 3600});
 MyDataHelps.getParticipantInfo().then(function (participantInfo) {

@@ -198,7 +198,7 @@ body {
   min-height: 150px;
 }
 
-.mdhui-html-step .mdhui-step-spinner {
+.mdhui-html-step .spinner {
   border: 10px solid #f3f3f3;
   border-top: 10px solid #2c62ce;
   border-radius: 50%;
