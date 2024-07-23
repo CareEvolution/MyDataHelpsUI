@@ -17,10 +17,14 @@ interface MealLogStoryArgs {
 }
 
 const render = (args: MealLogStoryArgs) => {
+    const onEditMeal = () => {
+        console.log('edit meal');
+    };
+
     return <Layout colorScheme={args.colorScheme}>
         <MealCoordinator previewState={args.previewState}>
             <Card>
-                <MealLog />
+                <MealLog preview={true} onEditMeal={() => onEditMeal()} />
             </Card>
         </MealCoordinator>
     </Layout>;

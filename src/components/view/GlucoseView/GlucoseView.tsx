@@ -14,6 +14,9 @@ export interface GlucoseViewProps {
 
 export default function (props: GlucoseViewProps) {
 
+    const onEditMeal = () => {
+        console.log('edit meal');
+    };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} className="mdhui-glucose">
         <NavigationBar title={language('glucose-view-title')} showCloseButton={true} variant="compressedModal" />
@@ -22,10 +25,10 @@ export default function (props: GlucoseViewProps) {
                 <Card>
                     <GlucoseChart previewState={props.previewState === 'default' ? 'with data' : undefined} showStats={true} />
                     <StressLevel previewState={props.previewState === 'default' ? 'loaded' : undefined} />
-                    <MealButtons />
+                    <MealButtons preview={!!props.previewState} onEditMeal={() => onEditMeal()} />
                 </Card>
                 <Card>
-                    <MealLog />
+                    <MealLog preview={!!props.previewState} onEditMeal={() => onEditMeal()} />
                 </Card>
             </MealCoordinator>
         </DateRangeCoordinator>

@@ -1,11 +1,13 @@
 import React, { useContext } from "react"
 import "./MealLog.css"
-import { getColorFromAssortment } from "../../../helpers";
+import { getColorFromAssortment, Meal, prepareMealForEditing } from "../../../helpers";
 import { LoadingIndicator, Title } from "../index";
 import SingleMeal from "../SingleMeal";
 import { MealContext } from "../../container";
 
 export interface MealLogProps {
+    preview?: boolean;
+    onEditMeal: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -13,6 +15,16 @@ export default function (props: MealLogProps) {
     const mealContext = useContext(MealContext);
 
     if (!mealContext) return null;
+
+    const onEditMeal = (meal: Meal) => {
+        if (props.preview) {
+            props.onEditMeal();
+            return;
+        }
+        prepareMealForEditing(meal).then(() => {
+            props.onEditMeal();
+        });
+    };
 
     return <div className="mdhui-meal-log" ref={props.innerRef}>
         <Title order={3}>Meal Log</Title>
@@ -27,6 +39,7 @@ export default function (props: MealLogProps) {
                 number={index + 1}
                 color={getColorFromAssortment(index)}
                 onClick={() => mealContext.onMealClicked(meal)}
+                onEdit={() => onEditMeal(meal)}
                 selected={mealContext.selectedMeal === meal}
             />;
         })}

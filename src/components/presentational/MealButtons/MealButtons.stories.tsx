@@ -2,7 +2,7 @@
 import { Layout } from '../../presentational';
 import MealButtons from './MealButtons';
 import MealCoordinator, { MealCoordinatorPreviewState } from '../../container/MealCoordinator';
-import Card from "../Card";
+import Card from '../Card';
 
 export default {
     title: 'Presentational/MealButtons',
@@ -16,10 +16,14 @@ interface MealButtonsStoryArgs {
 }
 
 const render = (args: MealButtonsStoryArgs) => {
+    const onEditMeal = () => {
+        console.log('edit meal');
+    };
+
     return <Layout colorScheme={args.colorScheme}>
         <MealCoordinator previewState={args.previewState}>
             <Card>
-                <MealButtons />
+                <MealButtons preview={true} onEditMeal={() => onEditMeal()} />
             </Card>
         </MealCoordinator>
     </Layout>;

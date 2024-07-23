@@ -10,3 +10,7 @@ export async function getMeals(date: Date): Promise<Meal[]> {
     let filteredMeals = meals.filter(meal => isSameDay(meal.timestamp, date));
     return filteredMeals.sort((a, b) => compareAsc(a.timestamp, b.timestamp));
 }
+
+export function prepareMealForEditing(meal: Meal): Promise<void> {
+    return MyDataHelps.persistDeviceData([{ type: 'MDHUI-MealToEdit', value: JSON.stringify(meal) }]);
+}
