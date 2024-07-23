@@ -15,11 +15,15 @@ interface MealCoordinatorStoryArgs {
 }
 
 const render = (args: MealCoordinatorStoryArgs) => {
+    const onEditMeal = () => {
+        console.log('edit meal');
+    };
+
     return <Layout colorScheme={args.colorScheme}>
         <DateRangeCoordinator intervalType="Day">
             <MealCoordinator previewState={args.previewState}>
                 <Card>
-                    <MealLog />
+                    <MealLog preview={true} onEditMeal={() => onEditMeal()} />
                 </Card>
             </MealCoordinator>
         </DateRangeCoordinator>
