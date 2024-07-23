@@ -1,15 +1,12 @@
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { Reading } from './types';
+import { getMaxValueReadings } from './util';
 
-export async function fitbitHalfHourlySleepDataProvider(date: Date): Promise<Reading[]> {
+export async function fitbitHalfHourSleepDataProvider(date: Date): Promise<Reading[]> {
     return [];
 }
 
-export async function garminHalfHourlySleepDataProvider(date: Date): Promise<Reading[]> {
-    return [];
-}
-
-export async function appleHealthHalfHourlySleepDataProvider(date: Date): Promise<Reading[]> {
+export async function appleHealthHalfHourSleepDataProvider(date: Date): Promise<Reading[]> {
     return [];
 }
 
@@ -18,30 +15,11 @@ export async function getSleep(date: Date): Promise<Reading[]> {
 
     return MyDataHelps.getDataCollectionSettings().then((settings) => {
         if (settings.fitbitEnabled) {
-            providers.push(fitbitHalfHourlySleepDataProvider(date));
+            providers.push(fitbitHalfHourSleepDataProvider(date));
         }
-        if (settings.garminEnabled) {
-            providers.push(garminHalfHourlySleepDataProvider(date));
+        if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'SleepAnalysisInterval')) {
+            providers.push(appleHealthHalfHourSleepDataProvider(date));
         }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "HalfHourlySleep")) {
-            providers.push(appleHealthHalfHourlySleepDataProvider(date));
-        }
-
-        if (!providers.length) {
-            return [];
-        }
-
-        return Promise.all(providers).then(results => {
-            let readings: Reading[] = [];
-            results.forEach(result => {
-                result.forEach(reading => {
-                    let existingReading = readings.find(r => r.timestamp === reading.timestamp);
-                    if (!existingReading) {
-                        readings.push(reading);
-                    }
-                });
-            });
-            return readings;
-        });
+        return providers.length > 0 ? getMaxValueReadings(providers) : [];
     });
 }

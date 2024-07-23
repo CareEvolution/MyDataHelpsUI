@@ -3,7 +3,7 @@ import queryAllDeviceDataV2 from '../query-all-device-data-v2';
 import { Reading } from './types';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
-import { timestampSortAsc } from './util';
+import { getMaxValueReadings } from './util';
 
 export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
@@ -51,25 +51,9 @@ export async function getSteps(date: Date): Promise<Reading[]> {
         if (settings.fitbitEnabled) {
             providers.push(fitbitHalfHourStepsDataProvider(date));
         }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "HalfHourSteps")) {
+        if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'HalfHourSteps')) {
             providers.push(appleHealthHalfHourStepsDataProvider(date));
         }
-
-        if (providers.length === 0) return [];
-
-        return Promise.all(providers).then(results => {
-            let readings: Reading[] = [];
-            results.forEach(result => {
-                result.forEach(reading => {
-                    let existingReading = readings.find(r => r.timestamp === reading.timestamp);
-                    if (!existingReading) {
-                        readings.push(reading);
-                    } else if (existingReading.value < reading.value) {
-                        existingReading.value = reading.value;
-                    }
-                });
-            });
-            return readings.sort(timestampSortAsc);
-        });
+        return providers.length > 0 ? getMaxValueReadings(providers) : [];
     });
 }
