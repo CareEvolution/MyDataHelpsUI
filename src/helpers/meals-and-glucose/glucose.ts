@@ -2,7 +2,7 @@ import MyDataHelps, { DeviceDataPointQuery } from '@careevolution/mydatahelps-js
 import { endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { Reading } from './types';
-import { readingTimestampSort } from './util';
+import { timestampSortAsc } from './util';
 
 export async function appleHealthBloodGlucoseDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
@@ -18,7 +18,7 @@ export async function appleHealthBloodGlucoseDataProvider(date: Date): Promise<R
                 timestamp: parseISO(dataPoint.observationDate!),
                 value: parseInt(dataPoint.value)
             };
-        }).sort(readingTimestampSort);
+        }).sort(timestampSortAsc);
     });
 }
 
@@ -36,7 +36,7 @@ export async function googleFitBloodGlucoseDataProvider(date: Date): Promise<Rea
                 timestamp: parseISO(dataPoint.observationDate!),
                 value: parseInt(dataPoint.value)
             };
-        }).sort(readingTimestampSort);
+        }).sort(timestampSortAsc);
     });
 }
 

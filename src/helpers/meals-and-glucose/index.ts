@@ -5,4 +5,4 @@ export { getSleep } from './sleep';
 export { getSteps } from './steps';
 export { getStressLevel } from './stress';
 export { Reading, Meal, MealType } from './types';
-export { readingTimestampSort } from './util';
+export { timestampSortAsc } from './util';

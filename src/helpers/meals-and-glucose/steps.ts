@@ -3,7 +3,7 @@ import queryAllDeviceDataV2 from '../query-all-device-data-v2';
 import { Reading } from './types';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
-import { readingTimestampSort } from './util';
+import { timestampSortAsc } from './util';
 
 export async function fitbitHalfHourlyStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
@@ -22,7 +22,7 @@ export async function fitbitHalfHourlyStepsDataProvider(date: Date): Promise<Rea
                 timestamp: add(parseISO(aggregate.date), { minutes: -15 }),
                 value: aggregate.statistics['sum']
             };
-        }).sort(readingTimestampSort);
+        }).sort(timestampSortAsc);
     });
 }
 
@@ -44,7 +44,7 @@ export async function appleHealthHalfHourlyStepsDataProvider(date: Date): Promis
                 timestamp: add(parseISO(dataPoint.observationDate!), { minutes: -15 }),
                 value: parseInt(dataPoint.value)
             };
-        }).sort(readingTimestampSort);
+        }).sort(timestampSortAsc);
     });
 }
 
