@@ -4,16 +4,22 @@ import language from '../../../helpers/language';
 import { Card, DateRangeCoordinator, MealButtons, MealLog, Title } from '../../presentational';
 import GlucoseChart from '../../container/GlucoseChart';
 import { MealCoordinator, StressLevel } from '../../container';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface GlucoseViewProps {
     previewState?: 'default'
     colorScheme?: 'light' | 'dark' | 'auto';
+    mealEditorUrl?: string;
 }
 
 export default function (props: GlucoseViewProps) {
 
     const onEditMeal = () => {
-        console.log('edit meal');
+        if (props.previewState || !props.mealEditorUrl) {
+            console.log('edit meal');
+            return;
+        }
+        MyDataHelps.openApplication(props.mealEditorUrl, { modal: true });
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
