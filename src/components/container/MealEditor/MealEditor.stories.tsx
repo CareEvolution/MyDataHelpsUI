@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Layout } from '../../presentational';
+import { Card, Layout } from '../../presentational';
 import MealEditor, { MealEditorProps } from './MealEditor';
 
 export default {
@@ -21,22 +21,24 @@ const render = (args: MealEditorStoryArgs) => {
         console.log('delete');
     };
 
-    const onSave = () => {
-        console.log('save');
-    };
-
     const onCancel = () => {
         console.log('cancel');
     };
 
+    const onSave = () => {
+        console.log('save');
+    };
+
     return <Layout colorScheme={args.colorScheme}>
-        <MealEditor
-            previewState={args.previewState}
-            onError={() => onError()}
-            onDelete={() => onDelete()}
-            onSave={() => onSave()}
-            onCancel={() => onCancel()}
-        />
+        <Card>
+            <MealEditor
+                previewState={args.previewState}
+                onError={() => onError()}
+                onDelete={() => onDelete()}
+                onCancel={() => onCancel()}
+                onSave={() => onSave()}
+            />
+        </Card>
     </Layout>;
 };
 

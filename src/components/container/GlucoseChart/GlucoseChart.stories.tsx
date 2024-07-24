@@ -51,7 +51,7 @@ export const Default = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data', 'live']
+            options: ['loading', 'no data', 'with data']
         },
         withMeals: {
             name: 'with meals'

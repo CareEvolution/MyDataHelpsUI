@@ -1,18 +1,18 @@
 ﻿import React from 'react';
-import GlucoseView, { GlucoseViewProps } from './GlucoseView';
+import MealEditorView, { MealEditorViewProps } from './MealEditorView';
 
 export default {
-    title: 'View/GlucoseView',
-    component: GlucoseView,
+    title: 'View/MealEditorView',
+    component: MealEditorView,
     parameters: { layout: 'fullscreen' }
 };
 
-interface GlucoseViewStoryArgs extends GlucoseViewProps {
+interface MealEditorViewStoryArgs extends MealEditorViewProps {
     state: 'preview' | 'live';
 }
 
-const render = (args: GlucoseViewStoryArgs) => {
-    return <GlucoseView {...args} previewState={args.state === 'preview' ? 'default' : undefined} />;
+const render = (args: MealEditorViewStoryArgs) => {
+    return <MealEditorView {...args} previewState={args.state === 'preview' ? 'default' : undefined} />;
 }
 
 export const Default = {

@@ -1,5 +1,4 @@
 import React from 'react';
-import './GlucoseView.css';
 import Layout from '../../presentational/Layout';
 import language from '../../../helpers/language';
 import { Card, DateRangeCoordinator, MealButtons, MealLog, Title } from '../../presentational';
@@ -17,7 +16,7 @@ export default function (props: GlucoseViewProps) {
         console.log('edit meal');
     };
 
-    return <Layout colorScheme={props.colorScheme ?? 'auto'} className="mdhui-glucose">
+    return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <Title order={2} style={{ padding: '16px' }}>{language('glucose-view-title')}</Title>
         <DateRangeCoordinator intervalType="Day" variant="rounded">
             <MealCoordinator previewState={props.previewState === 'default' ? 'with data' : undefined}>
