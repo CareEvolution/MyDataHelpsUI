@@ -1,0 +1,39 @@
+.mdhui-meal-editor {
+    padding: 16px;
+}
+
+.mdhui-meal-editor-header {
+    display: grid;
+    grid-template-columns: auto max-content max-content;
+    align-items: center;
+}
+
+.mdhui-meal-editor-header-type {
+    text-transform: capitalize;
+    font-size: 1.2em;
+}
+
+.mdhui-meal-editor-header-delete-action {
+    color: var(--mdhui-color-danger);
+    width: 28px;
+    text-align: right;
+}
+
+.mdhui-meal-editor-form {
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    grid-column-gap: 8px;
+}
+
+.mdhui-meal-editor-error {
+    color: var(--color-danger);
+}
+
+.mdhui-meal-editor-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+}

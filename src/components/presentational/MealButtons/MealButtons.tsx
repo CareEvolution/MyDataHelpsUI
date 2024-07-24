@@ -1,10 +1,11 @@
-import React, { useContext } from "react"
-import "./MealButtons.css"
-import { Button } from "../index";
-import { MealContext } from "../../container";
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faBurger, faCookie, faWineBottle } from "@fortawesome/free-solid-svg-icons";
-import { MealType, prepareMealForEditing } from "../../../helpers";
+import React, { useContext } from 'react'
+import './MealButtons.css'
+import { Button } from '../index';
+import { MealContext } from '../../container';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
+import { MealType, prepareMealForEditing } from '../../../helpers';
+import { v4 as uuid } from 'uuid';
 
 export interface MealButtonsProps {
     preview?: boolean;
@@ -22,7 +23,7 @@ export default function (props: MealButtonsProps) {
             props.onEditMeal();
             return;
         }
-        prepareMealForEditing({ timestamp: new Date(), type: type }).then(() => {
+        prepareMealForEditing({ id: uuid(), timestamp: new Date(), type: type }).then(() => {
             props.onEditMeal();
         });
     };

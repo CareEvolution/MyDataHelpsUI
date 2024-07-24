@@ -1,5 +1,5 @@
 export { getGlucoseReadings, computeBestFitGlucoseValue } from './glucose';
-export { getMeals, prepareMealForEditing } from './meals';
+export { getMeals, saveMeals, prepareMealForEditing, getMealToEdit } from './meals';
 export { generateGlucose, generateSteps, generateSleep } from './sample-data';
 export { getSleep } from './sleep';
 export { getSteps } from './steps';
