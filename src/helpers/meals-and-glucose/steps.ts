@@ -23,7 +23,7 @@ export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Readi
                 value: aggregate.statistics['sum']
             };
         });
-    });
+    }, () => []);
 }
 
 export async function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
@@ -41,7 +41,7 @@ export async function appleHealthHalfHourStepsDataProvider(date: Date): Promise<
                 value: parseInt(dataPoint.value)
             };
         });
-    });
+    }, () => []);
 }
 
 export async function getSteps(date: Date): Promise<Reading[]> {
