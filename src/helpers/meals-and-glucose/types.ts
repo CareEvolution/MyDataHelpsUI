@@ -12,3 +12,9 @@ export interface Meal {
     timestamp: Date;
     type: MealType;
 }
+
+export interface SerializedMeal {
+    id: string,
+    timestamp: string;
+    type: string;
+}

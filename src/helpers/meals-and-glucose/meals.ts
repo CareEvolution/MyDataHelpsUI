@@ -1,6 +1,6 @@
-import MyDataHelps, { PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
-import { add, endOfDay, startOfDay } from 'date-fns';
-import { Meal } from './types';
+import MyDataHelps, { Guid, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
+import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
+import { Meal, MealType, SerializedMeal } from './types';
 import { timestampSortAsc } from './util';
 
 export async function getMeals(date: Date): Promise<Meal[]> {
@@ -10,7 +10,10 @@ export async function getMeals(date: Date): Promise<Meal[]> {
         observedAfter: endOfDay(add(date, { days: -1 })).toISOString(),
         observedBefore: startOfDay(add(date, { days: 1 })).toISOString()
     });
-    return response.deviceDataPoints.length ? (JSON.parse(response.deviceDataPoints[0].value) as Meal[]).sort(timestampSortAsc) : [];
+    if (response.deviceDataPoints.length > 0) {
+        return (JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal[]).map(toMeal).sort(timestampSortAsc);
+    }
+    return [];
 }
 
 export function saveMeals(date: Date, meals: Meal[]): Promise<void> {
@@ -31,5 +34,16 @@ export async function getMealToEdit(): Promise<Meal | undefined> {
         namespace: 'Project',
         type: 'MealToEdit'
     });
-    return response.deviceDataPoints.length ? (JSON.parse(response.deviceDataPoints[0].value) as Meal) : undefined;
+    if (response.deviceDataPoints.length > 0) {
+        return toMeal(JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal);
+    }
+    return undefined;
+}
+
+function toMeal(serializedMeal: SerializedMeal): Meal {
+    return {
+        id: serializedMeal.id as Guid,
+        timestamp: parseISO(serializedMeal.timestamp),
+        type: serializedMeal.type as MealType
+    };
 }
