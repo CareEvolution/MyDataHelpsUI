@@ -28,7 +28,7 @@ export default function (props: GlucoseViewProps) {
             <MealCoordinator previewState={props.previewState === 'default' ? 'with data' : undefined}>
                 <Card style={{ paddingTop: 0, marginTop: 0 }}>
                     <GlucoseChart previewState={props.previewState === 'default' ? 'with data' : undefined} showStats={true} />
-                    <StressLevel previewState={props.previewState === 'default' ? 'loaded' : undefined} />
+                    <StressLevel previewState={props.previewState === 'default' ? 'with data' : undefined} />
                     <MealButtons preview={!!props.previewState} onEditMeal={() => onEditMeal()} />
                 </Card>
                 <Card>
