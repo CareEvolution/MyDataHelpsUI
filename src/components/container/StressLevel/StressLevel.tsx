@@ -4,7 +4,7 @@ import { getStressLevel, useInitializeView } from '../../../helpers';
 import { DateRangeContext, DiscreteScale, LoadingIndicator } from '../../presentational';
 import { startOfToday } from 'date-fns';
 
-export type StressLevelPreviewState = 'loading' | 'loaded';
+export type StressLevelPreviewState = 'loading' | 'no data' | 'with data';
 
 export interface StressLevelProps {
     previewState?: StressLevelPreviewState;
@@ -26,7 +26,7 @@ export default function (props: StressLevelProps) {
         }
 
         if (props.previewState) {
-            setStressLevel(Math.floor(Math.random() * 7));
+            setStressLevel(props.previewState === 'with data' ? Math.floor(Math.random() * 7) : undefined);
             setLoading(false);
             return;
         }

@@ -26,7 +26,7 @@ const render = (args: StressLevelStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        state: 'loaded'
+        state: 'with data'
     },
     argTypes: {
         colorScheme: {
@@ -37,7 +37,7 @@ export const Default = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'loaded', 'live']
+            options: ['loading', 'no data', 'with data']
         }
     },
     render: render
