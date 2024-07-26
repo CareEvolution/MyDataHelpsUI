@@ -9,7 +9,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import Markdown from 'react-markdown';
-import mermaid from 'mermaid';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -41,8 +40,6 @@ export default function (props: MyDataHelpsAssistantProps) {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAssistant();
         }
-
-        mermaid.initialize({ startOnLoad: false });
     }, []);
 
     useEffect(() => {
@@ -50,19 +47,6 @@ export default function (props: MyDataHelpsAssistantProps) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
         }
     }, [messages]);
-
-    const renderMermaid = async function () {
-
-        let mermaidNodes = logRef?.current?.querySelectorAll(".language-mermaid") as NodeListOf<HTMLElement>;
-        if (mermaidNodes && mermaidNodes.length > 0) {
-            mermaidNodes.forEach(n => n.removeAttribute("data-processed"));
-
-            await mermaid.run({
-                nodes: mermaidNodes,
-                suppressErrors: true
-            });
-        }
-    }
 
     const addUserMessage = async function () {
 
@@ -100,10 +84,6 @@ export default function (props: MyDataHelpsAssistantProps) {
                     setLoading("");
                 }
             }
-
-            if (type === "end" && kind === "llm") {
-                renderMermaid();
-            }
         });
     }
 
@@ -126,7 +106,6 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     const handleExpandClick = async () => {
         setCollapsed(false);
-        await renderMermaid();
     }
 
     return <>
