@@ -8,7 +8,7 @@ import { getMaxValueReadings } from './util';
 export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
         namespace: 'Fitbit',
-        type: 'activities_steps_intraday',
+        type: 'activities-steps-intraday',
         observedAfter: startOfDay(date).toISOString(),
         observedBefore: endOfDay(date).toISOString(),
         intervalAmount: 30,
