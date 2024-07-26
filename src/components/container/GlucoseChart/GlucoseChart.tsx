@@ -164,7 +164,7 @@ export default function (props: GlucoseChartProps) {
     };
 
     let filteredSteps = steps?.filter(reading => {
-        if (filteredGlucose.length === 0) return false;
+        if (reading.value === 0) return false;
         if (!selectedMeal) return true;
 
         let minDate = selectedMeal.timestamp;
@@ -174,7 +174,7 @@ export default function (props: GlucoseChartProps) {
     }) ?? [];
 
     let filteredSleep = sleep?.filter(reading => {
-        if (filteredGlucose.length === 0) return false;
+        if (reading.value === 0) return false;
         if (!selectedMeal) return true;
 
         let minDate = selectedMeal.timestamp;
@@ -187,11 +187,7 @@ export default function (props: GlucoseChartProps) {
 
     let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
-    let overlaySteps = filteredSteps
-        .filter(r => r.value > 0)
-        .map(r => {
-            return { ...r, value: r.value * stepsScale }
-        });
+    let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
 
     return <div className="mdhui-glucose-chart">
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
