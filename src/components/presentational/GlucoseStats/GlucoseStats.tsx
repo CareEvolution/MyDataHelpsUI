@@ -59,7 +59,7 @@ export default function (props: GlucoseStatsProps) {
             label="STEPS"
             icon={faShoePrints}
             iconColor="#f5b722"
-            value={steps ? `${steps.toLocaleString()} mg/dL` : undefined}
+            value={steps ? `${steps.toLocaleString()}` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}

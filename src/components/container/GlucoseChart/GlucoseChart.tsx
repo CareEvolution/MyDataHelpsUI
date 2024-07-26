@@ -185,8 +185,8 @@ export default function (props: GlucoseChartProps) {
 
     let glucoseRange = (maxGlucose || 0) - (minGlucose || 0);
 
-    let maxSteps = Math.max(...filteredSteps.map(r => r.value));
-    let stepsScale = 220 / (maxSteps * 0.8);
+    let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
+    let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
     let overlaySteps = filteredSteps
         .filter(r => r.value > 0)
         .map(r => {
@@ -219,8 +219,8 @@ export default function (props: GlucoseChartProps) {
                     },
                     yAxisOptions: {
                         width: 24,
-                        domain: [20, 220],
-                        ticks: [60, 100, 140, 180, 220]
+                        domain: [0, 240],
+                        ticks: [40, 80, 120, 160, 200, 240]
                     }
                 }}
             >
@@ -236,14 +236,17 @@ export default function (props: GlucoseChartProps) {
                         fontWeight: 'bold'
                     }}
                 />
-                <Bar
-                    data={overlaySteps}
-                    type="monotone"
-                    dataKey="value"
-                    fill="#f5b722"
-                    opacity={0.3}
-                    radius={[2, 2, 0, 0]}
-                />
+                {overlaySteps.length > 0 &&
+                    <Bar
+                        data={overlaySteps}
+                        type="monotone"
+                        dataKey="value"
+                        fill="#f5b722"
+                        opacity={0.3}
+                        radius={[2, 2, 0, 0]}
+                        barSize={8}
+                    />
+                }
             </TimeSeriesChart>
             <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
         </div>

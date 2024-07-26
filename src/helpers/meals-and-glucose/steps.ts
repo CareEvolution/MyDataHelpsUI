@@ -19,7 +19,7 @@ export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Readi
     return queryAllDeviceDataV2(params).then(aggregates => {
         return aggregates.map(aggregate => {
             return {
-                timestamp: add(parseISO(aggregate.date), { minutes: -15 }),
+                timestamp: add(parseISO(aggregate.date), { minutes: 15 }),
                 value: aggregate.statistics['sum']
             };
         });
