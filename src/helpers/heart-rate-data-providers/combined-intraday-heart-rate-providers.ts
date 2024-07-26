@@ -1,5 +1,5 @@
 import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
-import queryAllDeviceDataV2 from "../query-all-device-data-v2";
+import queryAllDeviceDataV2 from "../query-all-device-data-v2-aggregates";
 
 export type IntradayHeartRateAggregationOption = "avg" | "min" | "max";
 export type IntradayHeartRateData = { [key: number]: number };
