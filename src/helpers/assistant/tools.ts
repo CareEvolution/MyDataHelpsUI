@@ -200,7 +200,7 @@ export class QueryDailySleepTool extends StructuredTool {
   }
 }
 
-export class QueryDailyData extends StructuredTool {
+export class QueryDailyDataTool extends StructuredTool {
   schema = z.object({
     type: z.string().describe("The type of daily data to query."),
     startDate: z.date().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
