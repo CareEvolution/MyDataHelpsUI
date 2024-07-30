@@ -105,8 +105,13 @@ export class MyDataHelpsAssistant {
         const callModel = async (state: IAssistantState, config?: RunnableConfig) => {
             const { messages, participantInfo } = state;
             const chain = promptTemplate.pipe(boundModel);
-            const response = await chain.invoke({ messages, participantInfo }, config);
-            return { messages: [response] };
+            try {
+                const response = await chain.invoke({ messages, participantInfo }, config);
+                return { messages: [response] };
+            }
+            catch (e: unknown) {
+                return { messages: [`I seem to have encountered an error: ${(e as Error).message}. Could you please ask me something different?`] };
+            }
         };
 
         const setParticipantInfo = async () => {

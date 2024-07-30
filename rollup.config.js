@@ -25,19 +25,19 @@ export default [
 			{
 				file: packageJson.main,
 				format: "cjs",
-				sourcemap: false,
+				sourcemap: true,
 			},
 			{
 				file: packageJson.module,
 				format: "esm",
-				sourcemap: false,
+				sourcemap: true,
 			},
 		],
 		plugins: [
 			peerDepsExternal(),
 			resolve(),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json", sourceMap: false }),
+			typescript({ tsconfig: "./tsconfig.json", sourceMap: true }),
 			postcss(),
 			terser(),
 			image(),
