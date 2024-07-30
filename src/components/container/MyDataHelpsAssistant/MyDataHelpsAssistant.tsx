@@ -8,6 +8,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
+import { StructuredTool } from '@langchain/core/tools';
 import Markdown from 'react-markdown';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
@@ -19,6 +20,8 @@ export interface MyDataHelpsAssistantProps {
     previewState?: "default";
     debug: boolean;
     additionalInstructions?: string;
+    tools?: StructuredTool[];
+    appendTools?: boolean;
 }
 
 export interface MyDataHelpsAssistantMessage {
@@ -39,7 +42,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAssistant(props.additionalInstructions);
+            assistantRef.current = new MyDataHelpsAssistant(props.additionalInstructions, props.tools, props.appendTools);
         }
     }, []);
 

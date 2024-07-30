@@ -29,9 +29,9 @@ export interface IAssistantState {
 
 export class MyDataHelpsAssistant {
 
-    constructor(additionalInstructions: string = "", tools: StructuredTool[] = []) {
+    constructor(additionalInstructions: string = "", tools: StructuredTool[] = [], appendTools: boolean = true) {
         this.additionalInstructions = additionalInstructions;
-        this.tools = tools.length ? tools : this.defaultTools;
+        this.tools = tools.length ? (appendTools ? this.defaultTools.concat(tools) : tools) : this.defaultTools;
     }
 
     async ask(userMessage: string, onEvent: (event: any) => void) {
@@ -139,7 +139,7 @@ export class MyDataHelpsAssistant {
     private additionalInstructions: string;
     private tools: StructuredTool[];
 
-    private defaultTools = [
+    private defaultTools: StructuredTool[] = [
         new QueryDailySleepTool(),
         new PersistParticipantInfoTool(),
         new QueryDeviceDataV2Tool(),
