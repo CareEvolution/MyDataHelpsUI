@@ -203,8 +203,8 @@ export class QueryDailySleepTool extends StructuredTool {
 export class QueryDailyDataTool extends StructuredTool {
   schema = z.object({
     type: z.string().describe("The type of daily data to query."),
-    startDate: z.date().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
-    endDate: z.date().describe("The end of the date range for the query. This is a datetime in the participant's local timezone.")
+    startDate: z.string().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
+    endDate: z.string().describe("The end of the date range for the query. This is a datetime in the participant's local timezone.")
   });
 
   name = "queryDailyData";
@@ -212,7 +212,7 @@ export class QueryDailyDataTool extends StructuredTool {
   description = "Query daily data for a participant.";
 
   async _call(input: z.infer<typeof this.schema>) {
-    let response = await queryDailyData(input.type, input.startDate, input.endDate, false);
+    let response = await queryDailyData(input.type, new Date(input.startDate), new Date(input.endDate), false);
 
     return JSON.stringify(response);
   }
