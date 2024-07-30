@@ -4,6 +4,8 @@
     "close": "Close",
     "save": "Save",
     "add": "Add",
+    "edit": "Edit",
+    "cancel": "Cancel",
     "settings": "Settings",
     "connect": "Connect",
     "reconnect": "Reconnect",
@@ -381,6 +383,22 @@
     "bpm": "bpm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
+    "glucose-chart-no-data": "No blood glucose readings",
+    "glucose-stats-range-label": "Blood Glucose Range",
+    "glucose-stats-avg-label": "Avg Blood Glucose",
+    "glucose-stats-steps-label": "Steps",
+    "glucose-stats-sleep-label": "Sleep",
+    "stress-level-title": "Overall Stress",
+    "stress-level-min-label": "No Stress",
+    "stress-level-max-label": "Extremely Stressed",
+    "meal-type-meal": "Meal",
+    "meal-type-snack": "Snack",
+    "meal-type-drink": "Drink",
+    "meal-log-title": "Meal Log",
+    "meal-log-no-data": "No meals logged",
+    "meal-editor-time-input-label": "Time",
+    "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
+    "glucose-view-title": "Glucose Monitoring"
 };
 
 export default strings;
