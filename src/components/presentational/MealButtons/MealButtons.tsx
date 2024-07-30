@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
 import './MealButtons.css'
-import { Button } from '../index';
+import { Button, DateRangeContext } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 import { MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
+import { add } from 'date-fns';
 
 export interface MealButtonsProps {
     preview?: boolean;
@@ -14,6 +15,7 @@ export interface MealButtonsProps {
 }
 
 export default function (props: MealButtonsProps) {
+    const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
     if (!mealContext) return null;
@@ -23,7 +25,8 @@ export default function (props: MealButtonsProps) {
             props.onEditMeal();
             return;
         }
-        prepareMealForEditing({ id: uuid(), timestamp: new Date(), type: type }).then(() => {
+        let mealTimestamp = dateRangeContext ? add(dateRangeContext.intervalStart, { hours: 12 }) : new Date();
+        prepareMealForEditing({ id: uuid(), timestamp: mealTimestamp, type: type }).then(() => {
             props.onEditMeal();
         });
     };
