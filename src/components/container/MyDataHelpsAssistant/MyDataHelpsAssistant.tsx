@@ -18,6 +18,7 @@ export interface MyDataHelpsAssistantProps {
     innerRef?: React.Ref<HTMLDivElement>;
     previewState?: "default";
     debug: boolean;
+    additionalInstructions?: string;
 }
 
 export interface MyDataHelpsAssistantMessage {
@@ -38,7 +39,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAssistant();
+            assistantRef.current = new MyDataHelpsAssistant(props.additionalInstructions);
         }
     }, []);
 
@@ -78,8 +79,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
             if (kind === "tool") {
                 if (type === "start") {
-                    console.log(streamEvent);
-                    setLoading(`Calling ${streamEvent.name}...`);
+                    setLoading(`Querying your data...`);
                 }
                 else if (type === "end") {
                     setLoading("");
@@ -134,10 +134,10 @@ export default function (props: MyDataHelpsAssistantProps) {
                         </div>
                     }
                 })}
-                <div id="loading">
+                {loading && <div id="loading">
                     <FontAwesomeSvgIcon icon={faSpinner} spin={true} />
-                    {loading}
-                </div>
+                    <p>{loading}</p>
+                </div>}
             </div>
 
             <div className="input">
