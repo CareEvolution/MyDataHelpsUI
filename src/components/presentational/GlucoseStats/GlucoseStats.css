@@ -1,0 +1,32 @@
+.mdhui-glucose-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    padding: 16px;
+}
+
+.mdhui-glucose-stats .mdhui-loading-indicator {
+    padding: 2px;
+    text-align: left;
+}
+
+.mdhui-glucose-stat-label {
+    font-size: 0.65em;
+    margin-bottom: 4px;
+}
+
+.mdhui-glucose-stat-value {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-0);
+    margin-bottom: 4px;
+}
+
+.mdhui-glucose-stat-value-not-available {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-2);
+    margin-bottom: 4px;
+}
