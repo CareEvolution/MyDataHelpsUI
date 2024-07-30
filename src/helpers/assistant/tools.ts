@@ -1,30 +1,7 @@
 import { StructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import MyDataHelps, { DeviceDataV2AggregateQuery, DeviceDataV2Query, ParticipantDemographics, StringMap } from "@careevolution/mydatahelps-js";
-
-export class QueryDailySleepTool extends StructuredTool {
-  schema = z.object({
-    namespace: z.enum(["Fitbit", "AppleHealth"])
-      .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
-    type: z.string()
-      .describe("The device data type is specific to the namespace. For Apple Health this is called Sleep Analysis, for Fitbit it is called Sleep."),
-    observedAfter: z.string().optional()
-      .describe("The start of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
-    observedBefore: z.string().optional()
-      .describe("The end of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive.")
-  });
-
-  name = "queryDeviceDataV2DailySleep";
-
-  description = `Can query daily aggregated sleep data. This will include sleep broken down by sleep stage.
-    Use this function when you need to do sleep aggregate queries instead of deviceDataV2Aggregate.`;
-
-  async _call(input: z.infer<typeof this.schema>) {
-    let response = await MyDataHelps.queryDeviceDataV2DailySleep(input as DeviceDataV2AggregateQuery);
-
-    return JSON.stringify(response.sleepStageSummaries.map(({ date, duration, source, value }) => ({ date, duration, source, value })));
-  }
-}
+import { queryDailyData } from "../query-daily-data";
 
 export class PersistParticipantInfoTool extends StructuredTool {
   schema = z.object({
@@ -196,5 +173,47 @@ export class QueryDeviceDataV2AggregateTool extends StructuredTool {
     let response = await MyDataHelps.queryDeviceDataV2Aggregate(input as DeviceDataV2AggregateQuery);
 
     return JSON.stringify(response.intervals.map(({ date, statistics }) => ({ date, statistics })));
+  }
+}
+
+export class QueryDailySleepTool extends StructuredTool {
+  schema = z.object({
+    namespace: z.enum(["Fitbit", "AppleHealth"])
+      .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
+    type: z.string()
+      .describe("The device data type is specific to the namespace. For Apple Health this is called Sleep Analysis, for Fitbit it is called Sleep."),
+    observedAfter: z.string().optional()
+      .describe("The start of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
+    observedBefore: z.string().optional()
+      .describe("The end of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive.")
+  });
+
+  name = "queryDeviceDataV2DailySleep";
+
+  description = `Can query daily aggregated sleep data. This will include sleep broken down by sleep stage.
+    Use this function when you need to do sleep aggregate queries instead of deviceDataV2Aggregate.`;
+
+  async _call(input: z.infer<typeof this.schema>) {
+    let response = await MyDataHelps.queryDeviceDataV2DailySleep(input as DeviceDataV2AggregateQuery);
+
+    return JSON.stringify(response.sleepStageSummaries.map(({ date, duration, source, value }) => ({ date, duration, source, value })));
+  }
+}
+
+export class QueryDailyData extends StructuredTool {
+  schema = z.object({
+    type: z.string().describe("The type of daily data to query."),
+    startDate: z.date().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
+    endDate: z.date().describe("The end of the date range for the query. This is a datetime in the participant's local timezone.")
+  });
+
+  name = "queryDailyData";
+
+  description = "Query daily data for a participant.";
+
+  async _call(input: z.infer<typeof this.schema>) {
+    let response = await queryDailyData(input.type, input.startDate, input.endDate, false);
+
+    return JSON.stringify(response);
   }
 }

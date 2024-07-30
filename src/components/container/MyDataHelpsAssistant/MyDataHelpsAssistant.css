@@ -85,6 +85,7 @@
 
 .mdh-assistant-header .collapse-button {
     color: var(--mdhui-color-primary);
+    cursor: pointer;
 }
 
 .mdh-assistant-header svg {
