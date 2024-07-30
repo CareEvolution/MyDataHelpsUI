@@ -1,9 +1,8 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
-import { END, StateGraph, START, MemorySaver, CompiledStateGraph } from "@langchain/langgraph/web";
+import { END, StateGraph, START, MemorySaver, CompiledStateGraph, messagesStateReducer } from "@langchain/langgraph/web";
 import { ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate } from "@langchain/core/prompts";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
-import { StateGraphArgs } from "@langchain/langgraph";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { StructuredTool } from "@langchain/core/tools";
 
@@ -61,16 +60,17 @@ export class MyDataHelpsAssistant {
 
         const toolNode = new ToolNode<{ messages: BaseMessage[] }>(this.tools);
 
-        const graphState: StateGraphArgs<IAssistantState>["channels"] = {
-            messages: {
-                value: (x: BaseMessage[], y: BaseMessage[]) => x.concat(y),
-                default: () => [],
-            },
-            participantInfo: {
-                value: (x: string, y: string) => y ? y : x,
-                default: () => "{}"
+        const graphState = new StateGraph<IAssistantState>({
+            channels: {
+                messages: {
+                    reducer: messagesStateReducer
+                },
+                participantInfo: {
+                    value: (x: string, y: string) => y ? y : x,
+                    default: () => "{}"
+                }
             }
-        };
+        });
 
         const boundModel = new ChatOpenAI({
             model: "gpt-4o",
