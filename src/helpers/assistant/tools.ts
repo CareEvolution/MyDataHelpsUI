@@ -1,7 +1,7 @@
 import { StructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import MyDataHelps, { DeviceDataV2AggregateQuery, DeviceDataV2Query, ParticipantDemographics, StringMap } from "@careevolution/mydatahelps-js";
-import { queryDailyData } from "../query-daily-data";
+import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 
 export class PersistParticipantInfoTool extends StructuredTool {
   schema = z.object({
@@ -215,5 +215,17 @@ export class QueryDailyDataTool extends StructuredTool {
     let response = await queryDailyData(input.type, input.startDate, input.endDate, false);
 
     return JSON.stringify(response);
+  }
+}
+
+export class GetAllDailyDataTypesTool extends StructuredTool {
+  schema = z.object({});
+
+  name = "getAllDailyDataTypes";
+
+  description = "Get all the daily data types that can be queried with the queryDailyData tool.";
+
+  async _call() {
+    return JSON.stringify(getAllDailyDataTypes());
   }
 }

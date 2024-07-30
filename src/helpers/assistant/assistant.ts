@@ -17,7 +17,8 @@ import {
     QueryDeviceDataV2Tool,
     QueryNotificationsTool,
     QuerySurveyAnswersTool,
-    QueryDailyDataTool
+    QueryDailyDataTool,
+    GetAllDailyDataTypesTool
 } from "./tools";
 
 
@@ -147,6 +148,7 @@ export class MyDataHelpsAssistant {
         new QueryAppleHealthWorkoutsTool(),
         new QueryAppleHealthActivitySummariesTool(),
         new QuerySurveyAnswersTool(),
-        new QueryDailyDataTool()
+        new QueryDailyDataTool(),
+        new GetAllDailyDataTypesTool()
     ];
 }
