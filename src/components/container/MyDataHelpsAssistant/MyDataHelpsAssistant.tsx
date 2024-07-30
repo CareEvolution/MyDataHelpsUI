@@ -78,6 +78,7 @@ export default function (props: MyDataHelpsAssistantProps) {
 
             if (kind === "tool") {
                 if (type === "start") {
+                    console.log(streamEvent);
                     setLoading(`Calling ${streamEvent.name}...`);
                 }
                 else if (type === "end") {
@@ -109,7 +110,7 @@ export default function (props: MyDataHelpsAssistantProps) {
     }
 
     return <>
-        {collapsed && <div className="mdh-assistant-collapsed"><FontAwesomeSvgIcon icon={faFlask} size="lg" onClick={handleExpandClick} /></div>}
+        {collapsed && <div className="mdh-assistant-collapsed" onClick={handleExpandClick}><FontAwesomeSvgIcon icon={faFlask} size="lg" /></div>}
         {!collapsed && <div className="mdh-assistant">
             <div className="mdh-assistant-header">
                 <div>
@@ -133,10 +134,10 @@ export default function (props: MyDataHelpsAssistantProps) {
                         </div>
                     }
                 })}
-                {loading && <div id="loading">
+                <div id="loading">
                     <FontAwesomeSvgIcon icon={faSpinner} spin={true} />
                     {loading}
-                </div>}
+                </div>
             </div>
 
             <div className="input">
