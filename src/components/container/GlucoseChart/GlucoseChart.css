@@ -1,0 +1,44 @@
+.mdhui-glucose-chart .mdhui-card:first-child {
+    margin-top: 0;
+}
+
+.mdhui-glucose-chart-day {
+    text-align: center;
+    color: #aaa;
+}
+
+.mdhui-glucose-chart-chart {
+    height: 150px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
+    padding-top: 20px;
+}
+
+.mdhui-glucose-chart-chart .steps-icon {
+    position: absolute;
+    left: 21px;
+    top: 146px;
+    font-size: 12px;
+}
+
+.mdhui-glucose-chart-chart-empty {
+    height: 182px;
+    padding-top: 65px;
+    box-sizing: border-box;
+    color: #aaa;
+    text-align: center;
+}
+
+.mdhui-glucose-chart-chart-placeholder {
+    height: 182px;
+    padding-top: 48px;
+    box-sizing: border-box;
+}
+
+.mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
+    font-size: 11px;
+    fill: var(--mdhui-text-color-1);
+}

@@ -1,0 +1,12 @@
+.mdhui-stress-level {
+    padding: 16px 0 0;
+}
+
+.mdhui-stress-level-title {
+    margin: 0 16px;
+    font-size: 0.65em;
+}
+
+.mdhui-stress-level .mdhui-loading-indicator {
+    padding: 16px 16px 32px;
+}
