@@ -8,6 +8,7 @@ export { default as EhrNewsFeedEventDetailView } from "./EhrNewsFeedEventDetailV
 export { default as ExternalAccountsView } from "./ExternalAccountsView"
 export { default as FitbitView } from "./FitbitView"
 export { default as GarminView } from "./GarminView"
+export { default as GlucoseView } from "./GlucoseView"
 export { default as HomeView } from "./HomeView"
 export { default as HealthAndWellnessView } from "./HealthAndWellnessView"
 export { default as MealEditorView } from "./MealEditorView"
