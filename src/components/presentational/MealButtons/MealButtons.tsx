@@ -4,7 +4,7 @@ import { Button, DateRangeContext } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { MealType, prepareMealForEditing } from '../../../helpers';
+import { getMealTypeDisplayText, MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 import { add } from 'date-fns';
 
@@ -32,8 +32,8 @@ export default function (props: MealButtonsProps) {
     };
 
     return <div className="mdhui-meal-buttons" ref={props.innerRef}>
-        <Button onClick={() => addMeal('meal')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faBurger} /> Meal</Button>
-        <Button onClick={() => addMeal('snack')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faCookie} /> Snack</Button>
-        <Button onClick={() => addMeal('drink')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faWineBottle} /> Drink</Button>
+        <Button onClick={() => addMeal('meal')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faBurger} /> {getMealTypeDisplayText('meal')}</Button>
+        <Button onClick={() => addMeal('snack')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faCookie} /> {getMealTypeDisplayText('snack')}</Button>
+        <Button onClick={() => addMeal('drink')} variant="light" disabled={mealContext.loading}><FontAwesomeSvgIcon icon={faWineBottle} /> {getMealTypeDisplayText('drink')}</Button>
     </div>;
 }

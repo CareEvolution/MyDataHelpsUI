@@ -1,6 +1,6 @@
 import React from 'react';
 import './GlucoseStats.css';
-import { Reading } from '../../../helpers';
+import { language, Reading } from '../../../helpers';
 import LoadingIndicator from '../LoadingIndicator';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBed, faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
@@ -41,28 +41,28 @@ export default function (props: GlucoseStatsProps) {
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
         <SingleGlucoseStat
             loading={props.loading}
-            label="BLOOD GLUCOSE RANGE"
+            label={language('glucose-stats-range-label')}
             icon={faDroplet}
             iconColor="#d36540"
             value={minGlucose ? `${minGlucose.toFixed(0)} - ${maxGlucose!.toFixed(0)} mg/dL` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}
-            label="AVG BLOOD GLUCOSE"
+            label={language('glucose-stats-avg-label')}
             icon={faDroplet}
             iconColor="#d36540"
             value={avgGlucose ? `${avgGlucose.toFixed(0)} mg/dL` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}
-            label="STEPS"
+            label={language('glucose-stats-steps-label')}
             icon={faShoePrints}
             iconColor="#f5b722"
             value={steps ? `${steps.toLocaleString()}` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}
-            label="SLEEP"
+            label={language('glucose-stats-sleep-label')}
             icon={faBed}
             iconColor="#8287bb"
             value={(sleepHours || sleepMinutes) ? `${sleepHours}h ${sleepMinutes}m` : undefined}

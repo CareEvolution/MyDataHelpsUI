@@ -2,6 +2,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    grid-column-gap: 16px;
+    grid-column-gap: 12px;
     padding: 16px;
+}
+
+.mdhui-meal-buttons .mdhui-button {
+    padding: 12px;
 }

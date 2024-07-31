@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import './SingleMeal.css'
 import { format } from "date-fns";
 import UnstyledButton from '../UnstyledButton';
-import { ColorDefinition, Meal, resolveColor } from '../../../helpers';
+import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 
 export interface SingleMealProps {
@@ -32,7 +32,7 @@ export default function (props: SingleMealProps) {
         <WrapIfNecessary onClick={props.onClick}>
             <div className="mdhui-meal-info">
                 <div className="mdhui-meal-type">
-                    {props.meal.type}&nbsp;
+                    {getMealTypeDisplayText(props.meal.type)}&nbsp;
                     {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
                 </div>
                 <div className="mdhui-meal-time">{format(props.meal.timestamp, 'h:mm aa')}</div>

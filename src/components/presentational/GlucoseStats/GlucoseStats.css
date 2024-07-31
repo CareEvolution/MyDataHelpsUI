@@ -13,6 +13,7 @@
 }
 
 .mdhui-glucose-stat-label {
+    text-transform: uppercase;
     font-size: 0.65em;
     margin-bottom: 4px;
 }

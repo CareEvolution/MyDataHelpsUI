@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './StressLevel.css';
-import { deleteStressLevel, getStressLevel, saveStressLevel, useInitializeView } from '../../../helpers';
+import { deleteStressLevel, getStressLevel, language, saveStressLevel, useInitializeView } from '../../../helpers';
 import { DateRangeContext, DiscreteScale, LoadingIndicator } from '../../presentational';
 import { startOfToday } from 'date-fns';
 
@@ -50,12 +50,12 @@ export default function (props: StressLevelProps) {
     };
 
     return <div className="mdhui-stress-level" ref={props.innerRef}>
-        <div className="mdhui-stress-level-title">OVERALL STRESS</div>
+        <div className="mdhui-stress-level-title">{language('stress-level-title')}</div>
         {loading && <LoadingIndicator />}
         {!loading && <DiscreteScale
             tickCount={7}
-            minLabel="No Stress"
-            maxLabel="Extremely Stressed"
+            minLabel={language('stress-level-min-label')}
+            maxLabel={language('stress-level-max-label')}
             value={stressLevel}
             onChange={stressLevel => onStressLevelChange(stressLevel)}
             sliderColor="#d36540"

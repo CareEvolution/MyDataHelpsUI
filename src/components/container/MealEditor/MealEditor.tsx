@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useContext, useState } from 'react';
 import './MealEditor.css';
-import { getMeals, getMealToEdit, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
+import { getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, startOfDay } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
@@ -98,7 +98,7 @@ export default function (props: MealEditorProps) {
         {!loading && <div>
             <div className="mdhui-meal-editor-header">
                 <div className="mdhui-meal-editor-header-type">
-                    {mode === 'add' ? 'Add' : 'Edit'} {mealToEdit!.type}
+                    {mode === 'add' ? language('add') : language('edit')} {getMealTypeDisplayText(mealToEdit!.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
                     {format(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy')}
@@ -112,7 +112,7 @@ export default function (props: MealEditorProps) {
                 }
             </div>
             <div className="mdhui-meal-editor-form">
-                Time:
+                {language('meal-editor-time-input-label')}:
                 <input
                     type="time"
                     value={format(mealToEdit!.timestamp, 'HH:mm')}
@@ -122,10 +122,10 @@ export default function (props: MealEditorProps) {
                     }}
                 />
             </div>
-            {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">Two meals cannot have the same timestamp.</div>}
+            {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
             <div className="mdhui-meal-editor-buttons">
-                <Button onClick={() => props.onCancel()} variant="light">Cancel</Button>
-                <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>Save</Button>
+                <Button onClick={() => props.onCancel()} variant="light">{language('cancel')}</Button>
+                <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>{language('save')}</Button>
             </div>
         </div>}
     </div>

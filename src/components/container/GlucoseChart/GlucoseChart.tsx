@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
@@ -12,10 +12,8 @@ import { MealContext } from '../../container';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
-    minDate?: Date;
-    maxDate?: Date;
-    innerRef?: React.Ref<HTMLDivElement>;
     showStats?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: GlucoseChartProps) {
@@ -67,13 +65,10 @@ export default function (props: GlucoseChartProps) {
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
 
-    let minGlucose: number | undefined;
-    let maxGlucose: number | undefined;
-
+    let avgGlucose: number | undefined;
     if (filteredGlucose.length > 0) {
         let glucoseValues = filteredGlucose.map(reading => reading.value);
-        minGlucose = Math.min(...glucoseValues);
-        maxGlucose = Math.max(...glucoseValues);
+        avgGlucose = glucoseValues.reduce((s, a) => s + a, 0) / glucoseValues.length;
     }
 
     let filteredMeals = meals.filter(meal => {
@@ -149,8 +144,6 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
-    let glucoseRange = (maxGlucose || 0) - (minGlucose || 0);
-
     let filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
     let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
@@ -187,18 +180,20 @@ export default function (props: GlucoseChartProps) {
                     }
                 }}
             >
-                <ReferenceLine
-                    y={(maxGlucose || 0) - (glucoseRange / 2)}
-                    stroke="var(--mdhui-color-primary)"
-                    strokeWidth={1}
-                    label={{
-                        value: Number((maxGlucose || 0) - (glucoseRange / 2)).toFixed(0),
-                        fill: 'var(--mdhui-color-primary)',
-                        fontSize: 9,
-                        position: 'insideTopRight',
-                        fontWeight: 'bold'
-                    }}
-                />
+                {avgGlucose &&
+                    <ReferenceLine
+                        y={avgGlucose}
+                        stroke="var(--mdhui-color-primary)"
+                        strokeWidth={1}
+                        label={{
+                            value: avgGlucose.toFixed(0),
+                            fill: 'var(--mdhui-color-primary)',
+                            fontSize: 9,
+                            position: 'insideTopRight',
+                            fontWeight: 'bold'
+                        }}
+                    />
+                }
                 {!selectedMeal && overlaySteps.length > 0 &&
                     <Bar
                         data={overlaySteps}
@@ -213,7 +208,7 @@ export default function (props: GlucoseChartProps) {
             </TimeSeriesChart>
             <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
         </div>
-        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>No blood glucose readings</div>
+        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{language('glucose-chart-no-data')}</div>
         <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
             <LoadingIndicator />
         </div>

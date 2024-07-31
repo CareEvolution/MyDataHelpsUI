@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import "./MealLog.css"
-import { getColorFromAssortment, Meal, prepareMealForEditing } from "../../../helpers";
+import { getColorFromAssortment, language, Meal, prepareMealForEditing } from "../../../helpers";
 import { LoadingIndicator, Title } from "../index";
 import SingleMeal from "../SingleMeal";
 import { MealContext } from "../../container";
@@ -27,10 +27,10 @@ export default function (props: MealLogProps) {
     };
 
     return <div className="mdhui-meal-log" ref={props.innerRef}>
-        <Title order={3}>Meal Log</Title>
+        <Title order={3}>{language('meal-log-title')}</Title>
         {mealContext.loading && <LoadingIndicator />}
         {!mealContext.loading && mealContext.meals.length === 0 &&
-            <div className="mdhui-meal-log-empty-text">No meals logged</div>
+            <div className="mdhui-meal-log-empty-text">{language('meal-log-no-data')}</div>
         }
         {!mealContext.loading && mealContext.meals.map((meal, index) => {
             return <SingleMeal

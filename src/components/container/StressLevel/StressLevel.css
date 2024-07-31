@@ -3,6 +3,7 @@
 }
 
 .mdhui-stress-level-title {
+    text-transform: uppercase;
     margin: 0 16px;
     font-size: 0.65em;
 }
