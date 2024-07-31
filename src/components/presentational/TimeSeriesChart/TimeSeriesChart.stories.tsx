@@ -217,6 +217,39 @@ export const barChart: Story = {
     ]
 };
 
+export const barChartWithThresholds: Story = {
+    args: {
+        title: "Bar Chart",
+        intervalType: "Week",
+        chartType: "Bar",
+        chartHasData: true,
+        series: [{ dataKey: 'value' }],
+        data: undefined,
+        intervalStart: new Date(),
+        options: {
+            thresholds: [
+                {
+                    value: 100,
+                    overThresholdColor: 'green',
+                    referenceLineColor: 'red'
+                },
+                {
+                    value: 150,
+                    overThresholdColor: 'red',
+                    referenceLineColor: 'blue'
+                }
+            ]
+        },
+        tooltip
+    },
+    loaders: [
+        async () => ({
+            randomData: await getRandomData(new Date(), addDays(new Date(), 6))
+        })
+    ]
+};
+
+
 export const areaChart: Story = {
     args: {
         title: "Area Chart",

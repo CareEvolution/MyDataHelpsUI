@@ -3,7 +3,7 @@ import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
-import { AreaChartSeries, ChartSeries, ColorDefinition, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
+import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
@@ -120,14 +120,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         } else {
             return Number(args.toFixed(1)).toString();
         }
-    }
-
-    function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string) {
-        return resolveColor(layoutContext.colorScheme, color) ?? defaultColor;
-    }
-
-    function getAreaColorForSeries(i: number) {
-        return (props.series[i] as AreaChartSeries).areaColor;
     }
 
     function getBarColor(value: number, index: number) {
@@ -262,8 +254,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             dataKey={dk}
                                             fillOpacity={1}
                                             strokeWidth={2}
-                                            fill={`url(#${gradientKey}${i})`}
-                                            stroke={colorOrDefault(getAreaColorForSeries(i), "var(--mdhui-color-primary)")}
+                                            fill={`url(#${gradientKey}${i}-fill)`}
+                                            stroke={`url(#${gradientKey}${i}-stroke)`}
                                         />
                                     )}
                                 </>
