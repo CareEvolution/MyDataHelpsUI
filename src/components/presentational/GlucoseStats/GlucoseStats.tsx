@@ -1,16 +1,16 @@
-import React from 'react'
-import './GlucoseStats.css'
+import React from 'react';
+import './GlucoseStats.css';
 import { Reading } from '../../../helpers';
 import LoadingIndicator from '../LoadingIndicator';
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faBed, faDroplet, faShoePrints } from "@fortawesome/free-solid-svg-icons"
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faBed, faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 
 export interface GlucoseStatsProps {
     loading: boolean;
     glucoseReadings: Reading[];
     steps: Reading[];
-    sleep: Reading[];
+    sleepMinutes: number | undefined;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -33,10 +33,9 @@ export default function (props: GlucoseStatsProps) {
 
     let sleepHours: number | undefined;
     let sleepMinutes: number | undefined;
-    if (props.sleep) {
-        let totalSleepMinutes = props.sleep.reduce((a, c) => a + c.value, 0)
-        sleepHours = Math.floor(totalSleepMinutes / 60);
-        sleepMinutes = totalSleepMinutes % 60;
+    if (props.sleepMinutes) {
+        sleepHours = Math.floor(props.sleepMinutes / 60);
+        sleepMinutes = props.sleepMinutes % 60;
     }
 
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>

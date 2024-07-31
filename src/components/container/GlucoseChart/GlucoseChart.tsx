@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleep, getSteps, Reading, useInitializeView } from '../../../helpers';
+import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, Reading, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
@@ -25,7 +25,7 @@ export default function (props: GlucoseChartProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [glucose, setGlucose] = useState<Reading[]>();
     const [steps, setSteps] = useState<Reading[]>();
-    const [sleep, setSleep] = useState<Reading[]>();
+    const [sleepMinutes, setSleepMinutes] = useState<number | undefined>();
 
     let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
     let meals = mealContext?.meals ?? [];
@@ -41,18 +41,18 @@ export default function (props: GlucoseChartProps) {
         if (props.previewState) {
             setGlucose(previewData(props.previewState, selectedDate).glucose)
             setSteps(previewData(props.previewState, selectedDate).steps);
-            setSleep(previewData(props.previewState, selectedDate).sleep);
+            setSleepMinutes(previewData(props.previewState, selectedDate).sleepMinutes);
             setLoading(false);
             return;
         }
 
         let glucoseReadingLoader = getGlucoseReadings(selectedDate);
         let stepsLoader = getSteps(selectedDate);
-        let sleepLoader = getSleep(selectedDate);
-        Promise.all([glucoseReadingLoader, stepsLoader, sleepLoader]).then(results => {
+        let sleepMinutesLoader = getSleepMinutes(selectedDate);
+        Promise.all([glucoseReadingLoader, stepsLoader, sleepMinutesLoader]).then(results => {
             setGlucose(results[0]);
             setSteps(results[1]);
-            setSleep(results[2]);
+            setSleepMinutes(results[2]);
             setLoading(false);
         });
 
@@ -105,38 +105,24 @@ export default function (props: GlucoseChartProps) {
 
     let chartDomain: [number, number] = [selectedDate.valueOf(), add(selectedDate, { hours: 24 }).valueOf()];
     let chartTicks = [
-        selectedDate.valueOf(),
         add(selectedDate, { hours: 3 }).valueOf(),
         add(selectedDate, { hours: 6 }).valueOf(),
         add(selectedDate, { hours: 9 }).valueOf(),
         add(selectedDate, { hours: 12 }).valueOf(),
         add(selectedDate, { hours: 15 }).valueOf(),
         add(selectedDate, { hours: 18 }).valueOf(),
-        add(selectedDate, { hours: 21 }).valueOf(),
-        add(selectedDate, { hours: 24 }).valueOf()
+        add(selectedDate, { hours: 21 }).valueOf()
     ];
-    let chartTickFormatter = (value: number) => {
-        if (value === chartDomain[0] || value === chartDomain[1]) {
-            return "";
-        }
-        return format(new Date(value), 'h aaa');
-    }
+    let chartTickFormatter = (value: number) => format(new Date(value), 'h aaa');
 
     if (selectedMeal) {
-        chartDomain = [selectedMeal.timestamp.valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];
+        chartDomain = [add(selectedMeal.timestamp, { minutes: -3 }).valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];
         chartTicks = [
-            selectedMeal.timestamp.valueOf(),
             add(selectedMeal.timestamp, { minutes: 30 }).valueOf(),
             add(selectedMeal.timestamp, { minutes: 60 }).valueOf(),
-            add(selectedMeal.timestamp, { minutes: 90 }).valueOf(),
-            add(selectedMeal.timestamp, { minutes: 120 }).valueOf()
+            add(selectedMeal.timestamp, { minutes: 90 }).valueOf()
         ];
-        chartTickFormatter = (value: number) => {
-            if (value === chartDomain[0] || value === chartDomain[1]) {
-                return "";
-            }
-            return format(new Date(value), 'h:mmaaa');
-        }
+        chartTickFormatter = (value: number) => format(new Date(value), 'h:mmaaa');
     }
 
     const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, meal?: boolean } }) => {
@@ -163,28 +149,9 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
-    let filteredSteps = steps?.filter(reading => {
-        if (reading.value === 0) return false;
-        if (!selectedMeal) return true;
-
-        let minDate = selectedMeal.timestamp;
-        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
-
-        return reading.timestamp >= minDate && reading.timestamp <= maxDate;
-    }) ?? [];
-
-    let filteredSleep = sleep?.filter(reading => {
-        if (reading.value === 0) return false;
-        if (!selectedMeal) return true;
-
-        let minDate = selectedMeal.timestamp;
-        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
-
-        return reading.timestamp >= minDate && reading.timestamp <= maxDate;
-    }) ?? [];
-
     let glucoseRange = (maxGlucose || 0) - (minGlucose || 0);
 
+    let filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
     let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
     let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
@@ -232,7 +199,7 @@ export default function (props: GlucoseChartProps) {
                         fontWeight: 'bold'
                     }}
                 />
-                {overlaySteps.length > 0 &&
+                {!selectedMeal && overlaySteps.length > 0 &&
                     <Bar
                         data={overlaySteps}
                         type="monotone"
@@ -240,7 +207,7 @@ export default function (props: GlucoseChartProps) {
                         fill="#f5b722"
                         opacity={0.3}
                         radius={[2, 2, 0, 0]}
-                        barSize={8}
+                        barSize={selectedMeal ? 20 : 8}
                     />
                 }
             </TimeSeriesChart>
@@ -254,8 +221,8 @@ export default function (props: GlucoseChartProps) {
             <GlucoseStats
                 loading={loading}
                 glucoseReadings={filteredGlucose}
-                steps={filteredSteps}
-                sleep={filteredSleep}
+                steps={!selectedMeal ? filteredSteps : []}
+                sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
             />
         }
     </div>;

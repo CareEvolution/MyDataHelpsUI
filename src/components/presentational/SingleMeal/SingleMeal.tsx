@@ -35,7 +35,7 @@ export default function (props: SingleMealProps) {
                     {props.meal.type}&nbsp;
                     {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
                 </div>
-                <div className="mdhui-meal-time">{format(props.meal.timestamp, 'K:mm bb')}</div>
+                <div className="mdhui-meal-time">{format(props.meal.timestamp, 'h:mm aa')}</div>
             </div>
         </WrapIfNecessary>
         {props.onEdit &&

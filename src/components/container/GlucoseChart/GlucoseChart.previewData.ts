@@ -1,11 +1,11 @@
-import { generateGlucose, generateSleep, generateSteps, Reading } from '../../../helpers';
+import { generateGlucose, generateSteps, Reading } from '../../../helpers';
 
 export type GlucoseChartPreviewState = 'no data' | 'with data';
 
 export interface GlucoseChartPreviewData {
     glucose: Reading[];
     steps: Reading[];
-    sleep: Reading[];
+    sleepMinutes: number | undefined;
 }
 
 export const previewData = (previewState: GlucoseChartPreviewState, date: Date): GlucoseChartPreviewData => {
@@ -13,13 +13,13 @@ export const previewData = (previewState: GlucoseChartPreviewState, date: Date):
         return {
             glucose: [],
             steps: [],
-            sleep: []
+            sleepMinutes: undefined
         };
     } else if (previewState === 'with data') {
         return {
             glucose: generateGlucose(date),
             steps: generateSteps(date),
-            sleep: generateSleep(date)
+            sleepMinutes: 385
         };
     }
     return {} as GlucoseChartPreviewData;
