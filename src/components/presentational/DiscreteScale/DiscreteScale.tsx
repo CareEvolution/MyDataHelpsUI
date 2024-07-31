@@ -2,14 +2,14 @@ import React, { CSSProperties, useContext } from 'react';
 import { ColorDefinition, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import './DiscreteScale.css';
-import UnstyledButton from "../UnstyledButton";
+import UnstyledButton from '../UnstyledButton';
 
 export interface DiscreteScaleProps {
     tickCount: number;
     minLabel?: string;
     maxLabel?: string;
     value?: number;
-    onChange?: (value: number) => void;
+    onChange?: (value: number | undefined) => void;
     sliderColor?: ColorDefinition;
     innerRef?: React.RefObject<HTMLDivElement>;
 }
@@ -19,12 +19,12 @@ export default function (props: DiscreteScaleProps) {
 
     const values = [...Array(props.tickCount).keys()];
 
-    let selectedValue = props.value ?? 0;
-    if (selectedValue < 0) selectedValue = 0;
-    if (selectedValue >= props.tickCount) selectedValue = props.tickCount - 1;
+    let selectedValue = props.value;
+    if (selectedValue !== undefined && selectedValue < 0) selectedValue = 0;
+    if (selectedValue !== undefined && selectedValue >= props.tickCount) selectedValue = props.tickCount - 1;
 
     let sliderColor = props.sliderColor ? resolveColor(layoutContext.colorScheme, props.sliderColor) : 'var(--mdhui-color-primary)';
-    let sliderStop = `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${selectedValue}) + 8px)`;
+    let sliderStop = selectedValue ? `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${selectedValue}) + 8px)` : '0%';
     let sliderStyle = {
         background: `linear-gradient(to right, ${sliderColor} 0%, ${sliderColor} ${sliderStop}, var(--mdhui-background-color-2) ${sliderStop}, var(--mdhui-background-color-2) 100%)`
     } as CSSProperties;
@@ -33,13 +33,15 @@ export default function (props: DiscreteScaleProps) {
         gridTemplateColumns: values.slice(0, -1).map(v => '1fr').join(' ')
     } as CSSProperties;
 
-    let buttonStyle = {
-        background: sliderColor
-    } as CSSProperties;
-
     const onClick = (value: number) => {
         if (props.onChange) {
             props.onChange(value);
+        }
+    };
+
+    const onClear = () => {
+        if (props.onChange) {
+            props.onChange(undefined);
         }
     };
 
@@ -87,6 +89,12 @@ export default function (props: DiscreteScaleProps) {
         </div>
         <div className="mdhui-discrete-scale-labels">
             <div className="mdhui-discrete-scale-labels-min">{props.minLabel}</div>
+            {props.value !== undefined &&
+                <UnstyledButton onClick={() => onClear()}>
+                    <div className="mdhui-discrete-scale-clear-button" style={{ color: sliderColor }}>clear</div>
+                </UnstyledButton>
+            }
+            {props.value === undefined && <>&nbsp;</>}
             <div className="mdhui-discrete-scale-labels-max">{props.maxLabel}</div>
         </div>
     </div>;

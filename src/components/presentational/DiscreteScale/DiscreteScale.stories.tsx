@@ -13,11 +13,11 @@ interface DiscreteScaleStoryArgs extends DiscreteScaleProps {
 }
 
 const render = (args: DiscreteScaleStoryArgs) => {
-    const [value, setValue] = useState<number>(3);
+    const [value, setValue] = useState<number | undefined>(3);
 
     return <Layout colorScheme={args.colorScheme}>
         <DiscreteScale {...args} value={value} onChange={setValue} />
-        <div style={{ padding: '16px 0', textAlign: 'center' }}>The current value is {value}.</div>
+        <div style={{ padding: '16px 0', textAlign: 'center' }}>The current value is {value ? value : 'not set'}.</div>
     </Layout>;
 };
 

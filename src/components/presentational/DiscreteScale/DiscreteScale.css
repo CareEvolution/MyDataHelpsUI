@@ -42,10 +42,15 @@
 
 .mdhui-discrete-scale-labels {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     font-size: 0.8em;
     color: var(--mdhui-text-color-2);
+}
+
+.mdhui-discrete-scale-clear-button {
+    text-align: center;
+    text-decoration: underline;
 }
 
 .mdhui-discrete-scale-labels-max {

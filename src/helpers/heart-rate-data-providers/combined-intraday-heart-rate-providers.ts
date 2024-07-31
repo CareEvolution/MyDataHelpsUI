@@ -1,5 +1,5 @@
 import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
-import queryAllDeviceDataV2 from "../query-all-device-data-v2";
+import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 
 export type IntradayHeartRateAggregationOption = "avg" | "min" | "max";
 export type IntradayHeartRateData = { [key: number]: number };
@@ -21,7 +21,7 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
             aggregateFunctions: [aggregationOption]
         };
 
-        providers.push(queryAllDeviceDataV2(params));
+        providers.push(queryAllDeviceDataV2Aggregates(params));
     });
 
     if (providers.length == 0) {

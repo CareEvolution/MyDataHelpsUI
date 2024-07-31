@@ -1,0 +1,17 @@
+.mdhui-meal-log {
+    padding: 16px 0 0;
+}
+
+.mdhui-meal-log .mdhui-title {
+    padding: 0 16px;
+}
+
+.mdhui-meal-log .mdhui-loading-indicator {
+    padding: 16px 16px 32px;
+}
+
+.mdhui-meal-log-empty-text {
+    color: var(--mdhui-text-color-3);
+    padding: 16px 16px 32px;
+    text-align: center;
+}
