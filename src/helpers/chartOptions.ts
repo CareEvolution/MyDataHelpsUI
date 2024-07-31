@@ -70,7 +70,7 @@ export interface MultiSeriesLineChartOptions extends TimeSeriesChartOptions {
 }
 
 export interface MultiSeriesBarChartOptions extends TimeSeriesChartOptions {
-    thresholds?: BarChartThreshold[];
+    thresholds?: ChartThreshold[];
 }
 
 export interface ChartThreshold {
