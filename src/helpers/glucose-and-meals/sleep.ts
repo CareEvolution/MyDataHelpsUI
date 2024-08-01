@@ -23,7 +23,9 @@ export async function getSleepMinutes(date: Date): Promise<number | undefined> {
     let providers: Promise<number | undefined>[] = [];
 
     let settings = await MyDataHelps.getDataCollectionSettings();
+    console.log('settings: ' + JSON.stringify(settings));
     if (settings.fitbitEnabled) {
+        console.log('fitbit enabled, adding fitbit sleep provider.');
         providers.push(fitbitSleepMinutesProvider(date));
     }
     if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'SleepAnalysisInterval')) {
