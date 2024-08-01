@@ -35,7 +35,7 @@ export default function (props: GlucoseStatsProps) {
     let sleepMinutes: number | undefined;
     if (props.sleepMinutes) {
         sleepHours = Math.floor(props.sleepMinutes / 60);
-        sleepMinutes = props.sleepMinutes % 60;
+        sleepMinutes = Math.floor(props.sleepMinutes % 60);
     }
 
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
