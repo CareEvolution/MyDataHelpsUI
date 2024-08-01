@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import './MealButtons.css'
-import { Button, DateRangeContext } from '../index';
+import { Button, DateRangeContext, TextBlock } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,9 @@ export default function (props: MealButtonsProps) {
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
-    if (!mealContext) return null;
+    if (!mealContext) {
+        return <TextBlock innerRef={props.innerRef}>Error: Meal Buttons must be used within a Meal Coordinator.</TextBlock>
+    }
 
     const addMeal = (type: MealType) => {
         if (props.preview) {

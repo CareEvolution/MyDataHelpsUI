@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import "./MealLog.css"
 import { getColorFromAssortment, language, Meal, prepareMealForEditing } from "../../../helpers";
-import { LoadingIndicator, Title } from "../index";
+import { LoadingIndicator, TextBlock, Title } from "../index";
 import SingleMeal from "../SingleMeal";
 import { MealContext } from "../../container";
 
@@ -14,7 +14,9 @@ export interface MealLogProps {
 export default function (props: MealLogProps) {
     const mealContext = useContext(MealContext);
 
-    if (!mealContext) return null;
+    if (!mealContext) {
+        return <TextBlock innerRef={props.innerRef}>Error: Meal Log must be used within a Meal Coordinator.</TextBlock>
+    }
 
     const onEditMeal = (meal: Meal) => {
         if (props.preview) {
