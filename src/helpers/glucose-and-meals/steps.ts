@@ -5,7 +5,7 @@ import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { getMaxValueReadings } from './util';
 
-export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
+export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
         namespace: 'Fitbit',
         type: 'activities-steps-intraday',
@@ -26,7 +26,7 @@ export async function fitbitHalfHourStepsDataProvider(date: Date): Promise<Readi
     }, () => []);
 }
 
-export async function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
+export function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
         namespace: 'AppleHealth',
         type: 'HalfHourSteps',
@@ -47,13 +47,13 @@ export async function appleHealthHalfHourStepsDataProvider(date: Date): Promise<
 export async function getSteps(date: Date): Promise<Reading[]> {
     let providers: Promise<Reading[]>[] = [];
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitHalfHourStepsDataProvider(date));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'HalfHourSteps')) {
-            providers.push(appleHealthHalfHourStepsDataProvider(date));
-        }
-        return providers.length > 0 ? getMaxValueReadings(providers) : [];
-    });
+    let settings = await MyDataHelps.getDataCollectionSettings();
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitHalfHourStepsDataProvider(date));
+    }
+    if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'HalfHourSteps')) {
+        providers.push(appleHealthHalfHourStepsDataProvider(date));
+    }
+
+    return providers.length > 0 ? await getMaxValueReadings(providers) : [];
 }

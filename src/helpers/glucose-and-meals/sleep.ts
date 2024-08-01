@@ -12,7 +12,7 @@ export function fitbitSleepMinutesProvider(date: Date): Promise<number | undefin
     }, () => undefined);
 }
 
-export async function appleHealthSleepMinutesProvider(date: Date): Promise<number | undefined> {
+export function appleHealthSleepMinutesProvider(date: Date): Promise<number | undefined> {
     return asleepTime(startOfDay(date), endOfDay(date)).then(sleepData => {
         let dayKey = getDayKey(date);
         return sleepData.hasOwnProperty(dayKey) ? sleepData[dayKey] : undefined;
@@ -22,13 +22,13 @@ export async function appleHealthSleepMinutesProvider(date: Date): Promise<numbe
 export async function getSleepMinutes(date: Date): Promise<number | undefined> {
     let providers: Promise<number | undefined>[] = [];
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitSleepMinutesProvider(date));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'SleepAnalysisInterval')) {
-            providers.push(appleHealthSleepMinutesProvider(date));
-        }
-        return providers.length > 0 ? getMaxValue(providers) : undefined;
-    });
+    let settings = await MyDataHelps.getDataCollectionSettings();
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitSleepMinutesProvider(date));
+    }
+    if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'SleepAnalysisInterval')) {
+        providers.push(appleHealthSleepMinutesProvider(date));
+    }
+
+    return providers.length > 0 ? await getMaxValue(providers) : undefined;
 }
