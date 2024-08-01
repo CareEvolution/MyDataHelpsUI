@@ -6,10 +6,15 @@ import { asleepTime } from '../daily-data-providers/apple-health-sleep';
 import { endOfDay, startOfDay } from 'date-fns';
 
 export function fitbitSleepMinutesProvider(date: Date): Promise<number | undefined> {
+    console.log('fitbit sleep minutes provider');
     return totalSleepMinutes(startOfDay(date), endOfDay(date)).then(sleepData => {
+        console.log('received fitbit sleep total minutes');
         let dayKey = getDayKey(date);
         return sleepData.hasOwnProperty(dayKey) ? sleepData[dayKey] : undefined;
-    }, () => undefined);
+    }, (reason) => {
+        console.log('fitbit sleep error: ' + reason);
+        return undefined;
+    });
 }
 
 export function appleHealthSleepMinutesProvider(date: Date): Promise<number | undefined> {
@@ -23,9 +28,7 @@ export async function getSleepMinutes(date: Date): Promise<number | undefined> {
     let providers: Promise<number | undefined>[] = [];
 
     let settings = await MyDataHelps.getDataCollectionSettings();
-    console.log('settings: ' + JSON.stringify(settings));
     if (settings.fitbitEnabled) {
-        console.log('fitbit enabled, adding fitbit sleep provider.');
         providers.push(fitbitSleepMinutesProvider(date));
     }
     if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'SleepAnalysisInterval')) {
