@@ -93,7 +93,7 @@ export default function (props: MealEditorProps) {
         setMealToEdit({ ...mealToEdit!, timestamp: parse(event.target.value, 'HH:mm', mealToEdit!.timestamp) });
     }
 
-    return <div className="mdhui-meal-editor">
+    return <div className="mdhui-meal-editor" ref={props.innerRef}>
         {loading && <LoadingIndicator />}
         {!loading && <div>
             <div className="mdhui-meal-editor-header">
