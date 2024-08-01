@@ -6,7 +6,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 import { getMealTypeDisplayText, MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import { add } from 'date-fns';
+import { add, startOfDay } from 'date-fns';
 
 export interface MealButtonsProps {
     preview?: boolean;
@@ -27,7 +27,8 @@ export default function (props: MealButtonsProps) {
             props.onEditMeal();
             return;
         }
-        let mealTimestamp = dateRangeContext ? add(dateRangeContext.intervalStart, { hours: 12 }) : new Date();
+        let now = new Date();
+        let mealTimestamp = dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now;
         prepareMealForEditing({ id: uuid(), timestamp: mealTimestamp, type: type }).then(() => {
             props.onEditMeal();
         });
