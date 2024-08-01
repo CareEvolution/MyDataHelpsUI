@@ -6,15 +6,10 @@ import { asleepTime } from '../daily-data-providers/apple-health-sleep';
 import { endOfDay, startOfDay } from 'date-fns';
 
 export function fitbitSleepMinutesProvider(date: Date): Promise<number | undefined> {
-    console.log('fitbit sleep minutes provider');
     return totalSleepMinutes(startOfDay(date), endOfDay(date)).then(sleepData => {
-        console.log('received fitbit sleep total minutes');
         let dayKey = getDayKey(date);
         return sleepData.hasOwnProperty(dayKey) ? sleepData[dayKey] : undefined;
-    }, (reason) => {
-        console.log('fitbit sleep error: ' + reason);
-        return undefined;
-    });
+    }, () => undefined);
 }
 
 export function appleHealthSleepMinutesProvider(date: Date): Promise<number | undefined> {
