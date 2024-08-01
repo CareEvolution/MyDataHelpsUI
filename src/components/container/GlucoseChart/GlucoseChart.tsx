@@ -149,7 +149,7 @@ export default function (props: GlucoseChartProps) {
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
     let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
 
-    return <div className="mdhui-glucose-chart">
+    return <div className="mdhui-glucose-chart" ref={props.innerRef}>
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
             <TimeSeriesChart
                 intervalType="Day"
