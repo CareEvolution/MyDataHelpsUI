@@ -4,6 +4,9 @@ let strings: { [key: string]: string } = {
     "close": "Zamknij",
     "save": "Zapisz",
     "add": "Dodaj",
+    "edit": "Edytować",
+    "cancel": "Anuluj",
+    "clear": "jasny",
     "settings": "Ustawienia",
     "connect": "Połącz",
     "reconnect": "Połącz ponownie",
@@ -381,6 +384,22 @@ let strings: { [key: string]: string } = {
     "bpm": "bpm",
     "hours-abbreviation": " godz.",
     "minutes-abbreviation": " min.",
+    "glucose-chart-no-data": "Brak odczytów poziomu glukozy we krwi",
+    "glucose-stats-range-label": "Zakres poziomu glukozy we krwi",
+    "glucose-stats-avg-label": "Średni poziom glukozy we krwi",
+    "glucose-stats-steps-label": "Kroki",
+    "glucose-stats-sleep-label": "Sen",
+    "stress-level-title": "Ogólny poziom stresu",
+    "stress-level-min-label": "Brak stresu",
+    "stress-level-max-label": "Bardzo zestresowany",
+    "meal-type-meal": "Posiłek",
+    "meal-type-snack": "Przekąska",
+    "meal-type-drink": "Napój",
+    "meal-log-title": "Dziennik posiłków",
+    "meal-log-no-data": "Brak zarejestrowanych posiłków",
+    "meal-editor-time-input-label": "Czas",
+    "meal-editor-duplicate-timestamp-error": "Dwa posiłki nie mogą mieć tej samej godziny.",
+    "glucose-view-title": "Monitorowanie glukozy"
 };
 
 export default strings;

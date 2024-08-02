@@ -4,6 +4,9 @@ let strings: { [key: string]: string } = {
     "close": "Fermer",
     "save": "Enregistrer",
     "add": "Ajouter",
+    "edit": "Éditer",
+    "cancel": "Annuler",
+    "clear": "clair",
     "settings": "Paramètres",
     "connect": "Connecter",
     "reconnect": "Reconnecter",
@@ -381,6 +384,22 @@ let strings: { [key: string]: string } = {
     "bpm": "bpm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
+    "glucose-chart-no-data": "Aucune lecture de glycémie",
+    "glucose-stats-range-label": "Plage de glycémie",
+    "glucose-stats-avg-label": "Glycémie moyenne",
+    "glucose-stats-steps-label": "Pas",
+    "glucose-stats-sleep-label": "Sommeil",
+    "stress-level-title": "Stress global",
+    "stress-level-min-label": "Aucun stress",
+    "stress-level-max-label": "Extrêmement stressé",
+    "meal-type-meal": "Repas",
+    "meal-type-snack": "Snack",
+    "meal-type-drink": "Boisson",
+    "meal-log-title": "Journal des repas",
+    "meal-log-no-data": "Aucun repas enregistré",
+    "meal-editor-time-input-label": "Heure",
+    "meal-editor-duplicate-timestamp-error": "Deux repas ne peuvent pas avoir la même heure.",
+    "glucose-view-title": "Surveillance de la glycémie"
 };
 
 export default strings;

@@ -6,6 +6,7 @@
     "add": "Add",
     "edit": "Edit",
     "cancel": "Cancel",
+    "clear": "clear",
     "settings": "Settings",
     "connect": "Connect",
     "reconnect": "Reconnect",

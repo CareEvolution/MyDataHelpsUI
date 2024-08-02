@@ -4,6 +4,9 @@ let strings: { [key: string]: string } = {
     "close": "Schließen",
     "save": "Speichern",
     "add": "Hinzufügen",
+    "edit": "Bearbeiten",
+    "cancel": "Abbrechen",
+    "clear": "klar",
     "settings": "Einstellungen",
     "connect": "Verbinden",
     "reconnect": "Erneut verbinden",
@@ -381,6 +384,22 @@ let strings: { [key: string]: string } = {
     "bpm": "bpm",
     "hours-abbreviation": " Std.",
     "minutes-abbreviation": " Min.",
+    "glucose-chart-no-data": "Keine Blutzuckermesswerte",
+    "glucose-stats-range-label": "Blutzuckerspiegel",
+    "glucose-stats-avg-label": "Durchschnittlicher Blutzucker",
+    "glucose-stats-steps-label": "Schritte",
+    "glucose-stats-sleep-label": "Schlaf",
+    "stress-level-title": "Gesamtstress",
+    "stress-level-min-label": "Kein Stress",
+    "stress-level-max-label": "Extrem gestresst",
+    "meal-type-meal": "Mahlzeit",
+    "meal-type-snack": "Snack",
+    "meal-type-drink": "Getränk",
+    "meal-log-title": "Mahlzeitenprotokoll",
+    "meal-log-no-data": "Keine Mahlzeiten protokolliert",
+    "meal-editor-time-input-label": "Zeit",
+    "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
+    "glucose-view-title": "Blutzuckerüberwachung"
 };
 
 export default strings;

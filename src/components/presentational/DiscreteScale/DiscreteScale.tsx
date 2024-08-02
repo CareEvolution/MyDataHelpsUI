@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext } from 'react';
-import { ColorDefinition, resolveColor } from '../../../helpers';
+import { ColorDefinition, language, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import './DiscreteScale.css';
 import UnstyledButton from '../UnstyledButton';
@@ -91,7 +91,7 @@ export default function (props: DiscreteScaleProps) {
             <div className="mdhui-discrete-scale-labels-min">{props.minLabel}</div>
             {props.value !== undefined &&
                 <UnstyledButton onClick={() => onClear()}>
-                    <div className="mdhui-discrete-scale-clear-button" style={{ color: sliderColor }}>clear</div>
+                    <div className="mdhui-discrete-scale-clear-button" style={{ color: sliderColor }}>{language('clear')}</div>
                 </UnstyledButton>
             }
             {props.value === undefined && <>&nbsp;</>}
