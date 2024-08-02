@@ -37,16 +37,3 @@ export async function getMaxValueReadings(providers: Promise<Reading[]>[]) {
 
     return readings.sort(timestampSortAsc);
 }
-
-export async function getMaxValue(providers: Promise<number | undefined>[]) {
-    let maxValue: number | undefined;
-
-    let results = await Promise.all(providers);
-    results.forEach(result => {
-        if (result !== undefined && (maxValue === undefined || result > maxValue)) {
-            maxValue = result;
-        }
-    });
-
-    return maxValue;
-}
