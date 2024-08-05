@@ -40,7 +40,8 @@ export const Default = {
         colorScheme: 'auto',
         state: 'with data',
         withMeals: true,
-        showStats: true
+        showStats: true,
+        averageGlucoseLineColor: undefined
     },
     argTypes: {
         colorScheme: {
@@ -58,6 +59,10 @@ export const Default = {
         },
         showStats: {
             name: 'show stats'
+        },
+        averageGlucoseLineColor: {
+            name: 'average glucose line color',
+            control: 'color'
         }
     },
     render: render
