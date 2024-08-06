@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers/query-daily-data'
-import { add, format } from 'date-fns'
+import { add, format, startOfDay } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
@@ -33,9 +33,9 @@ export default function DailyDataChart(props: DailyDataChartProps) {
     let intervalStart: Date;
 
     if (dateRangeContext) {
-        if(dateRangeContext.intervalType === "6Month") {
+        if (dateRangeContext.intervalType === "6Month") {
             intervalType = "Month";
-        } else if(dateRangeContext.intervalType === "Day"){
+        } else if (dateRangeContext.intervalType === "Day") {
             intervalType = "Week";
         } else {
             intervalType = dateRangeContext.intervalType;
@@ -43,12 +43,12 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
-        intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
+        intervalStart = startOfDay(getDefaultIntervalStart(intervalType, props.weekStartsOn));
     }
 
-    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
-                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
-                        : intervalStart;
+    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 })
+        : intervalType === "Month" ? add(intervalStart, { months: 1 })
+            : intervalStart;
     function loadCurrentInterval() {
         setCurrentData(null);
         if (props.previewDataProvider) {
@@ -66,7 +66,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     useEffect(() => {
         function checkAvailability() {
-            if (props.previewDataProvider) {
+            if (props.previewDataProvider || props.previewState === "default") {
                 setHasAnyData(true);
                 return;
             }
@@ -96,28 +96,34 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     var data: { timestamp: number, value?: number, rawValue?: number, date?: Date }[] | undefined = [];
     var chartHasData: boolean = false;
+
+    let currentDate = intervalStart;
     if (currentData) {
-        Object.keys(currentData).forEach((dateStr) => {
-            const currentDate = parse(dateStr, 'yyyy-MM-dd', new Date());
-            var dataDay: any = {
-                timestamp: currentDate.getTime()
+        while (currentDate < intervalEnd) {
+            let dayKey = getDayKey(currentDate);
+            let dataDay: any = {
+                timestamp: currentDate.setHours(0,0,0,0)
             };
-            data!.push(dataDay);
-            var dayKey = getDayKey(currentDate);
-            dataDay.value = currentData![dayKey];
-            dataDay.rawValue = dataDay.value;
-            dataDay.date = currentDate;
-            if (props.valueConverter) {
-                dataDay.value = props.valueConverter(dataDay.value);
-            } else {
-                let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
-                if(defaultConverter) {
-                    dataDay.value = defaultConverter(dataDay.value);
+
+            if(currentData[dayKey] !== undefined && currentData[dayKey] !== null){
+                dataDay.value = currentData![dayKey];
+                dataDay.rawValue = dataDay.value;
+                dataDay.date = currentDate;
+                if (props.valueConverter) {
+                    dataDay.value = props.valueConverter(dataDay.value);
+                } else {
+                    let defaultConverter = getDailyDataTypeDefinition(props.dailyDataType).yAxisConverter;
+                    if (defaultConverter) {
+                        dataDay.value = defaultConverter(dataDay.value);
+                    }
                 }
-            }
-            chartHasData = true;
-        });
-    }else{
+                chartHasData = true;
+            };
+
+            data!.push(dataDay);
+            currentDate = add(currentDate, { days: 1 });
+        }
+    } else {
         data = undefined;
     }
 
@@ -141,20 +147,23 @@ export default function DailyDataChart(props: DailyDataChartProps) {
         return null;
     }
 
-    function generateSeriesAndOptions() : [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
-        if(props.chartType === "Line") {
+    function generateSeriesAndOptions(): [ChartSeries[] | AreaChartSeries[], MultiSeriesLineChartOptions | MultiSeriesBarChartOptions | undefined] {
+        if (props.chartType === "Line") {
             const lineOptions = props.options as LineChartOptions;
+            const multiSeriesLineChartOptions : MultiSeriesLineChartOptions = {
+                yAxisOptions: {
+                    domain: [lineOptions?.domainMin === "Auto" ? 'auto' : lineOptions?.domainMin ?? "auto", "auto"]
+                }
+            };
             return [
                 [{
                     dataKey: 'value',
                     color: lineOptions?.lineColor
                 }],
-                {
-                    domainMin: lineOptions?.domainMin
-                }
+                multiSeriesLineChartOptions
             ];
         }
-        else if(props.chartType === "Area") {
+        else if (props.chartType === "Area") {
             const areaOptions = props.options as AreaChartOptions;
             return [
                 [{
@@ -165,7 +174,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                 undefined
             ];
         }
-        else if(props.chartType === "Bar") {
+        else if (props.chartType === "Bar") {
             const barOptions = props.options as BarChartOptions;
             return [
                 [{
@@ -183,16 +192,18 @@ export default function DailyDataChart(props: DailyDataChartProps) {
 
     const [series, options] = generateSeriesAndOptions();
 
-    return <TimeSeriesChart 
-        title={props.title} 
-        intervalType={intervalType} 
+    return <TimeSeriesChart
+        title={props.title}
+        intervalType={intervalType}
         intervalStart={intervalStart}
-        data={data} 
-        expectedDataInterval={{days: 1}}
-        chartHasData={chartHasData} 
+        data={data}
+        expectedDataInterval={{ days: 1 }}
+        chartHasData={chartHasData}
         series={series}
         tooltip={GraphToolTip}
         chartType={props.chartType}
         options={options}
+        syncId="DailyDataChart"
+        innerRef={props.innerRef}
     />
 }

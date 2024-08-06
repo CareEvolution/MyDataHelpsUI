@@ -1,6 +1,6 @@
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { startOfDay } from "date-fns";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import getDayKey from "../../../helpers/get-day-key";
@@ -22,15 +22,14 @@ export interface RelativeActivityProps {
     date?: Date;
 }
 
-let currentRequestID = 0;
-
 export default function (props: RelativeActivityProps) {
     let [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
     let relativeActivityContext = useContext(RelativeActivityContext);
+    let currentRequestID = useRef<number>(0);
 
     let dataTypes: RelativeActivityDataType[] = props.dataTypes || [];
     if (props.useContext && relativeActivityContext?.dataTypes) {
-        dataTypes = relativeActivityContext.dataTypes;
+        dataTypes = [...relativeActivityContext.dataTypes];
     }
 
     let dateRangeContext = useContext(DateRangeContext);
@@ -58,9 +57,9 @@ export default function (props: RelativeActivityProps) {
         }
 
         //prevent requests from returning back out of order, since some of these can be long running
-        let requestID = ++currentRequestID;
+        let requestID = ++currentRequestID.current;
         queryRelativeActivity(date, date, dataTypes, !!props.previewState).then(results => {
-            if (requestID == currentRequestID) {
+            if (requestID == currentRequestID.current) {
                 setResults(transformResults(results));
             }
         });

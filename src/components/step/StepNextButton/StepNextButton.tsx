@@ -14,7 +14,6 @@ export interface StepNextButtonProps extends StepElementProps {
 }
 
 export default function (props: StepNextButtonProps) {
-
     const style = stepElementStyle(props) as any;
     if (props.gradient) {
       var gradientStyle = props.gradient.direction === "LeftToRight" ? 
@@ -25,6 +24,7 @@ export default function (props: StepNextButtonProps) {
     style.letterSpacing = props.letterSpacing;
     style.textTransform = props.textTransform;
     style.backgroundColor = props.backgroundColor;
+    style.borderColor = props.backgroundColor;
     var text = props.text ? props.text : language("next-button-text");
     return (
       <button 
