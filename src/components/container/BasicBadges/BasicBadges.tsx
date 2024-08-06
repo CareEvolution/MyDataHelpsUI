@@ -4,8 +4,6 @@ import { BasicBadge, Title } from "../../presentational";
 import "./BasicBadges.css"
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { parsePointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export interface BasicBadgesProps {
     badgeCount?: number;

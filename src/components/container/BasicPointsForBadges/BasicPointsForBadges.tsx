@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
 import language from "../../../helpers/language";
-import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
+import MyDataHelps from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
 import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, BasicPointsForBadgesState, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
 import { awardPointsAndBadges } from "../../../helpers";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { previewAwardPointsAndBadges, previewParticipantInfo } from "./BasicPointsForBadges.previewData";
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
@@ -30,38 +31,8 @@ export default function (props: BasicPointsForBadgesProps) {
         return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
     }
 
-    function previewParticipantInfo(): ParticipantInfo {
-        let previewActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
-        props.activities.forEach((activity, index) => {
-            previewActivityStates[activity.key] = { pointsAwarded: index == 0 ? 300 + (2 * props.pointsPerBadge) : 0 };
-        });
-        return {
-            participantID: "1",
-            participantIdentifier: "1",
-            //@ts-ignore
-            demographics: {},
-            customFields: {
-                [props.customField]: JSON.stringify({
-                    badges: [props.pointsPerBadge, props.pointsPerBadge * 2],
-                    activityStates: previewActivityStates
-                })
-            }
-        }
-    }
-
-    async function previewAwardPointsAndBadges(
-        activities: BasicPointsForBadgesActivity[],
-        state: BasicPointsForBadgesState): Promise<BasicPointsForBadgesState> {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        let newState = { ...state };
-        activities.forEach((activity, index) => {
-            newState.activityStates[activity.key].pointsAwarded += 250;
-        });
-        return newState;
-    }
-
     async function initialize() {
-        let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo();
+        let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo(props.activities, props.pointsPerBadge, props.customField);
         let currentState = parsePointsAndBadgesState(props.customField, props.activities, participantInfo);
         setBadges(currentState.badges);
         setPoints(sumActivityPoints(currentState.activityStates));
