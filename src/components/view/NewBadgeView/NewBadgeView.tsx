@@ -1,5 +1,5 @@
 import React from "react";
-import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
+import { ColorDefinition, getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { BasicBadge, Button, Layout, LoadingIndicator, TextBlock, Title } from "../../presentational";
 import "./NewBadgeView.css";
@@ -10,7 +10,7 @@ export interface NewBadgeViewProps {
     title?: string;
     text?: string;
     colorScheme?: 'auto' | 'light' | 'dark';
-    primaryColor?: string;
+    primaryColor?: ColorDefinition;
     customField: string;
     previewState?: "default";
     showBadgePoints?: boolean;
