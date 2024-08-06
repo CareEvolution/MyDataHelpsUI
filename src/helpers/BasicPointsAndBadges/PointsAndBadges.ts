@@ -6,8 +6,8 @@ import { SurveyCompletionActivity, awardSurveyCompletionActivityPoints } from ".
 import { CustomActivity, awardCustomActivityPoints } from "./CustomActivity";
 
 export async function awardPointsAndBadges(activities: BasicPointsForBadgesActivity[], state: BasicPointsForBadgesState, pointsPerBadge: number, participantInfo: ParticipantInfo): Promise<BasicPointsForBadgesState> {
-    let awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, state.activityStates[activity.key], participantInfo));
-    let updatedActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
+    const awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, state.activityStates[activity.key], participantInfo));
+    const updatedActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
     await Promise.all(awardPointsPromises).then((newActivityStatesArray) => {
         newActivityStatesArray.forEach((state, index) => {
             updatedActivityStates[activities[index].key] = state;
@@ -15,8 +15,8 @@ export async function awardPointsAndBadges(activities: BasicPointsForBadgesActiv
     });
 
 
-    let newPointTotal = activities.reduce((sum, activity) => sum + updatedActivityStates[activity.key].pointsAwarded, 0);
-    let lastBadge = state.badges.length ? Math.max(...state.badges) : 0;
+    const newPointTotal = activities.reduce((sum, activity) => sum + updatedActivityStates[activity.key].pointsAwarded, 0);
+    const lastBadge = state.badges.length ? Math.max(...state.badges) : 0;
     let nextBadge = lastBadge + pointsPerBadge;
     let newBadges = [...state.badges];
     while (newPointTotal >= nextBadge) {
