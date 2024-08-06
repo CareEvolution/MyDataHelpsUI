@@ -11,12 +11,12 @@ interface ConnectExternalAccountActivityState extends BasicPointsForBadgesActivi
 }
 
 export async function awardConnectExternalAccountActivityPoints(activity: ConnectExternalAccountActivity, activityState: ConnectExternalAccountActivityState) {
-    let connectedAccounts = await MyDataHelps.getExternalAccounts();
-    let allProviders = connectedAccounts.filter(account => activity.providerCategories.includes(account.provider.category)).map(t => t.id);
-    let newProviders = allProviders.filter(provider => !activityState.providersConnected?.includes(provider));
+    const connectedAccounts = await MyDataHelps.getExternalAccounts();
+    const allProviders = connectedAccounts.filter(account => activity.providerCategories.includes(account.provider.category)).map(t => t.id);
+    const newProviders = allProviders.filter(provider => !activityState.providersConnected?.includes(provider));
     if (newProviders.length > 0) {
-        let newPoints = newProviders.length * activity.points;
-        let newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints, providersConnected: allProviders };
+        const newPoints = newProviders.length * activity.points;
+        const newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints, providersConnected: allProviders };
         return newActivityState;
     }
     return activityState;

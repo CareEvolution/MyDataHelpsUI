@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { getColorFromAssortment, language, useInitializeView } from "../../../helpers";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { BasicBadge, Button, Layout, LoadingIndicator, TextBlock, Title } from "../../presentational";

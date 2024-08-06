@@ -120,7 +120,7 @@ export default function (props: BasicPointsForBadgesProps) {
                 <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge").replace("{{points}}", pointsUntilNextBadge().toString())}</div>
             </>
         }
-        {!badges == undefined || points == undefined &&
+        {!badges === undefined || points === undefined &&
             <LoadingIndicator />
         }
     </div>
