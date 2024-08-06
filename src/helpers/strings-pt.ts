@@ -380,7 +380,13 @@ let strings: { [key: string]: string } = {
     "sleep-score": "Pontuação do Sono",
     "bpm": "bpm",
     "hours-abbreviation": "h",
-    "minutes-abbreviation": "m"
+    "minutes-abbreviation": "m",
+    "points-until-next-badge": "{{points}} pontos para a próxima badge",
+    "fitbit-wear-time": "Tempo de uso do Fitbit",
+    "my-badges": "Minhas badges ({{badges}})",
+    "new-badge-title": "Bom trabalho!",
+    "new-badge-text": "Você ganhou uma nova badge!",
+    "get-badge": "Obter badge"
 };
 
 export default strings;

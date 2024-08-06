@@ -381,6 +381,12 @@
     "bpm": "bpm",
     "hours-abbreviation": "h",
     "minutes-abbreviation": "m",
+    "points-until-next-badge": "{{points}} points to next badge",
+    "fitbit-wear-time": "Fitbit Wear Time",
+    "my-badges": "My Badges ({{badges}})",
+    "new-badge-title": "Great job!",
+    "new-badge-text": "You got a new badge!",
+    "get-badge": "Get Badge",
 };
 
 export default strings;
