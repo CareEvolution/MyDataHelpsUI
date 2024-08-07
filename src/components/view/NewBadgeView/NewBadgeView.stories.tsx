@@ -11,7 +11,8 @@ const render = (args: NewBadgeViewProps) => <NewBadgeView {...args} />
 
 export const Default = {
     args: {
-        previewState: "default"
+        previewState: "default",
+        showBadgePoints: true
     },
     render: render
 };
