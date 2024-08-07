@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
@@ -27,6 +27,13 @@ export default function (props: ChatProps) {
     let md = new MarkdownIt();
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
+    const logRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (logRef.current) {
+            logRef.current.scrollTop = logRef.current.scrollHeight;
+        }
+    }, [props.messages]);
 
     const sendMessage = async function () {
         let newMessage = currentUserMessage;
@@ -36,7 +43,7 @@ export default function (props: ChatProps) {
 
     return (
         <div className="mdhui-chat">
-            <div className="mdhui-chat-log">
+            <div className="mdhui-chat-log" ref={logRef}>
                 {props.messages.map((message, index) => (
                     <div key={index} className={"mdhui-chat-message " + message.type}>
                         {message.icon}

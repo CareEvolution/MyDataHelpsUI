@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../../presentational/Layout";
-import MyDataHelpsAssistant, { MyDataHelpsAssistantProps } from "./MyDataHelpsAssistant";
+import MyDataHelpsAssistant, { AIAssistantProps } from "./AIAssistant";
 import { MyDataHelpsAssistantTools } from "../../../helpers/assistant";
 
 export default {
@@ -50,7 +50,7 @@ export default {
     }
 };
 
-const render = (args: MyDataHelpsAssistantProps) => {
+const render = (args: AIAssistantProps) => {
     return <Layout colorScheme='auto'>
         <MyDataHelpsAssistant {...args} appendTools={false} />
     </Layout>
