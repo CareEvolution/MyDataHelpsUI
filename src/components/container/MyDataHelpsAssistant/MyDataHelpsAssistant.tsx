@@ -9,7 +9,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
-import Markdown from 'react-markdown';
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';

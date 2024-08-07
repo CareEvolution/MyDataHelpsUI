@@ -16,6 +16,8 @@ export const core = css`
     --mdhui-padding-sm: 12px;
     --mdhui-padding-md: 16px;
     --mdhui-padding-lg: 24px;
+
+    --mdhui-touch: 44px;
 }
 
 @media (prefers-reduced-motion) {
