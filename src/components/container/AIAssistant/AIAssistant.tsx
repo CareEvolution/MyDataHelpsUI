@@ -10,7 +10,6 @@ import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import "./AIAssistant.css";
 
 export interface AIAssistantProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -92,7 +91,7 @@ export default function (props: AIAssistantProps) {
     }
 
     return <>
-        {messages && <Chat messages={messages.map((msg, index) => {
+        {messages && <Chat messages={messages.map((msg) => {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faGear} /> : <FontAwesomeSvgIcon icon={faUser} />,
                 content: msg.content,
