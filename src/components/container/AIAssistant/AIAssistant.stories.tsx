@@ -1,11 +1,11 @@
 import React from "react";
 import Layout from "../../presentational/Layout";
-import MyDataHelpsAssistant, { AIAssistantProps } from "./AIAssistant";
-import { MyDataHelpsAssistantTools } from "../../../helpers/assistant";
+import AIAssistant, { AIAssistantProps } from "./AIAssistant";
+import { MyDataHelpsTools } from "../../../helpers/assistant";
 
 export default {
-    title: 'Container/MyDataHelpsAssistant',
-    component: MyDataHelpsAssistant,
+    title: 'Container/AIAssistant',
+    component: AIAssistant,
     parameters: { layout: 'fullscreen' },
     argTypes: {
         debug: {
@@ -35,16 +35,16 @@ export default {
                 'queryDailySleep', 'queryDeviceDataV2Aggregate', 'queryDeviceDataV2', 'queryNotifications',
                 'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes'],
             mapping: {
-                persistParticipantInfo: new MyDataHelpsAssistantTools.PersistParticipantInfoTool(),
-                queryAppleHealthActivitySummaries: new MyDataHelpsAssistantTools.QueryAppleHealthActivitySummariesTool(),
-                queryAppleHealthWorkouts: new MyDataHelpsAssistantTools.QueryAppleHealthWorkoutsTool(),
-                queryDailySleep: new MyDataHelpsAssistantTools.QueryDailySleepTool(),
-                queryDeviceDataV2Aggregate: new MyDataHelpsAssistantTools.QueryDeviceDataV2AggregateTool(),
-                queryDeviceDataV2: new MyDataHelpsAssistantTools.QueryDeviceDataV2Tool(),
-                queryNotifications: new MyDataHelpsAssistantTools.QueryNotificationsTool(),
-                querySurveyAnswers: new MyDataHelpsAssistantTools.QuerySurveyAnswersTool(),
-                queryDailyDataTool: new MyDataHelpsAssistantTools.QueryDailyDataTool(),
-                getAllDailyDataTypes: new MyDataHelpsAssistantTools.GetAllDailyDataTypesTool(),
+                persistParticipantInfo: new MyDataHelpsTools.PersistParticipantInfoTool(),
+                queryAppleHealthActivitySummaries: new MyDataHelpsTools.QueryAppleHealthActivitySummariesTool(),
+                queryAppleHealthWorkouts: new MyDataHelpsTools.QueryAppleHealthWorkoutsTool(),
+                queryDailySleep: new MyDataHelpsTools.QueryDailySleepTool(),
+                queryDeviceDataV2Aggregate: new MyDataHelpsTools.QueryDeviceDataV2AggregateTool(),
+                queryDeviceDataV2: new MyDataHelpsTools.QueryDeviceDataV2Tool(),
+                queryNotifications: new MyDataHelpsTools.QueryNotificationsTool(),
+                querySurveyAnswers: new MyDataHelpsTools.QuerySurveyAnswersTool(),
+                queryDailyDataTool: new MyDataHelpsTools.QueryDailyDataTool(),
+                getAllDailyDataTypes: new MyDataHelpsTools.GetAllDailyDataTypesTool(),
             }
         }
     }
@@ -52,7 +52,7 @@ export default {
 
 const render = (args: AIAssistantProps) => {
     return <Layout colorScheme='auto'>
-        <MyDataHelpsAssistant {...args} appendTools={false} />
+        <AIAssistant {...args} appendTools={false} />
     </Layout>
 };
 

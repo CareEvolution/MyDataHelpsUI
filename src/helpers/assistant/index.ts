@@ -1,1 +1,1 @@
-export * as MyDataHelpsAssistantTools from './tools';
+export * as MyDataHelpsTools from './tools';
