@@ -39,17 +39,18 @@ export default function (props: HeartEssentialEightProps) {
 
   async function initialize() {
     if (props.previewState) {
-      if (["Default", "NoData"].includes(props.previewState ?? "")) {
-        const data =
-          props.previewState === "Default" ? previewHeartEssentialData : {};
-        loadScoresFromCustomFieldData(data);
-      } else {
+        if (["Default", "NoData"].includes(props.previewState ?? "")) {
+            const data =
+                props.previewState === "Default" ? previewHeartEssentialData : {};
+            loadScoresFromCustomFieldData(data);
+        }
+    } else {
         MyDataHelps.getParticipantInfo().then((participantInfo) => {
-          loadScoresFromCustomFieldData(participantInfo.customFields);
+            loadScoresFromCustomFieldData(participantInfo.customFields);
         });
-      }
     }
   }
+  
 
   function loadScoresFromCustomFieldData(
     customFieldData: Record<string, string>
