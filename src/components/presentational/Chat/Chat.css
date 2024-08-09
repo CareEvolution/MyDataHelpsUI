@@ -23,11 +23,18 @@
     border-radius: var(--mdhui-card-border-radius);
 }
 
+.mdhui-chat .send-button {
+    position: absolute;
+    right: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
 .mdhui-chat input {
     flex: 1;
     font-size: 1em;
     color: var(--mdhui-text-color-1);
-    padding: var(--mdhui-padding-md) calc(var(--mdhui-padding-md) * 2) var(--mdhui-padding-md) var(--mdhui-padding-md);
+    padding: var(--mdhui-padding-md) var(--mdhui-touch) var(--mdhui-padding-md) var(--mdhui-padding-md);
     box-sizing: border-box;
     outline-offset: -1px;
 }
@@ -50,7 +57,6 @@
 
 .mdhui-chat .mdhui-chat-message.sent {
     background: var(--mdhui-background-color-1);
-    min-height: 27px;
 }
 
 .mdhui-chat .mdhui-chat-message .svg-inline--fa,

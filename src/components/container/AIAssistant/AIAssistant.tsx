@@ -93,7 +93,7 @@ export default function (props: AIAssistantProps) {
     return <>
         {messages && <Chat messages={messages.map((msg) => {
             return {
-                icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faGear} /> : <FontAwesomeSvgIcon icon={faUser} />,
+                icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faGear} width={16} /> : <FontAwesomeSvgIcon icon={faUser} width={16} />,
                 content: msg.content,
                 type: msg.type === "user" ? "sent" : "received"
             }

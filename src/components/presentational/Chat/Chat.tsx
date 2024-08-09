@@ -3,6 +3,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import MarkdownIt from 'markdown-it';
+import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
 
@@ -46,7 +47,15 @@ export default function (props: ChatProps) {
             <div className="mdhui-chat-log" ref={logRef}>
                 {props.messages.map((message, index) => (
                     <div key={index} className={"mdhui-chat-message " + message.type}>
-                        <p>{message.icon}{md.renderInline(message.content)}</p>
+                        {message.icon}{parse(md.render(message.content), {
+                            transform: (reactNode, domNode, index) => {
+                                if (domNode.nodeType === 1 && domNode.name === "p" && index === 0) {
+                                    return <span key={index}>{domToReact((domNode as Element).children as DOMNode[])}</span>;
+                                }
+
+                                return null;
+                            }
+                        })}
                     </div>
                 ))}
                 {props.loading && <div className="message-loading">
@@ -65,7 +74,7 @@ export default function (props: ChatProps) {
                             }
                         }}
                     />
-                    <UnstyledButton onClick={sendMessage}>
+                    <UnstyledButton onClick={sendMessage} className="send-button">
                         <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </UnstyledButton>
                 </div>
