@@ -3,15 +3,15 @@ import { Layout, ResourceButtonVariant, ResourceImageAlignment } from '../../pre
 import InboxResourceListItem from './InboxResourceListItem';
 import resourceImage from '../../../assets/resource-image.png'
 import { InboxItemStatus, InboxResource } from '@careevolution/mydatahelps-js';
-import { noop } from '../../../helpers/functions';
 
 export default {
     title: 'Presentational/InboxResourceListItem',
     component: InboxResourceListItem,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface InboxResourceListItemStoryArgs {
+    colorScheme: 'auto' | 'light' | 'dark';
     title: string;
     subTitle?: string;
     imageUrl?: string;
@@ -20,6 +20,10 @@ interface InboxResourceListItemStoryArgs {
     buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
 }
+
+const onClick = () => {
+    console.log('resource list item clicked');
+};
 
 const render = (args: InboxResourceListItemStoryArgs) => {
     const resource = {
@@ -30,13 +34,20 @@ const render = (args: InboxResourceListItemStoryArgs) => {
         status: args.status
     } as InboxResource;
 
-    return <Layout colorScheme="auto">
-        <InboxResourceListItem resource={resource} imageAlignment={args.imageAlignment} buttonVariant={args.buttonVariant} buttonText={args.buttonText} onClick={noop}/>
+    return <Layout colorScheme={args.colorScheme}>
+        <InboxResourceListItem
+            resource={resource}
+            imageAlignment={args.imageAlignment}
+            buttonVariant={args.buttonVariant}
+            buttonText={args.buttonText}
+            onClick={() => onClick()}
+        />
     </Layout>;
 };
 
 export const Default = {
     args: {
+        colorScheme: 'auto',
         status: 'incomplete',
         title: 'Resource Title',
         subTitle: 'Here is a resource subtitle to add context',
@@ -46,23 +57,28 @@ export const Default = {
         buttonText: ''
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         status: {
             control: 'radio',
             options: ['incomplete', 'complete', 'closed']
         },
         subTitle: {
             name: 'sub title',
-            if: {arg: 'status', 'eq': 'incomplete'}
+            if: { arg: 'status', 'eq': 'incomplete' }
         },
         imageUrl: {
             name: 'image url',
-            if: {arg: 'status', 'eq': 'incomplete'}
+            if: { arg: 'status', 'eq': 'incomplete' }
         },
         imageAlignment: {
             name: 'image alignment',
             control: 'radio',
             options: ['left', 'center', 'right'],
-            if: {arg: 'status', 'eq': 'incomplete'}
+            if: { arg: 'status', 'eq': 'incomplete' }
         },
         buttonVariant: {
             name: 'button variant',
@@ -70,8 +86,7 @@ export const Default = {
             options: [undefined, 'button', 'link']
         },
         buttonText: {
-            name: 'button text override',
-            if: {arg: 'buttonVariant', neq: undefined}
+            name: 'button text override'
         }
     },
     render: render
