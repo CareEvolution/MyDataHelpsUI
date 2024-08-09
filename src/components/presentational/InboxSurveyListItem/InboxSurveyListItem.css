@@ -1,5 +1,6 @@
 .mdhui-inbox-survey-list-item {
     background: var(--mdhui-background-color-0);
     border-radius: 12px;
-    margin: 12px 0;
+    margin: 12px 16px;
+    box-shadow: var(--mdhui-box-shadow-0);
 }

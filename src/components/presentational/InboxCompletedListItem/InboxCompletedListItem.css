@@ -1,16 +1,17 @@
 .mdhui-inbox-completed-list-item {
     background: var(--mdhui-background-color-0);
     border-radius: 12px;
-    margin: 12px 0;
+    margin: 12px 16px;
 }
 
 .mdhui-inbox-completed-list-item .mdhui-action, .mdhui-inbox-completed-list-item .mdhui-card {
     border-radius: 12px;
     padding: 16px;
     margin: 12px 0;
+    box-shadow: var(--mdhui-box-shadow-0);
 }
 
-.mdhui-inbox-completed-list-item .mdhui-acqtion .title, .mdhui-inbox-completed-list-item-name {
+.mdhui-inbox-completed-list-item .mdhui-action .title, .mdhui-inbox-completed-list-item-name {
     font-weight: bold;
     font-size: 1.05em;
 }
