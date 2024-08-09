@@ -2,6 +2,8 @@ import React from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
+import './Popup.css';
+
 export interface PopupProps {
     children?: React.ReactNode;
     onCollapse: () => void;
@@ -13,8 +15,10 @@ export default function (props: PopupProps) {
 
     return <div className="mdhui-popup">
         <div className="mdhui-popup-header">
-            {props.titleIcon}
-            {props.title}
+            <div>
+                {props.titleIcon}
+                {props.title}
+            </div>
             <FontAwesomeSvgIcon icon={faChevronDown} className="collapse-button" onClick={() => props.onCollapse()} />
         </div>
         {props.children}
