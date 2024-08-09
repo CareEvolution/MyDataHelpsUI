@@ -46,29 +46,29 @@ export default function (props: ChatProps) {
             <div className="mdhui-chat-log" ref={logRef}>
                 {props.messages.map((message, index) => (
                     <div key={index} className={"mdhui-chat-message " + message.type}>
-                        {message.icon}
-                        <p>{md.renderInline(message.content)}</p>
+                        <p>{message.icon}{md.renderInline(message.content)}</p>
                     </div>
                 ))}
                 {props.loading && <div className="message-loading">
-                    <FontAwesomeSvgIcon icon={faSpinner} spin={true} />
-                    <p>{props.loading}</p>
+                    <p><FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}</p>
                 </div>}
             </div>
             <div className="mdhui-chat-input">
-                <input
-                    type="text"
-                    value={currentUserMessage}
-                    onChange={(e) => setCurrentUserMessage(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            sendMessage();
-                        }
-                    }}
-                />
-                <UnstyledButton onClick={sendMessage}>
-                    <FontAwesomeSvgIcon icon={faPaperPlane} />
-                </UnstyledButton>
+                <div className="input-group">
+                    <input
+                        type="text"
+                        value={currentUserMessage}
+                        onChange={(e) => setCurrentUserMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                sendMessage();
+                            }
+                        }}
+                    />
+                    <UnstyledButton onClick={sendMessage}>
+                        <FontAwesomeSvgIcon icon={faPaperPlane} />
+                    </UnstyledButton>
+                </div>
             </div>
         </div>
     );

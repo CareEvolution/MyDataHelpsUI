@@ -1,10 +1,15 @@
-.mhdui-chat .mdhui-chat-log {
+.mdhui-chat {
+    background: var(--mdhui-background-color-0);
+    font-size: 14px;
+}
+
+.mdhui-chat .mdhui-chat-log {
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.mhdui-chat p,
-.mhdui-chat ul {
+.mdhui-chat p,
+.mdhui-chat ul {
     margin: .25rem 0;
     word-break: break-word;
     color: var(--mdhui-text-color-1);
@@ -27,9 +32,18 @@
     outline-offset: -1px;
 }
 
+.mdhui-chat .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid var(--mdhui-border-color-1);
+}
+
 .mdhui-chat .mdhui-chat-message,
 .mdhui-chat .message-loading {
-    padding: var(--mdhui-padding-md) var(--mdhui-padding-xs) var(--mdhui-padding-xs) var(--mdhui-padding-lg);
+    padding: var(--mdhui-padding-xs) var(--mdhui-padding-xs) var(--mdhui-padding-xs) var(--mdhui-padding-lg);
     position: relative;
     border-bottom: 1px solid var(--mdhui-border-color-1);
 }
@@ -42,10 +56,7 @@
 .mdhui-chat .mdhui-chat-message .svg-inline--fa,
 .mdhui-chat .message-loading .svg-inline--fa {
     color: var(--mdhui-text-color-3);
-    left: 6px;
-    top: 10px;
-    font-size: 9px;
-    margin: .25rem 0;
+    margin-right: .25rem;
 }
 
 .mdhui-chat .message-loading .svg-inline--fa {

@@ -2,9 +2,8 @@
     position: fixed;
     bottom: 0;
     background-color: white;
-    font-size: 14px;
     width: calc(100% - 1rem);
-    border: var(--border);
+    border: 1px solid var(--mdhui-border-color-1);
     border-radius: 12px;
     overflow: hidden;
     margin: .5rem;
