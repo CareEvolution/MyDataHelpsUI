@@ -1,5 +1,5 @@
 import MyDataHelps, { DeviceDataPointQuery, DeviceDataV2AggregateQuery } from '@careevolution/mydatahelps-js';
-import queryAllDeviceDataV2 from '../query-all-device-data-v2-aggregates';
+import queryAllDeviceDataV2Aggregates from '../query-all-device-data-v2-aggregates';
 import { Reading } from './types';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
@@ -16,7 +16,7 @@ export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> 
         aggregateFunctions: ['sum']
     };
 
-    return queryAllDeviceDataV2(params).then(aggregates => {
+    return queryAllDeviceDataV2Aggregates(params).then(aggregates => {
         return aggregates.map(aggregate => {
             return {
                 timestamp: add(parseISO(aggregate.date), { minutes: 15 }),
@@ -37,7 +37,7 @@ export function garminHalfHourStepsDataProvider(date: Date): Promise<Reading[]> 
         aggregateFunctions: ['sum']
     };
 
-    return queryAllDeviceDataV2(params).then(aggregates => {
+    return queryAllDeviceDataV2Aggregates(params).then(aggregates => {
         return aggregates.map(aggregate => {
             return {
                 timestamp: add(parseISO(aggregate.date), { minutes: 15 }),
