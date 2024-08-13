@@ -4,6 +4,17 @@ import MyDataHelps, { DeviceDataV2AggregateQuery, DeviceDataV2Query, Participant
 import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 import { getNewsFeedPage } from "../news-feed/data";
 
+class DeviceDataV2Common {
+  static Namespace = z.enum(["Fitbit", "AppleHealth", "Garmin", "Dexcom", "HealthConnect"])
+    .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data.");
+
+  static DataSourceFilters = z.record(z.string(), z.string()).optional()
+    .describe('Filters to apply to the data source. For example, to filter by sourceName, use { sourceName: "Oura" }.');
+
+  static PropertyFilters = z.record(z.string(), z.string()).optional()
+    .describe('Filters to apply to the properties of the data points.');
+}
+
 export class PersistParticipantInfoTool extends StructuredTool {
   schema = z.object({
     demographics: z.object({
@@ -125,18 +136,22 @@ export class QuerySurveyAnswersTool extends StructuredTool {
 
 export class QueryDeviceDataV2Tool extends StructuredTool {
   schema = z.object({
-    namespace: z.enum(["Fitbit", "AppleHealth"])
-      .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
+    namespace: DeviceDataV2Common.Namespace,
     type: z.string().describe("The device data type is specific to the namespace."),
     observedAfter: z.string().optional()
       .describe("The start of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset."),
     observedBefore: z.string().optional()
-      .describe("The end of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset.")
+      .describe("The end of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset."),
+    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
+    propertyFilters: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2";
 
   description = `Can query a participant's device data. This represents raw individual fine grained data points, not aggregated in any way.
+
+    Before using this tool call the getDeviceDataV2AllDataTypes tool to see which data types are available. If a particular data type is not available
+    use the queryDailyData tool instead.
 
     For sleep this is the function you would query to determine the time a participant went to bed or woke up. For sleep a day consists of from 6 pm the 
     previous day to 6 pm the day of (For example 11/26/2024 sleep is from 11/25/2024 at 6 pm to 11/26/2024 at 6 pm). To determine the time a participant
@@ -160,15 +175,16 @@ export class QueryDeviceDataV2Tool extends StructuredTool {
 
 export class QueryDeviceDataV2AggregateTool extends StructuredTool {
   schema = z.object({
-    namespace: z.enum(["Fitbit", "AppleHealth"])
-      .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
+    namespace: DeviceDataV2Common.Namespace,
     type: z.string().describe("The device data type is specific to the namespace. Example data types for AppleHealth are Steps, Heart Rate."),
     observedAfter: z.string().optional().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
     observedBefore: z.string().optional().describe("The end of the date range for the query. This is a datetime in the participant's local timezone."),
     intervalAmount: z.number().describe("The number of periods to aggregate over. Together with intervalType this can be 1 Days or 3 Minutes."),
     intervalType: z.enum(["Minutes", "Hours", "Days", "Weeks", "Months"])
       .describe("The type of interval to aggregate over. Together with intervalAmount this can be 1 Days or 3 Minutes."),
-    aggregateFunctions: z.array(z.enum(["sum", "avg", "count", "min", "max"])).describe("The aggregations functions to apply to the granular data.")
+    aggregateFunctions: z.array(z.enum(["sum", "avg", "count", "min", "max"])).describe("The aggregations functions to apply to the granular data."),
+    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
+    propertyFilters: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2Aggregate";
@@ -185,14 +201,15 @@ export class QueryDeviceDataV2AggregateTool extends StructuredTool {
 
 export class QueryDailySleepTool extends StructuredTool {
   schema = z.object({
-    namespace: z.enum(["Fitbit", "AppleHealth"])
-      .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
+    namespace: DeviceDataV2Common.Namespace,
     type: z.string()
       .describe("The device data type is specific to the namespace. For Apple Health this is called Sleep Analysis, for Fitbit it is called Sleep."),
     observedAfter: z.string().optional()
       .describe("The start of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
     observedBefore: z.string().optional()
-      .describe("The end of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive.")
+      .describe("The end of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
+    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
+    propertyFilters: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2DailySleep";
@@ -203,7 +220,7 @@ export class QueryDailySleepTool extends StructuredTool {
   async _call(input: z.infer<typeof this.schema>) {
     let response = await MyDataHelps.queryDeviceDataV2DailySleep(input as DeviceDataV2AggregateQuery);
 
-    return JSON.stringify(response.sleepStageSummaries.map(({ date, duration, source, value }) => ({ date, duration, source, value })));
+    return JSON.stringify(response.sleepStageSummaries.map(({ date, duration, value }) => ({ date, duration, value })));
   }
 }
 
@@ -220,6 +237,20 @@ export class QueryDailyDataTool extends StructuredTool {
 
   async _call(input: z.infer<typeof this.schema>) {
     let response = await queryDailyData(input.type, new Date(input.startDate), new Date(input.endDate), false);
+
+    return JSON.stringify(response);
+  }
+}
+
+export class GetDeviceDataV2AllDataTypesTool extends StructuredTool {
+  schema = z.object({});
+
+  name = "getDeviceDataV2AllDataTypes";
+
+  description = "Get all the device data types that can be queried with the queryDeviceDataV2 tool. Only types that are enabled can be queried.";
+
+  async _call() {
+    let response = await MyDataHelps.getDeviceDataV2AllDataTypes();
 
     return JSON.stringify(response);
   }

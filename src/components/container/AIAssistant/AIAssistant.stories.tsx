@@ -45,7 +45,8 @@ export default {
                 querySurveyAnswers: new MyDataHelpsTools.QuerySurveyAnswersTool(),
                 queryDailyDataTool: new MyDataHelpsTools.QueryDailyDataTool(),
                 getAllDailyDataTypes: new MyDataHelpsTools.GetAllDailyDataTypesTool(),
-                getEhrNewsFeedPage: new MyDataHelpsTools.GetEhrNewsFeedPageTool()
+                getEhrNewsFeedPage: new MyDataHelpsTools.GetEhrNewsFeedPageTool(),
+                getDeviceDataV2AllDataTypes: new MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool()
             }
         }
     }

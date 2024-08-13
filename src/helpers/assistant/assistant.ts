@@ -19,7 +19,8 @@ import {
     QuerySurveyAnswersTool,
     QueryDailyDataTool,
     GetAllDailyDataTypesTool,
-    GetEhrNewsFeedPageTool
+    GetEhrNewsFeedPageTool,
+    GetDeviceDataV2AllDataTypesTool
 } from "./tools";
 
 
@@ -156,6 +157,7 @@ export class MyDataHelpsAssistant {
         new QuerySurveyAnswersTool(),
         new QueryDailyDataTool(),
         new GetAllDailyDataTypesTool(),
-        new GetEhrNewsFeedPageTool()
+        new GetEhrNewsFeedPageTool(),
+        new GetDeviceDataV2AllDataTypesTool()
     ];
 }
