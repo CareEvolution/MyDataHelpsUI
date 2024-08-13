@@ -114,6 +114,7 @@ export default function (props: MealEditorProps) {
             <div className="mdhui-meal-editor-form">
                 {language('meal-editor-time-input-label')}:
                 <input
+                    className="mdhui-meal-editor-input"
                     type="time"
                     value={format(mealToEdit!.timestamp, 'HH:mm')}
                     onChange={event => onTimeChanged(event)}
