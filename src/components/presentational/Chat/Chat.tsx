@@ -53,7 +53,7 @@ export default function (props: ChatProps) {
                                     return <span key={index}>{domToReact((domNode as Element).children as DOMNode[])}</span>;
                                 }
 
-                                return null;
+                                return <React.Fragment key={index}>{reactNode}</React.Fragment>;
                             }
                         })}
                     </div>

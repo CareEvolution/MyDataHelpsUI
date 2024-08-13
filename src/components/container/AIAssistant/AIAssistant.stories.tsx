@@ -33,7 +33,7 @@ export default {
             control: 'multi-select',
             options: ['persistParticipantInfo', 'queryAppleHealthActivitySummaries', 'queryAppleHealthWorkouts', 'getAllDailyDataTypes',
                 'queryDailySleep', 'queryDeviceDataV2Aggregate', 'queryDeviceDataV2', 'queryNotifications',
-                'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes'],
+                'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes', 'getEhrNewsFeedPage'],
             mapping: {
                 persistParticipantInfo: new MyDataHelpsTools.PersistParticipantInfoTool(),
                 queryAppleHealthActivitySummaries: new MyDataHelpsTools.QueryAppleHealthActivitySummariesTool(),
@@ -45,6 +45,7 @@ export default {
                 querySurveyAnswers: new MyDataHelpsTools.QuerySurveyAnswersTool(),
                 queryDailyDataTool: new MyDataHelpsTools.QueryDailyDataTool(),
                 getAllDailyDataTypes: new MyDataHelpsTools.GetAllDailyDataTypesTool(),
+                getEhrNewsFeedPage: new MyDataHelpsTools.GetEhrNewsFeedPageTool()
             }
         }
     }

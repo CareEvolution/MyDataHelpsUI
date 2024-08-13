@@ -2,6 +2,7 @@ import { StructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import MyDataHelps, { DeviceDataV2AggregateQuery, DeviceDataV2Query, ParticipantDemographics, StringMap } from "@careevolution/mydatahelps-js";
 import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
+import { getNewsFeedPage } from "../news-feed/data";
 
 export class PersistParticipantInfoTool extends StructuredTool {
   schema = z.object({
@@ -227,5 +228,23 @@ export class GetAllDailyDataTypesTool extends StructuredTool {
 
   async _call() {
     return JSON.stringify(getAllDailyDataTypes());
+  }
+}
+
+export class GetEhrNewsFeedPageTool extends StructuredTool {
+  schema = z.object({
+    feed: z.enum(["Immunizations", "LabReports", "Procedures", "Reports"]).describe("The type of feed to query."),
+    pageID: z.string().optional().describe("The page ID to continue from if you need to fetch more results."),
+    pageDate: z.string().optional().describe("The date of the page to continue from if you are doing a time based query.")
+  });
+
+  name = "getEhrNewsFeedPage"
+
+  description = `Get electronic health record (EHR) data for the participant.`;
+
+  async _call(input: z.infer<typeof this.schema>) {
+    let response = await getNewsFeedPage(input.feed, input.pageID, input.pageDate);
+
+    return JSON.stringify(response);
   }
 }

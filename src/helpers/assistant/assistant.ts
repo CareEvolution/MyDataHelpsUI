@@ -18,7 +18,8 @@ import {
     QueryNotificationsTool,
     QuerySurveyAnswersTool,
     QueryDailyDataTool,
-    GetAllDailyDataTypesTool
+    GetAllDailyDataTypesTool,
+    GetEhrNewsFeedPageTool
 } from "./tools";
 
 
@@ -149,6 +150,7 @@ export class MyDataHelpsAssistant {
         new QueryAppleHealthActivitySummariesTool(),
         new QuerySurveyAnswersTool(),
         new QueryDailyDataTool(),
-        new GetAllDailyDataTypesTool()
+        new GetAllDailyDataTypesTool(),
+        new GetEhrNewsFeedPageTool()
     ];
 }
