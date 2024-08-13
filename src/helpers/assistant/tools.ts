@@ -9,7 +9,10 @@ class DeviceDataV2Common {
     .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data.");
 
   static DataSourceFilters = z.record(z.string(), z.string()).optional()
-    .describe('Filters to apply to the data source. For example, to filter by sourceName, use { sourceName: "Oura" }.');
+    .describe(`These can be used to restrict the returned results to data coming from a specific device only. For example, if I
+      wanted to only query data from my iPhone, I could pass in "dataSource": { "sourceName": "Mike's iPhone" }. If I wanted to only query data
+      from my Oura ring, I could pass in "dataSource": { "sourceName": "Oura" }. You can prompt the user for the device name if it is unclear what that
+      is from the user's question.`);
 
   static PropertyFilters = z.record(z.string(), z.string()).optional()
     .describe('Filters to apply to the properties of the data points.');
@@ -142,8 +145,8 @@ export class QueryDeviceDataV2Tool extends StructuredTool {
       .describe("The start of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset."),
     observedBefore: z.string().optional()
       .describe("The end of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset."),
-    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
-    propertyFilters: DeviceDataV2Common.PropertyFilters
+    dataSource: DeviceDataV2Common.DataSourceFilters,
+    properties: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2";
@@ -183,8 +186,8 @@ export class QueryDeviceDataV2AggregateTool extends StructuredTool {
     intervalType: z.enum(["Minutes", "Hours", "Days", "Weeks", "Months"])
       .describe("The type of interval to aggregate over. Together with intervalAmount this can be 1 Days or 3 Minutes."),
     aggregateFunctions: z.array(z.enum(["sum", "avg", "count", "min", "max"])).describe("The aggregations functions to apply to the granular data."),
-    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
-    propertyFilters: DeviceDataV2Common.PropertyFilters
+    dataSource: DeviceDataV2Common.DataSourceFilters,
+    properties: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2Aggregate";
@@ -208,8 +211,8 @@ export class QueryDailySleepTool extends StructuredTool {
       .describe("The start of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
     observedBefore: z.string().optional()
       .describe("The end of the date range for the query. This is a date (no time) in the participant's local time. This is inclusive."),
-    dataSourceFilters: DeviceDataV2Common.DataSourceFilters,
-    propertyFilters: DeviceDataV2Common.PropertyFilters
+    dataSource: DeviceDataV2Common.DataSourceFilters,
+    properties: DeviceDataV2Common.PropertyFilters
   });
 
   name = "queryDeviceDataV2DailySleep";
