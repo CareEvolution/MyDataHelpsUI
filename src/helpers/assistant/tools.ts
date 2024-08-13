@@ -168,7 +168,7 @@ export class QueryDeviceDataV2Tool extends StructuredTool {
       observationDate,
       observationDateOffset,
       units,
-      dataSource: dataSource?.properties?.sourceName
+      dataSource: dataSource?.sourceName
     })));
   }
 }
