@@ -128,14 +128,20 @@ export class QueryDeviceDataV2Tool extends StructuredTool {
     namespace: z.enum(["Fitbit", "AppleHealth"])
       .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
     type: z.string().describe("The device data type is specific to the namespace."),
-    observedAfter: z.string().optional().describe("The start of the date range for the query. This is a datetime in the participant's local timezone."),
-    observedBefore: z.string().optional().describe("The end of the date range for the query. This is a datetime in the participant's local timezone.")
+    observedAfter: z.string().optional()
+      .describe("The start of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset."),
+    observedBefore: z.string().optional()
+      .describe("The end of the date range for the query. This is a datetime in the participant's local timezone, passed without the timezone offset.")
   });
 
   name = "queryDeviceDataV2";
 
   description = `Can query a participant's device data. This represents raw individual fine grained data points, not aggregated in any way.
-    For sleep this is the function you would query to determine the time a participant went to bed or woke up.`;
+
+    For sleep this is the function you would query to determine the time a participant went to bed or woke up. For sleep a day consists of from 6 pm the 
+    previous day to 6 pm the day of (For example 11/26/2024 sleep is from 11/25/2024 at 6 pm to 11/26/2024 at 6 pm). To determine the time a participant
+    went to bed look at the startDate of the first not awake and not in bed sleep stage for that day. To determine wake up times look at the observationDate
+    of the last not awake and not in bed sleep stage for that day.`;
 
   async _call(input: z.infer<typeof this.schema>) {
     let response = await MyDataHelps.queryDeviceDataV2(input as DeviceDataV2Query);
