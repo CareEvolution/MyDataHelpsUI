@@ -6,6 +6,7 @@
 .mdhui-chat .mdhui-chat-log {
     overflow-y: auto;
     overflow-x: hidden;
+    min-height: 20vh;
 }
 
 .mdhui-chat p,
