@@ -79,6 +79,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
+		if ( props.previewState ) return;
 		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
 			.then(function () {
 				initialize();
