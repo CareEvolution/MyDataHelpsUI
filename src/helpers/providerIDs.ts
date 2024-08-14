@@ -1,25 +1,21 @@
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import MyDataHelps from '@careevolution/mydatahelps-js';
+
+function isDevelopment() {
+    return MyDataHelps.baseUrl && (MyDataHelps.baseUrl.startsWith('https://mdhorg.ce.dev') || MyDataHelps.baseUrl.startsWith('https://mydatahelps.dev'));
+}
 
 export function getFitbitProviderID() {
-	var fitbitProviderID = 564;
-	if (MyDataHelps.baseUrl && (MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev") || MyDataHelps.baseUrl.startsWith("https://mydatahelps.dev"))) {
-		fitbitProviderID = 2;
-	}
-	return fitbitProviderID;
+    return isDevelopment() ? 2 : 564;
 }
 
 export function getGarminProviderID() {
-	var garminProviderID = 6327;
-	if (MyDataHelps.baseUrl && (MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev") || MyDataHelps.baseUrl.startsWith("https://mydatahelps.dev"))) {
-		garminProviderID = 1384;
-	}
-	return garminProviderID;
+    return isDevelopment() ? 1384 : 6327;
+}
+
+export function getDexcomProviderID() {
+    return isDevelopment() ? 5691 : 5691; // TODO: Change the second value to the prod ID once it is available.
 }
 
 export function getOmronProviderID() {
-	var omronProviderID = 1466;
-	if (MyDataHelps.baseUrl && (MyDataHelps.baseUrl.startsWith("https://mdhorg.ce.dev") || MyDataHelps.baseUrl.startsWith("https://mydatahelps.dev"))) {
-		omronProviderID = 171;
-	}
-	return omronProviderID;
+    return isDevelopment() ? 171 : 1466;
 }
