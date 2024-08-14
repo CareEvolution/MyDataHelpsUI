@@ -1,23 +1,18 @@
-.mdhui-heart-e8-container {
-  display: flex;  
-  align-items: center;
-}
-
-.mdhui-heart-e8-container .mdhui-heart-e8-score-container {
+.mdhui-heart-e8-score-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.mdhui-heart-e8-container .mdhui-heart-e8-score-container .score{
+.mdhui-heart-e8-score-container .score {
   font-size: 65px;
   font-weight: bold;
   display: flex;
   justify-content: center;
 }
 
-.mdhui-heart-e8-container .mdhui-heart-e8-score-container .scoreSubText{
+.mdhui-heart-e8-score-container .scoreSubText {
   font-size: 20px;
   font-weight: bold;
   color: rgb(109, 110, 113);
@@ -25,21 +20,27 @@
   justify-content: center;
 }
 
-.mdhui-heart-e8-container .mdhui-heart-e8-feedback {
+.mdhui-heart-e8-feedback {
   display: flex;
   flex-direction: column;
   justify-content: left;
   margin-left: 20px;
 }
 
-.mdhui-heart-e8-container .mdhui-heart-e8-feedback .achievementSection{
+.achievementSection {
   display: flex;
   align-items: center;
 }
 
-.bulletPoint{
-  width: 20px;
-  height: 20px;
+.achievementIcons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bulletPoint {
+  width: 10px;
+  height: 10px;
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
@@ -47,16 +48,16 @@
 }
 
 .improve {
-  background-color: rgb(234, 140, 28);;
+  background-color: rgb(234, 140, 28);
 }
 
 .celebrate {
   background-color: rgb(127, 180, 57);
 }
 
-.circle{
-  width: 40px;
-  height: 40px;
+.circle {
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -66,47 +67,46 @@
   overflow: hidden;
 }
 
-.circle img{
-  width: 40px;
-  height: 40px;
+.circle img {
+  width: 30px;
+  height: 30px;
 }
 
-.activity{
+.activity {
   background-color: rgb(1, 131, 191);
-  color: white;
 }
 
-.bloodPressure{
+.bloodPressure {
   background-color: rgb(102, 88, 166);
-  color: white;
 }
 
-.bloodSugar{
+.bloodSugar {
   background-color: rgb(2, 128, 131);
-  color: white;
 }
 
-.bmi{
+.bmi {
   background-color: rgb(234, 140, 28);
-  color: white;
 }
 
-.cholesterol{
+.cholesterol {
   background-color: rgb(158, 31, 99);
-  color: white;
 }
 
-.diet{
+.diet {
   background-color: rgb(127, 180, 57);
-  color: white;
 }
 
-.nicotine{
+.nicotine {
   background-color: rgb(193, 14, 33);
-  color: white;
 }
 
-.sleep{
+.sleep {
   background-color: rgb(111, 207, 190);
-  color: white;
+}
+
+.actionRow {
+  border-radius: 25px;
+  border-color: var(--mdhui-border-color-0);
+  border-width: 1px;
+  border-style: solid;
 }

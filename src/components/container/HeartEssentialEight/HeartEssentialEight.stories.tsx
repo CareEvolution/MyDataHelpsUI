@@ -28,20 +28,20 @@ const render = (args: HeartEssentialEightProps) => {
 };
 
 const defaultCustomFieldDictionary = {
-    Activity: "Activity",
-    BloodPressure: "BloodPressure",
-    BloodSugar: "BloodSugar",
-    BMI: "BMI",
-    Cholesterol: "Cholesterol",
-    Diet: "Diet",
-    Nicotine: "Nicotine",
-    Sleep: "Sleep"
+  Activity: "Activity",
+  BloodPressure: "BloodPressure",
+  BloodSugar: "BloodSugar",
+  BMI: "BMI",
+  Cholesterol: "Cholesterol",
+  Diet: "Diet",
+  Nicotine: "Nicotine",
+  Sleep: "Sleep",
 };
 
 export const Default: Story = {
   args: {
     previewState: "Default",
-    customFieldDictionary: defaultCustomFieldDictionary 
+    customFieldDictionary: defaultCustomFieldDictionary,
   },
   render: render,
 };
@@ -49,25 +49,23 @@ export const Default: Story = {
 export const NoData: Story = {
   args: {
     previewState: "NoData",
-    customFieldDictionary: defaultCustomFieldDictionary
+    customFieldDictionary: defaultCustomFieldDictionary,
   },
   render: render,
 };
 
-
 export const Live: Story = {
-    args: {
-      customFieldDictionary:  {
-            Activity: "LE8_PA_Score",
-            BloodPressure: "LE8_BP_Score",
-            BloodSugar: "LE8_BloodSugar_Score",
-            BMI: "LE8_BMI_Score",
-            Cholesterol: "LE8_Cholesterol_Score",
-            Diet: "LE8_Diet_Score",
-            Nicotine: "LE8_Nicotine_Score",
-            Sleep: "LE8_Sleep_Score"
-        }
+  args: {
+    customFieldDictionary: {
+      Activity: "LE8_PA_Score",
+      BloodPressure: "LE8_BP_Score",
+      BloodSugar: "LE8_BloodSugar_Score",
+      BMI: "LE8_BMI_Score",
+      Cholesterol: "LE8_Cholesterol_Score",
+      Diet: "LE8_Diet_Score",
+      Nicotine: "LE8_Nicotine_Score",
+      Sleep: "LE8_Sleep_Score",
     },
-    render: render,
-  };
-  
+  },
+  render: render,
+};

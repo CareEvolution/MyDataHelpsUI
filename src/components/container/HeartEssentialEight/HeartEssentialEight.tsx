@@ -32,25 +32,29 @@ export interface HeartEssentialEightProps {
 }
 
 export default function (props: HeartEssentialEightProps) {
-  const { customFieldDictionary } = props;
+  const customRingStyle: React.CSSProperties = {
+    backgroundColor: "lightblue",
+    height: "100px",
+    width: "100px",
+  };
+
   let [score, setScore] = React.useState<number>();
   let [achievementMap, setAchievementMap] =
     useState<Record<HeartEssentialEightScores, boolean>>();
 
   async function initialize() {
     if (props.previewState) {
-        if (["Default", "NoData"].includes(props.previewState ?? "")) {
-            const data =
-                props.previewState === "Default" ? previewHeartEssentialData : {};
-            loadScoresFromCustomFieldData(data);
-        }
+      if (["Default", "NoData"].includes(props.previewState ?? "")) {
+        const data =
+          props.previewState === "Default" ? previewHeartEssentialData : {};
+        loadScoresFromCustomFieldData(data);
+      }
     } else {
-        MyDataHelps.getParticipantInfo().then((participantInfo) => {
-            loadScoresFromCustomFieldData(participantInfo.customFields);
-        });
+      MyDataHelps.getParticipantInfo().then((participantInfo) => {
+        loadScoresFromCustomFieldData(participantInfo.customFields);
+      });
     }
   }
-  
 
   function loadScoresFromCustomFieldData(
     customFieldData: Record<string, string>
@@ -58,22 +62,22 @@ export default function (props: HeartEssentialEightProps) {
     let newScore: number = 0;
     let newAchievementMap = {} as Record<HeartEssentialEightScores, boolean>;
 
-    for (const key in customFieldDictionary) {
-      if (customFieldDictionary[key]) {
-        let surveyScore = customFieldData[customFieldDictionary[key]];
+    for (const key in props.customFieldDictionary) {
+      if (props.customFieldDictionary[key]) {
+        let surveyScore = customFieldData[props.customFieldDictionary[key]];
         let numericScore = parseInt(surveyScore);
         if (!Number.isNaN(numericScore)) {
           newScore += numericScore;
           newAchievementMap[key as HeartEssentialEightScores] =
             numericScore >= 100;
         } else {
-            newAchievementMap[key as HeartEssentialEightScores] = false;
+          newAchievementMap[key as HeartEssentialEightScores] = false;
         }
       }
     }
 
-    if (newScore > 0){
-        newScore = (newScore / 800) * 100;
+    if (newScore > 0) {
+      newScore = (newScore / 800) * 100;
     }
 
     setScore(parseFloat(newScore.toFixed(1)));
@@ -124,7 +128,7 @@ export default function (props: HeartEssentialEightProps) {
             icon = iconStopSmoking;
             circleClasses.push("nicotine");
             break;
-        case "Sleep":
+          case "Sleep":
             icon = iconSleep;
             circleClasses.push("sleep");
             break;
@@ -139,11 +143,14 @@ export default function (props: HeartEssentialEightProps) {
         );
 
         const achievement = (
-          <Action key={`achievement-${key}`}
-            title={title}
-            titleIcon={achievementIcon}
-            onClick={() => MyDataHelps.openExternalUrl(url)}
-          />
+          <div className="actionRow">
+            <Action
+              key={`achievement-${key}`}
+              title={title}
+              titleIcon={achievementIcon}
+              onClick={() => MyDataHelps.openExternalUrl(url)}
+            />
+          </div>
         );
         achievementList.push(achievement);
       }
@@ -156,9 +163,9 @@ export default function (props: HeartEssentialEightProps) {
 
   return (
     <>
-        {/* <LoadingIndicator /> */}
-      {/* {score === undefined && <LoadingIndicator />} */}
-        <div className="mdhui-heart-e8-container">
+      {score === undefined && <LoadingIndicator />}
+      {score !== undefined && (
+        <div>
           <div className="mdhui-heart-e8-score-container">
             <ProgressRing
               percentCompleted={score}
@@ -171,15 +178,28 @@ export default function (props: HeartEssentialEightProps) {
               }
               animate={true}
             />
+
+            {achievementMap && (
+              <>
+                <div className="achievementSection">
+                  <div className="bulletPoint improve" />
+                  <h4>IMPROVE</h4>
+                </div>
+                <div className="achievementIcons">
+                  {generateAchievementMap(false, achievementMap)}
+                </div>
+                <div className="achievementSection">
+                  <div className="bulletPoint celebrate" />
+                  <h4>CELEBRATE</h4>
+                </div>
+                <div className="achievementIcons">
+                  {generateAchievementMap(true, achievementMap)}
+                </div>
+              </>
+            )}
           </div>
-          {achievementMap && <div className="mdhui-heart-e8-feedback">
-            <div className="achievementSection"><div className="bulletPoint improve" /><h3>IMPROVE</h3></div>
-            <div className="achievementSection">{generateAchievementMap(false, achievementMap)}</div>
-            <div className="achievementSection"><div className="bulletPoint celebrate" /><h3>CELEBRATE</h3></div>
-            <div className="achievementSection">{generateAchievementMap(true, achievementMap)}</div>
-          </div>} 
         </div>
-      
+      )}
     </>
   );
 }
