@@ -1,0 +1,112 @@
+.mdhui-heart-e8-score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mdhui-heart-e8-score-container .score {
+  font-size: 65px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+}
+
+.mdhui-heart-e8-score-container .scoreSubText {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(109, 110, 113);
+  display: flex;
+  justify-content: center;
+}
+
+.mdhui-heart-e8-feedback {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-left: 20px;
+}
+
+.achievementSection {
+  display: flex;
+  align-items: center;
+}
+
+.achievementIcons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bulletPoint {
+  width: 10px;
+  height: 10px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  margin-right: 15px;
+}
+
+.improve {
+  background-color: rgb(234, 140, 28);
+}
+
+.celebrate {
+  background-color: rgb(127, 180, 57);
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.circle img {
+  width: 30px;
+  height: 30px;
+}
+
+.activity {
+  background-color: rgb(1, 131, 191);
+}
+
+.bloodPressure {
+  background-color: rgb(102, 88, 166);
+}
+
+.bloodSugar {
+  background-color: rgb(2, 128, 131);
+}
+
+.bmi {
+  background-color: rgb(234, 140, 28);
+}
+
+.cholesterol {
+  background-color: rgb(158, 31, 99);
+}
+
+.diet {
+  background-color: rgb(127, 180, 57);
+}
+
+.nicotine {
+  background-color: rgb(193, 14, 33);
+}
+
+.sleep {
+  background-color: rgb(111, 207, 190);
+}
+
+.actionRow {
+  border-radius: 25px;
+  border-color: var(--mdhui-border-color-0);
+  border-width: 1px;
+  border-style: solid;
+}
