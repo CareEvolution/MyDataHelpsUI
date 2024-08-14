@@ -4,7 +4,7 @@ import MyDataHelps, { DeviceDataV2AggregateQuery, DeviceDataV2Query, Participant
 import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 import { getNewsFeedPage } from "../news-feed/data";
 
-const DeviceDataV2QuerySchema = z.object({
+const deviceDataV2QuerySchema = z.object({
   namespace: z.enum(["Fitbit", "AppleHealth", "Garmin", "Dexcom", "HealthConnect"])
     .describe("The namespace of the device data, representing the manufacturer of the devices used to collect the data."),
 
@@ -150,7 +150,7 @@ export class QuerySurveyAnswersTool extends StructuredTool {
 }
 
 export class QueryDeviceDataV2Tool extends StructuredTool {
-  schema = DeviceDataV2QuerySchema;
+  schema = deviceDataV2QuerySchema;
 
   name = "queryDeviceDataV2";
 
@@ -180,7 +180,7 @@ export class QueryDeviceDataV2Tool extends StructuredTool {
 }
 
 export class QueryDeviceDataV2AggregateTool extends StructuredTool {
-  schema = DeviceDataV2QuerySchema.extend({
+  schema = deviceDataV2QuerySchema.extend({
     intervalAmount: z.number().describe("The number of periods to aggregate over. Together with intervalType this can be 1 Days or 3 Minutes."),
     intervalType: z.enum(["Minutes", "Hours", "Days", "Weeks", "Months"])
       .describe("The type of interval to aggregate over. Together with intervalAmount this can be 1 Days or 3 Minutes."),
@@ -200,7 +200,7 @@ export class QueryDeviceDataV2AggregateTool extends StructuredTool {
 }
 
 export class QueryDailySleepTool extends StructuredTool {
-  schema = DeviceDataV2QuerySchema.extend({
+  schema = deviceDataV2QuerySchema.extend({
     type: z.string()
       .describe("The device data type is specific to the namespace. For Apple Health this is called Sleep Analysis, for Fitbit it is called Sleep."),
   });
