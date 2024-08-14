@@ -91,6 +91,11 @@ export class MyDataHelpsAssistant {
             
             You can encourage the user to ask more questions and even suggest additional follow-up questions that might be relevant.
 
+            If the user asks for some data, and you query it with the respective tool, but the returned data does not sufficiently
+            answer the user's question, for example, if the user asks for their last 3 LDL values, and you query the getEhrNewsFeedPage
+            tool and it returns only the last 2 LDL values and a nextPageID, then query the tool again while passing the nextPageID as the
+            pageID parameter to get additional data. Continue this process until you have all the data that the user asked for, up to 5 iterations.
+
 			User information: {participantInfo}
 			
 			The time right now is ${new Date().toISOString()}.
