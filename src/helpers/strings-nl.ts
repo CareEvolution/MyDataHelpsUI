@@ -4,6 +4,9 @@ let strings: { [key: string]: string } = {
     "close": "Sluiten",
     "save": "Opslaan",
     "add": "Toevoegen",
+    "edit": "Bewerken",
+    "cancel": "Annuleren",
+    "clear": "duidelijk",
     "settings": "Instellingen",
     "connect": "Verbinden",
     "reconnect": "Opnieuw verbinden",
@@ -386,7 +389,23 @@ let strings: { [key: string]: string } = {
     "my-badges": "Mijn badges ({{badges}})",
     "new-badge-title": "Goed gedaan!",
     "new-badge-text": "Je hebt een nieuwe badge gekregen!",
-    "get-badge": "Badge krijgen"
+    "get-badge": "Badge krijgen",
+    "glucose-chart-no-data": "Geen bloedglucosemetingen",
+    "glucose-stats-range-label": "Bloedglucosebereik",
+    "glucose-stats-avg-label": "Gemiddelde bloedglucose",
+    "glucose-stats-steps-label": "Stappen",
+    "glucose-stats-sleep-label": "Slaap",
+    "stress-level-title": "Algemene stress",
+    "stress-level-min-label": "Geen stress",
+    "stress-level-max-label": "Extreem gestrest",
+    "meal-type-meal": "Maaltijd",
+    "meal-type-snack": "Snack",
+    "meal-type-drink": "Drankje",
+    "meal-log-title": "Maaltijdlogboek",
+    "meal-log-no-data": "Geen maaltijden geregistreerd",
+    "meal-editor-time-input-label": "Tijd",
+    "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
+    "glucose-view-title": "Glucosemonitoring"
 };
 
 export default strings;
