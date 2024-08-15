@@ -90,7 +90,10 @@ export default function (props: MealEditorProps) {
     };
 
     const onTimeChanged = (event: ChangeEvent<HTMLInputElement>) => {
-        setMealToEdit({ ...mealToEdit!, timestamp: parse(event.target.value, 'HH:mm', mealToEdit!.timestamp) });
+        let value = event.target.value;
+        if (value) {
+            setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
+        }
     }
 
     return <div className="mdhui-meal-editor" ref={props.innerRef}>
