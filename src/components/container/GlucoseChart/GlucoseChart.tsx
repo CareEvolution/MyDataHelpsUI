@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { DateRangeContext, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, format, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import GlucoseStats from '../../presentational/GlucoseStats';
@@ -13,10 +13,12 @@ import { MealContext } from '../../container';
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
     showStats?: boolean;
+    averageGlucoseLineColor?: ColorDefinition;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: GlucoseChartProps) {
+    const layoutContext = useContext(LayoutContext);
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
@@ -149,7 +151,7 @@ export default function (props: GlucoseChartProps) {
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
     let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
 
-    return <div className="mdhui-glucose-chart">
+    return <div className="mdhui-glucose-chart" ref={props.innerRef}>
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
             <TimeSeriesChart
                 intervalType="Day"
@@ -183,11 +185,11 @@ export default function (props: GlucoseChartProps) {
                 {avgGlucose &&
                     <ReferenceLine
                         y={avgGlucose}
-                        stroke="var(--mdhui-color-primary)"
-                        strokeWidth={1}
+                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
+                        strokeWidth={1.5}
                         label={{
                             value: avgGlucose.toFixed(0),
-                            fill: 'var(--mdhui-color-primary)',
+                            fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
                             fontSize: 9,
                             position: 'insideTopRight',
                             fontWeight: 'bold'

@@ -14,10 +14,10 @@ export function resolveColor(colorScheme: "light" | "dark", colorDefinition?: Co
 }
 
 var colorAssortment = [
+    "#c4291c",
     "#e35c33",
     "#5db37e",
     "#429bdf",
-    "#c4291c",
     "#7b88c6",
     "#616161",
     "#d98177",

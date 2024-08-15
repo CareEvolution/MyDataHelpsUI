@@ -38,6 +38,7 @@ export enum DailyDataType {
 	FitbitDeepSleepMinutes = "FitbitDeepSleepMinutes",
 	FitbitSpO2 = "FitbitSpO2",
 	FitbitSteps = "FitbitSteps",
+	FitbitWearMinutes = "FitbitWearMinutes",
 	GarminSteps = "GarminSteps",
 	GarminDistance = "GarminDistance",
 	GarminFloors = "GarminFloors",

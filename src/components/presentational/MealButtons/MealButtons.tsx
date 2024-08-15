@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import './MealButtons.css'
-import { Button, DateRangeContext } from '../index';
+import { Button, DateRangeContext, TextBlock } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 import { getMealTypeDisplayText, MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import { add } from 'date-fns';
+import { add, startOfDay } from 'date-fns';
 
 export interface MealButtonsProps {
     preview?: boolean;
@@ -18,14 +18,17 @@ export default function (props: MealButtonsProps) {
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
-    if (!mealContext) return null;
+    if (!mealContext) {
+        return <TextBlock innerRef={props.innerRef}>Error: Meal Buttons must be used within a Meal Coordinator.</TextBlock>
+    }
 
     const addMeal = (type: MealType) => {
         if (props.preview) {
             props.onEditMeal();
             return;
         }
-        let mealTimestamp = dateRangeContext ? add(dateRangeContext.intervalStart, { hours: 12 }) : new Date();
+        let now = new Date();
+        let mealTimestamp = dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now;
         prepareMealForEditing({ id: uuid(), timestamp: mealTimestamp, type: type }).then(() => {
             props.onEditMeal();
         });

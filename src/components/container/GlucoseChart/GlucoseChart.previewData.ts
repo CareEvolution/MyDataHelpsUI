@@ -19,7 +19,7 @@ export const previewData = (previewState: GlucoseChartPreviewState, date: Date):
         return {
             glucose: generateGlucose(date),
             steps: generateSteps(date),
-            sleepMinutes: 385
+            sleepMinutes: 385 + (Math.random() * 60)
         };
     }
     return {} as GlucoseChartPreviewData;

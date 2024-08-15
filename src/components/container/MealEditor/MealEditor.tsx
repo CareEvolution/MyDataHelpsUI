@@ -90,10 +90,13 @@ export default function (props: MealEditorProps) {
     };
 
     const onTimeChanged = (event: ChangeEvent<HTMLInputElement>) => {
-        setMealToEdit({ ...mealToEdit!, timestamp: parse(event.target.value, 'HH:mm', mealToEdit!.timestamp) });
+        let value = event.target.value;
+        if (value) {
+            setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
+        }
     }
 
-    return <div className="mdhui-meal-editor">
+    return <div className="mdhui-meal-editor" ref={props.innerRef}>
         {loading && <LoadingIndicator />}
         {!loading && <div>
             <div className="mdhui-meal-editor-header">
@@ -114,6 +117,7 @@ export default function (props: MealEditorProps) {
             <div className="mdhui-meal-editor-form">
                 {language('meal-editor-time-input-label')}:
                 <input
+                    className="mdhui-meal-editor-input"
                     type="time"
                     value={format(mealToEdit!.timestamp, 'HH:mm')}
                     onChange={event => onTimeChanged(event)}
