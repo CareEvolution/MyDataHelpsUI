@@ -1,5 +1,5 @@
 import { DataCollectionSettings, ExternalAccount } from "@careevolution/mydatahelps-js";
-import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
+import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
 export const previewAccounts:ExternalAccount[] = [
         {
@@ -29,8 +29,19 @@ export const previewAccounts:ExternalAccount[] = [
             lastRefreshDate: "",
             provider: {
                 category: "Device Manufacturer",
+                id: getDexcomProviderID(),
+                name: "Dexcom",
+                logoUrl: "",
+            },
+            status: "fetchComplete"
+        },
+        {
+            id: 4,
+            lastRefreshDate: "",
+            provider: {
+                category: "Device Manufacturer",
                 id: getOmronProviderID(),
-                name: "Fitbit",
+                name: "Omron",
                 logoUrl: "",
             },
             status: "fetchComplete"
@@ -40,6 +51,7 @@ export const previewAccounts:ExternalAccount[] = [
 export const previewSettings:DataCollectionSettings = {
     fitbitEnabled: true,
     garminEnabled: true,
+    dexcomEnabled: true,
     queryableDeviceDataTypes: [
         {
             namespace: "AppleHealth",
