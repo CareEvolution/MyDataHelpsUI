@@ -98,6 +98,11 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
+    function onMenuItemClicked( action?: () => void ) {
+        if ( props.previewState || !action ) return;
+        action();
+    }
+
     function getFitbitMenuItem() {
         if (!accountTypes.includes("Fitbit")) {
             return null;
@@ -131,7 +136,6 @@ export default function (props: ConnectDevicesMenuProps) {
 
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         let action: (() => void) | undefined = () => {
-            if ( props.previewState ) return;
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true });
         };
 
@@ -150,7 +154,7 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={action} indicator={indicator}>
+            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
                 <Title autosizeImage order={4} image={image}>{providerName}</Title>
             </Action>
         </div>;
@@ -169,22 +173,16 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        let action = () => {
-            if ( props.previewState ) return;
-            MyDataHelps.showGoogleFitSettings();
-        };
+        let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
         if (platform == "Web") {
-            action = () => {
-                if ( props.previewState ) return;
-                MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
-            };
+            action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
         }
 
         return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={action} indicator={indicator}>
+            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
                 <Title autosizeImage image={<img src={GoogleFitLogo} />} order={4}>Google Fit</Title>
             </Action>
         </div>;
