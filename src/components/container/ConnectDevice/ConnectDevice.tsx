@@ -37,6 +37,10 @@ export default function (props: ConnectDeviceProps) {
 	}
 	function initialize() {
 		if (props.previewState) {
+			setLoading(true);
+			setDeviceEnabled(false);
+			setDeviceExternalAccount(null);
+
 			if (props.previewState == "notEnabled") {
 				setLoading(false);
 				return;

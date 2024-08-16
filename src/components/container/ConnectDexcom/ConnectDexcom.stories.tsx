@@ -1,33 +1,36 @@
 ﻿import React from 'react'
-import ConnectDexcom, { ConnectDexcomProps } from './ConnectDexcom'
+import ConnectDexcom from './ConnectDexcom'
 import { Card, Layout } from '../../presentational'
+import { Meta, StoryObj } from '@storybook/react';
 
-export default {
+type ConnectDexcomStoryArgs = React.ComponentProps<typeof ConnectDexcom> & {
+    colorScheme: 'auto' | 'light' | 'dark'
+};
+
+const meta: Meta<ConnectDexcomStoryArgs> = {
     title: 'Container/ConnectDexcom',
     component: ConnectDexcom,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
+    },
+    render: args => {
+        return <Layout colorScheme={args.colorScheme}>
+            <Card>
+                <ConnectDexcom title="Dexcom" {...args} />
+            </Card>
+        </Layout>;
     }
 };
+export default meta;
 
-interface ConnectDexcomStoryArgs extends ConnectDexcomProps {
-    colorScheme: 'auto' | 'light' | 'dark';
-}
+type Story = StoryObj<ConnectDexcomStoryArgs>;
 
-const render = (args: ConnectDexcomStoryArgs) => {
-    return <Layout colorScheme={args.colorScheme}>
-        <Card>
-            <ConnectDexcom title="Dexcom" {...args} />
-        </Card>
-    </Layout>;
-};
-
-export const Default = {
+export const Default: Story = {
     args: {
         colorScheme: 'auto',
         previewState: 'notConnected',
-        disabledBehavior: undefined,
-        hideWhenConnected: undefined
+        hideWhenConnected: undefined,
+        disabledBehavior: undefined
     },
     argTypes: {
         colorScheme: {
@@ -40,20 +43,17 @@ export const Default = {
             control: 'radio',
             options: ['notConnected', 'unauthorized', 'error', 'fetchComplete', 'fetchingData', 'notEnabled']
         },
-        disabledBehavior: {
-            name: 'disabled behavior',
-            control: 'radio',
-            options: [undefined, 'hide', 'displayError'],
-            if: { arg: 'previewState', eq: 'notEnabled' }
-        },
         hideWhenConnected: {
             name: 'hide when connected?',
             control: 'radio',
-            options: [undefined, false, true],
-            if: { arg: 'previewState', neq: 'notEnabled' }
+            options: [undefined, false, true]
+        },
+        disabledBehavior: {
+            name: 'disabled behavior',
+            control: 'radio',
+            options: [undefined, 'hide', 'displayError']
         }
-    },
-    render: render
+    }
 };
 
 
