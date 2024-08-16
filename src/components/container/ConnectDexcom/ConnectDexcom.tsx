@@ -1,10 +1,10 @@
 ﻿import React from 'react'
-import { ConnectExternalAccountOptions, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import { ConnectExternalAccountOptions, ExternalAccountStatus } from '@careevolution/mydatahelps-js'
 import ConnectDevice from '../ConnectDevice';
 import { getDexcomProviderID } from '../../../helpers/providerIDs';
 import DexcomLogo from '../../../assets/dexcom-logo.svg';
 
-export type ConnectDexcomPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+export type ConnectDexcomPreviewState = ExternalAccountStatus | 'notConnected' | 'notEnabled';
 
 export interface ConnectDexcomProps {
     title?: string,
@@ -26,7 +26,7 @@ export default function (props: ConnectDexcomProps) {
         title="Dexcom"
         titleImage={<img src={DexcomLogo} />}
         providerName="Dexcom"
-        dataCollectionProperty='dexcomEnabled'
+        dataCollectionProperty="dexcomEnabled"
         providerID={getInternalDexcomProviderID()}
         previewState={props.previewState}
         disabledBehavior={props.disabledBehavior}
