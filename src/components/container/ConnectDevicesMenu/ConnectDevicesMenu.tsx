@@ -85,7 +85,6 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.garminEnabled) {
         accountTypes = accountTypes.filter(a => a != "Garmin");
     }
-    // @ts-ignore
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }

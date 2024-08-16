@@ -51,7 +51,6 @@ export const previewAccounts:ExternalAccount[] = [
 export const previewSettings:DataCollectionSettings = {
     fitbitEnabled: true,
     garminEnabled: true,
-    // @ts-ignore
     dexcomEnabled: true,
     queryableDeviceDataTypes: [
         {
