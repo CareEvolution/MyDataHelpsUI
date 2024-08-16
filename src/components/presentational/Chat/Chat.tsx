@@ -46,7 +46,7 @@ export default function (props: ChatProps) {
         <div className="mdhui-chat">
             <div className="mdhui-chat-log" ref={logRef}>
                 {props.messages.map((message, index) => (
-                    <div key={index} className={"mdhui-chat-message-" + message.type}>
+                    <div key={index} className={"mdhui-chat-message mdhui-chat-message-" + message.type}>
                         {message.icon}{parse(md.render(message.content), {
                             transform: (reactNode, domNode, index) => {
                                 if (domNode.nodeType === 1 && domNode.name === "p" && index === 0) {

@@ -13,7 +13,6 @@
 .mdhui-chat ul {
     margin: .25rem 0;
     word-break: break-word;
-    color: var(--mdhui-text-color-1);
 }
 
 .mdhui-chat input,
