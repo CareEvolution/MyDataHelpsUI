@@ -4,6 +4,9 @@ let strings: { [key: string]: string } = {
     "close": "Chiudi",
     "save": "Salva",
     "add": "Aggiungi",
+    "edit": "Modificare",
+    "cancel": "Annulla",
+    "clear": "chiaro",
     "settings": "Impostazioni",
     "connect": "Collega",
     "reconnect": "Riconnetti",
@@ -389,7 +392,23 @@ let strings: { [key: string]: string } = {
     "my-badges": "I miei badge ({{badges}})",
     "new-badge-title": "Ottimo lavoro!",
     "new-badge-text": "Hai ottenuto un nuovo badge!",
-    "get-badge": "Ottieni badge"
+    "get-badge": "Ottieni badge",
+    "glucose-chart-no-data": "Nessuna lettura della glicemia",
+    "glucose-stats-range-label": "Intervallo di glicemia",
+    "glucose-stats-avg-label": "Glicemia media",
+    "glucose-stats-steps-label": "Passi",
+    "glucose-stats-sleep-label": "Sonno",
+    "stress-level-title": "Stress generale",
+    "stress-level-min-label": "Nessuno stress",
+    "stress-level-max-label": "Estremamente stressato",
+    "meal-type-meal": "Pasto",
+    "meal-type-snack": "Spuntino",
+    "meal-type-drink": "Bevanda",
+    "meal-log-title": "Registro pasti",
+    "meal-log-no-data": "Nessun pasto registrato",
+    "meal-editor-time-input-label": "Ora",
+    "meal-editor-duplicate-timestamp-error": "Due pasti non possono avere la stessa ora.",
+    "glucose-view-title": "Monitoraggio della glicemia"
 };
 
 export default strings;

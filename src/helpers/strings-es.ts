@@ -4,6 +4,9 @@
     "close": "Cerrar",
     "save": "Ahorrar",
     "add": "Agregar",
+    "edit": "Editar",
+    "cancel": "Cancelar",
+    "clear": "claro",
     "settings": "Configuración",
     "connect": "Conectar",
     "reconnect": "Volver a conectar",
@@ -390,6 +393,22 @@
     "new-badge-title": "¡Buen trabajo!",
     "new-badge-text": "¡Has conseguido una nueva insignia!",
     "get-badge": "Obtener medalla",
+    "glucose-chart-no-data": "No hay lecturas de glucosa en sangre",
+    "glucose-stats-range-label": "Rango de glucosa en sangre",
+    "glucose-stats-avg-label": "Promedio de glucosa en sangre",
+    "glucose-stats-steps-label": "Pasos",
+    "glucose-stats-sleep-label": "Sueño",
+    "stress-level-title": "Estrés general",
+    "stress-level-min-label": "Sin estrés",
+    "stress-level-max-label": "Extremadamente estresado",
+    "meal-type-meal": "Comida",
+    "meal-type-snack": "Snack",
+    "meal-type-drink": "Bebida",
+    "meal-log-title": "Registro de comidas",
+    "meal-log-no-data": "No hay comidas registradas",
+    "meal-editor-time-input-label": "Hora",
+    "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
+    "glucose-view-title": "Monitorización de glucosa"
 };
 
 export default strings;

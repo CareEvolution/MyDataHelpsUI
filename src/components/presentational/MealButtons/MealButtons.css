@@ -1,0 +1,15 @@
+.mdhui-meal-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    grid-column-gap: 8px;
+    padding: 16px;
+}
+
+.mdhui-meal-buttons .mdhui-button {
+    padding: 12px;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
