@@ -23,9 +23,9 @@ export interface ChatMessage {
     type: ChatMessageType;
 }
 
-export default function (props: ChatProps) {
+const md = new MarkdownIt();
 
-    let md = new MarkdownIt();
+export default function (props: ChatProps) {
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const logRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ export default function (props: ChatProps) {
         <div className="mdhui-chat">
             <div className="mdhui-chat-log" ref={logRef}>
                 {props.messages.map((message, index) => (
-                    <div key={index} className={"mdhui-chat-message " + message.type}>
+                    <div key={index} className={"mdhui-chat-message-" + message.type}>
                         {message.icon}{parse(md.render(message.content), {
                             transform: (reactNode, domNode, index) => {
                                 if (domNode.nodeType === 1 && domNode.name === "p" && index === 0) {
@@ -58,12 +58,12 @@ export default function (props: ChatProps) {
                         })}
                     </div>
                 ))}
-                {props.loading && <div className="message-loading">
+                {props.loading && <div className="mdhui-chat-message-loading">
                     <p><FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}</p>
                 </div>}
             </div>
             <div className="mdhui-chat-input">
-                <div className="input-group">
+                <div className="mdhui-chat-input-group">
                     <input
                         type="text"
                         value={currentUserMessage}
@@ -74,7 +74,7 @@ export default function (props: ChatProps) {
                             }
                         }}
                     />
-                    <UnstyledButton onClick={sendMessage} className="send-button">
+                    <UnstyledButton onClick={sendMessage} className="mdhui-chat-send-button">
                         <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </UnstyledButton>
                 </div>
