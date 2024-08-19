@@ -1,10 +1,11 @@
 import React from "react";
-import Layout from "../../presentational/Layout";
-import Chat, { ChatProps } from "./Chat";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
+import { Global, css } from '@emotion/react';
+import Layout from "../../presentational/Layout";
+import Chat, { ChatProps } from "./Chat";
 
 export default {
     title: 'Presentational/Chat',
@@ -30,6 +31,23 @@ export default {
 
 const render = (args: ChatProps) => {
     return <Layout colorScheme='auto'>
+        <Global styles={css`
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#storybook-root {
+    height: 100%;
+}
+
+.mdhui-layout {
+    height: 100%;
+}
+        `} />
         <Chat {...args} />
     </Layout>
 };

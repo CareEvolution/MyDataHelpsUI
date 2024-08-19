@@ -1,4 +1,5 @@
 import React from "react";
+import { Global, css } from '@emotion/react';
 import Layout from "../../presentational/Layout";
 import AIAssistant, { AIAssistantProps } from "./AIAssistant";
 import { MyDataHelpsTools } from "../../../helpers/assistant";
@@ -54,6 +55,23 @@ export default {
 
 const render = (args: AIAssistantProps) => {
     return <Layout colorScheme='auto'>
+        <Global styles={css`
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#storybook-root {
+    height: 100%;
+}
+
+.mdhui-layout {
+    height: 100%;
+}
+        `} />
         <AIAssistant {...args} appendTools={false} />
     </Layout>
 };
