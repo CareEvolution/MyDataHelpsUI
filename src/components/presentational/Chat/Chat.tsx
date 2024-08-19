@@ -3,7 +3,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import MarkdownIt from 'markdown-it';
-import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
+import parse from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
 
@@ -18,7 +18,7 @@ export interface ChatProps {
 }
 
 export interface ChatMessage {
-    icon: React.JSX.Element;
+    icon?: React.JSX.Element;
     content: string;
     type: ChatMessageType;
 }
@@ -45,21 +45,23 @@ export default function (props: ChatProps) {
     return (
         <div className="mdhui-chat">
             <div className="mdhui-chat-log" ref={logRef}>
-                {props.messages.map((message, index) => (
-                    <div key={index} className={"mdhui-chat-message mdhui-chat-message-" + message.type}>
-                        {message.icon}{parse(md.render(message.content), {
-                            transform: (reactNode, domNode, index) => {
-                                if (domNode.nodeType === 1 && domNode.name === "p" && index === 0) {
-                                    return <span key={index}>{domToReact((domNode as Element).children as DOMNode[])}</span>;
-                                }
-
-                                return <React.Fragment key={index}>{reactNode}</React.Fragment>;
-                            }
-                        })}
-                    </div>
-                ))}
+                {props.messages.map((message, index) => {
+                    if (message.type === "sent") {
+                        return <div key={index} className="mdhui-chat-message mdhui-chat-sent-message-row">
+                            <div className="mdhui-chat-sent-message">
+                                {parse(md.render(message.content))}
+                            </div>
+                        </div>
+                    }
+                    else {
+                        return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
+                            {message.icon}
+                            <div className="mdhui-chat-received-message">{parse(md.render(message.content))}</div>
+                        </div>
+                    }
+                })}
                 {props.loading && <div className="mdhui-chat-message-loading">
-                    <p><FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}</p>
+                    <FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}
                 </div>}
             </div>
             <div className="mdhui-chat-input">

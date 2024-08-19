@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
-import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
+import { faFlask } from '@fortawesome/free-solid-svg-icons/faFlask';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
@@ -93,7 +92,7 @@ export default function (props: AIAssistantProps) {
     return <>
         {messages && <Chat messages={messages.map((msg) => {
             return {
-                icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faGear} width={16} /> : <FontAwesomeSvgIcon icon={faUser} width={16} />,
+                icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faFlask} width={16} /> : undefined,
                 content: msg.content,
                 type: msg.type === "user" ? "sent" : "received"
             }
