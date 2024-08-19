@@ -1,36 +1,47 @@
 import React, { useContext } from 'react'
 import { add, addDays, addMonths, format, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import "./TimeSeriesChart.css"
-import { AxisDomain } from 'recharts/types/util/types'
-import { ColorDefinition, resolveColor } from '../../../helpers/colors'
+import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import './TimeSeriesChart.css'
+import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
-import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
+
+export interface TimeSeriesDataPoint {
+    timestamp: number; // Unix Timestamp in ms since epoch
+    // Other properties of this object are either:
+    //  - Named the same as a dataKey property of the configured ChartSeries for the graph
+    //  - Arbitrary properties you want access to in places such as the tooltip callback.
+    [key: string]: any;
+}
 
 export interface TimeSeriesChartProps {
-    title?: string
-    intervalType?: "Week" | "Month" | "6Month" | "Day",
-    intervalStart: Date,
-    data: Record<string, any>[] | undefined,
-    expectedDataInterval?: Duration,
-    series: ChartSeries[] | AreaChartSeries[],
-    chartHasData: boolean,
-    tooltip: ({ active, payload, label }: any) => React.JSX.Element | null,
-    chartType: "Line" | "Bar" | "Area"
-    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions
-    innerRef?: React.Ref<HTMLDivElement>
+    title?: string;
+    intervalType?: "Week" | "Month" | "6Month" | "Day";
+    intervalStart: Date;
+    data?: TimeSeriesDataPoint[];
+    expectedDataInterval?: Duration;
+    series: ChartSeries[] | AreaChartSeries[];
+    chartHasData: boolean;
+    tooltip?: ({ active, payload, label }: any) => React.JSX.Element | null;
+    chartType: "Line" | "Bar" | "Area";
+    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions;
+    syncId?: string;
+    children?: React.ReactNode;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
 
-    const DayTick = ({ x, y, stroke, payload }: any) => {
-        var value = payload.value;
+    // Ensures that gradients are unique for each chart.
+    let gradientKey = `gradient_${Math.random()}_`;
+
+    const DayTick = ({ x, y, payload }: any) => {
+        let value = payload.value;
         let currentDate = new Date(value);
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
@@ -55,8 +66,6 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>
             </>;
         } else if (intervalType === "Day") {
-            const startTime = new Date(props.intervalStart);
-            startTime.setHours(0, 0, 0, 0);
             if (currentDate.getHours() === 0) {
                 return <></>;
             }
@@ -65,8 +74,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             </>;
         }
         return <>
-            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>;
-        </>
+            <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>
+        </>;
     }
 
     function getXAxisTicks() {
@@ -75,14 +84,12 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
         if (intervalType === "Week") {
             return Array.from({ length: 7 }, (_, i) => addDays(startTime, i).getTime());
-        }
-        else if (intervalType === "Month") {
+        } else if (intervalType === "Month") {
             const monthLength = getDaysInMonth(startTime);
             const numberOfTicks = ceil(monthLength / 2);
             return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
-        }
-        else if (intervalType === "6Month") {
-            const ticks = [];
+        } else if (intervalType === "6Month") {
+            const ticks: number[] = [];
             let currentTick: Date;
             let endOfGraph = addMonths(startTime, 6);
 
@@ -100,11 +107,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
-            //ticks.push(addMonths(startTime, 5).getTime());
 
             return ticks;
-        }
-        else if (intervalType === "Day") {
+        } else if (intervalType === "Day") {
             return Array.from({ length: 9 }, (_, i) => addHours(startTime, i * 3).getTime());
         }
     }
@@ -117,63 +122,12 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         }
     }
 
-    //ensures that gradients are unique for each chart
-    let gradientKey = `gradient_${Math.random()}`;
-    function standardChartComponents() {
-        let domain: AxisDomain | undefined = undefined;
-        if (props.options) {
-            if (props.chartType === "Line") {
-                let domainMin = (props.options as MultiSeriesLineChartOptions).domainMin;
-                if (domainMin === "Auto") {
-                    domain = ["auto", "auto"];
-                } else if (domainMin !== undefined) {
-                    domain = [domainMin, "auto"];
-                }
-            }
-        }
-
-        return <>
-            {props.chartHasData &&
-                <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
-            }
-            <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
-            <YAxis tickFormatter={tickFormatter} axisLine={false} interval={0} tickLine={false} width={32} domain={domain} />
-            <XAxis id="myXAxis"
-                domain={['auto', 'auto']}
-                padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
-                tick={DayTick}
-                scale={'time'}
-                type={'number'}
-                axisLine={false}
-                dataKey="timestamp"
-                tickMargin={0}
-                minTickGap={0}
-                tickLine={false}
-                ticks={getXAxisTicks()}
-                includeHidden
-                interval={0}
-            />
-        </>
-    }
-
-    function colorOrDefault(color: ColorDefinition | undefined, defaultColor: string) {
-        return resolveColor(layoutContext.colorScheme, color) || "var(--mdhui-color-primary)";
-    }
-
-    function getBaseColorForSeries(i: number) {
-        return props.series[i].color;
-    }
-
-    function getAreaColorForSeries(i: number) {
-        return (props.series[i] as AreaChartSeries).areaColor;
-    }
-
     function getBarColor(value: number, index: number) {
         let thresholds = (props.options as MultiSeriesBarChartOptions)?.thresholds;
         if (!thresholds) return `url(#${gradientKey}${index})`;
 
         let highestThresholdIndex = -1;
-        for (var i = 0; i < thresholds?.length; i++) {
+        for (let i = 0; i < thresholds?.length; i++) {
             if (value > thresholds[i].value && (highestThresholdIndex === -1 || thresholds[i].value > thresholds[highestThresholdIndex].value)) {
                 highestThresholdIndex = i;
             }
@@ -185,18 +139,18 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const keys = props.series.map(s => s.dataKey);
 
-    let dataToDisplay: Record<string, any>[] | undefined;
+    let dataToDisplay: TimeSeriesDataPoint[] | undefined;
     if (props.data && props.expectedDataInterval) {
         dataToDisplay = [];
-        for (var i = 0; i < props.data.length - 1; ++i) {
+        for (let i = 0; i < props.data.length - 1; ++i) {
             dataToDisplay.push(props.data[i]);
 
-            var currentPoint = new Date(props.data[i].timestamp);
-            var nextPoint = new Date(props.data[i + 1].timestamp);
-            var nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
+            let currentPoint = new Date(props.data[i].timestamp);
+            let nextPoint = new Date(props.data[i + 1].timestamp);
+            let nextExpectedPoint = add(currentPoint, props.expectedDataInterval);
             if (nextExpectedPoint < nextPoint) {
-                var nullValue = {
-                    timestamp: props.data[i].timestamp + 1
+                let nullValue = {
+                    timestamp: nextExpectedPoint.getTime()
                 }
                 dataToDisplay.push(nullValue);
             }
@@ -206,88 +160,110 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         dataToDisplay = props.data;
     }
 
+    const xAxisTicks = getXAxisTicks();
+
     return <div className="mdhui-time-series-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
         }
         <div className="chart-container">
-            {(!props.chartHasData) &&
-                <div>
-                    {!!dataToDisplay &&
-                        <div className="no-data-label">No Data</div>
+            {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">No Data</div>}
+            {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
+            <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
+                <ComposedChart data={dataToDisplay} syncId={props.syncId}>
+                    {props.chartHasData && props.tooltip &&
+                        <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
                     }
-                    {!dataToDisplay &&
-                        <LoadingIndicator />
+                    <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    <YAxis
+                        tickFormatter={tickFormatter}
+                        axisLine={false}
+                        interval={0}
+                        tickLine={false}
+                        width={32}
+                        domain={['auto', 'auto']}
+                        allowDataOverflow
+                        {...props.options?.yAxisOptions}
+                    />
+                    <XAxis
+                        id="myXAxis"
+                        domain={[xAxisTicks![0], xAxisTicks![xAxisTicks!.length - 1]]}
+                        padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
+                        tick={!props.options?.xAxisOptions?.tickFormatter ? DayTick : undefined}
+                        scale={'time'}
+                        type={'number'}
+                        axisLine={false}
+                        dataKey="timestamp"
+                        tickMargin={0}
+                        minTickGap={0}
+                        tickLine={false}
+                        ticks={xAxisTicks}
+                        allowDataOverflow
+                        interval={0}
+                        {...props.options?.xAxisOptions}
+                    />
+                    {props.children}
+                    {props.chartHasData &&
+                        <>
+                            {props.chartType === "Line" &&
+                                <>
+                                    {createLineChartDefs(layoutContext, gradientKey, props.series, props.options, keys, dataToDisplay!)}
+                                    {(props.options as MultiSeriesLineChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
+                                        <ReferenceLine key={`line-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                    )}
+                                    {keys.map((dk, i) =>
+                                        <Line
+                                            key={`line-${dk}`}
+                                            strokeWidth={2}
+                                            type="monotone"
+                                            dataKey={dk}
+                                            stroke={`url(#${gradientKey}${i})`}
+                                            {...(props.options as MultiSeriesLineChartOptions)?.lineOptions}
+                                        />
+                                    )}
+                                </>
+                            }
+                            {props.chartType === "Bar" &&
+                                <>
+                                    {createBarChartDefs(layoutContext, gradientKey, props.series, props.options)}
+                                    {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
+                                        <ReferenceLine key={`bar-ref-${index}`} y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
+                                    )}
+                                    {keys.map((dk, i) =>
+                                        <Bar
+                                            key={`bar-${dk}`}
+                                            type="monotone"
+                                            dataKey={dk}
+                                            fill={`url(#${gradientKey}${i})`}
+                                            radius={[2, 2, 0, 0]}
+                                        >
+                                            {dataToDisplay!.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={getBarColor(entry[dk], i)} />
+                                            ))}
+                                        </Bar>
+                                    )}
+                                </>
+                            }
+                            {props.chartType === "Area" &&
+                                <>
+                                    {createAreaChartDefs(layoutContext, gradientKey, props.series)}
+                                    {keys.map((dk, i) =>
+                                        <Area
+                                            key={`area-${dk}`}
+                                            type="monotone"
+                                            dataKey={dk}
+                                            fillOpacity={1}
+                                            strokeWidth={2}
+                                            fill={`url(#${gradientKey}${i}-fill)`}
+                                            stroke={`url(#${gradientKey}${i}-stroke)`}
+                                        />
+                                    )}
+                                </>
+                            }
+                        </>
                     }
-                    <ResponsiveContainer width="100%" height={150}>
-                        <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
-                            {standardChartComponents()}
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div>
-            }
-            {props.chartHasData && props.chartType === "Line" &&
-                <ResponsiveContainer width="100%" height={150}>
-                    <LineChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
-                        {standardChartComponents()}
-                        {keys.map((dk, i) =>
-                            <Line connectNulls={(props.options as MultiSeriesLineChartOptions)?.connectNulls} strokeWidth={2} key={`line-${dk}`} type="monotone" dataKey={dk} stroke={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary")} />
-                        )
-                        }
-                    </LineChart>
-                </ResponsiveContainer>
-            }
-            {props.chartHasData && props.chartType === "Bar" &&
-                <ResponsiveContainer width="100%" height={150}>
-                    <BarChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
-                        <defs>
-                            {keys.map((dk, i) =>
-                                <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={1.0} />
-                                    <stop offset="100%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.7} />
-                                </linearGradient>
-                            )}
-                            {(props.options as MultiSeriesBarChartOptions)?.thresholds?.map((threshold, index) =>
-                                <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
-                                    <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
-                                </linearGradient>
-                            )}
-                        </defs>
-                        {(props.options as MultiSeriesBarChartOptions)?.thresholds?.filter(t => t.referenceLineColor)?.map((threshold, index) =>
-                            <ReferenceLine y={threshold.value} stroke={resolveColor(layoutContext.colorScheme, threshold.referenceLineColor)} />
-                        )}
-                        {standardChartComponents()}
-                        {keys.map((dk, i) =>
-                            <Bar key={`line-${dk}`} type="monotone" dataKey={dk} fill={`url(#${gradientKey}${i})`} radius={[2, 2, 0, 0]} >
-                                {dataToDisplay!.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={getBarColor(entry.value, i)} />
-                                ))}
-                            </Bar>
-                        )
-                        }
-                    </BarChart>
-                </ResponsiveContainer>
-            }
-            {props.chartHasData && props.chartType === "Area" &&
-                <ResponsiveContainer width="100%" height={150}>
-                    <AreaChart width={400} height={400} data={dataToDisplay} syncId="DailyDataChart">
-                        <defs>
-                            {keys.map((dk, i) =>
-                                <linearGradient key={`lg-${dk}`} id={`${gradientKey}${i}`} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.5} />
-                                    <stop offset="100%" stopColor={colorOrDefault(getBaseColorForSeries(i), "var(--mdhui-color-primary)")} stopOpacity={0.2} />
-                                </linearGradient>
-                            )}
-                        </defs>
-                        {standardChartComponents()}
-                        {keys.map((dk, i) =>
-                            <Area key={`area-${dk}`} type="monotone" dataKey={dk} fillOpacity={1} strokeWidth={2} fill={`url(#${gradientKey}${i})`} stroke={colorOrDefault(getAreaColorForSeries(i), "var(--mdhui-color-primary)")} />
-                        )
-                        }
-                    </AreaChart>
-                </ResponsiveContainer>
-            }
+                </ComposedChart>
+            </ResponsiveContainer>
         </div>
-    </div>
+    </div>;
 }
