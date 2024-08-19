@@ -75,7 +75,7 @@
     "react-feather": "^2.0.9",
     "react-fontawesome-svg-icon": "^1.1.2",
     "recharts": "^2.9.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
