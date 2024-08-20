@@ -1,7 +1,6 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import Layout from "../../presentational/Layout";
-import { Card } from "../../presentational";
 import HeartEssentialEight, {
   HeartEssentialEightProps,
 } from "./HeartEssentialEight";
@@ -20,9 +19,7 @@ type Story = StoryObj<typeof HeartEssentialEight>;
 const render = (args: HeartEssentialEightProps) => {
   return (
     <Layout colorScheme="auto">
-      <Card>
         <HeartEssentialEight {...args} />
-      </Card>
     </Layout>
   );
 };
