@@ -1,1 +1,1 @@
-export {default} from "./AppDownload";
+export { default } from "./AppDownload";

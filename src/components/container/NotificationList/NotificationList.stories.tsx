@@ -1,19 +1,23 @@
 ﻿import React from "react"
 import { Meta, StoryObj } from "@storybook/react"
-import NotificationList, { NotificationListProps } from "./NotificationList"
+import { NotificationList, NotificationListProps } from "./NotificationList"
 import Layout from "../../presentational/Layout"
 import { Card } from "../../presentational"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof NotificationList> = {
 	title: "Container/NotificationList",
 	component: NotificationList,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	},
 };
 
 export default meta;
-type Story = StoryObj<typeof NotificationList>;
+type Story = StoryObj<typeof meta>;
 
 const render = (args: NotificationListProps) => {
 	return <Layout colorScheme='auto'>

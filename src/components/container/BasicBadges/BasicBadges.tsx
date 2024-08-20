@@ -11,7 +11,10 @@ export interface BasicBadgesProps {
     pointsForBadgesCustomField?: string;
 }
 
-export default function (props: BasicBadgesProps) {
+/** Display a grouping of star badges. 
+ * 	The number of badges is parameterized.
+*/
+export default function BasicBadges (props: BasicBadgesProps) {
     let [badgeCount, setBadgeCount] = React.useState<number | null>(null);
 
     useInitializeView(() => {

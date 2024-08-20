@@ -18,7 +18,8 @@ interface Allergy {
     Reactions: string[];
 }
 
-export default function (props: AllergiesListProps) {
+/** Listing of Allergy detail extracted from EHR Data. Supports an onClick event to view information */
+export default function AllergiesList (props: AllergiesListProps) {
     const [allergies, setAllergies] = useState<Allergy[] | null>(null);
 
     function load() {

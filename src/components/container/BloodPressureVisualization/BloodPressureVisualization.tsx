@@ -37,7 +37,11 @@ interface BloodPressureMetrics {
     minSystolicAlertClass: string
 }
 
-export default function (props: BloodPressureVisualizationProps) {
+/** A visualization of daily systolic and diastolic blood pressure highs, lows, and averages for a given week. 
+ * The chart is color coded to indicate if the values are within normal ranges.
+ * The chart can be configured to report off of survey, Apple Health, Google Fit, and Omron data.
+*/
+export default function BloodPressureVisualization (props: BloodPressureVisualizationProps) {
     const _minSystolic = 0;
     const _maxSystolic = 250;
     const yInterval: ClosedInterval = { values: [_minSystolic, _maxSystolic] };

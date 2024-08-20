@@ -1,15 +1,23 @@
 import React from "react"
-import BasicBadges, { BasicBadgesProps } from "./BasicBadges"
-import Card from "../../presentational/Card"
-import Layout from "../../presentational/Layout"
+import BasicBadges, { BasicBadgesProps } from "./BasicBadges";
+import Card from "../../presentational/Card";
+import Layout from "../../presentational/Layout";
+import { Description } from "@storybook/blocks";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
-    title: "Container/BasicBadges",
-    component: BasicBadges,
-    parameters: {
-        layout: 'fullscreen',
-    }
+const meta: Meta<typeof BasicBadges> = {
+	title: "Container/BasicBadges",
+	component: BasicBadges,
+	parameters: {
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
+	},
 };
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const render = (args: BasicBadgesProps) => <Layout colorScheme='auto'>
     <Card>
@@ -17,14 +25,14 @@ const render = (args: BasicBadgesProps) => <Layout colorScheme='auto'>
     </Card>
 </Layout>;
 
-export const FiveBadges = {
+export const FiveBadges : Story = {
     args: {
         badgeCount: 5
     },
     render: render
 };
 
-export const TenBadges = {
+export const TenBadges : Story = {
     args: {
         badgeCount:10
     },
@@ -32,7 +40,7 @@ export const TenBadges = {
 };
 
 
-export const FiftyBadges = {
+export const FiftyBadges : Story = {
     args: {
         badgeCount: 50
     },
@@ -40,7 +48,7 @@ export const FiftyBadges = {
 };
 
 
-export const ZeroBadges = {
+export const ZeroBadges : Story = {
     args: {
         badgeCount: 0
     },
@@ -48,7 +56,7 @@ export const ZeroBadges = {
 };
 
 
-export const Live = {
+export const Live : Story = {
     args: {
         pointsForBadgesCustomField: "PointsAndBadges",
     },

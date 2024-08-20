@@ -14,7 +14,7 @@ export interface NotificationListProps {
 export type NotificationListPreviewState = "Default" | "NoData";
 
 /** Notification List. Can be filtered by Email/Push/SMS */
-export default function (props: NotificationListProps) {
+export function NotificationList (props: NotificationListProps) {
 	const [loading, setLoading] = useState(false);
 	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
 	const [finishedLoading, setFinishedLoading] = useState(false);
