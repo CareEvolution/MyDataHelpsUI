@@ -1,10 +1,12 @@
-.mdhui-heart-e8-score-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
+/* TODO, make the below a new component for users who might want to, e.g, put only the score overview on a dashboard, and then drill into another view for the list */
+
+.mdhui-heart-e8-score-container {
+  padding: var(--mdhui-padding-md);
+}
+.mdhui-heart-e8-score-container .le8-header {
+  margin: 0 0 var(--mdhui-padding-md) 0;
+}
 .mdhui-heart-e8-score-container .score {
   font-size: 65px;
   font-weight: bold;
@@ -20,6 +22,8 @@
   justify-content: center;
 }
 
+/* TODO: where is this used? */
+
 .mdhui-heart-e8-feedback {
   display: flex;
   flex-direction: column;
@@ -27,37 +31,28 @@
   margin-left: 20px;
 }
 
-.achievementSection {
-  display: flex;
-  align-items: center;
-}
+/* TODO, make the below a new component for users who might want to, e.g, put only the score overview on a dashboard, and then drill into another view for the list */
 
-.achievementIcons {
+.mdhui-heart-e8-achievement-container {
+  padding: var(--mdhui-padding-xs) var(--mdhui-padding-md);
+}
+.mdhui-heart-e8-achievement-container .le8-header {
+  margin: var(--mdhui-padding-sm) 0 var(--mdhui-padding-xs) 0;
+}
+.achievementActionList {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-
-.bulletPoint {
-  width: 10px;
-  height: 10px;
-  -moz-border-radius: 50px;
-  -webkit-border-radius: 50px;
-  border-radius: 50px;
-  margin-right: 15px;
-}
-
-.improve {
-  background-color: rgb(234, 140, 28);
-}
-
-.celebrate {
-  background-color: rgb(127, 180, 57);
+.achievementActionList > div {
+  border-radius: var(--mdhui-card-border-radius);
+  border: 1px solid var(--mdhui-border-color-0);
+  margin-bottom: var(--mdhui-padding-xs);
 }
 
 .circle {
-  width: 30px;
-  height: 30px;
+  /* width: 30px;
+  height: 30px; */
   display: flex;
   justify-content: center;
   align-content: center;
@@ -65,11 +60,18 @@
   -webkit-border-radius: 50px;
   border-radius: 50px;
   overflow: hidden;
+  padding: 4px;
+}
+.circle img {
+  width: 26px;
+  height: 26px;
+}
+.improve {
+  background-color: rgb(234, 140, 28);
 }
 
-.circle img {
-  width: 30px;
-  height: 30px;
+.celebrate {
+  background-color: rgb(127, 180, 57);
 }
 
 .activity {
@@ -102,11 +104,4 @@
 
 .sleep {
   background-color: rgb(111, 207, 190);
-}
-
-.actionRow {
-  border-radius: 25px;
-  border-color: var(--mdhui-border-color-0);
-  border-width: 1px;
-  border-style: solid;
 }
