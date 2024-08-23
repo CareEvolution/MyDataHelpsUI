@@ -1,0 +1,41 @@
+.colorCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.colorCell .color {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.colorCell .shade {
+  color: var(--mdhui-grey-99);
+}
+
+.colorRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.colorHeader {
+  min-width: 190px;
+}
+
+.colorHeader code {
+  font-size: 11px !important;
+}
+
+.colorRow .colors {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-width: 630px;
+}
+
+.colorRow h3 {
+  min-width: 100px;
+}
