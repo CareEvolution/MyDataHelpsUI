@@ -60,10 +60,10 @@ export default function (props: LayoutProps) {
 			setWindowHeight(window.innerHeight);
 		};
 
-		window.addEventListener('resize', handleResize);
+		window.visualViewport?.addEventListener('resize', handleResize);
 
 		return () => {
-			window.removeEventListener('resize', handleResize);
+			window.visualViewport?.removeEventListener('resize', handleResize);
 		};
 	}, []);
 
