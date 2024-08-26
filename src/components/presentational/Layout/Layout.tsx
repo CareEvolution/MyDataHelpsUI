@@ -79,6 +79,8 @@ export default function (props: LayoutProps) {
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}
 				{props.children}
+				<div>{window.innerHeight}</div>
+				<div>{document.documentElement.clientHeight}</div>
 			</div>
 		</LayoutContext.Provider>
 	);
