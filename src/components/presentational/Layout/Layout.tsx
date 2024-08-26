@@ -71,7 +71,7 @@ export default function (props: LayoutProps) {
 	}, []);
 
 	const isKeyboardOpen = window.innerHeight < document.documentElement.clientHeight;
-	let paddingBottom = isKeyboardOpen ? "0" : "env(safe-area-inset-bottom)";
+	let paddingBottom = props.isFlex ? "0" : "env(safe-area-inset-bottom)";
 
 	return (
 		<LayoutContext.Provider value={context}>
