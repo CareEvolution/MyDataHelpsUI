@@ -114,6 +114,7 @@ a {
 
 html {
     font-size: 17px;
+    height: 100%;
 }
 
 @supports (font: -apple-system-body) {
@@ -131,4 +132,5 @@ body {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.3;
     font-size: 17px;
+    height: 100%;
 }`;
