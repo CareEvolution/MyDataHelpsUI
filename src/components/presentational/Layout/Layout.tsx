@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
@@ -51,6 +51,20 @@ export default function (props: LayoutProps) {
 	if (props.statusBarStyle) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
+
+	const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowHeight(window.innerHeight);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	const isKeyboardOpen = window.innerHeight < document.documentElement.clientHeight;
 	let paddingBottom = isKeyboardOpen ? "0" : "env(safe-area-inset-bottom)";
