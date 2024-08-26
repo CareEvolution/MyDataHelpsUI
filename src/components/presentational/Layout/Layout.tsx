@@ -56,7 +56,6 @@ export default function (props: LayoutProps) {
 
 	useEffect(() => {
 		const handleResize = () => {
-			document.getElementById("log")!.innerHTML = "Resizing. window.innerHeight: " + window.innerHeight;
 			setWindowHeight(window.innerHeight);
 		};
 
@@ -94,10 +93,6 @@ export default function (props: LayoutProps) {
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}
 				{props.children}
-				<div id="log"></div>
-				<div>{windowHeight}</div>
-				<div>{window.innerHeight}</div>
-				<div>{document.documentElement.clientHeight}</div>
 			</div>
 		</LayoutContext.Provider>
 	);
