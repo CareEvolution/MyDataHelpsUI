@@ -2,3 +2,9 @@
     color: var(--mdhui-text-color-1);
     display: flow-root;
 }
+
+.mdhui-layout-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

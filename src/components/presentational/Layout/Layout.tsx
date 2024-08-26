@@ -13,6 +13,7 @@ export interface LayoutProps {
 	className?: string;
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
+	isFlex?: boolean;
 	/**
 	  * @deprecated 
 	  */
@@ -31,6 +32,9 @@ export default function (props: LayoutProps) {
 	let className = "mdhui-layout";
 	if (props.className) {
 		className += " " + props.className;
+	}
+	if (props.isFlex) {
+		className += " mdhui-layout-flex";
 	}
 
 	let colorScheme: "light" | "dark" = "light";
