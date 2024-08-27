@@ -12,6 +12,7 @@ import './Chat.css';
 export type ChatMessageType = "sent" | "received";
 
 export interface ChatProps {
+    innerRef?: React.Ref<HTMLDivElement>;
     messages: ChatMessage[];
     onSendMessage: (newMessage: string) => void;
     loading?: string;
@@ -43,7 +44,7 @@ export default function (props: ChatProps) {
     }
 
     return (
-        <div className="mdhui-chat">
+        <div className="mdhui-chat" ref={props.innerRef}>
             <div className="mdhui-chat-log">
                 <div className="mdhui-chat-messages" ref={logRef}>
                     {props.messages.map((message, index) => {

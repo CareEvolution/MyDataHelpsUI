@@ -90,7 +90,7 @@ export default function (props: AIAssistantProps) {
     }
 
     return <>
-        {messages && <Chat messages={messages.map((msg) => {
+        {messages && <Chat innerRef={props.innerRef} messages={messages.map((msg) => {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faFlask} width={16} /> : undefined,
                 content: msg.content,

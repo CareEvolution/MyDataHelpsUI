@@ -5,6 +5,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+    min-height: 150px;
 }
 
 .mdhui-chat .mdhui-chat-log {
