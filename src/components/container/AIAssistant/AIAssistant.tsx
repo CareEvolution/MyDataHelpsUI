@@ -4,6 +4,7 @@ import { faFlask } from '@fortawesome/free-solid-svg-icons/faFlask';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
 import Chat from '../../presentational/Chat';
@@ -72,6 +73,24 @@ export default function (props: AIAssistantProps) {
                 else if (type === "end") {
                     setLoading("");
                 }
+            }
+
+            if (kind === "llm" && type === "end") {
+                MyDataHelps.trackCustomEvent({
+                    eventType: "aiassistant-message",
+                    properties: {
+                        type: "ai",
+                        body: messages[messages.length - 1].content
+                    }
+                });
+            }
+        });
+
+        MyDataHelps.trackCustomEvent({
+            eventType: "aiassistant-message",
+            properties: {
+                type: "user",
+                body: newMessage
             }
         });
     }
