@@ -56,6 +56,8 @@ export default function (props: LayoutProps) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
 
+	let paddingBottom = props.isFlex ? "0" : "env(safe-area-inset-bottom)";
+
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
@@ -75,7 +77,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div ref={props.innerRef} className={className} style={{ backgroundColor }}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}
