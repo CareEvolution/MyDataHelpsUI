@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext } from 'react';
 import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
@@ -56,23 +56,6 @@ export default function (props: LayoutProps) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
 
-	const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setWindowHeight(window.innerHeight);
-		};
-
-		window.visualViewport?.addEventListener('resize', handleResize);
-
-		return () => {
-			window.visualViewport?.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
-	const isKeyboardOpen = window.innerHeight < document.documentElement.clientHeight;
-	let paddingBottom = props.isFlex ? "0" : "env(safe-area-inset-bottom)";
-
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
@@ -92,7 +75,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom }}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}

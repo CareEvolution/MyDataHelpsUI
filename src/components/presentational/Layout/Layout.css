@@ -1,6 +1,8 @@
 ﻿.mdhui-layout {
     color: var(--mdhui-text-color-1);
     display: flow-root;
+    padding-top: calc(env(safe-area-inset-top, 0));
+    padding-bottom: calc(env(safe-area-inset-bottom, 0));
 }
 
 .mdhui-layout-flex {
