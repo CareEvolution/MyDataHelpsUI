@@ -30,7 +30,7 @@ export default function (props: BlankViewProps) {
             }
             {!(props.showBackButton || props.showCloseButton) &&
                 <>
-                    <StatusBarBackground />
+                    {!props.flexLayout && <StatusBarBackground />}
                     <ViewHeader title={props.title} subtitle={props.subtitle} titleColor={props.titleColor} subtitleColor={props.subtitleColor} />
                 </>
             }

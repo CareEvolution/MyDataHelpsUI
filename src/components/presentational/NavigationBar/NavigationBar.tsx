@@ -67,10 +67,6 @@ export default function (props: NavigationBarProps) {
 
 	let layoutContext = useContext(LayoutContext);
 
-	if (!props.title && !props.subtitle && !props.showBackButton && !props.showCloseButton && !props.children && !props.navigationBarLeft && !props.navigationBarRight) {
-		return null;
-	}
-
 	return (
 		<div className={classes.join(' ')} ref={navBar} style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
 			{props.showBackButton &&
