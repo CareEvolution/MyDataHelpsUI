@@ -18,6 +18,7 @@ export interface AIAssistantProps {
     additionalInstructions?: string;
     tools?: StructuredTool[];
     appendTools?: boolean;
+    baseUrl?: string;
 }
 
 export type AIAssistantMessageType = "user" | "ai";
@@ -37,7 +38,7 @@ export default function (props: AIAssistantProps) {
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAssistant(props.additionalInstructions, props.tools, props.appendTools);
+            assistantRef.current = new MyDataHelpsAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
         }
     }, []);
 

@@ -31,7 +31,8 @@ export interface IAssistantState {
 
 export class MyDataHelpsAssistant {
 
-    constructor(additionalInstructions: string = "", tools: StructuredTool[] = [], appendTools: boolean = true) {
+    constructor(baseUrl: string = "", additionalInstructions: string = "", tools: StructuredTool[] = [], appendTools: boolean = true) {
+        this.baseUrl = baseUrl || "https://xwk5dezh5vnf4in2avp6dxswym0tmgxg.lambda-url.us-east-1.on.aws/";
         this.additionalInstructions = additionalInstructions;
         this.tools = tools.length ? (appendTools ? this.defaultTools.concat(tools) : tools) : this.defaultTools;
     }
@@ -146,7 +147,7 @@ export class MyDataHelpsAssistant {
 
     private initialized = false;
     private graph!: CompiledStateGraph<IAssistantState, Partial<IAssistantState>, "agent" | "tools" | "setParticipantInfo" | typeof START>;
-    private baseUrl = 'https://2f4jcc2e2wgkjtpckvv2hhaani0ilmam.lambda-url.us-east-1.on.aws/';
+    private baseUrl: string;
     private participantId!: Guid;
     private additionalInstructions: string;
     private tools: StructuredTool[];
