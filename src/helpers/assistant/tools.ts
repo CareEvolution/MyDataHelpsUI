@@ -226,7 +226,7 @@ export class QueryDailyDataTool extends StructuredTool {
 
   name = "queryDailyData";
 
-  description = "Query daily data for a participant.";
+  description = "Query daily data for a participant. Before using this tool call the getAllDailyDataTypes tool to see which data types are available.";
 
   async _call(input: z.infer<typeof this.schema>) {
     let response = await queryDailyData(input.type, new Date(input.startDate), new Date(input.endDate), false);
