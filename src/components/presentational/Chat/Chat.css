@@ -46,6 +46,7 @@
     padding: var(--mdhui-padding-md) var(--mdhui-touch) var(--mdhui-padding-md) var(--mdhui-padding-md);
     box-sizing: border-box;
     outline-offset: -1px;
+    background: var(--mdhui-background-color-0);
 }
 
 .mdhui-chat .mdhui-chat-input-group {

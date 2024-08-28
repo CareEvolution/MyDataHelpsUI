@@ -12,6 +12,11 @@ export default {
     component: Chat,
     parameters: { layout: 'fullscreen' },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         loading: {
             control: 'text',
             description: 'Loading text to display when a backend operation is executing.',
@@ -29,8 +34,12 @@ export default {
     }
 };
 
-const render = (args: ChatProps) => {
-    return <Layout colorScheme='auto'>
+interface ChatStoryArgs extends ChatProps {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const render = (args: ChatStoryArgs) => {
+    return <Layout colorScheme={args.colorScheme}>
         <Global styles={css`
 html {
     height: 100%;
@@ -54,6 +63,7 @@ body {
 
 export const Default = {
     args: {
+        colorScheme: "auto",
         messages: [{
             icon: <FontAwesomeSvgIcon icon={faUser} />,
             content: "Hi!",

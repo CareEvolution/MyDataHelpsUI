@@ -9,6 +9,11 @@ export default {
     component: AIAssistant,
     parameters: { layout: 'fullscreen' },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         debug: {
             control: 'boolean',
             description: 'If turned on the assistant prints what tools it is trying to call and the corresponding parameters.',
@@ -53,8 +58,12 @@ export default {
     }
 };
 
-const render = (args: AIAssistantProps) => {
-    return <Layout colorScheme='auto'>
+interface AIAssistantStoryArgs extends AIAssistantProps {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const render = (args: AIAssistantStoryArgs) => {
+    return <Layout colorScheme={args.colorScheme}>
         <Global styles={css`
 html {
     height: 100%;
@@ -78,6 +87,7 @@ body {
 
 export const Default = {
     args: {
+        colorScheme: "auto",
         debug: false
     },
     render: render
