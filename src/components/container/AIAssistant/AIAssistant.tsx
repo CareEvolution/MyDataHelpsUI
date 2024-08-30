@@ -7,6 +7,7 @@ import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
+import language from '../../../helpers/language';
 import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -69,7 +70,7 @@ export default function (props: AIAssistantProps) {
 
             if (kind === "tool") {
                 if (type === "start") {
-                    setLoading(`Querying your data...`);
+                    setLoading(language('ai-assistant-loading'));
                 }
                 else if (type === "end") {
                     setLoading("");

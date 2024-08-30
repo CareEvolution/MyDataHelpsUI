@@ -408,7 +408,8 @@ let strings: { [key: string]: string } = {
     "meal-log-no-data": "Nenhuma refeição registrada",
     "meal-editor-time-input-label": "Hora",
     "meal-editor-duplicate-timestamp-error": "Duas refeições não podem ter o mesmo horário.",
-    "glucose-view-title": "Monitoramento de glicose"
+    "glucose-view-title": "Monitoramento de glicose",
+    "ai-assistant-loading": "Interagindo com seus dados..."
 };
 
 export default strings;
