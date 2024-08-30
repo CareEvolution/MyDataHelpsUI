@@ -28,7 +28,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
             title: language(`asthma-recommended-article-${article}-title`),
             subTitle: language(`asthma-recommended-article-${article}-subtitle`),
             url: new URL(`atedu_${article}${currentLanguage === 'es' ? '_es' : ''}.html`, props.libraryBaseUrl).href,
-            imageUrl: new URL(`images/article_category_${image}.svg`, props.libraryBaseUrl).href
+            imageUrl: new URL(`images/article_category_${image}${currentLanguage === 'es' ? '_es' : ''}.svg`, props.libraryBaseUrl).href
         };
     }
 
