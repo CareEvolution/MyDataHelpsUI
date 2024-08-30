@@ -6,7 +6,7 @@ import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { StructuredTool } from "@langchain/core/tools";
 
-import MyDataHelps, { Guid, ParticipantInfo } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { Guid, ParticipantInfo, ProjectInfo } from "@careevolution/mydatahelps-js";
 
 import {
     PersistParticipantInfoTool,
@@ -27,6 +27,7 @@ import {
 export interface AIAssistantState {
     messages: BaseMessage[];
     participantInfo: string;
+    projectInfo: string;
 }
 
 export class MyDataHelpsAIAssistant {
@@ -41,7 +42,8 @@ export class MyDataHelpsAIAssistant {
 
         if (!this.initialized) {
             let participantInfo = await MyDataHelps.getParticipantInfo();
-            this.initialize(participantInfo);
+            let projectInfo = await MyDataHelps.getProjectInfo();
+            this.initialize(participantInfo, projectInfo);
         }
 
         let config = { configurable: { thread_id: this.participantId } };
@@ -61,7 +63,7 @@ export class MyDataHelpsAIAssistant {
         }
     }
 
-    private initialize(participantInfo: ParticipantInfo) {
+    private initialize(participantInfo: ParticipantInfo, projectInfo: ProjectInfo) {
 
         const toolNode = new ToolNode<{ messages: BaseMessage[] }>(this.tools);
 
@@ -70,6 +72,10 @@ export class MyDataHelpsAIAssistant {
                 reducer: messagesStateReducer
             },
             participantInfo: {
+                value: (x: string, y: string) => y ? y : x,
+                default: () => "{}"
+            },
+            projectInfo: {
                 value: (x: string, y: string) => y ? y : x,
                 default: () => "{}"
             }
@@ -98,6 +104,8 @@ export class MyDataHelpsAIAssistant {
             pageID parameter to fetch additional data. Continue this process until you have all the data that the user has asked for, up to 5 iterations.
 
 			User information: {participantInfo}
+
+            Project information: {projectInfo}
 			
 			The time right now is ${new Date().toISOString()}.
 
@@ -116,24 +124,27 @@ export class MyDataHelpsAIAssistant {
         };
 
         const callModel = async (state: AIAssistantState, config?: RunnableConfig) => {
-            const { messages, participantInfo } = state;
+            const { messages, participantInfo, projectInfo } = state;
             const chain = promptTemplate.pipe(boundModel);
-            const response = await chain.invoke({ messages, participantInfo }, config);
+            const response = await chain.invoke({ messages, participantInfo, projectInfo }, config);
             return { messages: [response] };
         };
 
-        const setParticipantInfo = async () => {
-            return { participantInfo: JSON.stringify(participantInfo) };
+        const setContextInfo = async () => {
+            return {
+                participantInfo: JSON.stringify(participantInfo),
+                projectInfo: JSON.stringify(projectInfo)
+            };
         };
 
         const workflow = new StateGraph<AIAssistantState>({
             channels: graphState
         })
-            .addNode("setParticipantInfo", setParticipantInfo)
+            .addNode("setContextInfo", setContextInfo)
             .addNode("agent", callModel)
             .addNode("tools", toolNode)
-            .addEdge(START, "setParticipantInfo")
-            .addEdge("setParticipantInfo", "agent")
+            .addEdge(START, "setContextInfo")
+            .addEdge("setContextInfo", "agent")
             .addConditionalEdges("agent", routeMessage)
             .addEdge("tools", "agent");
 
@@ -146,7 +157,7 @@ export class MyDataHelpsAIAssistant {
     }
 
     private initialized = false;
-    private graph!: CompiledStateGraph<AIAssistantState, Partial<AIAssistantState>, "agent" | "tools" | "setParticipantInfo" | typeof START>;
+    private graph!: CompiledStateGraph<AIAssistantState, Partial<AIAssistantState>, "agent" | "tools" | "setContextInfo" | typeof START>;
     private baseUrl: string;
     private participantId!: Guid;
     private additionalInstructions: string;
