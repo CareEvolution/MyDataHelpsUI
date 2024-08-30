@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons/faLightbulb';
+import { faLightbulb } from '@fortawesome/free-regular-svg-icons/faLightbulb';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
