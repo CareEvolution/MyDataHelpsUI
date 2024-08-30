@@ -13,7 +13,7 @@ export interface LayoutProps {
 	className?: string;
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
-	isFlex?: boolean;
+	flex?: boolean;
 	/**
 	  * @deprecated 
 	  */
@@ -33,7 +33,7 @@ export default function (props: LayoutProps) {
 	if (props.className) {
 		className += " " + props.className;
 	}
-	if (props.isFlex) {
+	if (props.flex) {
 		className += " mdhui-layout-flex";
 	}
 
@@ -56,7 +56,7 @@ export default function (props: LayoutProps) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
 
-	let paddingBottom = props.isFlex ? "0" : "env(safe-area-inset-bottom)";
+	let paddingBottom = props.flex ? "0" : "env(safe-area-inset-bottom)";
 
 	return (
 		<LayoutContext.Provider value={context}>

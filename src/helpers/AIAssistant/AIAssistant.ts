@@ -21,15 +21,15 @@ import {
     GetAllDailyDataTypesTool,
     GetEhrNewsFeedPageTool,
     GetDeviceDataV2AllDataTypesTool
-} from "./tools";
+} from "./Tools";
 
 
-export interface IAssistantState {
+export interface AIAssistantState {
     messages: BaseMessage[];
     participantInfo: string;
 }
 
-export class MyDataHelpsAssistant {
+export class MyDataHelpsAIAssistant {
 
     constructor(baseUrl: string = "", additionalInstructions: string = "", tools: StructuredTool[] = [], appendTools: boolean = true) {
         this.baseUrl = baseUrl || "https://xwk5dezh5vnf4in2avp6dxswym0tmgxg.lambda-url.us-east-1.on.aws/";
@@ -65,7 +65,7 @@ export class MyDataHelpsAssistant {
 
         const toolNode = new ToolNode<{ messages: BaseMessage[] }>(this.tools);
 
-        const graphState: StateGraphArgs<IAssistantState>["channels"] = {
+        const graphState: StateGraphArgs<AIAssistantState>["channels"] = {
             messages: {
                 reducer: messagesStateReducer
             },
@@ -106,7 +106,7 @@ export class MyDataHelpsAssistant {
             new MessagesPlaceholder("messages")
         ]);
 
-        const routeMessage = (state: IAssistantState) => {
+        const routeMessage = (state: AIAssistantState) => {
             const { messages } = state;
             const lastMessage = messages[messages.length - 1] as AIMessage;
             if (!lastMessage.tool_calls?.length) {
@@ -115,7 +115,7 @@ export class MyDataHelpsAssistant {
             return "tools";
         };
 
-        const callModel = async (state: IAssistantState, config?: RunnableConfig) => {
+        const callModel = async (state: AIAssistantState, config?: RunnableConfig) => {
             const { messages, participantInfo } = state;
             const chain = promptTemplate.pipe(boundModel);
             const response = await chain.invoke({ messages, participantInfo }, config);
@@ -126,7 +126,7 @@ export class MyDataHelpsAssistant {
             return { participantInfo: JSON.stringify(participantInfo) };
         };
 
-        const workflow = new StateGraph<IAssistantState>({
+        const workflow = new StateGraph<AIAssistantState>({
             channels: graphState
         })
             .addNode("setParticipantInfo", setParticipantInfo)
@@ -146,7 +146,7 @@ export class MyDataHelpsAssistant {
     }
 
     private initialized = false;
-    private graph!: CompiledStateGraph<IAssistantState, Partial<IAssistantState>, "agent" | "tools" | "setParticipantInfo" | typeof START>;
+    private graph!: CompiledStateGraph<AIAssistantState, Partial<AIAssistantState>, "agent" | "tools" | "setParticipantInfo" | typeof START>;
     private baseUrl: string;
     private participantId!: Guid;
     private additionalInstructions: string;

@@ -2,7 +2,7 @@ import React from "react";
 import { Global, css } from '@emotion/react';
 import Layout from "../../presentational/Layout";
 import AIAssistant, { AIAssistantProps } from "./AIAssistant";
-import { MyDataHelpsTools } from "../../../helpers/assistant";
+import { MyDataHelpsTools } from "../../../helpers/AIAssistant";
 
 export default {
     title: 'Container/AIAssistant',

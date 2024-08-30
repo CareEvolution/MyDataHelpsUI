@@ -6,7 +6,7 @@ import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
-import { MyDataHelpsAssistant } from '../../../helpers/assistant/assistant';
+import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -34,11 +34,11 @@ export default function (props: AIAssistantProps) {
     const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
 
-    const assistantRef = useRef<MyDataHelpsAssistant>();
+    const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
+            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
         }
     }, []);
 
