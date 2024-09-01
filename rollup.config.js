@@ -10,7 +10,7 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 5e6
+const limitBytes = 6e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -25,19 +25,19 @@ export default [
 			{
 				file: packageJson.main,
 				format: "cjs",
-				sourcemap: true,
+				sourcemap: true
 			},
 			{
 				file: packageJson.module,
 				format: "esm",
-				sourcemap: true,
+				sourcemap: true
 			},
 		],
 		plugins: [
 			peerDepsExternal(),
 			resolve(),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json", sourceMap: false }),
+			typescript({ tsconfig: "./tsconfig.json", sourceMap: true }),
 			postcss(),
 			terser(),
 			image(),
