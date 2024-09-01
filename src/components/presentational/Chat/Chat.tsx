@@ -47,25 +47,27 @@ export default function (props: ChatProps) {
     return (
         <div className="mdhui-chat" ref={props.innerRef}>
             <div className="mdhui-chat-log">
-                <div className="mdhui-chat-messages" ref={logRef}>
-                    {props.messages.map((message, index) => {
-                        if (message.type === "sent") {
-                            return <div key={index} className="mdhui-chat-message mdhui-chat-sent-message-row">
-                                <div className="mdhui-chat-sent-message">
-                                    {parse(md.render(message.content))}
+                <div className="mdhui-chat-messages-scroll-wrapper" ref={logRef}>
+                    <div className="mdhui-chat-messages">
+                        {props.messages.map((message, index) => {
+                            if (message.type === "sent") {
+                                return <div key={index} className="mdhui-chat-message mdhui-chat-sent-message-row">
+                                    <div className="mdhui-chat-sent-message">
+                                        {parse(md.render(message.content))}
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        else {
-                            return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
-                                {message.icon}
-                                <div className="mdhui-chat-received-message">{parse(md.render(message.content))}</div>
-                            </div>
-                        }
-                    })}
-                    {props.loading && <div className="mdhui-chat-message-loading">
-                        <FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}
-                    </div>}
+                            }
+                            else {
+                                return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
+                                    {message.icon}
+                                    <div className="mdhui-chat-received-message">{parse(md.render(message.content))}</div>
+                                </div>
+                            }
+                        })}
+                        {props.loading && <div className="mdhui-chat-message-loading">
+                            <FontAwesomeSvgIcon icon={faSpinner} spin={true} />{props.loading}
+                        </div>}
+                    </div>
                 </div>
             </div>
             <div className="mdhui-chat-input">
