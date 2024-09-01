@@ -39,6 +39,11 @@
     text-align: center;
 }
 
+.mdhui-chat .mdhui-chat-send-button:disabled {
+    cursor: default;
+    color: var(--mdhui-text-color-3);
+}
+
 .mdhui-chat input {
     flex: 1;
     font-size: 1em;

@@ -16,6 +16,7 @@ export interface ChatProps {
     messages: ChatMessage[];
     onSendMessage: (newMessage: string) => void;
     loading?: string;
+    inputDisabled?: boolean;
 }
 
 export interface ChatMessage {
@@ -74,12 +75,14 @@ export default function (props: ChatProps) {
                         value={currentUserMessage}
                         onChange={(e) => setCurrentUserMessage(e.target.value)}
                         onKeyDown={(e) => {
+                            if (props.inputDisabled || !currentUserMessage) return;
+
                             if (e.key === 'Enter') {
                                 sendMessage();
                             }
                         }}
                     />
-                    <UnstyledButton onClick={sendMessage} className="mdhui-chat-send-button">
+                    <UnstyledButton onClick={sendMessage} className="mdhui-chat-send-button" disabled={props.inputDisabled || !currentUserMessage}>
                         <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </UnstyledButton>
                 </div>

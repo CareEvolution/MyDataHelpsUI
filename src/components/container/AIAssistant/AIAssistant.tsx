@@ -34,6 +34,9 @@ export default function (props: AIAssistantProps) {
 
     const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
+    const [inputDisabled, setInputDisabled] = useState(false);
+
+    let lastAIMessage = "";
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
@@ -46,6 +49,15 @@ export default function (props: AIAssistantProps) {
     const addUserMessage = async function (newMessage: string) {
 
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
+        setInputDisabled(true);
+
+        MyDataHelps.trackCustomEvent({
+            eventType: "ai-assistant-message",
+            properties: {
+                type: "user",
+                body: newMessage
+            }
+        });
 
         await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
 
@@ -77,22 +89,21 @@ export default function (props: AIAssistantProps) {
                 }
             }
 
+            if (kind === "llm" && type === "start") {
+                lastAIMessage = "";
+            }
+
             if (kind === "llm" && type === "end") {
+
                 MyDataHelps.trackCustomEvent({
-                    eventType: "aiassistant-message",
+                    eventType: "ai-assistant-message",
                     properties: {
                         type: "ai",
-                        body: messages[messages.length - 1].content
+                        body: lastAIMessage
                     }
                 });
-            }
-        });
 
-        MyDataHelps.trackCustomEvent({
-            eventType: "aiassistant-message",
-            properties: {
-                type: "user",
-                body: newMessage
+                setInputDisabled(false);
             }
         });
     }
@@ -108,6 +119,8 @@ export default function (props: AIAssistantProps) {
                 return [...prevMessages, { type: 'ai', content: message, runId: runId }];
             }
         });
+
+        lastAIMessage += message;
     }
 
     return <>
@@ -117,6 +130,6 @@ export default function (props: AIAssistantProps) {
                 content: msg.content,
                 type: msg.type === "user" ? "sent" : "received"
             }
-        })} onSendMessage={addUserMessage} loading={loading} />}
+        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>
 }
