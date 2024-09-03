@@ -49,6 +49,9 @@ export default function (props: AIAssistantProps) {
     const addUserMessage = async function (newMessage: string) {
 
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
+
+        if (props.previewState === "default") return;
+
         setInputDisabled(true);
 
         MyDataHelps.trackCustomEvent({
