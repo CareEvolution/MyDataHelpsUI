@@ -2,26 +2,42 @@
 import { Layout } from '../../presentational';
 import InboxMessageListItem from './InboxMessageListItem';
 import { InboxMessage } from '@careevolution/mydatahelps-js';
-import { noop } from '../../../helpers/functions';
 
 export default {
     title: 'Presentational/InboxMessageListItem',
     component: InboxMessageListItem,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
-const render = (message: InboxMessage) => {
-    return <Layout colorScheme="auto">
-        <InboxMessageListItem message={message} onClick={noop}/>
+interface InboxMessageListItemStoryArgs extends InboxMessage {
+    colorScheme: 'auto' | 'light' | 'dark';
+}
+
+const onClick = () => {
+    console.log('message list item clicked');
+};
+
+const render = (args: InboxMessageListItemStoryArgs) => {
+    return <Layout colorScheme={args.colorScheme}>
+        <InboxMessageListItem
+            message={args}
+            onClick={() => onClick()}
+        />
     </Layout>;
 };
 
 export const Default = {
     args: {
+        colorScheme: 'auto',
         status: 'incomplete',
         title: 'Message Title'
     },
     argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
         status: {
             control: 'radio',
             options: ['incomplete', 'complete', 'closed']

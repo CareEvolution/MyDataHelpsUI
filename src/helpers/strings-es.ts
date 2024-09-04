@@ -462,7 +462,8 @@
     "meal-log-no-data": "No hay comidas registradas",
     "meal-editor-time-input-label": "Hora",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
-    "glucose-view-title": "Monitorización de glucosa"
+    "glucose-view-title": "Monitorización de glucosa",
+    "ai-assistant-loading": "Interactuando con tus datos..."
 };
 
 export default strings;

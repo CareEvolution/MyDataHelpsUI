@@ -462,7 +462,8 @@
     "meal-log-no-data": "No meals logged",
     "meal-editor-time-input-label": "Time",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
-    "glucose-view-title": "Glucose Monitoring"
+    "glucose-view-title": "Glucose Monitoring",
+    "ai-assistant-loading": "Interacting with your data..."
 };
 
 export default strings;

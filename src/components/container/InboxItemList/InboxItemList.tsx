@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './InboxItemList.css';
 import MyDataHelps, { InboxItem, InboxItemQueryParameters, InboxItemSortColumn, InboxItemStatus, InboxItemType, InboxMessage, InboxResource, InboxSurvey, SortOrder } from '@careevolution/mydatahelps-js';
 import { InboxMessageListItem, InboxResourceListItem, InboxSurveyListItem, InboxSurveyVariant, LoadingIndicator, ResourceButtonVariant, ResourceImageAlignment } from '../../presentational';
-import { useInitializeView } from '../../../helpers/Initialization';
+import { useInitializeView } from '../../../helpers';
 import inboxDataService from '../../../helpers/Inbox/inbox-data';
 import { InboxItemListCoordinatorContext } from '../InboxItemListCoordinator';
 import { viewInboxMessage } from '../../view/InboxMessageView';
@@ -80,16 +80,16 @@ export default function (props: InboxItemListProps) {
                 <div className="mdhui-inbox-item-list-title">{props.title}</div>
             }
             {!props.hideLoadingIndicator &&
-                <LoadingIndicator/>
+                <LoadingIndicator />
             }
         </div>;
     }
 
     const onClick = (inboxItem: InboxItem): void => {
-        if (loading) return;
+        if (loading || props.previewState) return;
 
         if (inboxItem.isNew) {
-            inboxDataService.markItemRead(inboxItem).then(result => {
+            inboxDataService.markItemRead(inboxItem).then(() => {
                 if (!props.syncOnChanges) {
                     loadData();
                 }
@@ -118,13 +118,13 @@ export default function (props: InboxItemListProps) {
         }
         {items!.slice(0, props.limit).map((inboxItem, index) => {
             if (inboxItem.type === 'message') {
-                return <InboxMessageListItem key={index} message={inboxItem as InboxMessage} onClick={() => onClick(inboxItem)}/>
+                return <InboxMessageListItem key={index} message={inboxItem as InboxMessage} onClick={() => onClick(inboxItem)} />
             }
             if (inboxItem.type === 'survey') {
-                return <InboxSurveyListItem key={index} survey={inboxItem as InboxSurvey} onClick={() => onClick(inboxItem)} variant={props.surveyVariant}/>;
+                return <InboxSurveyListItem key={index} survey={inboxItem as InboxSurvey} onClick={() => onClick(inboxItem)} variant={props.surveyVariant} />;
             }
             if (inboxItem.type === 'resource') {
-                return <InboxResourceListItem key={index} resource={inboxItem as InboxResource} onClick={() => onClick(inboxItem)} imageAlignment={props.resourceImageAlignment} buttonVariant={props.resourceButtonVariant} buttonText={props.resourceButtonText}/>;
+                return <InboxResourceListItem key={index} resource={inboxItem as InboxResource} onClick={() => onClick(inboxItem)} imageAlignment={props.resourceImageAlignment} buttonVariant={props.resourceButtonVariant} buttonText={props.resourceButtonText} />;
             }
             return null;
         })}

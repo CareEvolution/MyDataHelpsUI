@@ -462,7 +462,8 @@ let strings: { [key: string]: string } = {
     "meal-log-no-data": "Keine Mahlzeiten protokolliert",
     "meal-editor-time-input-label": "Zeit",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
-    "glucose-view-title": "Blutzuckerüberwachung"
+    "glucose-view-title": "Blutzuckerüberwachung",
+    "ai-assistant-loading": "Interaktion mit Ihren Daten..."
 };
 
 export default strings;

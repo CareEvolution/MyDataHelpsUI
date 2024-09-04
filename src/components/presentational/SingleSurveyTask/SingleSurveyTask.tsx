@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import './SingleSurveyTask.css'
-import { SurveyTask } from '@careevolution/mydatahelps-js'
+import MyDataHelps, { SurveyTask } from '@careevolution/mydatahelps-js'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import formatRelative from 'date-fns/formatRelative'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
@@ -11,15 +11,12 @@ import language from '../../../helpers/language'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { ColorDefinition, getLocaleFromIso, resolveColor } from '../../../helpers';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
-import MyDataHelps from "@careevolution/mydatahelps-js";
-import { getLocaleFromIso } from '../../../helpers/locale';
 import { noop } from '../../../helpers/functions';
-import UnstyledButton from '../UnstyledButton';
 
 export type SingleSurveyTaskVariant = 'default' | 'expanded';
 
@@ -62,7 +59,7 @@ export default function (props: SingleSurveyTaskProps) {
 	};
 
 	const getExpandedIncompleteTask = () => {
-		return <UnstyledButton className="mdhui-single-survey-task incomplete-expanded" onClick={() => props.onClick()}>
+		return <div className="mdhui-single-survey-task incomplete-expanded" onClick={() => props.onClick()}>
 			<div className="header">
 				<div className="survey-name">{props.task.surveyDisplayName}</div>
 				{props.task.dueDate && getDueDate()}
@@ -76,7 +73,7 @@ export default function (props: SingleSurveyTaskProps) {
 					{!props.task.hasSavedProgress ? language('start-survey') : language('resume-survey')}
 				</Button>
 			}
-		</UnstyledButton>;
+		</div>;
 	};
 
 	const getIncompleteTask = () => {
