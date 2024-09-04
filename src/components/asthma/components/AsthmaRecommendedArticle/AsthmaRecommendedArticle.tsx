@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { getLanguageFromIso, language, Language, useInitializeView } from '../../../../helpers';
 import { Resource, ResourceButtonVariant, ResourceDefinition, ResourceImageAlignment } from '../../../presentational';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import sampleResourceImage from '../../../../assets/resource-image.png';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
 import { add, startOfToday } from 'date-fns';
 import './AsthmaRecommendedArticle.css';
 import { AsthmaControlState, AsthmaLogEntry } from '../../model';
+
+interface Article {
+    number: string;
+    image: string;
+}
 
 export interface AsthmaRecommendedArticleProps {
     previewState?: 'none' | 'default';
@@ -20,58 +24,58 @@ export interface AsthmaRecommendedArticleProps {
 }
 
 export default function (props: AsthmaRecommendedArticleProps) {
-    const [recommendedArticle, setRecommendedArticle] = useState<ResourceDefinition>();
+    const [recommendedArticle, setRecommendedArticle] = useState<Article>();
 
-    const createResourceDefinition = (article: string, image: string): ResourceDefinition => {
+    const createResourceDefinition = (article: Article): ResourceDefinition => {
         let currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
         return {
-            title: language(`asthma-recommended-article-${article}-title`),
-            subTitle: language(`asthma-recommended-article-${article}-subtitle`),
-            url: new URL(`atedu_${article}${currentLanguage === 'es' ? '_es' : ''}.html`, props.libraryBaseUrl).href,
-            imageUrl: new URL(`images/article_category_${image}${currentLanguage === 'es' ? '_es' : ''}.svg`, props.libraryBaseUrl).href
+            title: language(`asthma-recommended-article-${article.number}-title`),
+            subTitle: language(`asthma-recommended-article-${article.number}-subtitle`),
+            url: new URL(`atedu_${article.number}${currentLanguage === 'es' ? '_es' : ''}.html`, props.libraryBaseUrl).href,
+            imageUrl: new URL(`images/article_category_${article.image}${currentLanguage === 'es' ? '_es' : ''}.svg`, props.libraryBaseUrl).href
         };
     }
 
     const updateRecommendedArticle = (todayLogEntry: AsthmaLogEntry, asthmaControlState: AsthmaControlState, surveyAnswers: SurveyAnswer[]): void => {
-        let articles: ResourceDefinition[] = [];
+        let articles: Article[] = [];
 
         if (asthmaControlState.status === 'controlled') {
-            articles.push(createResourceDefinition('21', 'asthmacontrol'));
+            articles.push({ number: '21', image: 'asthmacontrol' });
         } else if (asthmaControlState.status === 'not-determined') {
-            articles.push(createResourceDefinition('22', 'asthmacontrol'));
+            articles.push({ number: '22', image: 'asthmacontrol' });
         } else if (asthmaControlState.status === 'not-controlled') {
-            articles.push(createResourceDefinition('25', 'asthmacontrol'));
+            articles.push({ number: '25', image: 'asthmacontrol' });
         }
 
         if (todayLogEntry.triggers.includes('Seasonal allergens/pollen')) {
-            articles.push(createResourceDefinition('42', 'triggers'));
+            articles.push({ number: '42', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Air pollution')) {
-            articles.push(createResourceDefinition('43', 'triggers'));
+            articles.push({ number: '43', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Cold/viral illness')) {
-            articles.push(createResourceDefinition('43a', 'triggers'));
+            articles.push({ number: '43a', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Animal exposure')) {
-            articles.push(createResourceDefinition('43b', 'triggers'));
+            articles.push({ number: '43b', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Smoke (tobacco or wood burning)')) {
-            articles.push(createResourceDefinition('43c', 'triggers'));
+            articles.push({ number: '43c', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Extreme weather changes')) {
-            articles.push(createResourceDefinition('43d', 'triggers'));
+            articles.push({ number: '43d', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Strong smells') || todayLogEntry.triggers.includes("Chemicals/cleaning supplies")) {
-            articles.push(createResourceDefinition('43e', 'triggers'));
+            articles.push({ number: '43e', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Dust') || todayLogEntry.triggers.includes('Dust mites')) {
-            articles.push(createResourceDefinition('43f', 'triggers'));
+            articles.push({ number: '43f', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Mold')) {
-            articles.push(createResourceDefinition('43g', 'triggers'));
+            articles.push({ number: '43g', image: 'triggers' });
         }
         if (todayLogEntry.triggers.includes('Had heartburn')) {
-            articles.push(createResourceDefinition('43h', 'triggers'));
+            articles.push({ number: '43h', image: 'triggers' });
         }
 
         const surpriseTriggers = [
@@ -85,28 +89,28 @@ export default function (props: AsthmaRecommendedArticleProps) {
             'Burned incense or a candle'
         ];
         if (todayLogEntry.triggers.find(trigger => surpriseTriggers.includes(trigger))) {
-            articles.push(createResourceDefinition('41', 'triggers'));
+            articles.push({ number: '41', image: 'triggers' });
         }
 
         let missedDosesAnswer = surveyAnswers.find(surveyAnswer => surveyAnswer.stepIdentifier === 'MISSED_DOSES');
         if (missedDosesAnswer) {
             if (missedDosesAnswer.answers.includes('No controller med')) {
-                articles.push(createResourceDefinition('32', 'medications'));
+                articles.push({ number: '32', image: 'medications' });
             }
             if (missedDosesAnswer.answers.includes('No missed doses')) {
                 let inhalerTypeAnswer = surveyAnswers.find(surveyAnswer => surveyAnswer.stepIdentifier === 'MISSED_DOSES_INHALER_TYPE');
                 if (inhalerTypeAnswer) {
                     if (inhalerTypeAnswer.answers.includes('Metered-dose inhaler (MDI)')) {
-                        articles.push(createResourceDefinition('37a', 'medications'));
+                        articles.push({ number: '37a', image: 'medications' });
                     }
                     if (inhalerTypeAnswer.answers.includes('Dry-powder inhaler (DPI)')) {
-                        articles.push(createResourceDefinition('37b', 'medications'));
+                        articles.push({ number: '37b', image: 'medications' });
                     }
                     if (inhalerTypeAnswer.answers.includes('Soft mist inhaler')) {
-                        articles.push(createResourceDefinition('37c', 'medications'));
+                        articles.push({ number: '37c', image: 'medications' });
                     }
                     if (inhalerTypeAnswer.answers.includes('Nebulizer')) {
-                        articles.push(createResourceDefinition('37d', 'medications'));
+                        articles.push({ number: '37d', image: 'medications' });
                     }
                 }
             }
@@ -116,30 +120,30 @@ export default function (props: AsthmaRecommendedArticleProps) {
         if (missedDosesReasonsAnswer) {
             if (missedDosesReasonsAnswer.answers.includes('Unable to afford the medications') ||
                 missedDosesReasonsAnswer.answers.includes('Don\'t want to run out, so purposefully skipping doses')) {
-                articles.push(createResourceDefinition('33', 'medications'));
+                articles.push({ number: '33', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('Difficulty getting refills')) {
-                articles.push(createResourceDefinition('34', 'medications'));
+                articles.push({ number: '34', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('Trouble remembering to take them')) {
-                articles.push(createResourceDefinition('35', 'medications'));
+                articles.push({ number: '35', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('I\'m confused which inhaler to take when')) {
-                articles.push(createResourceDefinition('36', 'medications'));
+                articles.push({ number: '36', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('Don\'t know why I should take it')) {
-                articles.push(createResourceDefinition('38', 'medications'));
+                articles.push({ number: '38', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('Concerns over side effects')) {
-                articles.push(createResourceDefinition('39', 'medications'));
+                articles.push({ number: '39', image: 'medications' });
             }
             if (missedDosesReasonsAnswer.answers.includes('Medications not working')) {
-                articles.push(createResourceDefinition('39a', 'medications'));
+                articles.push({ number: '39a', image: 'medications' });
             }
         }
 
         if (todayLogEntry.symptomLevel === 'severe') {
-            articles.push(createResourceDefinition('24', 'asthmacontrol'));
+            articles.push({ number: '24', image: 'asthmacontrol' });
         }
 
         if (articles.length > 0) {
@@ -155,7 +159,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
             return;
         }
         if (props.previewState === 'default') {
-            setRecommendedArticle({ title: 'Recommended Article Title', subTitle: 'recommended article subtitle', imageUrl: sampleResourceImage } as ResourceDefinition);
+            setRecommendedArticle({ number: '34', image: 'medications' });
             return;
         }
 
@@ -176,16 +180,18 @@ export default function (props: AsthmaRecommendedArticleProps) {
         return null;
     }
 
+    let recommendedArticleResource = createResourceDefinition(recommendedArticle);
+
     const onClick = (): void => {
         if (props.previewState) return;
-        MyDataHelps.openEmbeddedUrl(recommendedArticle.url);
+        MyDataHelps.openEmbeddedUrl(recommendedArticleResource.url);
     };
 
     return <div className="mdhui-asthma-recommended-article" style={props.style}>
         <Resource
-            title={recommendedArticle.title}
-            subTitle={recommendedArticle.subTitle}
-            imageUrl={recommendedArticle.imageUrl}
+            title={recommendedArticleResource.title}
+            subTitle={recommendedArticleResource.subTitle}
+            imageUrl={recommendedArticleResource.imageUrl}
             imageAlignment={props.imageAlignment}
             buttonVariant={props.buttonVariant}
             buttonText={props.buttonText}
