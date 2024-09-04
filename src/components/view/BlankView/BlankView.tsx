@@ -14,11 +14,12 @@ export interface BlankViewProps {
     titleColor?: ColorDefinition;
     subtitleColor?: ColorDefinition;
     navigationBarButtonColor?: ColorDefinition;
+    flexLayout?: boolean;
 }
 
 export default function (props: BlankViewProps) {
     return (
-        <Layout bodyBackgroundColor={props.bodyBackgroundColor} colorScheme={props.colorScheme ?? "auto"} primaryColor={props.primaryColor}>
+        <Layout bodyBackgroundColor={props.bodyBackgroundColor} colorScheme={props.colorScheme ?? "auto"} primaryColor={props.primaryColor} flex={props.flexLayout}>
             {(props.showBackButton || props.showCloseButton) &&
                 <NavigationBar title={props.title}
                     showBackButton={props.showBackButton}
@@ -29,7 +30,7 @@ export default function (props: BlankViewProps) {
             }
             {!(props.showBackButton || props.showCloseButton) &&
                 <>
-                    <StatusBarBackground />
+                    {!props.flexLayout && <StatusBarBackground />}
                     <ViewHeader title={props.title} subtitle={props.subtitle} titleColor={props.titleColor} subtitleColor={props.subtitleColor} />
                 </>
             }

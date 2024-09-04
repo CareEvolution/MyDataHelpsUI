@@ -16,3 +16,5 @@ export { default as dailyDataTypeDefinitions } from './daily-data-types/all';
 export * from './chartOptions';
 export * from './chartHelpers';
 export * from './heart-rate-data-providers';
+export * from './glucose-and-meals';
+export * from './AIAssistant';
