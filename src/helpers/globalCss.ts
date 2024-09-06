@@ -521,22 +521,19 @@ export const core = css`
   --mdhui-cyan-97: var(--mdhui-cyan-97-base);
   --mdhui-cyan-98: var(--mdhui-cyan-98-base);
   --mdhui-cyan-99: var(--mdhui-cyan-99-base);
-}
 
-:root {
   /* Gradients */
-  --mdhui-gradient-alpine-overlook: linear-gradient(180deg, 0% rgba(12, 100, 235), 100% rgba(76, 152, 207));
-  --mdhui-gradient-tropical-mist: linear-gradient(180deg, 0% rgba(76, 145, 248), 100% rgba(35, 164, 130));
-  --mdhui-gradient-summit-sunset: linear-gradient(180deg, 0% rgba(207, 94, 255), 100% rgba(230, 107, 111));
-  --mdhui-gradient-cold-front: linear-gradient(180deg, 0% rgba(143, 130, 246), 100% rgba(230, 107, 111));
-  --mdhui-gradient-summer-solstice: linear-gradient(180deg, 0% rgba(255, 146, 41), 100% rgba(143, 130, 246));
-  --mdhui-gradient-high-noon: linear-gradient(180deg, 0% rgba(236, 108, 5), 100% rgba(206, 44, 50));
-  --mdhui-gradient-midnight-moon: linear-gradient(180deg, 0% rgba(207, 94, 255), 100% rgba(102, 83, 240));
-  --mdhui-gradient-open-horizon: linear-gradient(180deg, 0% rgba(76, 145, 248), 100% rgba(207, 94, 255));
-  --mdhui-gradient-early-bird: linear-gradient(180deg, 0% rgba(34, 159, 185), 100% rgba(143, 130, 246));
-  --mdhui-gradient-evergreen-petrichor: linear-gradient(180deg, 0% rgba(34, 159, 185), 100% rgba(0, 123, 108));
-}`
-
+  --mdhui-gradient-alpine-overlook: linear-gradient(180deg, rgba(12, 100, 235), rgba(76, 152, 207));
+  --mdhui-gradient-tropical-mist: linear-gradient(180deg, rgba(76, 145, 248), rgba(35, 164, 130));
+  --mdhui-gradient-summit-sunset: linear-gradient(180deg, rgba(207, 94, 255), rgba(230, 107, 111));
+  --mdhui-gradient-cold-front: linear-gradient(180deg, rgba(143, 130, 246), rgba(230, 107, 111));
+  --mdhui-gradient-summer-solstice: linear-gradient(180deg, rgba(255, 146, 41), rgba(143, 130, 246));
+  --mdhui-gradient-high-noon: linear-gradient(180deg, rgba(236, 108, 5), rgba(206, 44, 50));
+  --mdhui-gradient-midnight-moon: linear-gradient(180deg, rgba(207, 94, 255), rgba(102, 83, 240));
+  --mdhui-gradient-open-horizon: linear-gradient(180deg, rgba(76, 145, 248), rgba(207, 94, 255));
+  --mdhui-gradient-early-bird: linear-gradient(180deg, rgba(34, 159, 185), rgba(143, 130, 246));
+  --mdhui-gradient-evergreen-petrichor: linear-gradient(180deg, rgba(34, 159, 185), rgba(0, 123, 108));
+}`;
 
 export const lightColorScheme = css`
 :root {
@@ -561,9 +558,7 @@ export const lightColorScheme = css`
     --mdhui-box-shadow-1: 0px 0px 5px 0px var(--mdhui-box-shadow-color-1);
 
     --mdhui-overlay-gradient:linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 240, 0.2) 100%);
-    
-}
-`
+}`;
 
 export const darkColorScheme = css`
 :root {
