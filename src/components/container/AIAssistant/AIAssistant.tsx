@@ -78,7 +78,7 @@ export default function (props: AIAssistantProps) {
                         addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].args);
                     }
                     else if (msg.tool_call_chunks[0].name) {
-                        addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].name + " ");
+                        addMessageChunk(streamEvent.run_id, "\n" + msg.tool_call_chunks[0].name + " ");
                     }
                 }
             }

@@ -25,7 +25,9 @@ export interface ChatMessage {
     type: ChatMessageType;
 }
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+    breaks: true
+});
 
 export default function (props: ChatProps) {
 
