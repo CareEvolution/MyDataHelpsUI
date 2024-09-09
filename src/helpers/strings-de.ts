@@ -193,6 +193,7 @@ let strings: { [key: string]: string } = {
     "asthma-trigger-cold-illness": "Erkältung/Viruskrankheit",
     "asthma-trigger-animal-exposure": "Tierkontakt",
     "asthma-trigger-seasonal-allergens": "Saisonale Allergene/Pollen",
+    "asthma-trigger-exercise": "Übung",
     "asthma-trigger-smoke": "Rauch",
     "asthma-trigger-weather-changes": "Extreme Wetteränderungen",
     "asthma-trigger-air-pollution": "Luftverschmutzung",

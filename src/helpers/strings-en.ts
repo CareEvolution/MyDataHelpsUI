@@ -193,6 +193,7 @@
     "asthma-trigger-cold-illness": "Cold/viral illness",
     "asthma-trigger-animal-exposure": "Animal exposure",
     "asthma-trigger-seasonal-allergens": "Seasonal allergens/pollen",
+    "asthma-trigger-exercise": "Exercise",
     "asthma-trigger-smoke": "Smoke",
     "asthma-trigger-weather-changes": "Extreme weather changes",
     "asthma-trigger-air-pollution": "Air pollution",
