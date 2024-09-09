@@ -29,11 +29,11 @@
 
 .mdhui-recent-daily-data-bar-chart-no-data-label, .mdhui-recent-daily-data-bar-chart .mdhui-loading-indicator {
     position: absolute;
-    width: 120px;
-    height: 20px;
+    width: 138px;
+    height: 54px;
     line-height: 20px;
-    left: calc(50% - 76px);
-    top: calc(50% - 26px);
+    left: calc(50% - 69px);
+    top: calc(50% - 27px);
     border: 1px solid var(--mdhui-border-color-1);
     background: var(--mdhui-background-color-0);
     border-radius: 12px;
@@ -44,6 +44,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
 .mdhui-recent-daily-data-bar-chart .recharts-cartesian-grid-horizontal line:first-child {
