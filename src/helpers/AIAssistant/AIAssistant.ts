@@ -82,7 +82,7 @@ export class MyDataHelpsAIAssistant {
         };
 
         const boundModel = new ChatOpenAI({
-            model: "gpt-4o",
+            model: "gpt-4o-2024-08-06",
             temperature: 0,
             apiKey: MyDataHelps.token.access_token
         }, {
