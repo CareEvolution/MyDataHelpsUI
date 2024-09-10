@@ -1,8 +1,9 @@
 .mdhui-inbox-item-list-title {
     color: var(--mdhui-text-color-2);
+    padding: 0 16px;
 }
 
 .mdhui-inbox-item-list-empty-text {
     color: var(--mdhui-text-color-3);
-    padding: 16px 0;
+    padding: 16px;
 }

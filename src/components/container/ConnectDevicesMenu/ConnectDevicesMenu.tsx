@@ -2,17 +2,18 @@ import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, Ext
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
-import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
+import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
 import FitbitLogo from '../../../assets/fitbit-logo.svg';
 import GarminLogo from '../../../assets/garmin-logo.svg';
+import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
 
-export type DeviceAccountType = "Fitbit" | "Garmin" | "AppleHealth" | "GoogleFit" | "Omron";
+export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron";
 
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
@@ -77,12 +78,15 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     //Omron excluded by default
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "AppleHealth", "GoogleFit"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
     if (!settings?.garminEnabled) {
         accountTypes = accountTypes.filter(a => a != "Garmin");
+    }
+    if (!settings?.dexcomEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
     if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth")) {
         accountTypes = accountTypes.filter(a => a != "AppleHealth");
@@ -92,6 +96,11 @@ export default function (props: ConnectDevicesMenuProps) {
     }
     if (!accountTypes.length) {
         return null;
+    }
+
+    function onMenuItemClicked( action?: () => void ) {
+        if ( props.previewState || !action ) return;
+        action();
     }
 
     function getFitbitMenuItem() {
@@ -106,6 +115,13 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
         return getExternalAccountMenuItem("Garmin", getGarminProviderID(), <img src={GarminLogo} />);
+    }
+
+    function getDexcomMenuItem() {
+        if (!accountTypes.includes("Dexcom")) {
+            return null;
+        }
+        return getExternalAccountMenuItem("Dexcom", getDexcomProviderID(), <img src={DexcomLogo} />);
     }
 
     function getOmronMenuItem() {
@@ -138,7 +154,7 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={action} indicator={indicator}>
+            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
                 <Title autosizeImage order={4} image={image}>{providerName}</Title>
             </Action>
         </div>;
@@ -149,7 +165,7 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        return <AppleHealthMenuItem platform={platform!} />;
+        return <AppleHealthMenuItem preview={!!props.previewState} platform={platform!} />;
     }
 
     function getGoogleFitMenuItem() {
@@ -166,7 +182,7 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={action} indicator={indicator}>
+            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
                 <Title autosizeImage image={<img src={GoogleFitLogo} />} order={4}>Google Fit</Title>
             </Action>
         </div>;
@@ -184,6 +200,7 @@ export default function (props: ConnectDevicesMenuProps) {
         <div className="mdhui-connect-devices-menu-inner">
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
+            {getDexcomMenuItem()}
             {getAppleHealthMenuItem()}
             {getGoogleFitMenuItem()}
             {getOmronMenuItem()}
@@ -192,7 +209,8 @@ export default function (props: ConnectDevicesMenuProps) {
 }
 
 interface AppleHealthMenuItemProps {
-    platform: string
+    preview: boolean;
+    platform: string;
 }
 
 function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
@@ -206,7 +224,10 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enable")}</div>;
 
     if (props.platform == "Web") {
-        action = () => MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
+        action = () => {
+            if ( props.preview ) return;
+            MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
+        }
         indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
     }
 

@@ -37,6 +37,10 @@ export default function (props: ConnectDeviceProps) {
 	}
 	function initialize() {
 		if (props.previewState) {
+			setLoading(true);
+			setDeviceEnabled(false);
+			setDeviceExternalAccount(null);
+
 			if (props.previewState == "notEnabled") {
 				setLoading(false);
 				return;
@@ -79,6 +83,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
+		if ( props.previewState ) return;
 		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
 			.then(function () {
 				initialize();
