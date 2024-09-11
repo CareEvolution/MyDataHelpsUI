@@ -31,7 +31,7 @@ export default [
 			},
 			{
 				dir: "dist/esm",
-				format: "esm",
+				format: "es",
 				sourcemap: true,
 				manualChunks: {
 					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
