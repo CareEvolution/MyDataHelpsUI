@@ -65,12 +65,18 @@ export default function (props: SurveyTaskListProps) {
 	}
 
 	function getSurveyTaskElement(task: SurveyTask) {
-		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} onClick={() => onTaskClicked(task)} surveyActive={isSurveyActive(task)} surveyBlocked={isSurveyBlocked(task)}/>
+		return <SingleSurveyTask buttonColor={props.buttonColor}
+			buttonVariant={props.buttonVariant}
+			key={task.id.toString()}
+			task={task}
+			onClick={() => onTaskClicked(task)}
+			surveyActive={isSurveyActive(task)}
+			surveyBlocked={isSurveyBlocked(task)} />
 	}
 
 	function initialize() {
 
-		var sortIncomplete = function (a : any, b : any){
+		var sortIncomplete = function (a: any, b: any) {
 			if (!a.dueDate) { return 1; }
 			if (!b.dueDate) { return -1; }
 			if (parseISO(a.dueDate) > parseISO(b.dueDate)) { return 1; }
@@ -100,7 +106,7 @@ export default function (props: SurveyTaskListProps) {
 					parameters.pageID = pageID;
 				}
 
-				return MyDataHelps.querySurveyTasks(parameters).then(function (result : any) {
+				return MyDataHelps.querySurveyTasks(parameters).then(function (result: any) {
 					allTasks = allTasks.concat((result as any).surveyTasks);
 					if (result.nextPageID) {
 						makeRequest(result.nextPageID);
