@@ -1,0 +1,6 @@
+.mdhui-spark-range-chart {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4px;
+    padding: 16px;
+}
