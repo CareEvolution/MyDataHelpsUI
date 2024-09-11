@@ -5,8 +5,11 @@
 .mdhui-single-survey-task.incomplete-expanded {
     padding: 16px;
     width: 100%;
-    cursor: pointer;
     box-sizing: border-box;
+}
+
+.mdhui-single-survey-task.incomplete-expanded.active {
+    cursor: pointer;
 }
 
 .mdhui-single-survey-task.incomplete-expanded .header {
