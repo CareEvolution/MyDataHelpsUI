@@ -53,15 +53,7 @@ export default function (props: SurveyTaskListProps) {
 	};
 
 	const isSurveyBlocked = (task: SurveyTask): boolean => {
-		let blocked = false;
-
-		if (tasks && props.sequential && tasks?.length > 1) {
-			if (tasks.at(0)?.id != task.id) {
-				blocked = true;
-			}
-		}
-
-		return blocked;
+		return props.sequential! && (tasks![0].id !== task.id);
 	}
 
 	function getSurveyTaskElement(task: SurveyTask) {
