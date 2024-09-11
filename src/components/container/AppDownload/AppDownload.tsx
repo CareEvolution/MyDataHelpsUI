@@ -22,7 +22,7 @@ export interface AppDownloadProps {
 /** Display download links for the MyDataHelps app on Web, Android, and iOS. 
  * 	Platform options can be configured.
 */
-export default function AppDownload (props: AppDownloadProps) {
+export default function (props: AppDownloadProps) {
 	const [projectInfo, setProjectInfo] = useState<ProjectInfo>();
 
 	useInitializeView(() => {

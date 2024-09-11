@@ -34,7 +34,7 @@ export { default as MealCoordinator, MealContext, MealCoordinatorPreviewState } 
 export { default as MealEditor, MealEditorPreviewState } from "./MealEditor"
 export { default as MedicationsList } from "./MedicationsList"
 export { default as MostRecentNotification } from "./MostRecentNotification"
-export { NotificationList } from "./NotificationList"
+export { default as NotificationList } from "./NotificationList"
 export { default as PlatformSpecificContent } from "./PlatformSpecificContent"
 export { default as ProjectHeader } from "./ProjectHeader"
 export { default as ProjectSupport } from "./ProjectSupport"

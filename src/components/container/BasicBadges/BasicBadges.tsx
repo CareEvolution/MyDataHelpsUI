@@ -14,7 +14,7 @@ export interface BasicBadgesProps {
 /** Display a grouping of star badges. 
  * 	The number of badges is parameterized.
 */
-export default function BasicBadges (props: BasicBadgesProps) {
+export default function (props: BasicBadgesProps) {
     let [badgeCount, setBadgeCount] = React.useState<number | null>(null);
 
     useInitializeView(() => {
