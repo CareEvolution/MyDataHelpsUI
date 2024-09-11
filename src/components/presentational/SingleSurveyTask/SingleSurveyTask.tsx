@@ -38,7 +38,7 @@ export default function (props: SingleSurveyTaskProps) {
 	const getDueDate = () => {
 		let today = startOfToday();
 		let tomorrow = add(new Date(today), {days: 1});
-		let dueDate = parseISO(props.task.dueDate);
+		let dueDate = parseISO(props.task.dueDate ?? '');
 
 		let dueDateClasses: string[] = ['due-date'];
 		let dueDateString: string;
