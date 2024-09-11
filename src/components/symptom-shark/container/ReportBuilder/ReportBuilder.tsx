@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, DateRangeContext, DateRangeNavigator, LoadingIndicator, Section, TrackerItem, UnstyledButton } from "../../../presentational";
 import language from "../../../../helpers/language";
 import MonthReport from "../../presentational/MonthReport/MonthReport";
 import { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration, useInitializeView } from "../../../..";
-import { add, startOfMonth } from "date-fns";
+import { startOfMonth } from "date-fns";
 import symptomSharkData from "../../helpers/symptom-shark-data";
 import { demoLogEntries, demoSymptoms, demoTreatments } from "../../helpers/demo-data";
-import MyDataHelps from "@careevolution/mydatahelps-js";
 import renderPdf from "../../../../helpers/renderPdf";
 import { SymptomSharkVisualizationContext } from "../VisualizationCoordinator/VisualizationCoordinator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faCircle } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "./ReportBuilder.css"
+import { noop } from "../../../../helpers/functions";
 
 export interface SymptomSharkReportBuilderProps {
     productLogo?: string;
@@ -191,7 +191,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                 </Button>
             </div>
             <div ref={report} style={{ display: "none" }}>
-                <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month" }}>
+                <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month", update: noop }}>
                     <SymptomSharkVisualizationContext.Provider value={{ logEntries: logEntries, symptoms: getSelectedSymptomConfigurations(), treatments: getSelectedTreatmentConfigurations(), hasFilteredSymptoms: !!selectedSymptoms.length }}>
                         <MonthReport
                             includeDailyOverallFeeling={includeDailyOverallExperience}
