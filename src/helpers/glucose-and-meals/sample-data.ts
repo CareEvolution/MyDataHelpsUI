@@ -1,15 +1,20 @@
 import { Reading } from './types';
-import { add, isSameDay, startOfDay } from 'date-fns';
+import { add, formatISO, isSameDay, startOfDay } from 'date-fns';
+import { predictableRandomNumber } from "../predictableRandomNumber";
 
-export function generateGlucose(date: Date): Reading[] {
+export async function generateGlucose(startDate: Date, endDate?: Date): Promise<Reading[]> {
     let readings: Reading[] = [];
 
-    let timestamp = date;
+    endDate = add(endDate ?? startDate, { days: 1 });
+
+    let timestamp = startDate;
     let previousValue = 60;
-    while (isSameDay(timestamp, date)) {
-        let newValue = previousValue + (Math.random() * 50) - 25;
+    while (timestamp < endDate) {
+        let newValue = previousValue + (await predictableRandomNumber(formatISO(timestamp)) % 50) - 25;
+
+        let retryCount = 0;
         while (newValue < 60 || newValue > 180) {
-            newValue = previousValue + (Math.random() * 50) - 25;
+            newValue = previousValue + (await predictableRandomNumber(formatISO(timestamp) + '_' + ++retryCount) % 50) - 25;
         }
 
         readings.push({

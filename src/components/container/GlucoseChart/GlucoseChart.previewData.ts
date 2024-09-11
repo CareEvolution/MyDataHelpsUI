@@ -8,16 +8,17 @@ export interface GlucoseChartPreviewData {
     sleepMinutes: number | undefined;
 }
 
-export const previewData = (previewState: GlucoseChartPreviewState, date: Date): GlucoseChartPreviewData => {
+export const previewData = async (previewState: GlucoseChartPreviewState, date: Date): Promise<GlucoseChartPreviewData> => {
     if (previewState === 'no data') {
         return {
             glucose: [],
             steps: [],
             sleepMinutes: undefined
         };
-    } else if (previewState === 'with data') {
+    }
+    if (previewState === 'with data') {
         return {
-            glucose: generateGlucose(date),
+            glucose: await generateGlucose(date),
             steps: generateSteps(date),
             sleepMinutes: 385 + (Math.random() * 60)
         };
