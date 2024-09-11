@@ -461,6 +461,7 @@ let strings: { [key: string]: string } = {
     "meal-log-title": "Registro pasti",
     "meal-log-no-data": "Nessun pasto registrato",
     "meal-editor-time-input-label": "Ora",
+    "meal-editor-description-input-label": "Descrizione",
     "meal-editor-duplicate-timestamp-error": "Due pasti non possono avere la stessa ora.",
     "glucose-view-title": "Monitoraggio della glicemia",
     "ai-assistant-loading": "Interagire con i tuoi dati..."

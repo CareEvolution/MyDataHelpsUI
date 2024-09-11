@@ -1,13 +1,12 @@
-import React from "react";
-import { DailyDataQueryResult } from "../../../helpers/query-daily-data";
-import { Card, Layout } from "../../presentational";
-import DateRangeCoordinator, { DateRangeCoordinatorProps } from "./DateRangeCoordinator";
+import React, { useContext } from "react";
+import { Card, DateRangeTitle, Layout } from "../../presentational";
+import DateRangeCoordinator, { DateRangeContext, DateRangeCoordinatorProps } from "./DateRangeCoordinator";
 import DailyDataChart from "../../container/DailyDataChart/DailyDataChart";
-import getDayKey from "../../../helpers/get-day-key";
-import { add, startOfDay } from "date-fns";
+import { add, parseISO, startOfDay } from "date-fns";
 import { DailyDataType } from "../../../helpers";
-import { SurveyAnswerChart } from "../../container";
+import { SurveyAnswerChart, WeeklyDayNavigator } from "../../container";
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
+import { noop } from "../../../helpers/functions";
 
 export default { title: "Presentational/DateRangeCoordinator", component: DateRangeCoordinator, parameters: { layout: 'fullscreen' } };
 let render = (args: DateRangeCoordinatorProps) => <Layout><DateRangeCoordinator {...args} /></Layout>
@@ -70,7 +69,7 @@ export const day = {
 		variant: "rounded",
 		initialIntervalStart: new Date(),
 		intervalType: "Day",
-		children: <Card></Card>
+		children: <DateRangeTitle defaultMargin />
 	},
 	render: render
 };
@@ -142,4 +141,29 @@ export const sixMonthNotFirstDaySecondHalf = {
 		initialIntervalStart: startOfDay(new Date(2024, 3, 20))
 	},
 	render: render
+};
+
+function CustomNavigator() {
+    const dateRangeContext = useContext(DateRangeContext);
+    const emojis = [<>&#128512;</>, <>&#128513;</>, <>&#128514;</>, <>&#128515;</>, <>&#128516;</>, <>&#128517;</>];
+
+    return <WeeklyDayNavigator
+        selectedDate={dateRangeContext!.intervalStart}
+        loadData={() => Promise.resolve()}
+        dayRenderer={(dayKey: string) => <div style={{ paddingTop: '4px', textAlign: 'center' }}>{emojis[parseISO(dayKey).getDate() % emojis.length]}</div>}
+    />
+}
+
+export const customNavigator = {
+    args: {
+        variant: "rounded",
+        initialIntervalStart: new Date(),
+        intervalType: "Day",
+        useCustomNavigator: true,
+        children: <>
+            <CustomNavigator />
+			<DateRangeTitle defaultMargin />
+        </>
+    },
+    render: render
 };

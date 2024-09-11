@@ -1,5 +1,6 @@
 import { add, startOfDay } from 'date-fns';
 import { Meal } from '../../../helpers';
+import { v4 as uuid } from 'uuid';
 
 export type MealCoordinatorPreviewState = 'no data' | 'with data';
 
@@ -15,15 +16,21 @@ export const previewData = (previewState: MealCoordinatorPreviewState, date: Dat
     } else if (previewState === 'with data') {
         return {
             meals: [{
+                id: uuid(),
                 timestamp: createObservationDate(date, 9, 15),
                 type: 'meal'
             }, {
+                id: uuid(),
                 timestamp: createObservationDate(date, 16, 25),
-                type: 'snack'
+                type: 'snack',
+                description: 'Here\'s a meal description that will require wrapping to fit completely within the bounds of the screen. The maximum length allowed is 250 characters, so the display will need to accommodate that. This description is exactly 250 characters in length.'
             }, {
+                id: uuid(),
                 timestamp: createObservationDate(date, 18, 10),
-                type: 'drink'
+                type: 'drink',
+                description: 'Here is a shorter meal description.'
             }, {
+                id: uuid(),
                 timestamp: createObservationDate(date, 21, 43),
                 type: 'meal'
             }]

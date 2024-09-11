@@ -6,6 +6,13 @@ export interface Reading {
     value: number;
 }
 
+export interface ReadingRange {
+    date: Date;
+    min: number;
+    max: number;
+    average: number;
+}
+
 export type MealType = 'meal' | 'snack' | 'drink';
 
 export function getMealTypeDisplayText(mealType: MealType): string {
@@ -19,10 +26,12 @@ export interface Meal {
     id: Guid;
     timestamp: Date;
     type: MealType;
+    description?: string;
 }
 
 export interface SerializedMeal {
     id: string,
     timestamp: string;
     type: string;
+    description?: string;
 }

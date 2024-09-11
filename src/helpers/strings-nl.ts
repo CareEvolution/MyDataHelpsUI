@@ -461,6 +461,7 @@ let strings: { [key: string]: string } = {
     "meal-log-title": "Maaltijdlogboek",
     "meal-log-no-data": "Geen maaltijden geregistreerd",
     "meal-editor-time-input-label": "Tijd",
+    "meal-editor-description-input-label": "Beschrijving",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
     "glucose-view-title": "Glucosemonitoring",
     "ai-assistant-loading": "Interageren met uw gegevens..."
