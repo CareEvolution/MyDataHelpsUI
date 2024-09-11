@@ -6,6 +6,13 @@ export interface Reading {
     value: number;
 }
 
+export interface ReadingRange {
+    date: Date;
+    min: number;
+    max: number;
+    average: number;
+}
+
 export type MealType = 'meal' | 'snack' | 'drink';
 
 export function getMealTypeDisplayText(mealType: MealType): string {
