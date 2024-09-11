@@ -12,6 +12,7 @@ import { useInitializeView } from '../../../helpers/Initialization';
 export interface SurveyTaskListProps {
 	status: SurveyTaskStatus,
 	limit?: number,
+	sequential?: boolean,
 	title?: string,
 	surveys?: string[],
 	onDetailLinkClick?: Function,
@@ -51,8 +52,20 @@ export default function (props: SurveyTaskListProps) {
 		}
 	};
 
+	const isSurveyBlocked = (task: SurveyTask): boolean => {
+		let blocked = false;
+
+		if (tasks && props.sequential && tasks?.length > 1) {
+			if (tasks.at(0)?.id != task.id) {
+				blocked = true;
+			}
+		}
+
+		return blocked;
+	}
+
 	function getSurveyTaskElement(task: SurveyTask) {
-		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} onClick={() => onTaskClicked(task)} surveyActive={isSurveyActive(task)}/>
+		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} onClick={() => onTaskClicked(task)} surveyActive={isSurveyActive(task)} surveyBlocked={isSurveyBlocked(task)}/>
 	}
 
 	function initialize() {
@@ -70,6 +83,7 @@ export default function (props: SurveyTaskListProps) {
 			setTasks(previewIncompleteTasks);
 			return;
 		}
+
 		if (props.previewState == "CompleteTasks") {
 			setTasks(previewCompleteTasks);
 			return;
