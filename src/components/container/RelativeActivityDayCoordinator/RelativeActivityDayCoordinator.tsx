@@ -1,7 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, DependencyList, useContext, useState } from 'react';
 import { checkDailyDataAvailability, queryRelativeActivity, RelativeActivityDataType, RelativeActivityQueryResult, useInitializeView } from '../../../helpers';
 import { startOfToday } from 'date-fns';
-import { DateRangeContext, LoadingIndicator, SparkBarChart, SparkBarChartBar } from '../../presentational';
+import { DateRangeContext, DateRangeCoordinator, LoadingIndicator, SparkBarChart, SparkBarChartBar } from '../../presentational';
 import { WeeklyDayNavigator } from '../../container';
 
 export interface RelativeActivityDayCoordinatorProps {
@@ -21,7 +21,6 @@ export const RelativeActivityContext = createContext<RelativeActivityContext | n
 export default function RelativeActivityDateRangeCoordinator(props: RelativeActivityDayCoordinatorProps) {
     const [availableDataTypes, setAvailableDataTypes] = useState<RelativeActivityDataType[]>();
     const [relativeActivityData, setRelativeActivityData] = useState<{ [key: string]: { [key: string]: RelativeActivityQueryResult } }>();
-    const [currentDateContext, setCurrentContext] = useState<DateRangeContext>({ intervalStart: startOfToday(), intervalType: 'Day' });
 
     const checkAvailableDataTypes = () => {
         if (props.previewState === 'default') {
@@ -39,14 +38,14 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         checkAvailableDataTypes();
     }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState]);
 
-    const loadData = (startDate: Date, endDate: Date) => {
-        if (!props.dataTypes.length) return;
-        queryRelativeActivity(startDate, endDate, props.dataTypes, !!props.previewState).then(results => {
+    const loadData = (startDate: Date, endDate: Date): Promise<void> => {
+        if (!props.dataTypes.length) return Promise.resolve();
+        return queryRelativeActivity(startDate, endDate, props.dataTypes, !!props.previewState).then(results => {
             setRelativeActivityData(results);
         });
     };
 
-    const dayRenderer = (dayKey: string) => {
+    const dayRenderer = (dayKey: string): React.JSX.Element | null => {
         if (!props.dataTypes.length) return null;
 
         let bars: SparkBarChartBar[] = props.dataTypes.map(dataType => {
@@ -78,19 +77,32 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         {!availableDataTypes && <LoadingIndicator />}
         {availableDataTypes &&
             <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
-                <DateRangeContext.Provider value={currentDateContext}>
-                    <WeeklyDayNavigator
-                        selectedDate={currentDateContext.intervalStart}
-                        onDateSelected={(d) => setCurrentContext({ ...currentDateContext, intervalStart: d })}
+                <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
+                    <CustomNavigator
                         loadData={loadData}
                         dayRenderer={dayRenderer}
                         dependencies={[props.previewState, props.dataTypes]}
-                        loading={!relativeActivityData}
-                        innerRef={props.innerRef}
                     />
                     {relativeActivityData && props.children}
-                </DateRangeContext.Provider>
+                </DateRangeCoordinator>
             </RelativeActivityContext.Provider>
         }
     </div>;
+}
+
+interface CustomNavigatorProps {
+    loadData: (startDate: Date, endDate: Date) => Promise<void>;
+    dayRenderer: (dayKey: string) => React.JSX.Element | null;
+    dependencies?: DependencyList;
+}
+
+function CustomNavigator(props: CustomNavigatorProps) {
+    const dateRangeContext = useContext(DateRangeContext)
+
+    return <WeeklyDayNavigator
+        selectedDate={dateRangeContext!.intervalStart}
+        loadData={props.loadData}
+        dayRenderer={props.dayRenderer}
+        dependencies={props.dependencies}
+    />;
 }
