@@ -23,7 +23,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
             return;
         }
 
-        const readings = await getGlucoseReadings(startDate);
+        const readings = await getGlucoseReadings(startDate, endDate);
 
         const readingsLookup: { [key: string]: number[] } = readings.reduce((lookup, reading) => {
             let dayKey = getDayKey(reading.timestamp);
