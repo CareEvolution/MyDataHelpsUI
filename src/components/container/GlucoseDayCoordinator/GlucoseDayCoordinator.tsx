@@ -1,5 +1,5 @@
-import React, { DependencyList, useContext, useState } from 'react';
-import { getColorFromAssortment, getDayKey, getGlucoseReadings } from '../../../helpers';
+import React, { createContext, DependencyList, useContext, useState } from 'react';
+import { getColorFromAssortment, getDayKey, getGlucoseReadings, Reading } from '../../../helpers';
 import { add, startOfToday } from 'date-fns';
 import { DateRangeContext, DateRangeCoordinator, SparkRangeChart, SparkRangeChartRange } from '../../presentational';
 import { WeeklyDayNavigator } from '../../container';
@@ -11,7 +11,14 @@ export interface GlucoseDayCoordinatorProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
+export interface GlucoseContext {
+    readings?: Reading[];
+}
+
+export const GlucoseContext = createContext<GlucoseContext | null>(null);
+
 export default function (props: GlucoseDayCoordinatorProps) {
+    const [glucoseReadings, setGlucoseReadings] = useState<Reading[]>();
     const [glucoseRanges, setGlucoseRanges] = useState<{ [key: string]: SparkRangeChartRange }>();
     const [recentAverage, setRecentAverage] = useState<number>();
 
@@ -35,7 +42,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
         }, {} as { [key: string]: number[] });
 
         let colorIndex = 0;
-        let glucoseRanges = Object.keys(readingsLookup).reduce((lookup, dayKey) => {
+        let ranges = Object.keys(readingsLookup).reduce((lookup, dayKey) => {
             const readings = readingsLookup[dayKey];
             lookup[dayKey] = {
                 min: Math.min(...readings),
@@ -63,7 +70,8 @@ export default function (props: GlucoseDayCoordinatorProps) {
             currentDate = add(currentDate, { days: 1 });
         }
 
-        setGlucoseRanges(glucoseRanges);
+        setGlucoseReadings(readings);
+        setGlucoseRanges(ranges);
         if (readingCount > 0) {
             setRecentAverage(readingTotal / readingCount);
         }
@@ -80,14 +88,16 @@ export default function (props: GlucoseDayCoordinatorProps) {
     };
 
     return <div ref={props.innerRef}>
-        <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
-            <CustomNavigator
-                loadData={loadData}
-                dayRenderer={dayRenderer}
-                dependencies={[props.previewState]}
-            />
-            {glucoseRanges && props.children}
-        </DateRangeCoordinator>
+        <GlucoseContext.Provider value={{ readings: glucoseReadings }}>
+            <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
+                <CustomNavigator
+                    loadData={loadData}
+                    dayRenderer={dayRenderer}
+                    dependencies={[props.previewState]}
+                />
+                {glucoseRanges && props.children}
+            </DateRangeCoordinator>
+        </GlucoseContext.Provider>
     </div>;
 }
 
