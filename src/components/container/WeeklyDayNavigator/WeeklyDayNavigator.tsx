@@ -1,22 +1,23 @@
-import React, { DependencyList, useState } from 'react';
-import { WeekCalendar } from '../../presentational';
-import { add, isSameDay, startOfDay, startOfToday } from 'date-fns';
+import React, { DependencyList, useContext, useState } from 'react';
+import { DateRangeContext, WeekCalendar } from '../../presentational';
+import { add, isSameDay, startOfToday } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import getDayKey from '../../../helpers/get-day-key';
 
-export interface GenericDayNavigatorProps {
+export interface WeeklyDayNavigatorProps {
     selectedDate: Date;
-    onDateSelected: (date: Date) => void;
-    loadData: (startDate: Date, endDate: Date) => void;
+    loadData: (startDate: Date, endDate: Date) => Promise<void>;
     dayRenderer: (dayKey: string) => React.JSX.Element | null;
-    loading: boolean;
     dependencies?: DependencyList;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: GenericDayNavigatorProps) {
-    let [today, setToday] = useState<Date>(startOfToday());
-    let [weekStart, setWeekStart] = useState<Date>(add(startOfDay(new Date()), { days: -6 }));
+export default function (props: WeeklyDayNavigatorProps) {
+    const dateRangeContext = useContext(DateRangeContext);
+
+    const [today, setToday] = useState<Date>(startOfToday());
+    const [weekStart, setWeekStart] = useState<Date>(add(startOfToday(), { days: -6 }));
+    const [loading, setLoading] = useState<boolean>(true);
 
     useInitializeView(() => {
         // Ensure we reload when the time passes midnight.
@@ -25,12 +26,20 @@ export default function (props: GenericDayNavigatorProps) {
             setWeekStart(add(startOfToday(), { days: -6 }));
             return;
         }
-        props.loadData(add(weekStart, { days: -7 }), add(weekStart, { days: 14 }));
+
+        setLoading(true);
+        props.loadData(add(weekStart, { days: -7 }), add(weekStart, { days: 14 })).then(() => {
+            setLoading(false);
+        });
     }, ['externalAccountSyncComplete'], [weekStart, ...(props.dependencies ?? [])]);
+
+    const onDateSelected = (date: Date) => {
+        dateRangeContext?.update({ intervalStart: date });
+    };
 
     const onStartDateChanged = (startDate: Date) => {
         setWeekStart(startDate);
-        props.onDateSelected(add(startDate, { days: 6 }));
+        onDateSelected(add(startDate, { days: 6 }));
     };
 
     return <WeekCalendar
@@ -38,8 +47,8 @@ export default function (props: GenericDayNavigatorProps) {
         startDate={weekStart}
         onStartDateChange={onStartDateChanged}
         selectedDate={props.selectedDate}
-        onDateSelected={props.onDateSelected}
+        onDateSelected={onDateSelected}
         dayRenderer={(year: number, month: number, day: number) => props.dayRenderer(getDayKey(new Date(year, month, day)))}
-        loading={props.loading}
+        loading={loading}
     />
 }
