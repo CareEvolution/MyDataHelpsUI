@@ -69,7 +69,7 @@ export const day = {
 		variant: "rounded",
 		initialIntervalStart: new Date(),
 		intervalType: "Day",
-		children: <Card style={{ padding: '16px' }}><DateRangeTitle /></Card>
+		children: <DateRangeTitle defaultMargin />
 	},
 	render: render
 };
@@ -162,9 +162,7 @@ export const customNavigator = {
         useCustomNavigator: true,
         children: <>
             <CustomNavigator />
-            <Card style={{ padding: '16px' }}>
-                <DateRangeTitle />
-            </Card>
+			<DateRangeTitle defaultMargin />
         </>
     },
     render: render

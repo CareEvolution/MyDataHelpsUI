@@ -26,7 +26,6 @@ type Story = StoryObj<SparkRangeChartStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'default',
         domain: [0, 100],
         ranges: [
             { min: 10, max: 80, average: 40 },
@@ -41,11 +40,6 @@ export const Default: Story = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        },
-        previewState: {
-            name: 'state',
-            control: 'radio',
-            options: ['default']
         }
     }
 };
