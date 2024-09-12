@@ -26,23 +26,16 @@ Incomplete.args = {
 	sequential: false
 }
 
-export const Complete = Template.bind({});
-Complete.args = {
-	limit: 3,
-	status: 'complete',
-	title: 'Completed Tasks',
-	previewState: "CompleteTasks",
-	variant: "singleCard"
+export const Sequential = Template.bind();
+Sequential.args = {
+	...Incomplete.args,
+	sequential: true
 }
 
 export const Multicard = Template.bind({});
 Multicard.args = {
-	limit: 3,
-	status: 'incomplete',
-	title: 'Incomplete Tasks',
-	previewState: "IncompleteTasks",
-	variant: "multiCard",
-	sequential: false
+	...Incomplete.args,
+	variant: "multiCard"
 }
 
 export const CustomStyle = Template.bind({});
@@ -60,4 +53,13 @@ CustomStyle.args = {
 	buttonVariant: "default",
 	buttonColor: "blue",
 	sequential: false
+}
+
+export const Complete = Template.bind({});
+Complete.args = {
+	limit: 3,
+	status: 'complete',
+	title: 'Completed Tasks',
+	previewState: "CompleteTasks",
+	variant: "singleCard"
 }
