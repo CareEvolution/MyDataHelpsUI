@@ -38,11 +38,9 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         checkAvailableDataTypes();
     }, ['externalAccountSyncComplete'], [props.dataTypes, props.previewState]);
 
-    const loadData = (startDate: Date, endDate: Date): Promise<void> => {
+    const loadData = async (startDate: Date, endDate: Date): Promise<void> => {
         if (!props.dataTypes.length) return Promise.resolve();
-        return queryRelativeActivity(startDate, endDate, props.dataTypes, !!props.previewState).then(results => {
-            setRelativeActivityData(results);
-        });
+        setRelativeActivityData(await queryRelativeActivity(startDate, endDate, props.dataTypes, !!props.previewState));
     };
 
     const dayRenderer = (dayKey: string): React.JSX.Element | null => {

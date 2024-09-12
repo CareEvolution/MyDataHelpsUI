@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
-import { add, compareAsc, format, startOfToday } from 'date-fns';
+import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { add, compareAsc, format, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
-import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
-import { MealContext } from '../../container';
+import { GlucoseContext, MealContext } from '../../container';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -19,6 +18,7 @@ export interface GlucoseChartProps {
 
 export default function (props: GlucoseChartProps) {
     const layoutContext = useContext(LayoutContext);
+    const glucoseContext = useContext(GlucoseContext);
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
@@ -30,6 +30,10 @@ export default function (props: GlucoseChartProps) {
     let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
     let meals = mealContext?.meals ?? [];
     let selectedMeal = mealContext?.selectedMeal;
+
+    const getGlucoseReadingsFromContext = () => {
+        return Promise.resolve(glucoseContext?.readings?.filter(reading => isSameDay(selectedDate, reading.timestamp)) ?? []);
+    };
 
     useInitializeView(() => {
         setLoading(true);
@@ -46,7 +50,7 @@ export default function (props: GlucoseChartProps) {
             return;
         }
 
-        let glucoseReadingLoader = getGlucoseReadings(selectedDate);
+        let glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate);
         let stepsLoader = getSteps(selectedDate);
         let sleepMinutesLoader = getSleepMinutes(selectedDate);
         Promise.all([glucoseReadingLoader, stepsLoader, sleepMinutesLoader]).then(results => {
