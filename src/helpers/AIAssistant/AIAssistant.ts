@@ -55,7 +55,7 @@ export class MyDataHelpsAIAssistant {
             const event of await this.graph.streamEvents(inputs, {
                 ...config,
                 streamMode: "values",
-                version: "v1"
+                version: "v2"
             })
         ) {
             onEvent(event);
