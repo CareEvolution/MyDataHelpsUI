@@ -5,7 +5,7 @@ import { ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate } 
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { StructuredTool } from "@langchain/core/tools";
-
+import { convertToOpenAITool } from "@langchain/core/utils/function_calling";
 import MyDataHelps, { Guid, ParticipantInfo, ProjectInfo } from "@careevolution/mydatahelps-js";
 
 import {
@@ -22,7 +22,6 @@ import {
     GetEhrNewsFeedPageTool,
     GetDeviceDataV2AllDataTypesTool
 } from "./Tools";
-
 
 export interface AIAssistantState {
     messages: BaseMessage[];
@@ -87,7 +86,7 @@ export class MyDataHelpsAIAssistant {
             apiKey: MyDataHelps.token.access_token
         }, {
             baseURL: this.baseUrl
-        }).bindTools(this.tools);
+        }).bindTools(this.tools.map( t => convertToOpenAITool(t)));
 
         const promptTemplate = ChatPromptTemplate.fromMessages([
             SystemMessagePromptTemplate.fromTemplate(`
@@ -164,17 +163,17 @@ export class MyDataHelpsAIAssistant {
     private tools: StructuredTool[];
 
     private defaultTools: StructuredTool[] = [
-        new QueryDailySleepTool(),
-        new PersistParticipantInfoTool(),
-        new QueryDeviceDataV2Tool(),
-        new QueryDeviceDataV2AggregateTool(),
-        new QueryNotificationsTool(),
-        new QueryAppleHealthWorkoutsTool(),
-        new QueryAppleHealthActivitySummariesTool(),
-        new QuerySurveyAnswersTool(),
-        new QueryDailyDataTool(),
-        new GetAllDailyDataTypesTool(),
-        new GetEhrNewsFeedPageTool(),
-        new GetDeviceDataV2AllDataTypesTool()
+        QueryDailySleepTool,
+        PersistParticipantInfoTool,
+        QueryDeviceDataV2Tool,
+        QueryDeviceDataV2AggregateTool,
+        QueryNotificationsTool,
+        QueryAppleHealthWorkoutsTool,
+        QueryAppleHealthActivitySummariesTool,
+        QuerySurveyAnswersTool,
+        QueryDailyDataTool,
+        GetAllDailyDataTypesTool,
+        GetEhrNewsFeedPageTool,
+        GetDeviceDataV2AllDataTypesTool
     ];
 }
