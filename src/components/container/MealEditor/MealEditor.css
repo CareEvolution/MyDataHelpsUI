@@ -1,5 +1,6 @@
 .mdhui-meal-editor {
     padding: 16px;
+    font-size: 0.9em;
 }
 
 .mdhui-meal-editor-header {
@@ -9,7 +10,6 @@
 }
 
 .mdhui-meal-editor-header-type {
-    font-size: 1.2em;
     font-weight: bold;
 }
 
