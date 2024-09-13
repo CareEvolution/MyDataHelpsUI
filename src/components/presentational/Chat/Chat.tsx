@@ -3,10 +3,12 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import MarkdownIt from 'markdown-it';
+import MarkdownItHighlightJs from 'markdown-it-highlightjs';
 import parse from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
 
+import 'highlight.js/styles/atom-one-dark.css';
 import './Chat.css';
 
 export type ChatMessageType = "sent" | "received";
@@ -27,7 +29,7 @@ export interface ChatMessage {
 
 const md = new MarkdownIt({
     breaks: true
-});
+}).use(MarkdownItHighlightJs, { inline: true});
 
 export default function (props: ChatProps) {
 
