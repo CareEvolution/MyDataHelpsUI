@@ -15,6 +15,7 @@ export interface SurveyTaskListProps {
 	sequential?: boolean,
 	title?: string,
 	surveys?: string[],
+	category?: string,
 	onDetailLinkClick?: Function,
 	previewState?: SurveyTaskListListPreviewState
 	variant?: "noCard" | "singleCard" | "multiCard"
@@ -35,7 +36,11 @@ export default function (props: SurveyTaskListProps) {
 	const context = useContext(LayoutContext);
 
 	const setTasks = (tasks: SurveyTask[]): void => {
-		setTasksInner(tasks);
+		if (props.category) {
+			setTasksInner(tasks.filter((t) => t.surveyCategory === props.category))
+		} else {
+			setTasksInner(tasks);
+		}
 		setActiveSurveys([]);
 	};
 

@@ -32,6 +32,12 @@ Sequential.args = {
 	sequential: true
 }
 
+export const Category = Template.bind();
+Category.args = {
+	...Incomplete.args,
+	category: 'Pregnancy Study'
+}
+
 export const Multicard = Template.bind({});
 Multicard.args = {
 	...Incomplete.args,
