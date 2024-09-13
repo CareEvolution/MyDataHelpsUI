@@ -43,10 +43,12 @@ export default function (props: GlucoseChartProps) {
         }
 
         if (props.previewState) {
-            setGlucose(previewData(props.previewState, selectedDate).glucose)
-            setSteps(previewData(props.previewState, selectedDate).steps);
-            setSleepMinutes(previewData(props.previewState, selectedDate).sleepMinutes);
-            setLoading(false);
+            previewData(props.previewState, selectedDate).then(({ glucose, steps, sleepMinutes }) => {
+                setGlucose(glucose)
+                setSteps(steps);
+                setSleepMinutes(sleepMinutes);
+                setLoading(false);
+            });
             return;
         }
 
@@ -70,12 +72,6 @@ export default function (props: GlucoseChartProps) {
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
-
-    let avgGlucose: number | undefined;
-    if (filteredGlucose.length > 0) {
-        let glucoseValues = filteredGlucose.map(reading => reading.value);
-        avgGlucose = glucoseValues.reduce((s, a) => s + a, 0) / glucoseValues.length;
-    }
 
     let filteredMeals = meals.filter(meal => {
         if (filteredGlucose.length === 0) return false;
@@ -186,13 +182,13 @@ export default function (props: GlucoseChartProps) {
                     }
                 }}
             >
-                {avgGlucose &&
+                {glucoseContext?.recentAverage !== undefined &&
                     <ReferenceLine
-                        y={avgGlucose}
+                        y={glucoseContext.recentAverage}
                         stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
                         strokeWidth={1.5}
                         label={{
-                            value: avgGlucose.toFixed(0),
+                            value: glucoseContext.recentAverage.toFixed(0),
                             fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
                             fontSize: 9,
                             position: 'insideTopRight',
