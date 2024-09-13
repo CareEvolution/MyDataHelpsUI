@@ -16,14 +16,10 @@ interface MealButtonsStoryArgs {
 }
 
 const render = (args: MealButtonsStoryArgs) => {
-    const onEditMeal = () => {
-        console.log('edit meal');
-    };
-
     return <Layout colorScheme={args.colorScheme}>
         <MealCoordinator previewState={args.previewState}>
             <Card>
-                <MealButtons preview={true} onEditMeal={() => onEditMeal()} />
+                <MealButtons preview={true} />
             </Card>
         </MealCoordinator>
     </Layout>;
