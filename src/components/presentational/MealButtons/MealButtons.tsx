@@ -4,7 +4,7 @@ import { Button, DateRangeContext, TextBlock } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { getMealTypeDisplayText, MealType, saveMeals, timestampSortAsc } from '../../../helpers';
+import { getMealTypeDisplayText, MealType } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 import { add, startOfDay } from 'date-fns';
 
@@ -25,13 +25,11 @@ export default function (props: MealButtonsProps) {
         if (props.preview) return;
 
         let now = new Date();
-        let newMeal = {
+        mealContext.addMeal({
             id: uuid(),
             timestamp: dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now,
             type: type
-        };
-
-        saveMeals(startOfDay(newMeal.timestamp), [...mealContext.meals, newMeal].sort(timestampSortAsc)).then();
+        });
     };
 
     return <div className="mdhui-meal-buttons" ref={props.innerRef}>
