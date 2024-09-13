@@ -1,8 +1,8 @@
 import React from 'react';
 import GlucoseChart, { GlucoseChartProps } from './GlucoseChart';
-import { Card, DateRangeCoordinator, Layout } from '../../presentational';
+import { Card, DateRangeTitle, Layout } from '../../presentational';
 import { GlucoseChartPreviewState } from './GlucoseChart.previewData';
-import { MealCoordinator } from '../../container';
+import { GlucoseDayCoordinator, MealCoordinator } from '../../container';
 
 export default {
     title: 'Container/GlucoseChart',
@@ -18,7 +18,8 @@ interface GlucoseChartStoryArgs extends GlucoseChartProps {
 
 const render = (args: GlucoseChartStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <DateRangeCoordinator intervalType='Day' variant='rounded'>
+        <GlucoseDayCoordinator previewState={args.state !== 'live' ? 'all data' : undefined}>
+            <DateRangeTitle defaultMargin />
             {!args.withMeals &&
                 <Card>
                     <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
@@ -31,7 +32,7 @@ const render = (args: GlucoseChartStoryArgs) => {
                     </Card>
                 </MealCoordinator>
             }
-        </DateRangeCoordinator>
+        </GlucoseDayCoordinator>
     </Layout>;
 };
 
@@ -52,7 +53,7 @@ export const Default = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data']
+            options: ['loading', 'no data', 'with data', 'live']
         },
         withMeals: {
             name: 'with meals'
