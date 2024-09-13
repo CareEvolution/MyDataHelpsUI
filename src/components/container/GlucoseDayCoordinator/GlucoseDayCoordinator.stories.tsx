@@ -30,7 +30,7 @@ type Story = StoryObj<GlucoseDayCoordinatorStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'all data'
+        state: 'all data'
     },
     argTypes: {
         colorScheme: {
