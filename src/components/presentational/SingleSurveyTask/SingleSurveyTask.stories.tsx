@@ -20,6 +20,7 @@ interface SingleSurveyTaskStoryArgs {
 	variant?: SingleSurveyTaskVariant;
 	endDate?: number;
 	surveyActive?: boolean;
+	surveyBlocked?: boolean;
 }
 
 const render = (args: SingleSurveyTaskStoryArgs) => {
@@ -34,7 +35,7 @@ const render = (args: SingleSurveyTaskStoryArgs) => {
 
 	return <Layout colorScheme="auto">
 		<Card>
-			<SingleSurveyTask task={task} variant={args.variant} surveyActive={args.surveyActive} onClick={noop}/>
+			<SingleSurveyTask task={task} variant={args.variant} surveyActive={args.surveyActive} onClick={noop} surveyBlocked={args.surveyBlocked}/>
 		</Card>
 	</Layout>;
 };
@@ -48,7 +49,8 @@ export const Default = {
 		dueDate: undefined,
 		hasSavedProgress: false,
 		endDate: undefined,
-		surveyActive: false
+		surveyActive: false,
+		surveyBlocked: false
 	},
 	argTypes: {
 		variant: {
@@ -71,6 +73,11 @@ export const Default = {
 		},
 		surveyActive: {
 			name: 'survey active',
+			control: 'boolean',
+			if: {arg: 'status', eq: 'incomplete'}
+		},
+		surveyBlocked: {
+			name: 'survey blocked',
 			control: 'boolean',
 			if: {arg: 'status', eq: 'incomplete'}
 		},
