@@ -32,7 +32,6 @@ export interface AIAssistantMessage {
     type: AIAssistantMessageType;
     content: string;
     runId?: string;
-    cssClass?: string;
 }
 
 export default function (props: AIAssistantProps) {

@@ -4,5 +4,5 @@
 }
 
 .mdhui-chat .mdhui-chat-received-message.tool pre .hljs {
-    border-radius: --var(mdhui-card-border-radius);
+    border-radius: var(--mdhui-card-border-radius);
 }
