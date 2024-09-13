@@ -30,7 +30,7 @@ export interface ChatMessage {
 
 const md = new MarkdownIt({
     breaks: true
-}).use(MarkdownItHighlightJs, { inline: true});
+}).use(MarkdownItHighlightJs, { inline: true });
 
 export default function (props: ChatProps) {
 
@@ -65,7 +65,7 @@ export default function (props: ChatProps) {
                             else {
                                 return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
                                     {message.icon}
-                                    <div className={"mdhui-chat-received-message " + message.cssClass}>{parse(md.render(message.content))}</div>
+                                    <div className={"mdhui-chat-received-message" + (message.cssClass ? (" " + message.cssClass) : "")}>{parse(md.render(message.content))}</div>
                                 </div>
                             }
                         })}
