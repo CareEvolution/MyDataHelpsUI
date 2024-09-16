@@ -5,7 +5,7 @@ import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, Res
 import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
-import { ceil } from 'lodash'
+import ceil from 'lodash/ceil'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
 

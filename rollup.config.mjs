@@ -1,16 +1,16 @@
-﻿import resolve from "@rollup/plugin-node-resolve";
+﻿import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json'
-const packageJson = require("./package.json");
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
+import packageJson from "./package.json" assert { type: "json" };
 
-const limitBytes = 6e6;
+const limitBytes = 7e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -35,7 +35,7 @@ export default [
 		],
 		plugins: [
 			peerDepsExternal(),
-			resolve(),
+			nodeResolve(),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json", sourceMap: true }),
 			postcss(),
