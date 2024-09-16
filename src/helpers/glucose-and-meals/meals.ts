@@ -44,6 +44,7 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
     return {
         id: serializedMeal.id as Guid,
         timestamp: parseISO(serializedMeal.timestamp),
-        type: serializedMeal.type as MealType
+        type: serializedMeal.type as MealType,
+        description: serializedMeal.description
     };
 }
