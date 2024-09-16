@@ -10,7 +10,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 import packageJson from "./package.json" assert { type: "json" };
 
-const limitBytes = 7e6;
+const limitBytes = 6e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
