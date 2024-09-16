@@ -85,7 +85,9 @@ export default function (props: AIAssistantProps) {
                 else if (type === "end") {
                     setLoading("");
 
-                    prettier.format(streamEvent.name + "(" + streamEvent.data.input.input + ")", { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
+                    let toolName = streamEvent.name;
+                    let toolInput = streamEvent.data.input.input;
+                    prettier.format(`${toolName}(${toolInput})`, { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
                         .then((formattedMessage) => {
                             addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
                         });
