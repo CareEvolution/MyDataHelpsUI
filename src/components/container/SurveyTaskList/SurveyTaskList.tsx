@@ -36,11 +36,7 @@ export default function (props: SurveyTaskListProps) {
 	const context = useContext(LayoutContext);
 
 	const setTasks = (tasks: SurveyTask[]): void => {
-		if (props.category) {
-			setTasksInner(tasks.filter((t) => t.surveyCategory === props.category))
-		} else {
-			setTasksInner(tasks);
-		}
+		setTasksInner(tasks);
 		setActiveSurveys([]);
 	};
 
@@ -98,6 +94,9 @@ export default function (props: SurveyTaskListProps) {
 				var parameters: SurveyTaskQueryParameters = { status: props.status }
 				if (props.surveys) {
 					parameters.surveyName = props.surveys;
+				}
+				if (props.category) {
+					parameters.surveyCategory = props.category;
 				}
 				if (pageID) {
 					parameters.pageID = pageID;
