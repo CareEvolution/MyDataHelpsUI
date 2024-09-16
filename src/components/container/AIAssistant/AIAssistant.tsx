@@ -5,12 +5,16 @@ import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
+import * as prettier from "prettier/standalone";
+import parserBabel from "prettier/plugins/babel";
+import * as prettierPluginEstree from "prettier/plugins/estree";
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import language from '../../../helpers/language';
 import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import './AIAssistant.css';
 
 export interface AIAssistantProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -22,7 +26,7 @@ export interface AIAssistantProps {
     baseUrl?: string;
 }
 
-export type AIAssistantMessageType = "user" | "ai";
+export type AIAssistantMessageType = "user" | "ai" | "tool";
 
 export interface AIAssistantMessage {
     type: AIAssistantMessageType;
@@ -64,22 +68,13 @@ export default function (props: AIAssistantProps) {
 
         await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
 
-            const [kind, type] = streamEvent.event.split("_").slice(1);
+            const [kind, type] = getEventKindType(streamEvent.event);
 
             if (type === "stream" && kind !== "chain") {
-                const chunk = streamEvent.data?.chunk;
-                let msg = chunk.message as AIMessageChunk;
+                let msg = streamEvent.data?.chunk as AIMessageChunk;
 
                 if (msg.content && typeof msg.content === "string") {
                     addMessageChunk(streamEvent.run_id, msg.content);
-                }
-                else if (props.debug && msg.tool_call_chunks && msg.tool_call_chunks.length > 0) {
-                    if (msg.tool_call_chunks[0].args) {
-                        addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].args);
-                    }
-                    else if (msg.tool_call_chunks[0].name) {
-                        addMessageChunk(streamEvent.run_id, msg.tool_call_chunks[0].name + " ");
-                    }
                 }
             }
 
@@ -89,14 +84,29 @@ export default function (props: AIAssistantProps) {
                 }
                 else if (type === "end") {
                     setLoading("");
+
+                    let toolName = streamEvent.name;
+                    let toolInput = streamEvent.data.input.input;
+                    prettier.format(`${toolName}(${toolInput})`, { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
+                        .then((formattedMessage) => {
+                            addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
+                        });
+
+                    MyDataHelps.trackCustomEvent({
+                        eventType: "ai-assistant-message",
+                        properties: {
+                            type: "tool",
+                            body: streamEvent.name + "(" + streamEvent.data.input.input + ")"
+                        }
+                    });
                 }
             }
 
-            if (kind === "llm" && type === "start") {
+            if (kind === "chat_model" && type === "start") {
                 lastAIMessage = "";
             }
 
-            if (kind === "llm" && type === "end") {
+            if (kind === "chat_model" && type === "end") {
 
                 MyDataHelps.trackCustomEvent({
                     eventType: "ai-assistant-message",
@@ -126,13 +136,25 @@ export default function (props: AIAssistantProps) {
         lastAIMessage += message;
     }
 
+    const addToolMessage = function (runId: string, message: string) {
+        setMessages(prevMessages => [...prevMessages, { type: 'tool', content: message, runId }]);
+    }
+
     return <>
         {messages && <Chat innerRef={props.innerRef} messages={messages.map((msg) => {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
-                type: msg.type === "user" ? "sent" : "received"
+                type: msg.type === "user" ? "sent" : "received",
+                cssClass: msg.type === "tool" ? "tool" : undefined
             }
         })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>
+}
+
+function getEventKindType(input: string) {
+    const parts = input.split('_');
+    const type = parts.pop();
+    const kind = parts.slice(1).join('_');
+    return [kind, type];
 }

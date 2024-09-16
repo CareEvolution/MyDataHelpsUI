@@ -41,18 +41,18 @@ export default {
                 'queryDailySleep', 'queryDeviceDataV2Aggregate', 'queryDeviceDataV2', 'queryNotifications',
                 'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes', 'getEhrNewsFeedPage'],
             mapping: {
-                persistParticipantInfo: new MyDataHelpsTools.PersistParticipantInfoTool(),
-                queryAppleHealthActivitySummaries: new MyDataHelpsTools.QueryAppleHealthActivitySummariesTool(),
-                queryAppleHealthWorkouts: new MyDataHelpsTools.QueryAppleHealthWorkoutsTool(),
-                queryDailySleep: new MyDataHelpsTools.QueryDailySleepTool(),
-                queryDeviceDataV2Aggregate: new MyDataHelpsTools.QueryDeviceDataV2AggregateTool(),
-                queryDeviceDataV2: new MyDataHelpsTools.QueryDeviceDataV2Tool(),
-                queryNotifications: new MyDataHelpsTools.QueryNotificationsTool(),
-                querySurveyAnswers: new MyDataHelpsTools.QuerySurveyAnswersTool(),
-                queryDailyDataTool: new MyDataHelpsTools.QueryDailyDataTool(),
-                getAllDailyDataTypes: new MyDataHelpsTools.GetAllDailyDataTypesTool(),
-                getEhrNewsFeedPage: new MyDataHelpsTools.GetEhrNewsFeedPageTool(),
-                getDeviceDataV2AllDataTypes: new MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool()
+                persistParticipantInfo: MyDataHelpsTools.PersistParticipantInfoTool,
+                queryAppleHealthActivitySummaries: MyDataHelpsTools.QueryAppleHealthActivitySummariesTool,
+                queryAppleHealthWorkouts: MyDataHelpsTools.QueryAppleHealthWorkoutsTool,
+                queryDailySleep: MyDataHelpsTools.QueryDailySleepTool,
+                queryDeviceDataV2Aggregate: MyDataHelpsTools.QueryDeviceDataV2AggregateTool,
+                queryDeviceDataV2: MyDataHelpsTools.QueryDeviceDataV2Tool,
+                queryNotifications: MyDataHelpsTools.QueryNotificationsTool,
+                querySurveyAnswers: MyDataHelpsTools.QuerySurveyAnswersTool,
+                queryDailyDataTool: MyDataHelpsTools.QueryDailyDataTool,
+                getAllDailyDataTypes: MyDataHelpsTools.GetAllDailyDataTypesTool,
+                getEhrNewsFeedPage: MyDataHelpsTools.GetEhrNewsFeedPageTool,
+                getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool
             }
         }
     }

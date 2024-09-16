@@ -3,10 +3,12 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import MarkdownIt from 'markdown-it';
+import MarkdownItHighlightJs from 'markdown-it-highlightjs';
 import parse from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
 
+import 'highlight.js/styles/atom-one-dark.css';
 import './Chat.css';
 
 export type ChatMessageType = "sent" | "received";
@@ -23,9 +25,12 @@ export interface ChatMessage {
     icon?: React.JSX.Element;
     content: string;
     type: ChatMessageType;
+    cssClass?: string;
 }
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+    breaks: true
+}).use(MarkdownItHighlightJs, { inline: true });
 
 export default function (props: ChatProps) {
 
@@ -60,7 +65,7 @@ export default function (props: ChatProps) {
                             else {
                                 return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
                                     {message.icon}
-                                    <div className="mdhui-chat-received-message">{parse(md.render(message.content))}</div>
+                                    <div className={"mdhui-chat-received-message" + (message.cssClass ? (" " + message.cssClass) : "")}>{parse(md.render(message.content))}</div>
                                 </div>
                             }
                         })}
