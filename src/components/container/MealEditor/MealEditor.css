@@ -25,25 +25,40 @@
     grid-template-columns: max-content auto;
     align-items: center;
     grid-column-gap: 8px;
+    grid-row-gap: 4px;
 }
 
-.mdhui-meal-editor-input {
+.mdhui-meal-editor-description-input-label {
+    margin-top: 8px;
+    grid-column: span 3;
+}
+
+.mdhui-meal-editor-input, .mdhui-meal-editor-textarea {
     box-sizing: border-box;
     font-family: inherit;
     font-size: 12px;
-    height: 30px;
-    padding: 0 4px 0 8px;
     border-radius: 5px;
     border-color: var(--mdhui-border-color-1);
     border-style: solid;
     border-width: 1px;
 }
 
-.mdhui-meal-editor-input:hover {
+.mdhui-meal-editor-input {
+    height: 30px;
+    padding: 0 4px 0 8px;
+    grid-column: span 2;
+}
+
+.mdhui-meal-editor-textarea {
+    padding: 8px;
+    grid-column: span 3;
+}
+
+.mdhui-meal-editor-input:hover, .mdhui-meal-editor-textarea:hover {
     border: 1px solid var(--mdhui-border-color-2);
 }
 
-.mdhui-meal-editor-input:focus-visible {
+.mdhui-meal-editor-input:focus-visible, .mdhui-meal-editor-textarea:focus-visible {
     outline: 0;
     border: 1px solid var(--mdhui-border-color-2);
 }

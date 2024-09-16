@@ -26,10 +26,12 @@ export interface Meal {
     id: Guid;
     timestamp: Date;
     type: MealType;
+    description?: string;
 }
 
 export interface SerializedMeal {
     id: string,
     timestamp: string;
     type: string;
+    description?: string;
 }
