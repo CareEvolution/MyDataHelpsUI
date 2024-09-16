@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
-import { getMeals, Meal, useInitializeView } from "../../../helpers";
-import { DateRangeContext } from "../../presentational";
-import { startOfToday } from "date-fns";
-import { MealCoordinatorPreviewState, previewData } from "./MealCoordinator.previewData";
+import React, { createContext, useContext, useState } from 'react';
+import { getMeals, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
+import { DateRangeContext } from '../../presentational';
+import { startOfDay, startOfToday } from 'date-fns';
+import { MealCoordinatorPreviewState, previewData } from './MealCoordinator.previewData';
 
 export interface MealCoordinatorProps {
     previewState?: 'loading' | MealCoordinatorPreviewState;
@@ -14,6 +14,7 @@ export interface MealContext {
     loading: boolean;
     meals: Meal[];
     selectedMeal?: Meal;
+    addMeal: (meal: Meal) => void;
     onMealClicked: (meal: Meal) => void;
 }
 
@@ -27,8 +28,18 @@ export default function (props: MealCoordinatorProps) {
     const [meals, setMeals] = useState<Meal[]>([]);
     const [selectedMeal, setSelectedMeal] = useState<Meal>();
 
-    const onMealClicked: (meal: Meal) => void = (meal: Meal) => {
+    const onMealClicked = (meal: Meal) => {
         setSelectedMeal(selectedMeal === meal ? undefined : meal);
+    };
+
+    const addMeal = (meal: Meal) => {
+        setLoading(true);
+
+        const updatedMeals = [...meals, meal].sort(timestampSortAsc);
+        saveMeals(startOfDay(meal.timestamp), updatedMeals).then(() => {
+            setMeals(updatedMeals);
+            setLoading(false);
+        });
     };
 
     useInitializeView(() => {
@@ -53,7 +64,7 @@ export default function (props: MealCoordinatorProps) {
     }, [], [props.previewState, dateRangeContext?.intervalStart]);
 
     return <div ref={props.innerRef}>
-        <MealContext.Provider value={{ loading, meals, selectedMeal, onMealClicked }}>
+        <MealContext.Provider value={{ loading, meals, selectedMeal, onMealClicked, addMeal }}>
             {props.children}
         </MealContext.Provider>
     </div>;

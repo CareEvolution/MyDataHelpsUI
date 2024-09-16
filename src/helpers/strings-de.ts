@@ -462,6 +462,8 @@ let strings: { [key: string]: string } = {
     "meal-log-title": "Mahlzeitenprotokoll",
     "meal-log-no-data": "Keine Mahlzeiten protokolliert",
     "meal-editor-time-input-label": "Zeit",
+    "meal-editor-description-input-label": "Beschreibung",
+    "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
     "glucose-view-title": "Blutzuckerüberwachung",
     "ai-assistant-loading": "Interaktion mit Ihren Daten..."

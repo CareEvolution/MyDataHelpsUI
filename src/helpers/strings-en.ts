@@ -462,6 +462,8 @@
     "meal-log-title": "Meal Log",
     "meal-log-no-data": "No meals logged",
     "meal-editor-time-input-label": "Time",
+    "meal-editor-description-input-label": "Description",
+    "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
     "glucose-view-title": "Glucose Monitoring",
     "ai-assistant-loading": "Interacting with your data..."

@@ -73,6 +73,8 @@ export default function (props: MealEditorProps) {
     };
 
     const onSave = () => {
+        mealToEdit!.description = mealToEdit!.description?.trim();
+
         if (props.previewState) {
             props.onSave();
             return;
@@ -94,7 +96,11 @@ export default function (props: MealEditorProps) {
         if (value) {
             setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
         }
-    }
+    };
+
+    const onDescriptionChanged = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        setMealToEdit({ ...mealToEdit!, description: event.target.value });
+    };
 
     return <div className="mdhui-meal-editor" ref={props.innerRef}>
         {loading && <LoadingIndicator />}
@@ -115,7 +121,7 @@ export default function (props: MealEditorProps) {
                 }
             </div>
             <div className="mdhui-meal-editor-form">
-                {language('meal-editor-time-input-label')}:
+                <div className="mdhui-meal-editor-time-input-label">{language('meal-editor-time-input-label')}:</div>
                 <input
                     className="mdhui-meal-editor-input"
                     type="time"
@@ -124,6 +130,18 @@ export default function (props: MealEditorProps) {
                     style={{
                         colorScheme: layoutContext.colorScheme
                     }}
+                />
+                <div className="mdhui-meal-editor-description-input-label">{language('meal-editor-description-input-label')}:</div>
+                <textarea
+                    className="mdhui-meal-editor-textarea"
+                    rows={5}
+                    maxLength={250}
+                    value={mealToEdit!.description}
+                    onChange={event => onDescriptionChanged(event)}
+                    style={{
+                        colorScheme: layoutContext.colorScheme
+                    }}
+                    placeholder={language('meal-editor-description-optional')}
                 />
             </div>
             {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
