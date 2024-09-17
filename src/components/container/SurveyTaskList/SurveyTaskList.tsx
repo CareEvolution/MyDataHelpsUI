@@ -15,6 +15,7 @@ export interface SurveyTaskListProps {
 	sequential?: boolean,
 	title?: string,
 	surveys?: string[],
+	category?: string,
 	onDetailLinkClick?: Function,
 	previewState?: SurveyTaskListListPreviewState
 	variant?: "noCard" | "singleCard" | "multiCard"
@@ -93,6 +94,9 @@ export default function (props: SurveyTaskListProps) {
 				var parameters: SurveyTaskQueryParameters = { status: props.status }
 				if (props.surveys) {
 					parameters.surveyName = props.surveys;
+				}
+				if (props.category) {
+					parameters.surveyCategory = props.category;
 				}
 				if (pageID) {
 					parameters.pageID = pageID;
