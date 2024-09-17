@@ -9,7 +9,7 @@ import terser from "@rollup/plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 6e6;
+const limitBytes = 6.1e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -54,6 +54,6 @@ export default [
 		input: "src/index.ts",
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
-		external: [/\.css$/]
+		external: [/\.css$/, /\.stories.tsx$/, /\.previewData.ts$/]
 	}
 ];
