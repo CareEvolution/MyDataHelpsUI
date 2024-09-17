@@ -8,7 +8,6 @@ import json from '@rollup/plugin-json'
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
-import packageJson from "./package.json" assert { type: "json" };
 
 const limitBytes = 6e6;
 
@@ -23,21 +22,27 @@ export default [
 		input: "src/index.ts",
 		output: [
 			{
-				file: packageJson.main,
+				dir: "dist/cjs",
 				format: "cjs",
-				sourcemap: true
+				sourcemap: true,
+				manualChunks: {
+					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+				}
 			},
 			{
-				file: packageJson.module,
+				dir: "dist/esm",
 				format: "esm",
-				sourcemap: true
+				sourcemap: true,
+				manualChunks: {
+					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+				}
 			},
 		],
 		plugins: [
 			peerDepsExternal(),
 			nodeResolve(),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json", sourceMap: true }),
+			typescript({ tsconfig: "./tsconfig.json" }),
 			postcss(),
 			terser(),
 			image(),
@@ -46,9 +51,9 @@ export default [
 		]
 	},
 	{
-		input: "dist/esm/types/index.d.ts",
+		input: "src/index.ts",
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
 		external: [/\.css$/]
-	},
+	}
 ];

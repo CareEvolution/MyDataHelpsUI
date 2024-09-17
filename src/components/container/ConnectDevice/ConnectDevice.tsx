@@ -4,10 +4,7 @@ import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAc
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
-import add from 'date-fns/add'
-import parseISO from 'date-fns/parseISO'
-import formatISO from 'date-fns/formatISO'
-import isAfter from 'date-fns/isAfter'
+import { add, parseISO, formatISO, isAfter } from 'date-fns'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ConnectDeviceProps {
@@ -81,7 +78,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		if ( props.previewState ) return;
+		if (props.previewState) return;
 		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
 			.then(function () {
 				initialize();

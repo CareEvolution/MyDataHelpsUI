@@ -5,9 +5,6 @@ import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import * as prettier from "prettier/standalone";
-import parserBabel from "prettier/plugins/babel";
-import * as prettierPluginEstree from "prettier/plugins/estree";
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import language from '../../../helpers/language';
@@ -89,7 +86,7 @@ export default function (props: AIAssistantProps) {
                     let toolInput = streamEvent.data.input.input;
 
                     if (props.debug) {
-                        prettier.format(`${toolName}(${toolInput})`, { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
+                        formatCode(toolName, toolInput)
                             .then((formattedMessage) => {
                                 addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
                             });
@@ -160,4 +157,15 @@ function getEventKindType(input: string) {
     const type = parts.pop();
     const kind = parts.slice(1).join('_');
     return [kind, type];
+}
+
+async function formatCode(toolName: string, toolInput: string) {
+    const prettier = await import("prettier/standalone");
+    const parserBabel = await import("prettier/plugins/babel");
+    const prettierPluginEstree = await import("prettier/plugins/estree");
+
+    return prettier.format(`${toolName}(${toolInput})`, {
+        parser: "babel",
+        plugins: [parserBabel, prettierPluginEstree]
+    });
 }

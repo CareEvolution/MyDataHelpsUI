@@ -2,11 +2,10 @@ import React, { ChangeEvent, useContext, useState } from 'react';
 import './MealEditor.css';
 import { getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
-import { format, startOfDay } from 'date-fns';
+import { format, startOfDay, parse } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import parse from 'date-fns/parse';
 
 type EditMode = 'add' | 'edit';
 

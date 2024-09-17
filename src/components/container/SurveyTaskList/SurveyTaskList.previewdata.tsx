@@ -1,6 +1,5 @@
 import { SurveyTask } from "@careevolution/mydatahelps-js";
-
-import add from 'date-fns/add'
+import { add } from 'date-fns';
 
 export var previewIncompleteTasks: SurveyTask[] =
 	[
@@ -84,7 +83,7 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 	];
 
-export var previewCompleteTasks:SurveyTask[] = [
+export var previewCompleteTasks: SurveyTask[] = [
 	{
 		"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a10",
 		"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",

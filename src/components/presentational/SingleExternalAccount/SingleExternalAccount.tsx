@@ -3,9 +3,8 @@ import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
-import formatRelative from 'date-fns/formatRelative'
 import "./SingleExternalAccount.css"
-import parseISO from 'date-fns/parseISO'
+import { parseISO, formatRelative } from 'date-fns'
 import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';

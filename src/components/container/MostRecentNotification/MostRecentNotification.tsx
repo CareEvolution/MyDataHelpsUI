@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import "./MostRecentNotification.css"
 import MyDataHelps, { NotificationQueryParameters, NotificationType, Notification } from "@careevolution/mydatahelps-js"
 import { Action, SingleNotification } from '../../presentational'
-import add from 'date-fns/add'
+import { add } from 'date-fns'
 import { previewNotification } from './MostRecentNotification.previewdata'
 import language from '../../../helpers/language'
 
