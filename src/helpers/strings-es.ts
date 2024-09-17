@@ -193,6 +193,7 @@
     "asthma-trigger-cold-illness": "Enfermedad viral/resfriado",
     "asthma-trigger-animal-exposure": "Exposición a animales",
     "asthma-trigger-seasonal-allergens": "Alergenos estacionales/polen",
+    "asthma-trigger-exercise": "Ejercicio",
     "asthma-trigger-smoke": "Humo",
     "asthma-trigger-weather-changes": "Cambios extremos de clima",
     "asthma-trigger-air-pollution": "Contaminación del aire",
