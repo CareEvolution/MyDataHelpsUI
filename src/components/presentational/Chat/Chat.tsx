@@ -32,8 +32,7 @@ hljs.registerLanguage('javascript', javascript);
 
 const md = new markdownIt({
     breaks: true
-})
-    .use(require('markdown-it-highlightjs/core'), { inline: true, hljs });
+}).use(require('markdown-it-highlightjs/core'), { inline: true, hljs });
 
 export default function (props: ChatProps) {
 

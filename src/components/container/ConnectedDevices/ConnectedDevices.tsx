@@ -3,7 +3,7 @@ import MyDataHelps, { DeviceDataNamespace, DeviceDataPoint, DeviceDataPointQuery
 import "./ConnectedDevices.css"
 import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
-import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons/"
+import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons"
 import { formatRelative, parseISO } from 'date-fns'
 import * as FeatherIcon from 'react-feather'
 import { getLocaleFromIso } from '../../../helpers/locale';
