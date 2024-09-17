@@ -87,16 +87,19 @@ export default function (props: AIAssistantProps) {
 
                     let toolName = streamEvent.name;
                     let toolInput = streamEvent.data.input.input;
-                    prettier.format(`${toolName}(${toolInput})`, { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
-                        .then((formattedMessage) => {
-                            addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
-                        });
+
+                    if (props.debug) {
+                        prettier.format(`${toolName}(${toolInput})`, { parser: "babel", plugins: [parserBabel, prettierPluginEstree] })
+                            .then((formattedMessage) => {
+                                addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
+                            });
+                    }
 
                     MyDataHelps.trackCustomEvent({
                         eventType: "ai-assistant-message",
                         properties: {
                             type: "tool",
-                            body: streamEvent.name + "(" + streamEvent.data.input.input + ")"
+                            body: `${toolName}(${toolInput})`
                         }
                     });
                 }
