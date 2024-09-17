@@ -1,7 +1,5 @@
 import UnstyledButton from '../UnstyledButton';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
-import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
-import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
+import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';

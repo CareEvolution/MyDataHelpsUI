@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import markdownIt from 'markdown-it';
 import markdownItHighlightjs from 'markdown-it-highlightjs/core';
 import hljs from 'highlight.js/lib/core';

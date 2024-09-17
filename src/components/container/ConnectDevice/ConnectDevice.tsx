@@ -1,7 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
+import { faExclamationTriangle, faCheckCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"

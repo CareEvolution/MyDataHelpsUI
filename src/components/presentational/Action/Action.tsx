@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from 'react'
 import UnstyledButton from '../UnstyledButton';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';

@@ -2,7 +2,7 @@ import React, { useContext, useLayoutEffect, useRef } from 'react'
 import './NavigationBar.css'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import language from '../../../helpers/language'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';

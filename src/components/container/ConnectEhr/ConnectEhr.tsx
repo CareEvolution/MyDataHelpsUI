@@ -2,12 +2,10 @@
 import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation"
+import { faCheckCircle, faTriangleExclamation, faAddressCard } from "@fortawesome/free-solid-svg-icons"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import ConnectEHR from "../../../assets/connect-ehr.svg";
 import { ColorDefinition } from '../../../helpers/colors';
 
