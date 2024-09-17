@@ -56,9 +56,7 @@ export default function (props: ExternalAccountsViewProps) {
             {props.presentation &&
                 <NavigationBar title={title}
                     showBackButton={props.presentation == "Push"}
-                    showCloseButton={props.presentation == "Modal"}
-                    onBack={props.onBack}
-                    onClose={props.onClose} />
+                    showCloseButton={props.presentation == "Modal"} />
             }
             {!props.presentation &&
                 <StatusBarBackground />

@@ -161,11 +161,11 @@ function getEventKindType(input: string) {
 
 async function formatCode(toolName: string, toolInput: string) {
     const prettier = await import("prettier/standalone");
-    const parserBabel = await import("prettier/plugins/babel");
-    const prettierPluginEstree = await import("prettier/plugins/estree");
+    const babelPlugin = await import("prettier/plugins/babel");
+    const estreePlugin = await import("prettier/plugins/estree");
 
     return prettier.format(`${toolName}(${toolInput})`, {
         parser: "babel",
-        plugins: [parserBabel, prettierPluginEstree]
+        plugins: [babelPlugin, estreePlugin.default]
     });
 }

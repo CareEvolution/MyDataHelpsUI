@@ -35,7 +35,6 @@ export default function (props: ResourceListProps) {
                     imageUrl={resource.imageUrl}
                     onClick={() => props.onViewResource(resource)}
                     imageAlignment={props.imageAlignment}
-                    hideButton={!props.buttonVariant}
                     buttonVariant={props.buttonVariant}
                     buttonText={props.buttonText}
                 />;
