@@ -40,7 +40,9 @@ export default [
 		],
 		plugins: [
 			peerDepsExternal(),
-			nodeResolve(),
+			nodeResolve({
+				browser: true
+			}),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json" }),
 			postcss(),
