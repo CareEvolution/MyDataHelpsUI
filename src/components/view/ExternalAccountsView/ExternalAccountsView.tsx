@@ -11,6 +11,8 @@ export interface ExternalAccountsViewProps {
     presentation?: ViewPresentationType;
     previewState?: "default";
     colorScheme?: "auto" | "light" | "dark";
+    onBack?(): void
+    onClose?(): void
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
