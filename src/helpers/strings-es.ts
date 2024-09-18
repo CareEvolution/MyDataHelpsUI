@@ -462,6 +462,8 @@
     "meal-log-title": "Registro de comidas",
     "meal-log-no-data": "No hay comidas registradas",
     "meal-editor-time-input-label": "Hora",
+    "meal-editor-description-input-label": "Descripción",
+    "meal-editor-description-optional": "Opcional",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
     "glucose-view-title": "Monitorización de glucosa",
     "ai-assistant-loading": "Interactuando con tus datos..."

@@ -462,6 +462,8 @@ let strings: { [key: string]: string } = {
     "meal-log-title": "Journal des repas",
     "meal-log-no-data": "Aucun repas enregistré",
     "meal-editor-time-input-label": "Heure",
+    "meal-editor-description-input-label": "Description",
+    "meal-editor-description-optional": "Optionnel",
     "meal-editor-duplicate-timestamp-error": "Deux repas ne peuvent pas avoir la même heure.",
     "glucose-view-title": "Surveillance de la glycémie",
     "ai-assistant-loading": "Interagir avec vos données..."

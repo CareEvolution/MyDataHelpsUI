@@ -2,6 +2,7 @@
 import { Layout } from '../../presentational';
 import SingleMeal from './SingleMeal';
 import { Meal } from '../../../helpers';
+import { v4 as uuid } from 'uuid';
 
 export default {
     title: 'Presentational/SingleMeal',
@@ -19,8 +20,10 @@ const render = (args: SingleMealStoryArgs) => {
     const [selected, setSelected] = useState<boolean>(false);
 
     const meal: Meal = {
+        id: uuid(),
         timestamp: new Date(),
-        type: 'meal'
+        type: 'meal',
+        description: 'Here is a description of the meal.'
     };
 
     const onClick = () => {
