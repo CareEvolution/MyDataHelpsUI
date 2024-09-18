@@ -31,11 +31,11 @@ export default [
 			},
 			{
 				dir: "dist/esm",
-				format: "esm",
-				sourcemap: true,
-				manualChunks: {
-					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
-				}
+				format: "es",
+				sourcemap: true
+				// manualChunks: {
+				// 	prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+				// }
 			},
 		],
 		plugins: [
@@ -44,7 +44,7 @@ export default [
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json" }),
 			postcss(),
-			terser(),
+			//terser(),
 			image(),
 			json(),
 			analyze({ onAnalysis, summaryOnly: true })
