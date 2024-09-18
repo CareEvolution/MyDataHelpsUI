@@ -4,6 +4,14 @@
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "browser": "./dist/browser/index.js"
+    }
+  },
+  "types": "dist/index.d.ts",
   "scripts": {
     "rollup": "rollup -c",
     "storybook": "set NODE_OPTIONS=--openssl-legacy-provider & storybook dev -p 6006",
@@ -86,6 +94,5 @@
   },
   "files": [
     "dist"
-  ],
-  "types": "dist/index.d.ts"
+  ]
 }

@@ -4,7 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
-import json from '@rollup/plugin-json'
+import json from '@rollup/plugin-json';
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
@@ -12,45 +12,57 @@ import analyze from 'rollup-plugin-analyzer';
 const limitBytes = 6.1e6;
 
 const onAnalysis = ({ bundleSize }) => {
-	if (bundleSize < limitBytes) return
-	console.log(`Bundle size exceeds ${limitBytes/1024} kb: ${bundleSize/1024} kb`)
-	return process.exit(1)
-}
+	if (bundleSize < limitBytes) return;
+	console.log(`Bundle size exceeds ${limitBytes / 1024} kb: ${bundleSize / 1024} kb`);
+	process.exit(1);
+};
+
+const manualChunks = {
+	prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+};
+
+const getPlugins = ({ browser = false, minify = false } = {}) => [
+	peerDepsExternal(),
+	nodeResolve({ browser }),
+	commonjs(),
+	typescript({ tsconfig: "./tsconfig.json" }),
+	postcss(),
+	image(),
+	json(),
+	...(minify ? [terser()] : []),
+	...(minify ? [analyze({ onAnalysis, summaryOnly: true })] : [])
+];
 
 export default [
 	{
 		input: "src/index.ts",
-		output: [
-			{
-				dir: "dist/cjs",
-				format: "cjs",
-				sourcemap: true,
-				manualChunks: {
-					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
-				}
-			},
-			{
-				dir: "dist/esm",
-				format: "esm",
-				sourcemap: true,
-				manualChunks: {
-					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
-				}
-			},
-		],
-		plugins: [
-			peerDepsExternal(),
-			nodeResolve({
-				browser: true
-			}),
-			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json" }),
-			postcss(),
-			terser(),
-			image(),
-			json(),
-			analyze({ onAnalysis, summaryOnly: true })
-		]
+		output: {
+			dir: "dist/cjs",
+			format: "cjs",
+			sourcemap: true,
+			manualChunks
+		},
+		plugins: getPlugins()
+	},
+	{
+		input: "src/index.ts",
+		output: {
+			dir: "dist/esm",
+			format: "esm",
+			sourcemap: true,
+			manualChunks
+		},
+		plugins: getPlugins()
+	},
+	{
+		input: "src/index.ts",
+		output: {
+			dir: "dist/browser",
+			format: "esm",
+			sourcemap: true,
+			manualChunks
+		},
+		plugins: getPlugins({ browser: true, minify: true })
 	},
 	{
 		input: "src/index.ts",
