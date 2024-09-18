@@ -1,7 +1,7 @@
 import React from "react";
 import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js";
 import { add, isAfter } from "date-fns";
-import { parseISO } from "date-fns/esm";
+import { parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 import { useInterval } from "../../../hooks";
 import { LoadingIndicator } from "../../presentational";

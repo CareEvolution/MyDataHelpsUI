@@ -3,13 +3,8 @@ import MyDataHelps, { DeviceDataNamespace, DeviceDataPoint, DeviceDataPointQuery
 import "./ConnectedDevices.css"
 import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
-import { faBatteryEmpty } from "@fortawesome/free-solid-svg-icons/faBatteryEmpty"
-import { faBatteryFull } from "@fortawesome/free-solid-svg-icons/faBatteryFull"
-import { faBatteryHalf } from "@fortawesome/free-solid-svg-icons/faBatteryHalf"
-import { faBatteryQuarter } from "@fortawesome/free-solid-svg-icons/faBatteryQuarter"
-import { faWeightScale } from "@fortawesome/free-solid-svg-icons/faWeightScale"
-import formatRelative from 'date-fns/formatRelative'
-import parseISO from 'date-fns/parseISO'
+import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons"
+import { formatRelative, parseISO } from 'date-fns'
 import * as FeatherIcon from 'react-feather'
 import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -65,7 +60,7 @@ export default function (props: ConnectedDevicesProps) {
 	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div className="mdhui-connected-devices" ref={props.innerRef}>
-			<CardTitle title={props.providerName+ " " + language("devices")} />
+			<CardTitle title={props.providerName + " " + language("devices")} />
 			{connectedDevices.map((device) =>
 				<div key={device.id.toString()} className="connected-device">
 					{device.properties?.Type == 'TRACKER' &&

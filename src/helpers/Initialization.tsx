@@ -1,6 +1,6 @@
 ﻿import MyDataHelps, { EventName } from '@careevolution/mydatahelps-js';
 import { DependencyList, useEffect, useRef } from 'react';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
     const isInitialMount = useRef(true);

@@ -1,8 +1,7 @@
 import React from 'react'
 import "./SingleNotification.css"
 import MyDataHelps, { Notification } from "@careevolution/mydatahelps-js"
-import formatRelative from 'date-fns/formatRelative'
-import parseISO from 'date-fns/parseISO'
+import { formatRelative, parseISO } from 'date-fns'
 import { getLocaleFromIso } from '../../../helpers/locale';
 
 export interface SingleNotificationProps {

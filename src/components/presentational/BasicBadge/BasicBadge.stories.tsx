@@ -3,7 +3,6 @@ import resourceImage from '../../../assets/resource-image.png'
 import { noop } from '../../../helpers/functions';
 import BasicBadge, { BasicBadgeProps } from './BasicBadge';
 import Layout from '../Layout';
-import { size } from 'lodash';
 
 export default {
     title: 'Presentational/BasicBadge',

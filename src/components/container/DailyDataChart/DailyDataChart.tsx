@@ -6,7 +6,6 @@ import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
-import parse from 'date-fns/parse'
 import { AreaChartOptions, AreaChartSeries, BarChartOptions, ChartSeries, LineChartOptions, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 
 export interface DailyDataChartProps {

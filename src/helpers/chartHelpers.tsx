@@ -1,5 +1,4 @@
 import React from "react"
-import { isNumber } from "lodash";
 import { AreaChartSeries, ChartSeries, ChartThreshold, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from "./chartOptions";
 import { ColorDefinition, resolveColor } from "./colors";
 import { LayoutContext } from "../components";

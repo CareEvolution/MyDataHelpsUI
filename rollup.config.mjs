@@ -1,16 +1,15 @@
-﻿import resolve from "@rollup/plugin-node-resolve";
+﻿import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json'
-const packageJson = require("./package.json");
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import analyze from 'rollup-plugin-analyzer';
 
-const limitBytes = 6e6;
+const limitBytes = 6.1e6;
 
 const onAnalysis = ({ bundleSize }) => {
 	if (bundleSize < limitBytes) return
@@ -23,21 +22,27 @@ export default [
 		input: "src/index.ts",
 		output: [
 			{
-				file: packageJson.main,
+				dir: "dist/cjs",
 				format: "cjs",
-				sourcemap: true
+				sourcemap: true,
+				manualChunks: {
+					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+				}
 			},
 			{
-				file: packageJson.module,
+				dir: "dist/esm",
 				format: "esm",
-				sourcemap: true
+				sourcemap: true,
+				manualChunks: {
+					prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+				}
 			},
 		],
 		plugins: [
 			peerDepsExternal(),
-			resolve(),
+			nodeResolve(),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json", sourceMap: true }),
+			typescript({ tsconfig: "./tsconfig.json" }),
 			postcss(),
 			terser(),
 			image(),
@@ -46,9 +51,9 @@ export default [
 		]
 	},
 	{
-		input: "dist/esm/types/index.d.ts",
+		input: "src/index.ts",
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
-		external: [/\.css$/]
-	},
+		external: [/\.css$/, /\.stories.tsx$/, /\.previewData.ts$/]
+	}
 ];

@@ -1,5 +1,5 @@
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
-import { add } from "date-fns";
+import { add, Duration } from "date-fns";
 import { getDayKey } from "../../../helpers";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { SurveyAnswerAreaChartSeries, SurveyAnswerChartSeries } from "./SurveyAnswerChart";

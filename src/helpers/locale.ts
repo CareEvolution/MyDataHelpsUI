@@ -1,4 +1,4 @@
-import { es, enUS, nl, de, fr, pt, it, pl } from 'date-fns/locale';
+import { es, enUS, nl, de, fr, pt, it, pl, Locale } from 'date-fns/locale';
 
 export function getLocaleFromIso(language: string): Locale {
     if (language.length < 2) return enUS;

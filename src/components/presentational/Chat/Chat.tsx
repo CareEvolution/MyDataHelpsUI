@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
-import MarkdownIt from 'markdown-it';
-import MarkdownItHighlightJs from 'markdown-it-highlightjs';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import markdownIt from 'markdown-it';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
 import parse from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
@@ -28,9 +28,11 @@ export interface ChatMessage {
     cssClass?: string;
 }
 
-const md = new MarkdownIt({
+hljs.registerLanguage('javascript', javascript);
+
+const md = new markdownIt({
     breaks: true
-}).use(MarkdownItHighlightJs, { inline: true });
+}).use(require('markdown-it-highlightjs/core'), { inline: true, hljs });
 
 export default function (props: ChatProps) {
 
