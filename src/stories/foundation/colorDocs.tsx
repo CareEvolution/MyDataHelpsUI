@@ -19,15 +19,25 @@ const shades = [1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 55, 60, 70, 80, 90, 95, 96, 9
 
 const gradientsNames: string[] = [
   'alpine-overlook',
+  'alpine-overlook-dark',
   'tropical-mist',
+  'tropical-mist-dark',
   'summit-sunset',
+  'summit-sunset-dark',
   'cold-front',
+  'cold-front-dark',
   'summer-solstice',
+  'summer-solstice-dark',
   'high-noon',
+  'high-noon-dark',
   'midnight-moon',
+  'midnight-moon-dark',
   'open-horizon',
+  'open-horizon-dark',
   'early-bird',
-  'evergreen-petrichor ',
+  'early-bird-dark',
+  'evergreen-petrichor',
+  'evergreen-petrichor-dark',
 ]
 
 interface ColorCellProps {
@@ -71,13 +81,14 @@ const ColorRow: React.FC<ColorRowProps> = ({ hue }) => {
 const GradientSection: React.FC = () => {
   return (
     <div className="gradients">
+        <header className="colorHeader">
+          <h3>Gradients</h3>
+          <p>
+            There are both regular and dark version of the gradients. The regular version is designed for black text on top, while the dark version is designed for white text on top.
+            <code>var(--mdhui-gradient-##)</code>
+          </p>
+        </header>
         <div className="colorRow">
-          <header className="colorHeader">
-            <h3>Gradients</h3>
-            <p>
-              <code>var(--mdhui-gradient-##)</code>
-            </p>
-          </header>
           <div className="gradientCells">
             {
               gradientsNames.map((gradient) => (

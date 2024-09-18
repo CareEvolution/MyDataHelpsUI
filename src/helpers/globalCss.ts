@@ -523,16 +523,26 @@ export const core = css`
   --mdhui-cyan-99: var(--mdhui-cyan-99-base);
 
   /* Gradients */
-  --mdhui-gradient-alpine-overlook: linear-gradient(180deg, rgba(12, 100, 235), rgba(76, 152, 207));
-  --mdhui-gradient-tropical-mist: linear-gradient(180deg, rgba(76, 145, 248), rgba(35, 164, 130));
-  --mdhui-gradient-summit-sunset: linear-gradient(180deg, rgba(207, 94, 255), rgba(230, 107, 111));
-  --mdhui-gradient-cold-front: linear-gradient(180deg, rgba(143, 130, 246), rgba(230, 107, 111));
-  --mdhui-gradient-summer-solstice: linear-gradient(180deg, rgba(255, 146, 41), rgba(143, 130, 246));
-  --mdhui-gradient-high-noon: linear-gradient(180deg, rgba(236, 108, 5), rgba(206, 44, 50));
-  --mdhui-gradient-midnight-moon: linear-gradient(180deg, rgba(207, 94, 255), rgba(102, 83, 240));
-  --mdhui-gradient-open-horizon: linear-gradient(180deg, rgba(76, 145, 248), rgba(207, 94, 255));
-  --mdhui-gradient-early-bird: linear-gradient(180deg, rgba(34, 159, 185), rgba(143, 130, 246));
-  --mdhui-gradient-evergreen-petrichor: linear-gradient(180deg, rgba(34, 159, 185), rgba(0, 123, 108));
+  --mdhui-gradient-alpine-overlook-dark: linear-gradient(180deg, rgba(12, 100, 235), rgba(76, 152, 207));
+  --mdhui-gradient-alpine-overlook: linear-gradient(180deg, rgba(117, 180, 225), rgba(246, 250, 253));
+  --mdhui-gradient-cold-front-dark: linear-gradient(180deg, rgba(143, 130, 246), rgba(230, 107, 111));
+  --mdhui-gradient-cold-front: linear-gradient(180deg, rgba(244, 215, 255), rgba(252, 217, 218));
+  --mdhui-gradient-early-bird-dark: linear-gradient(180deg, rgba(34, 159, 185), rgba(143, 130, 246));
+  --mdhui-gradient-early-bird: linear-gradient(180deg, rgba(199, 196, 255), rgba(255, 245, 156));
+  --mdhui-gradient-evergreen-petrichor-dark: linear-gradient(180deg, rgba(34, 159, 185), rgba(0, 123, 108));
+  --mdhui-gradient-evergreen-petrichor: linear-gradient(180deg, rgba(137, 218, 183), rgba(255, 248, 184));
+  --mdhui-gradient-high-noon-dark: linear-gradient(180deg, rgba(236, 108, 5), rgba(206, 44, 50));
+  --mdhui-gradient-high-noon: linear-gradient(180deg, rgba(255, 242, 128), rgba(255, 146, 40));
+  --mdhui-gradient-midnight-moon-dark: linear-gradient(180deg, rgba(207, 94, 255), rgba(102, 83, 240));
+  --mdhui-gradient-midnight-moon: linear-gradient(180deg, rgba(169, 163, 254), rgba(222, 221, 255));
+  --mdhui-gradient-open-horizon-dark: linear-gradient(180deg, rgba(76, 145, 248), rgba(207, 94, 255));
+  --mdhui-gradient-open-horizon: linear-gradient(180deg, rgba(117, 180, 225), rgba(252, 217, 218));
+  --mdhui-gradient-summer-solstice-dark: linear-gradient(180deg, rgba(255, 146, 41), rgba(143, 130, 246));
+  --mdhui-gradient-summer-solstice: linear-gradient(180deg, rgba(255, 146, 40), rgba(199, 196, 255));
+  --mdhui-gradient-summit-sunset-dark: linear-gradient(180deg, rgba(207, 94, 255), rgba(230, 107, 111));
+  --mdhui-gradient-summit-sunset: linear-gradient(180deg, rgba(244, 215, 255), rgba(246, 145, 148));
+  --mdhui-gradient-tropical-mist-dark: linear-gradient(180deg, rgba(76, 145, 248), rgba(35, 164, 130));
+  --mdhui-gradient-tropical-mist: linear-gradient(180deg, rgba(117, 180, 225), rgba(137, 218, 183));
 }`;
 
 export const lightColorScheme = css`
