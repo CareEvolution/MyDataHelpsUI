@@ -186,7 +186,6 @@ export default function (props: StandaloneHealthAndWellnessViewProps) {
         if (view.key == "ExternalAccounts") {
             return <ExternalAccountsView
                 presentation="Push"
-                onBack={() => back()}
                 excludeDeviceManufacturers
                 colorScheme={props.colorScheme}
                 previewState={props.previewState}
