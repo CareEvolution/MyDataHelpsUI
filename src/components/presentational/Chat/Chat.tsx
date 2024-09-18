@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import markdownIt from 'markdown-it';
+// @ts-ignore
+import markdownItHighlightjs from 'markdown-it-highlightjs/core';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import parse from 'html-react-parser';
@@ -32,7 +34,7 @@ hljs.registerLanguage('javascript', javascript);
 
 const md = new markdownIt({
     breaks: true
-}).use(require('markdown-it-highlightjs/core'), { inline: true, hljs });
+}).use(markdownItHighlightjs, { inline: true, hljs });
 
 export default function (props: ChatProps) {
 
