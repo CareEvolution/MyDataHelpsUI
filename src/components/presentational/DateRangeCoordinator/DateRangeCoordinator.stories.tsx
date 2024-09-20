@@ -145,7 +145,7 @@ export const sixMonthNotFirstDaySecondHalf = {
 
 function CustomNavigator() {
 	const dateRangeContext = useContext(DateRangeContext);
-	const emojis = [<>&#128512;</>, <>&#128513;</>, <>&#128514;</>, <>&#128515;</>, <>&#128516;</>, <>&#128517;</>];
+	const emojis = ["😀", "😁", "😂", "😃", "😄", "😅"];
 
 	return <WeeklyDayNavigator
 		selectedDate={dateRangeContext!.intervalStart}
