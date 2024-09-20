@@ -57,7 +57,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
                     dayRenderer={dayRenderer}
                     dependencies={[props.previewState]}
                 />
-                {glucoseRanges && props.children}
+                {glucoseReadings && props.children}
             </DateRangeCoordinator>
         </GlucoseContext.Provider>
     </div>;
