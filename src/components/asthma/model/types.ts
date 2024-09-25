@@ -1,5 +1,7 @@
 import { Guid, ParticipantInfo } from '@careevolution/mydatahelps-js';
 
+export type AsthmaParticipantMode = 'Self' | 'Caregiver';
+
 export class AsthmaParticipant {
     participantInfo: ParticipantInfo;
 
@@ -43,6 +45,14 @@ export class AsthmaParticipant {
 
     getAlertTakeover(): string | undefined {
         return this.getCustomFieldValue('AlertTakeover');
+    }
+
+    getParticipantMode(): AsthmaParticipantMode {
+        return this.getCustomFieldValue('ParticipantMode') as AsthmaParticipantMode ?? 'Self';
+    }
+
+    getCareRecipientName(): string | undefined {
+        return this.getCustomFieldValue('CareRecipientName');
     }
 
     getDaytimeRestingHeartRateBaseline(): number | undefined {
