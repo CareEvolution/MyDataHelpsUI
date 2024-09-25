@@ -178,7 +178,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         interval={0}
                         tickLine={false}
                         width={32}
-                        domain={['auto', 'auto']}
+                        domain={props.chartType === 'Line' ? ['auto', 'auto'] : undefined}
                         allowDataOverflow
                         {...props.options?.yAxisOptions}
                     />
