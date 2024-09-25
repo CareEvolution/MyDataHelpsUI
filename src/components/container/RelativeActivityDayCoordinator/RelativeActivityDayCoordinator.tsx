@@ -73,7 +73,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         {availableDataTypes &&
             <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
                 <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
-                    <CustomNavigator
+                    <RelativeActivityDayNavigator
                         loadData={loadData}
                         dayRenderer={dayRenderer}
                         dependencies={[props.previewState, props.dataTypes]}
@@ -85,13 +85,13 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
     </div>;
 }
 
-interface CustomNavigatorProps {
+interface RelativeActivityDayNavigatorProps {
     loadData: (startDate: Date, endDate: Date) => Promise<void>;
     dayRenderer: (dayKey: string) => React.JSX.Element | null;
     dependencies?: DependencyList;
 }
 
-function CustomNavigator(props: CustomNavigatorProps) {
+function RelativeActivityDayNavigator(props: RelativeActivityDayNavigatorProps) {
     const dateRangeContext = useContext(DateRangeContext)
 
     return <WeeklyDayNavigator

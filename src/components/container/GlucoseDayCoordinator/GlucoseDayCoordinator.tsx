@@ -52,7 +52,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
     return <div ref={props.innerRef}>
         <GlucoseContext.Provider value={{ readings: glucoseReadings, recentAverage: recentAverage }}>
             <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
-                <CustomNavigator
+                <GlucoseDayNavigator
                     loadData={loadData}
                     dayRenderer={dayRenderer}
                     dependencies={[props.previewState]}
@@ -63,13 +63,13 @@ export default function (props: GlucoseDayCoordinatorProps) {
     </div>;
 }
 
-interface CustomNavigatorProps {
+interface GlucoseDayNavigatorProps {
     loadData: (startDate: Date, endDate: Date) => Promise<void>;
     dayRenderer: (dayKey: string) => React.JSX.Element | null;
     dependencies?: DependencyList;
 }
 
-function CustomNavigator(props: CustomNavigatorProps) {
+function GlucoseDayNavigator(props: GlucoseDayNavigatorProps) {
     const dateRangeContext = useContext(DateRangeContext)
 
     return <WeeklyDayNavigator
