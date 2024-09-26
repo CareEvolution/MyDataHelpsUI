@@ -20,6 +20,7 @@ export interface BasicPointsForBadgesProps {
     awardBadgesViewUrl: string;
     showTotalPoints?: boolean;
     customField: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: BasicPointsForBadgesProps) {
@@ -74,7 +75,7 @@ export default function (props: BasicPointsForBadgesProps) {
         return getColorFromAssortment(badges?.length || 0)
     }
 
-    return <div className={"mdhui-basic-points-for-badges"}>
+    return <div className={"mdhui-basic-points-for-badges"} ref={props.innerRef}>
         {badges !== undefined && points !== undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
