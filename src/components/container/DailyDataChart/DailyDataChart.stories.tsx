@@ -327,6 +327,19 @@ export const liveSleepDeepAppleHealthBarChart = {
     render: render
 };
 
+export const liveAppleHealthNumberOfAlcoholicBeveragesBarChart = {
+    args: {
+        title: "Number of Alcoholic Beverages",
+        intervalType: "Month",
+        dailyDataType: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,
+        valueFormatter: (value: number) => {
+            return value.toFixed(1);
+        },
+        chartType: "Bar",
+    },
+    render: render
+};
+
 export const noData = {
     args: {
         title: "Steps",

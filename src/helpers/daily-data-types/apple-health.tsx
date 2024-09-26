@@ -1,7 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { appleHealthActiveEnergyBurned, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider } from "../daily-data-providers";
+import { appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, 
+    appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
+    appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
+    appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
+    appleHealthNumberOfAlcoholicBeveragesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail } from "@fortawesome/free-solid-svg-icons";
 import language from "../language";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
@@ -142,12 +146,21 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.AppleHealthActiveEnergyBurned,
-        dataProvider: appleHealthActiveEnergyBurned,
+        dataProvider: appleHealthActiveEnergyBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ActiveEnergyBurned"]),
         labelKey: "active-energy-burned",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
+    },
+    {
+        type: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,
+        dataProvider: appleHealthNumberOfAlcoholicBeveragesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["NumberOfAlcoholicBeverages"]),
+        labelKey: "number-of-alcoholic-beverages",
+        icon: <FontAwesomeSvgIcon icon={faCocktail} />,
+        formatter: defaultFormatter,
+        previewDataRange: [0, 20]
     }
 ];
 appleHealthTypeDefinitions.forEach((def) => {
