@@ -4,6 +4,7 @@ import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers";
 import DailyDataGoal, { DailyDataGoalProps } from "./DailyDataGoal";
 import { add, startOfDay } from "date-fns";
+import { DateRangeCoordinator } from "../../presentational";
 
 export default {
     title: "Container/DailyDataGoal",
@@ -94,7 +95,7 @@ export const Zero = {
 };
 
 
-export const SleepGoalLive = {
+export const FitbitSleepMinutesGoalLive = {
     args: {
         goal: 1,
         dailyDataType: DailyDataType.FitbitSleepMinutes,
@@ -114,34 +115,40 @@ export const SleepGoalLive = {
     render: render
 };
 
-export const WearTimeGoalLive = {
+const renderWithDRC = (args: DailyDataGoalProps) => <Layout colorScheme='auto'>
+    <DateRangeCoordinator intervalType="Day">
+        <DailyDataGoal {...args} />
+    </DateRangeCoordinator>
+</Layout>;
+
+export const LiveGarminSleepScore = {
     args: {
-        goal: 10000,
-        dailyDataType: DailyDataType.FitbitSteps, // TODO Wear time 
-        title: "Worn 10 Hours",
-        subtitle: "100 points",
+        goal: 100,
+        dailyDataType: DailyDataType.GarminSleepScore,
+        title: "Garmin Sleep Score",
+        subtitle: "100 is the perfect score",
         messages: [
             {
                 threshold: 0,
                 message: "No points yet"
             },
             {
-                threshold: 2500,
-                message: "Keep going!"
+                threshold: 70,
+                message: "Min Score 70!"
             },
             {
-                threshold: 5000,
-                message: "Halfway there!"
+                threshold: 85,
+                message: "Min Score 85"
             },
             {
-                threshold: 7500,
-                message: "Almost there!"
+                threshold: 91,
+                message: "Min Score 95"
             },
             {
-                threshold: 10000,
+                threshold: 100,
                 message: "Complete!"
             }
         ]
     },
-    render: render
+    render: renderWithDRC
 };
