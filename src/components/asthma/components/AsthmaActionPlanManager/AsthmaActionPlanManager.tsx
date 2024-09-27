@@ -50,9 +50,9 @@ export default function (props: AsthmaActionPlanManagerProps) {
 
         loadActionPlan(dataService);
 
-        MyDataHelps.on('surveyDidFinish', loadActionPlan);
+        MyDataHelps.on('surveyDidFinish', () => loadActionPlan(dataService));
         return () => {
-            MyDataHelps.off('surveyDidFinish', loadActionPlan);
+            MyDataHelps.off('surveyDidFinish', () => loadActionPlan(dataService));
         }
     }, [props.previewState]);
 
