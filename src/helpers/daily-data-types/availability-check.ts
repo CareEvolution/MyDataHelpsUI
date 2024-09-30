@@ -57,7 +57,14 @@ export function simpleAvailabilityCheckV2Aggregate(namespace: DeviceDataV2Namesp
 	}
 }
 
-export function combinedAvailabilityCheck(parameters: { namespace: DeviceDataNamespace, type: string | string[] }[], modifiedAfter?: Date) {
+export function combinedAvailabilityCheck(
+		parameters: { namespace: DeviceDataNamespace, type: string | string[] }[], 
+		v2AggregateParameters: { namespace: DeviceDataV2Namespace, type: string, aggregateFunctions: string | string[] }[],
+		v2Parameters: { namespace: DeviceDataV2Namespace, type: string }[],
+		modifiedAfter?: Date) {
 	var checks = parameters.map(param => simpleAvailabilityCheck(param.namespace, param.type));
+	checks.concat( v2AggregateParameters.map(param => simpleAvailabilityCheckV2Aggregate(param.namespace, param.type, param.aggregateFunctions)) );
+	checks.concat( v2Parameters.map(param => simpleAvailabilityCheckV2(param.namespace, param.type)) );
+
 	return Promise.allSettled(checks.map(check => check(modifiedAfter))).then(results => results.some(result => result));
 }
