@@ -95,25 +95,34 @@ export const Zero = {
 };
 
 
-export const FitbitSleepMinutesGoalLive = {
+export const LiveSleepMinutes = {
     args: {
-        goal: 1,
-        dailyDataType: DailyDataType.FitbitSleepMinutes,
-        title: "Worn to Sleep",
-        subtitle: "200 points",
+        goal: 480,
+        dailyDataType: DailyDataType.SleepMinutes,
+        title: "Sleep Minutes from AppleHealth, Fitbit, or Garmin",
+        subtitle: "Goal is 8 hours",
         messages: [
             {
                 threshold: 0,
                 message: "No points yet"
             },
             {
-                threshold: 1,
-                message: "Complete!"
+                threshold: 450,
+                message: "So close. Keep going!"
+            },
+            {
+                threshold: 480,
+                message: "Woohoo - You hit your goal of 8 hours of sleep!"
+            },
+            {
+                threshold: 540,
+                message: "Impressive - You had at least 9 hours of sleep!"
             }
         ]
     },
     render: render
 };
+
 
 const renderWithDRC = (args: DailyDataGoalProps) => <Layout colorScheme='auto'>
     <DateRangeCoordinator intervalType="Day">
@@ -121,34 +130,4 @@ const renderWithDRC = (args: DailyDataGoalProps) => <Layout colorScheme='auto'>
     </DateRangeCoordinator>
 </Layout>;
 
-export const LiveGarminSleepScore = {
-    args: {
-        goal: 100,
-        dailyDataType: DailyDataType.GarminSleepScore,
-        title: "Garmin Sleep Score",
-        subtitle: "100 is the perfect score",
-        messages: [
-            {
-                threshold: 0,
-                message: "No points yet"
-            },
-            {
-                threshold: 70,
-                message: "Min Score 70!"
-            },
-            {
-                threshold: 85,
-                message: "Min Score 85"
-            },
-            {
-                threshold: 91,
-                message: "Min Score 95"
-            },
-            {
-                threshold: 100,
-                message: "Complete!"
-            }
-        ]
-    },
-    render: renderWithDRC
-};
+export const LiveSleepMinutesWithDateRangeCoordinator =  {...LiveSleepMinutes, render: renderWithDRC};
