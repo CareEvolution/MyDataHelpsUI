@@ -13,3 +13,8 @@ export function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: st
 		});
 	}
 }
+
+export function combinedAvailabilityCheck(parameters: { namespace: DeviceDataNamespace, type: string | string[] }[], modifiedAfter?: Date) {
+	var checks = parameters.map(param => simpleAvailabilityCheck(param.namespace, param.type));
+	return Promise.allSettled(checks.map(check => check(modifiedAfter))).then(results => results.some(result => result));
+}
