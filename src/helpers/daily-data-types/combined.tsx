@@ -17,7 +17,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["RestingHeartRate"] }, 
                 { namespace: "Fitbit", type: ["RestingHeartRate"] }, 
-                { namespace: "Garmin", type: ["RestingHeartRateInBeatsPerMinute"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["RestingHeartRateInBeatsPerMinute"] } ] )( modifiedAfter );
         },
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -32,7 +32,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["AppleHealthMaxHeartRate"] }, 
                 { namespace: "Fitbit", type: ["FitbitMaxHeartRate"] }, 
-                { namespace: "Garmin", type: ["GarminMaxHeartRate"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["GarminMaxHeartRate"] } ] )( modifiedAfter );
         },
         labelKey: "max-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -47,7 +47,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["AppleHealthMinHeartRate"] }, 
                 { namespace: "Fitbit", type: ["FitbitMinHeartRate"] }, 
-                { namespace: "Garmin", type: ["GarminMinHeartRate"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["GarminMinHeartRate"] } ] )( modifiedAfter );
         },
         labelKey: "min-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -62,7 +62,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["AppleHealthAverageHeartRate"] }, 
                 { namespace: "Fitbit", type: ["FitbitAverageHeartRate"] }, 
-                { namespace: "Garmin", type: ["GarminAverageHeartRate"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["GarminAverageHeartRate"] } ] )( modifiedAfter );
         },
         labelKey: "average-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -77,7 +77,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["Steps"] }, 
                 { namespace: "Fitbit", type: ["Steps"] }, 
-                { namespace: "Garmin", type: ["Steps"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["Steps"] } ] )( modifiedAfter);
         },
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
@@ -92,7 +92,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             return combinedAvailabilityCheck( [
                 { namespace: "AppleHealth", type: ["SleepAnalysisInterval"] }, 
                 { namespace: "Fitbit", type: ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"] }, 
-                { namespace: "Garmin", type: ["Sleep"] } ], modifiedAfter);
+                { namespace: "Garmin", type: ["Sleep"] } ] )( modifiedAfter );
         },
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,

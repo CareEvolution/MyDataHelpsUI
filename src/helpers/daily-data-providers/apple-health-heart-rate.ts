@@ -56,14 +56,32 @@ export function minHeartRate (startDate: Date, endDate: Date): Promise<{ [key: s
         aggregateFunctions: ['min']
     };
 
-    return Promise.allSettled([ queryAllDeviceDataV2Aggregates(v2params) ]).then(queryResults => {
+	const v1params: DeviceDataPointQuery = {
+		namespace: "AppleHealth",
+		type: "HourlyMinimumHeartRate",
+		observedAfter: add(startDate, { days: -1 }).toISOString(),
+		observedBefore: add(endDate, { days: 1 }).toISOString()
+	}
+
+    return Promise.allSettled([ queryAllDeviceDataV2Aggregates(v2params), queryAllDeviceData(v1params) ]).then(queryResults => {
 		var data: { [key: string]: number } = {};
 		if (queryResults[0].status === 'fulfilled') {
 			queryResults[0].value.forEach((aggregate) => {
 				data[formatISO(parseISO(aggregate.date)).substring(0, 10)] = aggregate.statistics['min'];
 			});
 		}
-		
+		if (queryResults[1].status === 'fulfilled') {
+			queryResults[1].value.forEach((d) => {
+				if (!d.startDate) { return; }
+				var day = formatISO(parseISO(d.startDate)).substring(0, 10);
+				var value = parseFloat(d.value);
+				if (!data[day]) {
+					data[day] = value;
+				} else if (value < data[day] && value > 0) {
+					data[day] = value;
+				}
+			});
+		}
 		return data;
 
     }, () => ({} as { [key: string]: number }));
