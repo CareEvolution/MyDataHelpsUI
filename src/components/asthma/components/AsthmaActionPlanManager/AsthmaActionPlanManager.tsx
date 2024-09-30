@@ -29,7 +29,7 @@ export default function (props: AsthmaActionPlanManagerProps) {
                     if (actionPlan || retryCount >= 5) {
                         setLoading(false);
                     } else {
-                        setTimeout(() => loadActionPlan(dataService, retryCount++), 2000);
+                        setTimeout(() => loadActionPlan(dataService, retryCount + 1), 2000);
                     }
                 });
             } else {
