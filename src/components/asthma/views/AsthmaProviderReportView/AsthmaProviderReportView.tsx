@@ -3,7 +3,7 @@ import { Layout, NavigationBar, Title } from '../../../presentational';
 import { AsthmaProviderReport, AsthmaProviderReportPreviewState } from '../../components';
 
 export interface AsthmaProviderReportViewProps {
-    previewState?: 'loading' | AsthmaProviderReportPreviewState;
+    previewState?: AsthmaProviderReportPreviewState;
     logEntrySurveyName: string;
 }
 

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import './AsthmaControlStatusHeader.css';
-import { asthmaDataService, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
+import { asthmaDataService, caregiverVariableLanguage, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
 import { AsthmaAirQuality, AsthmaBiometric, AsthmaControlState, AsthmaParticipant } from '../../model';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { language, useInitializeView } from '../../../../helpers';
 import { add } from 'date-fns';
 import { AsthmaControlStatusHeaderPreviewState, previewData } from './AsthmaControlStatusHeader.previewData';
-import language from '../../../../helpers/language';
 
 export interface AsthmaControlStatusHeaderProps {
     previewState?: 'loading' | AsthmaControlStatusHeaderPreviewState;
@@ -36,7 +35,7 @@ export default function (props: AsthmaControlStatusHeaderProps) {
 
         let now = new Date();
 
-        asthmaDataService.loadLogEntries(add(new Date(now), {days: -10})).then(logEntries => {
+        asthmaDataService.loadLogEntries(add(new Date(now), { days: -10 })).then(logEntries => {
             if (props.participant.hasPairedDevice() && props.participant.hasEstablishedBaseline()) {
                 let biometricsLoader = asthmaDataService.loadBiometricsForControlStatus();
                 let airQualityLoaders = asthmaDataService.loadAirQualitiesForControlStatus(props.participant.getHomeAirQualityZipCode(), props.participant.getWorkAirQualityZipCode());
@@ -109,7 +108,7 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         }
 
         return <div className="mdhui-asthma-control-status-header-text">
-            <p>{language('asthma-control-status-header-no-data')}</p>
+            <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-no-data')}</p>
         </div>;
     };
 
@@ -126,18 +125,18 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         {controlState!.status === 'no-data' && getNoDataDisplay()}
         {controlState!.status === 'not-determined' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{language('asthma-control-status-header-not-determined')}</p>
+                <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-determined')}</p>
             </div>
         }
         {controlState!.status === 'controlled' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{language('asthma-control-status-header-controlled-p1')}<span className="mdhui-asthma-control-status-header-controlled">{language('asthma-control-status-header-controlled-p2')}</span></p>
+                <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled-p1')}<span className="mdhui-asthma-control-status-header-controlled">{language('asthma-control-status-header-controlled-p2')}</span></p>
             </div>
         }
         {controlState!.status === 'not-controlled' &&
             <div>
                 <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-not-controlled-p1')}<span className="mdhui-asthma-control-status-header-not-controlled">{language('asthma-control-status-header-not-controlled-p2')}</span></p>
+                    <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled-p1')}<span className="mdhui-asthma-control-status-header-not-controlled">{language('asthma-control-status-header-not-controlled-p2')}</span></p>
                 </div>
                 <div className="mdhui-asthma-control-status-header-not-controlled-stats">
                     {getStatDisplay(language('asthma-control-status-header-not-controlled-stat-symptom-days'), controlState!.symptomDaysPast7)}

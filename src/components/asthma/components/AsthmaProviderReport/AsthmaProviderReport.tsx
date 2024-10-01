@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
 export interface AsthmaProviderReportProps {
-    previewState?: 'loading' | AsthmaProviderReportPreviewState;
+    previewState?: AsthmaProviderReportPreviewState;
     logEntrySurveyName: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -30,22 +30,12 @@ export default function (props: AsthmaProviderReportProps) {
     useEffect(() => {
         setLoading(true);
 
-        if (props.previewState === 'loading') {
-            return;
-        }
-        if (props.previewState) {
-            setParticipant(previewData[props.previewState].participant);
-            setLogEntries(previewData[props.previewState].logEntries);
-            setSurveyAnswers(previewData[props.previewState].surveyAnswers);
-            setAirQualityDataPoints(previewData[props.previewState].airQualityDataPoints);
-            setLoading(false);
-            return;
-        }
+        const dataService = props.previewState ? previewData.createDataService(props.previewState) : asthmaDataService;
 
-        let participantLoader = asthmaDataService.loadParticipant();
-        let logEntryLoader = asthmaDataService.loadLogEntries(startDate);
-        let surveyAnswerLoader = asthmaDataService.loadSurveyAnswers(props.logEntrySurveyName, startDate);
-        let airQualityDataPointsLoader = asthmaDataService.loadAirQualityDataPoints(startDate);
+        let participantLoader = dataService.loadParticipant();
+        let logEntryLoader = dataService.loadLogEntries(startDate);
+        let surveyAnswerLoader = dataService.loadSurveyAnswers(props.logEntrySurveyName, startDate);
+        let airQualityDataPointsLoader = dataService.loadAirQualityDataPoints(startDate);
 
         Promise.all([participantLoader, logEntryLoader, surveyAnswerLoader, airQualityDataPointsLoader]).then(results => {
             setParticipant(results[0]);
@@ -58,6 +48,14 @@ export default function (props: AsthmaProviderReportProps) {
 
     if (loading) {
         return <LoadingIndicator innerRef={props.innerRef}/>;
+    }
+
+    let nameToDisplay = participant!.getFirstName();
+    if (participant!.getParticipantMode() === 'Caregiver') {
+        const careRecipientName = participant!.getCareRecipientName();
+        if (careRecipientName) {
+            nameToDisplay = careRecipientName;
+        }
     }
 
     let controlStateLookup: { [key: string]: AsthmaControlState } = {};
@@ -250,7 +248,7 @@ export default function (props: AsthmaProviderReportProps) {
     return <div style={{display: 'flex', justifyContent: 'center'}}>
         <div style={{position: 'absolute', width: documentWidth, height: documentHeight, transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
             <div style={{position: 'relative', padding: '32px 48px', width: documentWidth, height: documentHeight, boxSizing: 'border-box', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
-                <div style={{fontSize: '32px', fontWeight: 600}}>{participant!.getFirstName()} - Asthma Tool - Provider Report</div>
+                <div style={{fontSize: '32px', fontWeight: 600}}>{nameToDisplay} - Asthma Tool - Provider Report</div>
                 <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
                 <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
