@@ -63,7 +63,7 @@ export default function (props: AIAssistantProps) {
             }
         });
 
-        await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
+        await assistantRef.current?.ask(newMessage, async function (streamEvent: StreamEvent) {
 
             const [kind, type] = getEventKindType(streamEvent.event);
 
@@ -86,10 +86,8 @@ export default function (props: AIAssistantProps) {
                     let toolInput = streamEvent.data.input.input;
 
                     if (props.debug) {
-                        formatCode(toolName, toolInput)
-                            .then((formattedMessage) => {
-                                addMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```", "tool");
-                            });
+                        let formattedMessage = await formatCode(toolName, toolInput)
+                        addMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```", "tool");
                     }
 
                     if (toolName === "graphing") {
