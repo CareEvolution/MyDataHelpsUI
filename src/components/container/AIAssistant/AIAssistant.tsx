@@ -23,7 +23,7 @@ export interface AIAssistantProps {
     baseUrl?: string;
 }
 
-export type AIAssistantMessageType = "user" | "ai" | "tool";
+export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
 
 export interface AIAssistantMessage {
     type: AIAssistantMessageType;
@@ -88,8 +88,12 @@ export default function (props: AIAssistantProps) {
                     if (props.debug) {
                         formatCode(toolName, toolInput)
                             .then((formattedMessage) => {
-                                addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
+                                addMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```", "tool");
                             });
+                    }
+
+                    if (toolName === "graphing") {
+                        addMessage(streamEvent.run_id, streamEvent.data.output.content, "image");
                     }
 
                     MyDataHelps.trackCustomEvent({
@@ -136,8 +140,8 @@ export default function (props: AIAssistantProps) {
         lastAIMessage += message;
     }
 
-    const addToolMessage = function (runId: string, message: string) {
-        setMessages(prevMessages => [...prevMessages, { type: 'tool', content: message, runId }]);
+    const addMessage = function (runId: string, message: string, type: AIAssistantMessageType) {
+        setMessages(prevMessages => [...prevMessages, { type, content: message, runId }]);
     }
 
     return <>
@@ -145,8 +149,8 @@ export default function (props: AIAssistantProps) {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
-                type: msg.type === "user" ? "sent" : "received",
-                cssClass: msg.type === "tool" ? "tool" : undefined
+                type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
+                cssClass: msg.type === "tool" ? "tool" : undefined,
             }
         })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>

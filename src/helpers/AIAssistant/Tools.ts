@@ -266,22 +266,19 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input): Promise<string> => {
 
-    console.log(input);
     let response = await fetch('https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws', {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
       headers: { 'Content-Type': 'application/json' }
     }).then(response => response.json());
 
-    let result = `![Graph](data:image/png;base64,${response.image})`;
-
-    console.log(result);
-    return result;
+    return response.image;
   },
   {
     name: "graphing",
-    description: `If the user asks for something to be graphed, use this tool. This tool returns markdown that you should incorporate in your response as
-      is in order to display the graph.`,
+    description: `If the user asks for something to be graphed, use this tool. This tool returns a base 64 encoded string
+      that represents an image. You should NOT use or interpret the returned content. The UI will handle displaying the image.
+      No further processing is needed.`,
     schema: z.object({
       code: z.string().describe("The python code that, when executed, will generate an image representing the graph.")
     })
