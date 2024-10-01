@@ -277,8 +277,8 @@ export const GraphingTool = tool(
   {
     name: "graphing",
     description: `If the user asks for something to be graphed, use this tool. This tool returns a base 64 encoded string
-      that represents an image. You should NOT use or interpret the returned content. The UI will handle displaying the image.
-      No further processing is needed.`,
+      that represents an image. You should NOT use or interpret the returned content or include it in your response in any way.
+      The UI will handle displaying the image.`,
     schema: z.object({
       code: z.string().describe("The python code that, when executed, will generate an image representing the graph.")
     })
