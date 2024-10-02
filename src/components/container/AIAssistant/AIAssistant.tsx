@@ -148,7 +148,7 @@ export default function (props: AIAssistantProps) {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
-                cssClass: msg.type === "tool" ? "tool" : undefined,
+                cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
         })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>

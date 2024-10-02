@@ -68,7 +68,7 @@ export default function (props: ChatProps) {
                             }
                             else if (message.type === "received-image") {
                                 return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
-                                    <img src={"data:image/png;base64," + message.content} />
+                                    <img src={"data:image/png;base64," + message.content} className={message.cssClass} />
                                 </div>
                             }
                             else {
