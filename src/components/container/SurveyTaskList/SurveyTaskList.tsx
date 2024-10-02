@@ -25,9 +25,10 @@ export interface SurveyTaskListProps {
 	cardStyle?: React.CSSProperties
 	buttonVariant?: ButtonVariant
 	buttonColor?: ColorDefinition
+	hideIfEmpty?: boolean,
 }
 
-export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
+export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks" | "Empty";
 
 export default function (props: SurveyTaskListProps) {
 	const [loading, setLoading] = useState(true);
@@ -88,6 +89,12 @@ export default function (props: SurveyTaskListProps) {
 			return;
 		}
 
+		if (props.previewState == "Empty") {
+			setTasks([]);
+			setLoading(false);
+			return;
+		}
+
 		var loadData = function () {
 			var allTasks: SurveyTask[] = [];
 			var makeRequest = function (pageID: Guid | null) {
@@ -133,6 +140,10 @@ export default function (props: SurveyTaskListProps) {
 	}
 
 	if (props.status == "complete" && !tasks?.length) {
+		return null;
+	}
+
+	if (props.status == "incomplete" && !tasks?.length && props.hideIfEmpty) {
 		return null;
 	}
 
