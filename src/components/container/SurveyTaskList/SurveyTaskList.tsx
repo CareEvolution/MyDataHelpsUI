@@ -10,22 +10,22 @@ import { ButtonVariant } from '../../presentational/Button/Button'
 import { useInitializeView } from '../../../helpers/Initialization';
 
 export interface SurveyTaskListProps {
-	status: SurveyTaskStatus,
-	limit?: number,
-	sequential?: boolean,
-	title?: string,
-	surveys?: string[],
-	category?: string,
-	onDetailLinkClick?: Function,
-	previewState?: SurveyTaskListListPreviewState
-	variant?: "noCard" | "singleCard" | "multiCard"
-	innerRef?: React.Ref<HTMLDivElement>
-	titleColor?: ColorDefinition
-	cardBackgroundColor?: ColorDefinition
-	cardStyle?: React.CSSProperties
-	buttonVariant?: ButtonVariant
-	buttonColor?: ColorDefinition
-	hideIfEmpty?: boolean,
+	status: SurveyTaskStatus;
+	limit?: number;
+	sequential?: boolean;
+	title?: string;
+	surveys?: string[];
+	category?: string;
+	onDetailLinkClick?: Function;
+	previewState?: SurveyTaskListListPreviewState;
+	variant?: "noCard" | "singleCard" | "multiCard";
+	innerRef?: React.Ref<HTMLDivElement>;
+	titleColor?: ColorDefinition;
+	cardBackgroundColor?: ColorDefinition;
+	cardStyle?: React.CSSProperties;
+	buttonVariant?: ButtonVariant;
+	buttonColor?: ColorDefinition;
+	hideIfEmpty?: boolean;
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks" | "Empty";
