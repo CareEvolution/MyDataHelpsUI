@@ -140,11 +140,11 @@ export default function (props: SurveyTaskListProps) {
 		loadData();
 	}
 
-	if (props.status == "complete" && !tasks?.length) {
-		return null;
-	}
+	// If 'complete', default to hiding the task list
+	const { hideIfEmpty: hide } = props;
+	const hideIfEmpty = props.status == 'complete' ? (hide ?? true) : hide;
 
-	if (props.status == "incomplete" && !tasks?.length && props.hideIfEmpty) {
+	if (!tasks?.length && hideIfEmpty) {
 		return null;
 	}
 
@@ -160,7 +160,7 @@ export default function (props: SurveyTaskListProps) {
 				}
 				{!tasks?.length && !loading &&
 					<div className="empty-message">
-						{props.emptyText?.trim() || language("all-tasks-complete")}
+						{props.emptyText?.trim() || language(`empty-tasks-${props.status}`)}
 					</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
