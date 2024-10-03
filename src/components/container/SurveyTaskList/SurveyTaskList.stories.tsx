@@ -73,3 +73,22 @@ export const Complete = {
 	},
 	render: render
 }
+
+export const EmptyIncomplete = {
+	args: {
+		status: 'incomplete',
+		title: 'Incomplete Tasks',
+		previewState: "Empty",
+		variant: 'singleCard',
+		hideIfEmpty: false
+	},
+	render: render
+}
+
+export const EmptyComplete = {
+	args: {
+		status: 'complete',
+		previewState: "Empty"
+	},
+	render: render
+}
