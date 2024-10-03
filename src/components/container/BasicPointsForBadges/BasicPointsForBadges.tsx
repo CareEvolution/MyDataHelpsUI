@@ -35,8 +35,8 @@ export default function (props: BasicPointsForBadgesProps) {
     async function initialize() {
         let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo(props.activities, props.pointsPerBadge, props.customField);
         let currentState = parsePointsAndBadgesState(props.customField, props.activities, participantInfo);
-        setBadges(currentState.badges);
-        setPoints(sumActivityPoints(currentState.activityStates));
+        //setBadges(currentState.badges);
+       // setPoints(sumActivityPoints(currentState.activityStates));
 
         let updatedState = !props.previewState ?
             await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge, participantInfo) :
@@ -45,7 +45,6 @@ export default function (props: BasicPointsForBadgesProps) {
             await persistPointsAndBadgesState(props.customField, updatedState);
         }
         let newPointTotal = sumActivityPoints(updatedState.activityStates);
-        setPoints(newPointTotal);
 
         if (currentState.badges.length < updatedState.badges.length) {
             await new Promise(resolve => setTimeout(resolve, 3000));
@@ -53,7 +52,10 @@ export default function (props: BasicPointsForBadgesProps) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             //wait for the new badges view to open before setting the new point total
             setBadges(updatedState.badges);
+        } else {
+            setBadges(currentState.badges);
         }
+        setPoints(newPointTotal);
     }
 
     useInitializeView(() => {
