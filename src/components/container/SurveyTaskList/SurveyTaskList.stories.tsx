@@ -80,7 +80,8 @@ export const EmptyIncomplete = {
 		title: 'Incomplete Tasks',
 		previewState: "Empty",
 		variant: 'singleCard',
-		hideIfEmpty: false
+		hideIfEmpty: false,
+		emptyText: ''
 	},
 	render: render
 }

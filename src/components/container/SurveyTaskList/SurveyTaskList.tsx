@@ -26,6 +26,7 @@ export interface SurveyTaskListProps {
 	buttonVariant?: ButtonVariant;
 	buttonColor?: ColorDefinition;
 	hideIfEmpty?: boolean;
+	emptyText?: string;
 }
 
 export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks" | "Empty";
@@ -158,7 +159,9 @@ export default function (props: SurveyTaskListProps) {
 					<LoadingIndicator />
 				}
 				{!tasks?.length && !loading &&
-					<div className="empty-message">{language("all-tasks-complete")}</div>
+					<div className="empty-message">
+						{!props.emptyText?.trim() ? language("all-tasks-complete") : props.emptyText?.trim()}
+					</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
 					variant == "multiCard" ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgroundColor)} key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
