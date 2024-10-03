@@ -142,7 +142,7 @@ export default function (props: SurveyTaskListProps) {
 
 	// If 'complete', default to hiding the task list
 	const { hideIfEmpty: hide } = props;
-	const hideIfEmpty = props.status == 'complete' ? (hide ?? true) : hide;
+	const hideIfEmpty = props.status == "complete" ? (hide ?? true) : hide;
 
 	if (!tasks?.length && hideIfEmpty) {
 		return null;
