@@ -160,7 +160,7 @@ export default function (props: SurveyTaskListProps) {
 				}
 				{!tasks?.length && !loading &&
 					<div className="empty-message">
-						{!props.emptyText?.trim() ? language("all-tasks-complete") : props.emptyText?.trim()}
+						{props.emptyText?.trim() || language("all-tasks-complete")}
 					</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
