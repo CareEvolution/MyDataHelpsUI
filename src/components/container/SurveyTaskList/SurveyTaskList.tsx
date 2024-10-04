@@ -10,24 +10,26 @@ import { ButtonVariant } from '../../presentational/Button/Button'
 import { useInitializeView } from '../../../helpers/Initialization';
 
 export interface SurveyTaskListProps {
-	status: SurveyTaskStatus,
-	limit?: number,
-	sequential?: boolean,
-	title?: string,
-	surveys?: string[],
-	category?: string,
-	onDetailLinkClick?: Function,
-	previewState?: SurveyTaskListListPreviewState
-	variant?: "noCard" | "singleCard" | "multiCard"
-	innerRef?: React.Ref<HTMLDivElement>
-	titleColor?: ColorDefinition
-	cardBackgroundColor?: ColorDefinition
-	cardStyle?: React.CSSProperties
-	buttonVariant?: ButtonVariant
-	buttonColor?: ColorDefinition
+	status: SurveyTaskStatus;
+	limit?: number;
+	sequential?: boolean;
+	title?: string;
+	surveys?: string[];
+	category?: string;
+	onDetailLinkClick?: Function;
+	previewState?: SurveyTaskListListPreviewState;
+	variant?: "noCard" | "singleCard" | "multiCard";
+	innerRef?: React.Ref<HTMLDivElement>;
+	titleColor?: ColorDefinition;
+	cardBackgroundColor?: ColorDefinition;
+	cardStyle?: React.CSSProperties;
+	buttonVariant?: ButtonVariant;
+	buttonColor?: ColorDefinition;
+	hideIfEmpty?: boolean;
+	emptyText?: string;
 }
 
-export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
+export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks" | "Empty";
 
 export default function (props: SurveyTaskListProps) {
 	const [loading, setLoading] = useState(true);
@@ -88,6 +90,12 @@ export default function (props: SurveyTaskListProps) {
 			return;
 		}
 
+		if (props.previewState == "Empty") {
+			setTasks([]);
+			setLoading(false);
+			return;
+		}
+
 		var loadData = function () {
 			var allTasks: SurveyTask[] = [];
 			var makeRequest = function (pageID: Guid | null) {
@@ -132,7 +140,11 @@ export default function (props: SurveyTaskListProps) {
 		loadData();
 	}
 
-	if (props.status == "complete" && !tasks?.length) {
+	// If 'complete', default to hiding the task list
+	const { hideIfEmpty: hide } = props;
+	const hideIfEmpty = props.status == "complete" ? (hide ?? true) : hide;
+
+	if (!tasks?.length && hideIfEmpty) {
 		return null;
 	}
 
@@ -147,7 +159,9 @@ export default function (props: SurveyTaskListProps) {
 					<LoadingIndicator />
 				}
 				{!tasks?.length && !loading &&
-					<div className="empty-message">{language("all-tasks-complete")}</div>
+					<div className="empty-message">
+						{props.emptyText?.trim() || language(`empty-tasks-${props.status}`)}
+					</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
 					variant == "multiCard" ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgroundColor)} key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)
