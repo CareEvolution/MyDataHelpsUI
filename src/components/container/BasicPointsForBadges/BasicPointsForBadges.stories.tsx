@@ -142,78 +142,48 @@ export const WithGoalsAndBadges = {
     </Layout>
 };
 
-
-
 export const Live = {
     args: {
-        pointsPerBadge: 500,
-        showTotalPoints: false,
+        pointsLabelColor: "blue",
+        progressBarFillColor: "green",
+        customField: "PointsAndBadges",
+        pointsPerBadge: 1000,
         activities: [
             {
-                key: "SleepMinutes",
+                key: "SleepData",
                 type: "dailyData",
-                activationDate: startOfDay(new Date("2024-09-02")),
+                activationDate: new Date("2024-05-20"),
                 points: 200,
                 dailyDataType: DailyDataType.SleepMinutes,
-                awardThreshold: 60
-            },
-          /*   {
-                key: "ConsentSurveyComplete",
-                type: "surveyCompleted",
-                points: 50,
-                surveyName: "Consent"
+                awardThreshold: 1
             },
             {
-                key: "ConnectDevice",
-                type: "connectExternalAccount",
+                key: "FitbitWearTime",
+                type: "dailyData",
+                activationDate: new Date("2024-05-20"),
                 points: 100,
-                providerCategories: ["Device Manufacturer"]
+                dailyDataType: DailyDataType.FitbitWearMinutes,
+                awardThreshold: 600
             },
             {
-                key: "CustomFieldLE8",
+                key: "FitbitOrder",
+                type: "surveyCompleted",
+                points: 800,
+                surveyName: "OrderDevice"
+            },
+            {
+                key: "ConnectEhr",
+                type: "connectExternalAccount",
+                points: 250,
+                providerCategories: ["Provider", "Health Plan"]
+            },
+            {
+                key: "CustomField",
                 type: "custom",
                 points: 25,
                 customField: "PersonalGoal"
-            }, */
-        ],
-        customField: "StudyRewards",
-    },
-    render: render
-};
-
-export const LiveShowTotalPoints = {
-    args: {
-        pointsPerBadge: 500,
-        showTotalPoints: true,
-        activities: [
-            {
-                key: "SleepMinutes",
-                type: "dailyData",
-                activationDate: startOfDay(new Date("2024-09-02")),
-                points: 200,
-                dailyDataType: DailyDataType.SleepMinutes,
-                awardThreshold: 60
-            },
-           /*  {
-                key: "ConsentSurveyComplete",
-                type: "surveyCompleted",
-                points: 50,
-                surveyName: "Consent"
-            },
-            {
-                key: "ConnectDevice",
-                type: "connectExternalAccount",
-                points: 100,
-                providerCategories: ["Device Manufacturer"]
-            },
-            {
-                key: "CustomFieldLE8",
-                type: "custom",
-                points: 25,
-                customField: "PersonalGoal"
-            }, */
-        ],
-        customField: "StudyRewards",
+            }
+        ]
     },
     render: render
 };

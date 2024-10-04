@@ -35,8 +35,6 @@ export default function (props: BasicPointsForBadgesProps) {
     async function initialize() {
         let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo(props.activities, props.pointsPerBadge, props.customField);
         let currentState = parsePointsAndBadgesState(props.customField, props.activities, participantInfo);
-        //setBadges(currentState.badges);
-       // setPoints(sumActivityPoints(currentState.activityStates));
 
         let updatedState = !props.previewState ?
             await awardPointsAndBadges(props.activities, currentState, props.pointsPerBadge, participantInfo) :
@@ -80,7 +78,7 @@ export default function (props: BasicPointsForBadgesProps) {
     return <div className={"mdhui-basic-points-for-badges"} ref={props.innerRef}>
         {badges !== undefined && points !== undefined &&
             <>
-                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
+                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" color={resolveColor(layoutContext.colorScheme, props.pointsLabelColor)} >{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
                     fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"}
