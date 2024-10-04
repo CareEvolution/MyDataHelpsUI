@@ -58,10 +58,7 @@ export default function (props: BasicPointsForBadgesProps) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             //wait for the new badges view to open before setting the badges, and new point total
             setBadges(updatedState.badges);
-        } else {
-            setBadges(currentState.badges);
-        }
-        setPoints(newPointTotal);
+        } 
     }
 
     useInitializeView(() => {
