@@ -47,9 +47,9 @@ export default function (props: BasicPointsForBadgesProps) {
         setPoints(newPointTotal);
 
         // This component will load to reflect the existing points status
-        // followed by showing a pop up if new badges are awarded
-        // once the pop is shown, the new point total and badges will be set
-        // in a preview env, if badges were awarded, the user see the progress bar fill to 100%,
+        // followed by showing a pop up if new badges are awarded.
+        // Once the pop is shown, the new point total and badges will be set.
+        // In a preview env, if badges were awarded, the user will see the progress bar fill to 100%,
         // followed by a pause, and then see the progress bar reset to reflect 
         // how many points are needed for the next badge
         if (currentState.badges.length < updatedState.badges.length) {
