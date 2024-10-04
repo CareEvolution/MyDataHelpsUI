@@ -311,8 +311,8 @@ export const GetUploadedFileTool = tool(
   {
     name: "getUploadedFile",
     description: `Get a file uploaded by the current participant. This tool will return a presigned url that can be used to download the file.
-      The UI will handle embedding or displaying the file.
-      When you call this tool, your response back to the user should always be 'Please see your uploaded file above.' and that's it.`,
+      When you call this tool, if you pass in a file key that is an image, your response back
+      to the user should always be 'Please see your uploaded file above.' and that's it.`,
     schema: z.object({
       key: z.string().describe(`The file key of the file to get.`)
     })
