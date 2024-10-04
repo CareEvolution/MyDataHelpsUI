@@ -284,3 +284,37 @@ export const GraphingTool = tool(
     })
   }
 );
+
+export const UploadedFileQueryTool = tool(
+  async (input): Promise<string> => {
+
+    let response = await MyDataHelps.queryFiles(input);
+
+    return JSON.stringify(response);
+  },
+  {
+    name: "uploadedFileQuery",
+    description: `Query files uploaded by the current participant.`,
+    schema: z.object({
+      category: z.string().optional().describe("Category of files to query for. The generated AI Assistant graphs are saved under the 'ai-graph' category.")
+    })
+  }
+);
+
+export const GetUploadedFileTool = tool(
+  async (input): Promise<string> => {
+
+    let response = await MyDataHelps.getFileDownloadUrl(input.key);
+
+    return JSON.stringify(response);
+  },
+  {
+    name: "getUploadedFile",
+    description: `Get a file uploaded by the current participant. This tool will return a presigned url that can be used to download the file.
+      The UI will handle embedding or displaying the file.
+      When you call this tool, your response back to the user should always be 'Please see your uploaded file above.' and that's it.`,
+    schema: z.object({
+      key: z.string().describe(`The file key of the file to get.`)
+    })
+  }
+);

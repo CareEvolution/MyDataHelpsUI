@@ -21,7 +21,9 @@ import {
     GetAllDailyDataTypesTool,
     GetEhrNewsFeedPageTool,
     GetDeviceDataV2AllDataTypesTool,
-    GraphingTool
+    GraphingTool,
+    UploadedFileQueryTool,
+    GetUploadedFileTool
 } from "./Tools";
 
 export interface AIAssistantState {
@@ -176,6 +178,8 @@ export class MyDataHelpsAIAssistant {
         GetAllDailyDataTypesTool,
         GetEhrNewsFeedPageTool,
         GetDeviceDataV2AllDataTypesTool,
-        GraphingTool
+        GraphingTool,
+        UploadedFileQueryTool,
+        GetUploadedFileTool
     ];
 }

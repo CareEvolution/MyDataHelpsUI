@@ -21,6 +21,7 @@ export interface AIAssistantProps {
     tools?: StructuredTool[];
     appendTools?: boolean;
     baseUrl?: string;
+    saveGraphImages?: boolean;
 }
 
 export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
@@ -91,7 +92,29 @@ export default function (props: AIAssistantProps) {
                     }
 
                     if (toolName === "graphing") {
-                        addMessage(streamEvent.run_id, streamEvent.data.output.content, "image");
+                        addMessage(streamEvent.run_id, `data:image/png;base64,${streamEvent.data.output.content}`, "image");
+
+                        if (props.saveGraphImages) {
+                            const binaryString = atob(streamEvent.data.output.content);
+                            const len = binaryString.length;
+                            const uint8Array = new Uint8Array(len);
+
+                            for (let i = 0; i < len; i++) {
+                                uint8Array[i] = binaryString.charCodeAt(i);
+                            }
+
+                            const blob = new Blob([uint8Array], { type: 'image/png' });
+                            const file = new File([blob], `graph-${new Date().getTime()}.png`, { type: 'image/png' });
+
+                            await MyDataHelps.uploadFile(file, "ai-graph");
+                        }
+                    }
+                    else if (toolName === "getUploadedFile") {
+                        let input = JSON.parse(streamEvent.data.input.input);
+                        if (input.key && input.key.endsWith(".png")) {
+                            let output = JSON.parse(streamEvent.data.output.content);
+                            addMessage(streamEvent.run_id, output.preSignedUrl, "image");
+                        }
                     }
 
                     MyDataHelps.trackCustomEvent({
