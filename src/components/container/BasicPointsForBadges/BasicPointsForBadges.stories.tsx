@@ -4,12 +4,10 @@ import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers";
 import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
-import { DailyDataGoals } from "../../presentational/Grid/Grid.stories";
 import DailyDataGoal from "../DailyDataGoal";
 import { Grid, Title } from "../../presentational";
 import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
-import { startOfDay } from "date-fns";
 
 export default {
     title: "Container/BasicPointsForBadges",
