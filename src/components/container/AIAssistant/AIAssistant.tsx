@@ -92,21 +92,24 @@ export default function (props: AIAssistantProps) {
                     }
 
                     if (toolName === "graphing") {
-                        addMessage(streamEvent.run_id, `data:image/png;base64,${streamEvent.data.output.content}`, "image");
+                        let image = streamEvent.data.output.content;
+                        if (image && !image.startsWith("error")) {
+                            addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
 
-                        if (props.saveGraphImages) {
-                            const binaryString = atob(streamEvent.data.output.content);
-                            const len = binaryString.length;
-                            const uint8Array = new Uint8Array(len);
+                            if (props.saveGraphImages) {
+                                const binaryString = atob(image);
+                                const len = binaryString.length;
+                                const uint8Array = new Uint8Array(len);
 
-                            for (let i = 0; i < len; i++) {
-                                uint8Array[i] = binaryString.charCodeAt(i);
+                                for (let i = 0; i < len; i++) {
+                                    uint8Array[i] = binaryString.charCodeAt(i);
+                                }
+
+                                const blob = new Blob([uint8Array], { type: 'image/png' });
+                                const file = new File([blob], `graph-${new Date().getTime()}.png`, { type: 'image/png' });
+
+                                await MyDataHelps.uploadFile(file, "ai-graph");
                             }
-
-                            const blob = new Blob([uint8Array], { type: 'image/png' });
-                            const file = new File([blob], `graph-${new Date().getTime()}.png`, { type: 'image/png' });
-
-                            await MyDataHelps.uploadFile(file, "ai-graph");
                         }
                     }
                     else if (toolName === "getUploadedFile") {

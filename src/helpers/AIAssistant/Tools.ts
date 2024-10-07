@@ -272,7 +272,7 @@ export const GraphingTool = tool(
       headers: { 'Content-Type': 'application/json' }
     }).then(response => response.json());
 
-    return response.image;
+    return response.image || "error: unable to generate image";
   },
   {
     name: "graphing",
