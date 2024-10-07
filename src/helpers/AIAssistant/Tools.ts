@@ -269,7 +269,10 @@ export const GraphingTool = tool(
     let response = await fetch('https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws', {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${MyDataHelps.token.access_token}`
+      }
     }).then(response => response.json());
 
     return response.image || "error: unable to generate image";
