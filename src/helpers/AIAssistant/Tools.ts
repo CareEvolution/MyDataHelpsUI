@@ -280,8 +280,8 @@ export const GraphingTool = tool(
   {
     name: "graphing",
     description: `If the user asks for something to be graphed, use this tool. This tool returns a base 64 encoded string
-      that represents an image. You should NOT use or interpret the returned content or include it in your response in any way.
-      The UI will handle displaying the image.`,
+      that represents an image. After using this tool, the LLM should respond with 'Your generated graph is displayed above.' without interpreting 
+      or including the image content in the response. The UI will handle displaying the image.`,
     schema: z.object({
       code: z.string().describe("The python code that, when executed, will generate an image representing the graph.")
     })
@@ -297,9 +297,10 @@ export const UploadedFileQueryTool = tool(
   },
   {
     name: "uploadedFileQuery",
-    description: `Query files uploaded by the current participant.`,
+    description: `Use this tool to query files uploaded by the current participant. 
+      AI-generated graphs are saved under the 'ai-graph' category.`,
     schema: z.object({
-      category: z.string().optional().describe("Category of files to query for. The generated AI Assistant graphs are saved under the 'ai-graph' category.")
+      category: z.string().optional().describe("Category of files to query for.")
     })
   }
 );
@@ -313,11 +314,10 @@ export const GetUploadedFileTool = tool(
   },
   {
     name: "getUploadedFile",
-    description: `Get a file uploaded by the current participant. This tool will return a presigned url that can be used to download the file.
-      When you call this tool, if you pass in a file key that is an image, your response back
-      to the user should always be 'Please see your uploaded file above.' and that's it.`,
+    description: `Use this tool to get a file uploaded by the current participant. This tool returns a presigned URL to download the file. 
+      If the file is an image, the LLM should respond with 'Please see your uploaded file above.' and nothing else.`,
     schema: z.object({
-      key: z.string().describe(`The file key of the file to get.`)
+      key: z.string().describe("The file key of the file to get.")
     })
   }
 );
