@@ -113,7 +113,7 @@ export default function (props: AIAssistantProps) {
                         }
                     }
                     else if (toolName === "getUploadedFile") {
-                        let input = JSON.parse(streamEvent.data.input.input);
+                        let input = JSON.parse(toolInput);
                         if (input.key && input.key.endsWith(".png")) {
                             let output = JSON.parse(streamEvent.data.output.content);
                             addMessage(streamEvent.run_id, output.preSignedUrl, "image");
