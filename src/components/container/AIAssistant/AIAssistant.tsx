@@ -21,9 +21,10 @@ export interface AIAssistantProps {
     tools?: StructuredTool[];
     appendTools?: boolean;
     baseUrl?: string;
+    saveGraphImages?: boolean;
 }
 
-export type AIAssistantMessageType = "user" | "ai" | "tool";
+export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
 
 export interface AIAssistantMessage {
     type: AIAssistantMessageType;
@@ -63,7 +64,7 @@ export default function (props: AIAssistantProps) {
             }
         });
 
-        await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
+        await assistantRef.current?.ask(newMessage, async function (streamEvent: StreamEvent) {
 
             const [kind, type] = getEventKindType(streamEvent.event);
 
@@ -86,10 +87,37 @@ export default function (props: AIAssistantProps) {
                     let toolInput = streamEvent.data.input.input;
 
                     if (props.debug) {
-                        formatCode(toolName, toolInput)
-                            .then((formattedMessage) => {
-                                addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
-                            });
+                        let formattedMessage = await formatCode(toolName, toolInput)
+                        addMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```", "tool");
+                    }
+
+                    if (toolName === "graphing") {
+                        let image = streamEvent.data.output.content;
+                        if (image && !image.startsWith("error")) {
+                            addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
+
+                            if (props.saveGraphImages) {
+                                const binaryString = atob(image);
+                                const len = binaryString.length;
+                                const uint8Array = new Uint8Array(len);
+
+                                for (let i = 0; i < len; i++) {
+                                    uint8Array[i] = binaryString.charCodeAt(i);
+                                }
+
+                                const blob = new Blob([uint8Array], { type: 'image/png' });
+                                const file = new File([blob], `graph-${new Date().getTime()}.png`, { type: 'image/png' });
+
+                                await MyDataHelps.uploadFile(file, "ai-graph");
+                            }
+                        }
+                    }
+                    else if (toolName === "getUploadedFile") {
+                        let input = JSON.parse(toolInput);
+                        if (input.key && input.key.endsWith(".png")) {
+                            let output = JSON.parse(streamEvent.data.output.content);
+                            addMessage(streamEvent.run_id, output.preSignedUrl, "image");
+                        }
                     }
 
                     MyDataHelps.trackCustomEvent({
@@ -136,8 +164,8 @@ export default function (props: AIAssistantProps) {
         lastAIMessage += message;
     }
 
-    const addToolMessage = function (runId: string, message: string) {
-        setMessages(prevMessages => [...prevMessages, { type: 'tool', content: message, runId }]);
+    const addMessage = function (runId: string, message: string, type: AIAssistantMessageType) {
+        setMessages(prevMessages => [...prevMessages, { type, content: message, runId }]);
     }
 
     return <>
@@ -145,8 +173,8 @@ export default function (props: AIAssistantProps) {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
-                type: msg.type === "user" ? "sent" : "received",
-                cssClass: msg.type === "tool" ? "tool" : undefined
+                type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
+                cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
         })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>
