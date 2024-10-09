@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
+import { RealtimeClient } from '@openai/realtime-api-beta';
+import { WavRecorder, WavStreamPlayer } from '../../../helpers/wavtools/index.js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import language from '../../../helpers/language';
@@ -42,10 +44,81 @@ export default function (props: AIAssistantProps) {
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
+    const clientRef = useRef<RealtimeClient>(new RealtimeClient({ url: "http://localhost:8081" }));
+
+    const wavRecorderRef = useRef<WavRecorder>(
+        new WavRecorder({ sampleRate: 24000 })
+    );
+    const wavStreamPlayerRef = useRef<WavStreamPlayer>(
+        new WavStreamPlayer({ sampleRate: 24000 })
+    );
+
+    const [isRecording, setIsRecording] = useState(false);
+
     useEffect(() => {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
         }
+
+        const client = clientRef.current;
+        const wavRecorder = wavRecorderRef.current;
+        const wavStreamPlayer = wavStreamPlayerRef.current;
+
+        // Can set parameters ahead of connecting, either separately or all at once
+        clientRef.current.updateSession({ instructions: 'You are a great, upbeat friend.' });
+        clientRef.current.updateSession({ voice: 'alloy' });
+        clientRef.current.updateSession({
+            turn_detection: { type: 'server_vad' }, // or 'server_vad'
+            input_audio_transcription: { model: 'whisper-1' },
+        });
+
+        // Set up event handling
+        clientRef.current.on('conversation.updated', (event: any) => {
+            const { item, delta } = event;
+            const items = clientRef.current?.conversation.getItems();
+            /**
+             * item is the current item being updated
+             * delta can be null or populated
+             * you can fetch a full list of items at any time
+             */
+            console.log(event);
+        });
+
+    }, []);
+
+    const startRecording = useCallback(async () => {
+        const client = clientRef.current;
+        const wavRecorder = wavRecorderRef.current;
+        const wavStreamPlayer = wavStreamPlayerRef.current;
+
+        setIsRecording(true);
+
+        // Connect to microphone
+        await wavRecorder.begin();
+
+        // Connect to audio output
+        await wavStreamPlayer.connect();
+
+        // Connect to realtime API
+        await client.connect();
+
+        await wavRecorder.record((data) => client.appendInputAudio(data.mono));
+    }, []);
+
+    const stopRecording = useCallback(async () => {
+        setIsRecording(false);
+        // setRealtimeEvents([]);
+        // setItems([]);
+        // setMemoryKv({});
+
+        const client = clientRef.current;
+        client.disconnect();
+
+        const wavRecorder = wavRecorderRef.current;
+        await wavRecorder.end();
+
+        const wavStreamPlayer = wavStreamPlayerRef.current;
+        await wavStreamPlayer.interrupt();
     }, []);
 
     const addUserMessage = async function (newMessage: string) {
@@ -176,7 +249,8 @@ export default function (props: AIAssistantProps) {
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
                 cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
-        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
+        })} onSendMessage={addUserMessage} onStartRecording={startRecording} onStopRecording={stopRecording} isRecording={isRecording}
+            loading={loading} inputDisabled={inputDisabled} />}
     </>
 }
 

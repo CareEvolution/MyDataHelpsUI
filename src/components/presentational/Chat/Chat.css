@@ -39,14 +39,12 @@
     border: 0;
 }
 
-.mdhui-chat .mdhui-chat-send-button {
-    position: absolute;
-    right: 4px;
+.mdhui-chat .mdhui-unstyled-button {
     cursor: pointer;
     text-align: center;
 }
 
-.mdhui-chat .mdhui-chat-send-button:disabled {
+.mdhui-chat .mdhui-unstyled-button:disabled {
     cursor: default;
     color: var(--mdhui-text-color-3);
 }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faPaperPlane, faSpinner, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 import markdownIt from 'markdown-it';
 // @ts-ignore
 import markdownItHighlightjs from 'markdown-it-highlightjs/core';
@@ -19,6 +19,9 @@ export interface ChatProps {
     innerRef?: React.Ref<HTMLDivElement>;
     messages: ChatMessage[];
     onSendMessage: (newMessage: string) => void;
+    onStartRecording: () => void;
+    onStopRecording: () => void;
+    isRecording: boolean;
     loading?: string;
     inputDisabled?: boolean;
 }
@@ -98,6 +101,12 @@ export default function (props: ChatProps) {
                             }
                         }}
                     />
+                    <UnstyledButton onClick={props.onStartRecording} disabled={props.isRecording}>
+                        <FontAwesomeSvgIcon icon={faMicrophone} />
+                    </UnstyledButton>
+                    <UnstyledButton onClick={props.onStopRecording} disabled={!props.isRecording}>
+                        <FontAwesomeSvgIcon icon={faStopCircle} />
+                    </UnstyledButton>
                     <UnstyledButton onClick={sendMessage} className="mdhui-chat-send-button" disabled={props.inputDisabled || !currentUserMessage}>
                         <FontAwesomeSvgIcon icon={faPaperPlane} />
                     </UnstyledButton>
