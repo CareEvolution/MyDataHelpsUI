@@ -51,14 +51,15 @@ export default function (props: BasicPointsForBadgesProps) {
         // Once the pop is shown, the new point total and badges will be set.
         // In a preview env, if badges were awarded, the user will see the progress bar fill to 100%,
         // followed by a pause, and then see the progress bar reset to reflect 
-        // how many points are needed for the next badge
+        // how many points are needed for the next badge. Skipping back is accomplished by 
+        // resetting the progressbar key as noted below
         if (currentState.badges.length < updatedState.badges.length) {
             await new Promise(resolve => setTimeout(resolve, 3000));
             MyDataHelps.openApplication(props.awardBadgesViewUrl, { modal: true });
             await new Promise(resolve => setTimeout(resolve, 1000));
             //wait for the new badges view to open before setting the badges, and new point total
             setBadges(updatedState.badges);
-        } 
+        }
     }
 
     useInitializeView(() => {
@@ -86,7 +87,7 @@ export default function (props: BasicPointsForBadgesProps) {
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" color={props.pointsLabelColor} >{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
-                    fillColor={props.progressBarFillColor}
+                    fillColor={props.progressBarFillColor ?? "var(--mdhui-color-primary)"}
                     backgroundColor="var(--mdhui-background-color-2)" steps={[{
                         percent: 100,
                         icon:
