@@ -432,6 +432,7 @@ let strings: { [key: string]: string } = {
     "stand-time": "Temps Debout",
     "walking-heart-rate-average": "Moyenne de la Fréquence Cardiaque en Marchant",
     "active-energy-burned": "Énergie Active Brûlée",
+    "number-of-alcoholic-beverages": "Nombre de boissons alcoolisées",
     "active-calories": "Calories Actives",
     "resting-calories": "Calories au Repos",
     "total-calories": "Calories Totales",

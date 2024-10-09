@@ -432,6 +432,7 @@
     "stand-time": "Tiempo de Pie",
     "walking-heart-rate-average": "Promedio de Frecuencia Cardíaca al Caminar",
     "active-energy-burned": "Energía Activa Quemada",
+    "number-of-alcoholic-beverages": "Número de bebidas alcohólicas",
     "active-calories": "Calorías Activas",
     "resting-calories": "Calorías en Reposo",
     "total-calories": "Calorías Totales",
