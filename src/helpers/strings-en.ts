@@ -432,6 +432,7 @@
     "stand-time": "Stand Time",
     "walking-heart-rate-average": "Walking HR Average",
     "active-energy-burned": "Active Energy Burned",
+    "number-of-alcoholic-beverages": "Number of Alcoholic Beverages",
     "active-calories": "Active Calories",
     "resting-calories": "Resting Calories",
     "total-calories": "Total Calories",
