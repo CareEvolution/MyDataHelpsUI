@@ -7,6 +7,7 @@ import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { RealtimeClient } from '@openai/realtime-api-beta';
 import { WavRecorder, WavStreamPlayer } from '../../../helpers/wavtools/index.js';
+import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import language from '../../../helpers/language';
@@ -14,6 +15,8 @@ import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import './AIAssistant.css';
+import { convertToOpenAIFunction, convertToOpenAITool } from '@langchain/core/utils/function_calling';
+import { MyDataHelpsTools } from '../../../helpers';
 
 export interface AIAssistantProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -44,7 +47,10 @@ export default function (props: AIAssistantProps) {
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
-    const clientRef = useRef<RealtimeClient>(new RealtimeClient({ url: "http://localhost:8081" }));
+    const clientRef = useRef<RealtimeClient>(new RealtimeClient({
+        apiKey: process.env.OPENAI_API_KEY,
+        dangerouslyAllowAPIKeyInBrowser: true
+    }));
 
     const wavRecorderRef = useRef<WavRecorder>(
         new WavRecorder({ sampleRate: 24000 })
@@ -54,6 +60,7 @@ export default function (props: AIAssistantProps) {
     );
 
     const [isRecording, setIsRecording] = useState(false);
+    const [items, setItems] = useState<ItemType[]>([]);
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
@@ -64,25 +71,50 @@ export default function (props: AIAssistantProps) {
         const wavRecorder = wavRecorderRef.current;
         const wavStreamPlayer = wavStreamPlayerRef.current;
 
-        // Can set parameters ahead of connecting, either separately or all at once
-        clientRef.current.updateSession({ instructions: 'You are a great, upbeat friend.' });
-        clientRef.current.updateSession({ voice: 'alloy' });
-        clientRef.current.updateSession({
-            turn_detection: { type: 'server_vad' }, // or 'server_vad'
+        client.updateSession({
+            turn_detection: { type: 'server_vad' },
             input_audio_transcription: { model: 'whisper-1' },
+            voice: 'alloy',
+            instructions: 'You are a great, upbeat friend.'
         });
 
-        // Set up event handling
-        clientRef.current.on('conversation.updated', (event: any) => {
-            const { item, delta } = event;
-            const items = clientRef.current?.conversation.getItems();
-            /**
-             * item is the current item being updated
-             * delta can be null or populated
-             * you can fetch a full list of items at any time
-             */
-            console.log(event);
+        let coco = convertToOpenAITool(MyDataHelpsTools.QueryDailySleepTool);
+        client.addTool({
+            name: coco.function.name,
+            description: coco.function.description || "",
+            parameters: coco.function.parameters,
+        }, MyDataHelpsTools.QueryDailySleepTool.func);
+
+        client.on('error', (event: any) => console.error(event));
+        client.on('conversation.interrupted', async () => {
+            const trackSampleOffset = await wavStreamPlayer.interrupt();
+            if (trackSampleOffset?.trackId) {
+                const { trackId, offset } = trackSampleOffset;
+                await client.cancelResponse(trackId, offset);
+            }
         });
+        client.on('conversation.updated', async ({ item, delta }: any) => {
+            const items = client.conversation.getItems();
+            if (delta?.audio) {
+                wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+            }
+            if (item.status === 'completed' && item.formatted.audio?.length) {
+                const wavFile = await WavRecorder.decode(
+                    item.formatted.audio,
+                    24000,
+                    24000
+                );
+                item.formatted.file = wavFile;
+            }
+            setItems(items);
+        });
+
+        setItems(client.conversation.getItems());
+
+        return () => {
+            // cleanup; resets to defaults
+            client.reset();
+        };
 
     }, []);
 
@@ -92,6 +124,7 @@ export default function (props: AIAssistantProps) {
         const wavStreamPlayer = wavStreamPlayerRef.current;
 
         setIsRecording(true);
+        setItems(client.conversation.getItems());
 
         // Connect to microphone
         await wavRecorder.begin();
@@ -107,9 +140,7 @@ export default function (props: AIAssistantProps) {
 
     const stopRecording = useCallback(async () => {
         setIsRecording(false);
-        // setRealtimeEvents([]);
-        // setItems([]);
-        // setMemoryKv({});
+        setItems([]);
 
         const client = clientRef.current;
         client.disconnect();
@@ -242,6 +273,67 @@ export default function (props: AIAssistantProps) {
     }
 
     return <>
+        <div className="content-block conversation">
+            <div className="content-block-body" data-conversation-content>
+                {!items.length && `awaiting connection...`}
+                {items.map((conversationItem, i) => {
+                    return (
+                        <div className="conversation-item" key={conversationItem.id}>
+                            <div className={`speaker ${conversationItem.role || ''}`}>
+                                <div>
+                                    {(
+                                        conversationItem.role || conversationItem.type
+                                    ).replace('_', ' ')}
+                                </div>
+                                <div
+                                    className="close"
+                                    onClick={() => { }}
+                                >
+                                    <span>x</span>
+                                </div>
+                            </div>
+                            <div className={`speaker-content`}>
+                                {/* tool response */}
+                                {conversationItem.type === 'function_call_output' && (
+                                    <div>{conversationItem.formatted.output}</div>
+                                )}
+                                {/* tool call */}
+                                {!!conversationItem.formatted.tool && (
+                                    <div>
+                                        {conversationItem.formatted.tool.name}(
+                                        {conversationItem.formatted.tool.arguments})
+                                    </div>
+                                )}
+                                {!conversationItem.formatted.tool &&
+                                    conversationItem.role === 'user' && (
+                                        <div>
+                                            {conversationItem.formatted.transcript ||
+                                                (conversationItem.formatted.audio?.length
+                                                    ? '(awaiting transcript)'
+                                                    : conversationItem.formatted.text ||
+                                                    '(item sent)')}
+                                        </div>
+                                    )}
+                                {!conversationItem.formatted.tool &&
+                                    conversationItem.role === 'assistant' && (
+                                        <div>
+                                            {conversationItem.formatted.transcript ||
+                                                conversationItem.formatted.text ||
+                                                '(truncated)'}
+                                        </div>
+                                    )}
+                                {conversationItem.formatted.file && (
+                                    <audio
+                                        src={conversationItem.formatted.file.url}
+                                        controls
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
         {messages && <Chat innerRef={props.innerRef} messages={messages.map((msg) => {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
