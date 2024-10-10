@@ -24,6 +24,8 @@ export interface ChatProps {
     isRecording: boolean;
     loading?: string;
     inputDisabled?: boolean;
+    clientCanvasRef?: React.RefObject<HTMLCanvasElement>;
+    serverCanvasRef?: React.RefObject<HTMLCanvasElement>;
 }
 
 export interface ChatMessage {
@@ -91,6 +93,14 @@ export default function (props: ChatProps) {
                 </div>
             </div>
             <div className="mdhui-chat-input">
+                <div className="visualization">
+                    <div className="visualization-entry client">
+                        <canvas ref={props.clientCanvasRef} />
+                    </div>
+                    <div className="visualization-entry server">
+                        <canvas ref={props.serverCanvasRef} />
+                    </div>
+                </div>
                 <div className="mdhui-chat-input-group">
                     <input
                         type="text"
