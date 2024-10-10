@@ -130,7 +130,7 @@ export default function (props: AIAssistantProps) {
                 client.addTool({
                     name: toolDefinition.function.name,
                     description: toolDefinition.function.description || "",
-                    parameters: toolDefinition.function.parameters,
+                    parameters: toolDefinition.function.parameters
                 }, tool.func);
             }
 

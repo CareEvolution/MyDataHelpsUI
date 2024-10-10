@@ -249,7 +249,7 @@ export const GetAllDailyDataTypesTool = tool(
 
 export const GetEhrNewsFeedPageTool = tool(
   async (input): Promise<string> => {
-    const response = await getNewsFeedPage(input.feed, input.pageID, input.pageDate);
+    const response = await getNewsFeedPage(input.feed, undefined, input.pageDate, 100);
     return JSON.stringify(response);
   },
   {
@@ -257,8 +257,8 @@ export const GetEhrNewsFeedPageTool = tool(
     description: "Get electronic health record (EHR) data for the participant.",
     schema: z.object({
       feed: z.enum(["Immunizations", "LabReports", "Procedures", "Reports"]).describe("The type of feed to query."),
-      pageID: z.string().optional().describe("The page ID to continue from if you need to fetch more results."),
-      pageDate: z.string().optional().describe("The date of the page to continue from if you are doing a time-based query.")
+      // pageID: z.string().optional().describe("The page ID to continue from if you need to fetch more results. This is returned as NextPageID in the previous response."),
+      pageDate: z.string().optional().describe("The date of the page to continue from if you are doing a time-based query. This is returned as NextPageDate in the previous response.")
     })
   }
 );
