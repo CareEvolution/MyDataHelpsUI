@@ -254,11 +254,10 @@ export const GetEhrNewsFeedPageTool = tool(
   },
   {
     name: "getEhrNewsFeedPage",
-    description: "Get electronic health record (EHR) data for the participant.",
+    description: "Get electronic health record (EHR) data for the participant. If the previous response contains a NextPageDate, use that value for the pageDate input to continue fetching data. Do not generate a pageDate on your own.",
     schema: z.object({
       feed: z.enum(["Immunizations", "LabReports", "Procedures", "Reports"]).describe("The type of feed to query."),
-      // pageID: z.string().optional().describe("The page ID to continue from if you need to fetch more results. This is returned as NextPageID in the previous response."),
-      pageDate: z.string().optional().describe("The date of the page to continue from if you are doing a time-based query. This is returned as NextPageDate in the previous response.")
+      pageDate: z.string().optional().describe("The date of the page to continue from. Use only if the previous response returned a NextPageDate.")
     })
   }
 );
