@@ -61,17 +61,18 @@ export default function (props: AIAssistantProps) {
     );
 
     const [isRecording, setIsRecording] = useState(false);
+    let graphCallIds: string[] = [];
 
     useEffect(() => {
-
-        const client = clientRef.current;
-        const wavRecorder = wavRecorderRef.current;
-        const wavStreamPlayer = wavStreamPlayerRef.current;
 
         const initialize = async () => {
             if (assistantRef.current === undefined) {
                 assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
             }
+
+            const client = clientRef.current;
+            const wavRecorder = wavRecorderRef.current;
+            const wavStreamPlayer = wavStreamPlayerRef.current;
 
             let participantInfo = await MyDataHelps.getParticipantInfo();
             let projectInfo = await MyDataHelps.getProjectInfo();
@@ -162,6 +163,19 @@ export default function (props: AIAssistantProps) {
                         audioFileUrl = conversationItem.formatted.file.url;
                     }
 
+                    if (conversationItem.type === 'function_call_output' && graphCallIds.includes((conversationItem as any).call_id)) {
+                        if (conversationItem.formatted.output) {
+                            let image = JSON.parse(conversationItem.formatted.output);
+                            if (image && !image.startsWith("error")) {
+                                let imageType: AIAssistantMessageType = 'image';
+                                updatedMessages.push({
+                                    type: imageType,
+                                    content: `data:image/png;base64,${image}`
+                                });
+                            }
+                        }
+                    }
+
                     if (conversationItem.role === 'user') {
                         type = 'user';
                         content = conversationItem.formatted.transcript ||
@@ -178,6 +192,11 @@ export default function (props: AIAssistantProps) {
                     }
                     else if (conversationItem.formatted.tool) {
                         try {
+
+                            if (conversationItem.formatted.tool.name === "graphing") {
+                                graphCallIds.push((conversationItem as any).call_id);
+                            }
+
                             type = 'tool';
                             let formatted = await formatCode(conversationItem.formatted.tool.name, conversationItem.formatted.tool.arguments);
                             content = "```js\n" + formatted + "```";
@@ -198,7 +217,7 @@ export default function (props: AIAssistantProps) {
 
         return () => {
             // cleanup; resets to defaults
-            client.reset();
+            clientRef.current.reset();
         };
 
     }, []);
