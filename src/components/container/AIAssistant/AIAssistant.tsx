@@ -79,12 +79,33 @@ export default function (props: AIAssistantProps) {
             instructions: 'You are a great, upbeat friend.'
         });
 
-        let queryDailySleepTool = convertToOpenAITool(MyDataHelpsTools.QueryDailySleepTool);
-        client.addTool({
-            name: queryDailySleepTool.function.name,
-            description: queryDailySleepTool.function.description || "",
-            parameters: queryDailySleepTool.function.parameters,
-        }, MyDataHelpsTools.QueryDailySleepTool.func);
+        let oldTools = [
+            MyDataHelpsTools.QueryDailySleepTool,
+            MyDataHelpsTools.PersistParticipantInfoTool,
+            MyDataHelpsTools.QueryDeviceDataV2Tool,
+            MyDataHelpsTools.QueryDeviceDataV2AggregateTool,
+            MyDataHelpsTools.QueryNotificationsTool,
+            MyDataHelpsTools.QueryAppleHealthWorkoutsTool,
+            MyDataHelpsTools.QueryAppleHealthActivitySummariesTool,
+            MyDataHelpsTools.QuerySurveyAnswersTool,
+            MyDataHelpsTools.QueryDailyDataTool,
+            MyDataHelpsTools.GetAllDailyDataTypesTool,
+            MyDataHelpsTools.GetEhrNewsFeedPageTool,
+            MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
+            MyDataHelpsTools.GraphingTool,
+            MyDataHelpsTools.UploadedFileQueryTool,
+            MyDataHelpsTools.GetUploadedFileTool
+        ];
+
+        for (let i = 0; i < oldTools.length; i++) {
+            let tool = oldTools[i];
+            let toolDefinition = convertToOpenAITool(tool);
+            client.addTool({
+                name: toolDefinition.function.name,
+                description: toolDefinition.function.description || "",
+                parameters: toolDefinition.function.parameters,
+            }, tool.func);
+        }
 
         client.on('error', (event: any) => console.error(event));
         client.on('conversation.interrupted', async () => {
