@@ -15,7 +15,7 @@ import Chat from '../../presentational/Chat';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import './AIAssistant.css';
-import { convertToOpenAIFunction, convertToOpenAITool } from '@langchain/core/utils/function_calling';
+import { convertToOpenAITool } from '@langchain/core/utils/function_calling';
 import { MyDataHelpsTools } from '../../../helpers';
 
 export interface AIAssistantProps {
@@ -61,115 +61,142 @@ export default function (props: AIAssistantProps) {
     );
 
     const [isRecording, setIsRecording] = useState(false);
-    const [items, setItems] = useState<ItemType[]>([]);
 
     useEffect(() => {
-        if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
-        }
 
         const client = clientRef.current;
         const wavRecorder = wavRecorderRef.current;
         const wavStreamPlayer = wavStreamPlayerRef.current;
 
-        client.updateSession({
-            turn_detection: { type: 'server_vad' },
-            input_audio_transcription: { model: 'whisper-1' },
-            voice: 'alloy',
-            instructions: 'You are a great, upbeat friend.'
-        });
+        const initialize = async () => {
+            if (assistantRef.current === undefined) {
+                assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
+            }
 
-        let oldTools = [
-            MyDataHelpsTools.QueryDailySleepTool,
-            MyDataHelpsTools.PersistParticipantInfoTool,
-            MyDataHelpsTools.QueryDeviceDataV2Tool,
-            MyDataHelpsTools.QueryDeviceDataV2AggregateTool,
-            MyDataHelpsTools.QueryNotificationsTool,
-            MyDataHelpsTools.QueryAppleHealthWorkoutsTool,
-            MyDataHelpsTools.QueryAppleHealthActivitySummariesTool,
-            MyDataHelpsTools.QuerySurveyAnswersTool,
-            MyDataHelpsTools.QueryDailyDataTool,
-            MyDataHelpsTools.GetAllDailyDataTypesTool,
-            MyDataHelpsTools.GetEhrNewsFeedPageTool,
-            MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
-            MyDataHelpsTools.GraphingTool,
-            MyDataHelpsTools.UploadedFileQueryTool,
-            MyDataHelpsTools.GetUploadedFileTool
-        ];
+            let participantInfo = await MyDataHelps.getParticipantInfo();
+            let projectInfo = await MyDataHelps.getProjectInfo();
 
-        for (let i = 0; i < oldTools.length; i++) {
-            let tool = oldTools[i];
-            let toolDefinition = convertToOpenAITool(tool);
-            client.addTool({
-                name: toolDefinition.function.name,
-                description: toolDefinition.function.description || "",
-                parameters: toolDefinition.function.parameters,
-            }, tool.func);
+            let instructions = `You are a health and wellness data assistant. Your purpose is to help users understand their health and wearable data,
+                which includes providing simple summaries and highlighting insights and connections between data. The tone should
+                be clear and friendly. You are not a coach, so should not give advice. You should not be disparaging or discouraging,
+                just objectively share information.
+                
+                You can encourage the user to ask more questions and even suggest additional follow-up questions that might be relevant.
+
+                If the user asks for some data, and you query it with a particular tool, but the returned data does not sufficiently
+                answer the user's question, for example, if the user asks for their last 3 LDL values, and you query the getEhrNewsFeedPage
+                tool and it returns only the last 2 LDL values and a nextPageID, then query the same tool again while passing the nextPageID as the
+                pageID parameter to fetch additional data. Continue this process until you have all the data that the user has asked for, up to 5 iterations.
+
+                User information: ${JSON.stringify(participantInfo)}
+
+                Project information: ${JSON.stringify(projectInfo)}
+                
+                The time right now is ${new Date().toISOString()}.`
+
+            client.updateSession({
+                turn_detection: { type: 'server_vad' },
+                input_audio_transcription: { model: 'whisper-1' },
+                voice: 'alloy',
+                temperature: 0,
+                instructions,
+                model: 'gpt-4o',
+            });
+
+            let oldTools = [
+                MyDataHelpsTools.QueryDailySleepTool,
+                MyDataHelpsTools.PersistParticipantInfoTool,
+                MyDataHelpsTools.QueryDeviceDataV2Tool,
+                MyDataHelpsTools.QueryDeviceDataV2AggregateTool,
+                MyDataHelpsTools.QueryNotificationsTool,
+                MyDataHelpsTools.QueryAppleHealthWorkoutsTool,
+                MyDataHelpsTools.QueryAppleHealthActivitySummariesTool,
+                MyDataHelpsTools.QuerySurveyAnswersTool,
+                MyDataHelpsTools.QueryDailyDataTool,
+                MyDataHelpsTools.GetAllDailyDataTypesTool,
+                MyDataHelpsTools.GetEhrNewsFeedPageTool,
+                MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
+                MyDataHelpsTools.GraphingTool,
+                MyDataHelpsTools.UploadedFileQueryTool,
+                MyDataHelpsTools.GetUploadedFileTool
+            ];
+
+            for (let i = 0; i < oldTools.length; i++) {
+                let tool = oldTools[i];
+                let toolDefinition = convertToOpenAITool(tool);
+                client.addTool({
+                    name: toolDefinition.function.name,
+                    description: toolDefinition.function.description || "",
+                    parameters: toolDefinition.function.parameters,
+                }, tool.func);
+            }
+
+            client.on('error', (event: any) => console.error(event));
+            client.on('conversation.interrupted', async () => {
+                const trackSampleOffset = await wavStreamPlayer.interrupt();
+                if (trackSampleOffset?.trackId) {
+                    const { trackId, offset } = trackSampleOffset;
+                    await client.cancelResponse(trackId, offset);
+                }
+            });
+
+            client.on('conversation.updated', async ({ item, delta }: any) => {
+                const items = client.conversation.getItems();
+                if (delta?.audio) {
+                    wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+                }
+                if (item.status === 'completed' && item.formatted.audio?.length) {
+                    const wavFile = await WavRecorder.decode(
+                        item.formatted.audio,
+                        24000,
+                        24000
+                    );
+                    item.formatted.file = wavFile;
+                }
+
+                let updatedMessages = [];
+
+                for (let i = 0; i < items.length; i++) {
+                    let conversationItem = items[i];
+                    let audioFileUrl, content = "", type: AIAssistantMessageType = "user";
+
+                    if (conversationItem.formatted.file) {
+                        audioFileUrl = conversationItem.formatted.file.url;
+                    }
+
+                    if (conversationItem.role === 'user') {
+                        type = 'user';
+                        content = conversationItem.formatted.transcript ||
+                            (conversationItem.formatted.audio?.length
+                                ? '(awaiting transcript)'
+                                : conversationItem.formatted.text ||
+                                '(item sent)');
+                    }
+                    else if (conversationItem.role === 'assistant') {
+                        type = 'ai';
+                        content = conversationItem.formatted.transcript ||
+                            conversationItem.formatted.text ||
+                            '(truncated)';
+                    }
+                    else if (conversationItem.formatted.tool) {
+                        try {
+                            type = 'tool';
+                            let formatted = await formatCode(conversationItem.formatted.tool.name, conversationItem.formatted.tool.arguments);
+                            content = "```js\n" + formatted + "```";
+                        }
+                        catch (e) {
+
+                        }
+                    }
+
+                    updatedMessages.push({ type, content, audioFileUrl });
+                }
+
+                setMessages(updatedMessages);
+            });
         }
 
-        client.on('error', (event: any) => console.error(event));
-        client.on('conversation.interrupted', async () => {
-            const trackSampleOffset = await wavStreamPlayer.interrupt();
-            if (trackSampleOffset?.trackId) {
-                const { trackId, offset } = trackSampleOffset;
-                await client.cancelResponse(trackId, offset);
-            }
-        });
-        client.on('conversation.updated', async ({ item, delta }: any) => {
-            const items = client.conversation.getItems();
-            if (delta?.audio) {
-                wavStreamPlayer.add16BitPCM(delta.audio, item.id);
-            }
-            if (item.status === 'completed' && item.formatted.audio?.length) {
-                const wavFile = await WavRecorder.decode(
-                    item.formatted.audio,
-                    24000,
-                    24000
-                );
-                item.formatted.file = wavFile;
-            }
-
-            setItems(items);
-
-            let updatedMessages = [];
-
-            for (let i = 0; i < items.length; i++) {
-                let conversationItem = items[i];
-                let audioFileUrl, content = "", type: AIAssistantMessageType = "user";
-
-                if (conversationItem.formatted.file) {
-                    audioFileUrl = conversationItem.formatted.file.url;
-                }
-
-                if (conversationItem.role === 'user') {
-                    type = 'user';
-                    content = conversationItem.formatted.transcript ||
-                        (conversationItem.formatted.audio?.length
-                            ? '(awaiting transcript)'
-                            : conversationItem.formatted.text ||
-                            '(item sent)');
-                }
-
-                if (conversationItem.role === 'assistant') {
-                    type = 'ai';
-                    content = conversationItem.formatted.transcript ||
-                        conversationItem.formatted.text ||
-                        '(truncated)';
-                }
-
-                if (conversationItem.formatted.tool) {
-                    type = 'tool';
-                    let formatted = await formatCode(conversationItem.formatted.tool.name, conversationItem.formatted.tool.arguments);
-                    content = "```js\n" + formatted + "```";
-                }
-
-                updatedMessages.push({ type, content, audioFileUrl });
-            }
-
-            setMessages(updatedMessages);
-        });
-
-        setItems(client.conversation.getItems());
+        initialize();
 
         return () => {
             // cleanup; resets to defaults
@@ -184,7 +211,6 @@ export default function (props: AIAssistantProps) {
         const wavStreamPlayer = wavStreamPlayerRef.current;
 
         setIsRecording(true);
-        setItems(client.conversation.getItems());
 
         // Connect to microphone
         await wavRecorder.begin();
@@ -200,7 +226,6 @@ export default function (props: AIAssistantProps) {
 
     const stopRecording = useCallback(async () => {
         setIsRecording(false);
-        setItems([]);
 
         const client = clientRef.current;
         client.disconnect();
