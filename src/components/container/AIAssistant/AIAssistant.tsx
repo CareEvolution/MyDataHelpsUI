@@ -35,6 +35,7 @@ export interface AIAssistantMessage {
     type: AIAssistantMessageType;
     content: string;
     runId?: string;
+    audioFileUrl?: string;
 }
 
 export default function (props: AIAssistantProps) {
@@ -78,11 +79,11 @@ export default function (props: AIAssistantProps) {
             instructions: 'You are a great, upbeat friend.'
         });
 
-        let coco = convertToOpenAITool(MyDataHelpsTools.QueryDailySleepTool);
+        let queryDailySleepTool = convertToOpenAITool(MyDataHelpsTools.QueryDailySleepTool);
         client.addTool({
-            name: coco.function.name,
-            description: coco.function.description || "",
-            parameters: coco.function.parameters,
+            name: queryDailySleepTool.function.name,
+            description: queryDailySleepTool.function.description || "",
+            parameters: queryDailySleepTool.function.parameters,
         }, MyDataHelpsTools.QueryDailySleepTool.func);
 
         client.on('error', (event: any) => console.error(event));
@@ -106,7 +107,45 @@ export default function (props: AIAssistantProps) {
                 );
                 item.formatted.file = wavFile;
             }
+
             setItems(items);
+
+            let updatedMessages = [];
+
+            for (let i = 0; i < items.length; i++) {
+                let conversationItem = items[i];
+                let audioFileUrl, content = "", type: AIAssistantMessageType = "user";
+
+                if (conversationItem.formatted.file) {
+                    audioFileUrl = conversationItem.formatted.file.url;
+                }
+
+                if (conversationItem.role === 'user') {
+                    type = 'user';
+                    content = conversationItem.formatted.transcript ||
+                        (conversationItem.formatted.audio?.length
+                            ? '(awaiting transcript)'
+                            : conversationItem.formatted.text ||
+                            '(item sent)');
+                }
+
+                if (conversationItem.role === 'assistant') {
+                    type = 'ai';
+                    content = conversationItem.formatted.transcript ||
+                        conversationItem.formatted.text ||
+                        '(truncated)';
+                }
+
+                if (conversationItem.formatted.tool) {
+                    type = 'tool';
+                    let formatted = await formatCode(conversationItem.formatted.tool.name, conversationItem.formatted.tool.arguments);
+                    content = "```js\n" + formatted + "```";
+                }
+
+                updatedMessages.push({ type, content, audioFileUrl });
+            }
+
+            setMessages(updatedMessages);
         });
 
         setItems(client.conversation.getItems());
@@ -273,73 +312,13 @@ export default function (props: AIAssistantProps) {
     }
 
     return <>
-        <div className="content-block conversation">
-            <div className="content-block-body" data-conversation-content>
-                {!items.length && `awaiting connection...`}
-                {items.map((conversationItem, i) => {
-                    return (
-                        <div className="conversation-item" key={conversationItem.id}>
-                            <div className={`speaker ${conversationItem.role || ''}`}>
-                                <div>
-                                    {(
-                                        conversationItem.role || conversationItem.type
-                                    ).replace('_', ' ')}
-                                </div>
-                                <div
-                                    className="close"
-                                    onClick={() => { }}
-                                >
-                                    <span>x</span>
-                                </div>
-                            </div>
-                            <div className={`speaker-content`}>
-                                {/* tool response */}
-                                {conversationItem.type === 'function_call_output' && (
-                                    <div>{conversationItem.formatted.output}</div>
-                                )}
-                                {/* tool call */}
-                                {!!conversationItem.formatted.tool && (
-                                    <div>
-                                        {conversationItem.formatted.tool.name}(
-                                        {conversationItem.formatted.tool.arguments})
-                                    </div>
-                                )}
-                                {!conversationItem.formatted.tool &&
-                                    conversationItem.role === 'user' && (
-                                        <div>
-                                            {conversationItem.formatted.transcript ||
-                                                (conversationItem.formatted.audio?.length
-                                                    ? '(awaiting transcript)'
-                                                    : conversationItem.formatted.text ||
-                                                    '(item sent)')}
-                                        </div>
-                                    )}
-                                {!conversationItem.formatted.tool &&
-                                    conversationItem.role === 'assistant' && (
-                                        <div>
-                                            {conversationItem.formatted.transcript ||
-                                                conversationItem.formatted.text ||
-                                                '(truncated)'}
-                                        </div>
-                                    )}
-                                {conversationItem.formatted.file && (
-                                    <audio
-                                        src={conversationItem.formatted.file.url}
-                                        controls
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
         {messages && <Chat innerRef={props.innerRef} messages={messages.map((msg) => {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
                 cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
+                audioFileUrl: msg.audioFileUrl
             }
         })} onSendMessage={addUserMessage} onStartRecording={startRecording} onStopRecording={stopRecording} isRecording={isRecording}
             loading={loading} inputDisabled={inputDisabled} />}

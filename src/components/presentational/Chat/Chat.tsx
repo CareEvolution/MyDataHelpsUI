@@ -31,6 +31,7 @@ export interface ChatMessage {
     content: string;
     type: ChatMessageType;
     cssClass?: string;
+    audioFileUrl?: string;
 }
 
 hljs.registerLanguage('javascript', javascript);
@@ -67,6 +68,7 @@ export default function (props: ChatProps) {
                                     <div className="mdhui-chat-sent-message">
                                         {parse(md.render(message.content))}
                                     </div>
+                                    {message.audioFileUrl && <audio src={message.audioFileUrl} controls />}
                                 </div>
                             }
                             else if (message.type === "received-image") {
@@ -78,6 +80,7 @@ export default function (props: ChatProps) {
                                 return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
                                     {message.icon}
                                     <div className={"mdhui-chat-received-message" + (message.cssClass ? (" " + message.cssClass) : "")}>{parse(md.render(message.content))}</div>
+                                    {message.audioFileUrl && <audio src={message.audioFileUrl} controls />}
                                 </div>
                             }
                         })}

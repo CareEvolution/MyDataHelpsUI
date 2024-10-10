@@ -82,8 +82,8 @@
 
 .mdhui-chat .mdhui-chat-sent-message-row {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     padding-right: var(--mdhui-padding-md);
 }
 
@@ -92,6 +92,7 @@
     max-width: 70%;
     padding: var(--mdhui-padding-xs) var(--mdhui-padding-sm);
     border-radius: var(--mdhui-card-border-radius);
+    margin-left: auto;
 }
 
 .mdhui-chat .mdhui-chat-message .svg-inline--fa,
