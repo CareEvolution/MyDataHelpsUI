@@ -29,6 +29,7 @@
     "connect-error-reconnect": "Unexpected error.  Please reconnect.",
     "connected": "Connected",
     "search": "Search",
+    "no-providers-found": "Provider or Health Plan not listed?",
     "connect-fitbit-intro": "You can share data from your Fitbit account if you have one.  To begin, click or tap below to log in with your Fitbit credentials.",
     "connect-fitbit-button": "Connect Fitbit",
     "received-fitbit-data": "We are receiving your Fitbit data!",
