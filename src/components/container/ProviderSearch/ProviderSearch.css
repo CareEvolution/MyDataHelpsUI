@@ -22,10 +22,9 @@
     line-height: 1.5em;
     padding-left: 40px;
     box-sizing: border-box;
-    font-size: .88em;
+    font-size: 0.88em;
     padding-top: 8px;
     padding-bottom: 8px;
-    border: none;
     background: var(--mdhui-background-color-0);
     color: var(--mdhui-text-color-1);
 }
@@ -35,7 +34,7 @@
     left: 16px;
     top: 12px;
     color: var(--mdhui-text-color-4);
-    font-size: .8em;
+    font-size: 0.8em;
 }
 
 .mdhui-provider-search .search-results .provider {
@@ -44,7 +43,7 @@
     position: relative;
     padding-right: 96px;
     cursor: pointer;
-    font-size: .88em;
+    font-size: 0.88em;
     width: 100%;
 }
 
@@ -57,12 +56,16 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
-    background-color:#FFF;
+    background-color: #FFF;
     border-radius: 4px;
 }
 
+.mdhui-provider-search .search-results .provider .provider-info .provider-name {
+    font-weight: bold;
+}
+
 .mdhui-provider-search .search-results .provider .provider-status {
-    font-size: .88em;
+    font-size: 0.88em;
     font-weight: bold;
 }
 
@@ -72,4 +75,27 @@
 
 .mdhui-provider-search .search-results .provider .provider-status.connected-status {
     color: var(--mdhui-color-success);
+}
+
+/* Updated .no-results styles with prefix */
+.mdhui-provider-search .no-results {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.mdhui-provider-search .no-results p {
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #666;
+}
+
+.mdhui-provider-search .no-results a {
+    font-size: 16px;
+    color: var(--mdhui-color-primary);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.mdhui-provider-search .no-results a:hover {
+    text-decoration: none;
 }
