@@ -98,9 +98,7 @@ export default function (props: AIAssistantProps) {
                 turn_detection: { type: 'server_vad' },
                 input_audio_transcription: { model: 'whisper-1' },
                 voice: 'alloy',
-                temperature: 0,
-                instructions,
-                model: 'gpt-4o',
+                instructions
             });
 
             let oldTools = [
