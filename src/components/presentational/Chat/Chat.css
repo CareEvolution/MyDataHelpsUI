@@ -16,6 +16,7 @@
 .mdhui-chat .mdhui-chat-messages-scroll-wrapper {
     overflow-y: auto;
     height: 100%;
+    overflow-x: hidden;
 }
 
 .mdhui-chat .mdhui-chat-messages {
