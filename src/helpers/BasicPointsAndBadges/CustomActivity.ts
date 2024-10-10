@@ -10,6 +10,6 @@ export async function awardCustomActivityPoints(activity: CustomActivity, activi
     const customField = participantInfo.customFields[activity.customField];
     const activityCompletions = customField ? JSON.parse(customField) : 0;
     const newPoints = activityCompletions * activity.points;
-    const newActivityState = { pointsAwarded: activityState.pointsAwarded + newPoints };
+    const newActivityState = { pointsAwarded: newPoints };
     return newActivityState;
 }
