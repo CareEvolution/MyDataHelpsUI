@@ -21,7 +21,7 @@ export interface ProviderSearchProps {
   connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
-export type ProviderSearchPreviewState = 'Default';
+export type ProviderSearchPreviewState = 'Default' | 'EmptyResults';
 
 let currentRequestID = 0;
 
@@ -46,6 +46,12 @@ export default function (props: ProviderSearchProps) {
   function initialize() {
     if (props.previewState === 'Default') {
       updateSearchResults(previewProviders);
+      setSearching(false);
+      return;
+    }
+
+    if (props.previewState === 'EmptyResults') {
+      updateSearchResults([]);
       setSearching(false);
       return;
     }
@@ -128,11 +134,6 @@ export default function (props: ProviderSearchProps) {
     }
   }
 
-  function handleProviderNotListedClick(event: React.MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
-    MyDataHelps.openApplication('https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635');
-  }
-
   function onApplicationDidBecomeVisible() {
     loadExternalAccounts().then(function () {
       performSearch(searchStringRef.current);
@@ -186,7 +187,11 @@ export default function (props: ProviderSearchProps) {
         {!searching && searchResults.length === 0 && (
           <div className="no-results">
             <p>{language('no-providers-found')}</p>
-            <a href="#" onClick={handleProviderNotListedClick}>
+            <a
+              href="https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {language('provider-not-listed')}
             </a>
           </div>

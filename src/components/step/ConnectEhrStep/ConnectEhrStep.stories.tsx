@@ -73,3 +73,13 @@ ConnectEhrStepLive.args = {
     onProviderConnected: () => {},
     onNextButtonClick: () => {}
 };
+
+export const ConnectEhrStepEmptyResults = Template.bind({});
+ConnectEhrStepEmptyResults.args = {
+    title: "MyDataHelps",
+    text: "Connect to EHR",
+    previewState: "EmptyResults",
+    styles: {},
+    onProviderConnected: () => {},
+    onNextButtonClick: () => {}
+};
