@@ -130,10 +130,7 @@ export default function (props: ProviderSearchProps) {
 
   function handleProviderNotListedClick(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
-    // Implement the desired action when the link is clicked
-    // For example, open a modal or navigate to another page
-    // Replace 'your-application-url' with your actual URL or function
-    MyDataHelps.openApplication('your-application-url');
+    MyDataHelps.openApplication('https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635');
   }
 
   function onApplicationDidBecomeVisible() {
