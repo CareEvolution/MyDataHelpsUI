@@ -186,13 +186,12 @@ export default function (props: ProviderSearchProps) {
 
         {!searching && searchResults.length === 0 && (
           <div className="no-results">
-            <p>{language('no-providers-found')}</p>
             <a
               href="https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {language('provider-not-listed')}
+              {language('no-providers-found')}
             </a>
           </div>
         )}
