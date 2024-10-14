@@ -4,7 +4,6 @@ import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers";
 import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
-import { DailyDataGoals } from "../../presentational/Grid/Grid.stories";
 import DailyDataGoal from "../DailyDataGoal";
 import { Grid, Title } from "../../presentational";
 import BasicBadges from "../BasicBadges";
@@ -141,18 +140,19 @@ export const WithGoalsAndBadges = {
     </Layout>
 };
 
-
-
 export const Live = {
     args: {
+        pointsLabelColor: "blue",
+        progressBarFillColor: "green",
+        customField: "PointsAndBadges",
         pointsPerBadge: 1000,
         activities: [
             {
-                key: "FitbitSleepData",
+                key: "SleepData",
                 type: "dailyData",
                 activationDate: new Date("2024-05-20"),
                 points: 200,
-                dailyDataType: DailyDataType.FitbitSleepMinutes,
+                dailyDataType: DailyDataType.SleepMinutes,
                 awardThreshold: 1
             },
             {
@@ -175,8 +175,13 @@ export const Live = {
                 points: 250,
                 providerCategories: ["Provider", "Health Plan"]
             },
-        ],
-        customField: "PointsAndBadges",
+            {
+                key: "CustomField",
+                type: "custom",
+                points: 25,
+                customField: "PersonalGoal"
+            }
+        ]
     },
     render: render
 };
