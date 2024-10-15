@@ -1,3 +1,4 @@
+export { default as Achievement } from './Achievement';
 export { default as Action } from "./Action"
 export { default as ActivityMeter } from "./ActivityMeter"
 export { default as BasicBadge } from "./BasicBadge"

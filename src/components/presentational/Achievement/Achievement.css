@@ -1,0 +1,54 @@
+.mdhui-achievement {
+    display: grid;
+    grid-template-columns: max-content auto;
+    padding: 16px;
+}
+
+.mdhui-achievement-off {
+    fill: #ddd;
+    stroke: #ddd;
+    color: #ddd;
+}
+
+.mdhui-achievement-on {
+    fill: #6ac2da;
+    stroke: #6ac2da;
+    color: #6ac2da;
+}
+
+.mdhui-achievement-complete {
+    fill: #94ce51;
+    stroke: #94ce51;
+    color: #94ce51;
+}
+
+.mdhui-achievement-chart {
+    position: relative;
+    height: 80px;
+    width: 80px;
+}
+
+.mdhui-achievement-chart-icon-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mdhui-achievement-chart-icon-default {
+    font-size: 34px;
+}
+
+.mdhui-achievement-info {
+    padding-left: 8px;
+}
+
+.mdhui-achievement-ratio {
+    padding-top: 12px;
+    font-size: 2em;
+    color: #9a9a9a;
+}
