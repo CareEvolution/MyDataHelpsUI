@@ -1,3 +1,4 @@
+export { default as Achievement, AchievementPreviewState } from "./Achievement"
 export { default as AIAssistant } from "./AIAssistant"
 export { default as AllergiesList } from "./AllergiesList"
 export { default as AppDownload } from "./AppDownload"
