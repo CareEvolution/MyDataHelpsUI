@@ -10,7 +10,7 @@ import { AchievementPreviewState, previewData } from "./Achievement.previewData"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 
 export interface AchievementProps {
-    previewState: 'loading' | AchievementPreviewState;
+    previewState?: 'loading' | AchievementPreviewState;
     label: string;
     targetValue: number;
     maxValue: number;
