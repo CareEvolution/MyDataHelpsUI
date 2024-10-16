@@ -44,11 +44,20 @@
 }
 
 .mdhui-achievement-info {
+    padding-top: 12px;
     padding-left: 8px;
 }
 
+.mdhui-achievement-ratio, .mdhui-achievement-ratio-loading {
+    height: 40px;
+    line-height: 40px;
+}
+
 .mdhui-achievement-ratio {
-    padding-top: 12px;
     font-size: 2em;
-    color: #9a9a9a;
+}
+
+.mdhui-achievement-ratio-loading {
+    padding-left: 8px;
+    font-size: 1.5em;
 }

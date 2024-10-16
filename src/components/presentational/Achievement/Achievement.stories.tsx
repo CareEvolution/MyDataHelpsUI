@@ -26,9 +26,9 @@ type Story = StoryObj<AchievementStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
+        previewState: 'complete',
         maxValue: 7,
         targetValue: 4,
-        currentValue: 5,
         iconType: 'default',
         label: 'Days Wearing Fitness Tracker',
         notStartedColor: '',
@@ -41,14 +41,16 @@ export const Default: Story = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'not started', 'in progress', 'complete', 'maxed out', 'random']
+        },
         maxValue: {
             name: 'maximum value'
         },
         targetValue: {
             name: 'target value'
-        },
-        currentValue: {
-            name: 'current value'
         },
         iconType: {
             name: 'icon',
