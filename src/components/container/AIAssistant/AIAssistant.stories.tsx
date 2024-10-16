@@ -21,6 +21,13 @@ export default {
                 summary: false
             }
         },
+        saveGraphImages: {
+            control: 'boolean',
+            description: 'If turned on the assistant will save generated graph images via the Uploaded Files API.',
+            defaultValue: {
+                summary: false
+            }
+        },
         additionalInstructions: {
             control: 'text',
             description: 'Additional system instructions to be passed to the assistant.',
@@ -52,7 +59,10 @@ export default {
                 queryDailyDataTool: MyDataHelpsTools.QueryDailyDataTool,
                 getAllDailyDataTypes: MyDataHelpsTools.GetAllDailyDataTypesTool,
                 getEhrNewsFeedPage: MyDataHelpsTools.GetEhrNewsFeedPageTool,
-                getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool
+                getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
+                graphingTool: MyDataHelpsTools.GraphingTool,
+                uploadedFileQueryTool: MyDataHelpsTools.UploadedFileQueryTool,
+                getUploadedFileTool: MyDataHelpsTools.GetUploadedFileTool
             }
         }
     }
@@ -95,6 +105,14 @@ export const Default = {
 
 export const Debug = {
     args: {
+        debug: true
+    },
+    render: render
+};
+
+export const SaveGraphImages = {
+    args: {
+        saveGraphImages: true,
         debug: true
     },
     render: render

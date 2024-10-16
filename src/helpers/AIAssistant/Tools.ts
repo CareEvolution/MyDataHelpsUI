@@ -262,3 +262,62 @@ export const GetEhrNewsFeedPageTool = tool(
     })
   }
 );
+
+export const GraphingTool = tool(
+  async (input): Promise<string> => {
+
+    let response = await fetch('https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws', {
+      method: 'POST',
+      body: JSON.stringify({ code: input.code }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${MyDataHelps.token.access_token}`
+      }
+    }).then(response => response.json());
+
+    return response.image || "error: unable to generate image";
+  },
+  {
+    name: "graphing",
+    description: `If the user asks for something to be graphed, use this tool. This tool returns a base 64 encoded string
+      that represents an image. After using this tool, the LLM should respond with 'Your generated graph is displayed above.' without interpreting 
+      or including the image content in the response. The UI will handle displaying the image.`,
+    schema: z.object({
+      code: z.string().describe("The python code that, when executed, will generate an image representing the graph.")
+    })
+  }
+);
+
+export const UploadedFileQueryTool = tool(
+  async (input): Promise<string> => {
+
+    let response = await MyDataHelps.queryFiles(input);
+
+    return JSON.stringify(response);
+  },
+  {
+    name: "uploadedFileQuery",
+    description: `Use this tool to query files uploaded by the current participant. 
+      AI-generated graphs are saved under the 'ai-graph' category.`,
+    schema: z.object({
+      category: z.string().optional().describe("Category of files to query for.")
+    })
+  }
+);
+
+export const GetUploadedFileTool = tool(
+  async (input): Promise<string> => {
+
+    let response = await MyDataHelps.getFileDownloadUrl(input.key);
+
+    return JSON.stringify(response);
+  },
+  {
+    name: "getUploadedFile",
+    description: `Use this tool to get a file uploaded by the current participant. This tool returns a presigned URL to download the file. 
+      If the file is an image, the LLM should respond with 'Please see your uploaded file above.' and nothing else.`,
+    schema: z.object({
+      key: z.string().describe("The file key of the file to get.")
+    })
+  }
+);
