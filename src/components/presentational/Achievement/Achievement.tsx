@@ -48,7 +48,7 @@ export default function (props: AchievementProps) {
             setValue(Math.max(0, Math.min(value ?? 0, props.maxValue)));
             setLoading(false);
         })
-    }, [], [props.previewState, props.targetValue, props.maxValue]);
+    }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
 
     const getSegmentColor = (index: number) => {
         let segmentColor = notStartedColor;
