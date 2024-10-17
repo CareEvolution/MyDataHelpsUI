@@ -19,7 +19,7 @@ export interface CustomFieldIntegerValueProvider extends SingleValueProvider<num
     customField: string;
 }
 
-export const ValueProviderFactory = {
+export const SingleValueProviderFactory = {
     createStaticIntegerValueProvider: (staticValue: number): StaticIntegerValueProvider => {
         return {
             type: 'static integer',
