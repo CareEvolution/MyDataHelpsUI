@@ -24,6 +24,8 @@ export const ValueProviderFactory = {
         return {
             type: 'customField integer',
             getValue: async () => {
+                if (!customField) return undefined;
+
                 const participantInfo = await MyDataHelps.getParticipantInfo();
                 if (participantInfo.customFields.hasOwnProperty(customField)) {
                     const valueAsString = participantInfo.customFields[customField];
