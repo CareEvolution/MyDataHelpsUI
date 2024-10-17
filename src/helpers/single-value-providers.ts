@@ -1,6 +1,6 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
-export type SingleValueProviderType = 'static' | 'random' | 'customField';
+export type SingleValueProviderType = 'static integer' | 'random integer' | 'customField integer';
 
 export interface SingleValueProvider<T> {
     type: SingleValueProviderType;
@@ -10,19 +10,19 @@ export interface SingleValueProvider<T> {
 export const ValueProviderFactory = {
     createStaticIntegerValueProvider: (value: number): SingleValueProvider<number> => {
         return {
-            type: 'static',
+            type: 'static integer',
             getValue: () => Promise.resolve(value)
         };
     },
     createRandomIntegerValueProvider: (maxValue: number): SingleValueProvider<number> => {
         return {
-            type: 'random',
+            type: 'random integer',
             getValue: () => Promise.resolve(Math.round(Math.random() * maxValue))
         };
     },
     createCustomFieldIntegerValueProvider: (customField: string): SingleValueProvider<number> => {
         return {
-            type: 'customField',
+            type: 'customField integer',
             getValue: async () => {
                 const participantInfo = await MyDataHelps.getParticipantInfo();
                 if (participantInfo.customFields.hasOwnProperty(customField)) {
