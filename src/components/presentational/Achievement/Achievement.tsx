@@ -44,7 +44,7 @@ export default function (props: AchievementProps) {
             ? previewData(props.previewState, props.targetValue, props.maxValue).valueProvider
             : props.valueProvider;
 
-        valueProvider().then(value => {
+        valueProvider.getValue().then(value => {
             setValue(Math.max(0, Math.min(value ?? 0, props.maxValue)));
             setLoading(false);
         })
