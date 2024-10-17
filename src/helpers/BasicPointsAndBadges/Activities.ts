@@ -1,8 +1,10 @@
 import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
 
+export type BadgeActivityType = "dailyData" | "surveyCompleted" | "connectExternalAccount" | "custom";
+
 export interface BasicPointsForBadgesActivity {
     key: string;
-    type: "dailyData" | "surveyCompleted" | "connectExternalAccount" | "custom";
+    type: BadgeActivityType;
     points: number;
 }
 

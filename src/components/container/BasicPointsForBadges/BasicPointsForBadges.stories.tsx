@@ -41,6 +41,15 @@ export const Default = {
     render: render
 };
 
+export const UnConfigured = {
+    args: {
+        previewState: "default",
+        pointsPerBadge: 0,
+        activities : []
+    },
+    render: render
+};
+
 export const ShowTotalPoints = {
     args: {
         previewState: "default",
@@ -180,6 +189,24 @@ export const Live = {
                 type: "custom",
                 points: 25,
                 customField: "PersonalGoal"
+            }
+        ]
+    },
+    render: render
+};
+
+export const LiveConnectedDevice = {
+    args: {
+        pointsLabelColor: "blue",
+        progressBarFillColor: "purple",
+        customField: "PointsAndBadges",
+        pointsPerBadge: 100,
+        activities: [
+            {
+                key: "ConnectEhr",
+                type: "connectExternalAccount123",
+                points: 100,
+                providerCategories: ["Device Manufacturer"]
             }
         ]
     },
