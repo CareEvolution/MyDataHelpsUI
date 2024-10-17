@@ -1,6 +1,6 @@
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
-export type SingleValueProviderType = 'static integer' | 'random integer' | 'customField integer';
+export type SingleValueProviderType = 'static integer' | 'random integer' | 'custom field integer';
 
 export interface SingleValueProvider<T> {
     type: SingleValueProviderType;
@@ -36,7 +36,7 @@ export const ValueProviderFactory = {
     },
     createCustomFieldIntegerValueProvider: (customField: string): CustomFieldIntegerValueProvider => {
         return {
-            type: 'customField integer',
+            type: 'custom field integer',
             customField: customField,
             getValue: async () => {
                 if (!customField) return undefined;
