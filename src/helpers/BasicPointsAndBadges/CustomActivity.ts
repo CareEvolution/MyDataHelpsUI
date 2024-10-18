@@ -1,4 +1,4 @@
-import MyDataHelps, { ParticipantInfo } from "@careevolution/mydatahelps-js";
+import { ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState } from "./Activities";
 
 export interface CustomActivity extends BasicPointsForBadgesActivity {
@@ -6,7 +6,7 @@ export interface CustomActivity extends BasicPointsForBadgesActivity {
     customField: string;
 }
 
-export async function awardCustomActivityPoints(activity: CustomActivity, activityState: BasicPointsForBadgesActivityState, participantInfo: ParticipantInfo) {
+export async function awardCustomActivityPoints(activity: CustomActivity, participantInfo: ParticipantInfo) {
     const customField = participantInfo.customFields[activity.customField];
     const activityCompletions = customField ? JSON.parse(customField) : 0;
     const newPoints = activityCompletions * activity.points;

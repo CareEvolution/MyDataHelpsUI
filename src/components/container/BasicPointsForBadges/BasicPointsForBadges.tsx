@@ -23,7 +23,15 @@ export interface BasicPointsForBadgesProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: BasicPointsForBadgesProps) {
+/**
+ * Earn points for completing activities. Badges are earned once pointsPerBadge are reached.
+ * The progress bar will fill as points are earned. When a badge is earned a celebration step 
+ * will show and the progress bar will then reset. 
+ * Activity types supported are Survey Completion, Daily device data like sleep and steps, 
+ * connecting external accounts like an EHR, Health Plan, or wearable device, 
+ * and lastly based on the participant's custom field value. 
+*/
+export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
     let [badges, setBadges] = React.useState<number[] | undefined>(undefined);
     let [points, setPoints] = React.useState<number | undefined>(undefined);
 
