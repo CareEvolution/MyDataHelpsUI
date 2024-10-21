@@ -1,5 +1,5 @@
 import { ParticipantInfo } from "@careevolution/mydatahelps-js";
-import { CustomActivity } from "../../../dist";
+import { CustomActivity } from "./CustomActivity";
 import { awardCustomActivityPoints } from "./CustomActivity";
 
 describe("Custom Activity Awards", () => {
@@ -57,4 +57,20 @@ describe("Custom Activity Awards", () => {
         const newActivityState = await awardCustomActivityPoints(activity, pptInfo);
         expect(newActivityState.pointsAwarded).toBe(0);
    });
+
+    it("should handle decimal values in custom field", async () => {
+        const pptInfoWithDecimal = {
+            ...pptInfo,
+            customFields: { DailyGoals: "1.2" }
+        };
+        const activity: CustomActivity = {
+            key: "CustomGoals",
+            type: "custom",
+            points: 8,
+            customField: "DailyGoals"
+        };
+
+        const newActivityState = await awardCustomActivityPoints(activity, pptInfoWithDecimal);
+        expect(newActivityState.pointsAwarded).toBe(9.6); // Assuming rounding down
+    });
  });

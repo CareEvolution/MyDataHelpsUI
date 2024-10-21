@@ -10,6 +10,7 @@ import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
 import { Description } from "@storybook/blocks"
 import { Meta, StoryObj } from "@storybook/react";
+import { ConnectExternalAccountActivity, CustomActivity, SurveyCompletionActivity } from "../../../../dist";
 
 const meta: Meta<typeof BasicPointsForBadges> = {
     title: "Container/BasicPointsForBadges",
@@ -162,7 +163,7 @@ export const Live : Story = {
                 points: 200,
                 dailyDataType: DailyDataType.SleepMinutes,
                 awardThreshold: 1
-            },
+            } as DailyDataActivity,
             {
                 key: "FitbitWearTime",
                 type: "dailyData",
@@ -170,25 +171,25 @@ export const Live : Story = {
                 points: 100,
                 dailyDataType: DailyDataType.FitbitWearMinutes,
                 awardThreshold: 600
-            },
+            } as DailyDataActivity,
             {
                 key: "FitbitOrder",
                 type: "surveyCompleted",
                 points: 800,
                 surveyName: "OrderDevice"
-            },
+            } as SurveyCompletionActivity,
             {
                 key: "ConnectEhr",
                 type: "connectExternalAccount",
                 points: 250,
                 providerCategories: ["Provider", "Health Plan"]
-            },
+            } as ConnectExternalAccountActivity,
             {
                 key: "CustomField",
                 type: "custom",
                 points: 25,
                 customField: "PersonalGoal"
-            }
+            } as CustomActivity
         ]
     },
     render: render
