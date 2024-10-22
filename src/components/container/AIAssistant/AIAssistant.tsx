@@ -7,6 +7,7 @@ import { StructuredTool } from '@langchain/core/tools';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
+import { CustomEventTrackerCallbackHandler } from '../../../helpers/AIAssistant/Callbacks';
 import language from '../../../helpers/language';
 import Chat from '../../presentational/Chat';
 
@@ -38,13 +39,11 @@ export default function (props: AIAssistantProps) {
     const [loading, setLoading] = useState("");
     const [inputDisabled, setInputDisabled] = useState(false);
 
-    let lastAIMessage = "";
-
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
+            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, [new CustomEventTrackerCallbackHandler()], props.tools, props.appendTools);
         }
     }, []);
 
@@ -55,14 +54,6 @@ export default function (props: AIAssistantProps) {
         if (props.previewState === "default") return;
 
         setInputDisabled(true);
-
-        MyDataHelps.trackCustomEvent({
-            eventType: "ai-assistant-message",
-            properties: {
-                type: "user",
-                body: newMessage
-            }
-        });
 
         await assistantRef.current?.ask(newMessage, async function (streamEvent: StreamEvent) {
 
@@ -120,30 +111,11 @@ export default function (props: AIAssistantProps) {
                         }
                     }
 
-                    MyDataHelps.trackCustomEvent({
-                        eventType: "ai-assistant-message",
-                        properties: {
-                            type: "tool",
-                            body: `${toolName}(${toolInput})`
-                        }
-                    });
+
                 }
             }
 
-            if (kind === "chat_model" && type === "start") {
-                lastAIMessage = "";
-            }
-
             if (kind === "chat_model" && type === "end") {
-
-                MyDataHelps.trackCustomEvent({
-                    eventType: "ai-assistant-message",
-                    properties: {
-                        type: "ai",
-                        body: lastAIMessage
-                    }
-                });
-
                 setInputDisabled(false);
             }
         });
@@ -160,8 +132,6 @@ export default function (props: AIAssistantProps) {
                 return [...prevMessages, { type: 'ai', content: message, runId: runId }];
             }
         });
-
-        lastAIMessage += message;
     }
 
     const addMessage = function (runId: string, message: string, type: AIAssistantMessageType) {

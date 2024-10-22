@@ -60,7 +60,8 @@ export class MyDataHelpsAIAssistant {
             const event of await this.graph.streamEvents(inputs, {
                 streamMode: "values",
                 version: "v2",
-                configurable: { thread_id: this.participantId }
+                configurable: { thread_id: this.participantId },
+                callbacks: this.callbacks
             })
         ) {
             onEvent(event);
@@ -88,8 +89,7 @@ export class MyDataHelpsAIAssistant {
         const boundModel = new ChatOpenAI({
             model: "gpt-4o-2024-08-06",
             temperature: 0,
-            apiKey: MyDataHelps.token.access_token,
-            callbacks: this.callbacks
+            apiKey: MyDataHelps.token.access_token
         }, {
             baseURL: this.baseUrl
         }).bindTools(this.tools.map(t => convertToOpenAITool(t)));
