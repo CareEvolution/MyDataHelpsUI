@@ -1,15 +1,10 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
-import MyDataHelps, { ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import { faExclamationTriangle, faCheckCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
-import add from 'date-fns/add'
-import parseISO from 'date-fns/parseISO'
-import formatISO from 'date-fns/formatISO'
-import isAfter from 'date-fns/isAfter'
+import { add, parseISO, formatISO, isAfter } from 'date-fns'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ConnectDeviceProps {
@@ -22,6 +17,7 @@ export interface ConnectDeviceProps {
 	innerRef?: React.Ref<HTMLDivElement>
 	titleImage: React.ReactNode
 	hideWhenConnected?: boolean
+	connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
@@ -36,6 +32,10 @@ export default function (props: ConnectDeviceProps) {
 	}
 	function initialize() {
 		if (props.previewState) {
+			setLoading(true);
+			setDeviceEnabled(false);
+			setDeviceExternalAccount(null);
+
 			if (props.previewState == "notEnabled") {
 				setLoading(false);
 				return;
@@ -78,8 +78,9 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		MyDataHelps.connectExternalAccount(props.providerID, { openNewWindow: true })
-			.then(function() {
+		if (props.previewState) return;
+		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
+			.then(function () {
 				initialize();
 			});
 	}
@@ -92,7 +93,7 @@ export default function (props: ConnectDeviceProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
-	}, []);
+	}, [props.previewState]);
 
 
 	var deviceAccountStatus: ExternalAccountStatus | undefined = deviceExternalAccount?.status;
@@ -117,7 +118,7 @@ export default function (props: ConnectDeviceProps) {
 		}
 	}
 
-	if (props.hideWhenConnected && deviceExternalAccount) {
+	if (props.hideWhenConnected && deviceExternalAccount && deviceExternalAccount?.status != "unauthorized" && deviceExternalAccount?.status != "error") {
 		return null;
 	}
 
@@ -145,6 +146,14 @@ export default function (props: ConnectDeviceProps) {
 					<div>
 						<div className="subtitle reconnect">
 							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("expired-reconnect")}
+						</div>
+						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
+					</div>
+				}
+				{deviceExternalAccount && deviceAccountStatus == 'error' &&
+					<div>
+						<div className="subtitle reconnect">
+							<FontAwesomeSvgIcon icon={faExclamationTriangle} /> {language("connect-error-reconnect")}
 						</div>
 						<Button onClick={() => connectToDevice()}>{language(buildLanguageKey("connect-{device}-button"))}</Button>
 					</div>

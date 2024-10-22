@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import MyDataHelps from "@careevolution/mydatahelps-js";
 import { format, parseISO } from "date-fns";
 import "./LabResultWithSparkline.css"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 
 export interface LabResultValue {
     Type: string,
@@ -13,7 +13,7 @@ export interface LabResultValue {
     NormalRangeTopY: number,
     NormalRangeBottomY: number,
     SparklinePoints: SparklinePoint[],
-    TermInformation?: TermInformation
+    TermInformation?: TermInformationReference
 }
 
 export interface SparklinePoint {
@@ -21,15 +21,9 @@ export interface SparklinePoint {
     Y: number
 }
 
-export interface TermInformation {
-    TermFamily: string,
-    TermNamespace: string,
-    TermCode: string
-}
-
 export interface LabResultWithSparklineProps {
     labResultValue: LabResultValue;
-    onViewTermInfo(termInfo: TermInformation): void;
+    onViewTermInfo(termInfo: TermInformationReference): void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -47,7 +41,7 @@ export default function (props: LabResultWithSparklineProps) {
         setSparklineYRange(sparklineSvg.current?.getBoundingClientRect().height || 0);
     });
 
-    function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformation) {
+    function showTermInfo(e: React.MouseEvent<HTMLDivElement, MouseEvent>, termInfo: TermInformationReference) {
         e.preventDefault();
         e.stopPropagation();
         props.onViewTermInfo(termInfo);

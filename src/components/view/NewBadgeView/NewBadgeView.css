@@ -1,0 +1,14 @@
+.mdhui-new-badge-view {
+    padding: 16px;
+    text-align: center;
+    height: calc(100dvh - 34px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mdhui-new-badge-view .mdhui-new-badge-view-badge-container {
+    align-items: center;
+    display: flex;
+}

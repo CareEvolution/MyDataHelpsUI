@@ -3,7 +3,7 @@ import { parseISO, startOfDay } from "date-fns";
 
 export interface SurveyBloodPressureDataParameters {
     surveyName: string,
-    dateResultIdentifier: string,
+    dateResultIdentifier?: string,
     systolicResultIdentifier: string,
     diastolicResultIdentifier: string
 }
@@ -23,8 +23,13 @@ export default async function (props: SurveyBloodPressureDataParameters): Promis
             let resultIds = [...new Set(answers.map(a => a.surveyResultID))];
             resultIds.forEach((resultId) => {
                 var resultsForSubmission = answers.filter(a => a.surveyResultID == resultId);
-                var bpLogDateResults = resultsForSubmission.find(r => r.resultIdentifier == props.dateResultIdentifier);
-                var bpLogDate = bpLogDateResults && bpLogDateResults.answers ? bpLogDateResults.answers[0] : "";
+                var bpLogDate = "";
+                if (props.dateResultIdentifier){
+                    var bpLogDateResults = resultsForSubmission.find(r => r.resultIdentifier == props.dateResultIdentifier);
+                    bpLogDate = bpLogDateResults && bpLogDateResults.answers ? bpLogDateResults.answers[0] : "";
+                } else {
+                    bpLogDate = resultsForSubmission[0].date;
+                }
                 var bpSystolicResults = resultsForSubmission.find(r => r.resultIdentifier == props.systolicResultIdentifier);
                 var bpSystolic = bpSystolicResults && bpSystolicResults.answers ? bpSystolicResults.answers[0] : "";
                 var bpDiastolicResults = resultsForSubmission.find(r => r.resultIdentifier == props.diastolicResultIdentifier);
@@ -73,7 +78,9 @@ export default async function (props: SurveyBloodPressureDataParameters): Promis
         return MyDataHelps.querySurveyAnswers(queryParameters);
     }
 
-    const resultFilter = [props.dateResultIdentifier, props.systolicResultIdentifier, props.diastolicResultIdentifier];
+    const resultFilter = props.dateResultIdentifier ? 
+        [props.dateResultIdentifier, props.systolicResultIdentifier, props.diastolicResultIdentifier] : 
+        [props.systolicResultIdentifier, props.diastolicResultIdentifier];
     const surveyAnswers = await getSurveyAnswers();
     var sortedAnswers = (surveyAnswers).sort((a, b) => {
         if (parseISO(a.date) > parseISO(b.date)) { return -1; }

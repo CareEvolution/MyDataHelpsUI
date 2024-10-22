@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from '@careevolution/mydatahelps-js';
 import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
 import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
 export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
-    previewState?: NotificationListPreviewState;
+    previewState?: "default"
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
     innerRef?: React.Ref<HTMLDivElement>
+    connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
-
-export type NotificationListPreviewState = "Default"
 
 export default function (props: ExternalAccountListProps) {
     const [loading, setLoading] = useState(true);
     const [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>([]);
 
     function initialize() {
-        if (props.previewState == "Default") {
+        if (props.previewState == "default") {
             setLoading(false);
             updateExternalAccounts(previewExternalAccounts);
             return;
@@ -48,8 +47,8 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id, {openNewWindow: true})
-            .then(function() {
+        MyDataHelps.connectExternalAccount(account.provider.id, props.connectExternalAccountOptions || { openNewWindow: true })
+            .then(function () {
                 loadExternalAccounts();
             });
     }

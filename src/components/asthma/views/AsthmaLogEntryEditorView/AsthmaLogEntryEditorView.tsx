@@ -3,7 +3,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { Card, Layout, LoadingIndicator, NavigationBar, UnstyledButton, ValueSelector } from '../../../presentational';
 import { add, format, isBefore, startOfToday } from 'date-fns';
 import { AsthmaLogEntry, AsthmaSymptom, AsthmaSymptomLevel } from '../../model';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { getLocaleFromIso, useInitializeView } from '../../../../helpers';
 import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaImpacts, getAsthmaImpactTexts, getAsthmaSymptomLevel, getAsthmaSymptomLevelText, getAsthmaSymptoms, getAsthmaSymptomTexts, getAsthmaTriggers, getAsthmaTriggerTexts } from '../../helpers';
 import { AsthmaLogEntryEditorViewPreviewState, previewData } from './AsthmaLogEntryEditorView.previewData';
 import language from '../../../../helpers/language';
@@ -15,7 +15,7 @@ export interface AsthmaLogEntryEditorViewProps {
 }
 
 export default function (props: AsthmaLogEntryEditorViewProps) {
-    let yesterday = add(startOfToday(), {days: -1});
+    let yesterday = add(startOfToday(), { days: -1 });
     if (isBefore(props.date, yesterday)) {
         MyDataHelps.dismiss();
         return null;
@@ -58,8 +58,8 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
             return;
         }
 
-        let dayBefore = add(new Date(props.date), {days: -1});
-        let dayAfter = add(new Date(props.date), {days: 1});
+        let dayBefore = add(new Date(props.date), { days: -1 });
+        let dayAfter = add(new Date(props.date), { days: 1 });
         asthmaDataService.loadLogEntries(dayBefore, dayAfter).then(logEntries => {
             let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(props.date);
             let logEntry = logEntries.find(e => e.identifier === logEntryIdentifier);
@@ -106,18 +106,18 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
         });
     };
 
-    const cancelButton = <UnstyledButton className="button" style={{left: '16px'}} onClick={() => onCancel()}>Cancel</UnstyledButton>;
-    const saveButton = <UnstyledButton className="button" style={{color: '#fff', background: '#369cff', right: '16px', padding: '0 16px'}} onClick={() => onSave()}>Save</UnstyledButton>;
+    const cancelButton = <UnstyledButton className="button" style={{ left: '16px' }} onClick={() => onCancel()}>Cancel</UnstyledButton>;
+    const saveButton = <UnstyledButton className="button" style={{ color: '#fff', background: '#369cff', right: '16px', padding: '0 16px' }} onClick={() => onSave()}>Save</UnstyledButton>;
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar
-            title={format(props.date, 'LLLL do')}
+            title={format(props.date, 'PPP', { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) })}
             navigationBarLeft={cancelButton}
             navigationBarRight={saveButton}
             variant="compressed"
             backgroundColor="var(--mdhui-background-color-0)"
         />
-        {loading && <LoadingIndicator/>}
+        {loading && <LoadingIndicator />}
         {!loading && logEntry &&
             <div>
                 <Card backgroundColor="var(--mdhui-background-color-1)">
@@ -174,6 +174,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                             language('asthma-trigger-cold-illness'),
                             language('asthma-trigger-animal-exposure'),
                             language('asthma-trigger-seasonal-allergens'),
+                            language('asthma-trigger-exercise'),
                             language('asthma-trigger-smoke'),
                             language('asthma-trigger-weather-changes'),
                             language('asthma-trigger-air-pollution'),

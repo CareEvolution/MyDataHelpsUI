@@ -17,11 +17,25 @@ const Template: ComponentStory<typeof DateRangeNavigator> = (args: DateRangeNavi
 	</Layout>;
 
 var currentDate = new Date();
+export const Day = Template.bind({});
+Day.args = {
+	intervalStart: new Date(),
+	intervalType: "Day"
+}
+
+
 export const Month = Template.bind({});
 Month.args = {
 	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
 	intervalType: "Month"
 }
+
+export const SixMonth = Template.bind({});
+SixMonth.args = {
+	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
+	intervalType: "6Month"
+}
+
 
 export const Week = Template.bind({});
 Week.args = {

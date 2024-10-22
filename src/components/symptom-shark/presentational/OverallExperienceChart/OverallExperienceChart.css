@@ -2,6 +2,14 @@
     position: relative;
 }
 
+.mdhui-ss-oe-chart .mdhui-ss-oe-chart-title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .mdhui-ss-oe-chart .mdhui-ss-oe-chart-face {
     width: 16px;
     height: 16px;
@@ -30,9 +38,7 @@
 .mdhui-ss-oe-chart .mdhui-ss-oe-chart-average-wrapper {
     font-size: 17px;
     padding: 16px;
-    position: absolute;
-    right: 0;
-    top: 0;
+    padding-bottom: 0;
 }
 
 .mdhui-ss-oe-chart .mdhui-ss-oe-chart-average-wrapper .mdhui-ss-oe-chart-average {

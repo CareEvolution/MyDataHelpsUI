@@ -73,7 +73,13 @@ function calculateSleepTime(ranges: DateRange[]) {
 	return totalTime;
 }
 
-function coreSleep(startDate: Date, endDate: Date, value: "Asleep" | "InBed") {
+type SleepType = "Asleep" | "InBed" | "AsleepCore" | "AsleepREM" | "AsleepDeep";
+
+function coreSleep(startDate: Date, endDate: Date, value: SleepType) {
+	return coreSleepMultiValues(startDate, endDate, [ value ]);
+}
+
+function coreSleepMultiValues(startDate: Date, endDate: Date, values: SleepType[]) {
 	return queryAllDeviceData({
 		namespace: "AppleHealth",
 		type: "SleepAnalysisInterval",
@@ -85,7 +91,7 @@ function coreSleep(startDate: Date, endDate: Date, value: "Asleep" | "InBed") {
 
 		ddp.forEach((d) => {
 			if (!d.observationDate || !d.startDate) { return; }
-			if (d.value != value) { return; }
+			if (!values.find(x => x == d.value) ) { return; }
 			var ranges = splitSleepSampleIntoRanges(d);
 			for (var i = 0; i < ranges.length; i++) {
 				var anchorDate = add(ranges[i].startDate, { hours: 6 });
@@ -110,10 +116,22 @@ function coreSleep(startDate: Date, endDate: Date, value: "Asleep" | "InBed") {
 	});
 }
 
-export function asleepTime(startDate: Date, endDate: Date) {
-	return coreSleep(startDate, endDate, "Asleep");
-}
-
 export function inBedTime(startDate: Date, endDate: Date) {
 	return coreSleep(startDate, endDate, "InBed");
+}
+
+export function asleepCoreTime(startDate: Date, endDate: Date) {
+	return coreSleep(startDate, endDate, "AsleepCore");
+}
+
+export function asleepRemTime(startDate: Date, endDate: Date) {
+	return coreSleep(startDate, endDate, "AsleepREM");
+}
+
+export function asleepDeepTime(startDate: Date, endDate: Date) {
+	return coreSleep(startDate, endDate, "AsleepDeep");
+}
+
+export function asleepTime(startDate: Date, endDate: Date) {
+	return coreSleepMultiValues(startDate, endDate, [ "AsleepCore", "AsleepREM", "AsleepDeep", "Asleep" ]);
 }

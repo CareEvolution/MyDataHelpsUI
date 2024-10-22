@@ -11,12 +11,8 @@
     "jsx": "react",
     "module": "ESNext",
     "allowJs": true,
-    "declaration": true,
-    "declarationDir": "types",
     "sourceMap": true,
-    "outDir": "dist",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "emitDeclarationOnly": true
+    "allowSyntheticDefaultImports": true
   }
 }

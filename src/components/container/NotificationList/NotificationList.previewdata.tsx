@@ -1,5 +1,5 @@
 import { Notification } from "@careevolution/mydatahelps-js";
-import add from 'date-fns/add'
+import { add } from 'date-fns'
 
 export var previewNotifications: Notification[] =
 	[{
@@ -45,6 +45,32 @@ export var previewNotifications: Notification[] =
 		"content": {
 			"title": "Consent and get a Fitbit",
 			"body": "Are you missing out on a Fitbit device? Complete your consent - you could get a new Fitbit at no cost to you!"
+		},
+		recipients: [],
+		contentVersion: 1
+	},
+	{
+		"id": "6",
+		"identifier": "EmailSurveyReminder",
+		"sentDate": add(new Date(), { days: -3 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Email",
+		"content": {
+			"subject": "Subject - Email reminder to complete daily survey",
+			"body": "Complete your daily survey to earn rewards!"
+		},
+		recipients: [],
+		contentVersion: 1
+	},
+	{
+		"id": "7",
+		"identifier": "SMSSurveyReminder",
+		"sentDate": add(new Date(), { days: -4 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Sms",
+		"content": {
+			"title": "SMS Title - complete daily survey",
+			"body": "Visit MDH to complete your daily survey"
 		},
 		recipients: [],
 		contentVersion: 1

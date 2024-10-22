@@ -3,7 +3,6 @@ import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskLi
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";
-import { ConnectEhrApplicationUrl } from "../../container/ConnectEhr/ConnectEhr";
 import AppDownload from "../../container/AppDownload";
 
 export interface HomeViewProps {
@@ -17,7 +16,7 @@ export interface HomeViewProps {
 	/** Hide the task due date on displayed tasks */
 	hideTaskDueDate?: boolean
 	/** When present, causes the EHR connect widget to display. */
-	ehrConnectApplicationUrl?: ConnectEhrApplicationUrl
+	ehrConnectApplicationUrl?: string
 	notificationsViewUrl?: string
 	tasksViewUrl?: string
 	preview?: boolean;

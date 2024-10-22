@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import "./WeekCalendar.css"
 import { add, format, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
+import debounce from 'lodash/debounce';
 
 export interface WeekCalendarProps {
 	selectedDate?: Date;
@@ -12,6 +13,7 @@ export interface WeekCalendarProps {
 	loading: boolean;
 	onStartDateChange?(startDate: Date): void;
 	dayRenderer(year: number, month: number, day: number, selectedWeek: boolean): JSX.Element | null;
+	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: WeekCalendarProps) {
@@ -19,15 +21,15 @@ export default function (props: WeekCalendarProps) {
 
 	useEffect(() => {
 		if (props.onStartDateChange) {
-			var scrollListener = function (ev: Event) {
+			var scrollListener = debounce(function (ev: Event) {
 				if (element.current?.scrollLeft == 0) {
 					props.onStartDateChange!(add(props.startDate, { weeks: -1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
-				} else if (element.current?.scrollLeft == window.innerWidth * 2) {
+				} else if (element.current?.clientWidth && element.current?.scrollLeft == element.current.clientWidth * 2) {
 					props.onStartDateChange!(add(props.startDate, { weeks: 1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
 				}
-			};
+			}, 500);
 			element.current?.addEventListener("scroll", scrollListener);
 			return () => {
 				element.current?.removeEventListener("scroll", scrollListener);
@@ -91,39 +93,41 @@ export default function (props: WeekCalendarProps) {
 		props.onDateSelected(date);
 	}
 
-	return <div className="mdhui-week-calendar" ref={element}>
-		{props.loading &&
-			<div className="mdhui-week-calendar-loading">
-				<LoadingIndicator />
-			</div>
-		}
-		<div className="mdhui-week-calendar-week">
-			{previousWeek.map((d) =>
-				<div key={d.getTime()} className="mdhui-week-calendar-day">
-					{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), false)}
-					{!props.hideDateLabel && getLabel(d)}
+	return <div ref={props.innerRef}>
+		<div className="mdhui-week-calendar" ref={element}>
+			{props.loading &&
+				<div className="mdhui-week-calendar-loading">
+					<LoadingIndicator />
 				</div>
-			)}
-		</div>
-		<div className="mdhui-week-calendar-week">
-			{currentWeek.map((d) =>
-				<UnstyledButton key={d.getTime()}
-					className={getDayClasses(d).join(" ")}
-					onClick={() => selectDate(d)}>
-					{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), true)}
-					{!props.hideDateLabel && getLabel(d)}
-				</UnstyledButton>
-			)}
-		</div>
-		{add(props.startDate, { days: 7 }) < new Date() &&
+			}
 			<div className="mdhui-week-calendar-week">
-				{followingWeek.map((d) =>
-					<div key={d.getTime()} className={getDayClasses(d).join(" ")}>
+				{previousWeek.map((d) =>
+					<div key={d.getTime()} className="mdhui-week-calendar-day">
 						{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), false)}
 						{!props.hideDateLabel && getLabel(d)}
 					</div>
 				)}
 			</div>
-		}
+			<div className="mdhui-week-calendar-week">
+				{currentWeek.map((d) =>
+					<UnstyledButton key={d.getTime()}
+						className={getDayClasses(d).join(" ")}
+						onClick={() => selectDate(d)}>
+						{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), true)}
+						{!props.hideDateLabel && getLabel(d)}
+					</UnstyledButton>
+				)}
+			</div>
+			{add(props.startDate, { days: 7 }) < new Date() &&
+				<div className="mdhui-week-calendar-week">
+					{followingWeek.map((d) =>
+						<div key={d.getTime()} className={getDayClasses(d).join(" ")}>
+							{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), false)}
+							{!props.hideDateLabel && getLabel(d)}
+						</div>
+					)}
+				</div>
+			}
+		</div>
 	</div>;
 }

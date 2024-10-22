@@ -22,9 +22,7 @@ interface BloodTypeLab {
 }
 
 interface LabResultBloodTypeData {
-    ImportantLabs?: any[],
-    RecentLabs?: any[],
-    BloodTypeLabs?: BloodTypeLab[],
+    BloodTypeLabs?: BloodTypeLab[]
 }
 
 export default function (props: LabResultsBloodTypeProps) {
@@ -90,7 +88,7 @@ export default function (props: LabResultsBloodTypeProps) {
 
     // Sometimes the data will only have either the ABO type or the rH factor
     // Combine those into a unified value, if the first value doesn't contain both
-    var summaryResults = function(bloodTypeLabs: any) {
+    var summaryResults = function (bloodTypeLabs: any) {
         var type = "";
         var rH = "";
         for (const bloodTypeLab of bloodTypeLabs) {
@@ -118,38 +116,43 @@ export default function (props: LabResultsBloodTypeProps) {
         return type + " " + rH;
     }
 
+    let summary = summaryResults(model.BloodTypeLabs);
+    if (!props.showDetailedResults && !summary.trim()) {
+        return null;
+    }
+
     return <div ref={props.innerRef} >
         <Action
-        bottomBorder
-        title={ language ("blood-type") }
-        titleIcon={<img className="mdhui-health-preview-icon" src={ iconBloodType } alt="Blood Type" />}
-        onClick={ model ? drilldown: undefined }
-        indicatorIcon={ faInfoCircle }
-        indicatorPosition= "topRight" 
-        className="mdhui-health-preview-section">
-        {!model &&
-            <LoadingIndicator />
-        }
-        {model && props.showDetailedResults &&
-            <>
-                {model.BloodTypeLabs && model.BloodTypeLabs.length &&
-                    <div>
-                        {model.BloodTypeLabs.slice(0, props.maximumResults ? props.maximumResults : model.BloodTypeLabs.length).map((item: any) => 
-                            <div key={item.Type} className="mdhui-health-preview-item">{item.Type}: <b>{item.MostRecentValue}</b> ({item.MostRecentDate.substring(0,10)})</div>
+            bottomBorder
+            title={language("blood-type")}
+            titleIcon={<img className="mdhui-health-preview-icon" src={iconBloodType} alt="Blood Type" />}
+            onClick={model ? drilldown : undefined}
+            indicatorIcon={faInfoCircle}
+            indicatorPosition="topRight"
+            className="mdhui-health-preview-section">
+            {!model &&
+                <LoadingIndicator />
+            }
+            {model && props.showDetailedResults &&
+                <>
+                    {model.BloodTypeLabs && model.BloodTypeLabs.length &&
+                        <div>
+                            {model.BloodTypeLabs.slice(0, props.maximumResults ? props.maximumResults : model.BloodTypeLabs.length).map((item: any) =>
+                                <div key={item.Type} className="mdhui-health-preview-item">{item.Type}: <b>{item.MostRecentValue}</b> ({item.MostRecentDate.substring(0, 10)})</div>
                             )}
-                    </div>
-                }
-            </>
-        }
-        {model && !props.showDetailedResults &&
-            <>
-                {model.BloodTypeLabs && model.BloodTypeLabs.length &&
-                    <div>
-                        <div className="mdhui-health-preview-item">{summaryResults(model.BloodTypeLabs)}</div>
-                    </div>
-                }
-            </>
-        }
+                        </div>
+                    }
+                </>
+            }
+            {model && !props.showDetailedResults &&
+                <>
+                    {model.BloodTypeLabs && model.BloodTypeLabs.length &&
+                        <div>
+                            <div className="mdhui-health-preview-item">{summary}</div>
+                        </div>
+                    }
+                </>
+            }
         </Action>
     </div>
 }

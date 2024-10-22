@@ -1,10 +1,9 @@
 import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import RelativeActivityToday, { RelativeActivityTodayProps } from "./RelativeActivityToday"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
-import { DailyDataType } from "../../../helpers/query-daily-data"
+import { DailyDataType } from "../../../helpers"
 import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons"
 
 export default {
@@ -13,9 +12,9 @@ export default {
     parameters: {
         layout: 'fullscreen',
     }
-} as ComponentMeta<typeof RelativeActivityToday>;
+};
 
-const Template: ComponentStory<typeof RelativeActivityToday> = (args: RelativeActivityTodayProps) =>
+const render = (args: RelativeActivityTodayProps) =>
     <Layout colorScheme="auto">
         <Card>
             <RelativeActivityToday {...args} />
@@ -40,18 +39,7 @@ let dataTypes = [{
     }
 },
 {
-    dailyDataType: DailyDataType.AppleHealthSleepMinutes,
-    label: "Sleep Time",
-    icon: <FontAwesomeSvgIcon icon={faBed} />,
-    color: "rgba(74, 144, 226, 1)",
-    formatter: function (number: number) {
-        var hours = Math.floor(number / 60);
-        var displayValue = hours + "h " + Math.round(number - (hours * 60)) + "m";
-        return displayValue;
-    }
-},
-{
-    dailyDataType: DailyDataType.FitbitSleepMinutes,
+    dailyDataType: DailyDataType.SleepMinutes,
     label: "Sleep Time",
     icon: <FontAwesomeSvgIcon icon={faBed} />,
     color: "rgba(74, 144, 226, 1)",
@@ -80,15 +68,11 @@ let dataTypes = [{
     }
 }];
 
-export const Default = Template.bind({});
-Default.args = {
-    title: "Activity Today",
-    previewState: "Default",
-    dataTypes: dataTypes
-}
-
-export const Live = Template.bind({});
-Live.args = {
-    title: "Activity Today",
-    dataTypes: dataTypes
-}
+export const Default = {
+    args: {
+        title: "Activity Today",
+        previewState: "Default",
+        dataTypes: dataTypes
+    },
+    render: render
+};

@@ -21,8 +21,8 @@ export default function (props: ResourceListViewProps) {
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
-        <NavigationBar showCloseButton={true}>
-            <Title order={1} style={{paddingTop: '32px'}}>{props.title}</Title>
+        <NavigationBar variant="compressed" showCloseButton={true}>
+            <Title order={1}>{props.title}</Title>
         </NavigationBar>
         <ResourceList
             previewState={props.previewState}

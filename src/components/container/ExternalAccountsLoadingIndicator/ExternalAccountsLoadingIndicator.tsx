@@ -1,7 +1,7 @@
 import React from "react";
 import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js";
 import { add, isAfter } from "date-fns";
-import { parseISO } from "date-fns/esm";
+import { parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 import { useInterval } from "../../../hooks";
 import { LoadingIndicator } from "../../presentational";
@@ -12,6 +12,7 @@ export interface ExternalAccountsLoadingIndicatorProps {
     previewState?: "externalAccountsFetchingData" | "externalAccountsLoaded"
     externalAccountCategories?: string[];
     innerRef?: React.Ref<HTMLDivElement>
+    triggerWebExternalAccountSyncComplete?: boolean;
 }
 
 let previewStateAccounts: ExternalAccount[] = [{
@@ -53,6 +54,18 @@ export default function (props: ExternalAccountsLoadingIndicatorProps) {
                     account.status = 'fetchingData';
                 }
             });
+
+            if (props.triggerWebExternalAccountSyncComplete) {
+                let accountsChanged = externalAccounts.some((account, index) => {
+                    let newAccount = accounts.find(a => a.id == account.id);
+                    if (account.status == "fetchingData" && newAccount?.status == "fetchComplete") {
+                        return true;
+                    }
+                });
+                if (accountsChanged) {
+                    MyDataHelps.triggerEvent({ type: "externalAccountSyncComplete" });
+                }
+            }
             setExternalAccounts(accounts);
         });
     }

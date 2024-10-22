@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import "./SurveyTaskList.css"
 import MyDataHelps, { Guid, SurveyTask, SurveyTaskQueryParameters, SurveyTaskStatus } from "@careevolution/mydatahelps-js"
 import { Card, CardTitle, LayoutContext, LoadingIndicator, SingleSurveyTask } from '../../presentational'
-import parseISO from 'date-fns/parseISO'
+import { parseISO } from 'date-fns'
 import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.previewdata'
 import language from '../../../helpers/language'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors'
@@ -10,22 +10,26 @@ import { ButtonVariant } from '../../presentational/Button/Button'
 import { useInitializeView } from '../../../helpers/Initialization';
 
 export interface SurveyTaskListProps {
-	status: SurveyTaskStatus,
-	limit?: number,
-	title?: string,
-	surveys?: string[],
-	onDetailLinkClick?: Function,
-	previewState?: SurveyTaskListListPreviewState
-	variant?: "noCard" | "singleCard" | "multiCard"
-	innerRef?: React.Ref<HTMLDivElement>
-	titleColor?: ColorDefinition
-	cardBackgroundColor?: ColorDefinition
-	cardStyle?: React.CSSProperties
-	buttonVariant?: ButtonVariant
-	buttonColor?: ColorDefinition
+	status: SurveyTaskStatus;
+	limit?: number;
+	sequential?: boolean;
+	title?: string;
+	surveys?: string[];
+	category?: string;
+	onDetailLinkClick?: Function;
+	previewState?: SurveyTaskListListPreviewState;
+	variant?: "noCard" | "singleCard" | "multiCard";
+	innerRef?: React.Ref<HTMLDivElement>;
+	titleColor?: ColorDefinition;
+	cardBackgroundColor?: ColorDefinition;
+	cardStyle?: React.CSSProperties;
+	buttonVariant?: ButtonVariant;
+	buttonColor?: ColorDefinition;
+	hideIfEmpty?: boolean;
+	emptyText?: string;
 }
 
-export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks";
+export type SurveyTaskListListPreviewState = "IncompleteTasks" | "CompleteTasks" | "Empty";
 
 export default function (props: SurveyTaskListProps) {
 	const [loading, setLoading] = useState(true);
@@ -51,13 +55,23 @@ export default function (props: SurveyTaskListProps) {
 		}
 	};
 
+	const isSurveyBlocked = (task: SurveyTask): boolean => {
+		return props.sequential! && (tasks![0].id !== task.id);
+	}
+
 	function getSurveyTaskElement(task: SurveyTask) {
-		return <SingleSurveyTask buttonColor={props.buttonColor} buttonVariant={props.buttonVariant} key={task.id.toString()} task={task} onClick={() => onTaskClicked(task)} surveyActive={isSurveyActive(task)}/>
+		return <SingleSurveyTask buttonColor={props.buttonColor}
+			buttonVariant={props.buttonVariant}
+			key={task.id.toString()}
+			task={task}
+			onClick={() => onTaskClicked(task)}
+			surveyActive={isSurveyActive(task)}
+			surveyBlocked={isSurveyBlocked(task)} />
 	}
 
 	function initialize() {
 
-		var sortIncomplete = function (a : any, b : any){
+		var sortIncomplete = function (a: any, b: any) {
 			if (!a.dueDate) { return 1; }
 			if (!b.dueDate) { return -1; }
 			if (parseISO(a.dueDate) > parseISO(b.dueDate)) { return 1; }
@@ -70,8 +84,15 @@ export default function (props: SurveyTaskListProps) {
 			setTasks(previewIncompleteTasks);
 			return;
 		}
+
 		if (props.previewState == "CompleteTasks") {
 			setTasks(previewCompleteTasks);
+			return;
+		}
+
+		if (props.previewState == "Empty") {
+			setTasks([]);
+			setLoading(false);
 			return;
 		}
 
@@ -82,11 +103,14 @@ export default function (props: SurveyTaskListProps) {
 				if (props.surveys) {
 					parameters.surveyName = props.surveys;
 				}
+				if (props.category) {
+					parameters.surveyCategory = props.category;
+				}
 				if (pageID) {
 					parameters.pageID = pageID;
 				}
 
-				return MyDataHelps.querySurveyTasks(parameters).then(function (result : any) {
+				return MyDataHelps.querySurveyTasks(parameters).then(function (result: any) {
 					allTasks = allTasks.concat((result as any).surveyTasks);
 					if (result.nextPageID) {
 						makeRequest(result.nextPageID);
@@ -116,7 +140,11 @@ export default function (props: SurveyTaskListProps) {
 		loadData();
 	}
 
-	if (props.status == "complete" && !tasks?.length) {
+	// If 'complete', default to hiding the task list
+	const { hideIfEmpty: hide } = props;
+	const hideIfEmpty = props.status == "complete" ? (hide ?? true) : hide;
+
+	if (!tasks?.length && hideIfEmpty) {
 		return null;
 	}
 
@@ -131,7 +159,9 @@ export default function (props: SurveyTaskListProps) {
 					<LoadingIndicator />
 				}
 				{!tasks?.length && !loading &&
-					<div className="empty-message">{language("all-tasks-complete")}</div>
+					<div className="empty-message">
+						{props.emptyText?.trim() || language(`empty-tasks-${props.status}`)}
+					</div>
 				}
 				{tasks?.slice(0, props.limit).map((task) =>
 					variant == "multiCard" ? <Card style={props.cardStyle} backgroundColor={resolveColor(context.colorScheme, props.cardBackgroundColor)} key={task.id as string}>{getSurveyTaskElement(task)}</Card> : getSurveyTaskElement(task)

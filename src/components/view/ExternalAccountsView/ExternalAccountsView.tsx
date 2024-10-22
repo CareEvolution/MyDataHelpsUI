@@ -1,22 +1,22 @@
 import React from 'react'
-import {Layout, NavigationBar, StatusBarBackground} from "../.."
+import { Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from "../../../helpers/language";
 import ExternalAccountList from "../../container/ExternalAccountList";
-import MyDataHelps, {ExternalAccount} from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from "@careevolution/mydatahelps-js";
 
 export interface ExternalAccountsViewProps {
     excludeProviders?: boolean;
     excludeHealthPlans?: boolean;
     excludeDeviceManufacturers?: boolean;
     presentation?: ViewPresentationType;
-    preview?: boolean;
+    previewState?: "default";
     colorScheme?: "auto" | "light" | "dark";
+    connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
 export type ViewPresentationType = "Modal" | "Push";
 
 export default function (props: ExternalAccountsViewProps) {
-
     let title = '';
     let externalAccountProviderCategories: string[] = [];
 
@@ -52,14 +52,17 @@ export default function (props: ExternalAccountsViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             {props.presentation &&
-            <NavigationBar title={title}
-                           showBackButton={props.presentation == "Push"}
-                           showCloseButton={props.presentation == "Modal"}/>
+                <NavigationBar title={title}
+                    showBackButton={props.presentation == "Push"}
+                    showCloseButton={props.presentation == "Modal"} />
             }
             {!props.presentation &&
-            <StatusBarBackground />
+                <StatusBarBackground />
             }
-            <ExternalAccountList previewState={props.preview ? "Default" : undefined} externalAccountProviderCategories={externalAccountProviderCategories} onExternalAccountsLoaded={onExternalAccountsLoaded}/>
+            <ExternalAccountList previewState={props.previewState}
+                externalAccountProviderCategories={externalAccountProviderCategories}
+                onExternalAccountsLoaded={onExternalAccountsLoaded}
+                connectExternalAccountOptions={props.connectExternalAccountOptions} />
         </Layout>
     )
 }

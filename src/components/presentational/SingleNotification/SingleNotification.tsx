@@ -1,9 +1,8 @@
 import React from 'react'
 import "./SingleNotification.css"
 import MyDataHelps, { Notification } from "@careevolution/mydatahelps-js"
-import formatRelative from 'date-fns/formatRelative'
-import parseISO from 'date-fns/parseISO'
-import { enUS, es } from 'date-fns/locale'
+import { formatRelative, parseISO } from 'date-fns'
+import { getLocaleFromIso } from '../../../helpers/locale';
 
 export interface SingleNotificationProps {
 	notification: Notification
@@ -15,11 +14,14 @@ export default function (props: SingleNotificationProps) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	var locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
 				<div className="notification-title">{props.notification.content.title}</div>
+			}
+			{props.notification.content?.subject &&
+				<div className="notification-title">{props.notification.content.subject}</div>
 			}
 			{props.notification.content?.body &&
 				<div className="notification-body">{props.notification.content.body}</div>

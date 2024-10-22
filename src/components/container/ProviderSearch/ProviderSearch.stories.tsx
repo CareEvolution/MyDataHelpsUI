@@ -36,8 +36,19 @@ onProviderSelected.parameters = {
 
 export const Live = Template.bind({});
 Live.args = {
-	providerCategories: ["Health Plan"]
+	//providerCategories: ["Health Plan"]
 }
 Live.parameters = {
+	externalAccounts: []
+}
+
+export const LiveStandalone = Template.bind({});
+LiveStandalone.args = {
+	connectExternalAccountOptions: {
+		openNewWindow: false,
+		standaloneModeFinalRedirectPath: "https://mydatahelps.org"// replace with actual redirect url for this to work
+	}
+}
+LiveStandalone.parameters = {
 	externalAccounts: []
 }

@@ -1,5 +1,5 @@
-import {ExternalAccount} from "@careevolution/mydatahelps-js";
-import add from 'date-fns/add'
+import { ExternalAccount } from "@careevolution/mydatahelps-js";
+import { add } from 'date-fns';
 
 export var previewAccounts: ExternalAccount[] =
     [{

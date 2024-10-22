@@ -1,0 +1,34 @@
+.mdhui-report-content {
+    min-height: 200px;
+}
+
+.mdhui-report-content iframe {
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFF;
+    min-height: 200px;
+}
+
+.mdhui-report-content .mdhui-report-content-download-pdf a {
+    padding: 16px;
+    margin: 0 auto;
+    background: var(--mdhui-color-primary);
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    width: 200px;
+    margin-top: var(--mdhui-padding-md);
+}
+
+.mdhui-report-content .mdhui-report-content-download-pdf svg {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin-bottom: var(--mdhui-padding-md);
+}

@@ -2,8 +2,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ActivityMeter, { ActivityMeterProps } from "./ActivityMeter";
 import Layout from "../Layout"
-import { faShoePrints } from "@fortawesome/free-solid-svg-icons/faShoePrints";
-import { faBed } from "@fortawesome/free-solid-svg-icons/faBed";
+import { faShoePrints, faBed } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Card from "../Card";

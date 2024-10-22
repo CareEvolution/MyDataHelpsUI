@@ -1,14 +1,11 @@
 import UnstyledButton from '../UnstyledButton';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
-import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
-import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
+import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
-import formatRelative from 'date-fns/formatRelative'
 import "./SingleExternalAccount.css"
-import parseISO from 'date-fns/parseISO'
-import { enUS, es } from 'date-fns/locale';
+import { parseISO, formatRelative } from 'date-fns'
+import { getLocaleFromIso } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -20,7 +17,7 @@ export interface SingleExternalAccountProps {
 }
 
 export default function (props: SingleExternalAccountProps) {
-	let locale = MyDataHelps.getCurrentLanguage().toLowerCase().startsWith("es") ? es : enUS;
+	let locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {

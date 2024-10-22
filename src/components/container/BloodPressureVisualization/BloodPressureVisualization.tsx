@@ -32,15 +32,15 @@ interface BloodPressureMetrics {
     maxSystolic?: number,
     maxSystolicAlert?: string,
     maxSystolicAlertClass: string,
-    minDiastolic?: number,
-    minDiastolicAlert?: string,
-    minDiastolicAlertClass: string
+    minSystolic?: number,
+    minSystolicAlert?: string,
+    minSystolicAlertClass: string
 }
 
 export default function (props: BloodPressureVisualizationProps) {
-    const _minDiastolic = 0;
+    const _minSystolic = 0;
     const _maxSystolic = 250;
-    const yInterval: ClosedInterval = { values: [_minDiastolic, _maxSystolic] };
+    const yInterval: ClosedInterval = { values: [_minSystolic, _maxSystolic] };
     const axis: Axis = { yRange: yInterval, yIncrement: 50, xIncrement: (80 / 7) };
     const [bloodPressureData, setBloodPressureDataData] = useState<Map<string, BloodPressureDataPoint[]> | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
@@ -150,7 +150,7 @@ export default function (props: BloodPressureVisualizationProps) {
             </div>
             <div className="mdhui-blood-pressure-metrics-rows">
                 {buildDetailBlock(language("highest-systolic"), metrics.maxSystolicAlert, metrics.maxSystolicAlertClass, metrics.maxSystolic)}
-                {buildDetailBlock(language("lowest-diastolic"), metrics.minDiastolicAlert, metrics.minDiastolicAlertClass, metrics.minDiastolic)}
+                {buildDetailBlock(language("lowest-systolic"), metrics.minSystolicAlert, metrics.minSystolicAlertClass, metrics.minSystolic)}
             </div>
         </div>;
     }
@@ -160,7 +160,7 @@ export default function (props: BloodPressureVisualizationProps) {
         let bpMetrics: BloodPressureMetrics = {
             averageDiastolicAlertClass: "",
             averageSystolicAlertClass: "",
-            minDiastolicAlertClass: "",
+            minSystolicAlertClass: "",
             maxSystolicAlertClass: ""
         };
 
@@ -185,17 +185,17 @@ export default function (props: BloodPressureVisualizationProps) {
         bpMetrics.averageDiastolicAlert = Category[diastolicWeeklyAvgAlert];
         bpMetrics.averageDiastolicAlertClass = diastolicWeeklyAvgAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
-        let diastolicLow = Math.min(...diastolicReadings);
-        bpMetrics.minDiastolic = Math.round(diastolicLow);
-        let cat = getDiastolicCategory(diastolicLow);
-        bpMetrics.minDiastolicAlert = Category[cat];
-        bpMetrics.minDiastolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
-
         let systolicHigh = Math.max(...systolicReadings);
         bpMetrics.maxSystolic = Math.round(systolicHigh);
-        cat = getSystolicCategory(systolicHigh);
+        let cat = getSystolicCategory(systolicHigh);
         bpMetrics.maxSystolicAlert = Category[cat];
         bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+
+        let systolicLow = Math.min(...systolicReadings);
+        bpMetrics.minSystolic = Math.round(systolicLow);
+        cat = getSystolicCategory(systolicLow);
+        bpMetrics.minSystolicAlert = Category[cat];
+        bpMetrics.minSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
         return bpMetrics;
     }

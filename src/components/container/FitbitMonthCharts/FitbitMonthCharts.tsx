@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
-import { DateRangeNavigator } from '../../presentational';
-import DeviceDataMonthChart from '../DeviceDataMonthChart'
+import React from 'react'
 import language from '../../../helpers/language';
-import { DailyDataType } from '../../../helpers/query-daily-data';
+import { DailyDataType } from '../../../helpers';
 import MonthCharts, { MonthChartsPreviewState } from '../MonthCharts/MonthCharts';
 
 export interface FitbitMonthChartsProps {

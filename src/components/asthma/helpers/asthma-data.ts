@@ -1,8 +1,8 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
-import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
+import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityDescription, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
-import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers/query-daily-data";
+import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers";
 import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider, sleepDisturbancesDataProvider, stepsDataProvider } from "./daily-data-providers";
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
 
@@ -189,19 +189,19 @@ const loadAirQualities = (observedAfter: Date, observedBefore?: Date, pageID?: G
     return MyDataHelps.queryDeviceData(params);
 };
 
-const computeAirQualityStatusAndDescription = (aqi: number | undefined, defaultStatus: AsthmaDataStatus): [AsthmaDataStatus, string | undefined] => {
+const computeAirQualityStatusAndDescription = (aqi: number | undefined, defaultStatus: AsthmaDataStatus): [AsthmaDataStatus, AsthmaAirQualityDescription | undefined] => {
     if (aqi) {
         if (aqi <= 100) {
             return ['in-range', undefined];
         }
         if (aqi <= 200) {
-            return ['out-of-range', 'Unhealthy'];
+            return ['out-of-range', 'unhealthy'];
         }
         if (aqi <= 300) {
-            return ['out-of-range', 'Very Unhealthy'];
+            return ['out-of-range', 'very unhealthy'];
         }
         if (aqi <= 500) {
-            return ['out-of-range', 'Hazardous'];
+            return ['out-of-range', 'hazardous'];
         }
     }
     return [defaultStatus, undefined];
@@ -250,6 +250,8 @@ export interface AsthmaDataService {
     updateAlertTakeover(dataPoint: DeviceDataPoint, status: string, comment?: string): Promise<void>;
 
     loadSurveyAnswers(surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]>;
+
+    checkSurveyAnswerExists(surveyName: string | string[]): Promise<boolean>;
 
     loadAsthmaActionPlan(): Promise<AsthmaActionPlan | undefined>;
 }
@@ -363,6 +365,10 @@ const service: AsthmaDataService = {
             query.insertedAfter = formatISO(fromDate);
         }
         return queryAllSurveyAnswers(query);
+    },
+    checkSurveyAnswerExists: function (surveyName: string | string[]): Promise<boolean> {
+        let query: SurveyAnswersQuery = {surveyName: surveyName, limit: 1};
+        return MyDataHelps.querySurveyAnswers(query).then(result => !!result.surveyAnswers.length);
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);

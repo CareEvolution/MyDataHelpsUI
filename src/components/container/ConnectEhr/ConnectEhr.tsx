@@ -2,17 +2,15 @@
 import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation"
+import { faCheckCircle, faTriangleExclamation, faAddressCard } from "@fortawesome/free-solid-svg-icons"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import ConnectEHR from "../../../assets/connect-ehr.svg";
 import { ColorDefinition } from '../../../helpers/colors';
 
 export interface ConnectEhrProps {
-	applicationUrl: ConnectEhrApplicationUrl,
+	applicationUrl?: string,
 	previewState?: ConnectEhrPreviewState,
 	disabledBehavior?: 'hide' | 'displayError'
 	bottomBorder?: boolean
@@ -23,9 +21,9 @@ export interface ConnectEhrProps {
 	connectedText?: string
 	hideWhenConnected?: boolean
 	buttonColor?: ColorDefinition
+	onClick?: () => void
 }
 
-export type ConnectEhrApplicationUrl = "preview" | string;
 export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnected" | "enabledNeedsAttention";
 
 export default function (props: ConnectEhrProps) {
@@ -69,9 +67,9 @@ export default function (props: ConnectEhrProps) {
 	}
 
 	function connectToEhr() {
-		if (props.applicationUrl == "preview") {
-			console.log("PREVIEW: Opening the connect EHR application.");
-		} else {
+		if (props.onClick) {
+			props.onClick();
+		} else if (props.applicationUrl) {
 			MyDataHelps.openApplication(props.applicationUrl);
 		}
 	}
@@ -84,7 +82,7 @@ export default function (props: ConnectEhrProps) {
 			MyDataHelps.off("applicationDidBecomeVisible", initialize);
 			MyDataHelps.off("externalAccountSyncComplete", initialize);
 		}
-	}, []);
+	}, [props.previewState]);
 
 	if (!ehrEnabled) {
 		if (props.disabledBehavior == 'displayError') {
@@ -102,7 +100,7 @@ export default function (props: ConnectEhrProps) {
 		return null;
 	}
 
-	if (props.hideWhenConnected && connected) {
+	if (props.hideWhenConnected && connected && !needsAttention) {
 		return null;
 	}
 
