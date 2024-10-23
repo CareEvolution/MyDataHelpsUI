@@ -1,1 +1,8 @@
 .github
+.vscode
+.idea
+__tests__/
+*.test.*
+
+# Exclude Storybook files
+*.stories.*

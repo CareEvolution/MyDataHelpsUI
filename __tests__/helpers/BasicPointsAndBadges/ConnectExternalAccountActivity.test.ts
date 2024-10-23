@@ -1,4 +1,4 @@
-import { awardConnectExternalAccountActivityPoints, ConnectExternalAccountActivity } from "./ConnectExternalAccountActivity";
+import { awardConnectExternalAccountActivityPoints, ConnectExternalAccountActivity } from "../../../src/helpers/BasicPointsAndBadges/ConnectExternalAccountActivity";
 
 jest.mock('@careevolution/mydatahelps-js', () => {
 

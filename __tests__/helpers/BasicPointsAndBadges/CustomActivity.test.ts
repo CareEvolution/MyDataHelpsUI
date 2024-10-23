@@ -1,6 +1,5 @@
 import { ParticipantInfo } from "@careevolution/mydatahelps-js";
-import { CustomActivity } from "./CustomActivity";
-import { awardCustomActivityPoints } from "./CustomActivity";
+import { awardCustomActivityPoints, CustomActivity } from "../../../src/helpers/BasicPointsAndBadges/CustomActivity";
 
 describe("Custom Activity Awards", () => {
     const pptInfo : ParticipantInfo = {
