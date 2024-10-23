@@ -1,48 +1,103 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import ConnectFitbit, { ConnectFitbitProps } from "./ConnectFitbit"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react/*";
 
-export default {
+
+const meta: Meta<typeof ConnectFitbit> = {
 	title: "Container/ConnectFitbit",
 	component: ConnectFitbit,
 	parameters: {
 		layout: 'fullscreen',
+		docs: {
+			//TODO: Description: <Description />
+		}
 	}
-} as ComponentMeta<typeof ConnectFitbit>;
+};
 
-const Template: ComponentStory<typeof ConnectFitbit> = (args: ConnectFitbitProps) =>
-	<Layout colorScheme="auto">
-		<Card>
-			<ConnectFitbit {...args} />
-		</Card>
-	</Layout>;
+export default meta;
+type Story = StoryObj<typeof ConnectFitbit>;
 
-export const NotConnected = Template.bind({});
-NotConnected.args = { previewState: "notConnected", title: "Fitbit" };
+const render = (args: ConnectFitbitProps) => <Layout colorScheme="auto">
+	<Card>
+		<ConnectFitbit {...args} />
+	</Card>
+</Layout>;
 
-export const Unauthorized = Template.bind({});
-Unauthorized.args = { previewState: "unauthorized", title: "Fitbit" };
+export const NotConnected : Story = {
+    args: {
+        previewState: "notConnected", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const ConnectionError = Template.bind({});
-ConnectionError.args = { previewState: "error", title: "Fitbit" };
+export const Unauthorized : Story = {
+    args: {
+        previewState: "unauthorized", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const FetchComplete = Template.bind({});
-FetchComplete.args = { previewState: "fetchComplete", title: "Fitbit" };
+export const ConnectionError : Story = {
+    args: {
+        previewState: "error", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const FetchingData = Template.bind({});
-FetchingData.args = { previewState: "fetchingData", title: "Fitbit" };
+export const FetchComplete : Story = {
+    args: {
+        previewState: "fetchComplete", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const NotEnabledDefault = Template.bind({});
-NotEnabledDefault.args = { previewState: "notEnabled", title: "Fitbit" };
+export const FetchingData : Story = {
+    args: {
+        previewState: "fetchingData", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const NotEnabledHide = Template.bind({});
-NotEnabledHide.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "hide" };
+export const NotEnabledDefault : Story = {
+    args: {
+        previewState: "notEnabled", 
+		title: "Fitbit"
+    },
+    render: render
+};
 
-export const NotEnabledDisplayError = Template.bind({});
-NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Fitbit", disabledBehavior: "displayError" };
+export const NotEnabledHide : Story = {
+    args: {
+        previewState: "notEnabled", 
+		title: "Fitbit",
+		disabledBehavior: "hide"
+    },
+    render: render
+};
 
-export const HideConnected = Template.bind({});
-HideConnected.args = { previewState: "fetchComplete", hideWhenConnected: true };
-HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"]}};
+export const NotEnabledDisplayError : Story = {
+    args: {
+        previewState: "notEnabled", 
+		title: "Fitbit",
+		disabledBehavior: "displayError"
+    },
+    render: render
+};
+
+export const HideConnected : Story = {
+    args: {
+        previewState: "fetchComplete", 
+		hideWhenConnected: true
+    },
+	argTypes: { 
+		previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"] }
+	},
+    render: render
+};

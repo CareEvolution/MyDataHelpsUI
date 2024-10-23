@@ -10,7 +10,7 @@ import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
 import { Description } from "@storybook/blocks"
 import { Meta, StoryObj } from "@storybook/react";
-import { ConnectExternalAccountActivity, CustomActivity, SurveyCompletionActivity } from "../../../../dist";
+import { ConnectExternalAccountActivity, CustomActivity, SurveyCompletionActivity } from "../../../helpers/BasicPointsAndBadges";
 
 const meta: Meta<typeof BasicPointsForBadges> = {
     title: "Container/BasicPointsForBadges",

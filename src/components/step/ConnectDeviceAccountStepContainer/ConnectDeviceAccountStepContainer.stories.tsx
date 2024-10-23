@@ -1,18 +1,23 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ConnectDeviceAccountStepContainer, { ConnectDeviceAccountStepContainerProps } from "./ConnectDeviceAccountStepContainer";
+import { Meta, StoryObj } from "@storybook/react";
+import ConnectDeviceAccountStepContainer from "./ConnectDeviceAccountStepContainer";
 
-export default {
+const meta: Meta<typeof ConnectDeviceAccountStepContainer> = {
     title: "SurveyStep/ConnectDeviceAccountStepContainer",
     component: ConnectDeviceAccountStepContainer,
     parameters: {
-        layout: "fullscreen",
-    },
-} as ComponentMeta<typeof ConnectDeviceAccountStepContainer>;
+        layout: 'fullscreen',
+        docs: {
+            //TODO: Description: <Description />
+        }
+    }
+};
 
-const Template: ComponentStory<typeof ConnectDeviceAccountStepContainer> = (
-    args: ConnectDeviceAccountStepContainerProps
-) => <ConnectDeviceAccountStepContainer {...args}/>;
+export default meta;
+type Story = StoryObj<typeof ConnectDeviceAccountStepContainer>;
 
-export const ConnectDeviceAccountStepContainerDefault = Template.bind({});
-ConnectDeviceAccountStepContainerDefault.args = {};
+const render = () => <ConnectDeviceAccountStepContainer />;
+
+export const ConnectDeviceAccountStepContainerDefault : Story = {
+    render: render
+};
