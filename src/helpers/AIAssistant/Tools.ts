@@ -321,7 +321,8 @@ export const GetUploadedFileTool = tool(
   {
     name: "getUploadedFile",
     description: `Use this tool to get a file uploaded by the current participant. This tool returns a presigned URL to download the file. 
-      If the file is an image, the LLM should respond with 'Please see your uploaded file above.' and nothing else.`,
+      If the file is an image, the LLM should respond with 'Please see your uploaded file above.' and nothing else.
+      Do not include a link to the file in your response.`,
     schema: z.object({
       key: z.string().describe("The file key of the file to get.")
     })
