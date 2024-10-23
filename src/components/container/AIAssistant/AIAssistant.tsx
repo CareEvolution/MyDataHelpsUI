@@ -4,7 +4,6 @@ import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import { CustomEventTrackerCallbackHandler } from '../../../helpers/AIAssistant/Callbacks';
@@ -22,7 +21,6 @@ export interface AIAssistantProps {
     tools?: StructuredTool[];
     appendTools?: boolean;
     baseUrl?: string;
-    saveGraphImages?: boolean;
 }
 
 export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
@@ -86,21 +84,6 @@ export default function (props: AIAssistantProps) {
                         let image = streamEvent.data.output.content;
                         if (image && !image.startsWith("error")) {
                             addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
-
-                            if (props.saveGraphImages) {
-                                const binaryString = atob(image);
-                                const len = binaryString.length;
-                                const uint8Array = new Uint8Array(len);
-
-                                for (let i = 0; i < len; i++) {
-                                    uint8Array[i] = binaryString.charCodeAt(i);
-                                }
-
-                                const blob = new Blob([uint8Array], { type: 'image/png' });
-                                const file = new File([blob], `graph-${new Date().getTime()}.png`, { type: 'image/png' });
-
-                                await MyDataHelps.uploadFile(file, "ai-graph");
-                            }
                         }
                     }
                     else if (toolName === "getUploadedFile") {
@@ -110,8 +93,6 @@ export default function (props: AIAssistantProps) {
                             addMessage(streamEvent.run_id, output.preSignedUrl, "image");
                         }
                     }
-
-
                 }
             }
 

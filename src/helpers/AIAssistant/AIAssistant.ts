@@ -1,6 +1,6 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
-import { END, StateGraph, StateGraphArgs, START, MemorySaver, CompiledStateGraph, messagesStateReducer } from "@langchain/langgraph/web";
+import { END, StateGraph, StateGraphArgs, START, MemorySaver, CompiledStateGraph, messagesStateReducer, InMemoryStore } from "@langchain/langgraph/web";
 import { ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate } from "@langchain/core/prompts";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { RunnableConfig } from "@langchain/core/runnables";
@@ -25,7 +25,8 @@ import {
     GetDeviceDataV2AllDataTypesTool,
     GraphingTool,
     UploadedFileQueryTool,
-    GetUploadedFileTool
+    GetUploadedFileTool,
+    SaveLastGraphTool
 } from "./Tools";
 
 export interface AIAssistantState {
@@ -60,7 +61,10 @@ export class MyDataHelpsAIAssistant {
             const event of await this.graph.streamEvents(inputs, {
                 streamMode: "values",
                 version: "v2",
-                configurable: { thread_id: this.participantId },
+                configurable: { 
+                    thread_id: this.participantId,
+                    participantId: this.participantId
+                },
                 callbacks: this.callbacks
             })
         ) {
@@ -155,8 +159,9 @@ export class MyDataHelpsAIAssistant {
             .addEdge("tools", "agent");
 
         const memory = new MemorySaver();
+        const store = new InMemoryStore();
 
-        this.graph = workflow.compile({ checkpointer: memory });
+        this.graph = workflow.compile({ checkpointer: memory, store });
 
         this.initialized = true;
         this.participantId = participantInfo.participantID;
@@ -185,6 +190,7 @@ export class MyDataHelpsAIAssistant {
         GetDeviceDataV2AllDataTypesTool,
         GraphingTool,
         UploadedFileQueryTool,
-        GetUploadedFileTool
+        GetUploadedFileTool,
+        SaveLastGraphTool
     ];
 }
