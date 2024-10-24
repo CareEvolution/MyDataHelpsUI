@@ -1,11 +1,13 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
-import { END, StateGraph, StateGraphArgs, START, MemorySaver, CompiledStateGraph, messagesStateReducer } from "@langchain/langgraph/web";
+import { END, StateGraph, StateGraphArgs, START, MemorySaver, CompiledStateGraph, messagesStateReducer, InMemoryStore } from "@langchain/langgraph/web";
 import { ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate } from "@langchain/core/prompts";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { StructuredTool } from "@langchain/core/tools";
 import { convertToOpenAITool } from "@langchain/core/utils/function_calling";
+import { awaitAllCallbacks } from "@langchain/core/callbacks/promises";
+import { Callbacks } from "@langchain/core/callbacks/manager";
 import MyDataHelps, { Guid, ParticipantInfo, ProjectInfo } from "@careevolution/mydatahelps-js";
 
 import {
@@ -20,7 +22,11 @@ import {
     QueryDailyDataTool,
     GetAllDailyDataTypesTool,
     GetEhrNewsFeedPageTool,
-    GetDeviceDataV2AllDataTypesTool
+    GetDeviceDataV2AllDataTypesTool,
+    GraphingTool,
+    UploadedFileQueryTool,
+    GetUploadedFileTool,
+    SaveLastGraphTool
 } from "./Tools";
 
 export interface AIAssistantState {
@@ -31,9 +37,10 @@ export interface AIAssistantState {
 
 export class MyDataHelpsAIAssistant {
 
-    constructor(baseUrl: string = "", additionalInstructions: string = "", tools: StructuredTool[] = [], appendTools: boolean = true) {
+    constructor(baseUrl: string = "", additionalInstructions: string = "", callbacks: Callbacks, tools: StructuredTool[] = [], appendTools: boolean = true) {
         this.baseUrl = baseUrl || "https://xwk5dezh5vnf4in2avp6dxswym0tmgxg.lambda-url.us-east-1.on.aws/";
         this.additionalInstructions = additionalInstructions;
+        this.callbacks = callbacks || [];
         this.tools = tools.length ? (appendTools ? this.defaultTools.concat(tools) : tools) : this.defaultTools;
     }
 
@@ -45,7 +52,6 @@ export class MyDataHelpsAIAssistant {
             this.initialize(participantInfo, projectInfo);
         }
 
-        let config = { configurable: { thread_id: this.participantId } };
         let inputs = {
             messages: [
                 new HumanMessage(userMessage)
@@ -53,9 +59,13 @@ export class MyDataHelpsAIAssistant {
         };
         for await (
             const event of await this.graph.streamEvents(inputs, {
-                ...config,
                 streamMode: "values",
-                version: "v2"
+                version: "v2",
+                configurable: { 
+                    thread_id: this.participantId,
+                    participantId: this.participantId
+                },
+                callbacks: this.callbacks
             })
         ) {
             onEvent(event);
@@ -86,7 +96,7 @@ export class MyDataHelpsAIAssistant {
             apiKey: MyDataHelps.token.access_token
         }, {
             baseURL: this.baseUrl
-        }).bindTools(this.tools.map( t => convertToOpenAITool(t)));
+        }).bindTools(this.tools.map(t => convertToOpenAITool(t)));
 
         const promptTemplate = ChatPromptTemplate.fromMessages([
             SystemMessagePromptTemplate.fromTemplate(`
@@ -126,6 +136,7 @@ export class MyDataHelpsAIAssistant {
             const { messages, participantInfo, projectInfo } = state;
             const chain = promptTemplate.pipe(boundModel);
             const response = await chain.invoke({ messages, participantInfo, projectInfo }, config);
+            await awaitAllCallbacks();
             return { messages: [response] };
         };
 
@@ -148,8 +159,9 @@ export class MyDataHelpsAIAssistant {
             .addEdge("tools", "agent");
 
         const memory = new MemorySaver();
+        const store = new InMemoryStore();
 
-        this.graph = workflow.compile({ checkpointer: memory });
+        this.graph = workflow.compile({ checkpointer: memory, store });
 
         this.initialized = true;
         this.participantId = participantInfo.participantID;
@@ -161,6 +173,7 @@ export class MyDataHelpsAIAssistant {
     private participantId!: Guid;
     private additionalInstructions: string;
     private tools: StructuredTool[];
+    private callbacks: Callbacks;
 
     private defaultTools: StructuredTool[] = [
         QueryDailySleepTool,
@@ -174,6 +187,10 @@ export class MyDataHelpsAIAssistant {
         QueryDailyDataTool,
         GetAllDailyDataTypesTool,
         GetEhrNewsFeedPageTool,
-        GetDeviceDataV2AllDataTypesTool
+        GetDeviceDataV2AllDataTypesTool,
+        GraphingTool,
+        UploadedFileQueryTool,
+        GetUploadedFileTool,
+        SaveLastGraphTool
     ];
 }
