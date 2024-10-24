@@ -497,7 +497,8 @@
     "ai-assistant-suggestion-show-files": "Show me my files.",
     "ai-assistant-suggestion-save-graph-to-files": "Save the graph to my files",
     "mindful-minutes": "Mindful Minutes",
-    "therapy-minutes": "Therapy Minutes"
+    "therapy-minutes": "Therapy Minutes",
+    "overview-table-no-secondary-data": "No secondary data types configured."
 };
 
 export default strings;
