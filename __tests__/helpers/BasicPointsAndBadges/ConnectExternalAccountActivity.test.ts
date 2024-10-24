@@ -4,15 +4,23 @@ jest.mock('@careevolution/mydatahelps-js', () => {
 
     const externalAccounts = [{
         "id" : 1,
-        "provider": { "id": 1, "name": "Garmin", "category": "Device Manufacturer"} 
+        "provider": { "id": 11, "name": "Garmin", "category": "Device Manufacturer"},
+        status: "fetchComplete"
     },
     {
         "id" : 2,
-        "provider": { "id": 2, "name": "FitBit", "category": "Device Manufacturer"} 
+        "provider": { "id": 22, "name": "Fitbit", "category": "Device Manufacturer"},
+        status: "fetchComplete"
     },
     {
         "id" : 3,
-        "provider": { "id": 3, "name": "Health Plan 1", "category": "Health Plan"} 
+        "provider": { "id": 11, "name": "FitBit", "category": "Device Manufacturer"} ,
+        status: "unauthorized"
+    },
+    {
+        "id" : 4,
+        "provider": { "id": 44, "name": "Health Plan 1", "category": "Health Plan"} ,
+        status: "fetchComplete"
     }];
 
     return {
@@ -24,13 +32,7 @@ jest.mock('@careevolution/mydatahelps-js', () => {
                 return Promise.resolve(externalAccounts);
             }),
             on: jest.fn(),
-            off: jest.fn(),
-        },
-        MyDataHelps: {
-            getCurrentLanguage: () => jest.fn(),
-            getExternalAccounts: jest.fn(),
-            on: jest.fn(),
-            off: jest.fn(),
+            off: jest.fn()
         }
     }
 });
@@ -48,10 +50,25 @@ describe("ConnectExternalAccountActivity Awards", () => {
          };
          const newActivityState = await awardConnectExternalAccountActivityPoints(activity, activityState);
          expect(newActivityState.pointsAwarded).toBe(10);
-         expect(newActivityState.providersConnected).toEqual([3]);
+         expect(newActivityState.providersConnected).toEqual([44]);
     });
 
-    it("should award points for connecting multiple devices", async () => {
+    it("should award points for connecting multiple external accounts", async () => {
+        const activity = {
+            type: "connectExternalAccount",
+            points: 10,
+            providerCategories: ["Health Plan", 'Provider', 'Device Manufacturer']
+        } as ConnectExternalAccountActivity;
+        const activityState = {
+            pointsAwarded: 0,
+            providersConnected: []
+        };
+        const newActivityState = await awardConnectExternalAccountActivityPoints(activity, activityState);
+        expect(newActivityState.pointsAwarded).toBe(30);
+        expect(newActivityState.providersConnected).toEqual([11, 22, 44]);
+   });
+
+    it("should NOT award points for multiple external accounts connected to same provider", async () => {
         const activity = {
             type: "connectExternalAccount",
             points: 10,
@@ -63,10 +80,10 @@ describe("ConnectExternalAccountActivity Awards", () => {
         };
         const newActivityState = await awardConnectExternalAccountActivityPoints(activity, activityState);
         expect(newActivityState.pointsAwarded).toBe(20);
-        expect(newActivityState.providersConnected).toEqual([1, 2]);
+        expect(newActivityState.providersConnected).toEqual([11, 22]);
    });
 
-   it("should append points and reset providers connected if not on file", async () => {
+   it("should append points and update providers despite prior providers no longer being connected", async () => {
         const activity = {
             type: "connectExternalAccount",
             points: 10,
@@ -78,7 +95,7 @@ describe("ConnectExternalAccountActivity Awards", () => {
         };
         const newActivityState = await awardConnectExternalAccountActivityPoints(activity, activityState);
         expect(newActivityState.pointsAwarded).toBe(20);
-        expect(newActivityState.providersConnected).toEqual([3]);
+        expect(newActivityState.providersConnected).toEqual([1, 2, 44]);
     });
 
     it("should NOT award points when the ppt does not have this provider connected", async () => {

@@ -2,15 +2,13 @@ import React from "react"
 import BasicPointsForBadges, { BasicPointsForBadgesProps } from "./BasicPointsForBadges"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { DailyDataType } from "../../../helpers";
-import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
+import { ConnectExternalAccountActivity, CustomActivity, DailyDataActivity, DailyDataType, SurveyCompletionActivity } from "../../../helpers";
 import DailyDataGoal from "../DailyDataGoal";
 import { Grid, Title } from "../../presentational";
 import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
 import { Description } from "@storybook/blocks"
 import { Meta, StoryObj } from "@storybook/react";
-import { ConnectExternalAccountActivity, CustomActivity, SurveyCompletionActivity } from "../../../helpers/BasicPointsAndBadges";
 
 const meta: Meta<typeof BasicPointsForBadges> = {
     title: "Container/BasicPointsForBadges",

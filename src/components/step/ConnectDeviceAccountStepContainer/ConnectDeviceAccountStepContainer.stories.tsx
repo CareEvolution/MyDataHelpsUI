@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
+import { Description } from "@storybook/blocks";
 import ConnectDeviceAccountStepContainer from "./ConnectDeviceAccountStepContainer";
 
 const meta: Meta<typeof ConnectDeviceAccountStepContainer> = {
@@ -8,7 +9,7 @@ const meta: Meta<typeof ConnectDeviceAccountStepContainer> = {
     parameters: {
         layout: 'fullscreen',
         docs: {
-            //TODO: Description: <Description />
+            Description: <Description />
         }
     }
 };

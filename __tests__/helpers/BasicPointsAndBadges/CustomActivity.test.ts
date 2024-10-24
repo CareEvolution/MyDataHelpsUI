@@ -42,6 +42,6 @@ describe("Custom Activity Awards", () => {
         };
 
         const newActivityState = await awardCustomActivityPoints(activity, pptInfoWithDecimal);
-        expect(newActivityState.pointsAwarded).toBe(9.6); // Assuming rounding down
+        expect(newActivityState.pointsAwarded).toBe(9.6);
     });
  });
