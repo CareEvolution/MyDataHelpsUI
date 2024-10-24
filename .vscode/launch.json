@@ -1,0 +1,20 @@
+{
+ "version": "0.2.0",
+  "configurations": [ 
+    {
+      "name": "Unit Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest.js",
+        "--config",
+        "${workspaceRoot}/build/src/test/jest.config.js",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": ["${workspaceFolder}/build/**/*.js", "!**/node_modules/**"]
+    }
+  ]
+}
