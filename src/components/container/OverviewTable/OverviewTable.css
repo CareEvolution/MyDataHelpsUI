@@ -1,0 +1,41 @@
+.mdhui-overview-table {
+    display: grid;
+}
+
+.mdhui-overview-table-header-primary, .mdhui-overview-table-header-secondary, .mdhui-overview-table-threshold, .mdhui-overview-table-value {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--mdhui-border-color-1);
+    border-right: 1px solid var(--mdhui-border-color-1);
+}
+
+.mdhui-overview-table-header-primary, .mdhui-overview-table-header-secondary {
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.mdhui-overview-table-header-primary {
+    background-color: #E2F1FF;
+}
+
+.mdhui-overview-table-header-secondary {
+}
+
+.mdhui-overview-table-threshold {
+    font-size: 0.9em;
+}
+
+.mdhui-overview-table-value {
+    font-size: 1.7em;
+}
+
+.mdhui-overview-table-value-good {
+    background-color: #C8FFC2;
+}
+
+.mdhui-overview-table-value-not-good {
+    background-color: #FFEDC2;
+}
