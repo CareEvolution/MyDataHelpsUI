@@ -267,7 +267,7 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input, config: LangGraphRunnableConfig): Promise<string> => {
 
-    let response = await fetch('https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws', {
+    let response = await fetch('https://rbbfx4e6nlhghaxv4zbv5krzzu0dound.lambda-url.us-east-1.on.aws', {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
       headers: {
