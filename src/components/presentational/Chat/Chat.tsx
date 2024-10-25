@@ -13,7 +13,7 @@ import UnstyledButton from '../UnstyledButton';
 import 'highlight.js/styles/atom-one-dark.css';
 import './Chat.css';
 
-export type ChatMessageType = "sent" | "received";
+export type ChatMessageType = "sent" | "received" | "received-image";
 
 export interface ChatProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -64,6 +64,11 @@ export default function (props: ChatProps) {
                                     <div className="mdhui-chat-sent-message">
                                         {parse(md.render(message.content))}
                                     </div>
+                                </div>
+                            }
+                            else if (message.type === "received-image") {
+                                return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
+                                    <img src={message.content} className={message.cssClass} />
                                 </div>
                             }
                             else {
