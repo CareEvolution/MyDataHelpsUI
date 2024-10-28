@@ -95,6 +95,8 @@ export default function (props: AIAssistantProps) {
                         if (image && !image.startsWith("error")) {
                             addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
                         }
+
+                        setSuggestions(["Save the graph to my files."]);
                     }
                     else if (toolName === "getUploadedFile") {
                         let input = JSON.parse(toolInput);
