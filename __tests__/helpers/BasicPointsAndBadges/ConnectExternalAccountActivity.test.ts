@@ -14,7 +14,7 @@ jest.mock('@careevolution/mydatahelps-js', () => {
     },
     {
         "id" : 3,
-        "provider": { "id": 11, "name": "FitBit", "category": "Device Manufacturer"} ,
+        "provider": { "id": 22, "name": "FitBit", "category": "Device Manufacturer"} ,
         status: "unauthorized"
     },
     {
@@ -83,18 +83,18 @@ describe("ConnectExternalAccountActivity Awards", () => {
         expect(newActivityState.providersConnected).toEqual([11, 22]);
    });
 
-   it("should append points and update providers despite prior providers no longer being connected", async () => {
+   it("should recaluclate points across all providers. Awarding points should be based on newly connected", async () => {
         const activity = {
             type: "connectExternalAccount",
             points: 10,
             providerCategories: ["Health Plan"]
         } as ConnectExternalAccountActivity;
         const activityState = {
-            pointsAwarded: 10,
+            pointsAwarded: 20,
             providersConnected: [1,2]
         };
         const newActivityState = await awardConnectExternalAccountActivityPoints(activity, activityState);
-        expect(newActivityState.pointsAwarded).toBe(20);
+        expect(newActivityState.pointsAwarded).toBe(30);
         expect(newActivityState.providersConnected).toEqual([1, 2, 44]);
     });
 

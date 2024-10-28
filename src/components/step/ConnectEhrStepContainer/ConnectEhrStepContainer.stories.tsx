@@ -10,7 +10,6 @@ const meta: Meta<typeof ConnectEhrStepContainer> = {
     parameters: {
         layout: 'fullscreen',
         docs: {
-            //TODO: Description: <Description />
         }
     }
 };

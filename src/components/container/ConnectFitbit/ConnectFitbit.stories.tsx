@@ -6,98 +6,98 @@ import { Meta, StoryObj } from "@storybook/react/*";
 
 
 const meta: Meta<typeof ConnectFitbit> = {
-	title: "Container/ConnectFitbit",
-	component: ConnectFitbit,
-	parameters: {
-		layout: 'fullscreen',
-		docs: {
-			//TODO: Description: <Description />
-		}
-	}
+    title: "Container/ConnectFitbit",
+    component: ConnectFitbit,
+    parameters: {
+        layout: 'fullscreen',
+        docs: {
+
+        }
+    }
 };
 
 export default meta;
 type Story = StoryObj<typeof ConnectFitbit>;
 
 const render = (args: ConnectFitbitProps) => <Layout colorScheme="auto">
-	<Card>
-		<ConnectFitbit {...args} />
-	</Card>
+    <Card>
+        <ConnectFitbit {...args} />
+    </Card>
 </Layout>;
 
-export const NotConnected : Story = {
+export const NotConnected: Story = {
     args: {
-        previewState: "notConnected", 
-		title: "Fitbit"
+        previewState: "notConnected",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const Unauthorized : Story = {
+export const Unauthorized: Story = {
     args: {
-        previewState: "unauthorized", 
-		title: "Fitbit"
+        previewState: "unauthorized",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const ConnectionError : Story = {
+export const ConnectionError: Story = {
     args: {
-        previewState: "error", 
-		title: "Fitbit"
+        previewState: "error",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const FetchComplete : Story = {
+export const FetchComplete: Story = {
     args: {
-        previewState: "fetchComplete", 
-		title: "Fitbit"
+        previewState: "fetchComplete",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const FetchingData : Story = {
+export const FetchingData: Story = {
     args: {
-        previewState: "fetchingData", 
-		title: "Fitbit"
+        previewState: "fetchingData",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const NotEnabledDefault : Story = {
+export const NotEnabledDefault: Story = {
     args: {
-        previewState: "notEnabled", 
-		title: "Fitbit"
+        previewState: "notEnabled",
+        title: "Fitbit"
     },
     render: render
 };
 
-export const NotEnabledHide : Story = {
+export const NotEnabledHide: Story = {
     args: {
-        previewState: "notEnabled", 
-		title: "Fitbit",
-		disabledBehavior: "hide"
+        previewState: "notEnabled",
+        title: "Fitbit",
+        disabledBehavior: "hide"
     },
     render: render
 };
 
-export const NotEnabledDisplayError : Story = {
+export const NotEnabledDisplayError: Story = {
     args: {
-        previewState: "notEnabled", 
-		title: "Fitbit",
-		disabledBehavior: "displayError"
+        previewState: "notEnabled",
+        title: "Fitbit",
+        disabledBehavior: "displayError"
     },
     render: render
 };
 
-export const HideConnected : Story = {
+export const HideConnected: Story = {
     args: {
-        previewState: "fetchComplete", 
-		hideWhenConnected: true
+        previewState: "fetchComplete",
+        hideWhenConnected: true
     },
-	argTypes: { 
-		previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"] }
-	},
+    argTypes: {
+        previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"] }
+    },
     render: render
 };

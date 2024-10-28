@@ -15,8 +15,8 @@ interface ConnectExternalAccountActivityState extends BasicPointsForBadgesActivi
 export async function awardConnectExternalAccountActivityPoints(activity: ConnectExternalAccountActivity, activityState: ConnectExternalAccountActivityState) {
     const connectedAccounts = await MyDataHelps.getExternalAccounts();
     const connectedProviders = connectedAccounts.filter(account => activity.providerCategories.includes(account.provider.category as ConnectExternalActivityType)).map(account => account.provider.id);
-    let uqConnectedProviders = [...new Set(connectedProviders)];
-    const newProviders = uqConnectedProviders.filter(provider => !activityState.providersConnected?.includes(provider)); 
+    let uniqueConnectedProviders = [...new Set(connectedProviders)];
+    const newProviders = uniqueConnectedProviders.filter(provider => !activityState.providersConnected?.includes(provider)); 
     if (newProviders.length > 0) {
         const newPoints = newProviders.length * activity.points;
         const updatedProviders = !activityState.providersConnected ? newProviders : activityState.providersConnected.concat(newProviders);
