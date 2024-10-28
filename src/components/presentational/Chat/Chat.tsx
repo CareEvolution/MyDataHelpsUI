@@ -22,6 +22,7 @@ export interface ChatProps {
     loading?: string;
     inputDisabled?: boolean;
     suggestions?: string[];
+    onSuggestionSelected?: (suggestion: string) => void;
 }
 
 export interface ChatMessage {
@@ -85,10 +86,10 @@ export default function (props: ChatProps) {
                     </div>
                 </div>
             </div>
-            {props.suggestions && (
+            {props.suggestions && props.onSuggestionSelected && (
                 <div className="mdhui-chat-suggestions">
                     {props.suggestions.map((suggestion, index) => (
-                        <div key={index} className="mdhui-chat-suggestion">{suggestion}</div>
+                        <div key={index} className="mdhui-chat-suggestion" onClick={() => props.onSuggestionSelected?.(suggestion)}>{suggestion}</div>
                     ))}
                 </div>
             )}

@@ -57,6 +57,7 @@ export default function (props: AIAssistantProps) {
     const addUserMessage = async function (newMessage: string) {
 
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
+        setSuggestions([]);
 
         if (props.previewState === "default") return;
 
@@ -136,7 +137,8 @@ export default function (props: AIAssistantProps) {
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
                 cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
-        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} suggestions={suggestions} />}
+        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} suggestions={suggestions}
+            onSuggestionSelected={(suggestion) => addUserMessage(suggestion)} />}
     </>
 }
 
