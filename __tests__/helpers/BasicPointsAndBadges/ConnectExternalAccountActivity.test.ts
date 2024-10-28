@@ -83,7 +83,7 @@ describe("ConnectExternalAccountActivity Awards", () => {
         expect(newActivityState.providersConnected).toEqual([11, 22]);
    });
 
-   it("should recaluclate points across all providers. Awarding points should be based on newly connected", async () => {
+   it("should recalculate points across all providers. Awarding points should be based on newly connected", async () => {
         const activity = {
             type: "connectExternalAccount",
             points: 10,
