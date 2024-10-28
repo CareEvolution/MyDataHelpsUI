@@ -21,6 +21,7 @@ export interface AIAssistantProps {
     tools?: StructuredTool[];
     appendTools?: boolean;
     baseUrl?: string;
+    showSuggestions?: boolean;
 }
 
 export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
@@ -36,12 +37,20 @@ export default function (props: AIAssistantProps) {
     const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
     const [inputDisabled, setInputDisabled] = useState(false);
+    const [suggestions, setSuggestions] = useState<string[]>([]);
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, [new CustomEventTrackerCallbackHandler()], props.tools, props.appendTools);
+        }
+
+        if (props.showSuggestions) {
+            setSuggestions(defaultSuggestions
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+            );
         }
     }, []);
 
@@ -127,7 +136,7 @@ export default function (props: AIAssistantProps) {
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
                 cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
-        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
+        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} suggestions={suggestions} />}
     </>
 }
 
@@ -148,3 +157,11 @@ async function formatCode(toolName: string, toolInput: string) {
         plugins: [babelPlugin, estreePlugin.default]
     });
 }
+
+const defaultSuggestions = [
+    "How has my sleep been for the past 3 days?",
+    "What is my average heart rate for the past week?",
+    "Make a graph of my daily steps for the past 21 days.",
+    "What are my last 5 LDL values?",
+    "What is my average blood pressure for the past month?"
+];

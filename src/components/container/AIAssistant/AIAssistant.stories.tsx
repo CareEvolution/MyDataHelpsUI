@@ -28,6 +28,13 @@ export default {
                 summary: ""
             }
         },
+        showSuggestions: {
+            control: 'boolean',
+            description: 'If turned on the assistant will show suggestions to the user.',
+            defaultValue: {
+                summary: true
+            }
+        },
         appendTools: {
             control: false,
             description: 'If turned on the tools passed in the tools prop will be appended to the default tools.',
@@ -39,7 +46,8 @@ export default {
             control: 'multi-select',
             options: ['persistParticipantInfo', 'queryAppleHealthActivitySummaries', 'queryAppleHealthWorkouts', 'getAllDailyDataTypes',
                 'queryDailySleep', 'queryDeviceDataV2Aggregate', 'queryDeviceDataV2', 'queryNotifications',
-                'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes', 'getEhrNewsFeedPage'],
+                'querySurveyAnswers', 'queryDailyData', 'getAllDailyDataTypes', 'getEhrNewsFeedPage', 'getDeviceDataV2AllDataTypes',
+                'graphingTool', 'uploadedFileQueryTool', 'getUploadedFileTool', 'saveLastGraphTool'],
             mapping: {
                 persistParticipantInfo: MyDataHelpsTools.PersistParticipantInfoTool,
                 queryAppleHealthActivitySummaries: MyDataHelpsTools.QueryAppleHealthActivitySummariesTool,
@@ -92,14 +100,24 @@ body {
 export const Default = {
     args: {
         colorScheme: "auto",
-        debug: false
+        debug: false,
+        showSuggestions: true
     },
     render: render
 };
 
 export const Debug = {
     args: {
-        debug: true
+        debug: true,
+        showSuggestions: true
+    },
+    render: render
+};
+
+export const NoSuggestions = {
+    args: {
+        debug: false,
+        showSuggestions: false
     },
     render: render
 };
