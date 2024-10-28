@@ -96,7 +96,7 @@ export default function (props: AIAssistantProps) {
                             addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
                         }
 
-                        setSuggestions(["Save the graph to my files."]);
+                        setSuggestions(["Save the graph to my files"]);
                     }
                     else if (toolName === "getUploadedFile") {
                         let input = JSON.parse(toolInput);
@@ -163,9 +163,29 @@ async function formatCode(toolName: string, toolInput: string) {
 }
 
 const defaultSuggestions = [
-    "How has my sleep been for the past 3 days?",
     "What is my average heart rate for the past week?",
-    "Make a graph of my daily steps for the past 21 days.",
-    "What are my last 5 LDL values?",
-    "What is my average blood pressure for the past month?"
+    "What was my highest heart rate this week?",
+    "Make a graph of my daily steps for the past 21 days",
+    "How many workouts a week did I average this month?",
+    "What is my average blood pressure for the past month?",
+    "What’s my daily average for active minutes this month?",
+    "How has my resting heart rate changed over the past month?",
+    "How often did I stand up yesterday?",
+    "Could you graph my heart rate trends during workouts this week?",
+
+    "How has my sleep been for the past 7 days?",
+    "At what time did I usually fall asleep over the past 2 weeks?",
+    "How has my sleep quality changed over the past month?",
+
+    "When was my last tetanus vaccine?",
+
+    "When was my last blood test or lab work?",
+    "Do I have any abnormal lab results?",
+    "When was my last complete blood count (CBC)?",
+    "What were my glucose and A1c levels in my last test?",
+    "Can you show me a graph of how my cholesterol levels have changed over time?",
+    "When was my last metabolic panel done?",
+    "What’s the trend in my hemoglobin levels?",
+
+    "Show me my files."
 ];
