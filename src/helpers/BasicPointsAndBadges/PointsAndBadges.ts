@@ -36,6 +36,6 @@ async function awardPointsForActivity(activity: BasicPointsForBadgesActivity, ac
         case "connectExternalAccount":
             return await awardConnectExternalAccountActivityPoints(activity as ConnectExternalAccountActivity, activityState);
         case "custom":
-            return await awardCustomActivityPoints(activity as CustomActivity, activityState, participantInfo);
+            return await awardCustomActivityPoints(activity as CustomActivity, participantInfo);
     }
 }

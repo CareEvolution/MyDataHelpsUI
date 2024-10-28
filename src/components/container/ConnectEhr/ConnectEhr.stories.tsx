@@ -1,5 +1,4 @@
 ﻿import React from "react"
-import { ComponentMeta, ComponentStory } from "@storybook/react"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import ConnectEhr, { ConnectEhrProps } from "./ConnectEhr";
