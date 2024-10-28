@@ -1,8 +1,7 @@
 ﻿import React from 'react';
 import { Card, Layout } from '../../presentational';
 import GlucoseStats, { GlucoseStatsProps } from './GlucoseStats';
-import { generateGlucose, generateSteps } from '../../../helpers';
-import { startOfToday } from 'date-fns';
+import { Reading } from '../../../helpers';
 
 export default {
     title: 'Presentational/GlucoseStats',
@@ -20,8 +19,8 @@ const render = (args: GlucoseStatsStoryArgs) => {
         <Card>
             <GlucoseStats
                 {...args}
-                glucoseReadings={args.previewState === 'with data' ? generateGlucose(startOfToday()) : []}
-                steps={args.previewState === 'with data' ? generateSteps(startOfToday()) : []}
+                glucoseReadings={args.previewState === 'with data' ? [{ value: 61 }, { value: 70 }, { value: 153 }] as Reading[] : []}
+                steps={args.previewState === 'with data' ? [{ value: 4365 }] as Reading[] : []}
                 sleepMinutes={args.previewState === 'with data' ? 385 : undefined}
             />
         </Card>

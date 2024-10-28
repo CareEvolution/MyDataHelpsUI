@@ -4,9 +4,9 @@ import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
+import { CustomEventTrackerCallbackHandler } from '../../../helpers/AIAssistant/Callbacks';
 import language from '../../../helpers/language';
 import Chat from '../../presentational/Chat';
 
@@ -23,7 +23,7 @@ export interface AIAssistantProps {
     baseUrl?: string;
 }
 
-export type AIAssistantMessageType = "user" | "ai" | "tool";
+export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
 
 export interface AIAssistantMessage {
     type: AIAssistantMessageType;
@@ -37,13 +37,11 @@ export default function (props: AIAssistantProps) {
     const [loading, setLoading] = useState("");
     const [inputDisabled, setInputDisabled] = useState(false);
 
-    let lastAIMessage = "";
-
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
-            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, props.tools, props.appendTools);
+            assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, [new CustomEventTrackerCallbackHandler()], props.tools, props.appendTools);
         }
     }, []);
 
@@ -55,15 +53,7 @@ export default function (props: AIAssistantProps) {
 
         setInputDisabled(true);
 
-        MyDataHelps.trackCustomEvent({
-            eventType: "ai-assistant-message",
-            properties: {
-                type: "user",
-                body: newMessage
-            }
-        });
-
-        await assistantRef.current?.ask(newMessage, function (streamEvent: StreamEvent) {
+        await assistantRef.current?.ask(newMessage, async function (streamEvent: StreamEvent) {
 
             const [kind, type] = getEventKindType(streamEvent.event);
 
@@ -86,36 +76,27 @@ export default function (props: AIAssistantProps) {
                     let toolInput = streamEvent.data.input.input;
 
                     if (props.debug) {
-                        formatCode(toolName, toolInput)
-                            .then((formattedMessage) => {
-                                addToolMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```");
-                            });
+                        let formattedMessage = await formatCode(toolName, toolInput)
+                        addMessage(streamEvent.run_id, "```js\n" + formattedMessage + "```", "tool");
                     }
 
-                    MyDataHelps.trackCustomEvent({
-                        eventType: "ai-assistant-message",
-                        properties: {
-                            type: "tool",
-                            body: `${toolName}(${toolInput})`
+                    if (toolName === "graphing") {
+                        let image = streamEvent.data.output.content;
+                        if (image && !image.startsWith("error")) {
+                            addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
                         }
-                    });
+                    }
+                    else if (toolName === "getUploadedFile") {
+                        let input = JSON.parse(toolInput);
+                        if (input.key && input.key.endsWith(".png")) {
+                            let output = JSON.parse(streamEvent.data.output.content);
+                            addMessage(streamEvent.run_id, output.preSignedUrl, "image");
+                        }
+                    }
                 }
             }
 
-            if (kind === "chat_model" && type === "start") {
-                lastAIMessage = "";
-            }
-
             if (kind === "chat_model" && type === "end") {
-
-                MyDataHelps.trackCustomEvent({
-                    eventType: "ai-assistant-message",
-                    properties: {
-                        type: "ai",
-                        body: lastAIMessage
-                    }
-                });
-
                 setInputDisabled(false);
             }
         });
@@ -132,12 +113,10 @@ export default function (props: AIAssistantProps) {
                 return [...prevMessages, { type: 'ai', content: message, runId: runId }];
             }
         });
-
-        lastAIMessage += message;
     }
 
-    const addToolMessage = function (runId: string, message: string) {
-        setMessages(prevMessages => [...prevMessages, { type: 'tool', content: message, runId }]);
+    const addMessage = function (runId: string, message: string, type: AIAssistantMessageType) {
+        setMessages(prevMessages => [...prevMessages, { type, content: message, runId }]);
     }
 
     return <>
@@ -145,8 +124,8 @@ export default function (props: AIAssistantProps) {
             return {
                 icon: msg.type === "ai" ? <FontAwesomeSvgIcon icon={faLightbulb} width={16} /> : undefined,
                 content: msg.content,
-                type: msg.type === "user" ? "sent" : "received",
-                cssClass: msg.type === "tool" ? "tool" : undefined
+                type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
+                cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
         })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
     </>
