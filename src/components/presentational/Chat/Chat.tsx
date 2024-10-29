@@ -88,8 +88,8 @@ export default function (props: ChatProps) {
             </div>
             {props.suggestions && props.onSuggestionSelected && (
                 <div className="mdhui-chat-suggestions">
-                    {props.suggestions.map((suggestion, index) => (
-                        <div key={index} className="mdhui-chat-suggestion" onClick={() => props.onSuggestionSelected?.(suggestion)}>{suggestion}</div>
+                    {props.suggestions.map((suggestion) => (
+                        <div key={suggestion} className="mdhui-chat-suggestion" onClick={() => props.onSuggestionSelected?.(suggestion)}>{suggestion}</div>
                     ))}
                 </div>
             )}
