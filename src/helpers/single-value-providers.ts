@@ -25,7 +25,7 @@ export class RandomIntegerValueProvider extends SingleValueProvider<number> {
     }
 
     getValue(): Promise<number | undefined> {
-        return Promise.resolve(Math.round(Math.random() * this.maxValue));
+        return Promise.resolve(Math.floor(Math.random() * (this.maxValue + 1)));
     }
 }
 
