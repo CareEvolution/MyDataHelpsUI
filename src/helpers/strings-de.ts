@@ -494,7 +494,8 @@ let strings: { [key: string]: string } = {
     "ai-assistant-suggestion-graph-cholesterol-trends": "Könntest du mir ein Diagramm zeigen, wie sich meine Cholesterinwerte über die Zeit verändert haben?",
     "ai-assistant-suggestion-last-metabolic-panel": "Wann war mein letztes metabolisches Panel?",
     "ai-assistant-suggestion-hemoglobin-levels-trend": "Wie ist der Trend meiner Hämoglobinwerte?",
-    "ai-assistant-suggestion-show-files": "Zeige mir meine Dateien."
+    "ai-assistant-suggestion-show-files": "Zeige mir meine Dateien.",
+    "ai-assistant-suggestion-save-graph-to-files": "Speichere das Diagramm in meinen Dateien"
 };
 
 export default strings;

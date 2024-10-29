@@ -118,6 +118,8 @@ export class MyDataHelpsAIAssistant {
 			
 			The time right now is ${new Date().toISOString()}.
 
+            If you are asked a question in a different language, respond in the same language as the question.
+
             ${this.additionalInstructions}
 			`),
             new MessagesPlaceholder("messages")

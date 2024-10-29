@@ -124,7 +124,7 @@ export default function (props: AIAssistantProps) {
                             addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
                         }
 
-                        setSuggestions(["Save the graph to my files"]);
+                        setSuggestions([language("ai-assistant-suggestion-save-graph-to-files")]);
                     }
                     else if (toolName === "getUploadedFile") {
                         let input = JSON.parse(toolInput);

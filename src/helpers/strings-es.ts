@@ -494,7 +494,8 @@
     "ai-assistant-suggestion-graph-cholesterol-trends": "¿Podrías mostrarme un gráfico de cómo han cambiado mis niveles de colesterol con el tiempo?",
     "ai-assistant-suggestion-last-metabolic-panel": "¿Cuándo fue mi último panel metabólico?",
     "ai-assistant-suggestion-hemoglobin-levels-trend": "¿Cuál es la tendencia en mis niveles de hemoglobina?",
-    "ai-assistant-suggestion-show-files": "Muéstrame mis archivos."
+    "ai-assistant-suggestion-show-files": "Muéstrame mis archivos.",
+    "ai-assistant-suggestion-save-graph-to-files": "Guarda el gráfico en mis archivos"
 };
 
 export default strings;
