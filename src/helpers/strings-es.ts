@@ -473,7 +473,28 @@
     "meal-editor-description-optional": "Opcional",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
     "glucose-view-title": "Monitorización de glucosa",
-    "ai-assistant-loading": "Interactuando con tus datos..."
+    "ai-assistant-loading": "Interactuando con tus datos...",
+    "ai-assistant-suggestion-avg-weekly-heart-rate": "¿Cuál es mi frecuencia cardíaca promedio de la última semana?",
+    "ai-assistant-suggestion-highest-heart-rate-week": "¿Cuál fue mi frecuencia cardíaca más alta esta semana?",
+    "ai-assistant-suggestion-graph-daily-steps-21-days": "Haz un gráfico de mis pasos diarios durante los últimos 21 días",
+    "ai-assistant-suggestion-weekly-workouts-average-month": "¿Cuántos entrenamientos por semana he promediado este mes?",
+    "ai-assistant-suggestion-avg-monthly-blood-pressure": "¿Cuál es mi presión arterial promedio del último mes?",
+    "ai-assistant-suggestion-daily-active-minutes-month": "¿Cuál es mi promedio diario de minutos activos este mes?",
+    "ai-assistant-suggestion-resting-heart-rate-change-month": "¿Cómo ha cambiado mi frecuencia cardíaca en reposo durante el último mes?",
+    "ai-assistant-suggestion-stand-ups-yesterday": "¿Con qué frecuencia me puse de pie ayer?",
+    "ai-assistant-suggestion-graph-heart-rate-trends-workouts": "¿Podrías graficar las tendencias de mi frecuencia cardíaca durante los entrenamientos esta semana?",
+    "ai-assistant-suggestion-sleep-7-days": "¿Cómo ha sido mi sueño en los últimos 7 días?",
+    "ai-assistant-suggestion-fall-asleep-time-2-weeks": "¿A qué hora suelo quedarme dormido durante las últimas 2 semanas?",
+    "ai-assistant-suggestion-sleep-quality-change-month": "¿Cómo ha cambiado la calidad de mi sueño en el último mes?",
+    "ai-assistant-suggestion-last-tetanus-vaccine": "¿Cuándo fue mi última vacuna contra el tétanos?",
+    "ai-assistant-suggestion-last-blood-test-lab-work": "¿Cuándo fue mi último análisis de sangre o prueba de laboratorio?",
+    "ai-assistant-suggestion-abnormal-lab-results": "¿Tengo algún resultado de laboratorio anormal?",
+    "ai-assistant-suggestion-last-cbc-test": "¿Cuándo fue mi último hemograma completo (CBC)?",
+    "ai-assistant-suggestion-glucose-a1c-levels-last-test": "¿Cuáles fueron mis niveles de glucosa y A1c en mi última prueba?",
+    "ai-assistant-suggestion-graph-cholesterol-trends": "¿Podrías mostrarme un gráfico de cómo han cambiado mis niveles de colesterol con el tiempo?",
+    "ai-assistant-suggestion-last-metabolic-panel": "¿Cuándo fue mi último panel metabólico?",
+    "ai-assistant-suggestion-hemoglobin-levels-trend": "¿Cuál es la tendencia en mis niveles de hemoglobina?",
+    "ai-assistant-suggestion-show-files": "Muéstrame mis archivos."
 };
 
 export default strings;

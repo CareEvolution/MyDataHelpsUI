@@ -163,29 +163,29 @@ async function formatCode(toolName: string, toolInput: string) {
 }
 
 const defaultSuggestions = [
-    "What is my average heart rate for the past week?",
-    "What was my highest heart rate this week?",
-    "Make a graph of my daily steps for the past 21 days",
-    "How many workouts a week did I average this month?",
-    "What is my average blood pressure for the past month?",
-    "What’s my daily average for active minutes this month?",
-    "How has my resting heart rate changed over the past month?",
-    "How often did I stand up yesterday?",
-    "Could you graph my heart rate trends during workouts this week?",
+    language("ai-assistant-suggestion-avg-weekly-heart-rate"),
+    language("ai-assistant-suggestion-highest-heart-rate-week"),
+    language("ai-assistant-suggestion-graph-daily-steps-21-days"),
+    language("ai-assistant-suggestion-weekly-workouts-average-month"),
+    language("ai-assistant-suggestion-avg-monthly-blood-pressure"),
+    language("ai-assistant-suggestion-daily-active-minutes-month"),
+    language("ai-assistant-suggestion-resting-heart-rate-change-month"),
+    language("ai-assistant-suggestion-stand-ups-yesterday"),
+    language("ai-assistant-suggestion-graph-heart-rate-trends-workouts"),
+    
+    language("ai-assistant-suggestion-sleep-7-days"),
+    language("ai-assistant-suggestion-fall-asleep-time-2-weeks"),
+    language("ai-assistant-suggestion-sleep-quality-change-month"),
 
-    "How has my sleep been for the past 7 days?",
-    "At what time did I usually fall asleep over the past 2 weeks?",
-    "How has my sleep quality changed over the past month?",
-
-    "When was my last tetanus vaccine?",
-
-    "When was my last blood test or lab work?",
-    "Do I have any abnormal lab results?",
-    "When was my last complete blood count (CBC)?",
-    "What were my glucose and A1c levels in my last test?",
-    "Can you show me a graph of how my cholesterol levels have changed over time?",
-    "When was my last metabolic panel done?",
-    "What’s the trend in my hemoglobin levels?",
-
-    "Show me my files."
+    language("ai-assistant-suggestion-last-tetanus-vaccine"),
+    
+    language("ai-assistant-suggestion-last-blood-test-lab-work"),
+    language("ai-assistant-suggestion-abnormal-lab-results"),
+    language("ai-assistant-suggestion-last-cbc-test"),
+    language("ai-assistant-suggestion-glucose-a1c-levels-last-test"),
+    language("ai-assistant-suggestion-graph-cholesterol-trends"),
+    language("ai-assistant-suggestion-last-metabolic-panel"),
+    language("ai-assistant-suggestion-hemoglobin-levels-trend"),
+    
+    language("ai-assistant-suggestion-show-files")
 ];

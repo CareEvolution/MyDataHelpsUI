@@ -473,7 +473,28 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
     "glucose-view-title": "Blutzuckerüberwachung",
-    "ai-assistant-loading": "Interaktion mit Ihren Daten..."
+    "ai-assistant-loading": "Interaktion mit Ihren Daten...",
+    "ai-assistant-suggestion-avg-weekly-heart-rate": "Wie ist meine durchschnittliche Herzfrequenz der letzten Woche?",
+    "ai-assistant-suggestion-highest-heart-rate-week": "Was war meine höchste Herzfrequenz diese Woche?",
+    "ai-assistant-suggestion-graph-daily-steps-21-days": "Erstelle ein Diagramm meiner täglichen Schritte der letzten 21 Tage",
+    "ai-assistant-suggestion-weekly-workouts-average-month": "Wie viele Workouts pro Woche habe ich diesen Monat im Durchschnitt gemacht?",
+    "ai-assistant-suggestion-avg-monthly-blood-pressure": "Wie ist mein durchschnittlicher Blutdruck des letzten Monats?",
+    "ai-assistant-suggestion-daily-active-minutes-month": "Was ist mein täglicher Durchschnitt an aktiven Minuten diesen Monat?",
+    "ai-assistant-suggestion-resting-heart-rate-change-month": "Wie hat sich meine Ruheherzfrequenz im letzten Monat verändert?",
+    "ai-assistant-suggestion-stand-ups-yesterday": "Wie oft bin ich gestern aufgestanden?",
+    "ai-assistant-suggestion-graph-heart-rate-trends-workouts": "Könntest du meine Herzfrequenztrends während der Workouts dieser Woche grafisch darstellen?",
+    "ai-assistant-suggestion-sleep-7-days": "Wie war mein Schlaf in den letzten 7 Tagen?",
+    "ai-assistant-suggestion-fall-asleep-time-2-weeks": "Zu welcher Zeit bin ich in den letzten 2 Wochen normalerweise eingeschlafen?",
+    "ai-assistant-suggestion-sleep-quality-change-month": "Wie hat sich meine Schlafqualität im letzten Monat verändert?",
+    "ai-assistant-suggestion-last-tetanus-vaccine": "Wann war meine letzte Tetanusimpfung?",
+    "ai-assistant-suggestion-last-blood-test-lab-work": "Wann war mein letzter Bluttest oder Labortest?",
+    "ai-assistant-suggestion-abnormal-lab-results": "Habe ich irgendwelche abnormalen Laborergebnisse?",
+    "ai-assistant-suggestion-last-cbc-test": "Wann war mein letztes großes Blutbild (CBC)?",
+    "ai-assistant-suggestion-glucose-a1c-levels-last-test": "Wie waren meine Glukose- und A1c-Werte in meinem letzten Test?",
+    "ai-assistant-suggestion-graph-cholesterol-trends": "Könntest du mir ein Diagramm zeigen, wie sich meine Cholesterinwerte über die Zeit verändert haben?",
+    "ai-assistant-suggestion-last-metabolic-panel": "Wann war mein letztes metabolisches Panel?",
+    "ai-assistant-suggestion-hemoglobin-levels-trend": "Wie ist der Trend meiner Hämoglobinwerte?",
+    "ai-assistant-suggestion-show-files": "Zeige mir meine Dateien."
 };
 
 export default strings;
