@@ -1,19 +1,19 @@
-import { SingleValueProvider, SingleValueProviderFactory } from '../../../helpers';
+import { createRandomIntegerValueProvider, createStaticIntegerValueProvider, SingleValueProvider } from '../../../helpers';
 
 export type GoalPreviewState = 'not started' | 'in progress' | 'complete' | 'maxed out' | 'random';
 
 export const createPreviewValueProvider = (previewState: GoalPreviewState, targetValue: number, maxValue: number): SingleValueProvider<number> => {
     if (previewState === 'in progress') {
-        return SingleValueProviderFactory.createStaticIntegerValueProvider(targetValue - 1);
+        return createStaticIntegerValueProvider(targetValue - 1);
     }
     if (previewState === 'complete') {
-        return SingleValueProviderFactory.createStaticIntegerValueProvider(targetValue);
+        return createStaticIntegerValueProvider(targetValue);
     }
     if (previewState === 'maxed out') {
-        return SingleValueProviderFactory.createStaticIntegerValueProvider(maxValue);
+        return createStaticIntegerValueProvider(maxValue);
     }
     if (previewState === 'random') {
-        return SingleValueProviderFactory.createRandomIntegerValueProvider(maxValue);
+        return createRandomIntegerValueProvider(maxValue);
     }
-    return SingleValueProviderFactory.createStaticIntegerValueProvider(0);
+    return createStaticIntegerValueProvider(0);
 };

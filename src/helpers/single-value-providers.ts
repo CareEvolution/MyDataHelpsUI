@@ -50,16 +50,14 @@ export class CustomFieldIntegerValueProvider extends SingleValueProvider<number>
     }
 }
 
-export class SingleValueProviderFactory {
-    static createStaticIntegerValueProvider(staticValue: number): StaticIntegerValueProvider {
-        return new StaticIntegerValueProvider(staticValue);
-    }
+export const createStaticIntegerValueProvider = (staticValue: number): StaticIntegerValueProvider => {
+    return new StaticIntegerValueProvider(staticValue);
+};
 
-    static createRandomIntegerValueProvider(maxValue: number): RandomIntegerValueProvider {
-        return new RandomIntegerValueProvider(maxValue);
-    }
+export const createRandomIntegerValueProvider = (maxValue: number): RandomIntegerValueProvider => {
+    return new RandomIntegerValueProvider(maxValue);
+};
 
-    static createCustomFieldIntegerValueProvider(customField: string): CustomFieldIntegerValueProvider {
-        return new CustomFieldIntegerValueProvider(customField);
-    }
-}
+export const createCustomFieldIntegerValueProvider = (customField: string): CustomFieldIntegerValueProvider => {
+    return new CustomFieldIntegerValueProvider(customField);
+};
