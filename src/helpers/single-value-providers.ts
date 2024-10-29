@@ -2,55 +2,64 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export type SingleValueProviderType = 'static integer' | 'random integer' | 'custom field integer';
 
-export interface SingleValueProvider<T> {
-    type: SingleValueProviderType;
-    getValue: () => Promise<T | undefined>;
+export abstract class SingleValueProvider<T> {
+    protected constructor(public type: SingleValueProviderType) {
+    };
+
+    abstract getValue(): Promise<T | undefined>;
 }
 
-export interface StaticIntegerValueProvider extends SingleValueProvider<number> {
-    staticValue: number;
+export class StaticIntegerValueProvider extends SingleValueProvider<number> {
+    constructor(public staticValue: number) {
+        super('static integer');
+    }
+
+    getValue(): Promise<number | undefined> {
+        return Promise.resolve(this.staticValue);
+    }
 }
 
-export interface RandomIntegerValueProvider extends SingleValueProvider<number> {
-    maxValue: number;
+export class RandomIntegerValueProvider extends SingleValueProvider<number> {
+    constructor(public maxValue: number) {
+        super('random integer');
+    }
+
+    getValue(): Promise<number | undefined> {
+        return Promise.resolve(Math.round(Math.random() * this.maxValue));
+    }
 }
 
-export interface CustomFieldIntegerValueProvider extends SingleValueProvider<number> {
-    customField: string;
-}
+export class CustomFieldIntegerValueProvider extends SingleValueProvider<number> {
+    constructor(public customField: string) {
+        super('custom field integer');
+    }
 
-export const SingleValueProviderFactory = {
-    createStaticIntegerValueProvider: (staticValue: number): StaticIntegerValueProvider => {
-        return {
-            type: 'static integer',
-            staticValue: staticValue,
-            getValue: () => Promise.resolve(staticValue)
-        };
-    },
-    createRandomIntegerValueProvider: (maxValue: number): RandomIntegerValueProvider => {
-        return {
-            type: 'random integer',
-            maxValue: maxValue,
-            getValue: () => Promise.resolve(Math.round(Math.random() * maxValue))
-        };
-    },
-    createCustomFieldIntegerValueProvider: (customField: string): CustomFieldIntegerValueProvider => {
-        return {
-            type: 'custom field integer',
-            customField: customField,
-            getValue: async () => {
-                if (!customField) return undefined;
+    async getValue(): Promise<number | undefined> {
+        if (!this.customField) return undefined;
 
-                const participantInfo = await MyDataHelps.getParticipantInfo();
-                if (participantInfo.customFields.hasOwnProperty(customField)) {
-                    const valueAsString = participantInfo.customFields[customField];
-                    const valueAsInt = parseInt(valueAsString);
-                    if (!isNaN(valueAsInt)) {
-                        return valueAsInt;
-                    }
-                }
-                return undefined;
+        let participantInfo = await MyDataHelps.getParticipantInfo();
+        if (participantInfo.customFields.hasOwnProperty(this.customField)) {
+            const valueAsString = participantInfo.customFields[this.customField];
+            const valueAsInt = parseInt(valueAsString);
+            if (!isNaN(valueAsInt)) {
+                return valueAsInt;
             }
-        };
+        }
+
+        return undefined;
+    }
+}
+
+export class SingleValueProviderFactory {
+    static createStaticIntegerValueProvider(staticValue: number): StaticIntegerValueProvider {
+        return new StaticIntegerValueProvider(staticValue);
+    }
+
+    static createRandomIntegerValueProvider(maxValue: number): RandomIntegerValueProvider {
+        return new RandomIntegerValueProvider(maxValue);
+    }
+
+    static createCustomFieldIntegerValueProvider(customField: string): CustomFieldIntegerValueProvider {
+        return new CustomFieldIntegerValueProvider(customField);
     }
 }
