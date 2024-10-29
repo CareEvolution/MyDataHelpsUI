@@ -33,7 +33,11 @@ export interface AIAssistantMessage {
     runId?: string;
 }
 
-export default function (props: AIAssistantProps) {
+/**
+ * Component that can be used to add the MyDataHelps AI Assistant to your application.
+ * The component will use all the allowed viewport vertical space it is given.
+*/
+export default function AIAssistant(props: AIAssistantProps) {
 
     const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");

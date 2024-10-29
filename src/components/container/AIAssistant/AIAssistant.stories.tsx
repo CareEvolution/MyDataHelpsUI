@@ -1,5 +1,7 @@
 import React from "react";
 import { Global, css } from '@emotion/react';
+import { Description } from "@storybook/blocks";
+
 import Layout from "../../presentational/Layout";
 import AIAssistant, { AIAssistantProps } from "./AIAssistant";
 import { MyDataHelpsTools } from "../../../helpers/AIAssistant";
@@ -13,6 +15,9 @@ export default {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        docs: {
+            Description: <Description />
         },
         debug: {
             control: 'boolean',

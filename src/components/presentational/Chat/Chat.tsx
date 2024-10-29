@@ -38,7 +38,10 @@ const md = new markdownIt({
     breaks: true
 }).use(markdownItHighlightjs, { inline: true, hljs });
 
-export default function (props: ChatProps) {
+/**
+ * Presentational component that can be used to display a conversation between two users, one of which could be an AI Assistant.
+ */
+export default function Chat(props: ChatProps) {
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const logRef = useRef<HTMLDivElement>(null);
