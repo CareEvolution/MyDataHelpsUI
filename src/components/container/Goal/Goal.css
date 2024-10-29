@@ -4,24 +4,6 @@
     margin: 16px;
 }
 
-.mdhui-goal-off {
-    fill: #ddd;
-    stroke: #ddd;
-    color: #ddd;
-}
-
-.mdhui-goal-on {
-    fill: #6ac2da;
-    stroke: #6ac2da;
-    color: #6ac2da;
-}
-
-.mdhui-goal-complete {
-    fill: #94ce51;
-    stroke: #94ce51;
-    color: #94ce51;
-}
-
 .mdhui-goal-chart {
     position: relative;
     height: 80px;
