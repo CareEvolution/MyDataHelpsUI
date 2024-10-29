@@ -1,7 +1,7 @@
 .mdhui-goal {
     display: grid;
     grid-template-columns: max-content auto;
-    padding: 8px 16px;
+    margin: 16px;
 }
 
 .mdhui-goal-off {
