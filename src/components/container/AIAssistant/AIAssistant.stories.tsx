@@ -52,7 +52,11 @@ export default {
                 queryDailyDataTool: MyDataHelpsTools.QueryDailyDataTool,
                 getAllDailyDataTypes: MyDataHelpsTools.GetAllDailyDataTypesTool,
                 getEhrNewsFeedPage: MyDataHelpsTools.GetEhrNewsFeedPageTool,
-                getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool
+                getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
+                graphingTool: MyDataHelpsTools.GraphingTool,
+                uploadedFileQueryTool: MyDataHelpsTools.UploadedFileQueryTool,
+                getUploadedFileTool: MyDataHelpsTools.GetUploadedFileTool,
+                saveLastGraphTool: MyDataHelpsTools.SaveLastGraphTool
             }
         }
     }

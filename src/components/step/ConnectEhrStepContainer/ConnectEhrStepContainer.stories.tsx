@@ -1,20 +1,25 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ConnectEhrStepContainer, {
-    ConnectEhrStepContainerProps,
-} from "./ConnectEhrStepContainer";
+import { Meta, StoryObj } from "@storybook/react";
+import ConnectEhrStepContainer from "./ConnectEhrStepContainer";
+import { Card, Layout } from "../../presentational";
 
-export default {
+
+const meta: Meta<typeof ConnectEhrStepContainer> = {
     title: "SurveyStep/ConnectEhrStepContainer",
     component: ConnectEhrStepContainer,
     parameters: {
-        layout: "fullscreen",
-    },
-} as ComponentMeta<typeof ConnectEhrStepContainer>;
+        layout: 'fullscreen',
+        docs: {
+        }
+    }
+};
 
-const Template: ComponentStory<typeof ConnectEhrStepContainer> = (
-    args: ConnectEhrStepContainerProps
-) => <ConnectEhrStepContainer {...args} />;
+export default meta;
+type Story = StoryObj<typeof ConnectEhrStepContainer>;
 
-export const ConnectEhrStepContainerDefault = Template.bind({});
-ConnectEhrStepContainerDefault.args = {};
+const render = () => <ConnectEhrStepContainer />;
+
+
+export const ConnectEhrStepContainerDefault : Story = {
+    render: render
+};
