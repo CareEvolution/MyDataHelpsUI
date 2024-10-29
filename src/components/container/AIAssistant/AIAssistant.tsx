@@ -41,6 +41,34 @@ export default function (props: AIAssistantProps) {
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
 
+    const defaultSuggestions = [
+        language("ai-assistant-suggestion-avg-weekly-heart-rate"),
+        language("ai-assistant-suggestion-highest-heart-rate-week"),
+        language("ai-assistant-suggestion-graph-daily-steps-21-days"),
+        language("ai-assistant-suggestion-weekly-workouts-average-month"),
+        language("ai-assistant-suggestion-avg-monthly-blood-pressure"),
+        language("ai-assistant-suggestion-daily-active-minutes-month"),
+        language("ai-assistant-suggestion-resting-heart-rate-change-month"),
+        language("ai-assistant-suggestion-stand-ups-yesterday"),
+        language("ai-assistant-suggestion-graph-heart-rate-trends-workouts"),
+        
+        language("ai-assistant-suggestion-sleep-7-days"),
+        language("ai-assistant-suggestion-fall-asleep-time-2-weeks"),
+        language("ai-assistant-suggestion-sleep-quality-change-month"),
+    
+        language("ai-assistant-suggestion-last-tetanus-vaccine"),
+        
+        language("ai-assistant-suggestion-last-blood-test-lab-work"),
+        language("ai-assistant-suggestion-abnormal-lab-results"),
+        language("ai-assistant-suggestion-last-cbc-test"),
+        language("ai-assistant-suggestion-glucose-a1c-levels-last-test"),
+        language("ai-assistant-suggestion-graph-cholesterol-trends"),
+        language("ai-assistant-suggestion-last-metabolic-panel"),
+        language("ai-assistant-suggestion-hemoglobin-levels-trend"),
+        
+        language("ai-assistant-suggestion-show-files")
+    ];
+
     useEffect(() => {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, [new CustomEventTrackerCallbackHandler()], props.tools, props.appendTools);
@@ -161,31 +189,3 @@ async function formatCode(toolName: string, toolInput: string) {
         plugins: [babelPlugin, estreePlugin.default]
     });
 }
-
-const defaultSuggestions = [
-    language("ai-assistant-suggestion-avg-weekly-heart-rate"),
-    language("ai-assistant-suggestion-highest-heart-rate-week"),
-    language("ai-assistant-suggestion-graph-daily-steps-21-days"),
-    language("ai-assistant-suggestion-weekly-workouts-average-month"),
-    language("ai-assistant-suggestion-avg-monthly-blood-pressure"),
-    language("ai-assistant-suggestion-daily-active-minutes-month"),
-    language("ai-assistant-suggestion-resting-heart-rate-change-month"),
-    language("ai-assistant-suggestion-stand-ups-yesterday"),
-    language("ai-assistant-suggestion-graph-heart-rate-trends-workouts"),
-    
-    language("ai-assistant-suggestion-sleep-7-days"),
-    language("ai-assistant-suggestion-fall-asleep-time-2-weeks"),
-    language("ai-assistant-suggestion-sleep-quality-change-month"),
-
-    language("ai-assistant-suggestion-last-tetanus-vaccine"),
-    
-    language("ai-assistant-suggestion-last-blood-test-lab-work"),
-    language("ai-assistant-suggestion-abnormal-lab-results"),
-    language("ai-assistant-suggestion-last-cbc-test"),
-    language("ai-assistant-suggestion-glucose-a1c-levels-last-test"),
-    language("ai-assistant-suggestion-graph-cholesterol-trends"),
-    language("ai-assistant-suggestion-last-metabolic-panel"),
-    language("ai-assistant-suggestion-hemoglobin-levels-trend"),
-    
-    language("ai-assistant-suggestion-show-files")
-];
