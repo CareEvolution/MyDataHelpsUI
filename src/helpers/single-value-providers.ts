@@ -41,7 +41,7 @@ export class CustomFieldIntegerValueProvider extends SingleValueProvider<number>
         if (participantInfo.customFields.hasOwnProperty(this.customField)) {
             const valueAsString = participantInfo.customFields[this.customField];
             const valueAsInt = parseInt(valueAsString);
-            if (!isNaN(valueAsInt)) {
+            if (!Number.isNaN(valueAsInt)) {
                 return valueAsInt;
             }
         }
