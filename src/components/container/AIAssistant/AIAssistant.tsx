@@ -80,7 +80,7 @@ export default function (props: AIAssistantProps) {
         setSuggestions(props.showSuggestions ? defaultSuggestions
             .sort(() => 0.5 - Math.random())
             .slice(0, 3) : []);
-    }, [MyDataHelps.getCurrentLanguage()]);
+    }, [MyDataHelps.getCurrentLanguage(), props.showSuggestions]);
 
     const addUserMessage = async function (newMessage: string) {
 
