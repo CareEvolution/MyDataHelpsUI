@@ -4,6 +4,7 @@ import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import { CustomEventTrackerCallbackHandler } from '../../../helpers/AIAssistant/Callbacks';
@@ -51,13 +52,13 @@ export default function (props: AIAssistantProps) {
         language("ai-assistant-suggestion-resting-heart-rate-change-month"),
         language("ai-assistant-suggestion-stand-ups-yesterday"),
         language("ai-assistant-suggestion-graph-heart-rate-trends-workouts"),
-        
+
         language("ai-assistant-suggestion-sleep-7-days"),
         language("ai-assistant-suggestion-fall-asleep-time-2-weeks"),
         language("ai-assistant-suggestion-sleep-quality-change-month"),
-    
+
         language("ai-assistant-suggestion-last-tetanus-vaccine"),
-        
+
         language("ai-assistant-suggestion-last-blood-test-lab-work"),
         language("ai-assistant-suggestion-abnormal-lab-results"),
         language("ai-assistant-suggestion-last-cbc-test"),
@@ -65,7 +66,7 @@ export default function (props: AIAssistantProps) {
         language("ai-assistant-suggestion-graph-cholesterol-trends"),
         language("ai-assistant-suggestion-last-metabolic-panel"),
         language("ai-assistant-suggestion-hemoglobin-levels-trend"),
-        
+
         language("ai-assistant-suggestion-show-files")
     ];
 
@@ -73,14 +74,13 @@ export default function (props: AIAssistantProps) {
         if (assistantRef.current === undefined) {
             assistantRef.current = new MyDataHelpsAIAssistant(props.baseUrl, props.additionalInstructions, [new CustomEventTrackerCallbackHandler()], props.tools, props.appendTools);
         }
-
-        if (props.showSuggestions) {
-            setSuggestions(defaultSuggestions
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3)
-            );
-        }
     }, []);
+
+    useEffect(() => {
+        setSuggestions(props.showSuggestions ? defaultSuggestions
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3) : []);
+    }, [MyDataHelps.getCurrentLanguage()]);
 
     const addUserMessage = async function (newMessage: string) {
 
