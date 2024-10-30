@@ -473,7 +473,29 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-optional": "Optionnel",
     "meal-editor-duplicate-timestamp-error": "Deux repas ne peuvent pas avoir la même heure.",
     "glucose-view-title": "Surveillance de la glycémie",
-    "ai-assistant-loading": "Interagir avec vos données..."
+    "ai-assistant-loading": "Interagir avec vos données...",
+    "ai-assistant-suggestion-avg-weekly-heart-rate": "Quelle est ma fréquence cardiaque moyenne de la semaine dernière ?",
+    "ai-assistant-suggestion-highest-heart-rate-week": "Quelle a été ma fréquence cardiaque maximale cette semaine ?",
+    "ai-assistant-suggestion-graph-daily-steps-21-days": "Fais un graphique de mes pas quotidiens pour les 21 derniers jours",
+    "ai-assistant-suggestion-weekly-workouts-average-month": "Combien d'entraînements par semaine ai-je fait en moyenne ce mois-ci ?",
+    "ai-assistant-suggestion-avg-monthly-blood-pressure": "Quelle est ma tension artérielle moyenne du dernier mois ?",
+    "ai-assistant-suggestion-daily-active-minutes-month": "Quelle est ma moyenne quotidienne de minutes actives ce mois-ci ?",
+    "ai-assistant-suggestion-resting-heart-rate-change-month": "Comment ma fréquence cardiaque au repos a-t-elle changé au cours du dernier mois ?",
+    "ai-assistant-suggestion-stand-ups-yesterday": "À quelle fréquence me suis-je levé hier ?",
+    "ai-assistant-suggestion-graph-heart-rate-trends-workouts": "Peux-tu tracer les tendances de ma fréquence cardiaque pendant les entraînements de cette semaine ?",
+    "ai-assistant-suggestion-sleep-7-days": "Comment s'est passé mon sommeil ces 7 derniers jours ?",
+    "ai-assistant-suggestion-fall-asleep-time-2-weeks": "À quelle heure me suis-je généralement endormi au cours des 2 dernières semaines ?",
+    "ai-assistant-suggestion-sleep-quality-change-month": "Comment la qualité de mon sommeil a-t-elle changé au cours du dernier mois ?",
+    "ai-assistant-suggestion-last-tetanus-vaccine": "Quand ai-je reçu mon dernier vaccin contre le tétanos ?",
+    "ai-assistant-suggestion-last-blood-test-lab-work": "Quand ai-je fait mon dernier test sanguin ou examen de laboratoire ?",
+    "ai-assistant-suggestion-abnormal-lab-results": "Ai-je des résultats de laboratoire anormaux ?",
+    "ai-assistant-suggestion-last-cbc-test": "Quand a eu lieu ma dernière numération globulaire complète (CBC) ?",
+    "ai-assistant-suggestion-glucose-a1c-levels-last-test": "Quels étaient mes niveaux de glucose et A1c lors de mon dernier test ?",
+    "ai-assistant-suggestion-graph-cholesterol-trends": "Peux-tu me montrer un graphique de l'évolution de mes niveaux de cholestérol au fil du temps ?",
+    "ai-assistant-suggestion-last-metabolic-panel": "Quand a eu lieu mon dernier bilan métabolique ?",
+    "ai-assistant-suggestion-hemoglobin-levels-trend": "Quelle est la tendance de mes niveaux d'hémoglobine ?",
+    "ai-assistant-suggestion-show-files": "Montre-moi mes fichiers.",
+    "ai-assistant-suggestion-save-graph-to-files": "Enregistre le graphique dans mes fichiers"
 };
 
 export default strings;
