@@ -23,24 +23,20 @@ export default {
         loading: {
             control: 'text',
             description: 'Loading text to display when a backend operation is executing.',
-            defaultValue: {
-                summary: ''
-            }
         },
         messages: {
             control: 'object',
             description: 'Messages to display in the chat.',
-            defaultValue: {
-                summary: []
-            }
         },
         suggestions: {
             control: 'object',
             description: 'Suggestions to display to the user that they might ask the AI Assistant.',
-            defaultValue: {
-                summary: []
-            }
         }
+    },
+    args: {
+        messages: [],
+        suggestions: [],
+        loading: ""
     }
 };
 
@@ -117,8 +113,7 @@ export const Suggestions = {
             "What was my weight on January 1st?",
             "How tall am I?"
         ],
-        onSuggestionSelected: (suggestion: string) => alert(`You selected: ${suggestion}`),
-        messages: []
+        onSuggestionSelected: (suggestion: string) => alert(`You selected: ${suggestion}`)
     },
     render: render
 };
