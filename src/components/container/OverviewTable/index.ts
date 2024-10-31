@@ -1,2 +1,2 @@
 export { default } from './OverviewTable';
-export { OverviewTablePreviewState } from './OverviewTable.previewData';
+export { createPreviewDataProvider } from './OverviewTable.previewData';

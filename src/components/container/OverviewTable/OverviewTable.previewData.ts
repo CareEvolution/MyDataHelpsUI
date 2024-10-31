@@ -1,35 +1,17 @@
-import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, generateSampleData, OverviewDataProvider } from '../../../helpers';
-import { createTherapyOverviewDataType } from '../../../helpers/overview-table/data-types';
+import { add, startOfToday } from 'date-fns';
+import { DailyDataQueryResult, generateSampleData, OverviewDataProvider, OverviewDataType, OverviewDataTypeName } from '../../../helpers';
 
-export type OverviewTablePreviewState = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
+const endDate = startOfToday();
+const startDate = add(endDate, { days: -28 });
 
-const dataProviders: Record<OverviewTablePreviewState, OverviewDataProvider> = {
-    'mood': {
-        type: createMoodRatingDataType('Mood Rating', 'Mood Rating'),
-        dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'mood-rating', 0, 10)
-    },
-    'sleep': {
-        type: createSleepOverviewDataType(),
-        dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'sleep', 200, 700)
-    },
-    'steps': {
-        type: createStepsOverviewDataType(),
-        dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'steps', 1000, 12000)
-    },
-    'mindful': {
-        type: createMindfulOverviewDataType(),
-        dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'mindful', 0, 120)
-    },
-    'therapy': {
-        type: createTherapyOverviewDataType(),
-        dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'therapy', 0, 120)
-    }
-}
+const sampleData: Record<OverviewDataTypeName, DailyDataQueryResult> = {
+    'mood': generateSampleData(startDate, endDate, 0, 10),
+    'sleep': generateSampleData(startDate, endDate, 200, 675),
+    'steps': generateSampleData(startDate, endDate, 1000, 11500),
+    'mindful': generateSampleData(startDate, endDate, 0, 120),
+    'therapy': generateSampleData(startDate, endDate, 0, 120)
+};
 
-export function createPreviewPrimaryDataProvider(previewState: OverviewTablePreviewState): OverviewDataProvider {
-    return dataProviders[previewState];
-}
-
-export function createPreviewSecondaryDataProviders(previewState: OverviewTablePreviewState): OverviewDataProvider[] {
-    return Object.keys(dataProviders).filter(k => k !== previewState).map(k => dataProviders[k as OverviewTablePreviewState]);
+export function createPreviewDataProvider(type: OverviewDataType): OverviewDataProvider {
+    return { type: type, dataProvider: () => Promise.resolve(sampleData[type.name]) };
 }

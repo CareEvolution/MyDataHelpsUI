@@ -1,15 +1,14 @@
 import React, { CSSProperties, useContext, useState } from 'react';
-import { ColorDefinition, getDailyDataTypeDefinition, resolveColor, useInitializeView } from '../../../helpers';
-import { computeThresholdDays, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataType, } from '../../../helpers/overview-table';
+import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, resolveColor, useInitializeView } from '../../../helpers';
 import { LayoutContext, LoadingIndicator } from '../../presentational';
 import './OverviewTable.css';
 import { add, startOfToday } from 'date-fns';
-import { createPreviewPrimaryDataProvider, createPreviewSecondaryDataProviders, OverviewTablePreviewState } from './OverviewTable.previewData';
+import { createPreviewDataProvider } from './OverviewTable.previewData';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface OverviewTableProps {
-    previewState?: OverviewTablePreviewState;
+    preview?: boolean;
     primaryDataType: OverviewDataType;
     secondaryDataTypes: OverviewDataType[];
     daysToCompute?: number;
@@ -42,23 +41,23 @@ export default function (props: OverviewTableProps) {
     const today = startOfToday();
     const startDate = add(today, { days: -daysToCompute });
 
-    const getDataProvider = (dataType: OverviewDataType) => {
+    const getDataProvider = (dataType: OverviewDataType): OverviewDataProvider => {
         if (isSurveyDataType(dataType.rawDataType)) {
             return { type: dataType, dataProvider: getSurveyDataProvider(dataType.rawDataType) };
         }
         return { type: dataType, dataProvider: getDailyDataTypeDefinition(dataType.rawDataType).dataProvider };
     };
 
-    const getPrimaryDataProvider = () => {
-        if (props.previewState) {
-            return createPreviewPrimaryDataProvider(props.previewState);
+    const getPrimaryDataProvider = (): OverviewDataProvider => {
+        if (props.preview) {
+            return createPreviewDataProvider(props.primaryDataType);
         }
         return getDataProvider(props.primaryDataType);
     };
 
-    const getSecondaryDataProviders = () => {
-        if (props.previewState) {
-            return createPreviewSecondaryDataProviders(props.previewState);
+    const getSecondaryDataProviders = (): OverviewDataProvider[] => {
+        if (props.preview) {
+            return props.secondaryDataTypes.map(createPreviewDataProvider);
         }
         return props.secondaryDataTypes.map(getDataProvider);
     };
@@ -73,7 +72,7 @@ export default function (props: OverviewTableProps) {
         Promise.all(secondaryDataProviders.map(secondaryDataProvider => secondaryDataProvider.dataProvider(startDate, today).then(result => {
             return { type: secondaryDataProvider.type, queryResult: result };
         }))).then(setSecondaryData);
-    }, [], [props.previewState]);
+    }, [], [props.preview, props.primaryDataType, props.secondaryDataTypes]);
 
     if (!primaryData || !secondaryData) {
         return <div className="mdhui-overview-table" ref={props.innerRef}><LoadingIndicator /></div>;

@@ -2,7 +2,7 @@ import { DailyDataQueryResult } from '../query-daily-data';
 import { getDayKey } from '../index';
 import { add } from 'date-fns';
 
-export async function generateSampleData(startDate: Date, endDate: Date, key: string, min: number, max: number) {
+export function generateSampleData(startDate: Date, endDate: Date, min: number, max: number) {
     const result: DailyDataQueryResult = {};
 
     let currentDate = startDate;
