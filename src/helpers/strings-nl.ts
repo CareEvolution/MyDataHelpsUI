@@ -473,7 +473,29 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-optional": "Optioneel",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
     "glucose-view-title": "Glucosemonitoring",
-    "ai-assistant-loading": "Interageren met uw gegevens..."
+    "ai-assistant-loading": "Interageren met uw gegevens...",
+    "ai-assistant-suggestion-avg-weekly-heart-rate": "Wat is mijn gemiddelde hartslag van de afgelopen week?",
+    "ai-assistant-suggestion-highest-heart-rate-week": "Wat was mijn hoogste hartslag deze week?",
+    "ai-assistant-suggestion-graph-daily-steps-21-days": "Maak een grafiek van mijn dagelijkse stappen van de afgelopen 21 dagen",
+    "ai-assistant-suggestion-weekly-workouts-average-month": "Hoeveel trainingen per week heb ik deze maand gemiddeld gedaan?",
+    "ai-assistant-suggestion-avg-monthly-blood-pressure": "Wat is mijn gemiddelde bloeddruk van de afgelopen maand?",
+    "ai-assistant-suggestion-daily-active-minutes-month": "Wat is mijn dagelijkse gemiddelde actieve minuten deze maand?",
+    "ai-assistant-suggestion-resting-heart-rate-change-month": "Hoe is mijn rusthartslag de afgelopen maand veranderd?",
+    "ai-assistant-suggestion-stand-ups-yesterday": "Hoe vaak ben ik gisteren opgestaan?",
+    "ai-assistant-suggestion-graph-heart-rate-trends-workouts": "Kun je mijn hartslagtrends tijdens de trainingen van deze week grafisch weergeven?",
+    "ai-assistant-suggestion-sleep-7-days": "Hoe was mijn slaap de afgelopen 7 dagen?",
+    "ai-assistant-suggestion-fall-asleep-time-2-weeks": "Hoe laat viel ik meestal in slaap in de afgelopen 2 weken?",
+    "ai-assistant-suggestion-sleep-quality-change-month": "Hoe is de kwaliteit van mijn slaap de afgelopen maand veranderd?",
+    "ai-assistant-suggestion-last-tetanus-vaccine": "Wanneer was mijn laatste tetanusvaccinatie?",
+    "ai-assistant-suggestion-last-blood-test-lab-work": "Wanneer was mijn laatste bloedonderzoek of laboratoriumtest?",
+    "ai-assistant-suggestion-abnormal-lab-results": "Heb ik abnormale laboratoriumresultaten?",
+    "ai-assistant-suggestion-last-cbc-test": "Wanneer was mijn laatste volledig bloedonderzoek (CBC)?",
+    "ai-assistant-suggestion-glucose-a1c-levels-last-test": "Wat waren mijn glucose- en A1c-waarden in mijn laatste test?",
+    "ai-assistant-suggestion-graph-cholesterol-trends": "Kun je me een grafiek laten zien van hoe mijn cholesterolniveaus in de loop van de tijd zijn veranderd?",
+    "ai-assistant-suggestion-last-metabolic-panel": "Wanneer was mijn laatste metabool panel?",
+    "ai-assistant-suggestion-hemoglobin-levels-trend": "Wat is de trend in mijn hemoglobineniveaus?",
+    "ai-assistant-suggestion-show-files": "Toon mij mijn bestanden.",
+    "ai-assistant-suggestion-save-graph-to-files": "Sla de grafiek op in mijn bestanden"
 };
 
 export default strings;

@@ -21,6 +21,8 @@ export interface ChatProps {
     onSendMessage: (newMessage: string) => void;
     loading?: string;
     inputDisabled?: boolean;
+    suggestions?: string[];
+    onSuggestionSelected?: (suggestion: string) => void;
 }
 
 export interface ChatMessage {
@@ -36,7 +38,10 @@ const md = new markdownIt({
     breaks: true
 }).use(markdownItHighlightjs, { inline: true, hljs });
 
-export default function (props: ChatProps) {
+/**
+ * Presentational component that can be used to display a conversation between two users, one of which could be an AI Assistant.
+ */
+export default function Chat(props: ChatProps) {
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const logRef = useRef<HTMLDivElement>(null);
@@ -84,6 +89,13 @@ export default function (props: ChatProps) {
                     </div>
                 </div>
             </div>
+            {props.suggestions && props.onSuggestionSelected && (
+                <div className="mdhui-chat-suggestions">
+                    {props.suggestions.map((suggestion) => (
+                        <div key={suggestion} className="mdhui-chat-suggestion" onClick={() => props.onSuggestionSelected?.(suggestion)}>{suggestion}</div>
+                    ))}
+                </div>
+            )}
             <div className="mdhui-chat-input">
                 <div className="mdhui-chat-input-group">
                     <input

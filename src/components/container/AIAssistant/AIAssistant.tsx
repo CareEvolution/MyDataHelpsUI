@@ -4,6 +4,7 @@ import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
 import { StreamEvent } from '@langchain/core/tracers/log_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
 import { StructuredTool } from '@langchain/core/tools';
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 import { MyDataHelpsAIAssistant } from '../../../helpers/AIAssistant/AIAssistant';
 import { CustomEventTrackerCallbackHandler } from '../../../helpers/AIAssistant/Callbacks';
@@ -21,6 +22,7 @@ export interface AIAssistantProps {
     tools?: StructuredTool[];
     appendTools?: boolean;
     baseUrl?: string;
+    showSuggestions?: boolean;
 }
 
 export type AIAssistantMessageType = "user" | "ai" | "tool" | "image";
@@ -31,13 +33,46 @@ export interface AIAssistantMessage {
     runId?: string;
 }
 
-export default function (props: AIAssistantProps) {
+/**
+ * Component that can be used to add the MyDataHelps AI Assistant to your application.
+ * The component will use all the allowed viewport vertical space it is given.
+*/
+export default function AIAssistant(props: AIAssistantProps) {
 
     const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
     const [loading, setLoading] = useState("");
     const [inputDisabled, setInputDisabled] = useState(false);
+    const [suggestions, setSuggestions] = useState<string[]>([]);
 
     const assistantRef = useRef<MyDataHelpsAIAssistant>();
+
+    const defaultSuggestions = [
+        language("ai-assistant-suggestion-avg-weekly-heart-rate"),
+        language("ai-assistant-suggestion-highest-heart-rate-week"),
+        language("ai-assistant-suggestion-graph-daily-steps-21-days"),
+        language("ai-assistant-suggestion-weekly-workouts-average-month"),
+        language("ai-assistant-suggestion-avg-monthly-blood-pressure"),
+        language("ai-assistant-suggestion-daily-active-minutes-month"),
+        language("ai-assistant-suggestion-resting-heart-rate-change-month"),
+        language("ai-assistant-suggestion-stand-ups-yesterday"),
+        language("ai-assistant-suggestion-graph-heart-rate-trends-workouts"),
+
+        language("ai-assistant-suggestion-sleep-7-days"),
+        language("ai-assistant-suggestion-fall-asleep-time-2-weeks"),
+        language("ai-assistant-suggestion-sleep-quality-change-month"),
+
+        language("ai-assistant-suggestion-last-tetanus-vaccine"),
+
+        language("ai-assistant-suggestion-last-blood-test-lab-work"),
+        language("ai-assistant-suggestion-abnormal-lab-results"),
+        language("ai-assistant-suggestion-last-cbc-test"),
+        language("ai-assistant-suggestion-glucose-a1c-levels-last-test"),
+        language("ai-assistant-suggestion-graph-cholesterol-trends"),
+        language("ai-assistant-suggestion-last-metabolic-panel"),
+        language("ai-assistant-suggestion-hemoglobin-levels-trend"),
+
+        language("ai-assistant-suggestion-show-files")
+    ];
 
     useEffect(() => {
         if (assistantRef.current === undefined) {
@@ -45,9 +80,16 @@ export default function (props: AIAssistantProps) {
         }
     }, []);
 
+    useEffect(() => {
+        setSuggestions(props.showSuggestions ? defaultSuggestions
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3) : []);
+    }, [MyDataHelps.getCurrentLanguage(), props.showSuggestions]);
+
     const addUserMessage = async function (newMessage: string) {
 
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: newMessage }]);
+        setSuggestions([]);
 
         if (props.previewState === "default") return;
 
@@ -85,6 +127,8 @@ export default function (props: AIAssistantProps) {
                         if (image && !image.startsWith("error")) {
                             addMessage(streamEvent.run_id, `data:image/png;base64,${image}`, "image");
                         }
+
+                        setSuggestions([language("ai-assistant-suggestion-save-graph-to-files")]);
                     }
                     else if (toolName === "getUploadedFile") {
                         let input = JSON.parse(toolInput);
@@ -127,7 +171,8 @@ export default function (props: AIAssistantProps) {
                 type: msg.type === "user" ? "sent" : (msg.type === "image" ? "received-image" : "received"),
                 cssClass: msg.type === "tool" ? "tool" : (msg.type === "image" ? "image" : undefined),
             }
-        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} />}
+        })} onSendMessage={addUserMessage} loading={loading} inputDisabled={inputDisabled} suggestions={suggestions}
+            onSuggestionSelected={(suggestion) => addUserMessage(suggestion)} />}
     </>
 }
 

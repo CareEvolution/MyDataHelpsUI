@@ -473,7 +473,29 @@
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
     "glucose-view-title": "Glucose Monitoring",
-    "ai-assistant-loading": "Interacting with your data..."
+    "ai-assistant-loading": "Interacting with your data...",
+    "ai-assistant-suggestion-avg-weekly-heart-rate": "What is my average heart rate for the past week?",
+    "ai-assistant-suggestion-highest-heart-rate-week": "What was my highest heart rate this week?",
+    "ai-assistant-suggestion-graph-daily-steps-21-days": "Make a graph of my daily steps for the past 21 days",
+    "ai-assistant-suggestion-weekly-workouts-average-month": "How many workouts a week did I average this month?",
+    "ai-assistant-suggestion-avg-monthly-blood-pressure": "What is my average blood pressure for the past month?",
+    "ai-assistant-suggestion-daily-active-minutes-month": "What’s my daily average for active minutes this month?",
+    "ai-assistant-suggestion-resting-heart-rate-change-month": "How has my resting heart rate changed over the past month?",
+    "ai-assistant-suggestion-stand-ups-yesterday": "How often did I stand up yesterday?",
+    "ai-assistant-suggestion-graph-heart-rate-trends-workouts": "Could you graph my heart rate trends during workouts this week?",
+    "ai-assistant-suggestion-sleep-7-days": "How has my sleep been for the past 7 days?",
+    "ai-assistant-suggestion-fall-asleep-time-2-weeks": "At what time did I usually fall asleep over the past 2 weeks?",
+    "ai-assistant-suggestion-sleep-quality-change-month": "How has my sleep quality changed over the past month?",
+    "ai-assistant-suggestion-last-tetanus-vaccine": "When was my last tetanus vaccine?",
+    "ai-assistant-suggestion-last-blood-test-lab-work": "When was my last blood test or lab work?",
+    "ai-assistant-suggestion-abnormal-lab-results": "Do I have any abnormal lab results?",
+    "ai-assistant-suggestion-last-cbc-test": "When was my last complete blood count (CBC)?",
+    "ai-assistant-suggestion-glucose-a1c-levels-last-test": "What were my glucose and A1c levels in my last test?",
+    "ai-assistant-suggestion-graph-cholesterol-trends": "Can you show me a graph of how my cholesterol levels have changed over time?",
+    "ai-assistant-suggestion-last-metabolic-panel": "When was my last metabolic panel done?",
+    "ai-assistant-suggestion-hemoglobin-levels-trend": "What’s the trend in my hemoglobin levels?",
+    "ai-assistant-suggestion-show-files": "Show me my files.",
+    "ai-assistant-suggestion-save-graph-to-files": "Save the graph to my files"
 };
 
 export default strings;

@@ -110,3 +110,17 @@
 .mdhui-chat input:focus-visible {
     outline: 1px solid var(--mdhui-color-primary);
 }
+
+.mdhui-chat .mdhui-chat-suggestions {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--mdhui-padding-xxs);
+}
+
+.mdhui-chat .mdhui-chat-suggestion {
+    padding: var(--mdhui-padding-xs) var(--mdhui-padding-sm);
+    margin: var(--mdhui-padding-xs) var(--mdhui-padding-xxs);
+    border-radius: var(--mdhui-card-border-radius);
+    background: var(--mdhui-background-color-1);
+    cursor: pointer;
+}
