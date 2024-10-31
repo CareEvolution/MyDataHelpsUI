@@ -20,7 +20,7 @@ export interface OverviewDataType {
     secondaryValueEvaluator: OverviewValueEvaluator;
 }
 
-export function createMoodRatingDataType(surveyName: string, stepIdentifier: string, resultIdentifier: string, label?: OverviewDataTypeLabel, minGood?: number, maxGood?: number): OverviewDataType {
+export function createMoodRatingDataType(surveyName: string, stepIdentifier: string, resultIdentifier?: string, label?: OverviewDataTypeLabel, minGood?: number, maxGood?: number): OverviewDataType {
     return {
         label: label ?? { primary: 'When mood rating was...', secondary: 'Mood Rating' },
         units: 'avg rating',

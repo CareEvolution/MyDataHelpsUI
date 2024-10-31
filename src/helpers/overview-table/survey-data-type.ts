@@ -8,7 +8,7 @@ import queryAllSurveyAnswers from "../query-all-survey-answers";
 export interface SurveyDataType {
     surveyName: string;
     stepIdentifier: string;
-    resultIdentifier: string;
+    resultIdentifier?: string;
 }
 
 export function isSurveyDataType(dataType: DailyDataType | SurveyDataType): dataType is SurveyDataType {
