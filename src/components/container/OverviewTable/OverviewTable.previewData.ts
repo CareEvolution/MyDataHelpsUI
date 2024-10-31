@@ -1,11 +1,11 @@
-import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, generateSampleData, OverviewDataProvider } from '../../../helpers/overview-table';
+import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, generateSampleData, OverviewDataProvider } from '../../../helpers';
 import { createTherapyOverviewDataType } from '../../../helpers/overview-table/data-types';
 
 export type OverviewTablePreviewState = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
 
 const dataProviders: Record<OverviewTablePreviewState, OverviewDataProvider> = {
     'mood': {
-        type: createMoodRatingDataType('Mood Rating', 'MoodRating', 'MoodRating'),
+        type: createMoodRatingDataType('Mood Rating', 'Mood Rating'),
         dataProvider: (startDate: Date, endDate: Date) => generateSampleData(startDate, endDate, 'mood-rating', 0, 10)
     },
     'sleep': {
