@@ -28,6 +28,7 @@ import {
     GetUploadedFileTool,
     SaveLastGraphTool
 } from "./Tools";
+import { isDevelopment } from "../env";
 
 export interface AIAssistantState {
     messages: BaseMessage[];
@@ -38,7 +39,9 @@ export interface AIAssistantState {
 export class MyDataHelpsAIAssistant {
 
     constructor(baseUrl: string = "", additionalInstructions: string = "", callbacks: Callbacks, tools: StructuredTool[] = [], appendTools: boolean = true) {
-        this.baseUrl = baseUrl || "https://xwk5dezh5vnf4in2avp6dxswym0tmgxg.lambda-url.us-east-1.on.aws/";
+        this.baseUrl = baseUrl || (isDevelopment() ?
+            "https://2f4jcc2e2wgkjtpckvv2hhaani0ilmam.lambda-url.us-east-1.on.aws/" :
+            "https://xwk5dezh5vnf4in2avp6dxswym0tmgxg.lambda-url.us-east-1.on.aws/");
         this.additionalInstructions = additionalInstructions;
         this.callbacks = callbacks || [];
         this.tools = tools.length ? (appendTools ? this.defaultTools.concat(tools) : tools) : this.defaultTools;
@@ -61,7 +64,7 @@ export class MyDataHelpsAIAssistant {
             const event of await this.graph.streamEvents(inputs, {
                 streamMode: "values",
                 version: "v2",
-                configurable: { 
+                configurable: {
                     thread_id: this.participantId,
                     participantId: this.participantId
                 },

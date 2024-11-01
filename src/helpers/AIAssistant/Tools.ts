@@ -4,6 +4,7 @@ import MyDataHelps, { DeviceDataV2AggregateQuery, StringMap } from "@careevoluti
 import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 import { getNewsFeedPage } from "../news-feed/data";
 import { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { isDevelopment } from "../env";
 
 const deviceDataV2QuerySchema = z.object({
   namespace: z.enum(["Fitbit", "AppleHealth", "Garmin", "Dexcom", "HealthConnect"])
@@ -267,7 +268,8 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input, config: LangGraphRunnableConfig): Promise<string> => {
 
-    let response = await fetch('https://rbbfx4e6nlhghaxv4zbv5krzzu0dound.lambda-url.us-east-1.on.aws', {
+    let codeRunnerUrl = isDevelopment() ? 'https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws' : 'https://rbbfx4e6nlhghaxv4zbv5krzzu0dound.lambda-url.us-east-1.on.aws';
+    let response = await fetch(codeRunnerUrl, {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
       headers: {
@@ -342,7 +344,7 @@ export const SaveLastGraphTool = tool(
     const uint8Array = new Uint8Array(len);
 
     for (let i = 0; i < len; i++) {
-        uint8Array[i] = binaryString.charCodeAt(i);
+      uint8Array[i] = binaryString.charCodeAt(i);
     }
 
     const blob = new Blob([uint8Array], { type: 'image/png' });
