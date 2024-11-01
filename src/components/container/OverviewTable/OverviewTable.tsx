@@ -83,7 +83,7 @@ export default function (props: OverviewTableProps) {
     const allThresholds = primaryData.type.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
 
-    return <div className="mdhui-overview-table" style={{ gridTemplateColumns: Array(secondaryData.length + 1).fill('1fr').join(' ') }} ref={props.innerRef}>
+    return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px ' + Array(secondaryData.length).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
             {primaryData.type.label.primary}
         </div>
