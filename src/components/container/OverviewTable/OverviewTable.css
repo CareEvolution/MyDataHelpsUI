@@ -76,3 +76,13 @@
 .mdhui-overview-table-value-not-good {
     background: #FFEDC2;
 }
+
+.mdhui-overview-table-no-secondary-data {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    padding: 16px;
+    text-align: center;
+    align-self: center;
+    font-size: 0.9em;
+    color: var(--mdhui-text-color-2);
+}

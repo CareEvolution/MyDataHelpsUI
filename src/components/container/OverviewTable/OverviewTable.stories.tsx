@@ -72,8 +72,7 @@ export const Default: Story = {
         secondaryDataTypeNames: {
             name: 'secondary data types',
             control: 'check',
-            options: ['mood', 'sleep', 'steps', 'mindful', 'therapy'],
-            defaultValue: ['sleep', 'steps', 'mindful']
+            options: ['mood', 'sleep', 'steps', 'mindful', 'therapy']
         },
         useGoodValueIndicator: {
             name: 'good value indicator?'

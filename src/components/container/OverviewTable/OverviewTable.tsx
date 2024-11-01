@@ -83,10 +83,13 @@ export default function (props: OverviewTableProps) {
     const allThresholds = primaryData.type.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
 
-    return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px ' + Array(secondaryData.length).fill('1fr').join(' ') }} ref={props.innerRef}>
+    return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
             {primaryData.type.label.primary}
         </div>
+        {secondaryData.length === 0 &&
+            <div className="mdhui-overview-table-no-secondary-data">No secondary data types configured.</div>
+        }
         {secondaryData.map(data => {
             return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${data.type.label.primary}`}>
                 <div className="mdhui-overview-table-header-secondary-label">{data.type.label.secondary ?? data.type.label.primary}</div>
