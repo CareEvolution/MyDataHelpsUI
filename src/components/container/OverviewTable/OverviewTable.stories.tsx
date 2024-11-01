@@ -14,7 +14,7 @@ type OverviewTableStoryArgs = React.ComponentProps<typeof OverviewTable> & {
 };
 
 const dataTypes: Record<OverviewDataTypeName, OverviewDataType> = {
-    'mood': createMoodRatingDataType('Mood Rating', 'Mood Rating'),
+    'mood': createMoodRatingDataType({ surveyName: 'Mood Survey', stepIdentifier: 'Mood Rating' }),
     'sleep': createSleepOverviewDataType(),
     'steps': createStepsOverviewDataType(),
     'mindful': createMindfulOverviewDataType(),
