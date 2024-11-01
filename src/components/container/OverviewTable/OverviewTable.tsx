@@ -85,14 +85,14 @@ export default function (props: OverviewTableProps) {
 
     return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
-            {primaryData.type.label.primary}
+            {primaryData.type.label}
         </div>
         {secondaryData.length === 0 &&
             <div className="mdhui-overview-table-no-secondary-data">No secondary data types configured.</div>
         }
         {secondaryData.map(data => {
-            return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${data.type.label.primary}`}>
-                <div className="mdhui-overview-table-header-secondary-label">{data.type.label.secondary ?? data.type.label.primary}</div>
+            return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${data.type.label}`}>
+                <div className="mdhui-overview-table-header-secondary-label">{data.type.label}</div>
                 <div className="mdhui-overview-table-header-secondary-units">{data.type.units ?? <div>&nbsp;</div>}</div>
             </div>;
         })}
@@ -114,7 +114,7 @@ export default function (props: OverviewTableProps) {
                         color: valueIsGood ? goodValueTextColor : notGoodValueTextColor
                     };
 
-                    return <div className="mdhui-overview-table-value" key={data.type.label.primary} style={valueStyle}>
+                    return <div className="mdhui-overview-table-value" key={data.type.label} style={valueStyle}>
                         {valueIsGood && props.goodValueIndicator &&
                             <div className="mdhui-overview-table-value-good-indicator">
                                 <FontAwesomeSvgIcon icon={props.goodValueIndicator} />

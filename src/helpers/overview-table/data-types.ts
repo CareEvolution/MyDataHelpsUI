@@ -7,14 +7,9 @@ import { OverviewThreshold } from './thresholds';
 
 export type OverviewDataTypeName = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
 
-export interface OverviewDataTypeLabel {
-    primary: string;
-    secondary?: string;
-}
-
 export interface OverviewDataType {
     name: OverviewDataTypeName;
-    label: OverviewDataTypeLabel;
+    label: string;
     units?: string;
     rawDataType: DailyDataType | SurveyDataType;
     thresholds: OverviewThreshold[];
@@ -24,7 +19,7 @@ export interface OverviewDataType {
 }
 
 export interface OverviewDataTypeOptions {
-    label?: OverviewDataTypeLabel;
+    label?: string;
     thresholds?: OverviewThreshold[];
     minimumGoodValue?: number;
     maximumGoodValue?: number;
@@ -42,7 +37,7 @@ function mergeOptions(defaultOptions: OverviewDataTypeOptions, options?: Overvie
 
 export function createMoodRatingDataType(surveyDataType: SurveyDataType, options?: OverviewDataTypeOptions): OverviewDataType {
     const mergedOptions = mergeOptions({
-        label: { primary: 'When mood rating was...', secondary: 'Mood Rating' },
+        label: 'Mood Rating',
         thresholds: [
             { label: 'High', min: 8 },
             { label: 'Medium', min: 6 },
@@ -65,7 +60,7 @@ export function createMoodRatingDataType(surveyDataType: SurveyDataType, options
 
 export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
     const mergedOptions = mergeOptions({
-        label: { primary: 'When sleep was...', secondary: 'Sleep' },
+        label: 'Sleep',
         thresholds: [
             { label: 'High', min: 420 },
             { label: 'Medium', min: 360 },
@@ -89,7 +84,7 @@ export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): 
 
 export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
     const mergedOptions = mergeOptions({
-        label: { primary: 'When steps were...', secondary: 'Steps' },
+        label: 'Steps',
         thresholds: [
             { label: 'High', min: 6000 },
             { label: 'Medium', min: 4000 },
@@ -112,7 +107,7 @@ export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): 
 
 export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
     const mergedOptions = mergeOptions({
-        label: { primary: 'When mindful activity was...', secondary: 'Mindful Activity' },
+        label: 'Mindful Activity',
         thresholds: [
             { label: 'High', min: 60 },
             { label: 'Medium', min: 30 },
@@ -135,7 +130,7 @@ export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions)
 
 export function createTherapyOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
     const mergedOptions = mergeOptions({
-        label: { primary: 'When therapeutic activity was...', secondary: 'Therapeutic Activity' },
+        label: 'Therapeutic Activity',
         thresholds: [
             { label: 'High', min: 60 },
             { label: 'Medium', min: 30 },

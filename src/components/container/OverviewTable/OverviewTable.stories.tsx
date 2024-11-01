@@ -33,7 +33,10 @@ const meta: Meta<OverviewTableStoryArgs> = {
                 <OverviewTable
                     {...args}
                     preview={args.previewState === 'preview'}
-                    primaryDataType={dataTypes[args.primaryDataTypeName]}
+                    primaryDataType={{
+                        ...dataTypes[args.primaryDataTypeName],
+                        label: `When ${dataTypes[args.primaryDataTypeName].label.toLowerCase()} ${args.primaryDataTypeName.endsWith('s') ? 'were' : 'was'}...`
+                    }}
                     secondaryDataTypes={args.secondaryDataTypeNames.map(typeName => dataTypes[typeName])}
                     goodValueIndicator={args.useGoodValueIndicator ? faStar : undefined}
                 />
