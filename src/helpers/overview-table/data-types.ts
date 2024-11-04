@@ -5,10 +5,7 @@ import { createOverviewValueEvaluator, OverviewValueEvaluator } from './value-ev
 import { SurveyDataType } from './survey-data-type';
 import { OverviewThreshold } from './thresholds';
 
-export type OverviewDataTypeName = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
-
 export interface OverviewDataType {
-    name: OverviewDataTypeName;
     label: string;
     units?: string;
     rawDataType: DailyDataType | SurveyDataType;
@@ -47,7 +44,6 @@ export function createMoodRatingDataType(surveyDataType: SurveyDataType, options
     }, options);
 
     return {
-        name: 'mood',
         label: mergedOptions.label!,
         units: 'avg rating',
         rawDataType: surveyDataType,
@@ -71,7 +67,6 @@ export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): 
     }, options);
 
     return {
-        name: 'sleep',
         label: mergedOptions.label!,
         units: 'avg per night',
         rawDataType: DailyDataType.SleepMinutes,
@@ -94,7 +89,6 @@ export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): 
     }, options);
 
     return {
-        name: 'steps',
         label: mergedOptions.label!,
         units: 'avg per day',
         rawDataType: DailyDataType.Steps,
@@ -117,7 +111,6 @@ export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions)
     }, options);
 
     return {
-        name: 'mindful',
         label: mergedOptions.label!,
         units: '% of days',
         rawDataType: DailyDataType.SleepMinutes,
@@ -140,7 +133,6 @@ export function createTherapyOverviewDataType(options?: OverviewDataTypeOptions)
     }, options);
 
     return {
-        name: 'therapy',
         label: mergedOptions.label!,
         units: '% of days',
         rawDataType: DailyDataType.SleepMinutes,

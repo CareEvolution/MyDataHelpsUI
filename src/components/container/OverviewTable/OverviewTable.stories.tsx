@@ -3,7 +3,9 @@ import OverviewTable from './OverviewTable'
 import { Card, Layout } from '../../presentational'
 import { Meta, StoryObj } from '@storybook/react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, createTherapyOverviewDataType, OverviewDataType, OverviewDataTypeName } from '../../../helpers';
+import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, createTherapyOverviewDataType, OverviewDataType } from '../../../helpers';
+
+type OverviewDataTypeName = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
 
 type OverviewTableStoryArgs = React.ComponentProps<typeof OverviewTable> & {
     colorScheme: 'auto' | 'light' | 'dark';
