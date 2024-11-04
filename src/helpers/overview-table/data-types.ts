@@ -1,7 +1,6 @@
 import { DailyDataType } from '../daily-data-types';
 import { averageValueOverviewValueCalculator, OverviewValueCalculator, percentageOfDaysOverviewValueCalculator } from './value-calculator';
 import { createIntegerOverviewValueFormatter, minutesToHoursOverviewValueFormatter, OverviewValueFormatter, shrinkThousandsOverviewValueFormatter } from './value-formatter';
-import { createOverviewValueEvaluator, OverviewValueEvaluator } from './value-evaluator';
 import { SurveyDataType } from './survey-data-type';
 import { OverviewThreshold } from './thresholds';
 
@@ -12,7 +11,8 @@ export interface OverviewDataType {
     thresholds: OverviewThreshold[];
     secondaryValueCalculator: OverviewValueCalculator;
     secondaryValueFormatter: OverviewValueFormatter;
-    secondaryValueEvaluator: OverviewValueEvaluator;
+    minimumGoodValue: number;
+    maximumGoodValue?: number;
 }
 
 export interface OverviewDataTypeOptions {
@@ -50,7 +50,8 @@ export function createMoodRatingDataType(surveyDataType: SurveyDataType, options
         thresholds: mergedOptions.thresholds!,
         secondaryValueCalculator: averageValueOverviewValueCalculator,
         secondaryValueFormatter: createIntegerOverviewValueFormatter(),
-        secondaryValueEvaluator: createOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue),
+        minimumGoodValue: mergedOptions.minimumGoodValue!,
+        maximumGoodValue: mergedOptions.maximumGoodValue
     };
 }
 
@@ -73,7 +74,8 @@ export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): 
         thresholds: mergedOptions.thresholds!,
         secondaryValueCalculator: averageValueOverviewValueCalculator,
         secondaryValueFormatter: minutesToHoursOverviewValueFormatter,
-        secondaryValueEvaluator: createOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue),
+        minimumGoodValue: mergedOptions.minimumGoodValue!,
+        maximumGoodValue: mergedOptions.maximumGoodValue
     };
 }
 
@@ -95,7 +97,8 @@ export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): 
         thresholds: mergedOptions.thresholds!,
         secondaryValueCalculator: averageValueOverviewValueCalculator,
         secondaryValueFormatter: shrinkThousandsOverviewValueFormatter,
-        secondaryValueEvaluator: createOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
+        minimumGoodValue: mergedOptions.minimumGoodValue!,
+        maximumGoodValue: mergedOptions.maximumGoodValue
     };
 }
 
@@ -117,7 +120,8 @@ export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions)
         thresholds: mergedOptions.thresholds!,
         secondaryValueCalculator: percentageOfDaysOverviewValueCalculator,
         secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        secondaryValueEvaluator: createOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
+        minimumGoodValue: mergedOptions.minimumGoodValue!,
+        maximumGoodValue: mergedOptions.maximumGoodValue
     };
 }
 
@@ -139,6 +143,7 @@ export function createTherapyOverviewDataType(options?: OverviewDataTypeOptions)
         thresholds: mergedOptions.thresholds!,
         secondaryValueCalculator: percentageOfDaysOverviewValueCalculator,
         secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        secondaryValueEvaluator: createOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
+        minimumGoodValue: mergedOptions.minimumGoodValue!,
+        maximumGoodValue: mergedOptions.maximumGoodValue
     };
 }

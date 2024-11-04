@@ -83,6 +83,12 @@ export default function (props: OverviewTableProps) {
     const allThresholds = primaryData.type.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
 
+    const evaluateSecondaryValue = (dataType: OverviewDataType, value: number): boolean => {
+        return dataType.maximumGoodValue !== undefined
+            ? value >= dataType.minimumGoodValue && value <= dataType.maximumGoodValue
+            : value >= dataType.minimumGoodValue;
+    };
+
     return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
             {primaryData.type.label}
@@ -108,7 +114,7 @@ export default function (props: OverviewTableProps) {
                     const formattedValue = calculatedValue !== undefined
                         ? data.type.secondaryValueFormatter(calculatedValue)
                         : '-';
-                    const valueIsGood = calculatedValue !== undefined && data.type.secondaryValueEvaluator(calculatedValue);
+                    const valueIsGood = calculatedValue !== undefined && evaluateSecondaryValue(data.type, calculatedValue);
                     const valueStyle: CSSProperties = {
                         background: valueIsGood ? goodValueBackgroundColor : notGoodValueBackgroundColor,
                         color: valueIsGood ? goodValueTextColor : notGoodValueTextColor
