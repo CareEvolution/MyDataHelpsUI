@@ -12,8 +12,7 @@ export interface SurveyDataType {
 }
 
 export function isSurveyDataType(dataType: DailyDataType | SurveyDataType): dataType is SurveyDataType {
-    if (!dataType) return false;
-    return 'surveyName' in (dataType as any);
+    return dataType && (dataType as any).surveyName !== undefined;
 }
 
 export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvider {
