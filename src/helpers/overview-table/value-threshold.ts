@@ -16,7 +16,7 @@ export const NotEnteredThreshold = 'Not Entered';
 export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: OverviewData<PrimaryOverviewDataType>): OverviewThresholdDaysLookup {
     const lookup: OverviewThresholdDaysLookup = {};
 
-    const computeThreshold = (thresholds: OverviewValueThreshold[], value?: number): string => {
+    const computeThreshold = (thresholds: OverviewValueThreshold[], value?: number): string | undefined => {
         if (value !== undefined && value >= 0) {
             for (let i = 0; i < thresholds.length; i++) {
                 const threshold = thresholds[i];
@@ -24,6 +24,7 @@ export function computeThresholdDays(startDate: Date, endDate: Date, overviewDat
                 if (threshold.maximumValue !== undefined && threshold.maximumValue < value) continue;
                 return threshold.label;
             }
+            return undefined;
         }
         return NotEnteredThreshold;
     };
@@ -32,10 +33,14 @@ export function computeThresholdDays(startDate: Date, endDate: Date, overviewDat
     while (currentDate <= endDate) {
         const currentDayKey = getDayKey(currentDate);
         const threshold = computeThreshold(overviewData.type.thresholds, overviewData.queryResult[currentDayKey]);
-        if (!lookup.hasOwnProperty(threshold)) {
-            lookup[threshold] = [];
+
+        if (threshold) {
+            if (!lookup.hasOwnProperty(threshold)) {
+                lookup[threshold] = [];
+            }
+            lookup[threshold].push(currentDayKey);
         }
-        lookup[threshold].push(currentDayKey);
+
         currentDate = add(currentDate, { days: 1 });
     }
 
