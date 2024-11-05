@@ -1,6 +1,7 @@
 import { add } from 'date-fns';
 import getDayKey from '../get-day-key';
 import { OverviewData } from './data-provider';
+import { PrimaryOverviewDataType } from './data-types';
 
 export interface OverviewThreshold {
     label: string;
@@ -12,7 +13,7 @@ export type OverviewThresholdDaysLookup = { [key: string]: string[] };
 
 export const NotEnteredThreshold = 'Not Entered';
 
-export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: OverviewData): OverviewThresholdDaysLookup {
+export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: OverviewData<PrimaryOverviewDataType>): OverviewThresholdDaysLookup {
     const lookup: OverviewThresholdDaysLookup = {};
 
     const computeThreshold = (thresholds: OverviewThreshold[], value?: number): string => {
