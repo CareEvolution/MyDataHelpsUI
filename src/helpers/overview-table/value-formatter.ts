@@ -22,7 +22,7 @@ export const createMinutesToHoursOverviewValueFormatter = (): OverviewValueForma
 export const createIntegerOverviewValueFormatter = (suffix?: string): OverviewValueFormatter => {
     return {
         format: value => {
-            let formattedValue = value.toFixed(0);
+            let formattedValue = Number(value.toFixed(0)).toLocaleString();
             if (suffix) {
                 formattedValue += suffix;
             }
