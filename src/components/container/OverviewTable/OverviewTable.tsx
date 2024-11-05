@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext, useState } from 'react';
-import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, resolveColor, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getDefaultOverviewDataTypeLabel, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, resolveColor, useInitializeView } from '../../../helpers';
 import { LayoutContext, LoadingIndicator } from '../../presentational';
 import './OverviewTable.css';
 import { add, startOfToday } from 'date-fns';
@@ -91,15 +91,15 @@ export default function (props: OverviewTableProps) {
 
     return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
-            {primaryData.type.label}
+            {primaryData.type.label ?? getDefaultOverviewDataTypeLabel(primaryData.type)}
         </div>
         {secondaryData.length === 0 &&
             <div className="mdhui-overview-table-no-secondary-data">No secondary data types configured.</div>
         }
-        {secondaryData.map(data => {
-            return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${data.type.label}`}>
-                <div className="mdhui-overview-table-header-secondary-label">{data.type.label}</div>
-                <div className="mdhui-overview-table-header-secondary-units">{data.type.units ?? <div>&nbsp;</div>}</div>
+        {secondaryData.map(data => data.type).map((overviewDataType: OverviewDataType, index: number) => {
+            return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${index}`}>
+                <div className="mdhui-overview-table-header-secondary-label">{overviewDataType.label ?? getDefaultOverviewDataTypeLabel(overviewDataType)}</div>
+                <div className="mdhui-overview-table-header-secondary-units">{overviewDataType.units ?? <div>&nbsp;</div>}</div>
             </div>;
         })}
         {filteredThresholds.map(threshold => {

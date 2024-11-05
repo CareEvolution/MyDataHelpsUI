@@ -7,7 +7,7 @@ import { getDailyDataTypeDefinition } from '../query-daily-data';
 import language from '../language';
 
 export interface OverviewDataType {
-    label: string;
+    label?: string;
     units?: string;
     rawDataType: DailyDataType | SurveyDataType;
     thresholds: OverviewThreshold[];
