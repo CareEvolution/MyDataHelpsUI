@@ -3,7 +3,7 @@ import OverviewTable from './OverviewTable'
 import { Card, Layout } from '../../presentational'
 import { Meta, StoryObj } from '@storybook/react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { createMindfulOverviewDataType, createMoodRatingDataType, createSleepOverviewDataType, createStepsOverviewDataType, createTherapyOverviewDataType, OverviewDataType } from '../../../helpers';
+import { createAverageValueOverviewValueCalculator, createIntegerOverviewValueFormatter, createMinMaxOverviewValueEvaluator, createMinutesToHoursOverviewValueFormatter, createPercentageOfDaysOverviewValueCalculator, createShrinkThousandsOverviewValueFormatter, DailyDataType, OverviewDataType, PrimaryOverviewDataType, SecondaryOverviewDataType } from '../../../helpers';
 
 type OverviewDataTypeName = 'mood' | 'sleep' | 'steps' | 'mindful' | 'therapy';
 
@@ -16,7 +16,7 @@ type OverviewTableStoryArgs = React.ComponentProps<typeof OverviewTable> & {
 };
 
 const dataTypes: Record<OverviewDataTypeName, OverviewDataType> = {
-    'mood': createMoodRatingDataType({ surveyName: 'Mood Survey', stepIdentifier: 'Mood Rating' }),
+    'mood': createMoodRatingDataType(),
     'sleep': createSleepOverviewDataType(),
     'steps': createStepsOverviewDataType(),
     'mindful': createMindfulOverviewDataType(),
@@ -36,10 +36,10 @@ const meta: Meta<OverviewTableStoryArgs> = {
                     {...args}
                     preview={args.previewState === 'preview'}
                     primaryDataType={{
-                        ...dataTypes[args.primaryDataTypeName],
+                        ...dataTypes[args.primaryDataTypeName] as PrimaryOverviewDataType,
                         label: `When ${dataTypes[args.primaryDataTypeName].label!.toLowerCase()} ${args.primaryDataTypeName.endsWith('s') ? 'were' : 'was'}...`
                     }}
-                    secondaryDataTypes={args.secondaryDataTypeNames.map(typeName => dataTypes[typeName])}
+                    secondaryDataTypes={args.secondaryDataTypeNames.map(typeName => dataTypes[typeName] as SecondaryOverviewDataType)}
                     goodValueIndicator={args.useGoodValueIndicator ? faStar : undefined}
                 />
             </Card>
@@ -84,3 +84,83 @@ export const Default: Story = {
         }
     }
 };
+
+function createMoodRatingDataType() {
+    return {
+        label: 'Mood Rating',
+        rawDataType: { surveyName: 'Mood Survey', stepIdentifier: 'Mood Rating' },
+        thresholds: [
+            { label: 'High', min: 8 },
+            { label: 'Medium', min: 6 },
+            { label: 'Low', min: 0 }
+        ],
+        units: 'avg rating',
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
+        secondaryValueFormatter: createIntegerOverviewValueFormatter(),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(8)
+    };
+}
+
+function createSleepOverviewDataType() {
+    return {
+        label: 'Sleep',
+        rawDataType: DailyDataType.SleepMinutes,
+        thresholds: [
+            { label: 'High', min: 420 },
+            { label: 'Medium', min: 360 },
+            { label: 'Low', min: 0 }
+        ],
+        units: 'avg per night',
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
+        secondaryValueFormatter: createMinutesToHoursOverviewValueFormatter(),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(420, 600)
+    };
+}
+
+function createStepsOverviewDataType() {
+    return {
+        label: 'Steps',
+        rawDataType: DailyDataType.Steps,
+        thresholds: [
+            { label: 'High', min: 6000 },
+            { label: 'Medium', min: 4000 },
+            { label: 'Low', min: 0 }
+        ],
+        units: 'avg per day',
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
+        secondaryValueFormatter: createShrinkThousandsOverviewValueFormatter(),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(6000)
+    };
+}
+
+function createMindfulOverviewDataType() {
+    return {
+        label: 'Mindful Activity',
+        rawDataType: DailyDataType.MindfulMinutes,
+        thresholds: [
+            { label: 'High', min: 60 },
+            { label: 'Medium', min: 30 },
+            { label: 'Low', min: 0 }
+        ],
+        units: '% of days',
+        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
+        secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(0)
+    };
+}
+
+function createTherapyOverviewDataType() {
+    return {
+        label: 'Therapeutic Activity',
+        rawDataType: DailyDataType.MindfulMinutes,
+        thresholds: [
+            { label: 'High', min: 60 },
+            { label: 'Medium', min: 30 },
+            { label: 'Low', min: 0 }
+        ],
+        units: '% of days',
+        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
+        secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(0)
+    };
+}

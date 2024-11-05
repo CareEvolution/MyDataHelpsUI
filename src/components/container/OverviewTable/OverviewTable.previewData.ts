@@ -6,7 +6,7 @@ const startDate = add(endDate, { days: -28 });
 
 const sampleSurveyData: DailyDataQueryResult = generateSampleData(startDate, endDate, 0, 10);
 
-export function createPreviewDataProvider(dataType: OverviewDataType): OverviewDataProvider {
+export function createPreviewDataProvider<T extends OverviewDataType>(dataType: T): OverviewDataProvider<T> {
     if (isSurveyDataType(dataType.rawDataType)) {
         return {
             type: dataType,

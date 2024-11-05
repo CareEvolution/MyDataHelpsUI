@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext, useState } from 'react';
-import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getDefaultOverviewDataTypeLabel, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, resolveColor, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getDefaultOverviewDataTypeLabel, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, PrimaryOverviewDataType, resolveColor, SecondaryOverviewDataType, useInitializeView } from '../../../helpers';
 import { LayoutContext, LoadingIndicator } from '../../presentational';
 import './OverviewTable.css';
 import { add, startOfToday } from 'date-fns';
@@ -9,8 +9,8 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface OverviewTableProps {
     preview?: boolean;
-    primaryDataType: OverviewDataType;
-    secondaryDataTypes: OverviewDataType[];
+    primaryDataType: PrimaryOverviewDataType;
+    secondaryDataTypes: SecondaryOverviewDataType[];
     daysToCompute?: number;
     primaryHeaderBackgroundColor?: ColorDefinition;
     primaryHeaderTextColor?: ColorDefinition;
@@ -25,8 +25,8 @@ export interface OverviewTableProps {
 export default function (props: OverviewTableProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const [primaryData, setPrimaryData] = useState<OverviewData>();
-    const [secondaryData, setSecondaryData] = useState<OverviewData[]>();
+    const [primaryData, setPrimaryData] = useState<OverviewData<PrimaryOverviewDataType>>();
+    const [secondaryData, setSecondaryData] = useState<OverviewData<SecondaryOverviewDataType>[]>();
 
     const primaryHeaderBackgroundColor = resolveColor(layoutContext.colorScheme, props.primaryHeaderBackgroundColor ?? { lightMode: '#e2f1ff', darkMode: '#000' });
     const primaryHeaderTextColor = resolveColor(layoutContext.colorScheme, props.primaryHeaderTextColor ?? { lightMode: '#000', darkMode: '#8bcbff' });
@@ -41,21 +41,21 @@ export default function (props: OverviewTableProps) {
     const today = startOfToday();
     const startDate = add(today, { days: -daysToCompute });
 
-    const getDataProvider = (dataType: OverviewDataType): OverviewDataProvider => {
+    function getDataProvider<T extends OverviewDataType>(dataType: T): OverviewDataProvider<T> {
         if (isSurveyDataType(dataType.rawDataType)) {
             return { type: dataType, dataProvider: getSurveyDataProvider(dataType.rawDataType) };
         }
         return { type: dataType, dataProvider: getDailyDataTypeDefinition(dataType.rawDataType).dataProvider };
-    };
+    }
 
-    const getPrimaryDataProvider = (): OverviewDataProvider => {
+    const getPrimaryDataProvider = (): OverviewDataProvider<PrimaryOverviewDataType> => {
         if (props.preview) {
             return createPreviewDataProvider(props.primaryDataType);
         }
         return getDataProvider(props.primaryDataType);
     };
 
-    const getSecondaryDataProviders = (): OverviewDataProvider[] => {
+    const getSecondaryDataProviders = (): OverviewDataProvider<SecondaryOverviewDataType>[] => {
         if (props.preview) {
             return props.secondaryDataTypes.map(createPreviewDataProvider);
         }
@@ -90,7 +90,7 @@ export default function (props: OverviewTableProps) {
         {secondaryData.length === 0 &&
             <div className="mdhui-overview-table-no-secondary-data">No secondary data types configured.</div>
         }
-        {secondaryData.map(data => data.type).map((overviewDataType: OverviewDataType, index: number) => {
+        {secondaryData.map(data => data.type).map((overviewDataType: SecondaryOverviewDataType, index: number) => {
             return <div className="mdhui-overview-table-header-secondary" key={index}>
                 <div className="mdhui-overview-table-header-secondary-label">{overviewDataType.label ?? getDefaultOverviewDataTypeLabel(overviewDataType)}</div>
                 <div className="mdhui-overview-table-header-secondary-units">{overviewDataType.units ?? <div>&nbsp;</div>}</div>
@@ -100,7 +100,7 @@ export default function (props: OverviewTableProps) {
             const thresholdDays = thresholdDaysLookup[threshold];
             return <React.Fragment key={threshold}>
                 <div className="mdhui-overview-table-threshold">{threshold}</div>
-                {secondaryData.map((data: OverviewData, index: number) => {
+                {secondaryData.map((data: OverviewData<SecondaryOverviewDataType>, index: number) => {
                     const filteredValues = Object.keys(data.queryResult).filter(key => thresholdDays.includes(key)).map(key => data.queryResult[key]);
                     const calculatedValue = filteredValues.length > 0
                         ? data.type.secondaryValueCalculator.calculate(thresholdDays, filteredValues)

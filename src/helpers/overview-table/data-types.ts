@@ -1,7 +1,7 @@
 import { DailyDataType } from '../daily-data-types';
-import { createAverageValueOverviewValueCalculator, createPercentageOfDaysOverviewValueCalculator, OverviewValueCalculator } from './value-calculator';
-import { createIntegerOverviewValueFormatter, createMinutesToHoursOverviewValueFormatter, createShrinkThousandsOverviewValueFormatter, OverviewValueFormatter } from './value-formatter';
-import { createMinMaxOverviewValueEvaluator, OverviewValueEvaluator } from './value-evaluator';
+import { OverviewValueCalculator } from './value-calculator';
+import { OverviewValueFormatter } from './value-formatter';
+import { OverviewValueEvaluator } from './value-evaluator';
 import { isSurveyDataType, SurveyDataType } from './survey-data-type';
 import { OverviewThreshold } from './thresholds';
 import { getDailyDataTypeDefinition } from '../query-daily-data';
@@ -9,9 +9,15 @@ import language from '../language';
 
 export interface OverviewDataType {
     label?: string;
-    units?: string;
     rawDataType: DailyDataType | SurveyDataType;
+}
+
+export interface PrimaryOverviewDataType extends OverviewDataType {
     thresholds: OverviewThreshold[];
+}
+
+export interface SecondaryOverviewDataType extends OverviewDataType {
+    units?: string;
     secondaryValueCalculator: OverviewValueCalculator;
     secondaryValueFormatter: OverviewValueFormatter;
     secondaryValueEvaluator: OverviewValueEvaluator;
@@ -24,132 +30,4 @@ export function getDefaultOverviewDataTypeLabel(dataType: OverviewDataType): str
 
     const labelKey = getDailyDataTypeDefinition(dataType.rawDataType).labelKey;
     return labelKey ? language(labelKey, "en") : dataType.rawDataType;
-}
-
-export interface OverviewDataTypeOptions {
-    label?: string;
-    thresholds?: OverviewThreshold[];
-    minimumGoodValue?: number;
-    maximumGoodValue?: number;
-}
-
-function mergeOptions(defaultOptions: OverviewDataTypeOptions, options?: OverviewDataTypeOptions): OverviewDataTypeOptions {
-    const validOptions: OverviewDataTypeOptions = { ...(options ?? {}) };
-    for (const key in validOptions) {
-        if (!validOptions[key as keyof OverviewDataTypeOptions]) {
-            delete validOptions[key as keyof OverviewDataTypeOptions];
-        }
-    }
-    return { ...defaultOptions, ...validOptions };
-}
-
-export function createMoodRatingDataType(surveyDataType: SurveyDataType, options?: OverviewDataTypeOptions): OverviewDataType {
-    const mergedOptions = mergeOptions({
-        label: 'Mood Rating',
-        thresholds: [
-            { label: 'High', min: 8 },
-            { label: 'Medium', min: 6 },
-            { label: 'Low', min: 0 }
-        ],
-        minimumGoodValue: 8
-    }, options);
-
-    return {
-        label: mergedOptions.label!,
-        units: 'avg rating',
-        rawDataType: surveyDataType,
-        thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
-        secondaryValueFormatter: createIntegerOverviewValueFormatter(),
-        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
-    };
-}
-
-export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
-    const mergedOptions = mergeOptions({
-        label: 'Sleep',
-        thresholds: [
-            { label: 'High', min: 420 },
-            { label: 'Medium', min: 360 },
-            { label: 'Low', min: 0 }
-        ],
-        minimumGoodValue: 420,
-        maximumGoodValue: 600
-    }, options);
-
-    return {
-        label: mergedOptions.label!,
-        units: 'avg per night',
-        rawDataType: DailyDataType.SleepMinutes,
-        thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
-        secondaryValueFormatter: createMinutesToHoursOverviewValueFormatter(),
-        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
-    };
-}
-
-export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
-    const mergedOptions = mergeOptions({
-        label: 'Steps',
-        thresholds: [
-            { label: 'High', min: 6000 },
-            { label: 'Medium', min: 4000 },
-            { label: 'Low', min: 0 }
-        ],
-        minimumGoodValue: 6000
-    }, options);
-
-    return {
-        label: mergedOptions.label!,
-        units: 'avg per day',
-        rawDataType: DailyDataType.Steps,
-        thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
-        secondaryValueFormatter: createShrinkThousandsOverviewValueFormatter(),
-        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
-    };
-}
-
-export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
-    const mergedOptions = mergeOptions({
-        label: 'Mindful Activity',
-        thresholds: [
-            { label: 'High', min: 60 },
-            { label: 'Medium', min: 30 },
-            { label: 'Low', min: 0 }
-        ],
-        minimumGoodValue: 0
-    }, options);
-
-    return {
-        label: mergedOptions.label!,
-        units: '% of days',
-        rawDataType: DailyDataType.SleepMinutes,
-        thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
-        secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
-    };
-}
-
-export function createTherapyOverviewDataType(options?: OverviewDataTypeOptions): OverviewDataType {
-    const mergedOptions = mergeOptions({
-        label: 'Therapeutic Activity',
-        thresholds: [
-            { label: 'High', min: 60 },
-            { label: 'Medium', min: 30 },
-            { label: 'Low', min: 0 }
-        ],
-        minimumGoodValue: 0
-    }, options);
-
-    return {
-        label: mergedOptions.label!,
-        units: '% of days',
-        rawDataType: DailyDataType.SleepMinutes,
-        thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
-        secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
-    };
 }
