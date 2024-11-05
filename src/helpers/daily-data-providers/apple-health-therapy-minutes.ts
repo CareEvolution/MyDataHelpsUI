@@ -13,6 +13,6 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     };
 
     const dataPoints = await queryAllDeviceData(parameters);
-    const filteredDataPoints = dataPoints.filter(dataPoint => !isSilverCloudCbtDataPoint(dataPoint));
+    const filteredDataPoints = dataPoints.filter(dataPoint => isSilverCloudCbtDataPoint(dataPoint));
     return collateDataPoints(filteredDataPoints);
 }

@@ -1,10 +1,10 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPersonRunning, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faHourglassHalf, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import { combinedMindfulMinutesDataProvider, combinedSleepDataProvider, combinedStepsDataProvider } from "../daily-data-providers";
+import { combinedMindfulMinutesDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -17,13 +17,11 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                     return simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
                         if (!result) {
                             return simpleAvailabilityCheck("Garmin", ["RestingHeartRateInBeatsPerMinute"])(modifiedAfter);
-                        }
-                        else {
+                        } else {
                             return result;
                         }
                     })
-                }
-                else {
+                } else {
                     return result;
                 }
             })
@@ -42,13 +40,11 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                     return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter).then(function (result) {
                         if (!result) {
                             return simpleAvailabilityCheck("Garmin", ["Steps"])(modifiedAfter);
-                        }
-                        else {
+                        } else {
                             return result;
                         }
                     })
-                }
-                else {
+                } else {
                     return result;
                 }
             });
@@ -67,13 +63,11 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                     return simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter).then(function (result) {
                         if (!result) {
                             return simpleAvailabilityCheck("Garmin", ["Sleep"])(modifiedAfter);
-                        }
-                        else {
+                        } else {
                             return result;
                         }
                     })
-                }
-                else {
+                } else {
                     return result;
                 }
             })
@@ -96,7 +90,23 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             }
         },
         labelKey: "mindful-minutes",
-        icon: <FontAwesomeSvgIcon icon={faLightbulb} />,
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
+    },
+    {
+        type: DailyDataType.TherapyMinutes,
+        dataProvider: combinedTherapyMinutesDataProvider,
+        availabilityCheck: async (modifiedAfter?: Date) => {
+            const result = await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter);
+            if (!result) {
+                return simpleAvailabilityCheck("GoogleFit", "SilverCloudSession")(modifiedAfter);
+            } else {
+                return result;
+            }
+        },
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => value.toFixed(0),
         previewDataRange: [0, 120]
     }

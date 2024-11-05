@@ -4,10 +4,10 @@ import {
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -64,7 +64,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthMindfulMinutesDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
         labelKey: "mindful-minutes",
-        icon: <FontAwesomeSvgIcon icon={faLightbulb} />,
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => value.toFixed(0),
         previewDataRange: [0, 120]
     },
@@ -144,6 +144,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
+    },
+    {
+        type: DailyDataType.AppleHealthTherapyMinutes,
+        dataProvider: appleHealthTherapyMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
     },
     {
         type: DailyDataType.AppleHealthWalkingHeartRateAverage,

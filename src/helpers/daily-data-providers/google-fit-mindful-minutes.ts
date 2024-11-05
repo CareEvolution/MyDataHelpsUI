@@ -2,7 +2,7 @@
 import queryAllDeviceData from './query-all-device-data';
 import { DailyDataQueryResult } from '../query-daily-data';
 import { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
-import { collateMindfulMinutesDataPoints } from './common-mindful-minutes';
+import { collateDataPoints } from './common-mindful-and-therapy';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const parameters: DeviceDataPointQuery = {
@@ -14,5 +14,5 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
 
     const dataPoints = await queryAllDeviceData(parameters);
     const filteredDataPoints = dataPoints.filter(dataPoint => dataPoint.value === 'meditation');
-    return collateMindfulMinutesDataPoints(filteredDataPoints);
+    return collateDataPoints(filteredDataPoints);
 }

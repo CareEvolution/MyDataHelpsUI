@@ -496,7 +496,8 @@
     "ai-assistant-suggestion-hemoglobin-levels-trend": "What’s the trend in my hemoglobin levels?",
     "ai-assistant-suggestion-show-files": "Show me my files.",
     "ai-assistant-suggestion-save-graph-to-files": "Save the graph to my files",
-    "mindful-minutes": "Mindful Minutes"
+    "mindful-minutes": "Mindful Minutes",
+    "therapy-minutes": "Therapy Minutes"
 };
 
 export default strings;

@@ -1,9 +1,9 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faLightbulb, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
+import { faHourglassHalf, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./formatters";
-import { googleFitMindfulMinutesDataProvider, googleFitStepsDataProvider } from "../daily-data-providers";
+import { googleFitMindfulMinutesDataProvider, googleFitStepsDataProvider, googleFitTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 
 let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -12,7 +12,7 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: googleFitMindfulMinutesDataProvider,
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", "ActivitySegment"),
         labelKey: "mindful-minutes",
-        icon: <FontAwesomeSvgIcon icon={faLightbulb} />,
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => value.toFixed(0),
         previewDataRange: [0, 120]
     },
@@ -24,6 +24,15 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [3000, 6000]
+    },
+    {
+        type: DailyDataType.GoogleFitTherapyMinutes,
+        dataProvider: googleFitTherapyMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("GoogleFit", "SilverCloudSession"),
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
     }
 ];
 googleFitTypeDefinitions.forEach((def) => {
