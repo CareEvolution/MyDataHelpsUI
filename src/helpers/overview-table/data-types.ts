@@ -2,10 +2,8 @@ import { DailyDataType } from '../daily-data-types';
 import { OverviewValueCalculator } from './value-calculator';
 import { OverviewValueFormatter } from './value-formatter';
 import { OverviewValueEvaluator } from './value-evaluator';
-import { isSurveyDataType, SurveyDataType } from './survey-data-type';
-import { OverviewThreshold } from './thresholds';
-import { getDailyDataTypeDefinition } from '../query-daily-data';
-import language from '../language';
+import { SurveyDataType } from './survey-data-type';
+import { OverviewValueThreshold } from './value-threshold';
 
 export interface OverviewDataType {
     label?: string;
@@ -13,21 +11,12 @@ export interface OverviewDataType {
 }
 
 export interface PrimaryOverviewDataType extends OverviewDataType {
-    thresholds: OverviewThreshold[];
+    thresholds: OverviewValueThreshold[];
 }
 
 export interface SecondaryOverviewDataType extends OverviewDataType {
     units?: string;
-    secondaryValueCalculator: OverviewValueCalculator;
-    secondaryValueFormatter: OverviewValueFormatter;
-    secondaryValueEvaluator: OverviewValueEvaluator;
-}
-
-export function getDefaultOverviewDataTypeLabel(dataType: OverviewDataType): string {
-    if (isSurveyDataType(dataType.rawDataType)) {
-        return dataType.rawDataType.stepIdentifier;
-    }
-
-    const labelKey = getDailyDataTypeDefinition(dataType.rawDataType).labelKey;
-    return labelKey ? language(labelKey, "en") : dataType.rawDataType;
+    valueCalculator: OverviewValueCalculator;
+    valueFormatter: OverviewValueFormatter;
+    valueEvaluator: OverviewValueEvaluator;
 }

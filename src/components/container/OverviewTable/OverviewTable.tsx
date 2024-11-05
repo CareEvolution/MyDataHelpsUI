@@ -1,11 +1,12 @@
 import React, { CSSProperties, useContext, useState } from 'react';
-import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getDefaultOverviewDataTypeLabel, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, PrimaryOverviewDataType, resolveColor, SecondaryOverviewDataType, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getSurveyDataProvider, isSurveyDataType, NotEnteredThreshold, OverviewData, OverviewDataProvider, OverviewDataType, PrimaryOverviewDataType, resolveColor, SecondaryOverviewDataType, useInitializeView } from '../../../helpers';
 import { LayoutContext, LoadingIndicator } from '../../presentational';
 import './OverviewTable.css';
 import { add, startOfToday } from 'date-fns';
 import { createPreviewDataProvider } from './OverviewTable.previewData';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import language from '../../../helpers/language';
 
 export interface OverviewTableProps {
     preview?: boolean;
@@ -83,6 +84,15 @@ export default function (props: OverviewTableProps) {
     const allThresholds = primaryData.type.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
 
+    const getDefaultOverviewDataTypeLabel = (dataType: OverviewDataType): string => {
+        if (isSurveyDataType(dataType.rawDataType)) {
+            return dataType.rawDataType.stepIdentifier;
+        }
+
+        const labelKey = getDailyDataTypeDefinition(dataType.rawDataType).labelKey;
+        return labelKey ? language(labelKey, "en") : dataType.rawDataType;
+    };
+
     return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
             {primaryData.type.label ?? getDefaultOverviewDataTypeLabel(primaryData.type)}
@@ -103,12 +113,12 @@ export default function (props: OverviewTableProps) {
                 {secondaryData.map((data: OverviewData<SecondaryOverviewDataType>, index: number) => {
                     const filteredValues = Object.keys(data.queryResult).filter(key => thresholdDays.includes(key)).map(key => data.queryResult[key]);
                     const calculatedValue = filteredValues.length > 0
-                        ? data.type.secondaryValueCalculator.calculate(thresholdDays, filteredValues)
+                        ? data.type.valueCalculator.calculate(thresholdDays, filteredValues)
                         : undefined;
                     const formattedValue = calculatedValue !== undefined
-                        ? data.type.secondaryValueFormatter.format(calculatedValue)
+                        ? data.type.valueFormatter.format(calculatedValue)
                         : '-';
-                    const valueIsGood = calculatedValue !== undefined && data.type.secondaryValueEvaluator.evaluate(calculatedValue);
+                    const valueIsGood = calculatedValue !== undefined && data.type.valueEvaluator.evaluate(calculatedValue);
                     const valueStyle: CSSProperties = {
                         background: valueIsGood ? goodValueBackgroundColor : notGoodValueBackgroundColor,
                         color: valueIsGood ? goodValueTextColor : notGoodValueTextColor

@@ -3,10 +3,10 @@ import getDayKey from '../get-day-key';
 import { OverviewData } from './data-provider';
 import { PrimaryOverviewDataType } from './data-types';
 
-export interface OverviewThreshold {
+export interface OverviewValueThreshold {
     label: string;
-    min?: number;
-    max?: number;
+    minimumValue?: number;
+    maximumValue?: number;
 }
 
 export type OverviewThresholdDaysLookup = { [key: string]: string[] };
@@ -16,12 +16,12 @@ export const NotEnteredThreshold = 'Not Entered';
 export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: OverviewData<PrimaryOverviewDataType>): OverviewThresholdDaysLookup {
     const lookup: OverviewThresholdDaysLookup = {};
 
-    const computeThreshold = (thresholds: OverviewThreshold[], value?: number): string => {
+    const computeThreshold = (thresholds: OverviewValueThreshold[], value?: number): string => {
         if (value !== undefined && value >= 0) {
             for (let i = 0; i < thresholds.length; i++) {
                 const threshold = thresholds[i];
-                if (threshold.min !== undefined && threshold.min > value) continue;
-                if (threshold.max !== undefined && threshold.max < value) continue;
+                if (threshold.minimumValue !== undefined && threshold.minimumValue > value) continue;
+                if (threshold.maximumValue !== undefined && threshold.maximumValue < value) continue;
                 return threshold.label;
             }
         }
