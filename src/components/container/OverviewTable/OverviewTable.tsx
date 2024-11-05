@@ -83,12 +83,6 @@ export default function (props: OverviewTableProps) {
     const allThresholds = primaryData.type.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
 
-    const evaluateSecondaryValue = (dataType: OverviewDataType, value: number): boolean => {
-        return dataType.maximumGoodValue !== undefined
-            ? value >= dataType.minimumGoodValue && value <= dataType.maximumGoodValue
-            : value >= dataType.minimumGoodValue;
-    };
-
     return <div className="mdhui-overview-table" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, secondaryData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
         <div className="mdhui-overview-table-header-primary" style={{ background: primaryHeaderBackgroundColor, color: primaryHeaderTextColor }}>
             {primaryData.type.label ?? getDefaultOverviewDataTypeLabel(primaryData.type)}
@@ -109,12 +103,12 @@ export default function (props: OverviewTableProps) {
                 {secondaryData.map((data: OverviewData, index: number) => {
                     const filteredValues = Object.keys(data.queryResult).filter(key => thresholdDays.includes(key)).map(key => data.queryResult[key]);
                     const calculatedValue = filteredValues.length > 0
-                        ? data.type.secondaryValueCalculator(thresholdDays.length, filteredValues)
+                        ? data.type.secondaryValueCalculator.calculate(thresholdDays, filteredValues)
                         : undefined;
                     const formattedValue = calculatedValue !== undefined
-                        ? data.type.secondaryValueFormatter(calculatedValue)
+                        ? data.type.secondaryValueFormatter.format(calculatedValue)
                         : '-';
-                    const valueIsGood = calculatedValue !== undefined && evaluateSecondaryValue(data.type, calculatedValue);
+                    const valueIsGood = calculatedValue !== undefined && data.type.secondaryValueEvaluator.evaluate(calculatedValue);
                     const valueStyle: CSSProperties = {
                         background: valueIsGood ? goodValueBackgroundColor : notGoodValueBackgroundColor,
                         color: valueIsGood ? goodValueTextColor : notGoodValueTextColor

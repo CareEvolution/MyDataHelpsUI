@@ -1,6 +1,7 @@
 import { DailyDataType } from '../daily-data-types';
-import { averageValueOverviewValueCalculator, OverviewValueCalculator, percentageOfDaysOverviewValueCalculator } from './value-calculator';
-import { createIntegerOverviewValueFormatter, minutesToHoursOverviewValueFormatter, OverviewValueFormatter, shrinkThousandsOverviewValueFormatter } from './value-formatter';
+import { createAverageValueOverviewValueCalculator, createPercentageOfDaysOverviewValueCalculator, OverviewValueCalculator } from './value-calculator';
+import { createIntegerOverviewValueFormatter, createMinutesToHoursOverviewValueFormatter, createShrinkThousandsOverviewValueFormatter, OverviewValueFormatter } from './value-formatter';
+import { createMinMaxOverviewValueEvaluator, OverviewValueEvaluator } from './value-evaluator';
 import { isSurveyDataType, SurveyDataType } from './survey-data-type';
 import { OverviewThreshold } from './thresholds';
 import { getDailyDataTypeDefinition } from '../query-daily-data';
@@ -13,8 +14,7 @@ export interface OverviewDataType {
     thresholds: OverviewThreshold[];
     secondaryValueCalculator: OverviewValueCalculator;
     secondaryValueFormatter: OverviewValueFormatter;
-    minimumGoodValue: number;
-    maximumGoodValue?: number;
+    secondaryValueEvaluator: OverviewValueEvaluator;
 }
 
 export function getDefaultOverviewDataTypeLabel(dataType: OverviewDataType): string {
@@ -59,10 +59,9 @@ export function createMoodRatingDataType(surveyDataType: SurveyDataType, options
         units: 'avg rating',
         rawDataType: surveyDataType,
         thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: averageValueOverviewValueCalculator,
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
         secondaryValueFormatter: createIntegerOverviewValueFormatter(),
-        minimumGoodValue: mergedOptions.minimumGoodValue!,
-        maximumGoodValue: mergedOptions.maximumGoodValue
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
     };
 }
 
@@ -83,10 +82,9 @@ export function createSleepOverviewDataType(options?: OverviewDataTypeOptions): 
         units: 'avg per night',
         rawDataType: DailyDataType.SleepMinutes,
         thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: averageValueOverviewValueCalculator,
-        secondaryValueFormatter: minutesToHoursOverviewValueFormatter,
-        minimumGoodValue: mergedOptions.minimumGoodValue!,
-        maximumGoodValue: mergedOptions.maximumGoodValue
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
+        secondaryValueFormatter: createMinutesToHoursOverviewValueFormatter(),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
     };
 }
 
@@ -106,10 +104,9 @@ export function createStepsOverviewDataType(options?: OverviewDataTypeOptions): 
         units: 'avg per day',
         rawDataType: DailyDataType.Steps,
         thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: averageValueOverviewValueCalculator,
-        secondaryValueFormatter: shrinkThousandsOverviewValueFormatter,
-        minimumGoodValue: mergedOptions.minimumGoodValue!,
-        maximumGoodValue: mergedOptions.maximumGoodValue
+        secondaryValueCalculator: createAverageValueOverviewValueCalculator(),
+        secondaryValueFormatter: createShrinkThousandsOverviewValueFormatter(),
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
     };
 }
 
@@ -129,10 +126,9 @@ export function createMindfulOverviewDataType(options?: OverviewDataTypeOptions)
         units: '% of days',
         rawDataType: DailyDataType.SleepMinutes,
         thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: percentageOfDaysOverviewValueCalculator,
+        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
         secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        minimumGoodValue: mergedOptions.minimumGoodValue!,
-        maximumGoodValue: mergedOptions.maximumGoodValue
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
     };
 }
 
@@ -152,9 +148,8 @@ export function createTherapyOverviewDataType(options?: OverviewDataTypeOptions)
         units: '% of days',
         rawDataType: DailyDataType.SleepMinutes,
         thresholds: mergedOptions.thresholds!,
-        secondaryValueCalculator: percentageOfDaysOverviewValueCalculator,
+        secondaryValueCalculator: createPercentageOfDaysOverviewValueCalculator(),
         secondaryValueFormatter: createIntegerOverviewValueFormatter('%'),
-        minimumGoodValue: mergedOptions.minimumGoodValue!,
-        maximumGoodValue: mergedOptions.maximumGoodValue
+        secondaryValueEvaluator: createMinMaxOverviewValueEvaluator(mergedOptions.minimumGoodValue!, mergedOptions.maximumGoodValue)
     };
 }
