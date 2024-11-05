@@ -19,7 +19,7 @@ export interface OverviewDataType {
 
 export function getDefaultOverviewDataTypeLabel(dataType: OverviewDataType): string {
     if (isSurveyDataType(dataType.rawDataType)) {
-        return dataType.rawDataType.surveyName;
+        return dataType.rawDataType.stepIdentifier;
     }
 
     const labelKey = getDailyDataTypeDefinition(dataType.rawDataType).labelKey;
