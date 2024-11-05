@@ -97,7 +97,7 @@ export default function (props: OverviewTableProps) {
             <div className="mdhui-overview-table-no-secondary-data">No secondary data types configured.</div>
         }
         {secondaryData.map(data => data.type).map((overviewDataType: OverviewDataType, index: number) => {
-            return <div className="mdhui-overview-table-header-secondary" key={`mdhui-overview-table-header-secondary-${index}`}>
+            return <div className="mdhui-overview-table-header-secondary" key={index}>
                 <div className="mdhui-overview-table-header-secondary-label">{overviewDataType.label ?? getDefaultOverviewDataTypeLabel(overviewDataType)}</div>
                 <div className="mdhui-overview-table-header-secondary-units">{overviewDataType.units ?? <div>&nbsp;</div>}</div>
             </div>;
@@ -106,7 +106,7 @@ export default function (props: OverviewTableProps) {
             const thresholdDays = thresholdDaysLookup[threshold];
             return <React.Fragment key={threshold}>
                 <div className="mdhui-overview-table-threshold">{threshold}</div>
-                {secondaryData.map(data => {
+                {secondaryData.map((data: OverviewData, index: number) => {
                     const filteredValues = Object.keys(data.queryResult).filter(key => thresholdDays.includes(key)).map(key => data.queryResult[key]);
                     const calculatedValue = filteredValues.length > 0
                         ? data.type.secondaryValueCalculator(thresholdDays.length, filteredValues)
@@ -120,7 +120,7 @@ export default function (props: OverviewTableProps) {
                         color: valueIsGood ? goodValueTextColor : notGoodValueTextColor
                     };
 
-                    return <div className="mdhui-overview-table-value" key={data.type.label} style={valueStyle}>
+                    return <div className="mdhui-overview-table-value" key={index} style={valueStyle}>
                         {valueIsGood && props.goodValueIndicator &&
                             <div className="mdhui-overview-table-value-good-indicator">
                                 <FontAwesomeSvgIcon icon={props.goodValueIndicator} />
