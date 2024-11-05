@@ -1,8 +1,10 @@
 import { DailyDataType } from '../daily-data-types';
 import { averageValueOverviewValueCalculator, OverviewValueCalculator, percentageOfDaysOverviewValueCalculator } from './value-calculator';
 import { createIntegerOverviewValueFormatter, minutesToHoursOverviewValueFormatter, OverviewValueFormatter, shrinkThousandsOverviewValueFormatter } from './value-formatter';
-import { SurveyDataType } from './survey-data-type';
+import { isSurveyDataType, SurveyDataType } from './survey-data-type';
 import { OverviewThreshold } from './thresholds';
+import { getDailyDataTypeDefinition } from '../query-daily-data';
+import language from '../language';
 
 export interface OverviewDataType {
     label: string;
@@ -13,6 +15,15 @@ export interface OverviewDataType {
     secondaryValueFormatter: OverviewValueFormatter;
     minimumGoodValue: number;
     maximumGoodValue?: number;
+}
+
+export function getDefaultOverviewDataTypeLabel(dataType: OverviewDataType): string {
+    if (isSurveyDataType(dataType.rawDataType)) {
+        return dataType.rawDataType.surveyName;
+    }
+
+    const labelKey = getDailyDataTypeDefinition(dataType.rawDataType).labelKey;
+    return labelKey ? language(labelKey, "en") : dataType.rawDataType;
 }
 
 export interface OverviewDataTypeOptions {
