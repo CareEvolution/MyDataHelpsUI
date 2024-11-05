@@ -1,12 +1,13 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, 
+import {
+    appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider } from "../daily-data-providers";
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider
+} from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail } from "@fortawesome/free-solid-svg-icons";
-import language from "../language";
+import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -57,6 +58,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
         previewDataRange: [100, 180]
+    },
+    {
+        type: DailyDataType.AppleHealthMindfulMinutes,
+        dataProvider: appleHealthMindfulMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        labelKey: "mindful-minutes",
+        icon: <FontAwesomeSvgIcon icon={faLightbulb} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
     },
     {
         type: DailyDataType.AppleHealthRestingHeartRate,
