@@ -20,10 +20,13 @@ export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvid
         const query: SurveyAnswersQuery = {
             surveyName: dataType.surveyName,
             stepIdentifier: dataType.stepIdentifier,
-            resultIdentifier: dataType.resultIdentifier,
             after: add(startDate, { days: -1 }).toISOString(),
             before: add(endDate, { days: 1 }).toISOString()
         };
+
+        if (dataType.resultIdentifier) {
+            query.resultIdentifier = dataType.resultIdentifier;
+        }
 
         let answers = await queryAllSurveyAnswers(query);
 
