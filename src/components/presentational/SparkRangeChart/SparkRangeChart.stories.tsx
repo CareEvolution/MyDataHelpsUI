@@ -4,7 +4,7 @@ import { Layout } from '../../presentational'
 import { Meta, StoryObj } from '@storybook/react';
 
 type SparkRangeChartStoryArgs = React.ComponentProps<typeof SparkRangeChart> & {
-    colorScheme: 'auto' | 'light' | 'dark'
+    colorScheme: 'auto' | 'light' | 'dark';
 };
 
 const meta: Meta<SparkRangeChartStoryArgs> = {
