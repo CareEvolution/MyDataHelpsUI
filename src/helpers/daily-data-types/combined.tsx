@@ -1,11 +1,10 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
-import language from "../language";
+import { faBed, faHeartbeat, faPersonRunning, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import { combinedSleepDataProvider, combinedStepsDataProvider } from "../daily-data-providers";
+import { combinedSleepDataProvider, combinedStepsDataProvider, combinedMindfulMinutesDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -87,6 +86,40 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         formatter: minutesFormatter,
         yAxisConverter: sleepYAxisConverter,
         previewDataRange: [420, 540]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.MindfulMinutes,
+        dataProvider: combinedMindfulMinutesDataProvider,
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const result = await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter);
+            if (!result) {
+                return simpleAvailabilityCheck("GoogleFit", "ActivitySegment")(modifiedAfter);
+            } else {
+                return result;
+            }
+        },
+        labelKey: "mindful-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.TherapyMinutes,
+        dataProvider: combinedTherapyMinutesDataProvider,
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const result = await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter);
+            if (!result) {
+                return simpleAvailabilityCheck("GoogleFit", "SilverCloudSession")(modifiedAfter);
+            } else {
+                return result;
+            }
+        },
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
     }
 ];
 export default combinedTypeDefinitions;
