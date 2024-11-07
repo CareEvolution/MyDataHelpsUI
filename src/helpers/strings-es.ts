@@ -495,7 +495,9 @@
     "ai-assistant-suggestion-last-metabolic-panel": "¿Cuándo fue mi último panel metabólico?",
     "ai-assistant-suggestion-hemoglobin-levels-trend": "¿Cuál es la tendencia en mis niveles de hemoglobina?",
     "ai-assistant-suggestion-show-files": "Muéstrame mis archivos.",
-    "ai-assistant-suggestion-save-graph-to-files": "Guarda el gráfico en mis archivos"
+    "ai-assistant-suggestion-save-graph-to-files": "Guarda el gráfico en mis archivos",
+    "mindful-minutes": "Minutos de Atención Plena",
+    "therapy-minutes": "Minutos de Terapia"
 };
 
 export default strings;
