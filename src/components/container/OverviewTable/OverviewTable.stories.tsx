@@ -137,7 +137,7 @@ export const Default: Story = {
             name: 'not good value text color',
             control: 'color'
         },
-        ...argTypesToHide(['preview', 'primaryDataType', 'secondaryDataTypes', 'goodValueIndicator', 'innerRef']),
+        ...argTypesToHide(['preview', 'primaryDataType', 'secondaryDataTypes', 'goodValueIndicator', 'innerRef'])
     }
 };
 

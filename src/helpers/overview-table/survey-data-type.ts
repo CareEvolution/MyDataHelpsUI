@@ -28,16 +28,19 @@ export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvid
             query.resultIdentifier = dataType.resultIdentifier;
         }
 
-        let answers = await queryAllSurveyAnswers(query);
+        const answers = await queryAllSurveyAnswers(query);
 
-        let result: DailyDataQueryResult = {};
+        const result: DailyDataQueryResult = {};
 
         let currentDate = startDate;
         while (currentDate <= endDate) {
-            let currentDayKey = getDayKey(currentDate);
-            let answerForDate = answers.find(answer => isSameDay(parseISO(answer.date), currentDate));
+            const currentDayKey = getDayKey(currentDate);
+            const answerForDate = answers.find(answer => isSameDay(parseISO(answer.date), currentDate))?.answers[0];
             if (answerForDate) {
-                result[currentDayKey] = parseInt(answerForDate.answers[0]);
+                const parsedAnswer = parseInt(answerForDate);
+                if (!Number.isNaN(parsedAnswer)) {
+                    result[currentDayKey] = parsedAnswer;
+                }
             }
             currentDate = add(currentDate, { days: 1 });
         }
