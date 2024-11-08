@@ -1,22 +1,21 @@
 import { add } from 'date-fns';
 import getDayKey from '../get-day-key';
-import { OverviewData } from './data-provider';
-import { PrimaryOverviewDataType } from './data-types';
+import { InsightMatrixData, InsightMatrixGroupByDataConfiguration } from './types';
 
-export interface OverviewValueThreshold {
+export interface InsightMatrixValueThreshold {
     label: string;
     minimumValue?: number;
     maximumValue?: number;
 }
 
-export type OverviewThresholdDaysLookup = { [key: string]: string[] };
-
 export const NotEnteredThreshold = 'Not Entered';
 
-export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: OverviewData<PrimaryOverviewDataType>): OverviewThresholdDaysLookup {
-    const lookup: OverviewThresholdDaysLookup = {};
+export type InsightMatrixThresholdDaysLookup = { [key: string]: string[] };
 
-    const computeThreshold = (thresholds: OverviewValueThreshold[], value?: number): string | undefined => {
+export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: InsightMatrixData<InsightMatrixGroupByDataConfiguration>): InsightMatrixThresholdDaysLookup {
+    const lookup: InsightMatrixThresholdDaysLookup = {};
+
+    const computeThreshold = (thresholds: InsightMatrixValueThreshold[], value?: number): string | undefined => {
         if (value !== undefined && value >= 0) {
             for (let i = 0; i < thresholds.length; i++) {
                 const threshold = thresholds[i];
@@ -32,7 +31,7 @@ export function computeThresholdDays(startDate: Date, endDate: Date, overviewDat
     let currentDate = startDate;
     while (currentDate <= endDate) {
         const currentDayKey = getDayKey(currentDate);
-        const threshold = computeThreshold(overviewData.type.thresholds, overviewData.queryResult[currentDayKey]);
+        const threshold = computeThreshold(overviewData.configuration.thresholds, overviewData.result[currentDayKey]);
 
         if (threshold) {
             if (!lookup.hasOwnProperty(threshold)) {

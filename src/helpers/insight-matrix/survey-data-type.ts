@@ -1,9 +1,9 @@
-import { DailyDataType } from "../daily-data-types";
-import { DailyDataProvider, DailyDataQueryResult } from "../query-daily-data";
-import { SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import getDayKey from "../get-day-key";
-import { add, isSameDay, parseISO } from "date-fns";
-import queryAllSurveyAnswers from "../query-all-survey-answers";
+import { DailyDataType } from '../daily-data-types';
+import { DailyDataProvider, DailyDataQueryResult } from '../query-daily-data';
+import { SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import getDayKey from '../get-day-key';
+import { add, isSameDay, parseISO } from 'date-fns';
+import queryAllSurveyAnswers from '../query-all-survey-answers';
 
 export interface SurveyDataType {
     surveyName: string;
@@ -46,5 +46,5 @@ export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvid
         }
 
         return result;
-    }
+    };
 }

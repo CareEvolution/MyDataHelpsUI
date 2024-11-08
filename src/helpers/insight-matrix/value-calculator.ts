@@ -1,8 +1,8 @@
-export interface OverviewValueCalculator {
+export interface InsightMatrixValueCalculator {
     calculate: (thresholdDays: string[], values: number[]) => number | undefined;
 }
 
-export const createAverageValueOverviewValueCalculator = (): OverviewValueCalculator => {
+export const createAverageValueInsightMatrixValueCalculator = (): InsightMatrixValueCalculator => {
     return {
         calculate: (_: string[], values: number[]) => {
             const nonZeroValues = values.filter(v => v > 0);
@@ -11,7 +11,7 @@ export const createAverageValueOverviewValueCalculator = (): OverviewValueCalcul
     };
 };
 
-export const createPercentageOfDaysOverviewValueCalculator = (): OverviewValueCalculator => {
+export const createPercentageOfDaysInsightMatrixValueCalculator = (): InsightMatrixValueCalculator => {
     return {
         calculate: (thresholdDays: string[], values: number[]) => {
             if (thresholdDays.length === 0) {

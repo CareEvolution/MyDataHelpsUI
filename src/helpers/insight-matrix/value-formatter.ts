@@ -1,8 +1,8 @@
-export interface OverviewValueFormatter {
+export interface InsightMatrixValueFormatter {
     format: (value: number) => string;
 }
 
-export const createShrinkThousandsOverviewValueFormatter = (): OverviewValueFormatter => {
+export const createShrinkThousandsInsightMatrixValueFormatter = (): InsightMatrixValueFormatter => {
     return {
         format: value => {
             if (value >= 1000) {
@@ -13,13 +13,13 @@ export const createShrinkThousandsOverviewValueFormatter = (): OverviewValueForm
     };
 };
 
-export const createMinutesToHoursOverviewValueFormatter = (): OverviewValueFormatter => {
+export const createMinutesToHoursInsightMatrixValueFormatter = (): InsightMatrixValueFormatter => {
     return {
         format: value => (value / 60).toFixed(1) + 'hr'
     };
 };
 
-export const createIntegerOverviewValueFormatter = (suffix?: string): OverviewValueFormatter => {
+export const createIntegerInsightMatrixValueFormatter = (suffix?: string): InsightMatrixValueFormatter => {
     return {
         format: value => {
             let formattedValue = Number(value.toFixed(0)).toLocaleString();

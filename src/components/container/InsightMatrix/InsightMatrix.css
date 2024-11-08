@@ -1,8 +1,8 @@
-.mdhui-overview-table {
+.mdhui-insight-matrix {
     display: grid;
 }
 
-.mdhui-overview-table-header-primary, .mdhui-overview-table-header-secondary, .mdhui-overview-table-threshold, .mdhui-overview-table-value {
+.mdhui-insight-matrix-header-group-by, .mdhui-insight-matrix-header-comparison, .mdhui-insight-matrix-threshold, .mdhui-insight-matrix-value {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,21 +13,21 @@
     text-align: center;
 }
 
-.mdhui-overview-table-header-primary, .mdhui-overview-table-header-secondary {
+.mdhui-insight-matrix-header-group-by, .mdhui-insight-matrix-header-comparison {
     font-size: 0.75em;
     font-weight: bold;
 }
 
-.mdhui-overview-table-header-primary {
+.mdhui-insight-matrix-header-group-by {
     padding: 8px;
 }
 
-.mdhui-overview-table-header-secondary {
+.mdhui-insight-matrix-header-comparison {
     display: flex;
     flex-direction: column;
 }
 
-.mdhui-overview-table-header-secondary-label {
+.mdhui-insight-matrix-header-comparison-label {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,7 +36,7 @@
     text-align: center;
 }
 
-.mdhui-overview-table-header-secondary-units {
+.mdhui-insight-matrix-header-comparison-units {
     padding: 2px 0;
     background: var(--mdhui-background-color-1);
     flex-grow: 0;
@@ -48,36 +48,36 @@
     outline: 1px solid var(--mdhui-border-color-1);
 }
 
-.mdhui-overview-table-threshold, .mdhui-overview-table-value {
+.mdhui-insight-matrix-threshold, .mdhui-insight-matrix-value {
     padding: 8px;
 }
 
-.mdhui-overview-table-threshold {
+.mdhui-insight-matrix-threshold {
     font-size: 0.8em;
 }
 
-.mdhui-overview-table-value {
+.mdhui-insight-matrix-value {
     position: relative;
     color: #000;
     font-size: 1.3em;
 }
 
-.mdhui-overview-table-value-good {
+.mdhui-insight-matrix-value-good {
     background: #C8FFC2;
 }
 
-.mdhui-overview-table-value-good-indicator {
+.mdhui-insight-matrix-value-good-indicator {
     position: absolute;
     top: 4px;
     right: 4px;
     font-size: 12px;
 }
 
-.mdhui-overview-table-value-not-good {
+.mdhui-insight-matrix-value-not-good {
     background: #FFEDC2;
 }
 
-.mdhui-overview-table-no-secondary-data {
+.mdhui-insight-matrix-no-comparison-data {
     grid-column: 2;
     grid-row: 1 / span 5;
     padding: 16px;

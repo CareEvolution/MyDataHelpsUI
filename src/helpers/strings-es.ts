@@ -498,7 +498,7 @@
     "ai-assistant-suggestion-save-graph-to-files": "Guarda el gráfico en mis archivos",
     "mindful-minutes": "Minutos de Atención Plena",
     "therapy-minutes": "Minutos de Terapia",
-    "overview-table-no-secondary-data": "No se configuraron tipos de datos secundarios."
+    "insight-matrix-no-comparison-data": "No se han configurado tipos de datos de comparación."
 };
 
 export default strings;
