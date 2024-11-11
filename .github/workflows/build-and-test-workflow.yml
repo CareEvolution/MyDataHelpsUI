@@ -1,0 +1,46 @@
+name: MDH UI Build and Test Workflow
+
+on:
+  push:
+	branches:
+		- renee/testWorkflow
+  pull_request:
+	branches:
+		- renee/testWorkflow
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: npm ci
+        run: npm ci
+      - name: build
+        run: npm run build-storybook
+      - name: test
+        run: npm run test
+
+  notify-on-failure:
+    # This job only runs if the previous build-and-test job fails
+    needs: build-and-test
+    if: failure()
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 6: Send Slack notification on failure
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          text: |
+            :red_circle: The GitHub Action *${{ github.workflow }}* has failed!
+            - Repository: ${{ github.repository }}
+            - Workflow: ${{ github.workflow }}
+            - Job: ${{ github.job }}
+            - Branch: ${{ github.ref }}
+            - Commit: ${{ github.sha }}
+          color: '#FF0000'
