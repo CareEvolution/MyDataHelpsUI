@@ -1,6 +1,5 @@
-import { createAverageValueInsightMatrixValueCalculator, createPercentageOfDaysInsightMatrixValueCalculator } from '../../../src/helpers/insight-matrix/value-calculator';
+import { createAverageValueInsightMatrixValueCalculator, createPercentageOfDaysInsightMatrixValueCalculator, getDayKey } from '../../../src';
 import { add, startOfToday } from 'date-fns';
-import getDayKey from '../../../src/helpers/get-day-key';
 
 describe('Insight Matrix - Value Calculator Tests', () => {
 

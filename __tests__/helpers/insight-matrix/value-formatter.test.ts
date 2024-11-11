@@ -1,4 +1,4 @@
-import { createIntegerInsightMatrixValueFormatter, createMinutesToHoursInsightMatrixValueFormatter, createShrinkThousandsInsightMatrixValueFormatter } from '../../../src/helpers/insight-matrix/value-formatter';
+import { createIntegerInsightMatrixValueFormatter, createMinutesToHoursInsightMatrixValueFormatter, createShrinkThousandsInsightMatrixValueFormatter } from '../../../src';
 
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Shrink Thousands Formatter', () => {
