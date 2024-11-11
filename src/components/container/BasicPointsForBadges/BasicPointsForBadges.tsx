@@ -77,7 +77,11 @@ export default function (props: BasicPointsForBadgesProps) {
     return <div className={"mdhui-basic-points-for-badges"}>
         {badges !== undefined && points !== undefined &&
             <>
-                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>{props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}pts</Title>
+                <Title order={1} 
+                   className="mdhui-basic-points-for-badges-points-toward-badge" 
+                   style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>
+                      {props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}{language('points-abbreviation')}
+                </Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
                     fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"}

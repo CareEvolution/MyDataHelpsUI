@@ -463,7 +463,18 @@ let strings: { [key: string]: string } = {
     "meal-editor-time-input-label": "Zeit",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
     "glucose-view-title": "Blutzuckerüberwachung",
-    "ai-assistant-loading": "Interaktion mit Ihren Daten..."
+    "ai-assistant-loading": "Interaktion mit Ihren Daten...",
+    "allergylist-reactions": "TODO-DE-Reactions",
+    "points-abbreviation": "TODO-DE-pts",
+    "bp-low": "TODO-DE-Low",
+    "bp-normal": "TODO-DE-Normal",
+    "bp-elevated": "TODO-DE-Elevated",
+    "bp-stage1": "TODO-DE-Stage 1",
+    "bp-stage2": "TODO-DE-Stage 2",
+    "bp-crisis": "TODO-DE-Crisis",
+    "bp-unknown": "TODO-DE-Unknown"
+
+
 };
 
 export default strings;

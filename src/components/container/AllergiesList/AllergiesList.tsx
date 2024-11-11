@@ -5,6 +5,7 @@ import { useMyDataHelps } from "../../../helpers/useMyDataHelps"
 import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
+import language from "../../../helpers/language";
 
 export interface AllergiesListProps {
     previewState?: "default"
@@ -61,7 +62,7 @@ export default function (props: AllergiesListProps) {
         }
         {allergies && allergies.map(c =>
             <Action key={c.Substance}
-                subtitle={c.Reactions.length > 0 ? `Reactions: ${c.Reactions.join(", ")}` : undefined}
+                subtitle={c.Reactions.length > 0 ? `${language('allergylist-reactions')}: ${c.Reactions.join(", ")}` : undefined}
                 renderAs="div"
                 bottomBorder
                 title={c.Substance} indicator={

@@ -463,7 +463,18 @@
     "meal-editor-time-input-label": "Time",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
     "glucose-view-title": "Glucose Monitoring",
-    "ai-assistant-loading": "Interacting with your data..."
+    "ai-assistant-loading": "Interacting with your data...",
+    "allergylist-reactions": "Reactions",
+    "points-abbreviation": "pts",
+    "no-data-yet": "No data yet",
+    "bp-low": "Low",
+    "bp-normal": "Normal",
+    "bp-elevated": "Elevated",
+    "bp-stage1": "Stage 1",
+    "bp-stage2": "Stage 2",
+    "bp-crisis": "Crisis",
+    "bp-unknown": "Unknown"
+    // TODO: should mm Hg be localized?
 };
 
 export default strings;

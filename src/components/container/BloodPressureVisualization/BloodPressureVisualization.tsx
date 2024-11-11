@@ -24,16 +24,16 @@ export interface BloodPressureVisualizationProps {
 
 interface BloodPressureMetrics {
     averageSystolic?: number,
-    averageSystolicAlert?: string,
+    averageSystolicAlert?: Category,
     averageSystolicAlertClass: string,
     averageDiastolic?: number,
-    averageDiastolicAlert?: string,
+    averageDiastolicAlert?: Category,
     averageDiastolicAlertClass: string,
     maxSystolic?: number,
-    maxSystolicAlert?: string,
+    maxSystolicAlert?: Category,
     maxSystolicAlertClass: string,
     minSystolic?: number,
-    minSystolicAlert?: string,
+    minSystolicAlert?: Category,
     minSystolicAlertClass: string
 }
 
@@ -139,6 +139,25 @@ export default function (props: BloodPressureVisualizationProps) {
 
         return Category.Unknown;
     }
+    
+    function getAlertPrompt(alert: Category | undefined): string {
+       switch (alert) {
+        case Category.Crisis:
+          return language('bp-crisis');
+        case Category.Elevated:
+          return language('bp-elevated');
+        case Category.Low:
+          return language('bp-low');
+        case Category.Normal:
+          return language('bp-normal');
+        case Category["Stage 1"]:
+          return language('bp-stage1');
+        case Category["Stage 2"]:
+          return language('bp-stage2');
+        default:
+          return language('bp-unknown');
+       }
+    }
 
     function buildMetrics(data: BloodPressureDataPoint[]) {
         const metrics = buildAggregates(data);
@@ -179,10 +198,10 @@ export default function (props: BloodPressureVisualizationProps) {
         let systolicWeeklyAvgAlert = getSystolicCategory(systolicWeeklyAvg);
 
         bpMetrics.averageSystolic = systolicWeeklyAvg;
-        bpMetrics.averageSystolicAlert = Category[systolicWeeklyAvgAlert];
+        bpMetrics.averageSystolicAlert = systolicWeeklyAvgAlert;
         bpMetrics.averageSystolicAlertClass = systolicWeeklyAvgAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
         bpMetrics.averageDiastolic = diastolicWeeklyAvg;
-        bpMetrics.averageDiastolicAlert = Category[diastolicWeeklyAvgAlert];
+        bpMetrics.averageDiastolicAlert = diastolicWeeklyAvgAlert;
         bpMetrics.averageDiastolicAlertClass = diastolicWeeklyAvgAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
         let systolicHigh = Math.max(...systolicReadings);
@@ -200,11 +219,11 @@ export default function (props: BloodPressureVisualizationProps) {
         return bpMetrics;
     }
 
-    function buildDetailBlock(description: string, alert?: string, alertClass?: string, value?: number) {
+    function buildDetailBlock(description: string, alert?: Category, alertClass?: string, value?: number) {
         return <div className="mdhui-blood-pressure-metrics-block">
             <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
             <div className="mdhui-blood-pressure-metric-description">{description}</div>
-            <div className={alertClass}>{alert ?? "No data yet"}</div>
+            <div className={alertClass}>{getAlertPrompt(alert) ?? language('no-data-yet')}</div>
         </div>
     }
 
@@ -243,6 +262,7 @@ export default function (props: BloodPressureVisualizationProps) {
                 bpDataForMetrics.push(...dataForDay);
                 weekData.push(createDumbbellsPerDay(currentDate, dataForDay));
             } else {
+                // TODO - localized date format (throughout)
                 weekData.push({ xValue: format(currentDate, "MM/dd") });
             }
         }
