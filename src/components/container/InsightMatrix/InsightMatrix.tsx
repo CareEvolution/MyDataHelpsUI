@@ -37,15 +37,6 @@ export default function InsightMatrix(props: InsightMatrixProps) {
     const [groupByData, setGroupByData] = useState<InsightMatrixData<InsightMatrixGroupByDataConfiguration>>();
     const [comparisonData, setComparisonData] = useState<InsightMatrixData<InsightMatrixComparisonDataConfiguration>[]>();
 
-    const groupByHeaderBackgroundColor = resolveColor(layoutContext.colorScheme, props.groupByHeaderBackgroundColor ?? { lightMode: '#e2f1ff', darkMode: '#000' });
-    const groupByHeaderTextColor = resolveColor(layoutContext.colorScheme, props.groupByHeaderTextColor ?? { lightMode: '#000', darkMode: '#8bcbff' });
-
-    const goodValueBackgroundColor = resolveColor(layoutContext.colorScheme, props.goodValueBackgroundColor ?? { lightMode: '#c8ffc2', darkMode: '#000' });
-    const goodValueTextColor = resolveColor(layoutContext.colorScheme, props.goodValueTextColor ?? { lightMode: '#000', darkMode: '#96ff85' });
-
-    const otherValueBackgroundColor = resolveColor(layoutContext.colorScheme, props.otherValueBackgroundColor ?? { lightMode: '#ffedc2', darkMode: '#000' });
-    const otherValueTextColor = resolveColor(layoutContext.colorScheme, props.otherValueTextColor ?? { lightMode: '#000', darkMode: '#ffc847' });
-
     const daysToCompute = props.daysToCompute ?? 28;
     const today = startOfToday();
     const startDate = add(today, { days: -daysToCompute });
@@ -100,8 +91,27 @@ export default function InsightMatrix(props: InsightMatrixProps) {
         return labelKey ? language(labelKey) : configuration.rawDataType;
     };
 
-    return <div className="mdhui-insight-matrix" style={{ gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, comparisonData.length - 1)).fill('1fr').join(' ') }} ref={props.innerRef}>
-        <div className="mdhui-insight-matrix-header-group-by" style={{ background: groupByHeaderBackgroundColor, color: groupByHeaderTextColor }}>
+    const getColorVariable = (variable: string, colorDefinition: ColorDefinition | undefined) => {
+        const color: { [key: string]: string | undefined } = {};
+        color[variable] = resolveColor(layoutContext.colorScheme, colorDefinition ?? { lightMode: `var(${variable}-light)`, darkMode: `var(${variable}-dark)` });
+        return color;
+    };
+
+    const colorStyles = {
+        ...getColorVariable('--mdhui-insight-matrix-header-group-by-background-color', props.groupByHeaderBackgroundColor),
+        ...getColorVariable('--mdhui-insight-matrix-header-group-by-text-color', props.groupByHeaderTextColor),
+        ...getColorVariable('--mdhui-insight-matrix-value-good-background-color', props.goodValueBackgroundColor),
+        ...getColorVariable('--mdhui-insight-matrix-value-good-text-color', props.goodValueTextColor),
+        ...getColorVariable('--mdhui-insight-matrix-value-other-background-color', props.otherValueBackgroundColor),
+        ...getColorVariable('--mdhui-insight-matrix-value-other-text-color', props.otherValueTextColor)
+    } as CSSProperties;
+
+    const matrixStyles = {
+        gridTemplateColumns: '112px 1fr ' + Array(Math.max(0, comparisonData.length - 1)).fill('1fr').join(' ')
+    } as CSSProperties;
+
+    return <div className="mdhui-insight-matrix" style={{ ...colorStyles, ...matrixStyles }} ref={props.innerRef}>
+        <div className="mdhui-insight-matrix-header-group-by">
             {groupByData.configuration.label ?? getDefaultDataLabel(groupByData.configuration)}
         </div>
         {comparisonData.length === 0 &&
@@ -126,12 +136,8 @@ export default function InsightMatrix(props: InsightMatrixProps) {
                         ? data.configuration.valueFormatter.format(calculatedValue)
                         : '-';
                     const valueIsGood = calculatedValue !== undefined && data.configuration.valueEvaluator.evaluate(calculatedValue);
-                    const valueStyle: CSSProperties = {
-                        background: valueIsGood ? goodValueBackgroundColor : otherValueBackgroundColor,
-                        color: valueIsGood ? goodValueTextColor : otherValueTextColor
-                    };
-
-                    return <div className="mdhui-insight-matrix-value" key={index} style={valueStyle}>
+                    const valueClassNames = ['mdhui-insight-matrix-value'].concat(valueIsGood ? 'mdhui-insight-matrix-value-good' : 'mdhui-insight-matrix-value-other');
+                    return <div className={valueClassNames.join(' ')} key={index}>
                         {valueIsGood && props.goodValueIndicator &&
                             <div className="mdhui-insight-matrix-value-good-indicator">
                                 <FontAwesomeSvgIcon icon={props.goodValueIndicator} />
