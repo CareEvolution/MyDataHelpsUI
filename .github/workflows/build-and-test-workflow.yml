@@ -43,4 +43,5 @@ jobs:
             - Job: ${{ github.job }}
             - Branch: ${{ github.ref }}
             - Commit: ${{ github.sha }}
+            - Author: ${{ github.event.head_commit.author.username }}
           color: '#FF0000'
