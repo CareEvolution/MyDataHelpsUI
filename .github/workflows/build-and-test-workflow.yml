@@ -38,10 +38,9 @@ jobs:
     steps:
       # Step 1: Send Slack notification on failure
       - name: Send Slack notification
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
           text: |
             :red_circle: The GitHub Action *${{ github.workflow }}* has failed!
             - Repository: ${{ github.repository }}
@@ -51,3 +50,6 @@ jobs:
             - Commit: ${{ github.sha }}
             - Author: ${{ github.event.head_commit.author.username }}
           color: '#FF0000'
+        env:
+          SLACK-BOT-TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            
