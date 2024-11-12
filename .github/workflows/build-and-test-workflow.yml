@@ -6,13 +6,17 @@ on:
       - renee/Workflow
     paths-ignore:
       - 'amplify.yml'          # Exclude the main Amplify configuration file
+      - 'customHttp.yml'       # Exclude the custom HTTP configuration file
       - '*.md'                 # Markdown files
+      - '.vscode'               # Exclude the VSCode configuration folder
   pull_request:
     branches:
       - renee/Workflow
     paths-ignore:
       - 'amplify.yml'          # Exclude the main Amplify configuration file
+      - 'customHttp.yml'       # Exclude the custom HTTP configuration file
       - '*.md'                 # Markdown files
+      - '.vscode'               # Exclude the VSCode configuration folder
 
 jobs:
   build-and-test:
