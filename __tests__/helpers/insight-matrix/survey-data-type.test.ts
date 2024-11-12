@@ -82,5 +82,26 @@ describe('Insight Matrix - Survey Data Type', () => {
 
             verifyResult(result, add(startDate, { days: 2 }), 2);
         });
+
+        it('Should query for survey answers, ignoring answers with non-numeric values.', async () => {
+            queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
+                { date: startDate.toISOString(), answers: ["invalid"] },
+                { date: endDate.toISOString(), answers: ["6"] }
+            ]));
+
+            const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
+
+            verifyResult(result, endDate, 6);
+        });
+
+        it('Should query for survey answers, even without a result identifier.', async () => {
+            queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
+                { date: startDate.toISOString(), answers: ["10"] }
+            ]));
+
+            const result = await getSurveyDataProvider({ ...surveyDataType, resultIdentifier: undefined })(startDate, endDate);
+
+            verifyResult(result, startDate, 10, false);
+        });
     });
 });
