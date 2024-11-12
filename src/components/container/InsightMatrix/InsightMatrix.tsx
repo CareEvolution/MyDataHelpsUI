@@ -38,8 +38,8 @@ export default function InsightMatrix(props: InsightMatrixProps) {
     const [comparisonData, setComparisonData] = useState<InsightMatrixData<InsightMatrixComparisonDataConfiguration>[]>();
 
     const daysToCompute = props.daysToCompute ?? 28;
-    const today = startOfToday();
-    const startDate = add(today, { days: -daysToCompute });
+    const startDate = add(startOfToday(), { days: -daysToCompute });
+    const endDate = add(startOfToday(), { days: -1 })
 
     const getDataProvider = <T extends InsightMatrixDataConfiguration>(configuration: T): InsightMatrixDataProvider<T> => {
         if (isSurveyDataType(configuration.rawDataType)) {
@@ -64,12 +64,12 @@ export default function InsightMatrix(props: InsightMatrixProps) {
 
     useInitializeView(() => {
         const groupByDataProvider = getGroupByDataProvider();
-        groupByDataProvider.loadData(startDate, today).then(result => {
+        groupByDataProvider.loadData(startDate, endDate).then(result => {
             return { configuration: groupByDataProvider.configuration, result: result };
         }).then(setGroupByData);
 
         const comparisonDataProviders = getComparisonDataProviders();
-        Promise.all(comparisonDataProviders.map(comparisonDataProvider => comparisonDataProvider.loadData(startDate, today).then(result => {
+        Promise.all(comparisonDataProviders.map(comparisonDataProvider => comparisonDataProvider.loadData(startDate, endDate).then(result => {
             return { configuration: comparisonDataProvider.configuration, result: result };
         }))).then(setComparisonData);
     }, [], [props.preview, props.groupByDataConfiguration, props.comparisonDataConfigurations]);
@@ -78,7 +78,7 @@ export default function InsightMatrix(props: InsightMatrixProps) {
         return <div className="mdhui-insight-matrix" ref={props.innerRef}><LoadingIndicator /></div>;
     }
 
-    const thresholdDaysLookup = computeThresholdDays(startDate, today, groupByData);
+    const thresholdDaysLookup = computeThresholdDays(startDate, endDate, groupByData);
 
     const allThresholds = groupByData.configuration.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
     const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));

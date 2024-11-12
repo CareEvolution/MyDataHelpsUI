@@ -1,10 +1,13 @@
-import { getSurveyDataProvider, isSurveyDataType } from '../../../src/helpers/insight-matrix/survey-data-type';
+import { getSurveyDataProvider, isSurveyDataType, SurveyDataType } from '../../../src/helpers/insight-matrix/survey-data-type';
 import getDayKey from '../../../src/helpers/get-day-key';
-import { DailyDataQueryResult, DailyDataType } from '../../../src/helpers/daily-data-types';
+import { DailyDataType } from '../../../src/helpers/daily-data-types';
+import { DailyDataQueryResult } from '../../../src/helpers/query-daily-data';
 import * as queryAllSurveyAnswersModule from '../../../src/helpers/query-all-survey-answers';
 import { add, endOfDay, startOfToday } from 'date-fns';
+import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import { describe, it } from '@jest/globals';
 
-describe('Insight Matrix - Survey Data Type', () => {
+describe('Insight Matrix - Survey Data Type Tests', () => {
     describe('Is Survey Data Type', () => {
         it('Should return false when the passed argument is a DailyDataType.', () => {
             const result = isSurveyDataType(DailyDataType.Steps);
@@ -16,7 +19,7 @@ describe('Insight Matrix - Survey Data Type', () => {
         });
     });
 
-    describe('Survey Data Provider', () => {
+    describe('Get Survey Data Provider', () => {
         const startDate = add(startOfToday(), { days: -7 });
         const endDate = startOfToday();
 
@@ -54,7 +57,7 @@ describe('Insight Matrix - Survey Data Type', () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
                 { date: add(startDate, { seconds: -1 }).toISOString(), answers: ["6"] },
                 { date: startDate.toISOString(), answers: ["5"] }
-            ]));
+            ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
 
@@ -65,7 +68,7 @@ describe('Insight Matrix - Survey Data Type', () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
                 { date: add(endDate, { days: 1 }).toISOString(), answers: ["8"] },
                 { date: endOfDay(endDate).toISOString(), answers: ["7"] }
-            ]));
+            ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
 
@@ -76,7 +79,7 @@ describe('Insight Matrix - Survey Data Type', () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
                 { date: add(startDate, { days: 2 }).toISOString(), answers: ["2"] },
                 { date: add(startDate, { days: 2, minutes: 1 }).toISOString(), answers: ["4"] }
-            ]));
+            ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
 
@@ -87,7 +90,7 @@ describe('Insight Matrix - Survey Data Type', () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
                 { date: startDate.toISOString(), answers: ["invalid"] },
                 { date: endDate.toISOString(), answers: ["6"] }
-            ]));
+            ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
 
@@ -97,7 +100,7 @@ describe('Insight Matrix - Survey Data Type', () => {
         it('Should query for survey answers, even without a result identifier.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
                 { date: startDate.toISOString(), answers: ["10"] }
-            ]));
+            ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider({ ...surveyDataType, resultIdentifier: undefined })(startDate, endDate);
 

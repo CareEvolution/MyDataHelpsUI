@@ -1,4 +1,5 @@
 import { createIntegerInsightMatrixValueFormatter, createMinutesToHoursInsightMatrixValueFormatter, createShrinkThousandsInsightMatrixValueFormatter } from '../../../src/helpers/insight-matrix/value-formatter';
+import { describe, it } from '@jest/globals';
 
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Shrink Thousands Formatter', () => {

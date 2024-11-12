@@ -12,7 +12,7 @@ export const NotEnteredThreshold = 'Not Entered';
 
 export type InsightMatrixThresholdDaysLookup = { [key: string]: string[] };
 
-export function computeThresholdDays(startDate: Date, endDate: Date, overviewData: InsightMatrixData<InsightMatrixGroupByDataConfiguration>): InsightMatrixThresholdDaysLookup {
+export function computeThresholdDays(startDate: Date, endDate: Date, data: InsightMatrixData<InsightMatrixGroupByDataConfiguration>): InsightMatrixThresholdDaysLookup {
     const lookup: InsightMatrixThresholdDaysLookup = {};
 
     const computeThreshold = (thresholds: InsightMatrixValueThreshold[], value?: number): string | undefined => {
@@ -31,7 +31,7 @@ export function computeThresholdDays(startDate: Date, endDate: Date, overviewDat
     let currentDate = startDate;
     while (currentDate <= endDate) {
         const currentDayKey = getDayKey(currentDate);
-        const threshold = computeThreshold(overviewData.configuration.thresholds, overviewData.result[currentDayKey]);
+        const threshold = computeThreshold(data.configuration.thresholds, data.result[currentDayKey]);
 
         if (threshold) {
             if (!lookup.hasOwnProperty(threshold)) {

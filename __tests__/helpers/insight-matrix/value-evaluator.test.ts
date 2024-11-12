@@ -1,4 +1,5 @@
 import { createMinMaxInsightMatrixValueEvaluator } from '../../../src/helpers/insight-matrix/value-evaluator';
+import { describe, it } from '@jest/globals';
 
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Min Max Evaluator', () => {
