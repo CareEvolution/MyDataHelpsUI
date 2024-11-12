@@ -1,4 +1,4 @@
-import { InputType } from "storybook/internal/types";
+import { InputType } from 'storybook/internal/types';
 
 export function argTypesToHide(propertiesToIgnore: string[]) {
     return propertiesToIgnore.reduce((argTypes, property) => {
