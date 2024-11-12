@@ -2,17 +2,17 @@ name: MDH UI Build and Test Workflow
 
 on:
   push:
-	branches:
-		- renee/Workflow
+    branches:
+      - renee/Workflow
     paths-ignore:
-        - 'amplify.yml'          # Exclude the main Amplify configuration file
-        - '*.md'                 # Markdown files
+      - 'amplify.yml'          # Exclude the main Amplify configuration file
+      - '*.md'                 # Markdown files
   pull_request:
-	branches:
-		- renee/Workflow
+    branches:
+      - renee/Workflow
     paths-ignore:
-        - 'amplify.yml'          # Exclude the main Amplify configuration file
-        - '*.md'                 # Markdown files
+      - 'amplify.yml'          # Exclude the main Amplify configuration file
+      - '*.md'                 # Markdown files
 
 jobs:
   build-and-test:
@@ -52,4 +52,3 @@ jobs:
           color: '#FF0000'
         env:
           SLACK-BOT-TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-            
