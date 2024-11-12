@@ -3,10 +3,16 @@ name: MDH UI Build and Test Workflow
 on:
   push:
 	branches:
-		- renee/testWorkflow
+		- renee/Workflow
+    paths-ignore:
+        - 'amplify.yml'          # Exclude the main Amplify configuration file
+        - '*.md'                 # Markdown files
   pull_request:
 	branches:
-		- renee/testWorkflow
+		- renee/Workflow
+    paths-ignore:
+        - 'amplify.yml'          # Exclude the main Amplify configuration file
+        - '*.md'                 # Markdown files
 
 jobs:
   build-and-test:
@@ -30,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 6: Send Slack notification on failure
+      # Step 1: Send Slack notification on failure
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.23.0
         with:
