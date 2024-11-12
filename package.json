@@ -20,7 +20,7 @@
     "clean": "rimraf dist",
     "rollup": "npm run clean && rollup -c",
     "storybook": "set NODE_OPTIONS=--openssl-legacy-provider & storybook dev -p 6006",
-    "build-storybook": "exit 1",
+    "build-storybook": "set NODE_OPTIONS=--openssl-legacy-provider & storybook build",
     "test": "jest"
   },
   "repository": {
