@@ -1,4 +1,8 @@
-import { DailyDataType, isSurveyDataType } from '../../../src';
+import { getSurveyDataProvider, isSurveyDataType } from '../../../src/helpers/insight-matrix/survey-data-type';
+import getDayKey from '../../../src/helpers/get-day-key';
+import { DailyDataQueryResult, DailyDataType } from '../../../src/helpers/daily-data-types';
+import * as queryAllSurveyAnswersModule from '../../../src/helpers/query-all-survey-answers';
+import { add, endOfDay, startOfToday } from 'date-fns';
 
 describe('Insight Matrix - Survey Data Type', () => {
     describe('Is Survey Data Type', () => {
@@ -11,40 +15,72 @@ describe('Insight Matrix - Survey Data Type', () => {
             expect(result).toBe(true);
         });
     });
-});
 
-/*
-export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvider {
-    return async (startDate: Date, endDate: Date) => {
-        const query: SurveyAnswersQuery = {
-            surveyName: dataType.surveyName,
-            stepIdentifier: dataType.stepIdentifier,
-            after: add(startDate, { days: -1 }).toISOString(),
-            before: add(endDate, { days: 1 }).toISOString()
+    describe('Survey Data Provider', () => {
+        const startDate = add(startOfToday(), { days: -7 });
+        const endDate = startOfToday();
+
+        const surveyDataType: SurveyDataType = {
+            surveyName: 'Survey Name',
+            stepIdentifier: 'Step Identifier',
+            resultIdentifier: 'Result Identifier'
         };
 
-        if (dataType.resultIdentifier) {
-            query.resultIdentifier = dataType.resultIdentifier;
-        }
+        const queryAllSurveyAnswersMock = jest.spyOn(queryAllSurveyAnswersModule, 'default').mockImplementation();
 
-        const answers = await queryAllSurveyAnswers(query);
+        const verifyResult = (result: DailyDataQueryResult, resultDate: Date, resultValue: number, withResultIdentifier: boolean = true) => {
+            expect(Object.keys(result).length).toBe(1);
+            expect(result[getDayKey(resultDate)]).toBe(resultValue);
 
-        const result: DailyDataQueryResult = {};
+            const expectedQuery: SurveyAnswersQuery = {
+                surveyName: surveyDataType.surveyName,
+                stepIdentifier: surveyDataType.stepIdentifier,
+                after: add(startDate, { days: -1 }).toISOString(),
+                before: add(endDate, { days: 1 }).toISOString()
+            };
 
-        let currentDate = startDate;
-        while (currentDate <= endDate) {
-            const currentDayKey = getDayKey(currentDate);
-            const answerForDate = answers.find(answer => isSameDay(parseISO(answer.date), currentDate))?.answers[0];
-            if (answerForDate) {
-                const parsedAnswer = parseInt(answerForDate);
-                if (!Number.isNaN(parsedAnswer)) {
-                    result[currentDayKey] = parsedAnswer;
-                }
+            if (withResultIdentifier) {
+                expectedQuery.resultIdentifier = surveyDataType.resultIdentifier;
             }
-            currentDate = add(currentDate, { days: 1 });
-        }
 
-        return result;
-    };
-}
- */
+            expect(queryAllSurveyAnswersMock).toHaveBeenCalledWith(expectedQuery);
+        };
+
+        beforeEach(() => {
+            queryAllSurveyAnswersMock.mockReset();
+        })
+
+        it('Should query for survey answers, ignoring those that are too old.', async () => {
+            queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
+                { date: add(startDate, { seconds: -1 }).toISOString(), answers: ["6"] },
+                { date: startDate.toISOString(), answers: ["5"] }
+            ]));
+
+            const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
+
+            verifyResult(result, startDate, 5);
+        });
+
+        it('Should query for survey answers, ignoring those that are too recent.', async () => {
+            queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
+                { date: add(endDate, { days: 1 }).toISOString(), answers: ["8"] },
+                { date: endOfDay(endDate).toISOString(), answers: ["7"] }
+            ]));
+
+            const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
+
+            verifyResult(result, endDate, 7);
+        });
+
+        it('Should query for survey answers, ignoring duplicates (other answers from the same day).', async () => {
+            queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
+                { date: add(startDate, { days: 2 }).toISOString(), answers: ["2"] },
+                { date: add(startDate, { days: 2, minutes: 1 }).toISOString(), answers: ["4"] }
+            ]));
+
+            const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
+
+            verifyResult(result, add(startDate, { days: 2 }), 2);
+        });
+    });
+});

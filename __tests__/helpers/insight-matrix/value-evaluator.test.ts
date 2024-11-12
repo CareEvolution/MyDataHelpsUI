@@ -1,4 +1,4 @@
-import { createMinMaxInsightMatrixValueEvaluator } from '../../../src';
+import { createMinMaxInsightMatrixValueEvaluator } from '../../../src/helpers/insight-matrix/value-evaluator';
 
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Min Max Evaluator', () => {
