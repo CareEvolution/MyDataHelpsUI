@@ -51,7 +51,7 @@ describe('Insight Matrix - Survey Data Type Tests', () => {
 
         beforeEach(() => {
             queryAllSurveyAnswersMock.mockReset();
-        })
+        });
 
         it('Should query for survey answers, ignoring those that are too old.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
