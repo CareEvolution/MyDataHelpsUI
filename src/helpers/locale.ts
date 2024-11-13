@@ -42,7 +42,7 @@ export function formatRelativeDateForLocale(dateOrDateString: string | Date, bas
 export function capitalizeForLocale(str: string) {
     // This won't be adequate if we expand to RTL or symbol-based (e.g., Chinese/Japanese/Korean) languages.
     if (!str) {
-        return null;
+        return '';
     }
     if (str.length < 2) {
         return str.toLocaleUpperCase();
