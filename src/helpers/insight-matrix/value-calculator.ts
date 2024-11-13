@@ -2,7 +2,7 @@ export interface InsightMatrixValueCalculator {
     calculate: (thresholdDays: string[], values: number[]) => number | undefined;
 }
 
-export const createAverageValueInsightMatrixValueCalculator = (): InsightMatrixValueCalculator => {
+export const createNonZeroAverageValueInsightMatrixValueCalculator = (): InsightMatrixValueCalculator => {
     return {
         calculate: (_: string[], values: number[]) => {
             const nonZeroValues = values.filter(v => v > 0);

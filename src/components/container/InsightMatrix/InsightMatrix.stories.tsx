@@ -4,7 +4,7 @@ import { Card, Layout } from '../../presentational'
 import { Meta, StoryObj } from '@storybook/react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import {
-    createAverageValueInsightMatrixValueCalculator,
+    createNonZeroAverageValueInsightMatrixValueCalculator,
     createIntegerInsightMatrixValueFormatter,
     createMinMaxInsightMatrixValueEvaluator,
     createMinutesToHoursInsightMatrixValueFormatter,
@@ -162,7 +162,7 @@ function createMoodRatingDataConfiguration(): InsightMatrixGroupByDataConfigurat
             { label: 'Low', minimumValue: 0 }
         ],
         units: 'avg rating',
-        valueCalculator: createAverageValueInsightMatrixValueCalculator(),
+        valueCalculator: createNonZeroAverageValueInsightMatrixValueCalculator(),
         valueFormatter: createIntegerInsightMatrixValueFormatter(),
         valueEvaluator: createMinMaxInsightMatrixValueEvaluator(8)
     };
@@ -178,7 +178,7 @@ function createSleepDataConfiguration(): InsightMatrixGroupByDataConfiguration |
             { label: 'Low', minimumValue: 0 }
         ],
         units: 'avg per night',
-        valueCalculator: createAverageValueInsightMatrixValueCalculator(),
+        valueCalculator: createNonZeroAverageValueInsightMatrixValueCalculator(),
         valueFormatter: createMinutesToHoursInsightMatrixValueFormatter(),
         valueEvaluator: createMinMaxInsightMatrixValueEvaluator(420, 600)
     };
@@ -194,7 +194,7 @@ function createStepsDataConfiguration(): InsightMatrixGroupByDataConfiguration |
             { label: 'Low', minimumValue: 0 }
         ],
         units: 'avg per day',
-        valueCalculator: createAverageValueInsightMatrixValueCalculator(),
+        valueCalculator: createNonZeroAverageValueInsightMatrixValueCalculator(),
         valueFormatter: createShrinkThousandsInsightMatrixValueFormatter(),
         valueEvaluator: createMinMaxInsightMatrixValueEvaluator(6000)
     };

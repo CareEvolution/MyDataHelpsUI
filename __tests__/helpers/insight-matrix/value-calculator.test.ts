@@ -1,4 +1,4 @@
-import { createAverageValueInsightMatrixValueCalculator, createPercentageOfDaysInsightMatrixValueCalculator } from '../../../src/helpers/insight-matrix/value-calculator';
+import { createNonZeroAverageValueInsightMatrixValueCalculator, createPercentageOfDaysInsightMatrixValueCalculator } from '../../../src/helpers/insight-matrix/value-calculator';
 import getDayKey from '../../../src/helpers/get-day-key';
 import { add, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
@@ -7,14 +7,14 @@ describe('Insight Matrix - Value Calculator Tests', () => {
 
     const thresholdDays = Array(10).fill(0).map((_, index) => getDayKey(add(startOfToday(), { days: -index })));
 
-    describe('Average Value Calculator', () => {
+    describe('Non-Zero Average Value Calculator', () => {
         it('Should return the average of the non-zero values.', () => {
-            const calculator = createAverageValueInsightMatrixValueCalculator();
+            const calculator = createNonZeroAverageValueInsightMatrixValueCalculator();
             const result = calculator.calculate(thresholdDays, [10, 0, 20, 0, 30, 0, 40]);
             expect(result).toBe(25);
         });
         it('Should return undefined if there are no non-zero values.', () => {
-            const calculator = createAverageValueInsightMatrixValueCalculator();
+            const calculator = createNonZeroAverageValueInsightMatrixValueCalculator();
             const result = calculator.calculate(thresholdDays, [0, 0, 0]);
             expect(result).toBe(undefined);
         });
