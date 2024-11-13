@@ -1,6 +1,6 @@
-﻿import { add } from "date-fns";
+﻿import { add, startOfToday } from "date-fns";
 import getDayKey from "./get-day-key";
-import { DailyDataType, DailyDataTypeDefinition } from "./daily-data-types";
+import { DailyDataTypeDefinition } from "./daily-data-types";
 import allTypeDefinitions from "./daily-data-types/all";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
@@ -57,21 +57,22 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date, pre
 	});
 }
 
-export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date) {
-	var result: DailyDataQueryResult = {};
-	let range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
+export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date, fillPercentage?: number) {
+	const result: DailyDataQueryResult = {};
 
-	//Modulo repeatable random numbers to get a value in range.
-	while (startDate < endDate && startDate < new Date()) {
-		const dayKey = getDayKey(startDate);
-		if (startDate >= new Date()) {
-			result[dayKey] = 0;
-		} else {
-			const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
-			result[dayKey] = value;
+	const today = startOfToday();
+	const range = getDailyDataTypeDefinition(type).previewDataRange;
+
+	// Modulo repeatable random numbers to get a value in range.
+	let currentDate = startDate;
+	while (currentDate <= endDate && currentDate < today) {
+		const currentDayKey = getDayKey(currentDate);
+		if (!fillPercentage || ((await predictableRandomNumber(currentDayKey + "_" + type + "_fill") % 100) / 100) <= fillPercentage) {
+			result[currentDayKey] = ((await predictableRandomNumber(currentDayKey + "_" + type)) % (range[1] - range[0])) + range[0];
 		}
-		startDate = add(startDate, { days: 1 });
+		currentDate = add(currentDate, { days: 1 });
 	}
+
 	return result;
 }
 

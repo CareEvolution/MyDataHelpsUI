@@ -497,7 +497,8 @@ let strings: { [key: string]: string } = {
     "ai-assistant-suggestion-show-files": "Montre-moi mes fichiers.",
     "ai-assistant-suggestion-save-graph-to-files": "Enregistre le graphique dans mes fichiers",
     "mindful-minutes": "Minutes de Pleine Conscience",
-    "therapy-minutes": "Minutes de Thérapie"
+    "therapy-minutes": "Minutes de Thérapie",
+    "insight-matrix-no-comparison-data": "Aucun type de données de comparaison configuré."
 };
 
 export default strings;
