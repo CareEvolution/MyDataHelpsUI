@@ -7,7 +7,7 @@ import { useInitializeView } from '../../../helpers/Initialization'
 import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js'
 import { ChartThreshold, IntradayHeartRateAggregationOption, IntradayHeartRateData, MultiSeriesLineChartOptions, combinedIntradayHeartRateDataProvider } from '../../..'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart'
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
 
@@ -71,7 +71,7 @@ export default function (props: IntradayHeartRateChartProps) {
             return (
                 <div className="mdhui-time-series-tooltip">
                     <div className="mdhui-single-value-tooltip-value">{`${Math.round(payload[0].value)} bpm`}</div>
-                    <div className="mdhui-time-series-tooltip-date">{formatDate(payload[0].payload.date, "h:mm aaa")}</div>
+                    <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(payload[0].payload.date, "h:mm aaa")}</div>
                 </div>
             );
         }

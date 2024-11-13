@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Layout, NavigationBar, Title } from '../../../presentational';
 import { AsthmaAirQualities, AsthmaBiometrics, AsthmaLogEntryDetails } from '../../components';
-import { formatDate } from '../../../../helpers/locale';
+import { formatDateForLocale } from '../../../../helpers/locale';
 
 export interface AsthmaDayViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -21,7 +21,7 @@ export default function (props: AsthmaDayViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true}>
             <Title order={2}>
-                {formatDate(props.date, 'PPP')}
+                {formatDateForLocale(props.date, 'PPP')}
             </Title>
         </NavigationBar>
         <Card>

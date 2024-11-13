@@ -5,7 +5,7 @@ import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../
 import { LayoutContext } from '../Layout';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface SingleMealProps {
     meal: Meal;
@@ -35,7 +35,7 @@ export default function (props: SingleMealProps) {
                     {getMealTypeDisplayText(props.meal.type)}&nbsp;
                     {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
                 </div>
-                <div className="mdhui-meal-time">{formatDate(props.meal.timestamp, 'h:mm aa')}</div>
+                <div className="mdhui-meal-time">{formatDateForLocale(props.meal.timestamp, 'h:mm aa')}</div>
             </div>
         </WrapIfNecessary>
         {props.onEdit &&

@@ -9,7 +9,7 @@ import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
 import language from "../../../helpers/language"
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -48,7 +48,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
-            let monthLabel = currentDate.getDate() === 1 ? formatDate(currentDate, "LLL") : "";
+            let monthLabel = currentDate.getDate() === 1 ? formatDateForLocale(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
@@ -58,7 +58,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = formatDate(currentDate, "EEEEEE");
+                    dayOfWeek = formatDateForLocale(currentDate, "EEEEEE");
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -72,7 +72,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{formatDate(currentDate, "h aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{formatDateForLocale(currentDate, "h aaa")}</text>
             </>;
         }
         return <>

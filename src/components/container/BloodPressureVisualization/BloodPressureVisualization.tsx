@@ -10,7 +10,7 @@ import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.prev
 import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { BloodPressureDataPoint, BloodPressureDeviceDataSource, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
 export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
@@ -250,7 +250,7 @@ export default function (props: BloodPressureVisualizationProps) {
         const diastolicInterval = buildInterval(diastolicEntriesForDate);
         const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
         const dataPoint: DataPoint = { dataSet1: diastolicInterval, dataSet2: systolicInterval };
-        var db: Dumbbell = { dataPoint: dataPoint, xValue: formatDate(date, "MM/dd"), class: assignClass(systolicAverage, diastolicAverage) };
+        var db: Dumbbell = { dataPoint: dataPoint, xValue: formatDateForLocale(date, "MM/dd"), class: assignClass(systolicAverage, diastolicAverage) };
         return db;
     }
 
@@ -265,7 +265,7 @@ export default function (props: BloodPressureVisualizationProps) {
                 bpDataForMetrics.push(...dataForDay);
                 weekData.push(createDumbbellsPerDay(currentDate, dataForDay));
             } else {
-                weekData.push({ xValue: formatDate(currentDate, "MM/dd") });
+                weekData.push({ xValue: formatDateForLocale(currentDate, "MM/dd") });
             }
         }
 

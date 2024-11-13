@@ -9,7 +9,7 @@ import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { MealContext } from '../../container';
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -111,7 +111,7 @@ export default function (props: GlucoseChartProps) {
         add(selectedDate, { hours: 18 }).valueOf(),
         add(selectedDate, { hours: 21 }).valueOf()
     ];
-    let chartTickFormatter = (value: number) => formatDate(new Date(value), 'h aaa');
+    let chartTickFormatter = (value: number) => formatDateForLocale(new Date(value), 'h aaa');
 
     if (selectedMeal) {
         chartDomain = [add(selectedMeal.timestamp, { minutes: -3 }).valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];
@@ -120,7 +120,7 @@ export default function (props: GlucoseChartProps) {
             add(selectedMeal.timestamp, { minutes: 60 }).valueOf(),
             add(selectedMeal.timestamp, { minutes: 90 }).valueOf()
         ];
-        chartTickFormatter = (value: number) => formatDate(new Date(value), 'h:mmaaa');
+        chartTickFormatter = (value: number) => formatDateForLocale(new Date(value), 'h:mmaaa');
     }
 
     const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, meal?: boolean } }) => {

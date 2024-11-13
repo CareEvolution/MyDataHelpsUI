@@ -7,7 +7,7 @@ import { getDatesForMonth } from '../../../../helpers/date-helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import LogEntryIcon from '../LogEntryIcon/LogEntryIcon';
-import { formatDate } from '../../../../helpers/locale';
+import { formatDateForLocale } from '../../../../helpers/locale';
 
 export interface SymptomSharkNotesTimelineProps {
     intervalStart?: Date;
@@ -40,7 +40,7 @@ export default function (props: SymptomSharkNotesTimelineProps) {
             {daysWithNotes.map(day =>
                 <div key={day.toISOString()} className="ss-notes-timeline-day">
                     {visualizationContext!.logEntries[getDayKey(day)].icon ? <LogEntryIcon className="ss-notes-timeline-day-icon" icon={visualizationContext!.logEntries[getDayKey(day)].icon!}/> : <FontAwesomeIcon className="ss-notes-timeline-day-icon ss-notes-timeline-day-circle" icon={faCircle}/>}
-                    <div className="ss-notes-timeline-day-title">{formatDate(day, 'MMMM d, yyyy')}</div>
+                    <div className="ss-notes-timeline-day-title">{formatDateForLocale(day, 'MMMM d, yyyy')}</div>
                     <div className="ss-notes-timeline-note">{visualizationContext!.logEntries[getDayKey(day)].notes}</div>
                 </div>
             )}

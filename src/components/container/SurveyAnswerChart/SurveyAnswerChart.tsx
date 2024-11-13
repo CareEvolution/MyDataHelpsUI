@@ -9,7 +9,7 @@ import format from 'date-fns/format'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 import { getDefaultPreviewData } from './SurveyAnswerData.previewdata'
-import { formatDate } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
@@ -152,7 +152,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                         <div className="mdhui-single-value-tooltip-value">
                             {parseFloat(payload[0].value).toFixed(2)}
                         </div>
-                        <div className="mdhui-time-series-tooltip-date">{formatDate(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                        <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                     </div>
                 );
             }
@@ -168,7 +168,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                             )}
                         </tbody>
                     </table>
-                    <div className="mdhui-time-series-tooltip-date">{formatDate(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                    <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                 </div>
             );
         }

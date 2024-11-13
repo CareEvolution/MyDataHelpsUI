@@ -7,7 +7,7 @@ import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import parse from 'date-fns/parse';
-import { formatDate, capitalize } from '../../../helpers/locale';
+import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
 
 type EditMode = 'add' | 'edit';
 
@@ -105,7 +105,7 @@ export default function (props: MealEditorProps) {
                     {mode === 'add' ? language('add') : language('edit')} {getMealTypeDisplayText(mealToEdit!.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {capitalize(formatDate(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy'))}
+                    {capitalizeForLocale(formatDateForLocale(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy'))}
                 </div>
                 {mode === 'edit' &&
                     <UnstyledButton onClick={() => onDelete()}>
@@ -120,7 +120,7 @@ export default function (props: MealEditorProps) {
                 <input
                     className="mdhui-meal-editor-input"
                     type="time"
-                    value={formatDate(mealToEdit!.timestamp, 'HH:mm')}
+                    value={formatDateForLocale(mealToEdit!.timestamp, 'HH:mm')}
                     onChange={event => onTimeChanged(event)}
                     style={{
                         colorScheme: layoutContext.colorScheme

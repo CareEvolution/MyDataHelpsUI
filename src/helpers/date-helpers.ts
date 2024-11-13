@@ -1,6 +1,6 @@
 import { add, isSameDay, sub } from "date-fns";
 import language from "./language";
-import { formatDate } from "./locale";
+import { formatDateForLocale } from "./locale";
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -16,7 +16,7 @@ export function getDatesForMonth(year: number, month: number) {
 }
 
 export function getDayOfWeek(date: Date) {
-	var result = formatDate(date, "EEEE");
+	var result = formatDateForLocale(date, "EEEE");
 	if (isSameDay(date, new Date())) {
 		result = language("today");
 	}
@@ -27,18 +27,18 @@ export function getDayOfWeek(date: Date) {
 }
 
 export function getFullDateString(date: Date) {
-	return formatDate(date, "MMMM do, yyyy");
+	return formatDateForLocale(date, "MMMM do, yyyy");
 }
 
 export function getShorterDateString(date: Date) {
-	return formatDate(date, "MMM d, yyyy");
+	return formatDateForLocale(date, "MMM d, yyyy");
 }
 
 export function getMonthName(month: number) {
-	function capitalizeFirstLetter(string: string) {
+	function capitalizeForLocaleFirstLetter(string: string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
-	return capitalizeFirstLetter(formatDate(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM"));
+	return capitalizeForLocaleFirstLetter(formatDateForLocale(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM"));
 }
 
 export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Month", intervalStart: Date, variant?: "short" | "long") {
@@ -52,12 +52,12 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Mon
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
 	else if (intervalType === "Week" || intervalType === "Month" || intervalType === "6Month") {
-		return `${formatDate(intervalStart, "MM/dd/yyyy")} - ${formatDate(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
+		return `${formatDateForLocale(intervalStart, "MM/dd/yyyy")} - ${formatDateForLocale(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
 	}
 	else if (intervalType === "Day") {
 		if (variant === "long") {
 			return `${getDayOfWeek(intervalStart)}, ${getFullDateString(intervalStart)}`;
 		}
-		return `${getDayOfWeek(intervalStart)}, ${formatDate(intervalStart, "MM/dd/yyyy")}`;
+		return `${getDayOfWeek(intervalStart)}, ${formatDateForLocale(intervalStart, "MM/dd/yyyy")}`;
 	}
 }

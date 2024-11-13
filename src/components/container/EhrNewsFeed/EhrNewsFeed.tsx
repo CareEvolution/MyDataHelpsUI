@@ -9,7 +9,7 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { formatDate, capitalize } from '../../../helpers';
+import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -38,7 +38,7 @@ export default function (props: EhrNewsFeedProps) {
     let [finished, setFinished] = useState<boolean>(false);
 
     function dayLabel(date: string) {
-        return capitalize(formatDate(date, 'MMMM do, yyyy'));
+        return capitalizeForLocale(formatDateForLocale(date, 'MMMM do, yyyy'));
     }
 
     function loadMore() {
@@ -164,7 +164,7 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = formatDate(props.event.Date, "h:mm a");
+    let date = formatDateForLocale(props.event.Date, "h:mm a");
     if (date === "12:00 AM") {
         date = "";
     }
