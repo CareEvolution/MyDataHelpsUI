@@ -4,13 +4,11 @@ import { Action, Card, LoadingIndicator, TextBlock, Title, UnstyledButton } from
 import StatBlock from '../../presentational/StatBlock';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { format, parseISO } from 'date-fns';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
 import "./EhrNewsFeedEventDetail.css"
 import language from '../../../helpers/language';
-import { getLocaleFromIso } from '../../../helpers';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { formatDate, capitalize } from '../../../helpers';
 
 export interface EhrNewsFeedEventDetailProps {
     feed: EhrNewsFeedType
@@ -64,9 +62,8 @@ function NewsFeedDetailTitle(props: { event: EhrNewsFeedEventModel }) {
     let title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
     if (!title) { return null; }
 
-    let date = parseISO(props.event.Date);
-    let subtitle = `${format(parseISO(props.event.Date), "EEEE, MMMM do, y h:mm a", { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) })} • ${props.event.Patient.RecordAuthority}`
-    if (format(date, "h:mm a") == "12:00 AM") {
+    let subtitle = `${capitalize(formatDate(props.event.Date, "EEEE, MMMM do, y h:mm a"))} • ${props.event.Patient.RecordAuthority}`
+    if (formatDate(props.event.Date, "h:mm a") == "12:00 AM") {
         subtitle = props.event.Patient.RecordAuthority;
     }
 

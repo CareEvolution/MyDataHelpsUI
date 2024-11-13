@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { add, addDays, addMonths, format, isToday } from 'date-fns'
+import { add, addDays, addMonths, isToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
@@ -8,6 +8,8 @@ import getDaysInMonth from 'date-fns/getDaysInMonth'
 import { ceil } from 'lodash'
 import addHours from 'date-fns/addHours'
 import startOfMonth from 'date-fns/startOfMonth'
+import language from "../../../helpers/language"
+import { formatDate } from '../../../helpers/locale';
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -46,7 +48,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
-            let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
+            let monthLabel = currentDate.getDate() === 1 ? formatDate(currentDate, "LLL") : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
@@ -56,7 +58,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = format(currentDate, "EEEEEE");
+                    dayOfWeek = formatDate(currentDate, "EEEEEE");
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -70,7 +72,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{format(currentDate, "h aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{formatDate(currentDate, "h aaa")}</text>
             </>;
         }
         return <>
@@ -167,7 +169,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             <CardTitle title={props.title}></CardTitle>
         }
         <div className="chart-container">
-            {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">No Data</div>}
+            {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">{language('no-data')}</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
             <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>

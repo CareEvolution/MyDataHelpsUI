@@ -466,14 +466,16 @@ let strings: { [key: string]: string } = {
     "ai-assistant-loading": "Interaktion mit Ihren Daten...",
     "allergylist-reactions": "TODO-DE-Reactions",
     "points-abbreviation": "TODO-DE-pts",
+    "no-data-yet": "TODO-DE-NoDataYet",
+    "no-data": "TODO-DE-NoData",
     "bp-low": "TODO-DE-Low",
     "bp-normal": "TODO-DE-Normal",
     "bp-elevated": "TODO-DE-Elevated",
     "bp-stage1": "TODO-DE-Stage 1",
     "bp-stage2": "TODO-DE-Stage 2",
     "bp-crisis": "TODO-DE-Crisis",
-    "bp-unknown": "TODO-DE-Unknown"
-
+    "bp-unknown": "TODO-DE-Unknown",
+    "device-not-enabled": "TODO-DE @@DEVICE@@ is not enabled for this project."
 
 };
 

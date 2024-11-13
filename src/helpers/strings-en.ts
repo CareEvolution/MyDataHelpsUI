@@ -466,6 +466,7 @@
     "ai-assistant-loading": "Interacting with your data...",
     "allergylist-reactions": "Reactions",
     "points-abbreviation": "pts",
+    "no-data": "No Data",
     "no-data-yet": "No data yet",
     "bp-low": "Low",
     "bp-normal": "Normal",
@@ -473,7 +474,8 @@
     "bp-stage1": "Stage 1",
     "bp-stage2": "Stage 2",
     "bp-crisis": "Crisis",
-    "bp-unknown": "Unknown"
+    "bp-unknown": "Unknown",
+    "device-not-enabled": "@@DEVICE@@ is not enabled for this project.",
     // TODO: should mm Hg be localized?
 };
 

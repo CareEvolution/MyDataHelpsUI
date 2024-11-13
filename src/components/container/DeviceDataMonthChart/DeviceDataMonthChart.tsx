@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import add from 'date-fns/add'
-import { format } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { LoadingIndicator } from '../../presentational'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
 import language from "../../../helpers/language"
+import { formatDate } from '../../../helpers/locale';
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
@@ -158,7 +158,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 			return (
 				<div className="graph-tooltip">
-					<div className="graph-date">{format(date, 'MM/dd/yyyy')}</div>
+					<div className="graph-date">{formatDate(date, 'MM/dd/yyyy')}</div>
 					<table className="payload-values">
 						<tbody>
 							{payload.map((p: any) =>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { checkDailyDataAvailability, DailyDataQueryResult, queryDailyData } from '../../../helpers/query-daily-data';
 import { LoadingIndicator, Title } from '../../presentational';
-import { add, differenceInDays, format, startOfToday } from 'date-fns';
+import { add, differenceInDays, startOfToday } from 'date-fns';
 import getDayKey from '../../../helpers/get-day-key';
 import { AxisDomain } from 'recharts/types/util/types';
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -9,6 +9,7 @@ import { useInitializeView } from '../../../helpers/Initialization';
 import './RecentDailyDataBarChart.css';
 import { randomDataProvider } from '../../../helpers/daily-data-providers';
 import language from '../../../helpers/language';
+import { formatDate } from '../../../helpers/locale';
 
 export interface RecentDailyDataBarChartProps {
     previewState?: 'loading' | 'loaded without data' | 'loaded with data';
@@ -109,7 +110,7 @@ export default function (props: RecentDailyDataBarChartProps) {
     const dayTick = ({x, y, payload}: any) => {
         let daysAfterStart = payload.value;
         let currentDate = add(startDate, {days: daysAfterStart});
-        return <text x={x} y={y + 8} fontSize="11" fontWeight="bold" textAnchor="middle" fill="var(--mdhui-text-color-2)">{format(currentDate, 'M/d')}</text>;
+        return <text x={x} y={y + 8} fontSize="11" fontWeight="bold" textAnchor="middle" fill="var(--mdhui-text-color-2)">{formatDate(currentDate, 'M/d')}</text>;
     }
 
     const createLine = ({y1, y2, key}: any) => {

@@ -1,7 +1,7 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { format, isToday, sub } from 'date-fns';
+import { sub } from 'date-fns';
 import React from 'react';
 import UnstyledButton from '../UnstyledButton';
 import "./DateRangeNavigator.css"

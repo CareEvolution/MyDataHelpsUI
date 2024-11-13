@@ -1,9 +1,10 @@
 ﻿import React, { useRef } from "react";
 import { useEffect } from "react";
 import "./WeekCalendar.css"
-import { add, format, formatISO } from 'date-fns';
+import { add, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
 import { debounce } from 'lodash';
+import { formatDate } from '../../../helpers/locale';
 
 export interface WeekCalendarProps {
 	selectedDate?: Date;
@@ -64,8 +65,8 @@ export default function (props: WeekCalendarProps) {
 
 	function getLabel(date: Date) {
 		return <div className="mdhui-week-calendar-date-label">
-			<div className="mdhui-week-calendar-day-of-week"> {format(date, "E").substr(0, 1)}</div>
-			<div className="mdhui-week-calendar-day-of-month">{format(date, "d")}</div>
+			<div className="mdhui-week-calendar-day-of-week"> {formatDate(date, "E").substr(0, 1)}</div>
+			<div className="mdhui-week-calendar-day-of-month">{formatDate(date, "d")}</div>
 		</div>
 	}
 

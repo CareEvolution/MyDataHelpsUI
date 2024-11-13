@@ -4,12 +4,13 @@ import React from "react";
 import { DateRangeContext, LoadingIndicator } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
-import { addDays, format, startOfDay } from "date-fns";
+import { addDays, startOfDay } from "date-fns";
 import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
 import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start";
 import { useInitializeView } from "../../../helpers/Initialization";
 import { BloodPressureDataPoint, BloodPressureDeviceDataSource, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
+import { formatDate } from '../../../helpers/locale';
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
 export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
@@ -142,6 +143,8 @@ export default function (props: BloodPressureVisualizationProps) {
     
     function getAlertPrompt(alert: Category | undefined): string {
        switch (alert) {
+        case undefined:
+            return language('no-data-yet');
         case Category.Crisis:
           return language('bp-crisis');
         case Category.Elevated:
@@ -206,20 +209,20 @@ export default function (props: BloodPressureVisualizationProps) {
 
         let systolicHigh = Math.max(...systolicReadings);
         bpMetrics.maxSystolic = Math.round(systolicHigh);
-        let cat = getSystolicCategory(systolicHigh);
-        bpMetrics.maxSystolicAlert = Category[cat];
-        bpMetrics.maxSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+        let systolicHighAlert = getSystolicCategory(systolicHigh);
+        bpMetrics.maxSystolicAlert = systolicHighAlert;
+        bpMetrics.maxSystolicAlertClass = systolicHighAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
         let systolicLow = Math.min(...systolicReadings);
         bpMetrics.minSystolic = Math.round(systolicLow);
-        cat = getSystolicCategory(systolicLow);
-        bpMetrics.minSystolicAlert = Category[cat];
-        bpMetrics.minSystolicAlertClass = cat === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+        let systolicLowAlert = getSystolicCategory(systolicLow);
+        bpMetrics.minSystolicAlert = systolicLowAlert;
+        bpMetrics.minSystolicAlertClass = systolicLowAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
         return bpMetrics;
     }
 
-    function buildDetailBlock(description: string, alert?: Category, alertClass?: string, value?: number) {
+    function buildDetailBlock(description: string, alert: Category | undefined, alertClass?: string, value?: number) {
         return <div className="mdhui-blood-pressure-metrics-block">
             <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
             <div className="mdhui-blood-pressure-metric-description">{description}</div>
@@ -247,7 +250,7 @@ export default function (props: BloodPressureVisualizationProps) {
         const diastolicInterval = buildInterval(diastolicEntriesForDate);
         const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
         const dataPoint: DataPoint = { dataSet1: diastolicInterval, dataSet2: systolicInterval };
-        var db: Dumbbell = { dataPoint: dataPoint, xValue: format(date, "MM/dd"), class: assignClass(systolicAverage, diastolicAverage) };
+        var db: Dumbbell = { dataPoint: dataPoint, xValue: formatDate(date, "MM/dd"), class: assignClass(systolicAverage, diastolicAverage) };
         return db;
     }
 
@@ -262,8 +265,7 @@ export default function (props: BloodPressureVisualizationProps) {
                 bpDataForMetrics.push(...dataForDay);
                 weekData.push(createDumbbellsPerDay(currentDate, dataForDay));
             } else {
-                // TODO - localized date format (throughout)
-                weekData.push({ xValue: format(currentDate, "MM/dd") });
+                weekData.push({ xValue: formatDate(currentDate, "MM/dd") });
             }
         }
 

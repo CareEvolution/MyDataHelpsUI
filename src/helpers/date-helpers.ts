@@ -1,7 +1,6 @@
-import MyDataHelps from "@careevolution/mydatahelps-js";
-import { add, format, isSameDay, sub } from "date-fns";
+import { add, isSameDay, sub } from "date-fns";
 import language from "./language";
-import { getLocaleFromIso } from "./locale";
+import { formatDate } from "./locale";
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -17,8 +16,7 @@ export function getDatesForMonth(year: number, month: number) {
 }
 
 export function getDayOfWeek(date: Date) {
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-	var result = format(date, "EEEE", { locale: locale });
+	var result = formatDate(date, "EEEE");
 	if (isSameDay(date, new Date())) {
 		result = language("today");
 	}
@@ -29,21 +27,18 @@ export function getDayOfWeek(date: Date) {
 }
 
 export function getFullDateString(date: Date) {
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-	return format(date, "MMMM do, yyyy", { locale: locale });
+	return formatDate(date, "MMMM do, yyyy");
 }
 
 export function getShorterDateString(date: Date) {
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
-	return format(date, "MMM d, yyyy", { locale: locale });
+	return formatDate(date, "MMM d, yyyy");
 }
 
 export function getMonthName(month: number) {
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	function capitalizeFirstLetter(string: string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
-	return capitalizeFirstLetter(format(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", { locale: locale }));
+	return capitalizeFirstLetter(formatDate(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM"));
 }
 
 export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Month", intervalStart: Date, variant?: "short" | "long") {
@@ -57,12 +52,12 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Mon
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
 	else if (intervalType === "Week" || intervalType === "Month" || intervalType === "6Month") {
-		return `${format(intervalStart, "MM/dd/yyyy")} - ${format(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
+		return `${formatDate(intervalStart, "MM/dd/yyyy")} - ${formatDate(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
 	}
 	else if (intervalType === "Day") {
 		if (variant === "long") {
 			return `${getDayOfWeek(intervalStart)}, ${getFullDateString(intervalStart)}`;
 		}
-		return `${getDayOfWeek(intervalStart)}, ${format(intervalStart, "MM/dd/yyyy")}`;
+		return `${getDayOfWeek(intervalStart)}, ${formatDate(intervalStart, "MM/dd/yyyy")}`;
 	}
 }

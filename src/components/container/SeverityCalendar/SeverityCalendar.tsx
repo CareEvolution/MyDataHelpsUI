@@ -3,10 +3,11 @@ import { Guid, SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahel
 import React from "react";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import Calendar from "../../presentational/Calendar/Calendar";
-import { format, parseISO, startOfDay, startOfMonth } from "date-fns";
+import { parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
+import { formatDate } from '../../../helpers/locale';
 
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
@@ -64,7 +65,7 @@ export default function (props: SeverityCalendarProps) {
                 var severity = severityValueMapper(grouping.severityAnswer.answers[0]);
                 if (severity) {
                     let dateOfSeverity = parseISO(grouping.dateObservedAnswer ? grouping.dateObservedAnswer.answers[0] : grouping.severityAnswer.date);
-                    let key = format(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
+                    let key = formatDate(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
                     let exists = resultByDateMap.get(key);
                     if (exists) {
                         if (grouping.severityAnswer.date > exists.dateEntered) {
@@ -127,7 +128,7 @@ export default function (props: SeverityCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string => {
-        let key: string = format(startOfDay(date), 'MM/dd/yyyy');
+        let key: string = formatDate(startOfDay(date), 'MM/dd/yyyy');
         return data?.get(key)?.severity ?? "";
     };
 

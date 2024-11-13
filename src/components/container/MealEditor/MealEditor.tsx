@@ -2,11 +2,12 @@ import React, { ChangeEvent, useContext, useState } from 'react';
 import './MealEditor.css';
 import { getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
-import { format, startOfDay } from 'date-fns';
+import { startOfDay } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import parse from 'date-fns/parse';
+import { formatDate, capitalize } from '../../../helpers/locale';
 
 type EditMode = 'add' | 'edit';
 
@@ -104,7 +105,7 @@ export default function (props: MealEditorProps) {
                     {mode === 'add' ? language('add') : language('edit')} {getMealTypeDisplayText(mealToEdit!.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {format(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy')}
+                    {capitalize(formatDate(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy'))}
                 </div>
                 {mode === 'edit' &&
                     <UnstyledButton onClick={() => onDelete()}>
@@ -119,7 +120,7 @@ export default function (props: MealEditorProps) {
                 <input
                     className="mdhui-meal-editor-input"
                     type="time"
-                    value={format(mealToEdit!.timestamp, 'HH:mm')}
+                    value={formatDate(mealToEdit!.timestamp, 'HH:mm')}
                     onChange={event => onTimeChanged(event)}
                     style={{
                         colorScheme: layoutContext.colorScheme
