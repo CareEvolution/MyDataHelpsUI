@@ -476,7 +476,8 @@
     "bp-crisis": "Crisis",
     "bp-unknown": "Unknown",
     "device-not-enabled": "@@DEVICE@@ is not enabled for this project.",
-    // TODO: should mm Hg be localized?
+    "download-pdf-report": "Download PDF Report",
+    "connect-to-device": "Connect to @@DEVICE@@"
 };
 
 export default strings;

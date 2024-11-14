@@ -475,7 +475,9 @@ let strings: { [key: string]: string } = {
     "bp-stage2": "TODO-DE-Stage 2",
     "bp-crisis": "TODO-DE-Crisis",
     "bp-unknown": "TODO-DE-Unknown",
-    "device-not-enabled": "TODO-DE @@DEVICE@@ is not enabled for this project."
+    "device-not-enabled": "TODO-DE @@DEVICE@@ is not enabled for this project.",
+    "download-pdf-report": "TODO-DE Download PDF Report",
+    "connect-to-device": "TODO-DE Connect to @@DEVICE@@"
 
 };
 
