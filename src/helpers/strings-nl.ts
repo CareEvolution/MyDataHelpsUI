@@ -463,7 +463,24 @@ let strings: { [key: string]: string } = {
     "meal-editor-time-input-label": "Tijd",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
     "glucose-view-title": "Glucosemonitoring",
-    "ai-assistant-loading": "Interageren met uw gegevens..."
+    "ai-assistant-loading": "Interageren met uw gegevens...",
+    "allergylist-reactions": "Reacties",
+    "points-abbreviation": "ptn",
+    "no-data": "Geen Gegevens",
+    "no-data-yet": "Nog geen gegevens",
+    "bp-low": "Laag",
+    "bp-normal": "Normaal",
+    "bp-elevated": "Verhoogd",
+    "bp-stage1": "Stadium 1",
+    "bp-stage2": "Stadium 2",
+    "bp-crisis": "Crisis",
+    "bp-unknown": "Onbekend",
+    "device-not-enabled": "@@DEVICE@@ is niet ingeschakeld voor dit project.",
+    "download-pdf-report": "PDF-rapport downloaden",
+    "connect-to-device": "Verbinden met @@DEVICE@@",
+    "symptoms-and-treatments": "Symptomen en Behandelingen",
+    "subsequent-evaluation-note": "Opmerking bij volgende evaluatie",
+    "summary": "Samenvatting"
 };
 
 export default strings;

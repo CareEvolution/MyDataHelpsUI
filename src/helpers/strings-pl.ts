@@ -463,7 +463,24 @@ let strings: { [key: string]: string } = {
     "meal-editor-time-input-label": "Czas",
     "meal-editor-duplicate-timestamp-error": "Dwa posiłki nie mogą mieć tej samej godziny.",
     "glucose-view-title": "Monitorowanie glukozy",
-    "ai-assistant-loading": "Interakcja z Twoimi danymi..."
+    "ai-assistant-loading": "Interakcja z Twoimi danymi...",
+    "allergylist-reactions": "Reakcje",
+    "points-abbreviation": "pkt",
+    "no-data": "Brak danych",
+    "no-data-yet": "Brak danych",
+    "bp-low": "Niskie",
+    "bp-normal": "Normalne",
+    "bp-elevated": "Podwyższone",
+    "bp-stage1": "Etap 1",
+    "bp-stage2": "Etap 2",
+    "bp-crisis": "Kryzys",
+    "bp-unknown": "Nieznane",
+    "device-not-enabled": "@@DEVICE@@ nie jest włączone dla tego projektu.",
+    "download-pdf-report": "Pobierz raport PDF",
+    "connect-to-device": "Połącz z @@DEVICE@@",
+    "symptoms-and-treatments": "Objawy i Leczenie",
+    "subsequent-evaluation-note": "Uwaga do kolejnej oceny",
+    "summary": "Podsumowanie"
 };
 
 export default strings;
