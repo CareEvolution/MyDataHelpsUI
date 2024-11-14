@@ -477,8 +477,8 @@ let strings: { [key: string]: string } = {
     "bp-unknown": "TODO-DE-Unknown",
     "device-not-enabled": "TODO-DE @@DEVICE@@ is not enabled for this project.",
     "download-pdf-report": "TODO-DE Download PDF Report",
-    "connect-to-device": "TODO-DE Connect to @@DEVICE@@"
-
+    "connect-to-device": "TODO-DE Connect to @@DEVICE@@",
+    "symptoms-and-treatments": "TODO-DE Symptoms & Treatments",
 };
 
 export default strings;

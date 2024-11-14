@@ -40,8 +40,8 @@ export function formatRelativeDateForLocale(dateOrDateString: string | Date, bas
     return formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
 }
 
-export function formatNumberForLocale(value: number) {
-    return Number(value.toFixed(0)).toLocaleString(MyDataHelps.getCurrentLanguage())
+export function formatNumberForLocale(value: number, fractionDigits?: number) {
+    return Number(value.toFixed(fractionDigits || 0)).toLocaleString(MyDataHelps.getCurrentLanguage())
 }
 
 export function formatMinutesForLocale(value: number) {
