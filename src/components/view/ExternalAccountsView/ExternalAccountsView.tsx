@@ -16,9 +16,10 @@ export interface ExternalAccountsViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-/*
-** TODO
-*/
+/**
+ * This ready-to-use view provides an overview of the participant's connected Providers, Health Plans, and Devices within MDH.
+ * It displays the status of each connection and offers the option to reconnect as needed.
+ */
 export default function ExternalAccountsView(props: ExternalAccountsViewProps) {
     let title = '';
     let externalAccountProviderCategories: string[] = [];

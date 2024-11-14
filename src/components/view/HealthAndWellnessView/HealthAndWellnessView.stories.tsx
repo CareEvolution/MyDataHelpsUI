@@ -16,7 +16,7 @@ const meta: Meta<typeof HealthAndWellnessView> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof HealthAndWellnessView;
+type Story = StoryObj<typeof HealthAndWellnessView>;
 
 const render = (args: HealthAndWellnessViewProps) => <Layout colorScheme='auto'>
     <Card>

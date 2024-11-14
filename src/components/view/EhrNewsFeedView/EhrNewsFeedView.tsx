@@ -16,9 +16,10 @@ export interface EhrNewsFeedViewProps {
     onReportSelected(reportID: string): void
 }
 
-/*
-** TODO
-*/
+/**
+ * This ready-to-use view can be configured to display the following news feeds:
+ * Procedures, Reports, Lab Results, and Immunizations
+ */
 export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
     let title = "";
     let icon = <></>;

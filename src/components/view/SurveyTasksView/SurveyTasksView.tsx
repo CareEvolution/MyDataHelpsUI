@@ -13,9 +13,10 @@ export interface SurveyTasksViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-/*
-** TODO: When I have internet
-*/
+/**
+ * This ready-to-use view displays all tasks.
+ * It can be configured to show or hide completed and incomplete tasks as needed.
+ */
 export default function SurveyTasksView (props: SurveyTasksViewProps) {
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
