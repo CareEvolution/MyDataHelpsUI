@@ -1,70 +1,98 @@
 ﻿import React from "react"
-import {ComponentMeta, ComponentStory} from "@storybook/react"
 import ExternalAccountsView, {ExternalAccountsViewProps} from "./ExternalAccountsView";
+import { Card, Layout } from "../../presentational"
+import { Meta, StoryObj } from "@storybook/react/*"
+import { Description } from "@storybook/blocks"
 
-export default {
+const meta: Meta<typeof ExternalAccountsView> = {
     title: "View/ExternalAccountsView",
     component: ExternalAccountsView,
     parameters: {
         layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
     }
-} as ComponentMeta<typeof ExternalAccountsView>;
-
-const Template: ComponentStory<typeof ExternalAccountsView> = (args: ExternalAccountsViewProps) => <ExternalAccountsView {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    previewState: "default",
-    presentation: "Push"
 };
 
-export const ProvidersOnly = Template.bind({});
-ProvidersOnly.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeHealthPlans: true,
-    excludeDeviceManufacturers: true
+export default meta;
+type Story = StoryObj<typeof ExternalAccountsView>;
+
+const render = (args: ExternalAccountsViewProps) => <Layout colorScheme='auto'>
+    <Card>
+        <ExternalAccountsView {...args} />
+    </Card>
+</Layout>;
+
+export const Default : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push"
+    },
+    render: render
 };
 
-export const HealthPlansOnly = Template.bind({});
-HealthPlansOnly.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeProviders: true,
-    excludeDeviceManufacturers: true
+export const ProvidersOnly : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeHealthPlans: true,
+        excludeDeviceManufacturers: true
+    },
+    render: render
 };
 
-export const DeviceManufacturersOnly = Template.bind({});
-DeviceManufacturersOnly.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeProviders: true,
-    excludeHealthPlans: true
+export const HealthPlansOnly : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeProviders: true,
+        excludeDeviceManufacturers: true
+    },
+    render: render
 };
 
-export const ProvidersAndHealthPlans = Template.bind({});
-ProvidersAndHealthPlans.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeDeviceManufacturers: true
+export const DeviceManufacturersOnly : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeProviders: true,
+        excludeHealthPlans: true
+    },
+    render: render
 };
 
-export const ProvidersAndDeviceManufacturers = Template.bind({});
-ProvidersAndDeviceManufacturers.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeHealthPlans: true
+export const ProvidersAndHealthPlans : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeDeviceManufacturers: true
+    },
+    render: render
 };
 
-export const HealthPlansAndDeviceManufacturers = Template.bind({});
-HealthPlansAndDeviceManufacturers.args = {
-    previewState: "default",
-    presentation: "Push",
-    excludeProviders: true
+export const ProvidersAndDeviceManufacturers : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeHealthPlans: true
+    },
+    render: render
 };
 
-export const Live = Template.bind({});
-Live.args = {
-    previewState: "default",
-    presentation: "Push"
+export const HealthPlansAndDeviceManufacturers : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push",
+        excludeProviders: true
+    },
+    render: render
+};
+
+export const Live : Story = {
+    args: {
+        previewState: "default",
+        presentation: "Push"
+    },
+    render: render
 };

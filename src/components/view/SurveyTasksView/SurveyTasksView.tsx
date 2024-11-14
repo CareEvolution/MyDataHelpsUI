@@ -13,7 +13,10 @@ export interface SurveyTasksViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: SurveyTasksViewProps) {
+/*
+** TODO: When I have internet
+*/
+export default function SurveyTasksView (props: SurveyTasksViewProps) {
 	return (
 		<Layout colorScheme={props.colorScheme ?? "auto"}>
 			{props.presentation &&

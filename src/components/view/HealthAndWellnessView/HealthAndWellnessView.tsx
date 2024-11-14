@@ -13,7 +13,10 @@ export interface HealthAndWellnessViewProps {
     variant?: "default" | "cardBased"
 }
 
-export default function (props: HealthAndWellnessViewProps) {
+/*
+** TODO:
+*/
+export default function HealthAndWellnessView(props: HealthAndWellnessViewProps) {
     function viewLabs() {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }

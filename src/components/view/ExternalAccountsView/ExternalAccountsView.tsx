@@ -16,7 +16,10 @@ export interface ExternalAccountsViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: ExternalAccountsViewProps) {
+/*
+** TODO
+*/
+export default function ExternalAccountsView(props: ExternalAccountsViewProps) {
     let title = '';
     let externalAccountProviderCategories: string[] = [];
 

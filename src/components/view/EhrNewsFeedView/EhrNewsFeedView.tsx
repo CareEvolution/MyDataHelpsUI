@@ -16,7 +16,10 @@ export interface EhrNewsFeedViewProps {
     onReportSelected(reportID: string): void
 }
 
-export default function (props: EhrNewsFeedViewProps) {
+/*
+** TODO
+*/
+export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
     let title = "";
     let icon = <></>;
     switch (props.feed) {

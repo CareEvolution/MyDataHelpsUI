@@ -13,7 +13,10 @@ export interface NotificationsViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: NotificationsViewProps) {
+/*
+** TODO: When I have internet
+*/
+export default function NotificationsView(props: NotificationsViewProps) {
 	var notificationType: NotificationType = "Push";
 	if (props.notificationType) {
 		notificationType = props.notificationType;

@@ -6,7 +6,7 @@ export interface DeviceDataViewProps {
 	colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: DeviceDataViewProps) {
+export default function DeviceDataView(props: DeviceDataViewProps) {
 	return (
 		<Layout  colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground />

@@ -16,7 +16,7 @@ export interface ConnectEhrViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: ConnectEhrViewProps) {
+export default function ConnectEhrView(props: ConnectEhrViewProps) {
 
     let title = '';
     let providerCategories: string[] = [];

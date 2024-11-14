@@ -1,19 +1,39 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataView, { DeviceDataViewProps } from "./DeviceDataView"
+import { Card, Layout } from "../../presentational"
+import { Meta, StoryObj } from "@storybook/react/*"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/DeviceDataView",
-	component: DeviceDataView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof DeviceDataView>;
+const meta: Meta<typeof DeviceDataView> = {
+    title: "View/DeviceDataView",
+    component: DeviceDataView,
+    parameters: {
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
+    }
+};
 
-const Template: ComponentStory<typeof DeviceDataView> = (args: DeviceDataViewProps) => <DeviceDataView {...args} />;
+export default meta;
+type Story = StoryObj<typeof DeviceDataView>;
 
-export const Preview = Template.bind({});
-Preview.args = { preview: true };
+const render = (args: DeviceDataViewProps) => <Layout colorScheme='auto'>
+    <Card>
+        <DeviceDataView {...args} />
+    </Card>
+</Layout>;
 
-export const Live = Template.bind({});
-Live.args = { preview: false };
+export const Preview : Story = {
+    args: {
+        preview: true, 
+    },
+    render: render
+};
+
+export const Live : Story = {
+    args: {
+        preview: false, 
+    },
+    render: render
+};

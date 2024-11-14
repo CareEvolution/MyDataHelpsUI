@@ -12,7 +12,10 @@ export interface GarminViewProps {
 	garminProviderID?: number
 }
 
-export default function (props: GarminViewProps) {
+/*
+** TODO:
+*/
+export default function GarminView(props: GarminViewProps) {
 	var [viewIsReady, setViewIsReady] = useState(false);
 	useEffect(() => {
 		MyDataHelps.connect().then(() => {

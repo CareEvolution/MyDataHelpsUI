@@ -1,22 +1,45 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import HealthAndWellnessView, { HealthAndWellnessViewProps } from "./HealthAndWellnessView"
+import { Card, Layout } from "../../presentational"
+import { Meta, StoryObj } from "@storybook/react/*"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/HealthAndWellnessView",
-	component: HealthAndWellnessView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof HealthAndWellnessView>;
+const meta: Meta<typeof HealthAndWellnessView> = {
+    title: "View/HealthAndWellnessView",
+    component: HealthAndWellnessView,
+    parameters: {
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
+    }
+};
 
-const Template: ComponentStory<typeof HealthAndWellnessView> = (args: HealthAndWellnessViewProps) => <HealthAndWellnessView {...args} />;
+export default meta;
+type Story = StoryObj<typeof HealthAndWellnessView;
 
-export const Default = Template.bind({});
-Default.args = { previewState: "default" };
+const render = (args: HealthAndWellnessViewProps) => <Layout colorScheme='auto'>
+    <Card>
+        <HealthAndWellnessView {...args} />
+    </Card>
+</Layout>;
 
-export const CardBased = Template.bind({});
-CardBased.args = { previewState: "default", variant: "cardBased" };
+export const Default : Story = {
+    args: {
+        previewState: "default"
+    },
+    render: render
+};
 
-export const Live = Template.bind({});
-Live.args = {};
+export const CardBased : Story = {
+    args: {
+        previewState: "default",
+		variant: "cardBased"
+    },
+    render: render
+};
+
+export const Live : Story = {
+    args: {},
+    render: render
+};
