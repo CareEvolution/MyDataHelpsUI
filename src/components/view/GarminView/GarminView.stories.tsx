@@ -1,7 +1,6 @@
 ﻿import React from "react"
 import GarminView, { GarminViewProps } from "./GarminView"
-import { Card, Layout } from "../../presentational"
-import { Meta, StoryObj } from "@storybook/react/*"
+import { Meta, StoryObj } from "@storybook/react"
 import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof GarminView> = {

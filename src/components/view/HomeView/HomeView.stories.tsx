@@ -1,7 +1,6 @@
 ﻿import React from "react"
 import HomeView, { HomeViewProps } from "./HomeView"
-import { Card, Layout } from "../../presentational"
-import { Meta, StoryObj } from "@storybook/react/*"
+import { Meta, StoryObj } from "@storybook/react"
 import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof HomeView> = {

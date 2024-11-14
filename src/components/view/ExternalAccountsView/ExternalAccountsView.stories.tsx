@@ -1,7 +1,6 @@
 ﻿import React from "react"
 import ExternalAccountsView, { ExternalAccountsViewProps } from "./ExternalAccountsView";
-import { Card, Layout } from "../../presentational"
-import { Meta, StoryObj } from "@storybook/react/*"
+import { Meta, StoryObj } from "@storybook/react"
 import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof ExternalAccountsView> = {

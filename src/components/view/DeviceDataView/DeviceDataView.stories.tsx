@@ -1,7 +1,6 @@
 ﻿import React from "react"
 import DeviceDataView, { DeviceDataViewProps } from "./DeviceDataView"
-import { Card, Layout } from "../../presentational"
-import { Meta, StoryObj } from "@storybook/react/*"
+import { Meta, StoryObj } from "@storybook/react"
 import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof DeviceDataView> = {
