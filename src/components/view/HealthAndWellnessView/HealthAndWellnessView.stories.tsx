@@ -18,28 +18,24 @@ const meta: Meta<typeof HealthAndWellnessView> = {
 export default meta;
 type Story = StoryObj<typeof HealthAndWellnessView>;
 
-const render = (args: HealthAndWellnessViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <HealthAndWellnessView {...args} />
-    </Card>
-</Layout>;
+const render = (args: HealthAndWellnessViewProps) => <HealthAndWellnessView {...args} />;
 
-export const Default : Story = {
+export const Default: Story = {
     args: {
         previewState: "default"
     },
     render: render
 };
 
-export const CardBased : Story = {
+export const CardBased: Story = {
     args: {
         previewState: "default",
-		variant: "cardBased"
+        variant: "cardBased"
     },
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {},
     render: render
 };

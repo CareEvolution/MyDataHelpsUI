@@ -1,5 +1,5 @@
 ﻿import React from "react"
-import ExternalAccountsView, {ExternalAccountsViewProps} from "./ExternalAccountsView";
+import ExternalAccountsView, { ExternalAccountsViewProps } from "./ExternalAccountsView";
 import { Card, Layout } from "../../presentational"
 import { Meta, StoryObj } from "@storybook/react/*"
 import { Description } from "@storybook/blocks"
@@ -18,13 +18,9 @@ const meta: Meta<typeof ExternalAccountsView> = {
 export default meta;
 type Story = StoryObj<typeof ExternalAccountsView>;
 
-const render = (args: ExternalAccountsViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <ExternalAccountsView {...args} />
-    </Card>
-</Layout>;
+const render = (args: ExternalAccountsViewProps) => <ExternalAccountsView {...args} />;
 
-export const Default : Story = {
+export const Default: Story = {
     args: {
         previewState: "default",
         presentation: "Push"
@@ -32,7 +28,7 @@ export const Default : Story = {
     render: render
 };
 
-export const ProvidersOnly : Story = {
+export const ProvidersOnly: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -42,7 +38,7 @@ export const ProvidersOnly : Story = {
     render: render
 };
 
-export const HealthPlansOnly : Story = {
+export const HealthPlansOnly: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -52,7 +48,7 @@ export const HealthPlansOnly : Story = {
     render: render
 };
 
-export const DeviceManufacturersOnly : Story = {
+export const DeviceManufacturersOnly: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -62,7 +58,7 @@ export const DeviceManufacturersOnly : Story = {
     render: render
 };
 
-export const ProvidersAndHealthPlans : Story = {
+export const ProvidersAndHealthPlans: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -71,7 +67,7 @@ export const ProvidersAndHealthPlans : Story = {
     render: render
 };
 
-export const ProvidersAndDeviceManufacturers : Story = {
+export const ProvidersAndDeviceManufacturers: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -80,7 +76,7 @@ export const ProvidersAndDeviceManufacturers : Story = {
     render: render
 };
 
-export const HealthPlansAndDeviceManufacturers : Story = {
+export const HealthPlansAndDeviceManufacturers: Story = {
     args: {
         previewState: "default",
         presentation: "Push",
@@ -89,7 +85,7 @@ export const HealthPlansAndDeviceManufacturers : Story = {
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {
         previewState: "default",
         presentation: "Push"

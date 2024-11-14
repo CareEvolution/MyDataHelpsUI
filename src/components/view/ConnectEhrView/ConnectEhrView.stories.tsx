@@ -1,5 +1,5 @@
 ﻿import React from "react"
-import ConnectEhrView, {ConnectEhrViewProps} from "./ConnectEhrView"
+import ConnectEhrView, { ConnectEhrViewProps } from "./ConnectEhrView"
 import { Card, Layout } from "../../presentational"
 import { Meta, StoryObj } from "@storybook/react/*"
 import { Description } from "@storybook/blocks"
@@ -18,22 +18,18 @@ const meta: Meta<typeof ConnectEhrView> = {
 export default meta;
 type Story = StoryObj<typeof ConnectEhrView>;
 
-const render = (args: ConnectEhrViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <ConnectEhrView {...args} />
-    </Card>
-</Layout>;
+const render = (args: ConnectEhrViewProps) => <ConnectEhrView {...args} />;
 
-export const Default : Story = {
+export const Default: Story = {
     args: {
         preview: true,
         externalAccountsApplicationUrl: "preview",
-        presentation: "Push" 
+        presentation: "Push"
     },
     render: render
 };
 
-export const ProvidersOnly : Story = {
+export const ProvidersOnly: Story = {
     args: {
         preview: true,
         externalAccountsApplicationUrl: "preview",
@@ -43,7 +39,7 @@ export const ProvidersOnly : Story = {
     render: render
 };
 
-export const HealthPlansOnly : Story = {
+export const HealthPlansOnly: Story = {
     args: {
         preview: true,
         externalAccountsApplicationUrl: "preview",
@@ -53,7 +49,7 @@ export const HealthPlansOnly : Story = {
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {
         preview: false,
         externalAccountsApplicationUrl: "preview",

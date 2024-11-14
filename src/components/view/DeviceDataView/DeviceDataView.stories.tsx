@@ -18,22 +18,18 @@ const meta: Meta<typeof DeviceDataView> = {
 export default meta;
 type Story = StoryObj<typeof DeviceDataView>;
 
-const render = (args: DeviceDataViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <DeviceDataView {...args} />
-    </Card>
-</Layout>;
+const render = (args: DeviceDataViewProps) => <DeviceDataView {...args} />;
 
-export const Preview : Story = {
+export const Preview: Story = {
     args: {
-        preview: true, 
+        preview: true,
     },
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {
-        preview: false, 
+        preview: false,
     },
     render: render
 };

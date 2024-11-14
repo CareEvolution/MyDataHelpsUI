@@ -18,20 +18,16 @@ const meta: Meta<typeof NotificationsView> = {
 export default meta;
 type Story = StoryObj<typeof NotificationsView>;
 
-const render = (args: NotificationsViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <NotificationsView {...args} />
-    </Card>
-</Layout>;
+const render = (args: NotificationsViewProps) => <NotificationsView {...args} />;
 
-export const Default : Story = {
+export const Default: Story = {
     args: {
         preview: true
     },
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {
         preview: false
     },

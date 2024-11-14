@@ -18,25 +18,21 @@ const meta: Meta<typeof HomeView> = {
 export default meta;
 type Story = StoryObj<typeof HomeView>;
 
-const render = (args: HomeViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <HomeView {...args} />
-    </Card>
-</Layout>;
+const render = (args: HomeViewProps) => <HomeView {...args} />;
 
-export const Default : Story = {
+export const Default: Story = {
     args: {
-        preview: true, 
-		notificationsViewUrl: "test.html", 
-		ehrConnectApplicationUrl: "test.html"
+        preview: true,
+        notificationsViewUrl: "test.html",
+        ehrConnectApplicationUrl: "test.html"
     },
     render: render
 };
 
-export const Live : Story = {
-	args: { 
-		preview: false, 
-		notificationsViewUrl:"test.html" 
-	},
+export const Live: Story = {
+    args: {
+        preview: false,
+        notificationsViewUrl: "test.html"
+    },
     render: render
 }

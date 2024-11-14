@@ -18,40 +18,36 @@ const meta: Meta<typeof GarminView> = {
 export default meta;
 type Story = StoryObj<typeof GarminView>;
 
-const render = (args: GarminViewProps) => <Layout colorScheme='auto'>
-    <Card>
-        <GarminView {...args} />
-    </Card>
-</Layout>;
+const render = (args: GarminViewProps) => <GarminView {...args} />;
 
-export const NotEnabled : Story = {
+export const NotEnabled: Story = {
     args: {
-        connectPreview: "notEnabled", 
-		devicesPreview: "notEnabled", 
-		chartsPreview: "notEnabled"
+        connectPreview: "notEnabled",
+        devicesPreview: "notEnabled",
+        chartsPreview: "notEnabled"
     },
     render: render
 };
 
-export const NotConnected : Story = {
+export const NotConnected: Story = {
     args: {
         connectPreview: "notConnected",
-		devicesPreview: "notConnected",
-		chartsPreview: "notConnected"
+        devicesPreview: "notConnected",
+        chartsPreview: "notConnected"
     },
     render: render
 };
 
-export const Connected : Story = {
+export const Connected: Story = {
     args: {
         connectPreview: "fetchComplete",
-		devicesPreview: "connected",
-		chartsPreview: "connected"
+        devicesPreview: "connected",
+        chartsPreview: "connected"
     },
     render: render
 };
 
-export const Live : Story = {
+export const Live: Story = {
     args: {},
     render: render
 };
