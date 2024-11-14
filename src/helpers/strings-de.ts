@@ -479,6 +479,8 @@ let strings: { [key: string]: string } = {
     "download-pdf-report": "TODO-DE Download PDF Report",
     "connect-to-device": "TODO-DE Connect to @@DEVICE@@",
     "symptoms-and-treatments": "TODO-DE Symptoms & Treatments",
+    "subsequent-evaluation-note": "TODO-DE Subsequent evaluation note",
+    "summary": "TODO-DE Summary"
 };
 
 export default strings;

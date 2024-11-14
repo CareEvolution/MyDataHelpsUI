@@ -478,7 +478,9 @@
     "device-not-enabled": "@@DEVICE@@ is not enabled for this project.",
     "download-pdf-report": "Download PDF Report",
     "connect-to-device": "Connect to @@DEVICE@@",
-    "symptoms-and-treatments": "Symptoms & Treatments"
+    "symptoms-and-treatments": "Symptoms & Treatments",
+    "subsequent-evaluation-note": "Subsequent evaluation note",
+    "summary": "Summary"
 };
 
 export default strings;

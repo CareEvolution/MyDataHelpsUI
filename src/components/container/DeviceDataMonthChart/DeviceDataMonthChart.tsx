@@ -196,7 +196,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		values = values.filter(v => !!v);
 		if (!values.length) { return null; }
 		var calculated = values.reduce((a, b) => a + b) / values.length;
-		return calculated.toLocaleString('en-US', {
+		return calculated.toLocaleString(MyDataHelps.getCurrentLanguage(), {
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 1
 		});
