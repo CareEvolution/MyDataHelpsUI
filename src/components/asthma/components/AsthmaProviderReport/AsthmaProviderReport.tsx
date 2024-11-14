@@ -186,7 +186,7 @@ export default function (props: AsthmaProviderReportProps) {
         }
 
         return <div style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
-            <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? formatDateForLocale(date, 'MMM').toUpperCase() : ''}</div>
+            <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? formatDateForLocale(date, 'MMM').toLocaleUpperCase(MyDataHelps.getCurrentLanguage()) : ''}</div>
             <svg viewBox="0 0 40px 40px" style={{height: '40px', width: '40px'}}>
                 <circle cx="20" cy="20" r="18" style={dayWrapperStyle}/>
                 <foreignObject x="0" y="0" height="40px" width="40px">
