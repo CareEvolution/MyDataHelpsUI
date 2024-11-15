@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LayoutContext, LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
+import { LoadingIndicator, ProgressBar, ProgressBarStep, Title } from "../../presentational";
 import language from "../../../helpers/language";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
@@ -10,6 +10,7 @@ import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, parseP
 import { awardPointsAndBadges } from "../../../helpers";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { previewAwardPointsAndBadges, previewParticipantInfo } from "./BasicPointsForBadges.previewData";
+import { formatNumberForLocale } from "../../../helpers/locale"
 
 export interface BasicPointsForBadgesProps {
     pointsPerBadge: number;
@@ -20,12 +21,20 @@ export interface BasicPointsForBadgesProps {
     awardBadgesViewUrl: string;
     showTotalPoints?: boolean;
     customField: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: BasicPointsForBadgesProps) {
+/**
+ * Earn points for completing activities. Badges are earned once pointsPerBadge are reached.
+ * The progress bar will fill as points are earned. When a badge is earned a celebration step 
+ * will show and the progress bar will then reset. 
+ * Activity types supported are Survey Completion, Daily device data like sleep and steps, 
+ * connecting external accounts like an EHR, Health Plan, or wearable device, 
+ * and lastly based on the participant's custom field value. 
+*/
+export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
     let [badges, setBadges] = React.useState<number[] | undefined>(undefined);
     let [points, setPoints] = React.useState<number | undefined>(undefined);
-    let layoutContext = useContext<LayoutContext>(LayoutContext);
 
     function sumActivityPoints(activityStates: { [key: string]: BasicPointsForBadgesActivityState }) {
         return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
@@ -46,11 +55,18 @@ export default function (props: BasicPointsForBadgesProps) {
         let newPointTotal = sumActivityPoints(updatedState.activityStates);
         setPoints(newPointTotal);
 
+        // This component will load to reflect the existing points status
+        // followed by showing a pop up if new badges are awarded.
+        // Once the pop is shown, the new point total and badges will be set.
+        // In a preview env, if badges were awarded, the user will see the progress bar fill to 100%,
+        // followed by a pause, and then see the progress bar reset to reflect 
+        // how many points are needed for the next badge. Skipping back is accomplished by 
+        // resetting the progressbar key as noted below
         if (currentState.badges.length < updatedState.badges.length) {
             await new Promise(resolve => setTimeout(resolve, 3000));
             MyDataHelps.openApplication(props.awardBadgesViewUrl, { modal: true });
             await new Promise(resolve => setTimeout(resolve, 1000));
-            //wait for the new badges view to open before setting the new point total
+            //wait for the new badges view to open before setting the badges, and new point total
             setBadges(updatedState.badges);
         }
     }
@@ -74,17 +90,15 @@ export default function (props: BasicPointsForBadgesProps) {
         return getColorFromAssortment(badges?.length || 0)
     }
 
-    return <div className={"mdhui-basic-points-for-badges"}>
+    return <div className={"mdhui-basic-points-for-badges"} ref={props.innerRef}>
         {badges !== undefined && points !== undefined &&
             <>
-                <Title order={1} 
-                   className="mdhui-basic-points-for-badges-points-toward-badge" 
-                   style={{ color: resolveColor(layoutContext.colorScheme, props.pointsLabelColor) }}>
-                      {props.showTotalPoints ? points.toLocaleString() : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}{language('points-abbreviation')}
+                <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" color={props.pointsLabelColor} >
+                    {props.showTotalPoints ? formatNumberForLocale(points) : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}{language('points-abbreviation')}
                 </Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
-                    fillColor={resolveColor(layoutContext.colorScheme, props.progressBarFillColor) || "var(--mdhui-color-primary)"}
+                    fillColor={props.progressBarFillColor ?? "var(--mdhui-color-primary)"}
                     backgroundColor="var(--mdhui-background-color-2)" steps={[{
                         percent: 100,
                         icon:

@@ -1,22 +1,19 @@
 import React, { useContext } from 'react'
 import './SingleSurveyTask.css'
-import MyDataHelps, { SurveyTask } from '@careevolution/mydatahelps-js'
+import { SurveyTask } from '@careevolution/mydatahelps-js'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import formatRelative from 'date-fns/formatRelative'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import parseISO from 'date-fns/parseISO'
-import add from 'date-fns/add'
-import { isAfter, isSameDay, startOfToday } from 'date-fns'
+import { isAfter, isSameDay, startOfToday, parseISO, add } from 'date-fns'
 import language from '../../../helpers/language'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition, getLocaleFromIso, resolveColor } from '../../../helpers';
+import { ColorDefinition, resolveColor } from '../../../helpers';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
 import { noop } from '../../../helpers/functions';
+import { formatRelativeDateForLocale, formatTimeFromNowForLocale } from "../../../helpers/locale";
 
 export type SingleSurveyTaskVariant = 'default' | 'expanded';
 
@@ -37,7 +34,7 @@ export default function (props: SingleSurveyTaskProps) {
 
 	const getDueDate = () => {
 		let today = startOfToday();
-		let tomorrow = add(new Date(today), {days: 1});
+		let tomorrow = add(new Date(today), { days: 1 });
 		let dueDate = parseISO(props.task.dueDate ?? '');
 
 		let dueDateClasses: string[] = ['due-date'];
@@ -53,7 +50,7 @@ export default function (props: SingleSurveyTaskProps) {
 			dueDateString = language('overdue');
 			dueDateClasses.push('danger');
 		} else {
-			dueDateString = language('due-in') + ' ' + formatDistanceToNow(dueDate, {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())});
+			dueDateString = language('due-in') + ' ' + formatTimeFromNowForLocale(dueDate);
 		}
 
 		return <div className={dueDateClasses.join(' ')}>{dueDateString}</div>;
@@ -69,7 +66,7 @@ export default function (props: SingleSurveyTaskProps) {
 			<div className="survey-description">
 				<>{props.descriptionIcon} {props.task.surveyDescription}</>
 			</div>
-			{props.surveyActive && <LoadingIndicator/>}
+			{props.surveyActive && <LoadingIndicator />}
 			{!props.surveyActive &&
 				<Button color={resolveColor(layoutContext.colorScheme, props.buttonColor)} variant={props.buttonVariant} onClick={noop} disabled={props.surveyBlocked}>
 					{!props.task.hasSavedProgress ? language('start-survey') : language('resume-survey')}
@@ -81,7 +78,7 @@ export default function (props: SingleSurveyTaskProps) {
 	const getIncompleteTask = () => {
 		let indicator;
 		if (props.surveyActive) {
-			indicator = <LoadingIndicator/>;
+			indicator = <LoadingIndicator />;
 		} else {
 			indicator = <Button color={resolveColor(layoutContext.colorScheme, props.buttonColor)} variant={props.buttonVariant ?? 'light'} onClick={noop} disabled={props.surveyBlocked}>
 				{!props.task.hasSavedProgress ? language('start') : language('resume')}
@@ -100,7 +97,7 @@ export default function (props: SingleSurveyTaskProps) {
 		return <Action renderAs='div' className="mdhui-single-survey-task complete" indicator={<img src={checkMark} alt="check mark"></img>} innerRef={props.innerRef}>
 			<div className="survey-name">{props.task.surveyDisplayName}</div>
 			{props.task.endDate &&
-				<div className="completed-date">{language('completed')} {formatRelative(parseISO(props.task.endDate), new Date(), {locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage())})}</div>
+				<div className="completed-date">{language('completed')} {formatRelativeDateForLocale(props.task.endDate, new Date())}</div>
 			}
 		</Action>;
 	};

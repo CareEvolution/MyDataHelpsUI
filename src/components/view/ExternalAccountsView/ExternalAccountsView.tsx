@@ -11,8 +11,6 @@ export interface ExternalAccountsViewProps {
     presentation?: ViewPresentationType;
     previewState?: "default";
     colorScheme?: "auto" | "light" | "dark";
-    onBack?(): void
-    onClose?(): void
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
@@ -56,9 +54,7 @@ export default function (props: ExternalAccountsViewProps) {
             {props.presentation &&
                 <NavigationBar title={title}
                     showBackButton={props.presentation == "Push"}
-                    showCloseButton={props.presentation == "Modal"}
-                    onBack={props.onBack}
-                    onClose={props.onClose} />
+                    showCloseButton={props.presentation == "Modal"} />
             }
             {!props.presentation &&
                 <StatusBarBackground />

@@ -3,15 +3,9 @@ import MyDataHelps, { DeviceDataNamespace, DeviceDataPoint, DeviceDataPointQuery
 import "./ConnectedDevices.css"
 import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
-import { faBatteryEmpty } from "@fortawesome/free-solid-svg-icons/faBatteryEmpty"
-import { faBatteryFull } from "@fortawesome/free-solid-svg-icons/faBatteryFull"
-import { faBatteryHalf } from "@fortawesome/free-solid-svg-icons/faBatteryHalf"
-import { faBatteryQuarter } from "@fortawesome/free-solid-svg-icons/faBatteryQuarter"
-import { faWeightScale } from "@fortawesome/free-solid-svg-icons/faWeightScale"
-import formatRelative from 'date-fns/formatRelative'
-import parseISO from 'date-fns/parseISO'
+import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons"
 import * as FeatherIcon from 'react-feather'
-import { getLocaleFromIso } from '../../../helpers/locale';
+import { formatRelativeDateForLocale } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -62,10 +56,9 @@ export default function (props: ConnectedDevicesProps) {
 		return null;
 	}
 
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div className="mdhui-connected-devices" ref={props.innerRef}>
-			<CardTitle title={props.providerName+ " " + language("devices")} />
+			<CardTitle title={props.providerName + " " + language("devices")} />
 			{connectedDevices.map((device) =>
 				<div key={device.id.toString()} className="connected-device">
 					{device.properties?.Type == 'TRACKER' &&
@@ -84,7 +77,7 @@ export default function (props: ConnectedDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-								{language("last-sync")} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
+								{language("last-sync")} {formatRelativeDateForLocale(device.observationDate, new Date())}
 							</div>
 						}
 					</div>

@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
 import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
 import { LoadingIndicator, UnstyledButton } from '../../presentational';
-import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
 import { previewProviders } from './ProviderSearch.previewdata';

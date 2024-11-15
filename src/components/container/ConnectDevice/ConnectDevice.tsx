@@ -1,15 +1,10 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faRefresh } from "@fortawesome/free-solid-svg-icons/faRefresh"
+import { faExclamationTriangle, faCheckCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
-import add from 'date-fns/add'
-import parseISO from 'date-fns/parseISO'
-import formatISO from 'date-fns/formatISO'
-import isAfter from 'date-fns/isAfter'
+import { add, parseISO, formatISO, isAfter } from 'date-fns'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface ConnectDeviceProps {
@@ -83,7 +78,7 @@ export default function (props: ConnectDeviceProps) {
 	}
 
 	function connectToDevice() {
-		if ( props.previewState ) return;
+		if (props.previewState) return;
 		MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true })
 			.then(function () {
 				initialize();

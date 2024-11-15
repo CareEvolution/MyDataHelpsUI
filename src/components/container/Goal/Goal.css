@@ -1,0 +1,45 @@
+.mdhui-goal {
+    display: grid;
+    grid-template-columns: max-content auto;
+    margin: 16px;
+}
+
+.mdhui-goal-chart {
+    position: relative;
+    height: 80px;
+    width: 80px;
+}
+
+.mdhui-goal-chart-icon-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mdhui-goal-chart-icon {
+    font-size: 34px;
+}
+
+.mdhui-goal-info {
+    padding-top: 12px;
+    padding-left: 8px;
+}
+
+.mdhui-goal-ratio, .mdhui-goal-ratio-loading {
+    height: 40px;
+    line-height: 40px;
+}
+
+.mdhui-goal-ratio {
+    font-size: 2em;
+}
+
+.mdhui-goal-ratio-loading {
+    padding-left: 8px;
+    font-size: 1.5em;
+}

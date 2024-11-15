@@ -18,3 +18,6 @@ export * from './chartHelpers';
 export * from './heart-rate-data-providers';
 export * from './glucose-and-meals';
 export * from './AIAssistant';
+export * from './predictableRandomNumber';
+export * from './single-value-providers';
+export * from './insight-matrix';

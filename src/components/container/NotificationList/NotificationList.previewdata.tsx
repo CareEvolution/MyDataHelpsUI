@@ -1,5 +1,5 @@
 import { Notification } from "@careevolution/mydatahelps-js";
-import add from 'date-fns/add'
+import { add } from 'date-fns'
 
 export var previewNotifications: Notification[] =
 	[{

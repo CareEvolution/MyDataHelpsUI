@@ -7,7 +7,7 @@ import { getDayOfWeek } from '../../../../helpers/date-helpers';
 import language from '../../../../helpers/language';
 import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConfiguration, TreatmentConfiguration } from '../../helpers/symptom-shark-data';
 import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
 import { formatDateForLocale } from '../../../../helpers/locale';
 

@@ -2,21 +2,27 @@ import React from "react"
 import BasicPointsForBadges, { BasicPointsForBadgesProps } from "./BasicPointsForBadges"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { DailyDataType } from "../../../helpers";
-import { DailyDataActivity } from "../../../helpers/BasicPointsAndBadges/DailyDataActivity";
-import { DailyDataGoals } from "../../presentational/Grid/Grid.stories";
+import { ConnectExternalAccountActivity, CustomActivity, DailyDataActivity, DailyDataType, SurveyCompletionActivity } from "../../../helpers";
 import DailyDataGoal from "../DailyDataGoal";
 import { Grid, Title } from "../../presentational";
 import BasicBadges from "../BasicBadges";
 import Divider from "../../presentational/Divider";
+import { Description } from "@storybook/blocks"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof BasicPointsForBadges> = {
     title: "Container/BasicPointsForBadges",
     component: BasicPointsForBadges,
     parameters: {
         layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
     }
 };
+
+export default meta;
+type Story = StoryObj<typeof BasicPointsForBadges>;
 
 const render = (args: BasicPointsForBadgesProps) => <Layout colorScheme='auto'>
     <Card>
@@ -24,7 +30,7 @@ const render = (args: BasicPointsForBadgesProps) => <Layout colorScheme='auto'>
     </Card>
 </Layout>;
 
-export const Default = {
+export const Default : Story = {
     args: {
         previewState: "default",
         activities: [
@@ -42,7 +48,7 @@ export const Default = {
     render: render
 };
 
-export const ShowTotalPoints = {
+export const ShowTotalPoints : Story = {
     args: {
         previewState: "default",
         showTotalPoints: true,
@@ -62,7 +68,7 @@ export const ShowTotalPoints = {
 };
 
 
-export const WithGoalsAndBadges = {
+export const WithGoalsAndBadges : Story = {
     args: {
         previewState: "default",
         showTotalPoints: true,
@@ -141,20 +147,21 @@ export const WithGoalsAndBadges = {
     </Layout>
 };
 
-
-
-export const Live = {
+export const Live : Story = {
     args: {
+        pointsLabelColor: "blue",
+        progressBarFillColor: "green",
+        customField: "PointsAndBadges",
         pointsPerBadge: 1000,
         activities: [
             {
-                key: "FitbitSleepData",
+                key: "SleepData",
                 type: "dailyData",
                 activationDate: new Date("2024-05-20"),
                 points: 200,
-                dailyDataType: DailyDataType.FitbitSleepMinutes,
+                dailyDataType: DailyDataType.SleepMinutes,
                 awardThreshold: 1
-            },
+            } as DailyDataActivity,
             {
                 key: "FitbitWearTime",
                 type: "dailyData",
@@ -162,21 +169,26 @@ export const Live = {
                 points: 100,
                 dailyDataType: DailyDataType.FitbitWearMinutes,
                 awardThreshold: 600
-            },
+            } as DailyDataActivity,
             {
                 key: "FitbitOrder",
                 type: "surveyCompleted",
                 points: 800,
                 surveyName: "OrderDevice"
-            },
+            } as SurveyCompletionActivity,
             {
                 key: "ConnectEhr",
                 type: "connectExternalAccount",
                 points: 250,
                 providerCategories: ["Provider", "Health Plan"]
-            },
-        ],
-        customField: "PointsAndBadges",
+            } as ConnectExternalAccountActivity,
+            {
+                key: "CustomField",
+                type: "custom",
+                points: 25,
+                customField: "PersonalGoal"
+            } as CustomActivity
+        ]
     },
     render: render
 };

@@ -1,6 +1,5 @@
 import React, { Children } from 'react';
-import { differenceInDays, differenceInMonths, differenceInWeeks } from 'date-fns';
-import isAfter from "date-fns/isAfter";
+import { differenceInDays, differenceInMonths, differenceInWeeks, isAfter } from 'date-fns';
 
 export type RotatingComponentInterval = 'day' | 'week' | 'month';
 
@@ -15,7 +14,7 @@ export default function (props: RotatingComponentCoordinatorProps) {
     let children = Children.toArray(props.children);
 
     if (children.length === 0) {
-        return <div ref={props.innerRef}/>;
+        return <div ref={props.innerRef} />;
     }
 
     let now = new Date();

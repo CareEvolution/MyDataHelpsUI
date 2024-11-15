@@ -1,5 +1,4 @@
-import { add } from "date-fns";
-import subMonths from "date-fns/subMonths";
+import { add, subMonths } from "date-fns";
 
 let dayOfWeekLookup = {
     "Sunday": 0,

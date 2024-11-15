@@ -1,5 +1,5 @@
-import { format, formatRelative, parseISO } from 'date-fns';
-import { es, enUS, nl, de, fr, pt, it, pl } from 'date-fns/locale';
+import { format, formatRelative, formatDistanceToNow, parseISO } from 'date-fns';
+import { es, enUS, nl, de, fr, pt, it, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language from "./language";
 
@@ -38,6 +38,11 @@ export function formatDateForLocale(dateOrDateString: string | Date, formatStrin
 export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date): string {
     const date = toDate(dateOrDateString);
     return formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+}
+
+export function formatTimeFromNowForLocale(dateOrDateString: string | Date) {
+    const date = toDate(dateOrDateString);
+    return formatDistanceToNow(date, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
 }
 
 export function formatNumberForLocale(value: number, fractionDigits?: number) {

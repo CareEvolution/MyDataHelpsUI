@@ -1,11 +1,14 @@
-import React from 'react';
-import { Card, Layout, NavigationBar, Title } from '../../../presentational';
+import React, { useState } from 'react';
+import { Card, Layout, LoadingIndicator, NavigationBar, Title } from '../../../presentational';
 import { AsthmaAirQualities, AsthmaBiometrics, AsthmaLogEntryDetails } from '../../components';
+import { useInitializeView } from '../../../../helpers';
+import { AsthmaParticipant } from '../../model';
+import { asthmaDataService } from '../../helpers';
 import { formatDateForLocale } from '../../../../helpers/locale';
 
 export interface AsthmaDayViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
-    previewState?: 'default';
+    previewState?: 'loading' | 'default' | 'as caregiver';
     date: Date;
     logTodayEntrySurveyName: string;
     logYesterdayEntrySurveyName: string;
@@ -18,37 +21,66 @@ export interface AsthmaDayViewProps {
 }
 
 export default function (props: AsthmaDayViewProps) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [participant, setParticipant] = useState<AsthmaParticipant>();
+
+    useInitializeView(() => {
+        setLoading(true);
+
+        if (props.previewState === 'loading') {
+            return;
+        }
+
+        if (props.previewState) {
+            setParticipant({ getParticipantMode: () => props.previewState === 'as caregiver' ? 'Caregiver' : 'Self' } as AsthmaParticipant);
+            setLoading(false);
+            return;
+        }
+
+        asthmaDataService.loadParticipant().then(participant => {
+            setParticipant(participant);
+            setLoading(false);
+        });
+    }, [], [props.previewState])
+
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true}>
             <Title order={2}>
                 {formatDateForLocale(props.date, 'PPP')}
             </Title>
         </NavigationBar>
-        <Card>
-            <AsthmaLogEntryDetails
-                previewState={props.previewState ? 'logged with mild symptoms' : undefined}
-                date={props.date}
-                logTodayEntrySurveyName={props.logTodayEntrySurveyName}
-                logYesterdayEntrySurveyName={props.logYesterdayEntrySurveyName}
-                editLogEntryUrl={props.editLogEntryUrl}
-                infoUrl={props.logEntryInfoUrl}
-            />
-        </Card>
-        <Card>
-            <AsthmaBiometrics
-                previewState={props.previewState ? 'all data' : undefined}
-                heartAndLungsUrl={props.heartAndLungsUrl}
-                activityUrl={props.activityUrl}
-                sleepUrl={props.sleepUrl}
-                date={props.date}
-            />
-        </Card>
-        <Card>
-            <AsthmaAirQualities
-                previewState={props.previewState ? 'all data' : undefined}
-                airQualityUrl={props.airQualityUrl}
-                date={props.date}
-            />
-        </Card>
+        {loading && <LoadingIndicator />}
+        {!loading &&
+            <>
+                <Card>
+                    <AsthmaLogEntryDetails
+                        previewState={props.previewState ? 'logged with mild symptoms' : undefined}
+                        date={props.date}
+                        logTodayEntrySurveyName={props.logTodayEntrySurveyName}
+                        logYesterdayEntrySurveyName={props.logYesterdayEntrySurveyName}
+                        editLogEntryUrl={props.editLogEntryUrl}
+                        infoUrl={props.logEntryInfoUrl}
+                    />
+                </Card>
+                {participant!.getParticipantMode() !== 'Caregiver' &&
+                    <Card>
+                        <AsthmaBiometrics
+                            previewState={props.previewState ? 'all data' : undefined}
+                            heartAndLungsUrl={props.heartAndLungsUrl}
+                            activityUrl={props.activityUrl}
+                            sleepUrl={props.sleepUrl}
+                            date={props.date}
+                        />
+                    </Card>
+                }
+                <Card>
+                    <AsthmaAirQualities
+                        previewState={props.previewState ? 'all data' : undefined}
+                        airQualityUrl={props.airQualityUrl}
+                        date={props.date}
+                    />
+                </Card>
+            </>
+        }
     </Layout>;
 }

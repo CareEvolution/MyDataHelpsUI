@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import "./WeekCalendar.css"
 import { add, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface WeekCalendarProps {

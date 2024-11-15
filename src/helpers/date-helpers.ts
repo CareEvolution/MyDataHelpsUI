@@ -1,4 +1,4 @@
-import { add, isSameDay, sub } from "date-fns";
+import { add, Duration, isSameDay, sub } from "date-fns";
 import language from "./language";
 import { formatDateForLocale } from "./locale";
 

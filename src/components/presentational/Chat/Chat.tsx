@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
-import MarkdownIt from 'markdown-it';
-import MarkdownItHighlightJs from 'markdown-it-highlightjs';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import markdownIt from 'markdown-it';
+// @ts-ignore
+import markdownItHighlightjs from 'markdown-it-highlightjs/core';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
 import parse from 'html-react-parser';
 
 import UnstyledButton from '../UnstyledButton';
@@ -11,7 +13,7 @@ import UnstyledButton from '../UnstyledButton';
 import 'highlight.js/styles/atom-one-dark.css';
 import './Chat.css';
 
-export type ChatMessageType = "sent" | "received";
+export type ChatMessageType = "sent" | "received" | "received-image";
 
 export interface ChatProps {
     innerRef?: React.Ref<HTMLDivElement>;
@@ -19,6 +21,8 @@ export interface ChatProps {
     onSendMessage: (newMessage: string) => void;
     loading?: string;
     inputDisabled?: boolean;
+    suggestions?: string[];
+    onSuggestionSelected?: (suggestion: string) => void;
 }
 
 export interface ChatMessage {
@@ -28,11 +32,16 @@ export interface ChatMessage {
     cssClass?: string;
 }
 
-const md = new MarkdownIt({
-    breaks: true
-}).use(MarkdownItHighlightJs, { inline: true });
+hljs.registerLanguage('javascript', javascript);
 
-export default function (props: ChatProps) {
+const md = new markdownIt({
+    breaks: true
+}).use(markdownItHighlightjs, { inline: true, hljs });
+
+/**
+ * Presentational component that can be used to display a conversation between two users, one of which could be an AI Assistant.
+ */
+export default function Chat(props: ChatProps) {
 
     const [currentUserMessage, setCurrentUserMessage] = useState('');
     const logRef = useRef<HTMLDivElement>(null);
@@ -62,6 +71,11 @@ export default function (props: ChatProps) {
                                     </div>
                                 </div>
                             }
+                            else if (message.type === "received-image") {
+                                return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
+                                    <img src={message.content} className={message.cssClass} />
+                                </div>
+                            }
                             else {
                                 return <div key={index} className="mdhui-chat-message mdhui-chat-received-message-row">
                                     {message.icon}
@@ -75,6 +89,13 @@ export default function (props: ChatProps) {
                     </div>
                 </div>
             </div>
+            {props.suggestions && props.onSuggestionSelected && (
+                <div className="mdhui-chat-suggestions">
+                    {props.suggestions.map((suggestion) => (
+                        <div key={suggestion} className="mdhui-chat-suggestion" onClick={() => props.onSuggestionSelected?.(suggestion)}>{suggestion}</div>
+                    ))}
+                </div>
+            )}
             <div className="mdhui-chat-input">
                 <div className="mdhui-chat-input-group">
                     <input

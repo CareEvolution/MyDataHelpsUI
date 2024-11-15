@@ -1,8 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { appleHealthActiveEnergyBurned, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider, appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider, appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider } from "../daily-data-providers";
+import { appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, 
+    appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
+    appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
+    appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
-import language from "../language";
+import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -53,6 +56,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
         previewDataRange: [100, 180]
+    },
+    {
+        type: DailyDataType.AppleHealthMindfulMinutes,
+        dataProvider: appleHealthMindfulMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        labelKey: "mindful-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
     },
     {
         type: DailyDataType.AppleHealthRestingHeartRate,
@@ -132,6 +144,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         previewDataRange: [4000, 8000]
     },
     {
+        type: DailyDataType.AppleHealthTherapyMinutes,
+        dataProvider: appleHealthTherapyMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => value.toFixed(0),
+        previewDataRange: [0, 120]
+    },
+    {
         type: DailyDataType.AppleHealthWalkingHeartRateAverage,
         dataProvider: appleHealthWalkingHeartRateAverageDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["WalkingHeartRateAverage"]),
@@ -142,12 +163,21 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.AppleHealthActiveEnergyBurned,
-        dataProvider: appleHealthActiveEnergyBurned,
+        dataProvider: appleHealthActiveEnergyBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ActiveEnergyBurned"]),
         labelKey: "active-energy-burned",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
+    },
+    {
+        type: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,
+        dataProvider: appleHealthNumberOfAlcoholicBeveragesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["NumberOfAlcoholicBeverages"]),
+        labelKey: "number-of-alcoholic-beverages",
+        icon: <FontAwesomeSvgIcon icon={faCocktail} />,
+        formatter: defaultFormatter,
+        previewDataRange: [0, 20]
     }
 ];
 appleHealthTypeDefinitions.forEach((def) => {

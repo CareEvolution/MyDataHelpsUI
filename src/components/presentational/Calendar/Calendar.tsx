@@ -2,6 +2,7 @@ import React from 'react';
 import { getLocaleFromIso } from '../../../helpers/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import "./Calendar.css";
+import { Day } from 'date-fns';
 
 export interface CalendarProps {
 	month: number,
@@ -33,7 +34,7 @@ export default function (props: CalendarProps) {
 	}
 
 	const weekdays = daysOfTheWeekIndices.map((i) =>
-		locale.localize?.day(i, { width: "narrow" })
+		locale.localize?.day(i as Day, { width: "narrow" })
 	);
 
 	var daysInMonth = function (m: number, y: number) {

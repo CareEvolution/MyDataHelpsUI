@@ -1,5 +1,7 @@
 import { Guid, ParticipantInfo } from '@careevolution/mydatahelps-js';
 
+export type AsthmaParticipantMode = 'Self' | 'Caregiver';
+
 export class AsthmaParticipant {
     participantInfo: ParticipantInfo;
 
@@ -43,6 +45,14 @@ export class AsthmaParticipant {
 
     getAlertTakeover(): string | undefined {
         return this.getCustomFieldValue('AlertTakeover');
+    }
+
+    getParticipantMode(): AsthmaParticipantMode {
+        return this.getCustomFieldValue('ParticipantMode') as AsthmaParticipantMode ?? 'Self';
+    }
+
+    getCareRecipientName(): string | undefined {
+        return this.getCustomFieldValue('CareRecipientName');
     }
 
     getDaytimeRestingHeartRateBaseline(): number | undefined {
@@ -125,7 +135,7 @@ export interface AsthmaAirQuality {
 export type AsthmaSymptomLevel = 'none' | 'mild' | 'moderate' | 'severe';
 export type AsthmaSymptom = 'Difficulty breathing' | 'Wheezing' | 'Coughing' | 'Chest tightness or pressure';
 export type AsthmaImpact = 'Wake up at night' | 'Limit your daily activity' | 'Use your rescue inhaler';
-export type AsthmaTrigger = 'Cold/viral illness' | 'Animal exposure' | 'Seasonal allergens/pollen' | 'Smoke (tobacco or wood burning)' |
+export type AsthmaTrigger = 'Cold/viral illness' | 'Animal exposure' | 'Seasonal allergens/pollen' | 'Exercise' | 'Smoke (tobacco or wood burning)' |
     'Extreme weather changes' | 'Air pollution' | 'Strong smells' | 'Chemicals/cleaning supplies' | 'Dust' | 'Mold' | 'Dust mites' | 'Rodents' |
     'Cockroaches' | 'Taken a NSAID (non-steroidal anti-inflammatory drugs including aspirin and ibuprofen)' | 'Taken a beta blocker' | 'Had heartburn' |
     'Drank red wine' | 'Tried any new foods' | 'Cooked without a fan or open window' | 'Had a pet sleep in your bed' | 'Burned incense or a candle';

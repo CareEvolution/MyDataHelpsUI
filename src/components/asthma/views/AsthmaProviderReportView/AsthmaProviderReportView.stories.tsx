@@ -1,5 +1,5 @@
 import React from 'react';
-import AsthmaProviderReportView from './AsthmaProviderReportView';
+import AsthmaProviderReportView, { AsthmaProviderReportViewProps } from './AsthmaProviderReportView';
 
 export default {
     title: 'Asthma/Views/AsthmaProviderReportView',
@@ -7,11 +7,21 @@ export default {
     parameters: {layout: 'fullscreen'}
 };
 
-const render = () => {
-    return <AsthmaProviderReportView previewState="default" logEntrySurveyName="Log Symptoms - Today"/>;
+const render = (args: AsthmaProviderReportViewProps) => {
+    return <AsthmaProviderReportView {...args} logEntrySurveyName="Log Symptoms - Today" />;
 };
 
 export const Default = {
+    args: {
+        previewState: 'default'
+    },
+    argTypes: {
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'default', 'as caregiver']
+        }
+    },
     render: render
 };
 

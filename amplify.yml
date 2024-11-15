@@ -3,10 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 16
+        - nvm install 20
         - npm ci
     build:
       commands:
+        - npm run test
         - npm run build-storybook
   artifacts:
     baseDirectory: /storybook-static/

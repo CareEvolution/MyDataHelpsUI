@@ -1,9 +1,9 @@
 import React from "react";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
-import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
-import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
+import { faPaperPlane, faUser, faGear } from '@fortawesome/free-solid-svg-icons';
 import { Global, css } from '@emotion/react';
+import { Description } from "@storybook/blocks";
+
 import Layout from "../../presentational/Layout";
 import Chat, { ChatProps } from "./Chat";
 
@@ -11,6 +11,9 @@ export default {
     title: 'Presentational/Chat',
     component: Chat,
     parameters: { layout: 'fullscreen' },
+    docs: {
+        Description: <Description />
+    },
     argTypes: {
         colorScheme: {
             name: 'color scheme',
@@ -20,17 +23,20 @@ export default {
         loading: {
             control: 'text',
             description: 'Loading text to display when a backend operation is executing.',
-            defaultValue: {
-                summary: ''
-            }
         },
         messages: {
             control: 'object',
             description: 'Messages to display in the chat.',
-            defaultValue: {
-                summary: []
-            }
+        },
+        suggestions: {
+            control: 'object',
+            description: 'Suggestions to display to the user that they might ask the AI Assistant.',
         }
+    },
+    args: {
+        messages: [],
+        suggestions: [],
+        loading: ""
     }
 };
 
@@ -96,6 +102,18 @@ export const Loading = {
             content: "How has my sleep been in the past 7 days?",
             type: "sent"
         }]
+    },
+    render: render
+};
+
+export const Suggestions = {
+    args: {
+        suggestions: [
+            "What is my temperature?",
+            "What was my weight on January 1st?",
+            "How tall am I?"
+        ],
+        onSuggestionSelected: (suggestion: string) => alert(`You selected: ${suggestion}`)
     },
     render: render
 };

@@ -22,7 +22,7 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'default']
+            options: ['loading', 'default', 'as caregiver']
         }
     },
     render: render

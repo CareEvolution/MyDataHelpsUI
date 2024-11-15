@@ -1,8 +1,7 @@
 import React from "react";
 import { Card, Layout } from "..";
-import add from "date-fns/add";
+import { add, addDays } from "date-fns";
 import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
-import addDays from "date-fns/addDays";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";

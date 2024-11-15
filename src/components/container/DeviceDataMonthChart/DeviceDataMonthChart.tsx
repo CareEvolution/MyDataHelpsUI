@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import add from 'date-fns/add'
+import { add } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { LoadingIndicator } from '../../presentational'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'

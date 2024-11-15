@@ -1,13 +1,10 @@
 import React, { useContext } from 'react'
-import { add, addDays, addMonths, isToday } from 'date-fns'
+import { add, addDays, addMonths, Duration, isToday, getDaysInMonth, addHours, startOfMonth } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
-import getDaysInMonth from 'date-fns/getDaysInMonth'
-import { ceil } from 'lodash'
-import addHours from 'date-fns/addHours'
-import startOfMonth from 'date-fns/startOfMonth'
+import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
 import { formatDateForLocale } from '../../../helpers/locale';
 
@@ -183,7 +180,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         interval={0}
                         tickLine={false}
                         width={32}
-                        domain={['auto', 'auto']}
+                        domain={props.chartType === 'Line' ? ['auto', 'auto'] : undefined}
                         allowDataOverflow
                         {...props.options?.yAxisOptions}
                     />

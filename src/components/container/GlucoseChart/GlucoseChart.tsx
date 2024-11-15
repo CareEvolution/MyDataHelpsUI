@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
-import { add, compareAsc, startOfToday } from 'date-fns';
+import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { add, compareAsc, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
-import GlucoseStats from '../../presentational/GlucoseStats';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
-import { MealContext } from '../../container';
+import { GlucoseContext, MealContext } from '../../container';
 import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface GlucoseChartProps {
@@ -20,6 +19,7 @@ export interface GlucoseChartProps {
 
 export default function (props: GlucoseChartProps) {
     const layoutContext = useContext(LayoutContext);
+    const glucoseContext = useContext(GlucoseContext);
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
@@ -32,6 +32,10 @@ export default function (props: GlucoseChartProps) {
     let meals = mealContext?.meals ?? [];
     let selectedMeal = mealContext?.selectedMeal;
 
+    const getGlucoseReadingsFromContext = () => {
+        return Promise.resolve(glucoseContext?.readings?.filter(reading => isSameDay(selectedDate, reading.timestamp)) ?? []);
+    };
+
     useInitializeView(() => {
         setLoading(true);
 
@@ -40,14 +44,16 @@ export default function (props: GlucoseChartProps) {
         }
 
         if (props.previewState) {
-            setGlucose(previewData(props.previewState, selectedDate).glucose)
-            setSteps(previewData(props.previewState, selectedDate).steps);
-            setSleepMinutes(previewData(props.previewState, selectedDate).sleepMinutes);
-            setLoading(false);
+            previewData(props.previewState, selectedDate).then(({ glucose, steps, sleepMinutes }) => {
+                setGlucose(glucose)
+                setSteps(steps);
+                setSleepMinutes(sleepMinutes);
+                setLoading(false);
+            });
             return;
         }
 
-        let glucoseReadingLoader = getGlucoseReadings(selectedDate);
+        let glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate);
         let stepsLoader = getSteps(selectedDate);
         let sleepMinutesLoader = getSleepMinutes(selectedDate);
         Promise.all([glucoseReadingLoader, stepsLoader, sleepMinutesLoader]).then(results => {
@@ -67,12 +73,6 @@ export default function (props: GlucoseChartProps) {
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
-
-    let avgGlucose: number | undefined;
-    if (filteredGlucose.length > 0) {
-        let glucoseValues = filteredGlucose.map(reading => reading.value);
-        avgGlucose = glucoseValues.reduce((s, a) => s + a, 0) / glucoseValues.length;
-    }
 
     let filteredMeals = meals.filter(meal => {
         if (filteredGlucose.length === 0) return false;
@@ -183,13 +183,13 @@ export default function (props: GlucoseChartProps) {
                     }
                 }}
             >
-                {avgGlucose &&
+                {glucoseContext?.recentAverage !== undefined &&
                     <ReferenceLine
-                        y={avgGlucose}
+                        y={glucoseContext.recentAverage}
                         stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
                         strokeWidth={1.5}
                         label={{
-                            value: avgGlucose.toFixed(0),
+                            value: glucoseContext.recentAverage.toFixed(0),
                             fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
                             fontSize: 9,
                             position: 'insideTopRight',

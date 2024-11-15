@@ -10,7 +10,12 @@ import polishStrings from "./strings-pl"
 
 export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
 
-export function language(key: string, specifiedLanguage?: string): string {
+function format(resolvedString: string, args?: { [key: string]: string }) {
+	if (!resolvedString || !args) return resolvedString;
+	return resolvedString.replace(/\{\s*([^}\s]+)\s*}/g, (_, key) => args[key]);
+}
+
+export function language(key: string, specifiedLanguage?: string, args?: { [key: string]: string }): string {
 	const currentLanguage: Language = getLanguageFromIso(specifiedLanguage || MyDataHelps.getCurrentLanguage());
 
 	let resolvedString = null;
@@ -22,9 +27,9 @@ export function language(key: string, specifiedLanguage?: string): string {
 	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
 	if (currentLanguage == "it") resolvedString = italianStrings[key];
 	if (currentLanguage == "pl") resolvedString = polishStrings[key];
-	if (resolvedString != null) return resolvedString;
+	if (resolvedString != null) return format(resolvedString, args);
 
-	return englishStrings[key];
+	return format(englishStrings[key], args);
 }
 
 export function getLanguageFromIso(language: string): Language {
