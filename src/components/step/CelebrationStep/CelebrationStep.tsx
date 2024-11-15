@@ -19,7 +19,10 @@ export interface CelebrationStepProps {
     styles: { [key: string]: any };
 }
 
-export default function (props: CelebrationStepProps) {
+/**
+ * A ready-to-use survey step that celebrates with a confetti animation when first opened.
+ */
+export default function CelebrationStep(props: CelebrationStepProps) {
     function runConfetti() {
         if (window.innerWidth === 0 || window.innerHeight === 0) {
             window.setTimeout(runConfetti, 50);
