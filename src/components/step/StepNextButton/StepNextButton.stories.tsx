@@ -59,8 +59,7 @@ export const Gradient: Story = {
 
 export const Disabled: Story = {
     args: {
-        disabled: true,
-        onClick: () => alert("You shall not pass!")
+        disabled: true
     },
     render: render
 };
