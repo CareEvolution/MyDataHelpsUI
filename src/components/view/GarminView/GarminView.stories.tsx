@@ -7,10 +7,7 @@ const meta: Meta<typeof GarminView> = {
     title: "View/GarminView",
     component: GarminView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

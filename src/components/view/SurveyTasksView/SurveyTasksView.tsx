@@ -14,8 +14,8 @@ export interface SurveyTasksViewProps {
 export type ViewPresentationType = "Modal" | "Push";
 
 /**
- * This ready-to-use view displays all tasks.
- * It can be configured to show or hide completed and incomplete tasks as needed.
+ * This view displays all tasks.
+ * It can be configured to hide completed and incomplete tasks as needed.
  */
 export default function SurveyTasksView (props: SurveyTasksViewProps) {
 	return (

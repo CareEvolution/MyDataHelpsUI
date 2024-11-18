@@ -11,7 +11,10 @@ export interface AllergiesViewProps {
     onViewTermInfo?(termInfo: TermInformationReference): void
 }
 
-export default function (props: AllergiesViewProps) {
+/**
+ * This view shows a listing of allergies pulled from the connected Providers, and Health Plans.
+ */
+export default function AllergiesView(props: AllergiesViewProps) {
     function viewTermInfo(termInfo: TermInformationReference) {
         if (props.onViewTermInfo) {
             props.onViewTermInfo(termInfo);

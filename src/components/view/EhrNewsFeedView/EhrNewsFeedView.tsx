@@ -17,7 +17,7 @@ export interface EhrNewsFeedViewProps {
 }
 
 /**
- * This ready-to-use view can be configured to display the following news feeds:
+ * This view can be configured to display the following news feeds:
  * Procedures, Reports, Lab Results, and Immunizations
  */
 export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {

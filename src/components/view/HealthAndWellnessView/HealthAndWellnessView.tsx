@@ -14,7 +14,7 @@ export interface HealthAndWellnessViewProps {
 }
 
 /**
- * This out of the box view allows the participant to connect to their EHR provider. 
+ * This view allows the participant to connect to their EHR provider. 
  * After establishing the connection, participants can access a comprehensive range of health information, including labs, blood type, medications, immunizations, reports, allergies, conditions, and procedures.
  */
 export default function HealthAndWellnessView(props: HealthAndWellnessViewProps) {

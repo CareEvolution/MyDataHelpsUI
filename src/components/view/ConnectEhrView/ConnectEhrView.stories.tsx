@@ -7,10 +7,7 @@ const meta: Meta<typeof ConnectEhrView> = {
     title: "View/ConnectEhrView",
     component: ConnectEhrView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

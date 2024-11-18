@@ -7,10 +7,7 @@ const meta: Meta<typeof FitbitView> = {
     title: "View/FitbitView",
     component: FitbitView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

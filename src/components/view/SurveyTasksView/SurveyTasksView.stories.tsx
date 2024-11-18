@@ -7,10 +7,7 @@ const meta: Meta<typeof SurveyTasksView> = {
     title: "View/SurveyTasksView",
     component: SurveyTasksView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

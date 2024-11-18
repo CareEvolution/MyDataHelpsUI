@@ -8,9 +8,6 @@ const meta: Meta<typeof ExternalAccountsView> = {
     component: ExternalAccountsView,
     parameters: {
         layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
     }
 };
 
@@ -86,7 +83,6 @@ export const HealthPlansAndDeviceManufacturers: Story = {
 
 export const Live: Story = {
     args: {
-        previewState: "default",
         presentation: "Push"
     },
     render: render

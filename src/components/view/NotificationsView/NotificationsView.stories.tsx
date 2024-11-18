@@ -7,10 +7,7 @@ const meta: Meta<typeof NotificationsView> = {
     title: "View/NotificationsView",
     component: NotificationsView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 
@@ -27,8 +24,6 @@ export const Default: Story = {
 };
 
 export const Live: Story = {
-    args: {
-        preview: false
-    },
+    args: {},
     render: render
 };

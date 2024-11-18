@@ -13,8 +13,8 @@ export interface GarminViewProps {
 }
 
 /**
- * This out of the box view shows the Garmin connection status, a list of the participant's Garmin devices, and 2 line charts showing monthly steps and resting heart rate.
-**/
+ * This view shows the Garmin connection status, a list of the participant's Garmin devices, and 2 line charts showing monthly steps and resting heart rate.
+*/
 export default function GarminView(props: GarminViewProps) {
 	var [viewIsReady, setViewIsReady] = useState(false);
 	useEffect(() => {

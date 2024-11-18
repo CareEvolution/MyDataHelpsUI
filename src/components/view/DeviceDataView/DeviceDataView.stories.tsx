@@ -7,10 +7,7 @@ const meta: Meta<typeof DeviceDataView> = {
     title: "View/DeviceDataView",
     component: DeviceDataView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

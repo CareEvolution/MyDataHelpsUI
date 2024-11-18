@@ -7,10 +7,7 @@ const meta: Meta<typeof HomeView> = {
     title: "View/HomeView",
     component: HomeView,
     parameters: {
-        layout: 'fullscreen',
-        docs: {
-            Description: <Description />
-        }
+        layout: 'fullscreen'
     }
 };
 

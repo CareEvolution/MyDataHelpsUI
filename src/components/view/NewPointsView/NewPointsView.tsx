@@ -21,7 +21,10 @@ export interface NewPointsViewProps {
     doneButtonText?: string;
 }
 
-export default function (props: NewPointsViewProps) {
+/**
+ * This view displays a summary of new points earned by the participant.
+ */
+export default function NewPointsView(props: NewPointsViewProps) {
 
     let totalBonusPoints = props.entries.reduce((sum, entry) => {
         return sum + (entry.bonusPoints || 0);
@@ -85,6 +88,6 @@ export function showNewPoints(props: NewPointsViewProps, url?: string): void {
         value: JSON.stringify(props)
     };
     MyDataHelps.persistDeviceData([newPointsDataPoint]).then(() => {
-        MyDataHelps.openApplication(url || 'https://viewlibrary.careevolutionapps.com/newpoints', {modal: true});
+        MyDataHelps.openApplication(url || 'https://viewlibrary.careevolutionapps.com/newpoints', { modal: true });
     });
 }
