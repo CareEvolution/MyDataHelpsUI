@@ -15,5 +15,8 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noEmit": true
-  }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

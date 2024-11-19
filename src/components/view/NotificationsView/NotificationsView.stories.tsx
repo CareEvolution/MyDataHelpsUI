@@ -1,19 +1,29 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import NotificationsView, { NotificationsViewProps } from "./NotificationsView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/NotificationsView",
-	component: NotificationsView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof NotificationsView>;
+const meta: Meta<typeof NotificationsView> = {
+    title: "View/NotificationsView",
+    component: NotificationsView,
+    parameters: {
+        layout: 'fullscreen'
+    }
+};
 
-const Template: ComponentStory<typeof NotificationsView> = (args: NotificationsViewProps) => <NotificationsView {...args} />;
+export default meta;
+type Story = StoryObj<typeof NotificationsView>;
 
-export const Preview = Template.bind({});
-Preview.args = { preview: true };
+const render = (args: NotificationsViewProps) => <NotificationsView {...args} />;
 
-export const Live = Template.bind({});
-Live.args = { preview: false };
+export const Default: Story = {
+    args: {
+        preview: true
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {},
+    render: render
+};

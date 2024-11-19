@@ -6,7 +6,12 @@ export interface DeviceDataViewProps {
 	colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: DeviceDataViewProps) {
+/**
+ * This view charts a few commonly requested device data types.
+ * It includes steps and resting heart rate from Fitbit and Garmin, steps and distance traveled from Apple Health, and steps from Google Fit.
+ * It also allows you to manage your device data connections.
+ */
+export default function DeviceDataView(props: DeviceDataViewProps) {
 	return (
 		<Layout  colorScheme={props.colorScheme ?? "auto"}>
 			<StatusBarBackground />

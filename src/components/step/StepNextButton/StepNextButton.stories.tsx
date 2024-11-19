@@ -1,54 +1,66 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import StepNextButton, {StepNextButtonProps} from "./StepNextButton";
+import StepNextButton, { StepNextButtonProps } from "./StepNextButton";
 import StepLayout from "../StepLayout";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof StepNextButton> = {
     title: "SurveyStep/Components/StepNextButton",
     component: StepNextButton,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof StepNextButton>;
+};
 
-const Template: ComponentStory<typeof StepNextButton> = (args: StepNextButtonProps) =>
-    <StepLayout>
-        <StepNextButton {...args} />
-    </StepLayout>
+export default meta;
+type Story = StoryObj<typeof StepNextButton>;
 
-export const StepNextButtonDefault = Template.bind({});
-StepNextButtonDefault.args = {
-    onClick: () => alert("You clicked the Next button")
-}
+const render = (args: StepNextButtonProps) => <StepLayout>
+    <StepNextButton {...args} />
+</StepLayout>;
 
-export const StepNextButtonCustomText = Template.bind({});
-StepNextButtonCustomText.args = {
-    text: "Onward",
-    onClick: () => alert("You clicked the Onward button")
-}
-
-export const StepNextButtonCustomStyle = Template.bind({});
-StepNextButtonCustomStyle.args = {
-    color: "#FF0000",
-    fontWeight: "900",
-    backgroundColor: "#0000FF",
-    textTransform: "uppercase",
-    letterSpacing: "10px",
-    onClick: () => alert("You clicked the Next button")
-}
-
-export const StepNextButtonGradient = Template.bind({});
-StepNextButtonGradient.args = {
-    gradient: {
-        direction: "TopToBottom",
-        endColor: "#000000",
-        startColor: "#ffffff"
+export const Default: Story = {
+    args: {
+        onClick: () => console.log("You clicked the Next button")
     },
-    onClick: () => alert("You clicked the pretty button")
-}
+    render: render
+};
 
-export const StepNextButtonDisabled = Template.bind({});
-StepNextButtonDisabled.args = {
-    disabled: true,
-    onClick: () => alert("You shall not pass!")
-}
+export const CustomText: Story = {
+    args: {
+        text: "Onward",
+        onClick: () => console.log("You clicked the Onward button")
+    },
+    render: render
+};
+
+export const CustomStyle: Story = {
+    args: {
+        color: "#FF0000",
+        fontWeight: "900",
+        backgroundColor: "#0000FF",
+        textTransform: "uppercase",
+        letterSpacing: "10px",
+        onClick: () => console.log("You clicked the Next button")
+    },
+    render: render
+};
+
+export const GradientButton: Story = {
+    args: {
+        gradient: {
+            direction: "TopToBottom",
+            endColor: "#000000",
+            startColor: "#ffffff"
+        },
+        onClick: () => console.log("You clicked the pretty button")
+    },
+    render: render
+};
+
+export const Disabled: Story = {
+    args: {
+        disabled: true,
+        onClick: () => console.log("This will never be hit")
+    },
+    render: render
+};

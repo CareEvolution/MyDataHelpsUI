@@ -12,7 +12,10 @@ export interface FitbitViewProps {
 	colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: FitbitViewProps) {
+/**
+ * This view shows Fitbit connection status, a list of the participant's Fitbit devices, and 2 line charts showing monthly steps and resting heart rate.
+*/
+export default function FitbitView (props: FitbitViewProps) {
 	var [viewIsReady, setViewIsReady] = useState(false);
 	useEffect(() => {
 		MyDataHelps.connect().then(() => {

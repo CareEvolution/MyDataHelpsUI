@@ -13,7 +13,11 @@ export interface NotificationsViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: NotificationsViewProps) {
+/**
+ * This view shows notifications.
+ * It can be configured to show Sms, Push, or Email notifications. 
+*/
+export default function NotificationsView(props: NotificationsViewProps) {
 	var notificationType: NotificationType = "Push";
 	if (props.notificationType) {
 		notificationType = props.notificationType;

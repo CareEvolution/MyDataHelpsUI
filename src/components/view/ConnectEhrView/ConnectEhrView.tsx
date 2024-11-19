@@ -16,7 +16,10 @@ export interface ConnectEhrViewProps {
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: ConnectEhrViewProps) {
+/**
+ * This view enables participants to connect with their EHR providers and/or health plans.
+ */
+export default function ConnectEhrView(props: ConnectEhrViewProps) {
 
     let title = '';
     let providerCategories: string[] = [];

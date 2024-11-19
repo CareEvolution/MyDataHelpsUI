@@ -1,25 +1,49 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import FitbitView, { FitbitViewProps } from "./FitbitView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/FitbitView",
-	component: FitbitView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof FitbitView>;
+const meta: Meta<typeof FitbitView> = {
+    title: "View/FitbitView",
+    component: FitbitView,
+    parameters: {
+        layout: 'fullscreen'
+    }
+};
 
-const Template: ComponentStory<typeof FitbitView> = (args: FitbitViewProps) => <FitbitView {...args} />;
+export default meta;
+type Story = StoryObj<typeof FitbitView>;
 
-export const NotEnabled = Template.bind({});
-NotEnabled.args = { connectPreview: "notEnabled", devicesPreview: "notEnabled", chartsPreview: "notEnabled"};
+const render = (args: FitbitViewProps) => <FitbitView {...args} />;
 
-export const NotConnected = Template.bind({});
-NotConnected.args = { connectPreview: "notConnected", devicesPreview: "notConnected", chartsPreview: "notConnected"};
+export const NotEnabled: Story = {
+    args: {
+        connectPreview: "notEnabled",
+        devicesPreview: "notEnabled",
+        chartsPreview: "notEnabled"
+    },
+    render: render
+};
 
-export const Connected = Template.bind({});
-Connected.args = { connectPreview: "fetchComplete", devicesPreview: "connected", chartsPreview: "connected"};
+export const NotConnected: Story = {
+    args: {
+        connectPreview: "notConnected",
+        devicesPreview: "notConnected",
+        chartsPreview: "notConnected"
+    },
+    render: render
+};
 
-export const Live = Template.bind({});
-Live.args = {};
+export const Connected: Story = {
+    args: {
+        connectPreview: "fetchComplete",
+        devicesPreview: "connected",
+        chartsPreview: "connected"
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {},
+    render: render
+};
