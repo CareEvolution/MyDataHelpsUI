@@ -59,7 +59,8 @@ export const GradientButton: Story = {
 
 export const Disabled: Story = {
     args: {
-        disabled: true
+        disabled: true,
+        onClick: () => console.log("This will never be hit")
     },
     render: render
 };
