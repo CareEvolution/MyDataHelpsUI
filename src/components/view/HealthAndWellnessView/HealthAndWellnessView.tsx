@@ -13,7 +13,11 @@ export interface HealthAndWellnessViewProps {
     variant?: "default" | "cardBased"
 }
 
-export default function (props: HealthAndWellnessViewProps) {
+/**
+ * This view allows the participant to connect to their EHR provider. 
+ * After establishing the connection, participants can access a comprehensive range of health information, including labs, blood type, medications, immunizations, reports, allergies, conditions, and procedures.
+ */
+export default function HealthAndWellnessView(props: HealthAndWellnessViewProps) {
     function viewLabs() {
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }

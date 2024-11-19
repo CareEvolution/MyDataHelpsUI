@@ -1,43 +1,55 @@
 ﻿import React from "react"
-import {ComponentMeta, ComponentStory} from "@storybook/react"
-import ConnectEhrView, {ConnectEhrViewProps} from "./ConnectEhrView"
+import ConnectEhrView, { ConnectEhrViewProps } from "./ConnectEhrView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
+const meta: Meta<typeof ConnectEhrView> = {
     title: "View/ConnectEhrView",
     component: ConnectEhrView,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof ConnectEhrView>;
-
-const Template: ComponentStory<typeof ConnectEhrView> = (args: ConnectEhrViewProps) => <ConnectEhrView {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    preview: true,
-    externalAccountsApplicationUrl: "preview",
-    presentation: "Push"
 };
 
-export const ProvidersOnly = Template.bind({});
-ProvidersOnly.args = {
-    preview: true,
-    externalAccountsApplicationUrl: "preview",
-    presentation: "Push",
-    excludeHealthPlans: true
+export default meta;
+type Story = StoryObj<typeof ConnectEhrView>;
+
+const render = (args: ConnectEhrViewProps) => <ConnectEhrView {...args} />;
+
+export const Default: Story = {
+    args: {
+        preview: true,
+        externalAccountsApplicationUrl: "preview",
+        presentation: "Push"
+    },
+    render: render
 };
 
-export const HealthPlansOnly = Template.bind({});
-HealthPlansOnly.args = {
-    preview: true,
-    externalAccountsApplicationUrl: "preview",
-    presentation: "Push",
-    excludeProviders: true
+export const ProvidersOnly: Story = {
+    args: {
+        preview: true,
+        externalAccountsApplicationUrl: "preview",
+        presentation: "Push",
+        excludeHealthPlans: true
+    },
+    render: render
 };
 
-export const Live = Template.bind({});
-Live.args = {
-    preview: false,
-    externalAccountsApplicationUrl: "preview",
-    presentation: "Push"
+export const HealthPlansOnly: Story = {
+    args: {
+        preview: true,
+        externalAccountsApplicationUrl: "preview",
+        presentation: "Push",
+        excludeProviders: true
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {
+        preview: false,
+        externalAccountsApplicationUrl: "preview",
+        presentation: "Push"
+    },
+    render: render
 };

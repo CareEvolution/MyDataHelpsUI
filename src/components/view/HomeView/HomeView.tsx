@@ -23,7 +23,13 @@ export interface HomeViewProps {
 	colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: HomeViewProps) {
+/**
+ * This view includes all the essential features for MDH engagement:
+ * It displays a prompt to download the MyDataHelps app, the latest notification, 
+ * a list of incomplete tasks, options to connect devices and providers/health plans, 
+ * and support information for the project.
+ */
+export default function HomeView(props: HomeViewProps) {
 	var notificationType: NotificationType = "Push";
 	if (props.notificationType) {
 		notificationType = props.notificationType;

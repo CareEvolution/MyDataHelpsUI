@@ -20,7 +20,7 @@ const render = (args: StepNextButtonProps) => <StepLayout>
 
 export const Default: Story = {
     args: {
-        onClick: () => alert("You clicked the Next button")
+        onClick: () => console.log("You clicked the Next button")
     },
     render: render
 };
@@ -28,7 +28,7 @@ export const Default: Story = {
 export const CustomText: Story = {
     args: {
         text: "Onward",
-        onClick: () => alert("You clicked the Onward button")
+        onClick: () => console.log("You clicked the Onward button")
     },
     render: render
 };
@@ -40,26 +40,27 @@ export const CustomStyle: Story = {
         backgroundColor: "#0000FF",
         textTransform: "uppercase",
         letterSpacing: "10px",
-        onClick: () => alert("You clicked the Next button")
+        onClick: () => console.log("You clicked the Next button")
     },
     render: render
 };
 
-export const Gradient: Story = {
+export const GradientButton: Story = {
     args: {
         gradient: {
             direction: "TopToBottom",
             endColor: "#000000",
             startColor: "#ffffff"
         },
-        onClick: () => alert("You clicked the pretty button")
+        onClick: () => console.log("You clicked the pretty button")
     },
     render: render
 };
 
 export const Disabled: Story = {
     args: {
-        disabled: true
+        disabled: true,
+        onClick: () => console.log("This will never be hit")
     },
     render: render
 };

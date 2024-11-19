@@ -1,25 +1,49 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import GarminView, { GarminViewProps } from "./GarminView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/GarminView",
-	component: GarminView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof GarminView>;
+const meta: Meta<typeof GarminView> = {
+    title: "View/GarminView",
+    component: GarminView,
+    parameters: {
+        layout: 'fullscreen'
+    }
+};
 
-const Template: ComponentStory<typeof GarminView> = (args: GarminViewProps) => <GarminView {...args} />;
+export default meta;
+type Story = StoryObj<typeof GarminView>;
 
-export const NotEnabled = Template.bind({});
-NotEnabled.args = { connectPreview: "notEnabled", devicesPreview: "notEnabled", chartsPreview: "notEnabled"};
+const render = (args: GarminViewProps) => <GarminView {...args} />;
 
-export const NotConnected = Template.bind({});
-NotConnected.args = { connectPreview: "notConnected", devicesPreview: "notConnected", chartsPreview: "notConnected"};
+export const NotEnabled: Story = {
+    args: {
+        connectPreview: "notEnabled",
+        devicesPreview: "notEnabled",
+        chartsPreview: "notEnabled"
+    },
+    render: render
+};
 
-export const Connected = Template.bind({});
-Connected.args = { connectPreview: "fetchComplete", devicesPreview: "connected", chartsPreview: "connected"};
+export const NotConnected: Story = {
+    args: {
+        connectPreview: "notConnected",
+        devicesPreview: "notConnected",
+        chartsPreview: "notConnected"
+    },
+    render: render
+};
 
-export const Live = Template.bind({});
-Live.args = {};
+export const Connected: Story = {
+    args: {
+        connectPreview: "fetchComplete",
+        devicesPreview: "connected",
+        chartsPreview: "connected"
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {},
+    render: render
+};

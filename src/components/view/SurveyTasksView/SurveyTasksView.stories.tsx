@@ -1,25 +1,47 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import SurveyTasksView, { SurveyTasksViewProps } from "./SurveyTasksView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/SurveyTasksView",
-	component: SurveyTasksView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof SurveyTasksView>;
+const meta: Meta<typeof SurveyTasksView> = {
+    title: "View/SurveyTasksView",
+    component: SurveyTasksView,
+    parameters: {
+        layout: 'fullscreen'
+    }
+};
 
-const Template: ComponentStory<typeof SurveyTasksView> = (args: SurveyTasksViewProps) => <SurveyTasksView {...args} />;
+export default meta;
+type Story = StoryObj<typeof SurveyTasksView>;
 
-export const Preview = Template.bind({});
-Preview.args = { preview: true };
+const render = (args: SurveyTasksViewProps) => <SurveyTasksView {...args} />;
 
-export const HideIncomplete = Template.bind({});
-HideIncomplete.args = { preview: true, hideIncompleteTasks: true };
+export const Default: Story = {
+    args: {
+        preview: true
+    },
+    render: render
+};
 
-export const HideComplete = Template.bind({});
-HideComplete.args = { preview: true, hideCompleteTasks: true };
+export const HideIncomplete: Story = {
+    args: {
+        preview: true,
+        hideIncompleteTasks: true
+    },
+    render: render
+};
 
-export const Live = Template.bind({});
-Live.args = { preview: false };
+export const HideComplete: Story = {
+    args: {
+        preview: true,
+        hideCompleteTasks: true
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {
+        preview: false
+    },
+    render: render
+};
