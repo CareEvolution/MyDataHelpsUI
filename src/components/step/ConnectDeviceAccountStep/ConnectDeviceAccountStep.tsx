@@ -14,7 +14,10 @@ export interface ConnectDeviceAccountStepProps {
     onConnect: () => void;
 }
 
-export default function (props: ConnectDeviceAccountStepProps) {
+/**
+ * This survey step can be passed a function used to connect devices.
+ */
+export default function ConnectDeviceAccountStep (props: ConnectDeviceAccountStepProps) {
     const nextButtonText = `Connect to ${props.deviceType}`;
 
     return (

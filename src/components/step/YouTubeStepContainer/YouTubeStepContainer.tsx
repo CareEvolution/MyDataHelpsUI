@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
 import YouTubeStep from '../YouTubeStep';
 
-export default function () {
+/**
+ * A survey step to use within a MyDataHelps survey for playing YouTube content.
+ */
+export default function YouTubeStepContainer () {
 
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();

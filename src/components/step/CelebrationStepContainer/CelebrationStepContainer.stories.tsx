@@ -1,17 +1,21 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import CelebrationStepContainer from "./CelebrationStepContainer";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof CelebrationStepContainer> = {
     title: "SurveyStep/CelebrationStepContainer",
     component: CelebrationStepContainer,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof CelebrationStepContainer>;
+};
 
-const Template: ComponentStory<typeof CelebrationStepContainer> = () =>
-    <CelebrationStepContainer />
+export default meta;
+type Story = StoryObj<typeof CelebrationStepContainer>;
 
-export const CelebrationStepContainerDefault = Template.bind({});
-CelebrationStepContainerDefault.args = {}
+const render = () => <CelebrationStepContainer />;
+
+export const Default: Story = {
+    args: {},
+    render: render
+};

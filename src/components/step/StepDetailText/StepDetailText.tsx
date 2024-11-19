@@ -5,7 +5,7 @@ import { StepElementProps } from '../shared';
 import StepMarkdown from '../StepMarkdown/StepMarkdown';
 
 
-export default function (props: StepElementProps) {
+export default function StepDetailText (props: StepElementProps) {
     if (!props.text) {
       return null
     }

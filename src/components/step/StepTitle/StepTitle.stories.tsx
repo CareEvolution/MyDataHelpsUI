@@ -1,37 +1,45 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StepTitle from "./StepTitle";
-import {StepElementProps} from "../shared"
+import { StepElementProps } from "../shared"
 import StepLayout from "../StepLayout";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof StepTitle> = {
     title: "SurveyStep/Components/StepTitle",
     component: StepTitle,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof StepTitle>;
+};
 
-const Template: ComponentStory<typeof StepTitle> = (args: StepElementProps) =>
-    <StepLayout>
-        <StepTitle {...args} />
-    </StepLayout>
+export default meta;
+type Story = StoryObj<typeof StepTitle>;
 
-export const StepTitleDefault = Template.bind({});
-StepTitleDefault.args = {
-    text: "This is the title"
-}
+const render = (args: StepElementProps) => <StepLayout>
+    <StepTitle {...args} />
+</StepLayout>;
 
-export const StepTitleMarkdownItalics = Template.bind({});
-StepTitleMarkdownItalics.args = {
-    text: "This is _the title_"
-}
+export const Default: Story = {
+    args: {
+        text: "This is the title"
+    },
+    render: render
+};
 
-export const StepTitleCustomStyle = Template.bind({});
-StepTitleCustomStyle.args = {
-    text: "This is the title",
-    textAlign: "Left",
-    color: "#FF0000",
-    fontSize: "72",
-    fontWeight: "900"
-}
+export const StepTitleMarkdownItalics: Story = {
+    args: {
+        text: "This is _the title_"
+    },
+    render: render
+};
+
+export const StepTitleCustomStyle: Story = {
+    args: {
+        text: "This is the title",
+        textAlign: "Left",
+        color: "#FF0000",
+        fontSize: "72",
+        fontWeight: "900"
+    },
+    render: render
+};

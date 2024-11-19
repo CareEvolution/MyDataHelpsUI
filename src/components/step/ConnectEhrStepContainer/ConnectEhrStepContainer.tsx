@@ -7,7 +7,10 @@ import MyDataHelps, {
 import ConnectEhrStep from "../ConnectEhrStep/ConnectEhrStep";
 import React from "react";
 
-export default function () {
+/**
+ * A survey step to use within a MyDataHelps survey for connecting Providers, and Health Plans.
+ */
+export default function ConnectEhrStepContainer() {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [surveyContext, setSurveyContext] = useState<SurveyContext>();

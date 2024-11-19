@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import MyDataHelps, {StepConfiguration} from '@careevolution/mydatahelps-js';
 import CelebrationStep from '../CelebrationStep';
 
-export default function () {
+/**
+ * A celebration step to use within a MyDataHelps survey.
+ */
+export default function CelebrationStepContainer() {
 
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
