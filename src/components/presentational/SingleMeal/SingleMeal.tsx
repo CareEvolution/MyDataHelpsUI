@@ -1,15 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './SingleMeal.css'
 import UnstyledButton from '../UnstyledButton';
-import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
+import { ColorDefinition, formatDateForLocale, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { formatDateForLocale } from '../../../helpers/locale';
+import { LoadingIndicator } from '../index';
 
 export interface SingleMealProps {
     meal: Meal;
-    number: number;
+    mealImageUrl?: string;
+    number?: number;
     color: ColorDefinition;
     onClick?: () => void;
     onEdit?: () => void;
@@ -20,13 +21,37 @@ export interface SingleMealProps {
 export default function (props: SingleMealProps) {
     const layoutContext = useContext(LayoutContext);
 
+    const [imageLoading, setImageLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        setImageLoading(!!props.mealImageUrl);
+    }, [props.mealImageUrl])
+
     return <div className="mdhui-meal" ref={props.innerRef}>
         <WrapIfNecessary onClick={props.onClick}>
-            <div className="mdhui-meal-number" style={{ background: resolveColor(layoutContext.colorScheme, props.color) }}>
-                {props.number}&nbsp;
-                {props.meal.type === 'meal' && <FontAwesomeSvgIcon icon={faBurger} />}
-                {props.meal.type === 'snack' && <FontAwesomeSvgIcon icon={faCookie} />}
-                {props.meal.type === 'drink' && <FontAwesomeSvgIcon icon={faWineBottle} />}
+            <div className="mdhui-meal-thumbnail">
+                {!props.mealImageUrl &&
+                    <>
+                        {props.meal.type === 'meal' && <FontAwesomeSvgIcon icon={faBurger} />}
+                        {props.meal.type === 'snack' && <FontAwesomeSvgIcon icon={faCookie} />}
+                        {props.meal.type === 'drink' && <FontAwesomeSvgIcon icon={faWineBottle} />}
+                    </>
+                }
+                {props.mealImageUrl &&
+                    <>
+                        <div className="mdhui-meal-thumbnail-image" style={{ display: imageLoading ? 'none' : 'block' }}>
+                            <img alt="meal thumbnail" src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
+                        </div>
+                        {imageLoading &&
+                            <LoadingIndicator className="mdhui-meal-loading" />
+                        }
+                    </>
+                }
+                {props.number !== undefined &&
+                    <div className="mdhui-meal-number" style={{ background: resolveColor(layoutContext.colorScheme, props.color) }}>
+                        {props.number}
+                    </div>
+                }
             </div>
         </WrapIfNecessary>
         <WrapIfNecessary onClick={props.onClick}>

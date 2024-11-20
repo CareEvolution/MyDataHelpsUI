@@ -21,3 +21,4 @@ export * from './AIAssistant';
 export * from './predictableRandomNumber';
 export * from './single-value-providers';
 export * from './insight-matrix';
+export * from './query-all-files';

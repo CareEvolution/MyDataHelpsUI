@@ -4,33 +4,33 @@ import MealLog from './MealLog';
 import MealCoordinator from '../../container/MealCoordinator';
 import { MealCoordinatorPreviewState } from '../../container';
 import Card from "../Card";
+import { Meta, StoryObj } from "@storybook/react";
+import { argTypesToHide } from "../../../../.storybook/helpers";
 
-export default {
+type MealLogStoryArgs = React.ComponentProps<typeof MealLog> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    previewState: 'loading' | MealCoordinatorPreviewState | 'live';
+};
+
+const meta: Meta<MealLogStoryArgs> = {
     title: 'Presentational/MealLog',
     component: MealLog,
-    parameters: { layout: 'fullscreen' }
+    parameters: { layout: 'fullscreen' },
+    render: args => {
+        return <Layout colorScheme={args.colorScheme}>
+            <MealCoordinator previewState={args.previewState !== 'live' ? args.previewState : undefined}>
+                <Card>
+                    <MealLog preview={args.previewState !== 'live'} onEditMeal={() => console.log('edit meal')} />
+                </Card>
+            </MealCoordinator>
+        </Layout>;
+    }
 };
+export default meta;
 
-interface MealLogStoryArgs {
-    colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | MealCoordinatorPreviewState;
-}
+type Story = StoryObj<MealLogStoryArgs>;
 
-const render = (args: MealLogStoryArgs) => {
-    const onEditMeal = () => {
-        console.log('edit meal');
-    };
-
-    return <Layout colorScheme={args.colorScheme}>
-        <MealCoordinator previewState={args.previewState}>
-            <Card>
-                <MealLog preview={true} onEditMeal={() => onEditMeal()} />
-            </Card>
-        </MealCoordinator>
-    </Layout>;
-};
-
-export const Default = {
+export const Default: Story = {
     args: {
         colorScheme: 'auto',
         previewState: 'with data'
@@ -44,8 +44,8 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data']
-        }
-    },
-    render: render
+            options: ['loading', 'no data', 'with data', 'live']
+        },
+        ...argTypesToHide(['preview', 'onEditMeal', 'innerRef'])
+    }
 };
