@@ -14,7 +14,7 @@ export interface MealContext {
     loading: boolean;
     meals: Meal[];
     selectedMeal?: Meal;
-    addMeal: (meal: Meal) => void;
+    addMeal: (meal: Meal) => Promise<void>;
     onMealClicked: (meal: Meal) => void;
 }
 
@@ -32,11 +32,11 @@ export default function (props: MealCoordinatorProps) {
         setSelectedMeal(selectedMeal === meal ? undefined : meal);
     };
 
-    const addMeal = (meal: Meal) => {
+    const addMeal = (meal: Meal): Promise<void> => {
         setLoading(true);
 
         const updatedMeals = [...meals, meal].sort(timestampSortAsc);
-        saveMeals(startOfDay(meal.timestamp), updatedMeals).then(() => {
+        return saveMeals(startOfDay(meal.timestamp), updatedMeals).then(() => {
             setMeals(updatedMeals);
             setLoading(false);
         });

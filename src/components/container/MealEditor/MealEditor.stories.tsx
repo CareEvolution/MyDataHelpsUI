@@ -1,6 +1,8 @@
 ﻿import React from 'react';
 import { Card, Layout } from '../../presentational';
 import MealEditor, { MealEditorProps } from './MealEditor';
+import { argTypesToHide } from '../../../../.storybook/helpers';
+import { MealEditorPreviewState } from './MealEditor.previewData';
 
 export default {
     title: 'Container/MealEditor',
@@ -10,6 +12,9 @@ export default {
 
 interface MealEditorStoryArgs extends MealEditorProps {
     colorScheme: 'auto' | 'light' | 'dark';
+    withImageCapture: boolean;
+    stateWithoutImageCapture: 'loading' | 'loaded' | 'live';
+    stateWithImageCapture: 'loading' | MealEditorPreviewState | 'live';
 }
 
 const render = (args: MealEditorStoryArgs) => {
@@ -29,14 +34,38 @@ const render = (args: MealEditorStoryArgs) => {
         console.log('save');
     };
 
+    const onCaptureImage = () => {
+        console.log('capture image');
+    };
+
+    const computePreviewState = (args: MealEditorStoryArgs): 'loading' | MealEditorPreviewState | undefined => {
+        if (args.withImageCapture) {
+            if (args.stateWithImageCapture === 'loading') {
+                return 'loading';
+            }
+            if (args.stateWithImageCapture !== 'live') {
+                return args.stateWithImageCapture as MealEditorPreviewState;
+            }
+            return undefined;
+        }
+        if (args.stateWithoutImageCapture === 'loading') {
+            return 'loading';
+        }
+        if (args.stateWithoutImageCapture === 'loaded') {
+            return 'without image'
+        }
+        return undefined;
+    };
+
     return <Layout colorScheme={args.colorScheme}>
         <Card>
             <MealEditor
-                previewState={args.previewState}
+                previewState={computePreviewState(args)}
                 onError={() => onError()}
                 onDelete={() => onDelete()}
                 onCancel={() => onCancel()}
                 onSave={() => onSave()}
+                onCaptureImage={args.withImageCapture ? () => onCaptureImage() : undefined}
             />
         </Card>
     </Layout>;
@@ -45,7 +74,9 @@ const render = (args: MealEditorStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
-        previewState: 'add'
+        withImageCapture: false,
+        stateWithoutImageCapture: 'loaded',
+        stateWithImageCapture: 'without image'
     },
     argTypes: {
         colorScheme: {
@@ -53,11 +84,22 @@ export const Default = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
-        previewState: {
+        withImageCapture: {
+            name: 'with image capture?'
+        },
+        stateWithoutImageCapture: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'add', 'edit']
-        }
+            options: ['loading', 'loaded', 'live'],
+            if: { arg: 'withImageCapture', eq: false }
+        },
+        stateWithImageCapture: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'without image', 'with new image', 'with existing image', 'with modified image', 'with removed image', 'live'],
+            if: { arg: 'withImageCapture', eq: true }
+        },
+        ...argTypesToHide(['previewState'])
     },
     render: render
 };

@@ -10,6 +10,7 @@ import { add, startOfDay } from 'date-fns';
 
 export interface MealButtonsProps {
     preview?: boolean;
+    onAdd?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -29,7 +30,7 @@ export default function (props: MealButtonsProps) {
             id: uuid(),
             timestamp: dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now,
             type: type
-        });
+        }).then(() => props.onAdd?.());
     };
 
     return <div className="mdhui-meal-buttons" ref={props.innerRef}>

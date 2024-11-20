@@ -15,11 +15,15 @@ interface MealButtonsStoryArgs {
     previewState: 'loading' | MealCoordinatorPreviewState;
 }
 
+const onAdd = () => {
+    console.log('meal added');
+};
+
 const render = (args: MealButtonsStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <MealCoordinator previewState={args.previewState}>
             <Card>
-                <MealButtons preview={true} />
+                <MealButtons preview={true} onAdd={onAdd} />
             </Card>
         </MealCoordinator>
     </Layout>;

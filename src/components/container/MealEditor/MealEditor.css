@@ -1,4 +1,6 @@
 .mdhui-meal-editor {
+    --mdhui-meal-editor-image-action-background-color-light: rgba(255, 255, 255, 0.8);
+    --mdhui-meal-editor-image-action-background-color-dark: rgba(0, 0, 0, 0.8);
     padding: 16px;
     font-size: 0.9em;
 }
@@ -20,47 +22,126 @@
 }
 
 .mdhui-meal-editor-form {
-    padding: 20px 0;
-    display: grid;
-    grid-template-columns: max-content auto;
+    padding-top: 20px;
+}
+
+.mdhui-meal-editor-time {
+    display: flex;
     align-items: center;
-    grid-column-gap: 8px;
-    grid-row-gap: 4px;
+    column-gap: 8px;
 }
 
-.mdhui-meal-editor-description-input-label {
-    margin-top: 8px;
-    grid-column: span 3;
-}
-
-.mdhui-meal-editor-input, .mdhui-meal-editor-textarea {
-    box-sizing: border-box;
+.mdhui-meal-editor-time-input {
+    padding: 0 4px 0 8px;
+    height: 30px;
+    width: 100%;
     font-family: inherit;
     font-size: 12px;
+    border: 1px solid var(--mdhui-border-color-1);
     border-radius: 5px;
-    border-color: var(--mdhui-border-color-1);
-    border-style: solid;
-    border-width: 1px;
 }
 
-.mdhui-meal-editor-input {
-    height: 30px;
-    padding: 0 4px 0 8px;
-    grid-column: span 2;
-}
-
-.mdhui-meal-editor-textarea {
-    padding: 8px;
-    grid-column: span 3;
-}
-
-.mdhui-meal-editor-input:hover, .mdhui-meal-editor-textarea:hover {
+.mdhui-meal-editor-time-input:hover {
     border: 1px solid var(--mdhui-border-color-2);
 }
 
-.mdhui-meal-editor-input:focus-visible, .mdhui-meal-editor-textarea:focus-visible {
+.mdhui-meal-editor-time-input:focus-visible {
     outline: 0;
     border: 1px solid var(--mdhui-border-color-2);
+}
+
+.mdhui-meal-editor-description-label {
+    margin: 12px 0 4px;
+}
+
+.mdhui-meal-editor-description-input {
+    box-sizing: border-box;
+    padding: 8px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 12px;
+    border: 1px solid var(--mdhui-border-color-1);
+    border-radius: 5px;
+}
+
+.mdhui-meal-editor-description-input:hover {
+    border: 1px solid var(--mdhui-border-color-2);
+}
+
+.mdhui-meal-editor-description-input:focus-visible {
+    outline: 0;
+    border: 1px solid var(--mdhui-border-color-2);
+}
+
+.mdhui-meal-editor-image-add {
+    margin-top: 8px;
+}
+
+.mdhui-meal-editor-image-manager {
+    position: relative;
+    margin-top: 8px;
+    padding: 16px 16px 8px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.mdhui-meal-editor-image-wrapper {
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    background: #000;
+}
+
+.mdhui-meal-editor-image {
+    display: block;
+    max-height: 260px;
+    max-width: 100%;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.mdhui-meal-editor-image-removed {
+    opacity: 0.6;
+}
+
+.mdhui-meal-editor-image-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 8px;
+    background: var(--mdhui-background-color-2);
+    border-radius: 10px;
+    font-size: 0.8em;
+}
+
+.mdhui-meal-editor-image-overlay-removed {
+    color: var(--mdhui-color-danger);
+}
+
+.mdhui-meal-editor-image-actions {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    justify-content: center;
+    column-gap: 8px;
+}
+
+.mdhui-meal-editor-image-action {
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background: var(--mdhui-meal-editor-image-action-background-color);
+    border-radius: 5px;
+    color: var(--mdhui-color-primary);
+}
+
+.mdhui-meal-editor-image-action-remove {
+    color: var(--mdhui-color-danger);
 }
 
 .mdhui-meal-editor-error {
@@ -68,6 +149,7 @@
 }
 
 .mdhui-meal-editor-buttons {
+    margin-top: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
