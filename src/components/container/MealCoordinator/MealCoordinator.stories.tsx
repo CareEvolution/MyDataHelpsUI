@@ -1,36 +1,34 @@
 ﻿import React from 'react';
 import { Card, DateRangeCoordinator, Layout, MealLog } from '../../presentational';
-import { MealCoordinatorPreviewState } from './MealCoordinator.previewData';
 import MealCoordinator from '../MealCoordinator';
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
 
-export default {
+type MealCoordinatorStoryArgs = React.ComponentProps<typeof MealCoordinator> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+};
+
+const meta: Meta<MealCoordinatorStoryArgs> = {
     title: 'Container/MealCoordinator',
     component: MealCoordinator,
-    parameters: { layout: 'fullscreen' }
+    parameters: { layout: 'fullscreen' },
+    render: args => {
+        return <Layout colorScheme={args.colorScheme}>
+            <DateRangeCoordinator intervalType="Day">
+                <MealCoordinator previewState={args.previewState}>
+                    <Card>
+                        <MealLog preview={true} onEditMeal={() => console.log('edit meal')} />
+                    </Card>
+                </MealCoordinator>
+            </DateRangeCoordinator>
+        </Layout>;
+    }
 };
+export default meta;
 
-interface MealCoordinatorStoryArgs {
-    colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | MealCoordinatorPreviewState;
-}
+type Story = StoryObj<MealCoordinatorStoryArgs>;
 
-const render = (args: MealCoordinatorStoryArgs) => {
-    const onEditMeal = () => {
-        console.log('edit meal');
-    };
-
-    return <Layout colorScheme={args.colorScheme}>
-        <DateRangeCoordinator intervalType="Day">
-            <MealCoordinator previewState={args.previewState}>
-                <Card>
-                    <MealLog preview={true} onEditMeal={() => onEditMeal()} />
-                </Card>
-            </MealCoordinator>
-        </DateRangeCoordinator>
-    </Layout>;
-};
-
-export const Default = {
+export const Default: Story = {
     args: {
         colorScheme: 'auto',
         previewState: 'with data'
@@ -45,7 +43,7 @@ export const Default = {
             name: 'state',
             control: 'radio',
             options: ['loading', 'no data', 'with data']
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['innerRef'])
+    }
 };
