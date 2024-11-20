@@ -1,19 +1,27 @@
 import { add, startOfDay } from 'date-fns';
 import { Meal } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
+import grilledCheese from '../../../assets/grilled_cheese.png';
 
 export type MealCoordinatorPreviewState = 'no data' | 'with data';
 
 export interface MealCoordinatorPreviewData {
     meals: Meal[];
+    imageUrls: { [key: string]: string };
 }
 
-export const previewData = (previewState: MealCoordinatorPreviewState, date: Date): MealCoordinatorPreviewData => {
+export const createPreviewData = (previewState: MealCoordinatorPreviewState, date: Date): MealCoordinatorPreviewData => {
     if (previewState === 'no data') {
         return {
-            meals: []
+            meals: [],
+            imageUrls: {}
         };
     } else if (previewState === 'with data') {
+        const grilledCheeseMealId = uuid();
+
+        const imageUrls: { [key: string]: string } = {};
+        imageUrls[grilledCheeseMealId] = grilledCheese;
+
         return {
             meals: [{
                 id: uuid(),
@@ -25,15 +33,17 @@ export const previewData = (previewState: MealCoordinatorPreviewState, date: Dat
                 type: 'meal',
                 description: 'Three pancakes, two eggs, hashbrowns, three strips of bacon, and a piece of toast.'
             }, {
-                id: uuid(),
+                id: grilledCheeseMealId,
                 timestamp: createObservationDate(date, 18, 10),
-                type: 'drink',
-                description: 'A diet coke.'
+                type: 'meal',
+                description: 'A grilled cheese sandwich.'
             }, {
                 id: uuid(),
                 timestamp: createObservationDate(date, 21, 43),
-                type: 'meal'
-            }]
+                type: 'drink',
+                description: 'A diet coke.'
+            }],
+            imageUrls: imageUrls
         };
     }
     return {} as MealCoordinatorPreviewData;
