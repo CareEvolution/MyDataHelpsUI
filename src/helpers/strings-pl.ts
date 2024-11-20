@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Opis",
     "meal-editor-description-optional": "Opcjonalne",
     "meal-editor-duplicate-timestamp-error": "Dwa posiłki nie mogą mieć tej samej godziny.",
+    "meal-editor-add-image": "Dodaj obraz",
+    "meal-editor-image-upload-error": "Wystąpił błąd podczas przesyłania wybranego obrazu. Spróbuj ponownie, użyj innego obrazu lub usuń obraz, aby zapisać.",
     "glucose-view-title": "Monitorowanie glukozy",
     "ai-assistant-loading": "Interakcja z Twoimi danymi...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Jaki jest mój średni puls z ostatniego tygodnia?",
