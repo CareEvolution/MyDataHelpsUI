@@ -12,7 +12,7 @@ export default {
 
 interface MealButtonsStoryArgs {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | MealCoordinatorPreviewState;
+    previewState: 'loading' | MealCoordinatorPreviewState | 'live';
 }
 
 const onAdd = () => {
@@ -21,9 +21,9 @@ const onAdd = () => {
 
 const render = (args: MealButtonsStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <MealCoordinator previewState={args.previewState}>
+        <MealCoordinator previewState={args.previewState !== 'live' ? args.previewState : undefined}>
             <Card>
-                <MealButtons preview={true} onAdd={onAdd} />
+                <MealButtons preview={args.previewState !== 'live'} onAdd={onAdd} />
             </Card>
         </MealCoordinator>
     </Layout>;
@@ -43,7 +43,7 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data']
+            options: ['loading', 'no data', 'with data', 'live']
         }
     },
     render: render

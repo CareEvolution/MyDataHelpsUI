@@ -99,13 +99,15 @@ export default function (props: MealEditorProps) {
 
     const onSave = () => {
         mealToEdit!.description = mealToEdit!.description?.trim();
+        mealToEdit!.imageUrl = currentImageUrl;
 
         if (props.previewState) {
             props.onSave();
             return;
         }
 
-        saveMeals(startOfDay(mealToEdit!.timestamp), [...meals!].sort(timestampSortAsc)).then(() => {
+        const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
+        saveMeals(startOfDay(mealToEdit!.timestamp), [...otherMeals, mealToEdit!].sort(timestampSortAsc)).then(() => {
             props.onSave();
         });
     };

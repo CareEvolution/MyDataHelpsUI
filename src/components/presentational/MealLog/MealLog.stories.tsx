@@ -13,7 +13,7 @@ export default {
 
 interface MealLogStoryArgs {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | MealCoordinatorPreviewState;
+    previewState: 'loading' | MealCoordinatorPreviewState | 'live';
 }
 
 const render = (args: MealLogStoryArgs) => {
@@ -22,9 +22,9 @@ const render = (args: MealLogStoryArgs) => {
     };
 
     return <Layout colorScheme={args.colorScheme}>
-        <MealCoordinator previewState={args.previewState}>
+        <MealCoordinator previewState={args.previewState !== 'live' ? args.previewState : undefined}>
             <Card>
-                <MealLog preview={true} onEditMeal={() => onEditMeal()} />
+                <MealLog preview={args.previewState !== 'live'} onEditMeal={() => onEditMeal()} />
             </Card>
         </MealCoordinator>
     </Layout>;
@@ -44,7 +44,7 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data']
+            options: ['loading', 'no data', 'with data', 'live']
         }
     },
     render: render
