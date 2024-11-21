@@ -6,6 +6,7 @@ import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan, faUndo } from '@fortawesome/free-solid-svg-icons';
+import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -67,6 +68,21 @@ export default function (props: MealEditorProps) {
                 props.onError();
             }
         });
+
+        const checkForNewImageUrl = () => {
+            if (mealToEdit) {
+                setLoading(true);
+                getNewImageUrl().then(newImageUrl => {
+                    setLoading(false);
+                    setCurrentImageUrl(newImageUrl ?? currentImageUrl);
+                });
+            }
+        };
+
+        MyDataHelps.on('applicationDidBecomeVisible', checkForNewImageUrl);
+        return () => {
+            MyDataHelps.off('applicationDidBecomeVisible', checkForNewImageUrl);
+        }
     }, [props.previewState]);
 
     const onDelete = () => {
