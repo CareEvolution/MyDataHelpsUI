@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger';
 import { getNewsFeedPage } from '../../../helpers/news-feed/data';
-import { format, parseISO } from 'date-fns';
 import { Action, Card, LoadingIndicator, Title } from '../../presentational';
 import language from '../../../helpers/language';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -10,8 +9,7 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { getLocaleFromIso } from '../../../helpers';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -40,7 +38,7 @@ export default function (props: EhrNewsFeedProps) {
     let [finished, setFinished] = useState<boolean>(false);
 
     function dayLabel(date: string) {
-        return format(parseISO(date), 'MMMM do, yyyy');
+        return capitalizeForLocale(formatDateForLocale(date, 'MMMM do, yyyy'));
     }
 
     function loadMore() {
@@ -166,7 +164,7 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = format(parseISO(props.event.Date), "h:mm a", { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    let date = formatDateForLocale(props.event.Date, "h:mm a");
     if (date === "12:00 AM") {
         date = "";
     }

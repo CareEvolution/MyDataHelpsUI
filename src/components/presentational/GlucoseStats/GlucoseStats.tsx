@@ -5,6 +5,7 @@ import LoadingIndicator from '../LoadingIndicator';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBed, faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { formatNumberForLocale, formatMinutesForLocale } from "../../../helpers/locale";
 
 export interface GlucoseStatsProps {
     loading: boolean;
@@ -37,6 +38,7 @@ export default function (props: GlucoseStatsProps) {
         sleepHours = Math.floor(props.sleepMinutes / 60);
         sleepMinutes = Math.floor(props.sleepMinutes % 60);
     }
+    let totalSleepMinutes = ((sleepHours || 0) * 60) + (sleepMinutes || 0);
 
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
         <SingleGlucoseStat
@@ -58,14 +60,14 @@ export default function (props: GlucoseStatsProps) {
             label={language('glucose-stats-steps-label')}
             icon={faShoePrints}
             iconColor="#f5b722"
-            value={steps ? `${steps.toLocaleString()}` : undefined}
+            value={steps ? `${formatNumberForLocale(steps)}` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}
             label={language('glucose-stats-sleep-label')}
             icon={faBed}
             iconColor="#8287bb"
-            value={(sleepHours || sleepMinutes) ? `${sleepHours}h ${sleepMinutes}m` : undefined}
+            value={(sleepHours || sleepMinutes) ? formatMinutesForLocale(totalSleepMinutes) : undefined}
         />
     </div>;
 }

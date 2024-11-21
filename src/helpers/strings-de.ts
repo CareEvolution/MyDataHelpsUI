@@ -498,7 +498,24 @@ let strings: { [key: string]: string } = {
     "ai-assistant-suggestion-save-graph-to-files": "Speichere das Diagramm in meinen Dateien",
     "mindful-minutes": "Achtsame Minuten",
     "therapy-minutes": "Therapieminuten",
-    "insight-matrix-no-comparison-data": "Keine Vergleichsdaten-Typen konfiguriert."
+    "insight-matrix-no-comparison-data": "Keine Vergleichsdaten-Typen konfiguriert.",
+    "allergylist-reactions": "Reaktionen",
+    "points-abbreviation": "Pkt",
+    "no-data": "Keine Daten",
+    "no-data-yet": "Noch keine Daten",
+    "bp-low": "Niedrig",
+    "bp-normal": "Normal",
+    "bp-elevated": "Erhöht",
+    "bp-stage1": "Stufe 1",
+    "bp-stage2": "Stufe 2",
+    "bp-crisis": "Krise",
+    "bp-unknown": "Unbekannt",
+    "device-not-enabled": "@@DEVICE@@ ist für dieses Projekt nicht aktiviert.",
+    "download-pdf-report": "PDF-Bericht herunterladen",
+    "connect-to-device": "Mit @@DEVICE@@ verbinden",
+    "symptoms-and-treatments": "Symptome & Behandlungen",
+    "subsequent-evaluation-note": "Nachfolgende Bewertungsnotiz",
+    "summary": "Zusammenfassung"
 };
 
 export default strings;

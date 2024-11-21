@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { Card, Layout, LoadingIndicator, NavigationBar, UnstyledButton, ValueSelector } from '../../../presentational';
-import { add, format, isBefore, startOfToday } from 'date-fns';
+import { add, isBefore, startOfToday } from 'date-fns';
 import { AsthmaLogEntry, AsthmaSymptom, AsthmaSymptomLevel } from '../../model';
-import { getLocaleFromIso, useInitializeView } from '../../../../helpers';
+import { useInitializeView } from '../../../../helpers';
 import { asthmaDataService, dateToAsthmaLogEntryIdentifier, getAsthmaImpacts, getAsthmaImpactTexts, getAsthmaSymptomLevel, getAsthmaSymptomLevelText, getAsthmaSymptoms, getAsthmaSymptomTexts, getAsthmaTriggers, getAsthmaTriggerTexts } from '../../helpers';
 import { AsthmaLogEntryEditorViewPreviewState, previewData } from './AsthmaLogEntryEditorView.previewData';
 import language from '../../../../helpers/language';
+import { formatDateForLocale } from '../../../../helpers/locale';
 
 export interface AsthmaLogEntryEditorViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -111,7 +112,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar
-            title={format(props.date, 'PPP', { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) })}
+            title={formatDateForLocale(props.date, 'PPP')}
             navigationBarLeft={cancelButton}
             navigationBarRight={saveButton}
             variant="compressed"

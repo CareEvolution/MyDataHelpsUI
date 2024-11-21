@@ -110,7 +110,9 @@ export default function (props: ConnectDeviceProps) {
 		if (props.disabledBehavior == 'displayError' && !loading) {
 			return (
 				<div className="mdhui-connect-device" ref={props.innerRef}>
-					<div className="content">{props.title} is not enabled for this project.</div>
+					<div className="content">
+						{language("device-not-enabled").replace("@@DEVICE@@", props.title)}
+					</div>
 				</div>
 			);
 		} else {

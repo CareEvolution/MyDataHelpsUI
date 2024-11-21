@@ -6,7 +6,8 @@ import { predictableRandomNumber } from "../../../helpers/predictableRandomNumbe
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 import { Bar } from "recharts";
-import { format, startOfToday } from "date-fns";
+import { startOfToday } from "date-fns";
+import { formatDateForLocale } from '../../../helpers/locale';
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -487,7 +488,7 @@ export const customizedLineChart: StoryObj = {
             if (value === chartDomain[0] || value === chartDomain[1]) {
                 return "";
             }
-            return format(new Date(value), 'h aaa');
+            return formatDateForLocale(new Date(value), 'h aaa');
         }
 
         return <Layout colorScheme="auto">

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { format, parseISO } from "date-fns";
 import "./LabResultWithSparkline.css"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TermInformationReference } from "../../container/TermInformation/TermInformation";
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface LabResultValue {
     Type: string,
@@ -32,10 +32,6 @@ export default function (props: LabResultWithSparklineProps) {
     let [sparklineYRange, setSparklineYRange] = useState(0);
     let sparklineSvg = useRef<SVGSVGElement>(null);
 
-    function formatDate(d: any) {
-        return format(parseISO(d), "MM/dd/yy");
-    }
-
     useEffect(() => {
         setSparklineXRange(sparklineSvg.current?.getBoundingClientRect().width || 0);
         setSparklineYRange(sparklineSvg.current?.getBoundingClientRect().height || 0);
@@ -61,7 +57,7 @@ export default function (props: LabResultWithSparklineProps) {
                         <span className="mdhui-lab-result-with-sparkline-acuity mdhui-lab-result-with-sparkline-acuity-low">L</span>
                     }
                 </div>
-                <div className="mdhui-lab-result-with-sparkline-date">{formatDate(props.labResultValue.MostRecentDate)}</div>
+                <div className="mdhui-lab-result-with-sparkline-date">{formatDateForLocale(props.labResultValue.MostRecentDate, "MM/dd/yy")}</div>
             </div>
             <div className="mdhui-lab-result-with-sparkline-container">
                 {!!props.labResultValue.SparklinePoints.length &&

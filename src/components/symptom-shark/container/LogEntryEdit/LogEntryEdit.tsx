@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import { isSameDay, format, add, formatISO } from 'date-fns';
+import { isSameDay, add, formatISO } from 'date-fns';
 import "./LogEntryEdit.css"
 import getDayKey from '../../../../helpers/get-day-key';
 import { getDayOfWeek } from '../../../../helpers/date-helpers';
@@ -9,6 +9,7 @@ import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConf
 import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
 import debounce from 'lodash/debounce';
 import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
+import { formatDateForLocale } from '../../../../helpers/locale';
 
 export interface SymptomSharkLogEntryEditProps {
     date: Date;
@@ -150,7 +151,7 @@ export default function (props: SymptomSharkLogEntryEditProps) {
     };
 
     var dateLabel = getDayOfWeek(props.date);
-    dateLabel += (", " + format(props.date, "MMM d, yyyy"));
+    dateLabel += (", " + formatDateForLocale(props.date, "MMM d, yyyy"));
 
     function getDayTracker(entry: DailyLogEntry) {
         var primaryColors = entry.symptoms.map(t => configuration!.symptoms.find(s => s.id == t.id)?.color).filter(t => !!t).map(t => t!);
