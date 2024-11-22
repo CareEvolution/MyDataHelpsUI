@@ -58,7 +58,13 @@ export default function (props: MealEditorProps) {
                         setMeals(meals);
                         setMealToEdit(referencedMeal);
                         if (referencedMeal.imageFileName) {
-                            getMealImageUrl(referencedMeal.imageFileName).then(setImageUrl);
+                            getMealImageUrl(referencedMeal.imageFileName).then(imageUrl => {
+                                if (imageUrl) {
+                                    setImageUrl(imageUrl);
+                                } else {
+                                    setImageLoading(false);
+                                }
+                            });
                         }
                     } else {
                         props.onError();
@@ -163,7 +169,7 @@ export default function (props: MealEditorProps) {
                 <div className="mdhui-meal-editor-header-date">
                     {format(mealToEdit.timestamp, 'EEE, MMMM do, yyyy')}
                 </div>
-                <UnstyledButton onClick={() => onDelete()}>
+                <UnstyledButton onClick={onDelete}>
                     <div className="mdhui-meal-editor-header-delete-action">
                         <FontAwesomeSvgIcon icon={faTrashCan} />
                     </div>
@@ -206,14 +212,14 @@ export default function (props: MealEditorProps) {
                             </div>
                         }
                         <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
-                            <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={() => onImageLoaded()} />
+                            <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={onImageLoaded} />
                             <div className="mdhui-meal-editor-image-actions">
                                 {renderImageSelector(
                                     <div className="mdhui-meal-editor-image-action">
                                         <FontAwesomeSvgIcon icon={faEdit} />
                                     </div>
                                 )}
-                                <UnstyledButton onClick={() => onRemoveImage()}>
+                                <UnstyledButton onClick={onRemoveImage}>
                                     <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
                                         <FontAwesomeSvgIcon icon={faTrashCan} />
                                     </div>
