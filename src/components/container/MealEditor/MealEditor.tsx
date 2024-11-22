@@ -13,7 +13,7 @@ export interface MealEditorProps {
     onDelete: () => void;
     onSave: () => void;
     onCancel: () => void;
-    onCaptureImage?: () => void;
+    withImageCapture?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -94,7 +94,7 @@ export default function (props: MealEditorProps) {
         });
     };
 
-    const onSave = () => {
+    const onSave = async () => {
         if (props.previewState) {
             props.onSave();
             return;
@@ -215,7 +215,7 @@ export default function (props: MealEditorProps) {
                         placeholder={language('meal-editor-description-optional')}
                     />
                 </div>
-                {props.onCaptureImage && !originalImageFileName && !currentImageFileName && renderImageSelector(
+                {props.withImageCapture && !originalImageFileName && !currentImageFileName && renderImageSelector(
                     <div
                         className="mdhui-button mdhui-meal-editor-image-add"
                         style={{
@@ -226,59 +226,62 @@ export default function (props: MealEditorProps) {
                         <FontAwesomeSvgIcon icon={faPlus} /> Add Image
                     </div>
                 )}
-                {props.onCaptureImage && (originalImageFileName || currentImageFileName) &&
-                    <>
-                        {imageLoading && <LoadingIndicator />}
+                {props.withImageCapture && (originalImageFileName || currentImageFileName) &&
+                    <div className="mdhui-meal-editor-image-manager">
+                        {imageLoading &&
+                            <div className="mdhui-meal-editor-image-loading">
+                                <LoadingIndicator />
+                                <div>Loading image...</div>
+                            </div>
+                        }
                         <div
-                            className="mdhui-meal-editor-image-manager"
+                            className="mdhui-meal-editor-image-wrapper"
                             style={{
-                                display: imageLoading ? 'none' : 'block'
+                                display: imageLoading ? 'none' : 'inline-block'
                             }}
                         >
-                            <div className="mdhui-meal-editor-image-wrapper">
-                                <img
-                                    className={currentImageFileName
-                                        ? "mdhui-meal-editor-image"
-                                        : "mdhui-meal-editor-image mdhui-meal-editor-image-removed"
-                                    }
-                                    alt="meal image"
-                                    src={currentImageUrl ?? originalImageUrl}
-                                    onLoad={() => onImageLoaded()}
-                                />
-                                {currentImageFileName && originalImageFileName !== currentImageFileName &&
-                                    <div className="mdhui-meal-editor-image-overlay">
-                                        Pending
-                                    </div>
+                            <img
+                                className={currentImageFileName
+                                    ? "mdhui-meal-editor-image"
+                                    : "mdhui-meal-editor-image mdhui-meal-editor-image-removed"
                                 }
-                                {!currentImageFileName &&
-                                    <div className="mdhui-meal-editor-image-overlay mdhui-meal-editor-image-overlay-removed">
-                                        Removal Pending
-                                    </div>
-                                }
-                                <div className="mdhui-meal-editor-image-actions">
-                                    {renderImageSelector(
-                                        <div className="mdhui-meal-editor-image-action">
-                                            <FontAwesomeSvgIcon icon={faEdit} />
-                                        </div>
-                                    )}
-                                    {originalImageFileName && originalImageFileName !== currentImageFileName &&
-                                        <UnstyledButton onClick={() => onRevertImage()}>
-                                            <div className="mdhui-meal-editor-image-action">
-                                                <FontAwesomeSvgIcon icon={faUndo} />
-                                            </div>
-                                        </UnstyledButton>
-                                    }
-                                    {currentImageFileName &&
-                                        <UnstyledButton onClick={() => onRemoveImage()}>
-                                            <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
-                                                <FontAwesomeSvgIcon icon={faTrashCan} />
-                                            </div>
-                                        </UnstyledButton>
-                                    }
+                                alt="meal image"
+                                src={currentImageUrl ?? originalImageUrl}
+                                onLoad={() => onImageLoaded()}
+                            />
+                            {currentImageFileName && originalImageFileName !== currentImageFileName &&
+                                <div className="mdhui-meal-editor-image-overlay">
+                                    Pending
                                 </div>
+                            }
+                            {!currentImageFileName &&
+                                <div className="mdhui-meal-editor-image-overlay mdhui-meal-editor-image-overlay-removed">
+                                    Removal Pending
+                                </div>
+                            }
+                            <div className="mdhui-meal-editor-image-actions">
+                                {renderImageSelector(
+                                    <div className="mdhui-meal-editor-image-action">
+                                        <FontAwesomeSvgIcon icon={faEdit} />
+                                    </div>
+                                )}
+                                {originalImageFileName && originalImageFileName !== currentImageFileName &&
+                                    <UnstyledButton onClick={() => onRevertImage()}>
+                                        <div className="mdhui-meal-editor-image-action">
+                                            <FontAwesomeSvgIcon icon={faUndo} />
+                                        </div>
+                                    </UnstyledButton>
+                                }
+                                {currentImageFileName &&
+                                    <UnstyledButton onClick={() => onRemoveImage()}>
+                                        <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
+                                            <FontAwesomeSvgIcon icon={faTrashCan} />
+                                        </div>
+                                    </UnstyledButton>
+                                }
                             </div>
                         </div>
-                    </>
+                    </div>
                 }
             </div>
             {

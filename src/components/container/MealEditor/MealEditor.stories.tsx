@@ -12,7 +12,6 @@ export default {
 
 interface MealEditorStoryArgs extends MealEditorProps {
     colorScheme: 'auto' | 'light' | 'dark';
-    withImageCapture: boolean;
     stateWithoutImageCapture: 'loading' | 'loaded' | 'live';
     stateWithImageCapture: 'loading' | MealEditorPreviewState | 'live';
 }
@@ -65,7 +64,7 @@ const render = (args: MealEditorStoryArgs) => {
                 onDelete={() => onDelete()}
                 onCancel={() => onCancel()}
                 onSave={() => onSave()}
-                onCaptureImage={args.withImageCapture ? () => onCaptureImage() : undefined}
+                withImageCapture={args.withImageCapture}
             />
         </Card>
     </Layout>;
