@@ -52,7 +52,7 @@ const render = (args: MealEditorStoryArgs) => {
             return 'loading';
         }
         if (args.stateWithoutImageCapture === 'loaded') {
-            return 'without image'
+            return 'without existing image'
         }
         return undefined;
     };
@@ -96,7 +96,7 @@ export const Default = {
         stateWithImageCapture: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'without image', 'with new image', 'with existing image', 'with modified image', 'with removed image', 'live'],
+            options: ['loading', 'without existing image', 'with existing image', 'live'],
             if: { arg: 'withImageCapture', eq: true }
         },
         ...argTypesToHide(['previewState'])

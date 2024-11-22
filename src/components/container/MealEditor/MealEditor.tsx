@@ -1,12 +1,11 @@
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
-import { ColorDefinition, getMeals, getMealToEdit, getMealTypeDisplayText, getNewImageUrl, language, Meal, resolveColor, saveMeals, timestampSortAsc } from '../../../helpers';
+import { ColorDefinition, getMealImageUrl, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan, faUndo } from '@fortawesome/free-solid-svg-icons';
-import MyDataHelps from "@careevolution/mydatahelps-js";
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -24,15 +23,21 @@ export default function (props: MealEditorProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [meals, setMeals] = useState<Meal[]>();
     const [mealToEdit, setMealToEdit] = useState<Meal>();
+    const [originalImageFileName, setOriginalImageFileName] = useState<string>();
+    const [currentImageFileName, setCurrentImageFileName] = useState<string>();
     const [originalImageUrl, setOriginalImageUrl] = useState<string>();
     const [currentImageUrl, setCurrentImageUrl] = useState<string>();
+    const [newImageFile, setNewImageFile] = useState<File>();
 
     useEffect(() => {
         setLoading(true);
         setMeals(undefined);
         setMealToEdit(undefined);
+        setOriginalImageFileName(undefined);
+        setCurrentImageFileName(undefined);
         setOriginalImageUrl(undefined);
         setCurrentImageUrl(undefined);
+        setNewImageFile(undefined);
 
         if (props.previewState === 'loading') {
             return;
@@ -43,23 +48,28 @@ export default function (props: MealEditorProps) {
             setLoading(false);
             setMeals(previewData.meals);
             setMealToEdit(previewData.mealToEdit);
-            setOriginalImageUrl(previewData.originalImageUrl);
-            setCurrentImageUrl(previewData.currentImageUrl);
+            setOriginalImageFileName(previewData.mealToEdit.imageFileName);
+            setCurrentImageFileName(previewData.mealToEdit.imageFileName);
+            setOriginalImageUrl(previewData.imageUrl);
+            setCurrentImageUrl(previewData.imageUrl);
             return;
         }
 
         getMealToEdit().then(mealReference => {
             if (mealReference) {
-                getMeals(mealReference.date).then(meals => {
+                getMeals(mealReference.date).then(async (meals) => {
                     const referencedMeal = meals.find(meal => meal.id === mealReference.id);
                     if (referencedMeal) {
-                        getNewImageUrl().then(newImageUrl => {
-                            setLoading(false);
-                            setMeals(meals);
-                            setMealToEdit(referencedMeal);
-                            setOriginalImageUrl(referencedMeal.imageUrl);
-                            setCurrentImageUrl(newImageUrl ?? referencedMeal.imageUrl);
-                        });
+                        setLoading(false);
+                        setMeals(meals);
+                        setMealToEdit(referencedMeal);
+                        setOriginalImageFileName(referencedMeal.imageFileName);
+                        setCurrentImageFileName(referencedMeal.imageFileName);
+                        if (referencedMeal.imageFileName) {
+                            const imageUrl = await getMealImageUrl(referencedMeal.imageFileName);
+                            setOriginalImageUrl(imageUrl);
+                            setCurrentImageUrl(imageUrl);
+                        }
                     } else {
                         props.onError();
                     }
@@ -68,21 +78,6 @@ export default function (props: MealEditorProps) {
                 props.onError();
             }
         });
-
-        const checkForNewImageUrl = () => {
-            if (mealToEdit) {
-                setLoading(true);
-                getNewImageUrl().then(newImageUrl => {
-                    setLoading(false);
-                    setCurrentImageUrl(newImageUrl ?? currentImageUrl);
-                });
-            }
-        };
-
-        MyDataHelps.on('applicationDidBecomeVisible', checkForNewImageUrl);
-        return () => {
-            MyDataHelps.off('applicationDidBecomeVisible', checkForNewImageUrl);
-        }
     }, [props.previewState]);
 
     const onDelete = () => {
@@ -92,22 +87,29 @@ export default function (props: MealEditorProps) {
         }
 
         const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
-        saveMeals(startOfDay(mealToEdit!.timestamp), [...otherMeals].sort(timestampSortAsc)).then(() => {
+        saveMeals(startOfDay(mealToEdit!.timestamp), otherMeals).then(() => {
             props.onDelete();
         });
     };
 
     const onSave = () => {
-        mealToEdit!.description = mealToEdit!.description?.trim();
-        mealToEdit!.imageUrl = currentImageUrl;
-
         if (props.previewState) {
             props.onSave();
             return;
         }
 
+        setLoading(true);
+
+        mealToEdit!.description = mealToEdit!.description?.trim();
+        mealToEdit!.imageFileName = currentImageFileName;
+
         const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
-        saveMeals(startOfDay(mealToEdit!.timestamp), [...otherMeals, mealToEdit!].sort(timestampSortAsc)).then(() => {
+        const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
+        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(async () => {
+            if (newImageFile) {
+                await uploadMealImageFile(newImageFile);
+            }
+            setLoading(false);
             props.onSave();
         });
     };
@@ -127,11 +129,23 @@ export default function (props: MealEditorProps) {
         setMealToEdit({ ...mealToEdit!, description: value.trim() ? value : undefined });
     };
 
+    const onFileChanged = (file: File | undefined) => {
+        if (file) {
+            setNewImageFile(file);
+            setCurrentImageFileName(file.name);
+            setCurrentImageUrl(URL.createObjectURL(file));
+        }
+    };
+
     const onRevertImage = () => {
+        setNewImageFile(undefined);
+        setCurrentImageFileName(originalImageFileName);
         setCurrentImageUrl(originalImageUrl);
     };
 
     const onRemoveImage = () => {
+        setNewImageFile(undefined);
+        setCurrentImageFileName(undefined);
         setCurrentImageUrl(undefined);
     };
 
@@ -145,15 +159,22 @@ export default function (props: MealEditorProps) {
         ...getColorVariable('--mdhui-meal-editor-image-action-background-color', undefined)
     } as CSSProperties;
 
+    const renderImageSelector = (children: React.ReactNode) => {
+        return <label>
+            <input type="file" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
+            {children}
+        </label>;
+    };
+
     return <div className="mdhui-meal-editor" style={colorStyles} ref={props.innerRef}>
-        {loading && <LoadingIndicator />}
-        {!loading && <div>
+        {(loading || !mealToEdit) && <LoadingIndicator />}
+        {!loading && mealToEdit && <div>
             <div className="mdhui-meal-editor-header">
                 <div className="mdhui-meal-editor-header-type">
-                    {getMealTypeDisplayText(mealToEdit!.type)}
+                    {getMealTypeDisplayText(mealToEdit.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {format(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy')}
+                    {format(mealToEdit.timestamp, 'EEE, MMMM do, yyyy')}
                 </div>
                 <UnstyledButton onClick={() => onDelete()}>
                     <div className="mdhui-meal-editor-header-delete-action">
@@ -167,7 +188,7 @@ export default function (props: MealEditorProps) {
                     <input
                         className="mdhui-meal-editor-time-input"
                         type="time"
-                        value={format(mealToEdit!.timestamp, 'HH:mm')}
+                        value={format(mealToEdit.timestamp, 'HH:mm')}
                         onChange={event => onTimeChanged(event.target.value)}
                         style={{
                             colorScheme: layoutContext.colorScheme
@@ -180,7 +201,7 @@ export default function (props: MealEditorProps) {
                         className="mdhui-meal-editor-description-input"
                         rows={3}
                         maxLength={250}
-                        value={mealToEdit!.description}
+                        value={mealToEdit.description}
                         onChange={event => onDescriptionChanged(event.target.value)}
                         style={{
                             colorScheme: layoutContext.colorScheme
@@ -188,47 +209,52 @@ export default function (props: MealEditorProps) {
                         placeholder={language('meal-editor-description-optional')}
                     />
                 </div>
-                {props.onCaptureImage && !originalImageUrl && !currentImageUrl &&
-                    // No image.
-                    <Button className="mdhui-meal-editor-image-add" onClick={() => props.onCaptureImage!()} variant="light">
+                {props.onCaptureImage && !originalImageFileName && !currentImageFileName && renderImageSelector(
+                    <div
+                        className="mdhui-button mdhui-meal-editor-image-add"
+                        style={{
+                            background: 'var(--mdhui-background-color-1)',
+                            color: 'var(--mdhui-color-primary)'
+                        }}
+                    >
                         <FontAwesomeSvgIcon icon={faPlus} /> Add Image
-                    </Button>
-                }
-                {props.onCaptureImage && (originalImageUrl || currentImageUrl) &&
+                    </div>
+                )}
+                {props.onCaptureImage && (originalImageFileName || currentImageFileName) &&
                     <div className="mdhui-meal-editor-image-manager">
                         <div className="mdhui-meal-editor-image-wrapper">
                             <img
-                                className={currentImageUrl
+                                className={currentImageFileName
                                     ? "mdhui-meal-editor-image"
                                     : "mdhui-meal-editor-image mdhui-meal-editor-image-removed"
                                 }
                                 alt="meal image"
                                 src={currentImageUrl ?? originalImageUrl}
                             />
-                            {currentImageUrl && originalImageUrl !== currentImageUrl &&
+                            {currentImageFileName && originalImageFileName !== currentImageFileName &&
                                 <div className="mdhui-meal-editor-image-overlay">
                                     Pending
                                 </div>
                             }
-                            {!currentImageUrl &&
+                            {!currentImageFileName &&
                                 <div className="mdhui-meal-editor-image-overlay mdhui-meal-editor-image-overlay-removed">
                                     Removal Pending
                                 </div>
                             }
                             <div className="mdhui-meal-editor-image-actions">
-                                <UnstyledButton onClick={() => props.onCaptureImage!()}>
+                                {renderImageSelector(
                                     <div className="mdhui-meal-editor-image-action">
                                         <FontAwesomeSvgIcon icon={faEdit} />
                                     </div>
-                                </UnstyledButton>
-                                {originalImageUrl && originalImageUrl !== currentImageUrl &&
+                                )}
+                                {originalImageFileName && originalImageFileName !== currentImageFileName &&
                                     <UnstyledButton onClick={() => onRevertImage()}>
                                         <div className="mdhui-meal-editor-image-action">
                                             <FontAwesomeSvgIcon icon={faUndo} />
                                         </div>
                                     </UnstyledButton>
                                 }
-                                {currentImageUrl &&
+                                {currentImageFileName &&
                                     <UnstyledButton onClick={() => onRemoveImage()}>
                                         <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
                                             <FontAwesomeSvgIcon icon={faTrashCan} />

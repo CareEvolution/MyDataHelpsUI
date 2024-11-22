@@ -27,7 +27,7 @@ export interface Meal {
     timestamp: Date;
     type: MealType;
     description?: string;
-    imageUrl?: string;
+    imageFileName?: string;
 }
 
 export interface MealReference {

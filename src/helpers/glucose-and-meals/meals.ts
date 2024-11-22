@@ -1,14 +1,15 @@
 import MyDataHelps, { Guid, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
-import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
+import { add, compareDesc, endOfDay, parseISO, startOfDay } from 'date-fns';
 import { Meal, MealReference, MealType } from './types';
 import { timestampSortAsc } from './util';
+import queryAllFiles from "../query-all-files";
 
 interface SerializedMeal {
     id: string,
     timestamp: string;
     type: string;
     description?: string;
-    imageUrl?: string;
+    imageFileName?: string;
 }
 
 interface SerializedMealReference {
@@ -54,16 +55,17 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
     return undefined;
 }
 
-export async function getNewImageUrl(): Promise<string | undefined> {
-    const response = await MyDataHelps.queryDeviceData({
-        namespace: 'Project',
-        type: 'MealImageUrl'
-    });
-    if (response.deviceDataPoints.length > 0) {
-        const dataPoints = response.deviceDataPoints;
-        return Promise.all(dataPoints.map(dataPoint => MyDataHelps.deleteDeviceDataPoint(dataPoint.id))).then(() => {
-            return dataPoints[0].value;
-        });
+export function uploadMealImageFile(file: File): Promise<void> {
+    return MyDataHelps.uploadFile(file, 'MealImage');
+}
+
+export async function getMealImageUrl(fileName: string): Promise<string | undefined> {
+    const files = await queryAllFiles({ category: 'MealImage' });
+    const sortedFiles = files.sort((a, b) => compareDesc(parseISO(a.lastModified), parseISO(b.lastModified)));
+    // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
+    const imageFile = sortedFiles.find(file => file.fileName === fileName);
+    if (imageFile) {
+        return (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
     }
     return undefined;
 }
@@ -74,7 +76,7 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         timestamp: parseISO(serializedMeal.timestamp),
         type: serializedMeal.type as MealType,
         description: serializedMeal.description,
-        imageUrl: serializedMeal.imageUrl
+        imageFileName: serializedMeal.imageFileName
     };
 }
 
