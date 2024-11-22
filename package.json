@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.51.1-MealImageCapture.4",
+  "version": "2.51.1-MealImageCapture.5",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
