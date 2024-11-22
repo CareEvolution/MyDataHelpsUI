@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { CSSProperties } from 'react';
 import { Card, Layout } from '../../presentational';
 import MealEditor, { MealEditorProps } from './MealEditor';
 import { argTypesToHide } from '../../../../.storybook/helpers';
@@ -14,6 +14,7 @@ interface MealEditorStoryArgs extends MealEditorProps {
     colorScheme: 'auto' | 'light' | 'dark';
     stateWithoutImageCapture: 'loading' | 'loaded' | 'live';
     stateWithImageCapture: 'loading' | MealEditorPreviewState | 'live';
+    withChildren: boolean;
 }
 
 const render = (args: MealEditorStoryArgs) => {
@@ -31,10 +32,6 @@ const render = (args: MealEditorStoryArgs) => {
 
     const onSave = () => {
         console.log('save');
-    };
-
-    const onCaptureImage = () => {
-        console.log('capture image');
     };
 
     const computePreviewState = (args: MealEditorStoryArgs): 'loading' | MealEditorPreviewState | undefined => {
@@ -56,6 +53,16 @@ const render = (args: MealEditorStoryArgs) => {
         return undefined;
     };
 
+    const createChildren = () => {
+        const childStyle: CSSProperties = {
+            textDecoration: 'underline',
+            textAlign: 'right',
+            color: 'var(--mdhui-color-primary)',
+            fontSize: '0.8em'
+        };
+        return <div style={childStyle}>Provide More Details</div>;
+    };
+
     return <Layout colorScheme={args.colorScheme}>
         <Card>
             <MealEditor
@@ -65,6 +72,7 @@ const render = (args: MealEditorStoryArgs) => {
                 onCancel={() => onCancel()}
                 onSave={() => onSave()}
                 withImageCapture={args.withImageCapture}
+                children={args.withChildren ? createChildren() : undefined}
             />
         </Card>
     </Layout>;
@@ -75,7 +83,8 @@ export const Default = {
         colorScheme: 'auto',
         withImageCapture: false,
         stateWithoutImageCapture: 'loaded',
-        stateWithImageCapture: 'without image'
+        stateWithImageCapture: 'without image',
+        withChildren: false
     },
     argTypes: {
         colorScheme: {
@@ -97,6 +106,9 @@ export const Default = {
             control: 'radio',
             options: ['loading', 'without existing image', 'with existing image', 'live'],
             if: { arg: 'withImageCapture', eq: true }
+        },
+        withChildren: {
+            name: 'with child components?'
         },
         ...argTypesToHide(['previewState'])
     },

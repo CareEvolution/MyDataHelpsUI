@@ -75,6 +75,8 @@
 
 .mdhui-meal-editor-image-add {
     margin-top: 8px;
+    background: var(--mdhui-background-color-1);
+    color: var(--mdhui-color-primary);
 }
 
 .mdhui-meal-editor-image-loading {
@@ -98,7 +100,6 @@
     display: inline-block;
     position: relative;
     border-radius: 5px;
-    background: #000;
     margin: 0 auto;
 }
 
@@ -108,26 +109,6 @@
     max-width: 100%;
     border-radius: 5px;
     margin: 0 auto;
-}
-
-.mdhui-meal-editor-image-removed {
-    opacity: 0.6;
-}
-
-.mdhui-meal-editor-image-overlay {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    height: 20px;
-    line-height: 20px;
-    padding: 0 8px;
-    background: var(--mdhui-background-color-2);
-    border-radius: 10px;
-    font-size: 0.8em;
-}
-
-.mdhui-meal-editor-image-overlay-removed {
-    color: var(--mdhui-color-danger);
 }
 
 .mdhui-meal-editor-image-actions {
@@ -152,6 +133,10 @@
 
 .mdhui-meal-editor-image-action-remove {
     color: var(--mdhui-color-danger);
+}
+
+.mdhui-meal-editor-children {
+    margin-top: 16px;
 }
 
 .mdhui-meal-editor-error {
