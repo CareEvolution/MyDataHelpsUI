@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
-import { ColorDefinition, getMealImageUrl, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { ColorDefinition, getDayKey, getMealImageUrl, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
@@ -123,6 +123,7 @@ export default function (props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
+            file = new File([file], `${getDayKey(mealToEdit!.timestamp)}_${mealToEdit!.id}.${file.name.split('.').pop()}`);
             setNewImageFile(file);
             setMealToEdit({ ...mealToEdit!, imageFileName: file.name });
             setImageUrl(URL.createObjectURL(file));
@@ -147,7 +148,7 @@ export default function (props: MealEditorProps) {
 
     const renderImageSelector = (children: React.ReactNode) => {
         return <label>
-            <input type="file" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
+            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
             {children}
         </label>;
     };
