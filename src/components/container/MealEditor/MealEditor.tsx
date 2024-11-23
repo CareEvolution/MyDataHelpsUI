@@ -168,7 +168,7 @@ export default function (props: MealEditorProps) {
 
     const renderImageSelector = (children: React.ReactNode) => {
         return <label>
-            <input type="file" accept="image/*;capture=camera" /*style={{ display: 'none' }}*/ onChange={event => onFileChanged(event.target.files?.[0])} />
+            <input type="file" accept="image/*;capture=camera" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
             {children}
         </label>;
     };
