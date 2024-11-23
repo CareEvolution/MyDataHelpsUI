@@ -129,7 +129,7 @@ export default function (props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
-            file = new File([file], `${getDayKey(mealToEdit!.timestamp)}_${mealToEdit!.id}.${file.name.split('.').pop()}`);
+            file = new File([file], `${getDayKey(mealToEdit!.timestamp)}_${mealToEdit!.id}.${file.name.split('.').pop()}`, { type: file.type });
             setNewImageFile(file);
             setMealToEdit({ ...mealToEdit!, imageFileName: file.name });
             setImageUrl(URL.createObjectURL(file));
