@@ -1,4 +1,4 @@
-import React, { CSSProperties, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
 import { ColorDefinition, getDayKey, getMealImageUrl, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
@@ -28,9 +28,6 @@ export default function (props: MealEditorProps) {
     const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [newImageFile, setNewImageFile] = useState<File>();
     const [imageUploadError, setImageUploadError] = useState<boolean>(false);
-
-    const inputRef1 = useRef<HTMLInputElement>(null);
-    const inputRef2 = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -169,12 +166,11 @@ export default function (props: MealEditorProps) {
         ...getColorVariable('--mdhui-meal-editor-image-action-background-color', undefined)
     } as CSSProperties;
 
-    const renderImageSelector = (ref: RefObject<HTMLInputElement>, children: React.ReactNode) => {
-        return <div>
-            <input type="file" ref={ref} accept="image/*;capture=camera" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
-            <Button onClick={() => ref.current?.click()}>Test</Button>
+    const renderImageSelector = (children: React.ReactNode) => {
+        return <label>
+            <input type="file" accept="image/*;capture=camera" style={{ display: 'none' }} onChange={event => onFileChanged(event.target.files?.[0])} />
             {children}
-        </div>;
+        </label>;
     };
 
     return <div className="mdhui-meal-editor" style={colorStyles} ref={props.innerRef}>
@@ -216,7 +212,7 @@ export default function (props: MealEditorProps) {
                         placeholder={language('meal-editor-description-optional')}
                     />
                 </div>
-                {props.withImageCapture && !mealToEdit.imageFileName && renderImageSelector(inputRef1,
+                {props.withImageCapture && !mealToEdit.imageFileName && renderImageSelector(
                     <div className="mdhui-button mdhui-meal-editor-image-add">
                         <FontAwesomeSvgIcon icon={faPlus} /> Add Image
                     </div>
@@ -231,7 +227,7 @@ export default function (props: MealEditorProps) {
                         <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
                             <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={onImageLoaded} />
                             <div className="mdhui-meal-editor-image-actions">
-                                {renderImageSelector(inputRef2,
+                                {renderImageSelector(
                                     <div className="mdhui-meal-editor-image-action">
                                         <FontAwesomeSvgIcon icon={faEdit} />
                                     </div>
