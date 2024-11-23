@@ -16,7 +16,7 @@ export default function (props: MealEditorViewProps) {
         MyDataHelps.dismiss();
     };
 
-    return <Layout colorScheme={props.colorScheme ?? 'auto'}>
+    return <Layout colorScheme={props.colorScheme ?? 'auto'} flex={true}>
         <Card>
             <MealEditor
                 previewState={props.previewState !== 'live' ? props.previewState : undefined}
