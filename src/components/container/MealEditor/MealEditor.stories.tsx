@@ -83,7 +83,7 @@ export const Default = {
         colorScheme: 'auto',
         withImageCapture: false,
         stateWithoutImageCapture: 'loaded',
-        stateWithImageCapture: 'without image',
+        stateWithImageCapture: 'without existing image',
         withChildren: false
     },
     argTypes: {

@@ -27,6 +27,7 @@ export default function (props: MealEditorProps) {
     const [imageUrl, setImageUrl] = useState<string>();
     const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [newImageFile, setNewImageFile] = useState<File>();
+    const [imageUploadError, setImageUploadError] = useState<boolean>(false);
 
     useEffect(() => {
         setLoading(true);
@@ -35,6 +36,7 @@ export default function (props: MealEditorProps) {
         setImageUrl(undefined);
         setImageLoading(true);
         setNewImageFile(undefined);
+        setImageUploadError(false);
 
         if (props.previewState === 'loading') {
             return;
@@ -95,14 +97,24 @@ export default function (props: MealEditorProps) {
         }
 
         setLoading(true);
+        setImageUploadError(false);
+
+        if (newImageFile) {
+            try {
+                await uploadMealImageFile(newImageFile);
+            } catch {
+                setLoading(false);
+                setImageUploadError(true);
+                return;
+            }
+        }
+
         mealToEdit!.description = mealToEdit!.description?.trim();
 
         const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
         const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
+
         saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(async () => {
-            if (newImageFile) {
-                await uploadMealImageFile(newImageFile);
-            }
             setLoading(false);
             props.onSave();
         });
@@ -133,6 +145,7 @@ export default function (props: MealEditorProps) {
             setNewImageFile(file);
             setMealToEdit({ ...mealToEdit!, imageFileName: file.name });
             setImageUrl(URL.createObjectURL(file));
+            setImageUploadError(false);
         }
     };
 
@@ -140,6 +153,7 @@ export default function (props: MealEditorProps) {
         setNewImageFile(undefined);
         setMealToEdit({ ...mealToEdit!, imageFileName: undefined });
         setImageUrl(undefined);
+        setImageUploadError(false);
     };
 
     const getColorVariable = (variable: string, colorDefinition: ColorDefinition | undefined) => {
@@ -208,7 +222,6 @@ export default function (props: MealEditorProps) {
                         {imageLoading &&
                             <div className="mdhui-meal-editor-image-loading">
                                 <LoadingIndicator />
-                                <div>Loading image...</div>
                             </div>
                         }
                         <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
@@ -234,9 +247,8 @@ export default function (props: MealEditorProps) {
                     {props.children}
                 </div>
             }
-            {
-                hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>
-            }
+            {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
+            {imageUploadError && <div className="mdhui-meal-editor-error">An error occurred while uploading the selected image. Please try again, use a different image, or remove the image in order to save.</div>}
             <div className="mdhui-meal-editor-buttons">
                 <Button onClick={() => props.onCancel()} variant="light">{language('cancel')}</Button>
                 <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>{language('save')}</Button>

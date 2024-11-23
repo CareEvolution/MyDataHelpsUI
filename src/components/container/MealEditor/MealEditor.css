@@ -140,7 +140,9 @@
 }
 
 .mdhui-meal-editor-error {
-    color: var(--color-danger);
+    margin-top: 16px;
+    color: var(--mdhui-color-danger);
+    font-size: 0.9em;
 }
 
 .mdhui-meal-editor-buttons {
