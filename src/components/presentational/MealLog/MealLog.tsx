@@ -8,6 +8,7 @@ import { MealContext } from "../../container";
 export interface MealLogProps {
     preview?: boolean;
     onEditMeal: () => void;
+    hideMealNumbers?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -40,7 +41,7 @@ export default function MealLog(props: MealLogProps) {
                 key={`meal-${index}`}
                 meal={meal}
                 mealImageUrl={meal.imageFileName ? mealContext.imageUrls[meal.imageFileName] : undefined}
-                number={index + 1}
+                number={!props.hideMealNumbers ? index + 1 : undefined}
                 color={getColorFromAssortment(index)}
                 onClick={() => mealContext.onMealClicked(meal)}
                 onEdit={() => onEditMeal(meal)}
