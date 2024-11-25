@@ -11,7 +11,10 @@ export interface MealLogProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: MealLogProps) {
+/**
+ * This component renders a daily meal log.  It must be used within a Meal Coordinator.
+ */
+export default function MealLog(props: MealLogProps) {
     const mealContext = useContext(MealContext);
 
     if (!mealContext) {
@@ -23,9 +26,7 @@ export default function (props: MealLogProps) {
             props.onEditMeal();
             return;
         }
-        prepareMealForEditing(meal).then(() => {
-            props.onEditMeal();
-        });
+        prepareMealForEditing(meal).then(props.onEditMeal);
     };
 
     return <div className="mdhui-meal-log" ref={props.innerRef}>
@@ -38,6 +39,7 @@ export default function (props: MealLogProps) {
             return <SingleMeal
                 key={`meal-${index}`}
                 meal={meal}
+                mealImageUrl={meal.imageFileName ? mealContext.imageUrls[meal.imageFileName] : undefined}
                 number={index + 1}
                 color={getColorFromAssortment(index)}
                 onClick={() => mealContext.onMealClicked(meal)}

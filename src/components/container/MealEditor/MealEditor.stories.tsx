@@ -1,84 +1,71 @@
 ﻿import React, { CSSProperties } from 'react';
 import { Card, Layout } from '../../presentational';
-import MealEditor, { MealEditorProps } from './MealEditor';
+import MealEditor from './MealEditor';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import { MealEditorPreviewState } from './MealEditor.previewData';
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
-    title: 'Container/MealEditor',
-    component: MealEditor,
-    parameters: { layout: 'fullscreen' }
-};
-
-interface MealEditorStoryArgs extends MealEditorProps {
+type MealEditorStoryArgs = React.ComponentProps<typeof MealEditor> & {
     colorScheme: 'auto' | 'light' | 'dark';
     stateWithoutImageCapture: 'loading' | 'loaded' | 'live';
     stateWithImageCapture: 'loading' | MealEditorPreviewState | 'live';
     withChildren: boolean;
-}
-
-const render = (args: MealEditorStoryArgs) => {
-    const onError = () => {
-        console.log('error');
-    };
-
-    const onDelete = () => {
-        console.log('delete');
-    };
-
-    const onCancel = () => {
-        console.log('cancel');
-    };
-
-    const onSave = () => {
-        console.log('save');
-    };
-
-    const computePreviewState = (args: MealEditorStoryArgs): 'loading' | MealEditorPreviewState | undefined => {
-        if (args.withImageCapture) {
-            if (args.stateWithImageCapture === 'loading') {
-                return 'loading';
-            }
-            if (args.stateWithImageCapture !== 'live') {
-                return args.stateWithImageCapture as MealEditorPreviewState;
-            }
-            return undefined;
-        }
-        if (args.stateWithoutImageCapture === 'loading') {
-            return 'loading';
-        }
-        if (args.stateWithoutImageCapture === 'loaded') {
-            return 'without existing image'
-        }
-        return undefined;
-    };
-
-    const createChildren = () => {
-        const childStyle: CSSProperties = {
-            textDecoration: 'underline',
-            textAlign: 'right',
-            color: 'var(--mdhui-color-primary)',
-            fontSize: '0.8em'
-        };
-        return <div style={childStyle}>Provide More Details</div>;
-    };
-
-    return <Layout colorScheme={args.colorScheme}>
-        <Card>
-            <MealEditor
-                previewState={computePreviewState(args)}
-                onError={() => onError()}
-                onDelete={() => onDelete()}
-                onCancel={() => onCancel()}
-                onSave={() => onSave()}
-                withImageCapture={args.withImageCapture}
-                children={args.withChildren ? createChildren() : undefined}
-            />
-        </Card>
-    </Layout>;
 };
 
-export const Default = {
+const meta: Meta<MealEditorStoryArgs> = {
+    title: 'Container/MealEditor',
+    component: MealEditor,
+    parameters: { layout: 'fullscreen' },
+    render: args => {
+        const computePreviewState = (args: MealEditorStoryArgs): 'loading' | MealEditorPreviewState | undefined => {
+            if (args.withImageCapture) {
+                if (args.stateWithImageCapture === 'loading') {
+                    return 'loading';
+                }
+                if (args.stateWithImageCapture !== 'live') {
+                    return args.stateWithImageCapture as MealEditorPreviewState;
+                }
+                return undefined;
+            }
+            if (args.stateWithoutImageCapture === 'loading') {
+                return 'loading';
+            }
+            if (args.stateWithoutImageCapture === 'loaded') {
+                return 'without existing image'
+            }
+            return undefined;
+        };
+
+        const createChildren = () => {
+            const childStyle: CSSProperties = {
+                textDecoration: 'underline',
+                textAlign: 'right',
+                color: 'var(--mdhui-color-primary)',
+                fontSize: '0.8em'
+            };
+            return <div style={childStyle}>Provide More Details</div>;
+        };
+
+        return <Layout colorScheme={args.colorScheme}>
+            <Card>
+                <MealEditor
+                    previewState={computePreviewState(args)}
+                    onError={() => console.log('error')}
+                    onDelete={() => console.log('delete')}
+                    onCancel={() => console.log('cancel')}
+                    onSave={() => console.log('save')}
+                    withImageCapture={args.withImageCapture}
+                    children={args.withChildren ? createChildren() : undefined}
+                />
+            </Card>
+        </Layout>;
+    }
+};
+export default meta;
+
+type Story = StoryObj<MealEditorStoryArgs>;
+
+export const Default: Story = {
     args: {
         colorScheme: 'auto',
         withImageCapture: false,
@@ -110,7 +97,6 @@ export const Default = {
         withChildren: {
             name: 'with child components?'
         },
-        ...argTypesToHide(['previewState'])
-    },
-    render: render
+        ...argTypesToHide(['previewState', 'onError', 'onDelete', 'onSave', 'onCancel', 'innerRef'])
+    }
 };

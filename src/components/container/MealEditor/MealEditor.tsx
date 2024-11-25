@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
-import { ColorDefinition, getDayKey, getMealImageUrl, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { ColorDefinition, getDayKey, getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
@@ -18,7 +18,10 @@ export interface MealEditorProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: MealEditorProps) {
+/**
+ * This component can be used to edit meal log entries.
+ */
+export default function MealEditor(props: MealEditorProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -53,20 +56,20 @@ export default function (props: MealEditorProps) {
 
         getMealToEdit().then(mealReference => {
             if (mealReference) {
-                getMeals(mealReference.date).then(meals => {
+                getMeals(mealReference.date).then(async meals => {
                     const referencedMeal = meals.find(meal => meal.id === mealReference.id);
                     if (referencedMeal) {
                         setLoading(false);
                         setMeals(meals);
                         setMealToEdit(referencedMeal);
                         if (referencedMeal.imageFileName) {
-                            getMealImageUrl(referencedMeal.imageFileName).then(imageUrl => {
-                                if (imageUrl) {
-                                    setImageUrl(imageUrl);
-                                } else {
-                                    setImageLoading(false);
-                                }
-                            });
+                            const imageUrls = await getMealImageUrls([referencedMeal.imageFileName]);
+                            const imageUrl = imageUrls[referencedMeal.imageFileName];
+                            if (imageUrl) {
+                                setImageUrl(imageUrl);
+                            } else {
+                                setImageLoading(false);
+                            }
                         }
                     } else {
                         props.onError();
@@ -133,10 +136,6 @@ export default function (props: MealEditorProps) {
 
     const onDescriptionChanged = (value: string) => {
         setMealToEdit({ ...mealToEdit!, description: value.trim() ? value : undefined });
-    };
-
-    const onImageLoaded = () => {
-        setImageLoading(false);
     };
 
     const onFileChanged = (file: File | undefined) => {
@@ -225,7 +224,7 @@ export default function (props: MealEditorProps) {
                             </div>
                         }
                         <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
-                            <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={onImageLoaded} />
+                            <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={() => setImageLoading(false)} />
                             <div className="mdhui-meal-editor-image-actions">
                                 {renderImageSelector(
                                     <div className="mdhui-meal-editor-image-action">

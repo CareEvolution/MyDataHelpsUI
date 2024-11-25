@@ -4,17 +4,23 @@ import { Button, DateRangeContext, TextBlock } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { getMealTypeDisplayText, MealType } from '../../../helpers';
+import { getMealTypeDisplayText, MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 import { add, startOfDay } from 'date-fns';
 
 export interface MealButtonsProps {
     preview?: boolean;
-    onAdd?: () => void;
+    autoLaunchEditor?: boolean;
+    onEditMeal?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: MealButtonsProps) {
+/**
+ * This component renders buttons that can be used to quickly add meal log entries.  It can be
+ * configured to automatically launch the meal editor when a new meal has been added.  It must
+ * be used within a Meal Coordinator.
+ */
+export default function MealButtons(props: MealButtonsProps) {
     const dateRangeContext = useContext(DateRangeContext);
     const mealContext = useContext(MealContext);
 
@@ -23,14 +29,24 @@ export default function (props: MealButtonsProps) {
     }
 
     const addMeal = (type: MealType) => {
-        if (props.preview) return;
+        if (props.preview) {
+            if (props.autoLaunchEditor && props.onEditMeal) {
+                props.onEditMeal();
+            }
+            return;
+        }
 
         let now = new Date();
-        mealContext.addMeal({
+        const meal = {
             id: uuid(),
             timestamp: dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now,
             type: type
-        }).then(() => props.onAdd?.());
+        };
+        mealContext.addMeal(meal).then(() => {
+            if (props.autoLaunchEditor && props.onEditMeal) {
+                prepareMealForEditing(meal).then(props.onEditMeal)
+            }
+        });
     };
 
     return <div className="mdhui-meal-buttons" ref={props.innerRef}>

@@ -1,5 +1,5 @@
 export { getGlucoseReadings, computeBestFitGlucoseValue, computeGlucoseReadingRanges, computeGlucoseReadingRecentAverage } from './glucose';
-export { getMeals, saveMeals, prepareMealForEditing, getMealToEdit, uploadMealImageFile, getMealImageUrl } from './meals';
+export { getMeals, saveMeals, prepareMealForEditing, getMealToEdit, uploadMealImageFile, getMealImageUrls } from './meals';
 export { generateGlucose, generateSteps, generateSleep } from './sample-data';
 export { getSleepMinutes } from './sleep';
 export { getSteps } from './steps';

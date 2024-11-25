@@ -59,15 +59,22 @@ export function uploadMealImageFile(file: File): Promise<void> {
     return MyDataHelps.uploadFile(file, 'MealImage');
 }
 
-export async function getMealImageUrl(fileName: string): Promise<string | undefined> {
-    const files = await queryAllFiles({ category: 'MealImage' });
-    const sortedFiles = files.sort((a, b) => compareDesc(parseISO(a.lastModified), parseISO(b.lastModified)));
-    // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
-    const imageFile = sortedFiles.find(file => file.fileName === fileName);
-    if (imageFile) {
-        return (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
-    }
-    return undefined;
+export async function getMealImageUrls(fileNames: string[]): Promise<{ [key: string]: string }> {
+    if (fileNames.length === 0) return {};
+
+    const allMealImageFiles = await queryAllFiles({ category: 'MealImage' });
+    const sortedMealImageFiles = allMealImageFiles.sort((a, b) => compareDesc(parseISO(a.lastModified), parseISO(b.lastModified)));
+
+    const result: { [key: string]: string } = {};
+    await Promise.all(fileNames.map(async fileName => {
+        // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
+        const imageFile = sortedMealImageFiles.find(file => file.fileName === fileName);
+        if (imageFile) {
+            result[fileName] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
+        }
+    }));
+
+    return result;
 }
 
 function toMeal(serializedMeal: SerializedMeal): Meal {
