@@ -3,7 +3,7 @@ import { add, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { describe, it } from '@jest/globals';
 import { awardSurveyCompletionActivityPoints, SurveyCompletionActivity } from '../../../src/helpers/BasicPointsAndBadges/SurveyCompletionActivity';
-import { generateGUID } from "../commonFunctions";
+import { generateGUID } from "../../fixtures/commonFunctions";
 
 describe('Basic Points And Badges - SurveyCompletionActivity', () => {
 
