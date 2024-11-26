@@ -78,7 +78,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
     const result: { [key: string]: string } = {};
     await Promise.all(meals.map(async meal => {
         const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(`${meal.id}_thumbnail`))
-            ?? sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id));
+            ?? sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id.toString()));
         if (imageFile) {
             result[meal.id.toString()] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
         }
