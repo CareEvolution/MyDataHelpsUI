@@ -83,10 +83,14 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
+        setLoading(true);
+
+        mealToEdit!.archiveTimestamp = new Date();
+
         const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
-        saveMeals(startOfDay(mealToEdit!.timestamp), otherMeals).then(() => {
-            props.onDelete();
-        });
+        const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
+
+        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(props.onDelete);
     };
 
     const onSave = async () => {
@@ -113,10 +117,7 @@ export default function MealEditor(props: MealEditorProps) {
         const otherMeals = meals!.filter(meal => meal.id !== mealToEdit!.id);
         const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
 
-        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(async () => {
-            setLoading(false);
-            props.onSave();
-        });
+        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(props.onSave);
     };
 
     const hasDuplicateTimestamp = () => {

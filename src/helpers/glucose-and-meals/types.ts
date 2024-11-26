@@ -27,6 +27,7 @@ export interface Meal {
     timestamp: Date;
     type: MealType;
     description?: string;
+    archiveTimestamp?: Date;
 }
 
 export interface MealReference {

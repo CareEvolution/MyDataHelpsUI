@@ -9,6 +9,7 @@ interface SerializedMeal {
     timestamp: string;
     type: string;
     description?: string;
+    archiveTimestamp?: string;
 }
 
 interface SerializedMealReference {
@@ -24,7 +25,8 @@ export async function getMeals(date: Date): Promise<Meal[]> {
         observedBefore: startOfDay(add(date, { days: 1 })).toISOString()
     });
     if (response.deviceDataPoints.length > 0) {
-        return (JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal[]).map(toMeal).sort(timestampSortAsc);
+        const meals = (JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal[]).map(toMeal);
+        return meals.filter(meal => !meal.archiveTimestamp).sort(timestampSortAsc);
     }
     return [];
 }
@@ -73,7 +75,9 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
     const result: { [key: string]: string } = {};
     await Promise.all(meals.map(async meal => {
         // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
-        const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id));
+        const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(`${meal.id}_thumbnail`))
+            // @ts-ignore
+            ?? sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id));
         if (imageFile) {
             result[meal.id.toString()] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
         }
@@ -87,7 +91,8 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         id: serializedMeal.id as Guid,
         timestamp: parseISO(serializedMeal.timestamp),
         type: serializedMeal.type as MealType,
-        description: serializedMeal.description
+        description: serializedMeal.description,
+        archiveTimestamp: serializedMeal.archiveTimestamp ? parseISO(serializedMeal.archiveTimestamp) : undefined
     };
 }
 
