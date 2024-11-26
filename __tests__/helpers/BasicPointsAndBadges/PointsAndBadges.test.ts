@@ -119,7 +119,7 @@ describe("Points And Badges full life cycle", () => {
             badges: [100],
             activityStates: {
                 CustomField: {
-                    pointsAwarded: 1
+                    pointsAwarded: 1000
                 },
                 SurveyCompletion: {
                     pointsAwarded: 100,
@@ -134,12 +134,12 @@ describe("Points And Badges full life cycle", () => {
         const expected = Object.keys(newState.activityStates).sort();
         expect(expected.length).toBe(2);
         expect(expected[0]).toBe("CustomField");
-        expect(newState.activityStates.CustomField.pointsAwarded).toBe(1);
+        expect(newState.activityStates.CustomField.pointsAwarded).toBe(1000);
 
         expect(expected[1]).toBe("SurveyCompletion");
         expect(newState.activityStates.SurveyCompletion.pointsAwarded).toBe(100);
 
-        expect(newState.badges).toEqual([100]);
+        expect(newState.badges).toEqual([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100]);
     });
 
     it("should calculate the sum of existing points as 0 if none are on file", async () => {

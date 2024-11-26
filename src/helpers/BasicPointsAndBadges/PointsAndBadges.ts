@@ -7,6 +7,14 @@ import { CustomActivity, awardCustomActivityPoints } from "./CustomActivity";
 
 export async function awardPointsAndBadges(activities: BasicPointsForBadgesActivity[], state: BasicPointsForBadgesState, pointsPerBadge: number, participantInfo: ParticipantInfo): Promise<BasicPointsForBadgesState> {
 
+    function getActivityState(activity: BasicPointsForBadgesActivity) : any{
+        if (Object.keys(state.activityStates).includes(activity.key)) {
+            return state.activityStates[activity.key];
+        }
+
+        return { pointsAwarded: 0 };
+    }
+
     const inActiveActivityKeys = Object.keys(state.activityStates).filter((earnings) => activities.map(a => a.key).indexOf(earnings) === -1);
     let earningsForInactiveActivities: { [key: string]: BasicPointsForBadgesActivityState } = {};
     for (var i = 0; i < inActiveActivityKeys.length; i++) {
@@ -14,7 +22,7 @@ export async function awardPointsAndBadges(activities: BasicPointsForBadgesActiv
         earningsForInactiveActivities[key] = state.activityStates[key];
     }
 
-    const awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, state.activityStates[activity.key], participantInfo));
+    const awardPointsPromises = activities.map((activity) => awardPointsForActivity(activity, getActivityState(activity), participantInfo));
     const updatedActivityStates: { [key: string]: BasicPointsForBadgesActivityState } = {};
     await Promise.all(awardPointsPromises).then((newActivityStatesArray) => {
         newActivityStatesArray.forEach((state, index) => {
@@ -22,7 +30,7 @@ export async function awardPointsAndBadges(activities: BasicPointsForBadgesActiv
         });
     });
 
-    const newPointTotal = sumActivityPoints(updatedActivityStates);
+    const newPointTotal = sumActivityPoints(updatedActivityStates) + sumActivityPoints(earningsForInactiveActivities);
     const lastBadge = state.badges.length ? Math.max(...state.badges) : 0;
     let nextBadge = lastBadge + pointsPerBadge;
     let newBadges = [...state.badges];
