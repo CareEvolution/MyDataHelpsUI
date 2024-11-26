@@ -8,7 +8,7 @@ export interface SurveyCompletionActivity extends BasicPointsForBadgesActivity {
     limit?: number;
 }
 
-interface SurveyCompletionActivityState extends BasicPointsForBadgesActivityState {
+export interface SurveyCompletionActivityState extends BasicPointsForBadgesActivityState {
     countCompleted?: number;
     lastQueryDate?: string;
 }
@@ -31,7 +31,7 @@ export async function awardSurveyCompletionActivityPoints(activity: SurveyComple
     // inserted after is really "inserted on or after"
     let answers = (await queryAllSurveyAnswers(parameters)).filter(answer => answer.insertedDate != activityState.lastQueryDate);
 
-    //sory by latest inserteddate first
+    //sort by latest inserteddate first
     answers.sort((a, b) => new Date(b.insertedDate).getTime() - new Date(a.insertedDate).getTime());
 
     let newUniqueResults = answers.map(answer => answer.surveyResultID).filter((value, index, self) => self.indexOf(value) === index);
@@ -42,8 +42,7 @@ export async function awardSurveyCompletionActivityPoints(activity: SurveyComple
     if (newUniqueResults.length > 0) {
         let newState: SurveyCompletionActivityState = {
             countCompleted: countCompleted + newUniqueResults.length,
-            //TODO: Ensure this doesn't cause continual re-awarding of points due to date overlaps/equality or anything
-            lastQueryDate: answers.length > 0 ? answers[0].insertedDate : activityState.lastQueryDate,
+            lastQueryDate: answers[0].insertedDate,
             pointsAwarded: activityState.pointsAwarded + newUniqueResults.length * activity.points
         };
         return newState;
