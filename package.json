@@ -88,6 +88,7 @@
     "@langchain/langgraph": "^0.2.16",
     "@langchain/openai": "^0.3.11",
     "date-fns": "^4.0.0",
+    "exif-js": "^2.3.0",
     "html-react-parser": "^5.0.7",
     "lodash": "^4.17.21",
     "markdown-it": "^14.1.0",
