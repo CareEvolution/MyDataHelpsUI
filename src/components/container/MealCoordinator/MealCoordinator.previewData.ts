@@ -17,6 +17,11 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
             imageUrls: {}
         };
     } else if (previewState === 'with data') {
+        const grilledCheeseMealId = uuid();
+
+        const imageUrls: { [key: string]: string } = {};
+        imageUrls[grilledCheeseMealId] = grilledCheese;
+
         return {
             meals: [{
                 id: uuid(),
@@ -28,20 +33,17 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
                 type: 'meal',
                 description: 'Three pancakes, two eggs, hashbrowns, three strips of bacon, and a piece of toast.'
             }, {
-                id: uuid(),
+                id: grilledCheeseMealId,
                 timestamp: createObservationDate(date, 18, 10),
                 type: 'meal',
-                description: 'A grilled cheese sandwich.',
-                imageFileName: 'grilled_cheese.png'
+                description: 'A grilled cheese sandwich.'
             }, {
                 id: uuid(),
                 timestamp: createObservationDate(date, 21, 43),
                 type: 'drink',
                 description: 'A diet coke.'
             }],
-            imageUrls: {
-                'grilled_cheese.png': grilledCheese
-            }
+            imageUrls: imageUrls
         };
     }
     return {} as MealCoordinatorPreviewData;

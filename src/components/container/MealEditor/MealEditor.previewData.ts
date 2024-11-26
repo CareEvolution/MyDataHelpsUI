@@ -20,8 +20,7 @@ export const createPreviewData = (previewState: MealEditorPreviewState, date: Da
         id: uuid(),
         timestamp: createObservationDate(date, 14, 33),
         type: 'snack',
-        description: 'A grilled cheese sandwich.',
-        imageFileName: previewState === 'with existing image' ? 'grilled_cheese.png' : undefined
+        description: 'A grilled cheese sandwich.'
     }, {
         id: uuid(),
         timestamp: createObservationDate(date, 18, 10),

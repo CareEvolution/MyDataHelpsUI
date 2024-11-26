@@ -9,7 +9,6 @@ interface SerializedMeal {
     timestamp: string;
     type: string;
     description?: string;
-    imageFileName?: string;
 }
 
 interface SerializedMealReference {
@@ -55,23 +54,28 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
     return undefined;
 }
 
-export async function uploadMealImageFile(file: File): Promise<void> {
-    const resizedFile = await resizeImage(file, 400);
-    return MyDataHelps.uploadFile(resizedFile, 'MealImage');
+export async function uploadMealImageFile(meal: Meal, file: File): Promise<void> {
+    const imageFileExtension = file.name.split('.').pop()!;
+
+    const originalImageFile = renameImage(file, `${meal.id}.${imageFileExtension}`);
+    await MyDataHelps.uploadFile(originalImageFile, 'MealImage');
+
+    const thumbnailImageFile = await createThumbnailImage(file, `${meal.id}_thumbnail.${imageFileExtension}`);
+    return MyDataHelps.uploadFile(thumbnailImageFile, 'MealImage');
 }
 
-export async function getMealImageUrls(fileNames: string[]): Promise<{ [key: string]: string }> {
-    if (fileNames.length === 0) return {};
+export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: string }> {
+    if (meals.length === 0) return {};
 
     const allMealImageFiles = await queryAllFiles({ category: 'MealImage' });
     const sortedMealImageFiles = allMealImageFiles.sort((a, b) => compareDesc(parseISO(a.lastModified), parseISO(b.lastModified)));
 
     const result: { [key: string]: string } = {};
-    await Promise.all(fileNames.map(async fileName => {
+    await Promise.all(meals.map(async meal => {
         // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
-        const imageFile = sortedMealImageFiles.find(file => file.fileName === fileName);
+        const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id));
         if (imageFile) {
-            result[fileName] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
+            result[meal.id.toString()] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
         }
     }));
 
@@ -83,8 +87,7 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         id: serializedMeal.id as Guid,
         timestamp: parseISO(serializedMeal.timestamp),
         type: serializedMeal.type as MealType,
-        description: serializedMeal.description,
-        imageFileName: serializedMeal.imageFileName
+        description: serializedMeal.description
     };
 }
 
@@ -95,20 +98,31 @@ function toMealReference(serializedMealReference: SerializedMealReference): Meal
     };
 }
 
-async function resizeImage(file: File, maxSize: number): Promise<File> {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+function renameImage(file: File, fileName: string): File {
+    return new File([file], fileName, { type: file.type });
+}
+
+async function createThumbnailImage(file: File, fileName: string): Promise<File> {
+    const maxThumbnailSize = 300;
 
     const bitmap = await createImageBitmap(file);
-    const ratio = maxSize / Math.max(bitmap.height, bitmap.width);
+    const ratio = maxThumbnailSize / Math.max(bitmap.height, bitmap.width);
+
+    if (ratio >= 1) {
+        return renameImage(file, fileName);
+    }
+
     const newWidth = bitmap.width * ratio;
     const newHeight = bitmap.height * ratio;
 
+    const canvas = document.createElement('canvas');
     canvas.width = newWidth;
     canvas.height = newHeight;
+
+    const context = canvas.getContext('2d');
     context!.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, newWidth, newHeight);
 
     return new Promise(resolve => canvas.toBlob(blob => {
-        resolve(new File([blob!], file.name, { type: file.type }));
+        resolve(new File([blob!], fileName, { type: file.type }));
     }, file.type, 1));
 }

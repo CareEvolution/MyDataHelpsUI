@@ -51,8 +51,7 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
         }
 
         getMeals(selectedDate).then(meals => {
-            const imageFileNames = meals.map(meal => meal.imageFileName).filter(fileName => fileName) as string[];
-            getMealImageUrls(imageFileNames).then(imageUrls => {
+            getMealImageUrls(meals).then(imageUrls => {
                 setLoading(false);
                 setMeals(meals);
                 setImageUrls(imageUrls);

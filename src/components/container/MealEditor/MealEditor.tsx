@@ -59,18 +59,14 @@ export default function MealEditor(props: MealEditorProps) {
                 getMeals(mealReference.date).then(async meals => {
                     const referencedMeal = meals.find(meal => meal.id === mealReference.id);
                     if (referencedMeal) {
+                        const imageUrls = await getMealImageUrls([referencedMeal]);
+                        const imageUrl = imageUrls[referencedMeal.id.toString()];
+
                         setLoading(false);
                         setMeals(meals);
                         setMealToEdit(referencedMeal);
-                        if (referencedMeal.imageFileName) {
-                            const imageUrls = await getMealImageUrls([referencedMeal.imageFileName]);
-                            const imageUrl = imageUrls[referencedMeal.imageFileName];
-                            if (imageUrl) {
-                                setImageUrl(imageUrl);
-                            } else {
-                                setImageLoading(false);
-                            }
-                        }
+                        setImageUrl(imageUrl);
+                        setImageLoading(!!imageUrl);
                     } else {
                         props.onError();
                     }
@@ -104,7 +100,7 @@ export default function MealEditor(props: MealEditorProps) {
 
         if (newImageFile) {
             try {
-                await uploadMealImageFile(newImageFile);
+                await uploadMealImageFile(mealToEdit!, newImageFile);
             } catch {
                 setLoading(false);
                 setImageUploadError(true);
@@ -140,9 +136,7 @@ export default function MealEditor(props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
-            file = new File([file], `${mealToEdit!.id}.${file.name.split('.').pop()}`, { type: file.type });
             setNewImageFile(file);
-            setMealToEdit({ ...mealToEdit!, imageFileName: file.name });
             setImageUrl(URL.createObjectURL(file));
             setImageUploadError(false);
         }
@@ -150,7 +144,6 @@ export default function MealEditor(props: MealEditorProps) {
 
     const onRemoveImage = () => {
         setNewImageFile(undefined);
-        setMealToEdit({ ...mealToEdit!, imageFileName: undefined });
         setImageUrl(undefined);
         setImageUploadError(false);
     };
@@ -211,12 +204,12 @@ export default function MealEditor(props: MealEditorProps) {
                         placeholder={language('meal-editor-description-optional')}
                     />
                 </div>
-                {props.withImageCapture && !mealToEdit.imageFileName && renderImageSelector(
+                {props.withImageCapture && !imageUrl && renderImageSelector(
                     <div className="mdhui-button mdhui-meal-editor-image-add">
                         <FontAwesomeSvgIcon icon={faPlus} /> Add Image
                     </div>
                 )}
-                {props.withImageCapture && mealToEdit.imageFileName &&
+                {props.withImageCapture && imageUrl &&
                     <div className="mdhui-meal-editor-image-manager">
                         {imageLoading &&
                             <div className="mdhui-meal-editor-image-loading">

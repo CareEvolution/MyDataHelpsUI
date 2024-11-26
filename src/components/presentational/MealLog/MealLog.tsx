@@ -40,7 +40,7 @@ export default function MealLog(props: MealLogProps) {
             return <SingleMeal
                 key={`meal-${index}`}
                 meal={meal}
-                mealImageUrl={meal.imageFileName ? mealContext.imageUrls[meal.imageFileName] : undefined}
+                mealImageUrl={mealContext.imageUrls[meal.id.toString()]}
                 number={!props.hideMealNumbers ? index + 1 : undefined}
                 color={getColorFromAssortment(index)}
                 onClick={() => mealContext.onMealClicked(meal)}
