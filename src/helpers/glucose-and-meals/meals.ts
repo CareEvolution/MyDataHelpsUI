@@ -55,8 +55,9 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
     return undefined;
 }
 
-export function uploadMealImageFile(file: File): Promise<void> {
-    return MyDataHelps.uploadFile(file, 'MealImage');
+export async function uploadMealImageFile(file: File): Promise<void> {
+    const resizedFile = await resizeImage(file, 400);
+    return MyDataHelps.uploadFile(resizedFile, 'MealImage');
 }
 
 export async function getMealImageUrls(fileNames: string[]): Promise<{ [key: string]: string }> {
@@ -92,4 +93,22 @@ function toMealReference(serializedMealReference: SerializedMealReference): Meal
         date: parseISO(serializedMealReference.date),
         id: serializedMealReference.id as Guid
     };
+}
+
+async function resizeImage(file: File, maxSize: number): Promise<File> {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    const bitmap = await createImageBitmap(file);
+    const ratio = maxSize / Math.max(bitmap.height, bitmap.width);
+    const newWidth = bitmap.width * ratio;
+    const newHeight = bitmap.height * ratio;
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    context!.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, newWidth, newHeight);
+
+    return new Promise(resolve => canvas.toBlob(blob => {
+        resolve(new File([blob!], file.name, { type: file.type }));
+    }, file.type, 1));
 }

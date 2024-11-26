@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
-import { ColorDefinition, getDayKey, getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { ColorDefinition, getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
@@ -140,7 +140,7 @@ export default function MealEditor(props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
-            file = new File([file], `${getDayKey(mealToEdit!.timestamp)}_${mealToEdit!.id}.${file.name.split('.').pop()}`, { type: file.type });
+            file = new File([file], `${mealToEdit!.id}.${file.name.split('.').pop()}`, { type: file.type });
             setNewImageFile(file);
             setMealToEdit({ ...mealToEdit!, imageFileName: file.name });
             setImageUrl(URL.createObjectURL(file));
