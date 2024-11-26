@@ -59,11 +59,14 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
 export async function uploadMealImageFile(meal: Meal, file: File): Promise<void> {
     const imageFileExtension = file.name.split('.').pop()!;
 
-    const originalImageFile = renameImage(file, `${meal.id}.${imageFileExtension}`);
-    await MyDataHelps.uploadFile(originalImageFile, 'MealImage');
+    await MyDataHelps.uploadFile(file, 'MealImage', `${meal.id}.${imageFileExtension}`);
 
-    const thumbnailImageFile = await createThumbnailImage(file, `${meal.id}_thumbnail.${imageFileExtension}`);
-    return MyDataHelps.uploadFile(thumbnailImageFile, 'MealImage');
+    const thumbnailFile = await createThumbnailIfNecessary(file);
+    if (thumbnailFile) {
+        return MyDataHelps.uploadFile(thumbnailFile, 'MealImage', `${meal.id}_thumbnail.${imageFileExtension}`);
+    }
+
+    return Promise.resolve();
 }
 
 export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: string }> {
@@ -74,9 +77,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
 
     const result: { [key: string]: string } = {};
     await Promise.all(meals.map(async meal => {
-        // @ts-ignore - fileName exists, but just isn't in the MDH-JS type yet.
         const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(`${meal.id}_thumbnail`))
-            // @ts-ignore
             ?? sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id));
         if (imageFile) {
             result[meal.id.toString()] = (await MyDataHelps.getFileDownloadUrl(imageFile.key)).preSignedUrl;
@@ -103,31 +104,27 @@ function toMealReference(serializedMealReference: SerializedMealReference): Meal
     };
 }
 
-function renameImage(file: File, fileName: string): File {
-    return new File([file], fileName, { type: file.type });
-}
-
-async function createThumbnailImage(file: File, fileName: string): Promise<File> {
-    const maxThumbnailSize = 300;
+async function createThumbnailIfNecessary(file: File): Promise<File | undefined> {
+    const thumbnailSize = 300;
 
     const bitmap = await createImageBitmap(file);
-    const ratio = maxThumbnailSize / Math.max(bitmap.height, bitmap.width);
+    const ratio = thumbnailSize / Math.max(bitmap.height, bitmap.width);
 
-    if (ratio >= 1) {
-        return renameImage(file, fileName);
+    if (ratio < 1) {
+        const newWidth = bitmap.width * ratio;
+        const newHeight = bitmap.height * ratio;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        const context = canvas.getContext('2d');
+        context!.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, newWidth, newHeight);
+
+        return new Promise(resolve => canvas.toBlob(blob => {
+            resolve(new File([blob!], file.name, { type: file.type }));
+        }, file.type, 1));
     }
 
-    const newWidth = bitmap.width * ratio;
-    const newHeight = bitmap.height * ratio;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = newWidth;
-    canvas.height = newHeight;
-
-    const context = canvas.getContext('2d');
-    context!.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, newWidth, newHeight);
-
-    return new Promise(resolve => canvas.toBlob(blob => {
-        resolve(new File([blob!], fileName, { type: file.type }));
-    }, file.type, 1));
+    return undefined;
 }
