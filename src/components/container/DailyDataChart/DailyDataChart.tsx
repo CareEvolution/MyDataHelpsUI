@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
 import { DailyDataProvider, DailyDataQueryResult, checkDailyDataAvailability, getDailyDataTypeDefinition, queryDailyData } from '../../../helpers/query-daily-data'
-import { add, format, startOfDay } from 'date-fns'
+import { add, startOfDay } from 'date-fns'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import getDayKey from '../../../helpers/get-day-key'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import { AreaChartOptions, AreaChartSeries, BarChartOptions, ChartSeries, LineChartOptions, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface DailyDataChartProps {
     title?: string
@@ -135,7 +136,7 @@ export default function DailyDataChart(props: DailyDataChartProps) {
                     <div className="mdhui-single-value-tooltip-value">
                         {formatter ? formatter(payload[0].payload.rawValue) : payload[0].payload.value}
                     </div>
-                    <div className="mdhui-time-series-tooltip-date">{format(date, 'MM/dd/yyyy')}</div>
+                    <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(date, 'MM/dd/yyyy')}</div>
                 </div>
             );
         }

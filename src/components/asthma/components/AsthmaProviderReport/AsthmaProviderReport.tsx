@@ -1,12 +1,14 @@
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
 import { AsthmaProviderReportPreviewState, previewData } from './AsthmaProviderReport.previewData';
-import { add, format, formatISO, parseISO, startOfToday } from 'date-fns';
+import { add, formatISO, parseISO, startOfToday } from 'date-fns';
 import { AsthmaControlState, AsthmaLogEntry, AsthmaParticipant } from '../../model';
 import MyDataHelps, { DeviceDataPoint, DeviceInfo, SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { LoadingIndicator } from '../../../presentational';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { formatDateForLocale } from '../../../../helpers/locale';
+import { language } from '../../../../helpers/language';
 
 export interface AsthmaProviderReportProps {
     previewState?: AsthmaProviderReportPreviewState;
@@ -183,7 +185,7 @@ export default function (props: AsthmaProviderReportProps) {
         }
 
         return <div style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
-            <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? format(date, 'MMM').toUpperCase() : ''}</div>
+            <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? formatDateForLocale(date, 'MMM').toLocaleUpperCase() : ''}</div>
             <svg viewBox="0 0 40px 40px" style={{height: '40px', width: '40px'}}>
                 <circle cx="20" cy="20" r="18" style={dayWrapperStyle}/>
                 <foreignObject x="0" y="0" height="40px" width="40px">
@@ -249,7 +251,7 @@ export default function (props: AsthmaProviderReportProps) {
         <div style={{position: 'absolute', width: documentWidth, height: documentHeight, transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
             <div style={{position: 'relative', padding: '32px 48px', width: documentWidth, height: documentHeight, boxSizing: 'border-box', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
                 <div style={{fontSize: '32px', fontWeight: 600}}>{nameToDisplay} - Asthma Tool - Provider Report</div>
-                <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{format(startDate, 'MMMM d')} - {format(today, 'MMMM d, yyyy')} (90 days)</div>
+                <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{formatDateForLocale(startDate, 'MMMM d')} - {formatDateForLocale(today, 'MMMM d, yyyy')} (90 {language('days')})</div>
                 <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
                         <div style={{flexGrow: 1}}>

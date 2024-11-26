@@ -1,8 +1,7 @@
 import React from 'react'
 import "./SingleNotification.css"
-import MyDataHelps, { Notification } from "@careevolution/mydatahelps-js"
-import { formatRelative, parseISO } from 'date-fns'
-import { getLocaleFromIso } from '../../../helpers/locale';
+import { Notification } from "@careevolution/mydatahelps-js"
+import { capitalizeForLocale, formatRelativeDateForLocale } from '../../../helpers/locale';
 
 export interface SingleNotificationProps {
 	notification: Notification
@@ -10,11 +9,6 @@ export interface SingleNotificationProps {
 }
 
 export default function (props: SingleNotificationProps) {
-	function capitalizeFirstLetter(string: string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
-
-	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
@@ -27,7 +21,7 @@ export default function (props: SingleNotificationProps) {
 				<div className="notification-body">{props.notification.content.body}</div>
 			}
 			<div className="notification-date">
-				{capitalizeFirstLetter(formatRelative(parseISO(props.notification.sentDate), new Date(), { locale: locale }))}
+				{capitalizeForLocale(formatRelativeDateForLocale(props.notification.sentDate, new Date()))}
 			</div>
 		</div>
 	)

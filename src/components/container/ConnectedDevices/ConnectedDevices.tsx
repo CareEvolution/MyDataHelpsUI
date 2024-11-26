@@ -4,9 +4,8 @@ import "./ConnectedDevices.css"
 import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
 import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons"
-import { formatRelative, parseISO } from 'date-fns'
 import * as FeatherIcon from 'react-feather'
-import { getLocaleFromIso } from '../../../helpers/locale';
+import { formatRelativeDateForLocale } from '../../../helpers/locale';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -57,7 +56,6 @@ export default function (props: ConnectedDevicesProps) {
 		return null;
 	}
 
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div className="mdhui-connected-devices" ref={props.innerRef}>
 			<CardTitle title={props.providerName + " " + language("devices")} />
@@ -79,7 +77,7 @@ export default function (props: ConnectedDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-								{language("last-sync")} {formatRelative(parseISO(device.observationDate), new Date(), { locale: locale })}
+								{language("last-sync")} {formatRelativeDateForLocale(device.observationDate, new Date())}
 							</div>
 						}
 					</div>

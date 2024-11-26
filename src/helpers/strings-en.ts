@@ -498,7 +498,24 @@
     "ai-assistant-suggestion-save-graph-to-files": "Save the graph to my files",
     "mindful-minutes": "Mindful Minutes",
     "therapy-minutes": "Therapy Minutes",
-    "insight-matrix-no-comparison-data": "No comparison data types configured."
+    "insight-matrix-no-comparison-data": "No comparison data types configured.",
+    "allergylist-reactions": "Reactions",
+    "points-abbreviation": "pts",
+    "no-data": "No Data",
+    "no-data-yet": "No data yet",
+    "bp-low": "Low",
+    "bp-normal": "Normal",
+    "bp-elevated": "Elevated",
+    "bp-stage1": "Stage 1",
+    "bp-stage2": "Stage 2",
+    "bp-crisis": "Crisis",
+    "bp-unknown": "Unknown",
+    "device-not-enabled": "@@DEVICE@@ is not enabled for this project.",
+    "download-pdf-report": "Download PDF Report",
+    "connect-to-device": "Connect to @@DEVICE@@",
+    "symptoms-and-treatments": "Symptoms & Treatments",
+    "subsequent-evaluation-note": "Subsequent evaluation note",
+    "summary": "Summary"
 };
 
 export default strings;

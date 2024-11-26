@@ -3,11 +3,12 @@ import './GlucoseChart.css';
 import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
-import { add, compareAsc, format, isSameDay, startOfToday } from 'date-fns';
+import { add, compareAsc, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -110,7 +111,7 @@ export default function (props: GlucoseChartProps) {
         add(selectedDate, { hours: 18 }).valueOf(),
         add(selectedDate, { hours: 21 }).valueOf()
     ];
-    let chartTickFormatter = (value: number) => format(new Date(value), 'h aaa');
+    let chartTickFormatter = (value: number) => formatDateForLocale(new Date(value), 'h aaa');
 
     if (selectedMeal) {
         chartDomain = [add(selectedMeal.timestamp, { minutes: -3 }).valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];
@@ -119,7 +120,7 @@ export default function (props: GlucoseChartProps) {
             add(selectedMeal.timestamp, { minutes: 60 }).valueOf(),
             add(selectedMeal.timestamp, { minutes: 90 }).valueOf()
         ];
-        chartTickFormatter = (value: number) => format(new Date(value), 'h:mmaaa');
+        chartTickFormatter = (value: number) => formatDateForLocale(new Date(value), 'h:mmaaa');
     }
 
     const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, meal?: boolean } }) => {

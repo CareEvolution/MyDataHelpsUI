@@ -74,7 +74,7 @@ export default function (props: SymptomSharkLogEntryProps) {
                 highlightedTreatments={props.highlightedTreatments} />
             {props.logEntry!.notes &&
                 <div className="mdhui-ss-log-entry-section">
-                    <div className="mdhui-ss-section-header">Notes</div>
+                    <div className="mdhui-ss-section-header">{language('notes')}</div>
                     <div className="mdhui-ss-notes-content">{props.logEntry!.notes}</div>
                 </div>
             }
@@ -159,7 +159,7 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
     }
 
     return <div className="mdhui-ss-log-entry-section">
-        <div className="mdhui-ss-section-header">Symptoms & Treatments</div>
+        <div className="mdhui-ss-section-header">{language('symptoms-and-treatments')}</div>
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
             <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
         )}

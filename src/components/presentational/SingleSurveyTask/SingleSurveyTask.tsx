@@ -1,18 +1,19 @@
 import React, { useContext } from 'react'
 import './SingleSurveyTask.css'
-import MyDataHelps, { SurveyTask } from '@careevolution/mydatahelps-js'
+import { SurveyTask } from '@careevolution/mydatahelps-js'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { isAfter, isSameDay, startOfToday, formatRelative, formatDistanceToNow, parseISO, add } from 'date-fns'
+import { isAfter, isSameDay, startOfToday, parseISO, add } from 'date-fns'
 import language from '../../../helpers/language'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Button from '../Button';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition, getLocaleFromIso, resolveColor } from '../../../helpers';
+import { ColorDefinition, resolveColor } from '../../../helpers';
 import { ButtonVariant } from '../Button/Button';
 import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
 import { noop } from '../../../helpers/functions';
+import { formatRelativeDateForLocale, formatTimeFromNowForLocale } from "../../../helpers/locale";
 
 export type SingleSurveyTaskVariant = 'default' | 'expanded';
 
@@ -49,7 +50,7 @@ export default function (props: SingleSurveyTaskProps) {
 			dueDateString = language('overdue');
 			dueDateClasses.push('danger');
 		} else {
-			dueDateString = language('due-in') + ' ' + formatDistanceToNow(dueDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+			dueDateString = language('due-in') + ' ' + formatTimeFromNowForLocale(dueDate);
 		}
 
 		return <div className={dueDateClasses.join(' ')}>{dueDateString}</div>;
@@ -96,7 +97,7 @@ export default function (props: SingleSurveyTaskProps) {
 		return <Action renderAs='div' className="mdhui-single-survey-task complete" indicator={<img src={checkMark} alt="check mark"></img>} innerRef={props.innerRef}>
 			<div className="survey-name">{props.task.surveyDisplayName}</div>
 			{props.task.endDate &&
-				<div className="completed-date">{language('completed')} {formatRelative(parseISO(props.task.endDate), new Date(), { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) })}</div>
+				<div className="completed-date">{language('completed')} {formatRelativeDateForLocale(props.task.endDate, new Date())}</div>
 			}
 		</Action>;
 	};
