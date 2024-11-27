@@ -6,7 +6,7 @@ import { startOfDay, parse } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 type EditMode = 'add' | 'edit';
 

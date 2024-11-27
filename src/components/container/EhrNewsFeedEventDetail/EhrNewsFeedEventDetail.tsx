@@ -8,7 +8,7 @@ import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefini
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
 import "./EhrNewsFeedEventDetail.css"
 import language from '../../../helpers/language';
-import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface EhrNewsFeedEventDetailProps {
     feed: EhrNewsFeedType
@@ -62,7 +62,7 @@ function NewsFeedDetailTitle(props: { event: EhrNewsFeedEventModel }) {
     let title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
     if (!title) { return null; }
 
-    let subtitle = `${capitalizeForLocale(formatDateForLocale(props.event.Date, "EEEE, MMMM do, y h:mm a"))} • ${props.event.Patient.RecordAuthority}`
+    let subtitle = `${formatDateForLocale(props.event.Date, "EEEE, MMMM do, y h:mm a")} • ${props.event.Patient.RecordAuthority}`
     if (formatDateForLocale(props.event.Date, "h:mm a") == "12:00 AM") {
         subtitle = props.event.Patient.RecordAuthority;
     }

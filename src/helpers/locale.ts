@@ -30,14 +30,16 @@ function toDate(dateOrDateString: string | Date): Date {
     return date;
 }
 
-export function formatDateForLocale(dateOrDateString: string | Date, formatString: string): string {
+export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
-    return format(date, formatString, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    const formatted = format(date, formatString, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    return capitalize ? capitalizeForLocale(formatted) : formatted;
 }
 
-export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date): string {
+export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
-    return formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    const formatted = formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    return capitalize ? capitalizeForLocale(formatted) : formatted;
 }
 
 export function formatTimeFromNowForLocale(dateOrDateString: string | Date) {

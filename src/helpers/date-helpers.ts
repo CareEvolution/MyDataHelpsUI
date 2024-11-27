@@ -1,6 +1,6 @@
 import { add, Duration, isSameDay, sub } from "date-fns";
 import language from "./language";
-import { formatDateForLocale } from "./locale";
+import { formatDateForLocale, capitalizeForLocale } from "./locale";
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -34,11 +34,8 @@ export function getShorterDateString(date: Date) {
 	return formatDateForLocale(date, "MMM d, yyyy");
 }
 
-export function getMonthName(month: number) {
-	function capitalizeForLocaleFirstLetter(string: string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
-	return capitalizeForLocaleFirstLetter(formatDateForLocale(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM"));
+export function getMonthName(month: number, capitalize: boolean = true) {
+	return formatDateForLocale(new Date(new Date().getFullYear(), month, 1, 0, 0, 0, 0), "MMMM", capitalize);
 }
 
 export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Month", intervalStart: Date, variant?: "short" | "long") {

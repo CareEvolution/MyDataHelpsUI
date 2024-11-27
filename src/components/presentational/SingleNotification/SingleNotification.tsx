@@ -1,7 +1,7 @@
 import React from 'react'
 import "./SingleNotification.css"
 import { Notification } from "@careevolution/mydatahelps-js"
-import { capitalizeForLocale, formatRelativeDateForLocale } from '../../../helpers/locale';
+import { formatRelativeDateForLocale } from '../../../helpers/locale';
 
 export interface SingleNotificationProps {
 	notification: Notification
@@ -21,7 +21,7 @@ export default function (props: SingleNotificationProps) {
 				<div className="notification-body">{props.notification.content.body}</div>
 			}
 			<div className="notification-date">
-				{capitalizeForLocale(formatRelativeDateForLocale(props.notification.sentDate, new Date()))}
+				{formatRelativeDateForLocale(props.notification.sentDate, new Date())}
 			</div>
 		</div>
 	)
