@@ -1,6 +1,7 @@
-import { add, Duration, isSameDay, sub } from "date-fns";
+import { add, Duration, isSameDay, sub, Day } from "date-fns";
 import language from "./language";
-import { formatDateForLocale, capitalizeForLocale } from "./locale";
+import { formatDateForLocale, getLocaleFromIso, capitalizeFirstLetterForLocale } from "./locale";
+import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -24,6 +25,11 @@ export function getDayOfWeek(date: Date) {
 		result = language("yesterday");
 	}
 	return result;
+}
+
+export function getDayOfWeekLetter(day: Day) : string {
+	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());	
+	return capitalizeFirstLetterForLocale(locale.localize?.day(day, { width: "narrow" }));
 }
 
 export function getFullDateString(date: Date) {

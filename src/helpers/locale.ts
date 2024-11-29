@@ -30,16 +30,16 @@ function toDate(dateOrDateString: string | Date): Date {
     return date;
 }
 
-export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, capitalize: boolean = true): string {
+export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);
     const formatted = format(date, formatString, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
-    return capitalize ? capitalizeForLocale(formatted) : formatted;
+    return titleize ? titleizeForLocale(formatted) : formatted;
 }
 
-export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date, capitalize: boolean = true): string {
+export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);
     const formatted = formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
-    return capitalize ? capitalizeForLocale(formatted) : formatted;
+    return titleize ? titleizeForLocale(formatted) : formatted;
 }
 
 export function formatTimeFromNowForLocale(dateOrDateString: string | Date) {
@@ -60,7 +60,7 @@ export function formatMinutesForLocale(value: number) {
     return displayValue;
 }
 
-export function capitalizeForLocale(str: string) {
+export function capitalizeFirstLetterForLocale(str: string) {
     // This won't be adequate if we expand to RTL or symbol-based (e.g., Chinese/Japanese/Korean) languages.
     if (!str) {
         return '';
@@ -71,4 +71,13 @@ export function capitalizeForLocale(str: string) {
     const firstLetter = str.slice(0, 1).toLocaleUpperCase();
     const rest = str.slice(1);
     return `${firstLetter}${rest}`;
+}
+
+export function titleizeForLocale(str: string) {
+    // Limited version but good enough for mvp purposes
+    if (!str) {
+        return '';
+    }
+    const parts = str.split(' ');
+    return parts.map( p => capitalizeFirstLetterForLocale(p) ).join(' ');
 }
