@@ -1,7 +1,8 @@
-import { format, formatRelative, formatDistanceToNow, parseISO } from 'date-fns';
+import { format, formatRelative, formatDistanceToNow } from 'date-fns';
 import { es, enUS, nl, de, fr, pt, it, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language from "./language";
+import { toDate } from "./date-helpers";
 
 export function getLocaleFromIso(language: string): Locale {
     if (language.length < 2) return enUS;
@@ -20,15 +21,6 @@ export function getLocaleFromIso(language: string): Locale {
     return enUS;
 }
 
-function toDate(dateOrDateString: string | Date): Date {
-    var date;
-    if (typeof(dateOrDateString) === 'string') {
-        date = parseISO(dateOrDateString);
-    } else {
-        date = dateOrDateString;
-    }
-    return date;
-}
 
 export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);

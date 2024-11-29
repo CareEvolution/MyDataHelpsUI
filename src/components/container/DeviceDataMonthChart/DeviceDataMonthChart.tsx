@@ -7,7 +7,7 @@ import { LoadingIndicator } from '../../presentational'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
 import language from "../../../helpers/language"
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getShortDateString } from '../../../helpers/date-helpers';
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
@@ -158,7 +158,7 @@ export default function (props: DeviceDataMonthChartProps) {
 
 			return (
 				<div className="graph-tooltip">
-					<div className="graph-date">{formatDateForLocale(date, 'MM/dd/yyyy')}</div>
+					<div className="graph-date">{getShortDateString(date)}</div>
 					<table className="payload-values">
 						<tbody>
 							{payload.map((p: any) =>

@@ -10,6 +10,7 @@ import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-fe
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
 import { formatDateForLocale } from '../../../helpers/locale';
+import { getFullDateString } from '../../../helpers/date-helpers';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -37,15 +38,11 @@ export default function (props: EhrNewsFeedProps) {
     let [nextPageDate, setNextPageDate] = useState<string | undefined>(undefined);
     let [finished, setFinished] = useState<boolean>(false);
 
-    function dayLabel(date: string) {
-        return formatDateForLocale(date, 'MMMM do, yyyy');
-    }
-
     function loadMore() {
         function addEvents(events: EhrNewsFeedEventModel[]) {
             let newDayBuckets = [...dayBuckets];
             events.forEach((event) => {
-                let eventDayLabel = dayLabel(event.Date);
+                let eventDayLabel = getFullDateString(event.Date);
                 if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day == eventDayLabel) {
                     newDayBuckets[newDayBuckets.length - 1].items.push(event);
                 } else {

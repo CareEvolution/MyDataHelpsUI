@@ -6,6 +6,7 @@ import { startOfDay, parse } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { getFullDayAndDateString } from '../../../helpers/date-helpers';
 import { formatDateForLocale } from '../../../helpers/locale';
 
 type EditMode = 'add' | 'edit';
@@ -110,7 +111,7 @@ export default function (props: MealEditorProps) {
                     {mode === 'add' ? language('add') : language('edit')} {getMealTypeDisplayText(mealToEdit!.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {formatDateForLocale(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy')}
+                    {getFullDayAndDateString(mealToEdit!.timestamp)}
                 </div>
                 {mode === 'edit' &&
                     <UnstyledButton onClick={() => onDelete()}>

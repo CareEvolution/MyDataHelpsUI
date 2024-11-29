@@ -7,6 +7,7 @@ import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, 
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
 import { formatDateForLocale } from '../../../helpers/locale';
+import { getAbbreviatedMonthName } from '../../../helpers/date-helpers'
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -45,7 +46,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
-            let monthLabel = currentDate.getDate() === 1 ? formatDateForLocale(currentDate, "LLL") : "";
+            let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
