@@ -48,10 +48,29 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
-// e.g., 12:45 pm (localized, may be 24h)
+// e.g., Mon or Fri
+export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
+	if (dayOrDate instanceof Date) {
+		return formatDateForLocale(dayOrDate, "EEEEEE");
+	}
+
+	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());	
+	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
+}
+
+// e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string
 export function getTimeOfDayString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
+	if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
+		return "";
+	}
 	return formatDateForLocale(date, "p");
+}
+
+// e.g., Friday, April 29th, 2024 at 11:00pm - localized
+export function getDayAndDateAndTimeString(dateOrDateString: Date | string) {
+	const date = toDate(dateOrDateString);
+	return formatDateForLocale(date, "PPPPp");
 }
 
 // e.g., Friday, April 29th, 2024 - localized

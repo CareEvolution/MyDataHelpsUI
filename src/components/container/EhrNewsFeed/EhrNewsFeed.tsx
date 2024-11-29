@@ -9,8 +9,7 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { formatDateForLocale } from '../../../helpers/locale';
-import { getFullDateString } from '../../../helpers/date-helpers';
+import { getFullDateString, getTimeOfDayString, toDate } from '../../../helpers/date-helpers';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -161,10 +160,8 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = formatDateForLocale(props.event.Date, "h:mm a");
-    if (date === "12:00 AM") {
-        date = "";
-    }
+    let date = toDate(props.event.Date);
+    let timeString = getTimeOfDayString(date);
 
     function getTitle() {
         let titleItems = definition.getTitleItems(props.event);
@@ -186,6 +183,6 @@ function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event
     >
         <div className="mdhui-news-feed-list-item-title">{getTitle()}</div>
         {definition.getPreview && definition.getPreview(props.event)}
-        <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
+        <div className="mdhui-news-feed-list-item-date">{`${timeString ? timeString + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
     </Action>;
 }

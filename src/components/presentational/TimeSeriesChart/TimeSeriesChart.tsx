@@ -6,8 +6,7 @@ import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { formatDateForLocale } from '../../../helpers/locale';
-import { getAbbreviatedMonthName } from '../../../helpers/date-helpers'
+import { getAbbreviatedMonthName, getAbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -56,7 +55,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = formatDateForLocale(currentDate, "EEEEEE");
+                    dayOfWeek = getAbreviatedDayOfWeek(currentDate);
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -70,7 +69,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{formatDateForLocale(currentDate, "h aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getTimeOfDayString(currentDate)}</text>
             </>;
         }
         return <>
