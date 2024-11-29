@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
 import "./SingleExternalAccount.css";
-import { formatRelativeDateForLocale } from "../../../helpers/locale";
+import { getRelativeDateString } from "../../../helpers/date-helpers";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -66,7 +66,7 @@ export default function (props: SingleExternalAccountProps) {
 				{getStatus() === "fetchComplete" &&
 					<p>
 						{language("external-account-last-updated")}&nbsp;
-						<strong>{formatRelativeDateForLocale(props.externalAccount.lastRefreshDate, new Date())}</strong>
+						<strong>{getRelativeDateString(props.externalAccount.lastRefreshDate, new Date())}</strong>
 					</p>
 				}
 				{getStatus() === "error" &&

@@ -95,6 +95,7 @@ export default function (props: MealEditorProps) {
     const onTimeChanged = (event: ChangeEvent<HTMLInputElement>) => {
         let value = event.target.value;
         if (value) {
+            // The input control always uses HH:mm 24-hour time, but formats it in the UI based on browser settings.
             setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
         }
     };

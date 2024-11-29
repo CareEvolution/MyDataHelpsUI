@@ -1,7 +1,7 @@
 import React from 'react'
 import "./SingleNotification.css"
 import { Notification } from "@careevolution/mydatahelps-js"
-import { formatRelativeDateForLocale } from '../../../helpers/locale';
+import { getRelativeDateString } from '../../../helpers/date-helpers';
 
 export interface SingleNotificationProps {
 	notification: Notification
@@ -21,7 +21,7 @@ export default function (props: SingleNotificationProps) {
 				<div className="notification-body">{props.notification.content.body}</div>
 			}
 			<div className="notification-date">
-				{formatRelativeDateForLocale(props.notification.sentDate, new Date())}
+				{getRelativeDateString(props.notification.sentDate, new Date())}
 			</div>
 		</div>
 	)

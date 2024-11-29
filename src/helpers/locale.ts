@@ -1,8 +1,12 @@
-import { format, formatRelative, formatDistanceToNow } from 'date-fns';
+import { format, formatRelative } from 'date-fns';
 import { es, enUS, nl, de, fr, pt, it, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language from "./language";
 import { toDate } from "./date-helpers";
+
+export function getCurrentLocale() : Locale {
+    return getLocaleFromIso(MyDataHelps.getCurrentLanguage());
+}
 
 export function getLocaleFromIso(language: string): Locale {
     if (language.length < 2) return enUS;
@@ -24,19 +28,8 @@ export function getLocaleFromIso(language: string): Locale {
 
 export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);
-    const formatted = format(date, formatString, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    const formatted = format(date, formatString, { locale: getCurrentLocale() });
     return titleize ? titleizeForLocale(formatted) : formatted;
-}
-
-export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
-    const date = toDate(dateOrDateString);
-    const formatted = formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
-    return titleize ? titleizeForLocale(formatted) : formatted;
-}
-
-export function formatTimeFromNowForLocale(dateOrDateString: string | Date) {
-    const date = toDate(dateOrDateString);
-    return formatDistanceToNow(date, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
 }
 
 export function formatNumberForLocale(value: number, fractionDigits?: number) {

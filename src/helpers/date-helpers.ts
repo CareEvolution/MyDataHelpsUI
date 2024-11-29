@@ -1,6 +1,6 @@
-import { add, Duration, isSameDay, sub, Day, parseISO } from "date-fns";
+import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow } from "date-fns";
 import language from "./language";
-import { formatDateForLocale, getLocaleFromIso, capitalizeFirstLetterForLocale } from "./locale";
+import { formatDateForLocale, getCurrentLocale, titleizeForLocale } from "./locale";
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export function toDate(dateOrDateString: string | Date): Date {
@@ -44,8 +44,8 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 		return formatDateForLocale(dayOrDate, "EEEEE");
 	}
 
-	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());	
-	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
+	const locale = getCurrentLocale();
+	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
 // e.g., Mon or Fri
@@ -54,17 +54,8 @@ export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 		return formatDateForLocale(dayOrDate, "EEEEEE");
 	}
 
-	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());	
-	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
-}
-
-// e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string
-export function getTimeOfDayString(dateOrDateString: Date | string) {
-	const date = toDate(dateOrDateString);
-	if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
-		return "";
-	}
-	return formatDateForLocale(date, "p");
+	const locale = getCurrentLocale();
+	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
 }
 
 // e.g., Friday, April 29th, 2024 at 11:00pm - localized
@@ -100,7 +91,7 @@ export function getShortDateString(dateOrDateString: Date | string) {
 // e.g., 04/29 - localized
 export function getShortestDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
-	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());	
+	const locale = getCurrentLocale();
 	// date-fns doesn't have a format for this one, so we have to fall back to Intl
 	return date.toLocaleDateString(locale.code, {
 		month: 'numeric',
@@ -149,4 +140,26 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Mon
 		}
 		return `${getDayOfWeek(intervalStart)}, ${formatDateForLocale(intervalStart, "MM/dd/yyyy")}`;
 	}
+}
+
+// For future dates - e.g., "in 3 days" or "tomorrow"
+export function getTimeFromNowString(dateOrDateString: string | Date) {
+    const date = toDate(dateOrDateString);
+    return formatDistanceToNow(date, { locale: getCurrentLocale() });
+}
+
+// For past dates - e.g., "2 weeks ago" or "yesterday"
+export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
+    const date = toDate(dateOrDateString);
+    const formatted = formatRelative(date, baseDate, { locale: getCurrentLocale() });
+    return titleize ? titleizeForLocale(formatted) : formatted;
+}
+
+// e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string
+export function getTimeOfDayString(dateOrDateString: Date | string) {
+	const date = toDate(dateOrDateString);
+	if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
+		return "";
+	}
+	return formatDateForLocale(date, "p");
 }
