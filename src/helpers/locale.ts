@@ -36,6 +36,7 @@ export function formatNumberForLocale(value: number, fractionDigits?: number) {
     return Number(value.toFixed(fractionDigits || 0)).toLocaleString(MyDataHelps.getCurrentLanguage())
 }
 
+// e.g., 7h 5m
 export function formatMinutesForLocale(value: number) {
     var hours = Math.floor(value / 60);
     var displayValue = hours > 0 ? (`${hours}${language("hours-abbreviation")} `) : "";
