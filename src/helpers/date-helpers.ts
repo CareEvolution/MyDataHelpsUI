@@ -1,7 +1,6 @@
 import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow } from "date-fns";
 import language from "./language";
-import { formatDateForLocale, getCurrentLocale, titleizeForLocale } from "./locale";
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { formatDateForLocale, getDateLocale, getIntlLocale, titleizeForLocale } from "./locale";
 
 export function toDate(dateOrDateString: string | Date): Date {
     var date;
@@ -44,7 +43,7 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 		return formatDateForLocale(dayOrDate, "EEEEE");
 	}
 
-	const locale = getCurrentLocale();
+	const locale = getDateLocale();
 	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
@@ -54,7 +53,7 @@ export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 		return formatDateForLocale(dayOrDate, "EEEEEE");
 	}
 
-	const locale = getCurrentLocale();
+	const locale = getDateLocale();
 	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
 }
 
@@ -91,9 +90,9 @@ export function getShortDateString(dateOrDateString: Date | string) {
 // e.g., 04/29 - localized
 export function getShortestDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
-	const locale = getCurrentLocale();
 	// date-fns doesn't have a format for this one, so we have to fall back to Intl
-	return date.toLocaleDateString(locale.code, {
+	const locale = getIntlLocale();
+	return date.toLocaleDateString(locale, {
 		month: 'numeric',
 		day: 'numeric',
 	 });	
@@ -132,26 +131,26 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Mon
 		return `${getMonthName(intervalStart.getMonth())} ${intervalStart.getFullYear()}`;
 	}
 	else if (intervalType === "Week" || intervalType === "Month" || intervalType === "6Month") {
-		return `${getShortDateString(intervalStart)} - ${getShortDateString(sub(intervalEnd, { days: 1 }), "MM/dd/yyyy")}`;
+		return `${getShortDateString(intervalStart)} - ${getShortDateString(sub(intervalEnd, { days: 1 }))}`;
 	}
 	else if (intervalType === "Day") {
 		if (variant === "long") {
 			return `${getDayOfWeek(intervalStart)}, ${getFullDateString(intervalStart)}`;
 		}
-		return `${getDayOfWeek(intervalStart)}, ${formatDateForLocale(intervalStart, "MM/dd/yyyy")}`;
+		return `${getDayOfWeek(intervalStart)}, ${getShortDateString(intervalStart)}`;
 	}
 }
 
 // For future dates - e.g., "in 3 days" or "tomorrow"
 export function getTimeFromNowString(dateOrDateString: string | Date) {
     const date = toDate(dateOrDateString);
-    return formatDistanceToNow(date, { locale: getCurrentLocale() });
+    return formatDistanceToNow(date, { locale: getDateLocale() });
 }
 
 // For past dates - e.g., "2 weeks ago" or "yesterday"
 export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);
-    const formatted = formatRelative(date, baseDate, { locale: getCurrentLocale() });
+    const formatted = formatRelative(date, baseDate, { locale: getDateLocale() });
     return titleize ? titleizeForLocale(formatted) : formatted;
 }
 
