@@ -7,6 +7,7 @@ import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, 
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
 import { getAbbreviatedMonthName, getAbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -115,9 +116,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     function tickFormatter(args: any) {
         if (args >= 10000) {
-            return Number((args / 1000).toFixed(1)) + 'K';
+            return formatNumberForLocale(args / 1000, 1) + 'K'; // K is SI prefix - not localized
         } else {
-            return Number(args.toFixed(1)).toString();
+            return formatNumberForLocale(args, 1);
         }
     }
 

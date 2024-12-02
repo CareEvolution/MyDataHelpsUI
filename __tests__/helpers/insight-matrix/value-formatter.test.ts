@@ -1,6 +1,15 @@
 import { createIntegerInsightMatrixValueFormatter, createMinutesToHoursInsightMatrixValueFormatter, createShrinkThousandsInsightMatrixValueFormatter } from '../../../src/helpers/insight-matrix/value-formatter';
 import { describe, it } from '@jest/globals';
 
+jest.mock('@careevolution/mydatahelps-js', () => {
+    return {
+        __esModule: true,
+        default: {
+            getCurrentLanguage:  jest.fn(() => { return "en-US"; })
+        }
+    }
+});
+
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Shrink Thousands Formatter', () => {
         it('Should return values less than 1000 as they were.', () => {

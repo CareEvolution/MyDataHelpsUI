@@ -10,6 +10,7 @@ import './RecentDailyDataBarChart.css';
 import { randomDataProvider } from '../../../helpers/daily-data-providers';
 import language from '../../../helpers/language';
 import { getShortestDateString } from '../../../helpers/date-helpers';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface RecentDailyDataBarChartProps {
     previewState?: 'loading' | 'loaded without data' | 'loaded with data';
@@ -97,9 +98,9 @@ export default function (props: RecentDailyDataBarChartProps) {
         if (value === 0) {
             return '';
         } else if (value >= 10000) {
-            return Number((value / 1000)).toFixed(0) + 'K';
+            return formatNumberForLocale(value / 1000) + 'K';
         } else {
-            return value.toLocaleString();
+            return formatNumberForLocale(value);
         }
     };
 
@@ -124,7 +125,7 @@ export default function (props: RecentDailyDataBarChartProps) {
         if (props.highlight && props.highlight(data[index].rawValue)) {
             textColor = '#6731AA';
         }
-        return <text x={x + (width / 2)} y={y - 5} fontSize={10} fontWeight="bold" textAnchor="middle" fill={textColor}>{props.valueFormatter ? props.valueFormatter(value) : value.toLocaleString()}</text>;
+        return <text x={x + (width / 2)} y={y - 5} fontSize={10} fontWeight="bold" textAnchor="middle" fill={textColor}>{props.valueFormatter ? props.valueFormatter(value) : formatNumberForLocale(value)}</text>;
     };
 
     return <div className="mdhui-recent-daily-data-bar-chart" ref={props.innerRef}>

@@ -9,6 +9,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
 import { getTimeOfDayString } from '../../../helpers/date-helpers';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -189,7 +190,7 @@ export default function (props: GlucoseChartProps) {
                         stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
                         strokeWidth={1.5}
                         label={{
-                            value: glucoseContext.recentAverage.toFixed(0),
+                            value: formatNumberForLocale(glucoseContext.recentAverage),
                             fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
                             fontSize: 9,
                             position: 'insideTopRight',

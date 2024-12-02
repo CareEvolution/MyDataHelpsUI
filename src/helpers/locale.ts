@@ -100,7 +100,8 @@ export function formatDateForLocale(dateOrDateString: string | Date, formatStrin
     return titleize ? titleizeForLocale(formatted) : formatted;
 }
 
-export function formatNumberForLocale(value: number, fractionDigits?: number) {
+export function formatNumberForLocale(value: number | undefined, fractionDigits?: number) {
+    if (!value) return "";
     const locale = getIntlLocale();
     return Number(value.toFixed(fractionDigits || 0)).toLocaleString(locale);
 }

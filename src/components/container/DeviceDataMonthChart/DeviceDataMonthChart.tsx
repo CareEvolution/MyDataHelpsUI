@@ -8,6 +8,7 @@ import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from
 import getDayKey from '../../../helpers/get-day-key'
 import language from "../../../helpers/language"
 import { getShortDateString } from '../../../helpers/date-helpers';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
@@ -164,7 +165,7 @@ export default function (props: DeviceDataMonthChartProps) {
 							{payload.map((p: any) =>
 								<tr key={p.dataKey}>
 									<th>{labelLookup[p.dataKey]}</th>
-									<td>{parseFloat(p.value.toFixed(2))}</td>
+									<td>{formatNumberForLocale(parseFloat(p.value),2)}</td>
 								</tr>
 							)}
 						</tbody>
@@ -196,10 +197,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		values = values.filter(v => !!v);
 		if (!values.length) { return null; }
 		var calculated = values.reduce((a, b) => a + b) / values.length;
-		return calculated.toLocaleString(MyDataHelps.getCurrentLanguage(), {
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 1
-		});
+		return formatNumberForLocale(calculated, 1);
 	}
 
 	if (!hasData) {
