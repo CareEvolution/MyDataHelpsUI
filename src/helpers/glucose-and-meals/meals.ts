@@ -3,7 +3,6 @@ import { add, compareDesc, endOfDay, parseISO, startOfDay } from 'date-fns';
 import { Meal, MealReference, MealType } from './types';
 import { timestampSortAsc } from './util';
 import queryAllFiles from '../query-all-files';
-import EXIF from 'exif-js';
 
 interface SerializedMeal {
     id: string,
@@ -118,10 +117,10 @@ async function createThumbnailIfNecessary(file: File): Promise<File | undefined>
         const newHeight = image.height * ratio;
 
         const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d')!;
+        canvas.width = newWidth;
+        canvas.height = newHeight;
 
-        const orientation = await getExifOrientation(file);
-        drawImageWithOrientation(context, image, orientation, newWidth, newHeight);
+        canvas.getContext('2d')!.drawImage(image, 0, 0, image.width, image.height, 0, 0, newWidth, newHeight);
 
         return new Promise(resolve => canvas.toBlob(blob => {
             resolve(new File([blob!], file.name, { type: file.type }));
@@ -129,71 +128,4 @@ async function createThumbnailIfNecessary(file: File): Promise<File | undefined>
     }
 
     return undefined;
-}
-
-function getExifOrientation(file: File): Promise<number> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            const tags = EXIF.readFromBinaryFile(reader.result);
-            const orientation = tags.Orientation as number | undefined;
-            resolve(orientation ?? 1);
-        };
-
-        reader.onerror = () => {
-            reject('Error reading the file.');
-        };
-
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-function drawImageWithOrientation(context: CanvasRenderingContext2D, image: ImageBitmap, orientation: number, width: number, height: number) {
-
-    if (orientation >= 5 && orientation <= 8) {
-        context.canvas.width = height;
-        context.canvas.height = width;
-    } else {
-        context.canvas.width = width;
-        context.canvas.height = height;
-    }
-
-    switch (orientation) {
-        case 2: // Mirrored Horizontal
-            context.translate(width, 0);
-            context.scale(-1, 1);
-            break;
-        case 3: // Rotated 180°
-            context.translate(width, height);
-            context.rotate(Math.PI);
-            break;
-        case 4: // Mirrored Vertical
-            context.translate(0, height);
-            context.scale(1, -1);
-            break;
-        case 5: // Rotated 90° Clockwise and Mirrored Horizontal
-            context.translate(height, 0);
-            context.rotate(Math.PI / 2);
-            context.scale(-1, 1);
-            break;
-        case 6: // Rotated 90° Clockwise
-            context.translate(height, 0);
-            context.rotate(Math.PI / 2);
-            break;
-        case 7: // Rotated 90° Counterclockwise and Mirrored Horizontal
-            context.translate(0, width);
-            context.rotate(-Math.PI / 2);
-            context.scale(-1, 1);
-            break;
-        case 8: // Rotated 90° Counterclockwise
-            context.translate(0, width);
-            context.rotate(-Math.PI / 2);
-            break;
-        default: // Normal (1)
-            // No transformation needed
-            break;
-    }
-
-    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
 }
