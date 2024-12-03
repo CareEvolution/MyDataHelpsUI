@@ -110,18 +110,18 @@ function toMealReference(serializedMealReference: SerializedMealReference): Meal
 async function createThumbnailIfNecessary(file: File): Promise<File | undefined> {
     const thumbnailSize = 300;
 
-    const bitmap = await createImageBitmap(file);
-    const ratio = thumbnailSize / Math.max(bitmap.height, bitmap.width);
+    const image = await createImageBitmap(file);
+    const ratio = thumbnailSize / Math.max(image.height, image.width);
 
     if (ratio < 1) {
-        const newWidth = bitmap.width * ratio;
-        const newHeight = bitmap.height * ratio;
+        const newWidth = image.width * ratio;
+        const newHeight = image.height * ratio;
 
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d')!;
 
         const orientation = await getExifOrientation(file);
-        drawImageWithOrientation(context, bitmap, orientation, newWidth, newHeight);
+        drawImageWithOrientation(context, image, orientation, newWidth, newHeight);
 
         return new Promise(resolve => canvas.toBlob(blob => {
             resolve(new File([blob!], file.name, { type: file.type }));
@@ -195,5 +195,5 @@ function drawImageWithOrientation(context: CanvasRenderingContext2D, image: Imag
             break;
     }
 
-    context.drawImage(image, 0, 0);
+    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
 }
