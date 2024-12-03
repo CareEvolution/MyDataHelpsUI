@@ -20,7 +20,12 @@ const meta: Meta<MealLogStoryArgs> = {
         return <Layout colorScheme={args.colorScheme}>
             <MealCoordinator previewState={args.previewState !== 'live' ? args.previewState : undefined}>
                 <Card>
-                    <MealLog preview={args.previewState !== 'live'} onEditMeal={() => console.log('edit meal')} />
+                    <MealLog
+                        preview={args.previewState !== 'live'}
+                        onEditMeal={() => console.log('edit meal')}
+                        showMealNumbers={args.showMealNumbers}
+                        highlightSelectedMeal={args.highlightSelectedMeal}
+                    />
                 </Card>
             </MealCoordinator>
         </Layout>;
@@ -33,7 +38,9 @@ type Story = StoryObj<MealLogStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'with data'
+        previewState: 'with data',
+        showMealNumbers: true,
+        highlightSelectedMeal: true
     },
     argTypes: {
         colorScheme: {
@@ -45,6 +52,12 @@ export const Default: Story = {
             name: 'state',
             control: 'radio',
             options: ['loading', 'no data', 'with data', 'live']
+        },
+        showMealNumbers: {
+            name: 'show meal numbers?'
+        },
+        highlightSelectedMeal: {
+            name: 'highlight selected meal?'
         },
         ...argTypesToHide(['preview', 'onEditMeal', 'innerRef'])
     }

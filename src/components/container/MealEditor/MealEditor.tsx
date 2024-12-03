@@ -137,6 +137,7 @@ export default function MealEditor(props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
+            setMealToEdit({ ...mealToEdit!, hasImage: true });
             setNewImageFile(file);
             setImageUrl(URL.createObjectURL(file));
             setImageUploadError(false);
@@ -144,6 +145,7 @@ export default function MealEditor(props: MealEditorProps) {
     };
 
     const onRemoveImage = () => {
+        setMealToEdit({ ...mealToEdit!, hasImage: false });
         setNewImageFile(undefined);
         setImageUrl(undefined);
         setImageUploadError(false);

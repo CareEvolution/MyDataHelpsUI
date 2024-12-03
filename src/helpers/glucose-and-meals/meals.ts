@@ -10,6 +10,7 @@ interface SerializedMeal {
     timestamp: string;
     type: string;
     description?: string;
+    hasImage?: boolean;
     archiveTimestamp?: string;
 }
 
@@ -77,7 +78,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
     const sortedMealImageFiles = allMealImageFiles.sort((a, b) => compareDesc(parseISO(a.lastModified), parseISO(b.lastModified)));
 
     const result: { [key: string]: string } = {};
-    await Promise.all(meals.map(async meal => {
+    await Promise.all(meals.filter(meal => meal.hasImage).map(async meal => {
         const imageFile = sortedMealImageFiles.find(file => file.fileName.startsWith(`${meal.id}_thumbnail`))
             ?? sortedMealImageFiles.find(file => file.fileName.startsWith(meal.id.toString()));
         if (imageFile) {
@@ -94,6 +95,7 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         timestamp: parseISO(serializedMeal.timestamp),
         type: serializedMeal.type as MealType,
         description: serializedMeal.description,
+        hasImage: serializedMeal.hasImage,
         archiveTimestamp: serializedMeal.archiveTimestamp ? parseISO(serializedMeal.archiveTimestamp) : undefined
     };
 }
