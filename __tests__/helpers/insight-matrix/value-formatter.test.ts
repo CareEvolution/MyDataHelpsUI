@@ -28,7 +28,7 @@ describe('Insight Matrix - Value Evaluator Tests', () => {
         it('Should return the value in hours instead of minutes.', () => {
             const formatter = createMinutesToHoursInsightMatrixValueFormatter();
             const result = formatter.format(521);
-            expect(result).toBe('8.7hr');
+            expect(result).toBe('8.7h');
         });
     });
 

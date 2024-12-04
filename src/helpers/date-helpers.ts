@@ -1,6 +1,6 @@
 import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow } from "date-fns";
 import language from "./language";
-import { formatDateForLocale, getDateLocale, getIntlLocale, titleizeForLocale } from "./locale";
+import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
 export function toDate(dateOrDateString: string | Date): Date {
     var date;
@@ -44,7 +44,7 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 	}
 
 	const locale = getDateLocale();
-	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
+	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
 // e.g., Mon or Fri
@@ -54,7 +54,7 @@ export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 	}
 
 	const locale = getDateLocale();
-	return titleizeForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
+	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
 }
 
 // e.g., Friday, April 29th, 2024 at 11:00pm - localized
@@ -151,7 +151,7 @@ export function getTimeFromNowString(dateOrDateString: string | Date) {
 export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
     const date = toDate(dateOrDateString);
     const formatted = formatRelative(date, baseDate, { locale: getDateLocale() });
-    return titleize ? titleizeForLocale(formatted) : formatted;
+    return titleize ? capitalizeFirstLetterForLocale(formatted) : formatted;
 }
 
 // e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string
