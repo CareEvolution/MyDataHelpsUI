@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { getIntlLocale, getDateLocale } from '../../../src/helpers/locale';
+import { getIntlLocale, getDateLocale, formatNumberForLocale, formatDateForLocale, formatMinutesForLocale } from '../../../src/helpers/locale';
 import { es, enUS, enGB, enCA, enAU } from 'date-fns/locale';
 import { describe, it } from '@jest/globals';
 
@@ -91,6 +91,96 @@ describe('Locale Tests', () => {
             const result = getDateLocale();
             expect(result).toBe(enUS);
         });
+    });
+
+    describe('formatNumberForLocale', () => {        
+        it('Should format a decimal number for a locale with period separator.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatNumberForLocale(0.4, 1);
+            expect(result).toBe("0.4");
+        });
+        it('Should format a decimal number for a locale with comma separator.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = formatNumberForLocale(0.4, 1);
+            expect(result).toBe("0,4");
+        });
+        it('Should format a big number for a locale with comma separator.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatNumberForLocale(1104200);
+            expect(result).toBe("1,104,200");
+        });
+        it('Should format a big number for a locale with period separator.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = formatNumberForLocale(1104200);
+            expect(result).toBe("1.104.200");
+        });
+        it('Should format number with the specified precision.', () => {            
+            mockMDHLanguage = "en-US";
+            let result = formatNumberForLocale(0.1234, 2);
+            expect(result).toBe("0.12");
+
+            result = formatNumberForLocale(0.1234, 1);
+            expect(result).toBe("0.1");
+
+            result = formatNumberForLocale(0.1234, 0);
+            expect(result).toBe("0");
+        });
+        it('Should format zero.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatNumberForLocale(0);
+            expect(result).toBe("0");
+        });
+        it('Should format undef as empty string.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatNumberForLocale(undefined);
+            expect(result).toBe("");
+        });
+    });
+
+    describe('formatDateForLocale', () => {        
+        it('Should format a US style date MM/DD/YYYY.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale(new Date(2024, 10, 15), "P");
+            expect(result).toBe("11/15/2024");
+        });
+        it('Should format a Euro style date DD.MM.YYYY.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = formatDateForLocale(new Date(2024, 10, 15), "P");
+            expect(result).toBe("15.11.2024");
+        });
+        it('Should capitalize the date string by default.', () => {            
+            mockMDHLanguage = "es";
+            const result = formatDateForLocale(new Date(2024, 10, 15), "LLLL");
+            expect(result).toBe("Noviembre");
+        });
+        it('Should allow you to not auto-capitalize the date string.', () => {            
+            mockMDHLanguage = "es";
+            const result = formatDateForLocale(new Date(2024, 10, 15), "LLLL", false);
+            expect(result).toBe("noviembre");
+        });
+        it('Should capitalize anyway in languages where dates use proper nouns.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale(new Date(2024, 10, 15), "LLLL", false);
+            expect(result).toBe("November");
+        });
+    });
+
+    describe('formatMinutesForLocale', () => {        
+        it('Should format minutes only.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatMinutesForLocale(45);
+            expect(result).toBe("45m");
+        });
+        it('Should format hours/minutes.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatMinutesForLocale(94);
+            expect(result).toBe("1h 34m");
+        });
+        it('Should format by locale.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = formatMinutesForLocale(94);
+            expect(result).toBe("1 Std. 34 Min.");
+        });        
     });
 
 });

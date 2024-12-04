@@ -119,7 +119,7 @@ export function formatDateForLocale(dateOrDateString: string | Date, formatStrin
 }
 
 export function formatNumberForLocale(value: number | undefined, fractionDigits?: number) {
-    if (!value) return "";
+    if (value === undefined || value === null) return "";
     const locale = getIntlLocale();
     return Number(value.toFixed(fractionDigits || 0)).toLocaleString(locale);
 }
