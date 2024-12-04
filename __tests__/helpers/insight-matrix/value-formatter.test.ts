@@ -1,6 +1,15 @@
 import { createIntegerInsightMatrixValueFormatter, createMinutesToHoursInsightMatrixValueFormatter, createShrinkThousandsInsightMatrixValueFormatter } from '../../../src/helpers/insight-matrix/value-formatter';
 import { describe, it } from '@jest/globals';
 
+jest.mock('@careevolution/mydatahelps-js', () => {
+    return {
+        __esModule: true,
+        default: {
+            getCurrentLanguage:  jest.fn(() => { return "en-US"; })
+        }
+    }
+});
+
 describe('Insight Matrix - Value Evaluator Tests', () => {
     describe('Shrink Thousands Formatter', () => {
         it('Should return values less than 1000 as they were.', () => {
@@ -19,7 +28,7 @@ describe('Insight Matrix - Value Evaluator Tests', () => {
         it('Should return the value in hours instead of minutes.', () => {
             const formatter = createMinutesToHoursInsightMatrixValueFormatter();
             const result = formatter.format(521);
-            expect(result).toBe('8.7hr');
+            expect(result).toBe('8.7h');
         });
     });
 

@@ -5,6 +5,7 @@ import React from "react";
 import { defaultFormatter } from "./formatters";
 import { googleFitStepsDataProvider, googleFitMindfulMinutesDataProvider, googleFitTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
+import { formatNumberForLocale } from "../locale";
 
 let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -13,7 +14,7 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", "ActivitySegment"),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {
@@ -31,7 +32,7 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", "SilverCloudSession"),
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     }
 ];

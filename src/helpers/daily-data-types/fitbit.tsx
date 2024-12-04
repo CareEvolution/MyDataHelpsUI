@@ -5,6 +5,7 @@ import { faBed, faClock, faHeartbeat, faPerson, faPersonRunning, faRoute, faStai
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
+import { formatNumberForLocale } from "../../helpers/locale";
 
 let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -179,7 +180,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["SpO2"]),
         labelKey: "spo2",
         icon: <FontAwesomeSvgIcon icon={faWind} />,
-        formatter: (value: number) => Number(value.toFixed(0)) + " %",
+        formatter: (value: number) => formatNumberForLocale(value) + " %",
         previewDataRange: [95, 100]
     },
     {

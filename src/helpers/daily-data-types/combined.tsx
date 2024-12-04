@@ -6,6 +6,7 @@ import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConve
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import { combinedSleepDataProvider, combinedStepsDataProvider, combinedMindfulMinutesDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
+import { formatNumberForLocale } from "../../helpers/locale";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -101,7 +102,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {
@@ -118,7 +119,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     }
 ];

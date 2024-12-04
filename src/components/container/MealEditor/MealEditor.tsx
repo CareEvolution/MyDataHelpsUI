@@ -6,7 +6,8 @@ import { startOfDay, parse } from 'date-fns';
 import { MealEditorPreviewState, previewData } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
+import { getFullDayAndDateString } from '../../../helpers/date-helpers';
+import { formatDateForLocale } from '../../../helpers/locale';
 
 type EditMode = 'add' | 'edit';
 
@@ -94,6 +95,7 @@ export default function (props: MealEditorProps) {
     const onTimeChanged = (event: ChangeEvent<HTMLInputElement>) => {
         let value = event.target.value;
         if (value) {
+            // The input control always uses HH:mm 24-hour time, but formats it in the UI based on browser settings.
             setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
         }
     };
@@ -110,7 +112,7 @@ export default function (props: MealEditorProps) {
                     {mode === 'add' ? language('add') : language('edit')} {getMealTypeDisplayText(mealToEdit!.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {formatDateForLocale(mealToEdit!.timestamp, 'EEE, MMMM do, yyyy')}
+                    {getFullDayAndDateString(mealToEdit!.timestamp)}
                 </div>
                 {mode === 'edit' &&
                     <UnstyledButton onClick={() => onDelete()}>
