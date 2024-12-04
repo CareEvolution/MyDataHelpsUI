@@ -14,18 +14,18 @@ import { toDate } from "./date-helpers";
 // 3. Fall back to the original language string.
 export function getIntlLocale() : string {
     // Intl libraries don't support underscores, so it needs "en-US" not "en_US".
-    const language =`${MyDataHelps.getCurrentLanguage()}`.replace("_", "-");
+    const lang =`${MyDataHelps.getCurrentLanguage()}`.replace("_", "-");
 
-    if (language.length < 2) return "en-us";
+    if (lang.length < 2) return "en-us";
 
-    let countryCode = getCountryCodeFromIso(language);
+    let countryCode = getCountryCodeFromIso(lang);
     let intlLocale;
     
     if (countryCode) {
-        intlLocale = language;
+        intlLocale = lang;
     }
     else {
-        intlLocale = navigator?.language || language;
+        intlLocale = navigator?.language || lang;
     }
     return intlLocale.toLowerCase();
 }
@@ -44,12 +44,12 @@ export function getIntlLocale() : string {
 // 3. If neither MDH nor browser specifies a locale, use the
 //    default locale based on the current language.
 export function getDateLocale(): Locale {
-    const language = MyDataHelps.getCurrentLanguage();
-    if (language.length < 2) return enUS;
+    const lang = MyDataHelps.getCurrentLanguage();
+    if (lang.length < 2) return enUS;
 
-    let languageCode = language.toLowerCase().slice(0,2);
+    let languageCode = lang.toLowerCase().slice(0,2);
 
-    let countryCode = getCountryCodeFromIso(language);
+    let countryCode = getCountryCodeFromIso(lang);
     if (!countryCode && navigator?.language) {
         languageCode = getLanguageFromIso(navigator.language) || "en";
         countryCode = getCountryCodeFromIso(navigator.language);
