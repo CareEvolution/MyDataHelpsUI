@@ -472,6 +472,8 @@
     "meal-editor-description-input-label": "Descripción",
     "meal-editor-description-optional": "Opcional",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
+    "meal-editor-add-image": "Agregar imagen",
+    "meal-editor-image-upload-error": "Ocurrió un error al subir la imagen seleccionada. Por favor, inténtelo de nuevo, use una imagen diferente o elimine la imagen para guardar.",
     "glucose-view-title": "Monitorización de glucosa",
     "ai-assistant-loading": "Interactuando con tus datos...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "¿Cuál es mi frecuencia cardíaca promedio de la última semana?",

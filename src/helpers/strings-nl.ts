@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Beschrijving",
     "meal-editor-description-optional": "Optioneel",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
+    "meal-editor-add-image": "Afbeelding toevoegen",
+    "meal-editor-image-upload-error": "Er is een fout opgetreden bij het uploaden van de geselecteerde afbeelding. Probeer het opnieuw, gebruik een andere afbeelding of verwijder de afbeelding om op te slaan.",
     "glucose-view-title": "Glucosemonitoring",
     "ai-assistant-loading": "Interageren met uw gegevens...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Wat is mijn gemiddelde hartslag van de afgelopen week?",

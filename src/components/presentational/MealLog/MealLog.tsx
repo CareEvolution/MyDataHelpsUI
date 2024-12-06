@@ -8,10 +8,16 @@ import { MealContext } from "../../container";
 export interface MealLogProps {
     preview?: boolean;
     onEditMeal: () => void;
+    showMealNumbers?: boolean;
+    highlightSelectedMeal?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: MealLogProps) {
+/**
+ * This component renders a daily meal log.  It can be configured to show meal numbers and/or
+ * highlight the currently selected meal.  It must be used within a Meal Coordinator.
+ */
+export default function MealLog(props: MealLogProps) {
     const mealContext = useContext(MealContext);
 
     if (!mealContext) {
@@ -23,9 +29,7 @@ export default function (props: MealLogProps) {
             props.onEditMeal();
             return;
         }
-        prepareMealForEditing(meal).then(() => {
-            props.onEditMeal();
-        });
+        prepareMealForEditing(meal).then(props.onEditMeal);
     };
 
     return <div className="mdhui-meal-log" ref={props.innerRef}>
@@ -38,11 +42,12 @@ export default function (props: MealLogProps) {
             return <SingleMeal
                 key={`meal-${index}`}
                 meal={meal}
-                number={index + 1}
+                mealImageUrl={mealContext.imageUrls[meal.id.toString()]}
+                number={props.showMealNumbers ? index + 1 : undefined}
                 color={getColorFromAssortment(index)}
                 onClick={() => mealContext.onMealClicked(meal)}
                 onEdit={() => onEditMeal(meal)}
-                selected={mealContext.selectedMeal === meal}
+                selected={props.highlightSelectedMeal ? mealContext.selectedMeal === meal : false}
             />;
         })}
     </div>;

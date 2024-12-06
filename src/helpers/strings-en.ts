@@ -472,6 +472,8 @@
     "meal-editor-description-input-label": "Description",
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
+    "meal-editor-add-image": "Add Image",
+    "meal-editor-image-upload-error": "An error occurred while uploading the selected image. Please try again, use a different image, or remove the image in order to save.",
     "glucose-view-title": "Glucose Monitoring",
     "ai-assistant-loading": "Interacting with your data...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "What is my average heart rate for the past week?",
