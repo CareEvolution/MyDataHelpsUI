@@ -4,10 +4,10 @@ import { Card, Layout } from '../../presentational'
 import { Meta, StoryObj } from '@storybook/react';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import {
-    createNonZeroAverageValueInsightMatrixValueCalculator,
     createIntegerInsightMatrixValueFormatter,
     createMinMaxInsightMatrixValueEvaluator,
     createMinutesToHoursInsightMatrixValueFormatter,
+    createNonZeroAverageValueInsightMatrixValueCalculator,
     createPercentageOfDaysInsightMatrixValueCalculator,
     createShrinkThousandsInsightMatrixValueFormatter,
     DailyDataType,
@@ -82,6 +82,7 @@ export const Default: Story = {
         colorScheme: 'auto',
         previewState: 'preview',
         daysToCompute: 28,
+        showUnmatchedThresholds: false,
         groupByDataConfigurationName: 'mood',
         comparisonDataConfigurationNames: ['sleep', 'steps', 'mindful', 'therapy'],
         groupByHeaderBackgroundColor: undefined,
@@ -110,6 +111,9 @@ export const Default: Story = {
                 min: 0,
                 max: 28
             }
+        },
+        showUnmatchedThresholds: {
+            name: 'show unmatched thresholds?'
         },
         groupByDataConfigurationName: {
             name: 'group-by data',
