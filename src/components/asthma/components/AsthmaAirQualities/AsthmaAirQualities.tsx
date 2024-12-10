@@ -9,6 +9,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import language from '../../../../helpers/language';
+import { formatNumberForLocale } from '../../../../helpers/locale';
 
 export interface AsthmaAirQualitiesProps {
     previewState?: 'loading' | AsthmaAirQualitiesPreviewState;
@@ -90,7 +91,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                         label={language('asthma-air-qualities-home-aqi-label')}
                         statusText={getAsthmaAirQualityDescriptionText(homeAirQuality!.description) ?? getAsthmaDataStatusText(homeAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(homeAirQuality!.status)}
-                        value={homeAirQuality!.value?.toLocaleString()}
+                        value={formatNumberForLocale(homeAirQuality!.value)}
                         onClick={() => onClick(homeAirQuality!)}
                     />
                 }
@@ -100,7 +101,7 @@ export default function (props: AsthmaAirQualitiesProps) {
                         label={language('asthma-air-qualities-work-aqi-label')}
                         statusText={getAsthmaAirQualityDescriptionText(workAirQuality!.description) ?? getAsthmaDataStatusText(workAirQuality!.status)}
                         statusColor={getAsthmaDataStatusColor(workAirQuality!.status)}
-                        value={workAirQuality!.value?.toLocaleString()}
+                        value={formatNumberForLocale(workAirQuality!.value)}
                         onClick={() => onClick(workAirQuality!)}
                     />
                 }

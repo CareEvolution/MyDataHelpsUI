@@ -2,7 +2,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { garminActiveCaloriesDataProvider, garminActiveMinutesDataProvider, garminAverageHeartRateDataProvider, garminAverageStressLevelDataProvider, garminAwakeMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminDistanceDataProvider, garminFloorsDataProvider, garminHighStressMinutesDataProvider, garminLightSleepMinutesDataProvider, garminLowStressMinutesDataProvider, garminMaxHeartRateDataProvider, garminMaxStressLevelDataProvider, garminMediumStressMinutesDataProvider, garminMinHeartRateDataProvider, garminRemSleepMinutesDataProvider, garminRestingCaloriesDataProvider, garminRestingHeartRateDataProvider, garminSleepScoreDataProvider, garminStepsDataProvider, garminTotalCaloriesDataProvider, garminTotalSleepMinutesDataProvider, garminTotalStressMinutesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faBoltLightning, faHeartbeat, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
-import language from "../language";
+import { formatNumberForLocale } from "../locale";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -23,7 +23,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         labelKey: "distance-traveled",
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
-        formatter: (value: number) => Number((value / 1000).toFixed(2)).toLocaleString() + " km",
+        formatter: (value: number) => formatNumberForLocale(value / 1000, 2) + " km",
         yAxisConverter: (value: number) => value / 1000,
         previewDataRange: [3000, 5000]
     },
