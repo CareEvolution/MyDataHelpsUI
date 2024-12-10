@@ -60,6 +60,9 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
 
 export async function uploadMealImageFile(meal: Meal, file: File): Promise<void> {
     const imageFileExtension = file.name.split('.').pop()!;
+    if (!imageFileExtension) {
+        return Promise.reject();
+    }
 
     await MyDataHelps.uploadFile(file, 'MealImage', `${meal.id}.${imageFileExtension}`);
 
