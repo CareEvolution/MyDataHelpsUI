@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Beschreibung",
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
+    "meal-editor-add-image": "Bild hinzufügen",
+    "meal-editor-image-upload-error": "Ein Fehler ist beim Hochladen des ausgewählten Bildes aufgetreten. Bitte versuchen Sie es erneut, verwenden Sie ein anderes Bild oder entfernen Sie das Bild, um zu speichern.",
     "glucose-view-title": "Blutzuckerüberwachung",
     "ai-assistant-loading": "Interaktion mit Ihren Daten...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Wie ist meine durchschnittliche Herzfrequenz der letzten Woche?",
