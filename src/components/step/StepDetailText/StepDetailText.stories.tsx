@@ -1,37 +1,45 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StepDetailText from "./StepDetailText";
-import {StepElementProps} from "../shared"
+import { StepElementProps } from "../shared"
 import StepLayout from "../StepLayout";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof StepDetailText> = {
     title: "SurveyStep/Components/StepDetailText",
     component: StepDetailText,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof StepDetailText>;
+};
 
-const Template: ComponentStory<typeof StepDetailText> = (args: StepElementProps) =>
-    <StepLayout>
-        <StepDetailText {...args} />
-    </StepLayout>
+export default meta;
+type Story = StoryObj<typeof StepDetailText>;
 
-export const StepDetailTextDefault = Template.bind({});
-StepDetailTextDefault.args = {
-    text: "This is the detail text"
-}
+const render = (args: StepElementProps) => <StepLayout>
+    <StepDetailText {...args} />
+</StepLayout>;
 
-export const StepDetailTextMarkdown = Template.bind({});
-StepDetailTextMarkdown.args = {
-    text: "\\*\\*Bold\\*\\*\n**Bold**\n\n\\_Italics\\_\n_Italics_\n\n\\*\\*\\_Bold Italics\\_\\*\\*\n**_Bold Italics_**\n\n\\<http://www.example.com\\>\n<http://www.example.com>\n\n\\<user@example.com>\n<user@example.com>\n\n\\[Example](http://www.example.com)\n[Example](http://www.example.com)\n\n\\[123-555-1234](tel:123-555-1234)\n[123-555-1234](tel:123-555-1234)\n\nBullet list with `+`, `-`, or `*`. Indent 2 spaces for sublist.\n- Level 1, Item A\n- Level 1, Item B\n  - Level 2, Item A\n  - Level 2, Item B\n    - Level 3, Item A"
-}
+export const Default: Story = {
+    args: {
+        text: "This is the detail text"
+    },
+    render: render
+};
 
-export const StepDetailTextCustomStyle = Template.bind({});
-StepDetailTextCustomStyle.args = {
-    text: "This is the detail text",
-    textAlign: "Left",
-    color: "#0000FF",
-    fontSize: "24",
-    fontWeight: "300"
-}
+export const Markdown: Story = {
+    args: {
+        text: "\\*\\*Bold\\*\\*\n**Bold**\n\n\\_Italics\\_\n_Italics_\n\n\\*\\*\\_Bold Italics\\_\\*\\*\n**_Bold Italics_**\n\n\\<http://www.example.com\\>\n<http://www.example.com>\n\n\\<user@example.com>\n<user@example.com>\n\n\\[Example](http://www.example.com)\n[Example](http://www.example.com)\n\n\\[123-555-1234](tel:123-555-1234)\n[123-555-1234](tel:123-555-1234)\n\nBullet list with `+`, `-`, or `*`. Indent 2 spaces for sublist.\n- Level 1, Item A\n- Level 1, Item B\n  - Level 2, Item A\n  - Level 2, Item B\n    - Level 3, Item A"
+    },
+    render: render
+};
+
+export const CustomStyle: Story = {
+    args: {
+        text: "This is the detail text",
+        textAlign: "Left",
+        color: "#0000FF",
+        fontSize: "24",
+        fontWeight: "300"
+    },
+    render: render
+};

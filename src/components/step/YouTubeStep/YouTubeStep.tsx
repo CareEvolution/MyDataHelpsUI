@@ -16,7 +16,10 @@ export interface YouTubeStepProps {
     styles: { [key: string]: any };
 }
 
-export default function (props: YouTubeStepProps) {
+/**
+ * This ready-to-use step is for playing YouTube content
+ */
+export default function YouTubeStep(props: YouTubeStepProps) {
 
     // ref player params at https://developers.google.com/youtube/player_parameters
     let frameHeight = (props.height ? props.height : "225") + "px";

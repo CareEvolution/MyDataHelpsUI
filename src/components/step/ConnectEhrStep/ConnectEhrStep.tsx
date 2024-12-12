@@ -18,7 +18,10 @@ export interface ConnectEhrStepProps {
     styles: { [key: string]: any };
 }
 
-export default function (props: ConnectEhrStepProps) {
+/**
+ * A ready-to-use surey step for connecting Providers, and Health Plans
+ */
+export default function ConnectEhrStep (props: ConnectEhrStepProps) {
     return (
         <StepLayout>
             <StepTitle
