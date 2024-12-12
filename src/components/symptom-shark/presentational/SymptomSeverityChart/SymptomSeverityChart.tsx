@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./SymptomSeverityChart.css"
 import { CardTitle, ShinyOverlay, SymptomConfiguration, SymptomReference, TextBlock, getDayKey, language } from "../../../..";
 import { getDatesForMonth } from "../../../../helpers/date-helpers";
+import { formatNumberForLocale } from "../../../../helpers/locale";
 import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
 import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/DateRangeCoordinator";
 import { startOfMonth } from "date-fns";
@@ -97,16 +98,16 @@ export default function (props: SymptomSeverityChartProps) {
                 <div className="mdhui-ss-severity-chart-inner mdhui-ss-severity-chart-three-point-scale">
                     <div className="mdhui-ss-severity-chart-y-axis">
                         <div className="mdhui-ss-severity-chart-value">
-                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(3)}</span>sev
+                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(3)}</span>{language('severe-shortened')}
                         </div>
                         <div className="mdhui-ss-severity-chart-value">
-                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(2)}</span>mod
+                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(2)}</span>{language('moderate-shortened')}
                         </div>
                         <div className="mdhui-ss-severity-chart-value">
-                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(1)}</span>mild
+                            <span className="mdhui-ss-severity-chart-total">{daysMatchingScore(1)}</span>{language('mild-shortened')}
                         </div>
                         <div className="mdhui-ss-severity-chart-value">
-                            <span className="mdhui-ss-severity-chart-total"></span>n/a
+                            <span className="mdhui-ss-severity-chart-total"></span>---
                         </div>
                     </div>
                     <div className="mdhui-ss-severity-chart-x-axis-line"></div>
@@ -131,7 +132,7 @@ export default function (props: SymptomSeverityChartProps) {
                 {symptomAverage &&
                     <div className="mdhui-ss-severity-chart-average-wrapper">
                         {language("average")} <div className="mdhui-ss-severity-chart-average">
-                            {symptomAverage.toFixed(1)} / 3
+                            {formatNumberForLocale(symptomAverage, 1)} / 3
                         </div>
                     </div>
                 }
@@ -172,7 +173,7 @@ export default function (props: SymptomSeverityChartProps) {
                 {symptomAverage &&
                     <div className="mdhui-ss-severity-chart-average-wrapper">
                         {language("average")} <div className="mdhui-ss-severity-chart-average">
-                            {symptomAverage.toFixed(1)} / 10
+                            {formatNumberForLocale(symptomAverage, 1)} / 10
                         </div>
                     </div>
                 }

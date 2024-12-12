@@ -472,6 +472,8 @@
     "meal-editor-description-input-label": "Descripción",
     "meal-editor-description-optional": "Opcional",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
+    "meal-editor-add-image": "Agregar imagen",
+    "meal-editor-image-upload-error": "Ocurrió un error al subir la imagen seleccionada. Por favor, inténtelo de nuevo, use una imagen diferente o elimine la imagen para guardar.",
     "glucose-view-title": "Monitorización de glucosa",
     "ai-assistant-loading": "Interactuando con tus datos...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "¿Cuál es mi frecuencia cardíaca promedio de la última semana?",
@@ -498,7 +500,24 @@
     "ai-assistant-suggestion-save-graph-to-files": "Guarda el gráfico en mis archivos",
     "mindful-minutes": "Minutos de Atención Plena",
     "therapy-minutes": "Minutos de Terapia",
-    "insight-matrix-no-comparison-data": "No se han configurado tipos de datos de comparación."
+    "insight-matrix-no-comparison-data": "No se han configurado tipos de datos de comparación.",
+    "allergylist-reactions": "Reacciones",
+    "points-abbreviation": "pts",
+    "no-data": "Sin Datos",
+    "no-data-yet": "Aún sin datos",
+    "bp-low": "Baja",
+    "bp-normal": "Normal",
+    "bp-elevated": "Elevada",
+    "bp-stage1": "Etapa 1",
+    "bp-stage2": "Etapa 2",
+    "bp-crisis": "Crisis",
+    "bp-unknown": "Desconocido",
+    "device-not-enabled": "@@DEVICE@@ no está habilitado para este proyecto.",
+    "download-pdf-report": "Descargar Informe en PDF",
+    "connect-to-device": "Conectar a @@DEVICE@@",
+    "symptoms-and-treatments": "Síntomas y Tratamientos",
+    "subsequent-evaluation-note": "Nota de evaluación subsecuente",
+    "summary": "Resumen"
 };
 
 export default strings;

@@ -5,6 +5,7 @@ import { Layout, LoadingIndicator, NavigationBar } from "../../presentational";
 import ReportContent from "../../presentational/ReportContent/ReportContent";
 import { previewReportHtml, previewReportPdf } from "../../presentational/ReportContent/ReportContent.previewData";
 import "./ReportView.css"
+import { language } from "../../../helpers/language";
 
 export interface ReportViewProps {
     reportId: string
@@ -24,8 +25,8 @@ export default function (props: ReportViewProps) {
     useEffect(() => {
         if (props.previewState == "html") {
             setReportContent({
-                Type: "Subsequent evaluation note",
-                Summary: "Summary",
+                Type: language('subsequent-evaluation-note'),
+                Summary: language("summary"),
                 Content: previewReportHtml,
                 ContentType: "text/html"
             });
@@ -35,7 +36,7 @@ export default function (props: ReportViewProps) {
         if (props.previewState == "pdf") {
             setReportContent({
                 Type: "ResearchKitConsentDocument",
-                Summary: "Summary",
+                Summary: language("summary"),
                 Content: previewReportPdf,
                 ContentType: "application/pdf"
             });

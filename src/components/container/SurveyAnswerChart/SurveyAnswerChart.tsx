@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, Duration, parseISO, format } from 'date-fns'
+import { add, Duration, parseISO } from 'date-fns'
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
@@ -8,6 +8,7 @@ import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 import { getDefaultPreviewData } from './SurveyAnswerData.previewdata'
+import { formatDateForLocale } from '../../../helpers/locale';
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
@@ -150,7 +151,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                         <div className="mdhui-single-value-tooltip-value">
                             {parseFloat(payload[0].value).toFixed(2)}
                         </div>
-                        <div className="mdhui-time-series-tooltip-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                        <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                     </div>
                 );
             }
@@ -166,7 +167,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                             )}
                         </tbody>
                     </table>
-                    <div className="mdhui-time-series-tooltip-date">{format(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                    <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
                 </div>
             );
         }

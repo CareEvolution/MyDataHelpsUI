@@ -28,7 +28,8 @@ export default function (props: ConnectFitbitProps) {
 		providerName="Fitbit" 
 		dataCollectionProperty='fitbitEnabled' 
 		providerID={getInternalFitbitProviderID()} 
-		previewState={props.previewState} disabledBehavior={props.disabledBehavior}
+		previewState={props.previewState} 
+		disabledBehavior={props.disabledBehavior}
 		hideWhenConnected={props.hideWhenConnected}
 		connectExternalAccountOptions={props.connectExternalAccountOptions} />);
 }

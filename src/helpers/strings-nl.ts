@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Beschrijving",
     "meal-editor-description-optional": "Optioneel",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
+    "meal-editor-add-image": "Afbeelding toevoegen",
+    "meal-editor-image-upload-error": "Er is een fout opgetreden bij het uploaden van de geselecteerde afbeelding. Probeer het opnieuw, gebruik een andere afbeelding of verwijder de afbeelding om op te slaan.",
     "glucose-view-title": "Glucosemonitoring",
     "ai-assistant-loading": "Interageren met uw gegevens...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Wat is mijn gemiddelde hartslag van de afgelopen week?",
@@ -498,7 +500,24 @@ let strings: { [key: string]: string } = {
     "ai-assistant-suggestion-save-graph-to-files": "Sla de grafiek op in mijn bestanden",
     "mindful-minutes": "Bewuste Minuten",
     "therapy-minutes": "Therapie Minuten",
-    "insight-matrix-no-comparison-data": "Geen vergelijkingstype gegevens geconfigureerd."
+    "insight-matrix-no-comparison-data": "Geen vergelijkingstype gegevens geconfigureerd.",
+    "allergylist-reactions": "Reacties",
+    "points-abbreviation": "ptn",
+    "no-data": "Geen Gegevens",
+    "no-data-yet": "Nog geen gegevens",
+    "bp-low": "Laag",
+    "bp-normal": "Normaal",
+    "bp-elevated": "Verhoogd",
+    "bp-stage1": "Stadium 1",
+    "bp-stage2": "Stadium 2",
+    "bp-crisis": "Crisis",
+    "bp-unknown": "Onbekend",
+    "device-not-enabled": "@@DEVICE@@ is niet ingeschakeld voor dit project.",
+    "download-pdf-report": "PDF-rapport downloaden",
+    "connect-to-device": "Verbinden met @@DEVICE@@",
+    "symptoms-and-treatments": "Symptomen en Behandelingen",
+    "subsequent-evaluation-note": "Opmerking bij volgende evaluatie",
+    "summary": "Samenvatting"
 };
 
 export default strings;

@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Opis",
     "meal-editor-description-optional": "Opcjonalne",
     "meal-editor-duplicate-timestamp-error": "Dwa posiłki nie mogą mieć tej samej godziny.",
+    "meal-editor-add-image": "Dodaj obraz",
+    "meal-editor-image-upload-error": "Wystąpił błąd podczas przesyłania wybranego obrazu. Spróbuj ponownie, użyj innego obrazu lub usuń obraz, aby zapisać.",
     "glucose-view-title": "Monitorowanie glukozy",
     "ai-assistant-loading": "Interakcja z Twoimi danymi...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Jaki jest mój średni puls z ostatniego tygodnia?",
@@ -498,7 +500,24 @@ let strings: { [key: string]: string } = {
     "ai-assistant-suggestion-save-graph-to-files": "Zapisz wykres w moich plikach",
     "mindful-minutes": "Minuty Uważności",
     "therapy-minutes": "Minuty Terapii",
-    "insight-matrix-no-comparison-data": "Nie skonfigurowano typów danych do porównania."
+    "insight-matrix-no-comparison-data": "Nie skonfigurowano typów danych do porównania.",
+    "allergylist-reactions": "Reakcje",
+    "points-abbreviation": "pkt",
+    "no-data": "Brak danych",
+    "no-data-yet": "Brak danych",
+    "bp-low": "Niskie",
+    "bp-normal": "Normalne",
+    "bp-elevated": "Podwyższone",
+    "bp-stage1": "Etap 1",
+    "bp-stage2": "Etap 2",
+    "bp-crisis": "Kryzys",
+    "bp-unknown": "Nieznane",
+    "device-not-enabled": "@@DEVICE@@ nie jest włączone dla tego projektu.",
+    "download-pdf-report": "Pobierz raport PDF",
+    "connect-to-device": "Połącz z @@DEVICE@@",
+    "symptoms-and-treatments": "Objawy i Leczenie",
+    "subsequent-evaluation-note": "Uwaga do kolejnej oceny",
+    "summary": "Podsumowanie"
 };
 
 export default strings;
