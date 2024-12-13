@@ -2,6 +2,10 @@ import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDis
 import language from "./language";
 import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
+/** Ensures we have a Date object. If the param is already a Date, it passes through unchanged.
+ *  If it's a string, it will be converted to a Date.
+ *  If the date string is undefined or invalid, it will return undefined.
+ */
 export function toDate(dateOrDateString: string | Date | undefined): Date | undefined {
 	var date;
 	if (!dateOrDateString) {
