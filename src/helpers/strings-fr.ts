@@ -472,6 +472,8 @@ let strings: { [key: string]: string } = {
     "meal-editor-description-input-label": "Description",
     "meal-editor-description-optional": "Optionnel",
     "meal-editor-duplicate-timestamp-error": "Deux repas ne peuvent pas avoir la même heure.",
+    "meal-editor-add-image": "Ajouter une image",
+    "meal-editor-image-upload-error": "Une erreur s'est produite lors du téléchargement de l'image sélectionnée. Veuillez réessayer, utiliser une autre image ou supprimer l'image pour enregistrer.",
     "glucose-view-title": "Surveillance de la glycémie",
     "ai-assistant-loading": "Interagir avec vos données...",
     "ai-assistant-suggestion-avg-weekly-heart-rate": "Quelle est ma fréquence cardiaque moyenne de la semaine dernière ?",

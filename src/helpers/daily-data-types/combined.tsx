@@ -6,6 +6,7 @@ import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConve
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import { combinedSleepDataProvider, combinedStepsDataProvider, combinedMindfulMinutesDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
+import MyDataHelps from "@careevolution/mydatahelps-js";
 import { formatNumberForLocale } from "../../helpers/locale";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -13,22 +14,19 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["RestingHeartRateInBeatsPerMinute"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            })
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "RestingHeartRate")
+                && await simpleAvailabilityCheck("AppleHealth", "RestingHeartRate")(modifiedAfter)) {
+                return true;
+            }
+
+            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", "RestingHeartRate")(modifiedAfter)) {
+                return true;
+            }
+
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "RestingHeartRateInBeatsPerMinute")(modifiedAfter);
         },
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -39,22 +37,19 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.Steps,
         dataProvider: combinedStepsDataProvider,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["Steps"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["Steps"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            });
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "Steps")
+                && await simpleAvailabilityCheck("AppleHealth", "Steps")(modifiedAfter)) {
+                return true;
+            }
+
+            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", "Steps")(modifiedAfter)) {
+                return true;
+            }
+
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Steps")(modifiedAfter);
         },
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
@@ -65,22 +60,19 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.SleepMinutes,
         dataProvider: combinedSleepDataProvider,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["Sleep"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            })
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "SleepAnalysisInterval")
+                && await simpleAvailabilityCheck("AppleHealth", "SleepAnalysisInterval")(modifiedAfter)) {
+                return true;
+            }
+
+            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter)) {
+                return true;
+            }
+
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Sleep")(modifiedAfter);
         },
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
@@ -93,12 +85,15 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.MindfulMinutes,
         dataProvider: combinedMindfulMinutesDataProvider,
         availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            const result = await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter);
-            if (!result) {
-                return simpleAvailabilityCheck("GoogleFit", "ActivitySegment")(modifiedAfter);
-            } else {
-                return result;
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "MindfulSession")
+                && await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter)) {
+                return true;
             }
+
+            return !!settings.queryableDeviceDataTypes.find(dt => dt.namespace == "GoogleFit" && dt.type == "ActivitySegment")
+                && await simpleAvailabilityCheck("GoogleFit", "ActivitySegment")(modifiedAfter);
         },
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
@@ -110,12 +105,15 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.TherapyMinutes,
         dataProvider: combinedTherapyMinutesDataProvider,
         availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            const result = await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter);
-            if (!result) {
-                return simpleAvailabilityCheck("GoogleFit", "SilverCloudSession")(modifiedAfter);
-            } else {
-                return result;
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "MindfulSession")
+                && await simpleAvailabilityCheck("AppleHealth", "MindfulSession")(modifiedAfter)) {
+                return true;
             }
+
+            return !!settings.queryableDeviceDataTypes.find(dt => dt.namespace == "GoogleFit" && dt.type == "SilverCloudSession")
+                && await simpleAvailabilityCheck("GoogleFit", "SilverCloudSession")(modifiedAfter);
         },
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,

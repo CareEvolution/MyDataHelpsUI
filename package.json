@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.51.1-cross-spawn-7.0.6.0",
+  "version": "2.53.0",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -101,7 +101,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@careevolution/mydatahelps-js": "^3.25.0",
+    "@careevolution/mydatahelps-js": "^3.26.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

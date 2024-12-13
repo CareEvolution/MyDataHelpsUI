@@ -1,17 +1,18 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import YouTubeStepContainer from "./YouTubeStepContainer";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof YouTubeStepContainer> = {
     title: "SurveyStep/YouTubeStepContainer",
     component: YouTubeStepContainer,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof YouTubeStepContainer>;
+};
 
-const Template: ComponentStory<typeof YouTubeStepContainer> = () =>
-    <YouTubeStepContainer />
+export default meta;
+type Story = StoryObj<typeof YouTubeStepContainer>;
 
-export const YouTubeStepContainerDefault = Template.bind({});
-YouTubeStepContainerDefault.args = {}
+export const Default: Story = {
+    render: () => <YouTubeStepContainer />
+};
