@@ -39,7 +39,7 @@ export function getIntlLocale() : string {
 // Priority for locale selection:
 // 1. If MDH language has a country code (like "en-AU") use it to
 //    select the appropriate locale for that language.
-// 2. If MDH language does NOT have a country code (like "en"), use the browser langauge
+// 2. If MDH language does NOT have a country code (like "en"), use the browser language
 //    to determine locale. The browser often has more locale specificity than MDH.
 // 3. If neither MDH nor browser specifies a locale, use the
 //    default locale based on the current language.

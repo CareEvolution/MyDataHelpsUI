@@ -31,7 +31,7 @@ describe('Locale Tests', () => {
             const result = getIntlLocale();
             expect(result).toBe("es-co");
         });
-        it('Should return base language if no browser langauge.', () => {
+        it('Should return base language if no browser language.', () => {
             mockMDHLanguage = "en";
             jest.spyOn(navigator, 'language', 'get').mockReturnValue('');
             const result = getIntlLocale();
@@ -80,7 +80,7 @@ describe('Locale Tests', () => {
             const result = getDateLocale();
             expect(result).toBe(enUS);
         });
-        it('Should use base language if no navigator langauge.', () => {
+        it('Should use base language if no navigator language.', () => {
             mockMDHLanguage = "es";
             jest.spyOn(navigator, 'language', 'get').mockReturnValue('');
             const result = getDateLocale();
