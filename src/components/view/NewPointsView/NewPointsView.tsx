@@ -63,7 +63,7 @@ export default function NewPointsView(props: NewPointsViewProps) {
                                 )}
                                 {totalBonusPoints > 0 &&
                                     <div className="mdhui-new-points-entry">
-                                        <div className="mdhui-new-points-entry-name bonus">Bonus</div>
+                                        <div className="mdhui-new-points-entry-name bonus">{language('bonus')}</div>
                                         <div className="mdhui-new-points-entry-points bonus">+{totalBonusPoints}</div>
                                     </div>
                                 }
