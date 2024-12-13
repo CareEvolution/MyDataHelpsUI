@@ -137,6 +137,7 @@ describe('Locale Tests', () => {
         });
     });
 
+    // Note: Date() uses 0-indexed months
     describe('formatDateForLocale', () => {        
         it('Should format a US style date MM/DD/YYYY.', () => {            
             mockMDHLanguage = "en-US";
@@ -162,6 +163,26 @@ describe('Locale Tests', () => {
             mockMDHLanguage = "en-US";
             const result = formatDateForLocale(new Date(2024, 10, 15), "LLLL", false);
             expect(result).toBe("November");
+        });
+        it('Should format an undefined date.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale(undefined, "P");
+            expect(result).toBe("");
+        });
+        it('Should format an empty date string.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale("", "P");
+            expect(result).toBe("");
+        });        
+        it('Should format an invalid date string.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale("not a date", "P");
+            expect(result).toBe("");
+        });
+        it('Should format a valid date string.', () => {            
+            mockMDHLanguage = "en-US";
+            const result = formatDateForLocale("2024-11-15T11:30:30", "P");
+            expect(result).toBe("11/15/2024");
         });
     });
 

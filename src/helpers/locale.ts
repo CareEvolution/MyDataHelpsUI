@@ -1,4 +1,4 @@
-import { format, formatRelative } from 'date-fns';
+import { format } from 'date-fns';
 import { es, enUS, enAU, enCA, enGB, enIE, enIN, enNZ, enZA, nl, nlBE, de, deAT, fr, frCA, frCH, pt, ptBR, it, itCH, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language, { getCountryCodeFromIso, getLanguageFromIso } from "./language";
@@ -108,12 +108,15 @@ export function getDateLocale(): Locale {
     return enUS;
 }
 
-// Uses date-fns format strings.
-// Note that some languages don't treat day/month names as proper nouns, so a string might come
-// back like "27 marzo 2024". The capitalize param lets you auto-capitalize the first letter in case
-// the string is being used like a title/heading.
-export function formatDateForLocale(dateOrDateString: string | Date, formatString: string, capitalize: boolean = true): string {
+/** 
+ * Uses date-fns format strings.
+ * Note that some languages don't treat day/month names as proper nouns, so a string might come
+ * back like "27 marzo 2024". The capitalize param lets you auto-capitalize the first letter in case
+ * the string is being used like a title/heading.
+ */
+export function formatDateForLocale(dateOrDateString: string | Date | undefined, formatString: string, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
+    if (!date) { return "" };
     const formatted = format(date, formatString, { locale: getDateLocale() });
     return capitalize ? capitalizeFirstLetterForLocale(formatted) : formatted;
 }
@@ -124,7 +127,7 @@ export function formatNumberForLocale(value: number | undefined, fractionDigits?
     return Number(value.toFixed(fractionDigits || 0)).toLocaleString(locale);
 }
 
-// e.g., 7h 5m
+/** e.g., 7h 5m */
 export function formatMinutesForLocale(value: number) {
     var hours = Math.floor(value / 60);
     var displayValue = hours > 0 ? (`${hours}${language("hours-abbreviation")} `) : "";

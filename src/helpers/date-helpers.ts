@@ -2,30 +2,43 @@ import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDis
 import language from "./language";
 import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
-export function toDate(dateOrDateString: string | Date): Date {
-    var date;
-    if (typeof(dateOrDateString) === 'string') {
-        date = parseISO(dateOrDateString);
-    } else {
-        date = dateOrDateString;
-    }
-    return date;
+export function toDate(dateOrDateString: string | Date | undefined): Date | undefined {
+	var date;
+	if (!dateOrDateString) {
+		return undefined;
+	}
+	else if (typeof (dateOrDateString) === 'string') {
+		date = parseISO(dateOrDateString);
+		// date-fns returns "Invalid Date" when it couldn't parse.
+		if (!date || (date.toString() === "Invalid Date")) {
+			return undefined;
+		}
+	} else {
+		date = dateOrDateString;
+	}
+	return date;
 }
 
+/** Number of days in the month.
+ * @param iMonth 0-indexed month number
+ */
 export function daysInMonth(iYear: number, iMonth: number) {
 	return 32 - new Date(iYear, iMonth, 32).getDate();
 }
 
-export function getDatesForMonth(year: number, month: number) {
+/** List of dates in the specified month
+ * @param iMonth 0-indexed month number
+ */
+export function getDatesForMonth(iYear: number, iMonth: number) {
 	var monthDays: Date[] = [];
-	for (var i = 1; i < daysInMonth(year, month) + 1; i++) {
-		var date = new Date(year, month, i);
+	for (var i = 1; i < daysInMonth(iYear, iMonth) + 1; i++) {
+		var date = new Date(iYear, iMonth, i);
 		monthDays.push(date);
 	}
 	return monthDays;
 }
 
-// e.g., Monday or Friday, with special cases for today/yesterday
+/** e.g., Monday or Friday, with special cases for today/yesterday */
 export function getDayOfWeek(date: Date) {
 	var result = formatDateForLocale(date, "EEEE");
 	if (isSameDay(date, new Date())) {
@@ -37,7 +50,7 @@ export function getDayOfWeek(date: Date) {
 	return result;
 }
 
-// e.g., M or F
+/** e.g., M or F */
 export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 	if (dayOrDate instanceof Date) {
 		return formatDateForLocale(dayOrDate, "EEEEE");
@@ -47,7 +60,7 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
-// e.g., Mon or Fri
+/** e.g., Mon or Fri */
 export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 	if (dayOrDate instanceof Date) {
 		return formatDateForLocale(dayOrDate, "EEEEEE");
@@ -57,48 +70,49 @@ export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "abbreviated" }));
 }
 
-// e.g., Friday, April 29th, 2024 at 11:00pm - localized
+/** e.g., Friday, April 29th, 2024 at 11:00pm - localized */
 export function getDayAndDateAndTimeString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	return formatDateForLocale(date, "PPPPp");
 }
 
-// e.g., Friday, April 29th, 2024 - localized
+/** e.g., Friday, April 29th, 2024 - localized */
 export function getFullDayAndDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	return formatDateForLocale(date, "PPPP");
 }
 
-// e.g., April 29th, 2024 - localized
+/** e.g., April 29th, 2024 - localized */
 export function getFullDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	return formatDateForLocale(date, "PPP");
 }
 
-// e.g., Apr 29, 2024 - localized
+/** e.g., Apr 29, 2024 - localized */
 export function getLongDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	return formatDateForLocale(date, "PP");
 }
 
-// e.g., 04/29/2024 - localized
+/** e.g., 04/29/2024 - localized */
 export function getShortDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	return formatDateForLocale(date, "P");
 }
 
-// e.g., 04/29 - localized
+/** e.g., 04/29 - localized */
 export function getShortestDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	// date-fns doesn't have a format for this one, so we have to fall back to Intl
 	const locale = getIntlLocale();
+	if (!date) { return "" }
 	return date.toLocaleDateString(locale, {
 		month: 'numeric',
 		day: 'numeric',
 	 });	
 }
 
-// e.g., November
+/** e.g., November */
 export function getMonthName(monthOrDate: number | Date, capitalize: boolean = true) {
 	var date;
 	if (typeof(monthOrDate) === 'number') {
@@ -109,7 +123,7 @@ export function getMonthName(monthOrDate: number | Date, capitalize: boolean = t
 	return formatDateForLocale(date, "LLLL", capitalize);
 }
 
-// e.g., Nov
+/** e.g., Nov */
 export function getAbbreviatedMonthName(month: number | Date, capitalize: boolean = true) {
 	var date;
 	if (typeof(month) === 'number') {
@@ -141,23 +155,25 @@ export function titleForDateRange(intervalType: "Day" | "Week" | "Month" | "6Mon
 	}
 }
 
-// For future dates - e.g., "in 3 days" or "tomorrow"
+/** For future dates - e.g., "3 days" */
 export function getTimeFromNowString(dateOrDateString: string | Date) {
     const date = toDate(dateOrDateString);
-    return formatDistanceToNow(date, { locale: getDateLocale() });
+	if (!date) { return "" }
+	return formatDistanceToNow(date, { locale: getDateLocale() });
 }
 
-// For past dates - e.g., "2 weeks ago" or "yesterday"
-export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, titleize: boolean = true): string {
+/** For past dates - e.g., "2 weeks ago" or "yesterday" */
+export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
+	if (!date) { return "" }
     const formatted = formatRelative(date, baseDate, { locale: getDateLocale() });
-    return titleize ? capitalizeFirstLetterForLocale(formatted) : formatted;
+    return capitalize ? capitalizeFirstLetterForLocale(formatted) : formatted;
 }
 
-// e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string
+/** e.g., 12:45 pm (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
 export function getTimeOfDayString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
-	if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
+	if (!date || (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0)) {
 		return "";
 	}
 	return formatDateForLocale(date, "p");
