@@ -42,7 +42,7 @@ describe('Date Helper Tests', () => {
             const result = toDate("2024-14-99");
             expect(result).toBe(undefined);
         });
-        it('Should return base language if no browser langauge.', () => {
+        it('Should return base language if no browser language.', () => {
             const result = toDate("2024-11-15");
             expect(result).toStrictEqual(new Date(2024, 10, 15));
         });
