@@ -3,7 +3,7 @@ name: MDH UI Build and Test Workflow
 on:
   push:
     branches:
-      - renee/Workflow
+      - '**' # Match any branch
     paths-ignore:
       - 'amplify.yml'          # Exclude the main Amplify configuration file
       - 'customHttp.yml'       # Exclude the custom HTTP configuration file
@@ -11,7 +11,7 @@ on:
       - '.vscode'               # Exclude the VSCode configuration folder
   pull_request:
     branches:
-      - renee/Workflow
+      - '**' # Match any branch
     paths-ignore:
       - 'amplify.yml'          # Exclude the main Amplify configuration file
       - 'customHttp.yml'       # Exclude the custom HTTP configuration file
