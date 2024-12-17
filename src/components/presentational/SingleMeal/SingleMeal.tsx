@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './SingleMeal.css'
 import UnstyledButton from '../UnstyledButton';
-import { ColorDefinition, formatDateForLocale, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
+import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
 import { LoadingIndicator } from '../index';
+import { getTimeOfDayString } from '../../../helpers/date-helpers';
 
 export interface SingleMealProps {
     meal: Meal;
@@ -60,7 +61,7 @@ export default function (props: SingleMealProps) {
                     {getMealTypeDisplayText(props.meal.type)}&nbsp;
                     {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
                 </div>
-                <div className="mdhui-meal-time">{formatDateForLocale(props.meal.timestamp, 'h:mm aa')}</div>
+                <div className="mdhui-meal-time">{getTimeOfDayString(props.meal.timestamp)}</div>
                 {props.meal.description &&
                     <div className="mdhui-meal-description">{props.meal.description}</div>
                 }

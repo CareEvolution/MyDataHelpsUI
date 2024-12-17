@@ -7,6 +7,7 @@ import combinedRestingHeartRate from "../daily-data-providers/combined-resting-h
 import { combinedSleepDataProvider, combinedStepsDataProvider, combinedMindfulMinutesDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 import MyDataHelps from "@careevolution/mydatahelps-js";
+import { formatNumberForLocale } from "../../helpers/locale";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -96,7 +97,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {
@@ -116,7 +117,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         },
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     }
 ];

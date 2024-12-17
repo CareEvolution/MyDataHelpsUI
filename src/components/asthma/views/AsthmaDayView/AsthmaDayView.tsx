@@ -4,7 +4,7 @@ import { AsthmaAirQualities, AsthmaBiometrics, AsthmaLogEntryDetails } from '../
 import { useInitializeView } from '../../../../helpers';
 import { AsthmaParticipant } from '../../model';
 import { asthmaDataService } from '../../helpers';
-import { formatDateForLocale } from '../../../../helpers/locale';
+import { getFullDateString } from '../../../../helpers/date-helpers';
 
 export interface AsthmaDayViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -46,7 +46,7 @@ export default function (props: AsthmaDayViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true}>
             <Title order={2}>
-                {formatDateForLocale(props.date, 'PPP')}
+                {getFullDateString(props.date)}
             </Title>
         </NavigationBar>
         {loading && <LoadingIndicator />}

@@ -7,6 +7,7 @@ import { AsthmaDailyDataType, asthmaDataService, isBloodOxygenLevelWithinRange, 
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 import { RecentDailyDataBarChart } from '../../../container';
+import { formatNumberForLocale } from "../../../../helpers/locale";
 
 export interface AsthmaHeartAndLungsViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -61,7 +62,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-dhr-chart-title')}
                 dailyDataType={AsthmaDailyDataType.DaytimeRestingHeartRate}
-                valueFormatter={value => Number(value).toFixed(0)}
+                valueFormatter={value => formatNumberForLocale(value)}
                 highlight={rawValue => dhrBaseline ? !isDaytimeRestingHeartRateWithinRange(dhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
@@ -72,7 +73,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 previewDataProvider={hrPreviewDataProvider}
                 title={language('asthma-heart-and-lungs-view-nhr-chart-title')}
                 dailyDataType={AsthmaDailyDataType.NighttimeRestingHeartRate}
-                valueFormatter={value => Number(value).toFixed(0)}
+                valueFormatter={value => formatNumberForLocale(value)}
                 highlight={rawValue => nhrBaseline ? !isNighttimeRestingHeartRateWithinRange(nhrBaseline, rawValue) : false}
                 emptyDomain={[0, 120]}
             />
@@ -94,7 +95,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 title={language('asthma-heart-and-lungs-view-dbol-chart-title')}
                 dailyDataType={AsthmaDailyDataType.DaytimeBloodOxygenLevel}
                 valueConverter={rawValue => rawValue * 100.0}
-                valueFormatter={value => Number(value).toFixed(0)}
+                valueFormatter={value => formatNumberForLocale(value)}
                 highlight={rawValue => dbolBaseline ? !isBloodOxygenLevelWithinRange(dbolBaseline, rawValue) : false}
                 domain={[80, 100]}
                 emptyDomain={[80, 100]}
@@ -107,7 +108,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
                 title={language('asthma-heart-and-lungs-view-nbol-chart-title')}
                 dailyDataType={AsthmaDailyDataType.NighttimeBloodOxygenLevel}
                 valueConverter={rawValue => rawValue * 100.0}
-                valueFormatter={value => Number(value).toFixed(0)}
+                valueFormatter={value => formatNumberForLocale(value)}
                 highlight={rawValue => nbolBaseline ? !isBloodOxygenLevelWithinRange(nbolBaseline, rawValue) : false}
                 domain={[80, 100]}
                 emptyDomain={[80, 100]}
