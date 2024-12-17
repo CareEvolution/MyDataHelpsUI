@@ -4,10 +4,10 @@ import language from "../../../helpers/language";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { useInitializeView } from "../../../helpers/Initialization";
 import "./BasicPointsForBadges.css"
-import { ColorDefinition, getColorFromAssortment, resolveColor } from "../../../helpers/colors";
+import { ColorDefinition, getColorFromAssortment } from "../../../helpers/colors";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BasicPointsForBadgesActivity, BasicPointsForBadgesActivityState, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
-import { awardPointsAndBadges } from "../../../helpers";
+import { BasicPointsForBadgesActivity, parsePointsAndBadgesState, persistPointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
+import { awardPointsAndBadges, sumActivityPoints } from "../../../helpers";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { previewAwardPointsAndBadges, previewParticipantInfo } from "./BasicPointsForBadges.previewData";
 import { formatNumberForLocale } from "../../../helpers/locale"
@@ -35,10 +35,6 @@ export interface BasicPointsForBadgesProps {
 export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
     let [badges, setBadges] = React.useState<number[] | undefined>(undefined);
     let [points, setPoints] = React.useState<number | undefined>(undefined);
-
-    function sumActivityPoints(activityStates: { [key: string]: BasicPointsForBadgesActivityState }) {
-        return props.activities.reduce((sum, activity) => sum + activityStates[activity.key].pointsAwarded, 0);
-    }
 
     async function initialize() {
         let participantInfo = !props.previewState ? await MyDataHelps.getParticipantInfo() : previewParticipantInfo(props.activities, props.pointsPerBadge, props.customField);
