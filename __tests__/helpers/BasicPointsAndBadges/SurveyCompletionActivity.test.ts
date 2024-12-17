@@ -3,7 +3,7 @@ import { add, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { describe, it } from '@jest/globals';
 import { awardSurveyCompletionActivityPoints, SurveyCompletionActivity } from '../../../src/helpers/BasicPointsAndBadges/SurveyCompletionActivity';
-import { generateGUID } from "../../fixtures/commonFunctions";
+import { v4 as uuid } from 'uuid';
 
 describe('Basic Points And Badges - SurveyCompletionActivity', () => {
 
@@ -13,9 +13,9 @@ describe('Basic Points And Badges - SurveyCompletionActivity', () => {
         date: add(startDate, { days: 1, minutes: 1 }).toISOString(),
         answers: ["1"],
         insertedDate: add(startDate, { days: 1, minutes: 1 }).toISOString(),
-        surveyResultID: generateGUID(),
-        id: generateGUID(),
-        surveyID: generateGUID(),
+        surveyResultID: uuid(),
+        id: uuid(),
+        surveyID: uuid(),
         surveyVersion: 1,
         surveyName: 'Project Consent',
         surveyDisplayName: 'Consent to Study',
@@ -27,9 +27,9 @@ describe('Basic Points And Badges - SurveyCompletionActivity', () => {
         date: add(startDate, { days: 1, minutes: 2 }).toISOString(),
         answers: ["2"],
         insertedDate: add(startDate, { days: 1, minutes: 2 }).toISOString(),
-        surveyResultID: generateGUID(),
-        id: generateGUID(),
-        surveyID: generateGUID(),
+        surveyResultID: uuid(),
+        id: uuid(),
+        surveyID: uuid(),
         surveyVersion: 1,
         surveyName: 'Project Consent',
         surveyDisplayName: 'Consent to Study',
