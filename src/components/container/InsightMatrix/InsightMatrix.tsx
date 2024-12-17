@@ -13,6 +13,7 @@ export interface InsightMatrixProps {
     groupByDataConfiguration: InsightMatrixGroupByDataConfiguration;
     comparisonDataConfigurations: InsightMatrixComparisonDataConfiguration[];
     daysToCompute?: number;
+    showUnmatchedThresholds?: boolean;
     groupByHeaderBackgroundColor?: ColorDefinition;
     groupByHeaderTextColor?: ColorDefinition;
     goodValueBackgroundColor?: ColorDefinition;
@@ -80,8 +81,11 @@ export default function InsightMatrix(props: InsightMatrixProps) {
 
     const thresholdDaysLookup = computeThresholdDays(startDate, endDate, groupByData);
 
-    const allThresholds = groupByData.configuration.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
-    const filteredThresholds = allThresholds.filter(threshold => Object.keys(thresholdDaysLookup).includes(threshold));
+    let thresholds = groupByData.configuration.thresholds.map(threshold => threshold.label).concat(NotEnteredThreshold);
+    if (!props.showUnmatchedThresholds) {
+        const matchedThresholds = Object.keys(thresholdDaysLookup);
+        thresholds = thresholds.filter(threshold => matchedThresholds.includes(threshold));
+    }
 
     const getDefaultDataLabel = (configuration: InsightMatrixDataConfiguration): string => {
         if (isSurveyDataType(configuration.rawDataType)) {
@@ -123,8 +127,8 @@ export default function InsightMatrix(props: InsightMatrixProps) {
                 <div className="mdhui-insight-matrix-header-comparison-units">{configuration.units ?? <div>&nbsp;</div>}</div>
             </div>;
         })}
-        {filteredThresholds.map(threshold => {
-            const thresholdDays = thresholdDaysLookup[threshold];
+        {thresholds.map(threshold => {
+            const thresholdDays = thresholdDaysLookup[threshold] ?? [];
             return <React.Fragment key={threshold}>
                 <div className="mdhui-insight-matrix-threshold">{threshold}</div>
                 {comparisonData.map((data: InsightMatrixData<InsightMatrixComparisonDataConfiguration>, index: number) => {

@@ -27,11 +27,11 @@ export interface Meal {
     timestamp: Date;
     type: MealType;
     description?: string;
+    hasImage?: boolean;
+    archiveTimestamp?: Date;
 }
 
-export interface SerializedMeal {
-    id: string,
-    timestamp: string;
-    type: string;
-    description?: string;
+export interface MealReference {
+    date: Date;
+    id: Guid;
 }

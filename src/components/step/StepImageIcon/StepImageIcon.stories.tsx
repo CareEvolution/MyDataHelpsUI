@@ -1,27 +1,32 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StepImageIcon from "./StepImageIcon";
-import {IconElementProps} from "../shared"
+import { IconElementProps } from "../shared"
 import StepLayout from "../StepLayout";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof StepImageIcon> = {
     title: "SurveyStep/Components/StepImageIcon",
     component: StepImageIcon,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof StepImageIcon>;
+};
 
-const Template: ComponentStory<typeof StepImageIcon> = (args: IconElementProps) =>
-    <StepLayout>
-        <StepImageIcon {...args} />
-    </StepLayout>
+export default meta;
+type Story = StoryObj<typeof StepImageIcon>;
 
-export const StepImageIconNoSrc = Template.bind({});
-StepImageIconNoSrc.args = {
-}
+const render = (args: IconElementProps) => <StepLayout>
+    <StepImageIcon {...args} />
+</StepLayout>;
 
-export const StepImageIconWithSrc = Template.bind({});
-StepImageIconWithSrc.args = {
-    srcUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/CE-Logo-2022.png"
-}
+export const Default: Story = {
+    args: {
+        srcUrl: "https://rkstudio-customer-assets.s3.amazonaws.com/CareEvolution/Images/CE-Logo-2022.png"
+    },
+    render: render
+};
+
+export const NoSrc: Story = {
+    args: {},
+    render: render
+};
