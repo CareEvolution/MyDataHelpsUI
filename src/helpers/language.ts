@@ -48,4 +48,15 @@ export function getLanguageFromIso(language: string): Language {
 	return "";
 }
 
+export function setLanguageString(language: Language, key: string, value: string) {
+	if (language == "en") englishStrings[key] = value;
+	if (language == "es") spanishStrings[key] = value;
+	if (language == "nl") dutchStrings[key] = value;
+	if (language == "de") germanStrings[key] = value;
+	if (language == "fr") frenchStrings[key] = value;
+	if (language == "pt") portugueseStrings[key] = value;
+	if (language == "it") italianStrings[key] = value;
+	if (language == "pl") polishStrings[key] = value;
+}
+
 export default language;
