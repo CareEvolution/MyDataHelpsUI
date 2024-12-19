@@ -40,8 +40,8 @@ export default function (props: AppDownloadProps) {
 	let title = props.title || language('app-download-title');
 	let text = props.text || language('app-download-subtitle').replace("@@PROJECT_NAME@@", projectInfo.name);
 	return (
-		<div className="mdhui-app-download" ref={props.innerRef}>
-			<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform}>
+		<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform} innerRef={props.innerRef}>
+			<div className="mdhui-app-download">
 				<CardTitle title={title} />
 				<TextBlock>
 					<div className="mdhui-app-download-subtitle">
@@ -60,7 +60,7 @@ export default function (props: AppDownloadProps) {
 						}
 					</div>
 				</TextBlock>
-			</PlatformSpecificContent>
-		</div>
+			</div>
+		</PlatformSpecificContent>
 	);
 }
