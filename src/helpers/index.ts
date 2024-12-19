@@ -23,3 +23,4 @@ export * from './single-value-providers';
 export * from './insight-matrix';
 export * from './query-all-files';
 export * from './image';
+export * from './regex';
