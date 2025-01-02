@@ -1,1 +1,1 @@
-export { EhrNewsFeedEventType, EhrNewsFeedEvent } from './types';
+export { EhrNewsFeedType, EhrNewsFeedEventType, EhrNewsFeedEvent } from './types';
