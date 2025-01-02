@@ -9,6 +9,7 @@ export interface ConditionsViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
     onViewTermInfo?(termInfo: TermInformationReference): void
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export default function (props: ConditionsViewProps) {
