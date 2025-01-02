@@ -1,91 +1,102 @@
-import React, { useState, useEffect, useRef } from 'react'
-import MyDataHelps,  { Guid, Notification, NotificationQueryParameters, NotificationType } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, SingleNotification, Card, TextBlock } from '../../presentational'
-import { previewNotifications } from './NotificationList.previewdata'
+import React, { useState } from 'react';
+import MyDataHelps, { Guid, Notification, NotificationQueryParameters, NotificationType } from '@careevolution/mydatahelps-js';
+import { Card, LoadingIndicator, SingleNotification, TextBlock } from '../../presentational';
+import { previewNotifications } from './NotificationList.previewdata';
 import language from '../../../helpers/language';
-import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger'
+import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
+import { useInitializeView } from '../../../helpers';
+
+export type NotificationListPreviewState = 'loading' | 'loaded with data' | 'loaded with no data';
 
 export interface NotificationListProps {
-	notificationType?: NotificationType,
-	previewState?: NotificationListPreviewState
-	innerRef?: React.Ref<HTMLDivElement>
+    previewState?: NotificationListPreviewState;
+    notificationType?: NotificationType;
+    notificationIdentifierRegex?: RegExp;
+    displayLimit?: number;
+    hideWhenEmpty?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export type NotificationListPreviewState = "Default" | "NoData";
+/**
+ * A list of participant notifications.
+ *
+ * <ul>
+ * <li>The list can be filtered by type (i.e. Email/Push/SMS) and/or identifier regex.</li>
+ * <li>You can set a limit on the number of displayed notifications.</li>
+ * <li>The list can be hidden when there are no notifications.</li>
+ * </ul>
+ **/
+export default function NotificationList(props: NotificationListProps) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [nextPageID, setNextPageID] = useState<Guid>();
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
-/** Notification List. Can be filtered by Email/Push/SMS */
-export default function (props: NotificationListProps) {
-	const [loading, setLoading] = useState(false);
-	const [nextPageID, setNextPageID] = useState<Guid | undefined>(undefined);
-	const [finishedLoading, setFinishedLoading] = useState(false);
-	const [notifications, setNotifications] = useState<Notification[]>([]);
+    const loadNextPage = (existingNotifications?: Notification[]) => {
+        setLoading(true);
+        setNextPageID(undefined);
 
-	function loadNextPage() {
-		if (props.previewState == "Default") {
-			setNotifications(previewNotifications.filter(n => !props.notificationType || n.type === props.notificationType));
-		}
+        if (props.previewState === 'loading') {
+            return;
+        }
 
-		if (props.previewState) {
-			setLoading(false);
-			setFinishedLoading(true);
-			return;
-		}
+        if (props.previewState === 'loaded with data') {
+            const typeFilteredNotifications = previewNotifications.filter(n => !props.notificationType || n.type === props.notificationType);
+            const typeAndIdentifierFilteredNotifications = typeFilteredNotifications.filter(n => !props.notificationIdentifierRegex || n.identifier.match(props.notificationIdentifierRegex));
+            const filteredAndLimitedNotifications = typeAndIdentifierFilteredNotifications.slice(0, props.displayLimit);
+            setNotifications(filteredAndLimitedNotifications);
+            setLoading(false);
+            return;
+        }
 
-		if (loading || finishedLoading) { return; }
-		setLoading(true);
-		var parameters: NotificationQueryParameters = {
-			statusCode: "Succeeded",
-			limit: 10
-		};
-		if (props.notificationType) {
-			parameters.type = props.notificationType;
-		}
-		if (nextPageID) {
-			parameters.pageID = nextPageID;
-		}
-		MyDataHelps.queryNotifications(parameters).then(function (result) {
-			setNotifications(notifications.concat(result.notifications));
-			setLoading(false);
-			if (!result.nextPageID) {
-				setFinishedLoading(true);
-			}
-			setNextPageID(result.nextPageID);
-		});
-	}
+        if (props.previewState === 'loaded with no data') {
+            setNotifications([]);
+            setLoading(false);
+            return;
+        }
 
-	useEffect(() => {
-		loadNextPage();
+        const parameters: NotificationQueryParameters = {
+            statusCode: 'Succeeded',
+            limit: 10
+        };
+        if (props.notificationType) {
+            parameters.type = props.notificationType;
+        }
+        if (nextPageID) {
+            parameters.pageID = nextPageID;
+        }
+        MyDataHelps.queryNotifications(parameters).then(result => {
+            const filteredResultNotifications = result.notifications.filter(n => !props.notificationIdentifierRegex || n.identifier.match(props.notificationIdentifierRegex));
+            const updatedNotifications = (existingNotifications ?? []).concat(filteredResultNotifications).slice(0, props.displayLimit);
 
-		var initialize = function () {
-			setNotifications([]);
-			setNextPageID(undefined);
-			setFinishedLoading(false);
-			loadNextPage();
-		}
-		MyDataHelps.on("applicationDidBecomeVisible", initialize);
-		return () => {
-			MyDataHelps.off("applicationDidBecomeVisible", initialize);
-		}
-	}, [props.notificationType]);
+            setNotifications(updatedNotifications);
+            setNextPageID((!props.displayLimit || updatedNotifications.length < props.displayLimit) ? result.nextPageID : undefined);
+            setLoading(false);
+        });
+    };
 
-	return (
-		<div ref={props.innerRef} className="mdhui-notification-list">
-			{notifications && notifications.map((notification) =>
-				<Card key={notification.id.toString()}>
-					<SingleNotification notification={notification} />
-				</Card>
-			)}
-			{loading && !finishedLoading &&
-				<LoadingIndicator />
-			}
-			{!loading && finishedLoading && notifications.length == 0 &&
-				<Card>
-					<TextBlock>
-						{language("no-notifications-received")}
-					</TextBlock>
-				</Card>
-			}
-			<OnVisibleTrigger onTrigger={loadNextPage} enabled={!loading && !finishedLoading}></OnVisibleTrigger>
-		</div>
-	);
+    useInitializeView(() => {
+        setNotifications([]);
+        loadNextPage();
+    }, [], [props.previewState, props.notificationType, props.notificationIdentifierRegex, props.displayLimit]);
+
+    if (!loading && !nextPageID && notifications.length === 0 && props.hideWhenEmpty) {
+        return null;
+    }
+
+    return <div ref={props.innerRef} className="mdhui-notification-list">
+        {notifications.map(notification =>
+            <Card key={notification.id.toString()}>
+                <SingleNotification notification={notification} />
+            </Card>
+        )}
+        {loading && <LoadingIndicator />}
+        {!loading && !nextPageID && notifications.length === 0 &&
+            <Card>
+                <TextBlock>
+                    {language('no-notifications-received')}
+                </TextBlock>
+            </Card>
+        }
+        <OnVisibleTrigger onTrigger={() => loadNextPage(notifications)} enabled={!loading && !!nextPageID}></OnVisibleTrigger>
+    </div>;
 }

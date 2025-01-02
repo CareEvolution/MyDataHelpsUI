@@ -33,7 +33,7 @@ export default function NotificationsView(props: NotificationsViewProps) {
 			{!props.presentation &&
 				<StatusBarBackground />
 			}
-			<NotificationList notificationType={notificationType} previewState={props.preview ? "Default" : undefined} />
+			<NotificationList notificationType={notificationType} previewState={props.preview ? "loaded with data" : undefined} />
 		</Layout>
 	)
 }
