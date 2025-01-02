@@ -10,6 +10,7 @@ import { language } from "../../../helpers/language";
 export interface ReportViewProps {
     reportId: string
     previewState?: "html" | "pdf"
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export interface ReportContent {
@@ -58,7 +59,7 @@ export default function (props: ReportViewProps) {
         }
     }
 
-    return <Layout className="mdhui-report-view">
+    return <Layout className="mdhui-report-view" colorScheme={props.colorScheme}>
         <NavigationBar subtitle={title} variant="compressedModal" showCloseButton />
         {!reportContent && <LoadingIndicator />}
         {reportContent && <ReportContent type={reportContent.Type} content={reportContent.Content} contentType={reportContent.ContentType} />}
