@@ -1,0 +1,1 @@
+export { EhrNewsFeedEventType, EhrNewsFeedEvent } from './types';
