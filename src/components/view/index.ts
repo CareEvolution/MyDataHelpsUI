@@ -19,6 +19,7 @@ export { default as NewPointsView, NewPointsViewProps, NewPointsEntry, showNewPo
 export { default as InboxView } from "./InboxView"
 export { default as InboxHistoryView } from "./InboxHistoryView"
 export { default as InboxMessageView } from "./InboxMessageView"
+export { default as ReportView } from "./ReportView";
 export { default as ResourceListView } from "./ResourceListView"
 export { default as StandaloneHealthAndWellnessView } from "./StandaloneHealthAndWellnessView"
 export { default as TermInformationView } from "./TermInformationView"
