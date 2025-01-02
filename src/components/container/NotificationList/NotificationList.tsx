@@ -11,7 +11,7 @@ export type NotificationListPreviewState = 'loading' | 'loaded with data' | 'loa
 export interface NotificationListProps {
     previewState?: NotificationListPreviewState;
     notificationType?: NotificationType;
-    notificationIdentifierPattern?: RegExp;
+    notificationIdentifierRegex?: RegExp;
     displayLimit?: number;
     hideWhenEmpty?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -21,7 +21,7 @@ export interface NotificationListProps {
  * A list of participant notifications.
  *
  * <ul>
- * <li>The list can be filtered by type (i.e. Email/Push/SMS) and/or identifier pattern.</li>
+ * <li>The list can be filtered by type (i.e. Email/Push/SMS) and/or identifier regex.</li>
  * <li>You can set a limit on the number of displayed notifications.</li>
  * <li>The list can be hidden when there are no notifications.</li>
  * </ul>
@@ -41,7 +41,7 @@ export default function NotificationList(props: NotificationListProps) {
 
         if (props.previewState === 'loaded with data') {
             const typeFilteredNotifications = previewNotifications.filter(n => !props.notificationType || n.type === props.notificationType);
-            const typeAndIdentifierFilteredNotifications = typeFilteredNotifications.filter(n => !props.notificationIdentifierPattern || n.identifier.match(props.notificationIdentifierPattern));
+            const typeAndIdentifierFilteredNotifications = typeFilteredNotifications.filter(n => !props.notificationIdentifierRegex || n.identifier.match(props.notificationIdentifierRegex));
             const filteredAndLimitedNotifications = typeAndIdentifierFilteredNotifications.slice(0, props.displayLimit);
             setNotifications(filteredAndLimitedNotifications);
             setLoading(false);
@@ -65,7 +65,7 @@ export default function NotificationList(props: NotificationListProps) {
             parameters.pageID = nextPageID;
         }
         MyDataHelps.queryNotifications(parameters).then(result => {
-            const filteredResultNotifications = result.notifications.filter(n => !props.notificationIdentifierPattern || n.identifier.match(props.notificationIdentifierPattern));
+            const filteredResultNotifications = result.notifications.filter(n => !props.notificationIdentifierRegex || n.identifier.match(props.notificationIdentifierRegex));
             const updatedNotifications = (existingNotifications ?? []).concat(filteredResultNotifications).slice(0, props.displayLimit);
 
             setNotifications(updatedNotifications);
@@ -77,7 +77,7 @@ export default function NotificationList(props: NotificationListProps) {
     useInitializeView(() => {
         setNotifications([]);
         loadNextPage();
-    }, [], [props.previewState, props.notificationType, props.notificationIdentifierPattern, props.displayLimit]);
+    }, [], [props.previewState, props.notificationType, props.notificationIdentifierRegex, props.displayLimit]);
 
     if (!loading && !nextPageID && notifications.length === 0 && props.hideWhenEmpty) {
         return null;

@@ -10,7 +10,7 @@ import { tryParseRegex } from '../../../helpers';
 type NotificationListStoryArgs = React.ComponentProps<typeof NotificationList> & {
     colorScheme: 'auto' | 'light' | 'dark';
     state: NotificationListPreviewState | 'live';
-    notificationIdentifierPatternString?: string;
+    notificationIdentifierRegexString?: string;
 };
 
 const meta: Meta<NotificationListStoryArgs> = {
@@ -25,12 +25,12 @@ export default meta;
 type Story = StoryObj<NotificationListStoryArgs>;
 
 const render = (args: NotificationListStoryArgs) => {
-    if (args.notificationIdentifierPatternString) {
-        const { success, regex } = tryParseRegex(args.notificationIdentifierPatternString);
+    if (args.notificationIdentifierRegexString) {
+        const { success, regex } = tryParseRegex(args.notificationIdentifierRegexString);
         if (success) {
-            args.notificationIdentifierPattern = regex;
+            args.notificationIdentifierRegex = regex;
         } else {
-            console.log('Invalid identifier pattern regex.')
+            console.log('Invalid identifier regex.')
         }
     }
 
@@ -49,7 +49,7 @@ export const Default: Story = {
         colorScheme: 'auto',
         state: "loaded with data",
         notificationType: undefined,
-        notificationIdentifierPatternString: '',
+        notificationIdentifierRegexString: '',
         displayLimit: 100,
         hideWhenEmpty: false
     },
@@ -74,8 +74,8 @@ export const Default: Story = {
             },
             options: [undefined, 'Email', 'Push', 'Sms']
         },
-        notificationIdentifierPatternString: {
-            name: 'identifier pattern',
+        notificationIdentifierRegexString: {
+            name: 'identifier regex',
         },
         displayLimit: {
             name: 'display limit',
@@ -84,7 +84,7 @@ export const Default: Story = {
         hideWhenEmpty: {
             name: 'hide when empty?'
         },
-        ...argTypesToHide(['previewState', 'notificationIdentifierPattern', 'innerRef'])
+        ...argTypesToHide(['previewState', 'notificationIdentifierRegex', 'innerRef'])
     },
     render: render
 };
