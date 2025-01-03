@@ -9,7 +9,7 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { formatDateForLocale, capitalizeForLocale } from '../../../helpers/locale';
+import { getFullDateString, getTimeOfDayString, toDate } from '../../../helpers/date-helpers';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -37,15 +37,11 @@ export default function (props: EhrNewsFeedProps) {
     let [nextPageDate, setNextPageDate] = useState<string | undefined>(undefined);
     let [finished, setFinished] = useState<boolean>(false);
 
-    function dayLabel(date: string) {
-        return capitalizeForLocale(formatDateForLocale(date, 'MMMM do, yyyy'));
-    }
-
     function loadMore() {
         function addEvents(events: EhrNewsFeedEventModel[]) {
             let newDayBuckets = [...dayBuckets];
             events.forEach((event) => {
-                let eventDayLabel = dayLabel(event.Date);
+                let eventDayLabel = getFullDateString(event.Date);
                 if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day == eventDayLabel) {
                     newDayBuckets[newDayBuckets.length - 1].items.push(event);
                 } else {
@@ -164,10 +160,8 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = formatDateForLocale(props.event.Date, "h:mm a");
-    if (date === "12:00 AM") {
-        date = "";
-    }
+    let date = toDate(props.event.Date);
+    let timeString = getTimeOfDayString(date);
 
     function getTitle() {
         let titleItems = definition.getTitleItems(props.event);
@@ -189,6 +183,6 @@ function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event
     >
         <div className="mdhui-news-feed-list-item-title">{getTitle()}</div>
         {definition.getPreview && definition.getPreview(props.event)}
-        <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
+        <div className="mdhui-news-feed-list-item-date">{`${timeString ? timeString + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
     </Action>;
 }

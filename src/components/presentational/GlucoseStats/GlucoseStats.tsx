@@ -46,14 +46,14 @@ export default function (props: GlucoseStatsProps) {
             label={language('glucose-stats-range-label')}
             icon={faDroplet}
             iconColor="#d36540"
-            value={minGlucose ? `${minGlucose.toFixed(0)} - ${maxGlucose!.toFixed(0)} mg/dL` : undefined}
+            value={(minGlucose && maxGlucose) ? `${formatNumberForLocale(minGlucose)} - ${formatNumberForLocale(maxGlucose)} mg/dL` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}
             label={language('glucose-stats-avg-label')}
             icon={faDroplet}
             iconColor="#d36540"
-            value={avgGlucose ? `${avgGlucose.toFixed(0)} mg/dL` : undefined}
+            value={avgGlucose ? `${formatNumberForLocale(avgGlucose)} mg/dL` : undefined}
         />
         <SingleGlucoseStat
             loading={props.loading}

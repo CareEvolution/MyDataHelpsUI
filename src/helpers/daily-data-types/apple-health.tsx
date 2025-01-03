@@ -9,6 +9,7 @@ import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCoc
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
+import { formatNumberForLocale } from "../locale";
 
 let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -17,7 +18,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlyDistanceWalkingRunning"]),
         labelKey: "distance-traveled",
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
-        formatter: (value: number) => Number((value / 1000).toFixed(2)).toLocaleString() + " km",
+        formatter: (value: number) => formatNumberForLocale(value / 1000, 2) + " km",
         yAxisConverter: (value: number) => value / 1000,
         previewDataRange: [3000, 5000]
     },
@@ -63,7 +64,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {
@@ -149,7 +150,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: value => value.toFixed(0),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {

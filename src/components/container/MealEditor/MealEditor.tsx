@@ -1,11 +1,12 @@
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
-import { formatDateForLocale, getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { getFullDayAndDateString, getTimeOfDayString } from '../../../helpers/date-helpers';
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -183,7 +184,7 @@ export default function MealEditor(props: MealEditorProps) {
                     {language('edit')} {getMealTypeDisplayText(mealToEdit.type)}
                 </div>
                 <div className="mdhui-meal-editor-header-date">
-                    {formatDateForLocale(mealToEdit.timestamp, 'EEE, MMMM do, yyyy')}
+                    {getFullDayAndDateString(mealToEdit.timestamp)}
                 </div>
                 <UnstyledButton onClick={onDelete}>
                     <div className="mdhui-meal-editor-header-delete-action">
@@ -197,7 +198,7 @@ export default function MealEditor(props: MealEditorProps) {
                     <input
                         className="mdhui-meal-editor-time-input"
                         type="time"
-                        value={formatDateForLocale(mealToEdit.timestamp, 'HH:mm')}
+                        value={getTimeOfDayString(mealToEdit.timestamp)}
                         onChange={event => onTimeChanged(event.target.value)}
                         style={{ colorScheme: layoutContext.colorScheme }}
                     />

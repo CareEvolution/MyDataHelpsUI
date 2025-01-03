@@ -8,7 +8,8 @@ import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
 import { useInitializeView } from '../../../helpers/Initialization'
 import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
 import { getDefaultPreviewData } from './SurveyAnswerData.previewdata'
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getShortDateString } from '../../../helpers/date-helpers';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
@@ -149,9 +150,9 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                 return (
                     <div className="mdhui-time-series-tooltip">
                         <div className="mdhui-single-value-tooltip-value">
-                            {parseFloat(payload[0].value).toFixed(2)}
+                            {formatNumberForLocale(parseFloat(payload[0].value), 2)}
                         </div>
-                        <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                        <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
                     </div>
                 );
             }
@@ -162,12 +163,12 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                             {payload.map((p: any, index: number) =>
                                 <tr key={p.dataKey}>
                                     <th style={{ color: getHeaderColor(p,index) }}>{p.dataKey}</th>
-                                    <td>{parseFloat(p.value).toFixed(2)}</td>
+                                    <td>{formatNumberForLocale(parseFloat(p.value), 2)}</td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-                    <div className="mdhui-time-series-tooltip-date">{formatDateForLocale(new Date(payload[0].payload.timestamp), 'MM/dd/yyyy')}</div>
+                    <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
                 </div>
             );
         }

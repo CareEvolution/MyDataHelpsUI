@@ -51,7 +51,6 @@ export const stepsWithGapLineChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             let data: DailyDataQueryResult = {};
@@ -79,7 +78,6 @@ export const stepsWithGapLineChartTooltipSync = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             let data: DailyDataQueryResult = {};
@@ -112,7 +110,6 @@ export const stepsBarChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewState: "default"
     },
@@ -141,7 +138,6 @@ export const stepsBarWithThresholdsChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar",
         previewState: "default"
     },
@@ -158,7 +154,6 @@ export const stepsLiveBarChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar"
     },
     render: render
@@ -173,7 +168,6 @@ export const stepsLiveBarChartTooltipSync = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Bar"
     },
     render: (args: DailyDataChartProps) => <Layout colorScheme="auto">
@@ -197,7 +191,6 @@ export const stepsAreaChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Area",
         previewState: "default"
     },
@@ -210,13 +203,7 @@ export const sleepBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.FitbitSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        dailyDataType: DailyDataType.FitbitSleepMinutes,        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -231,13 +218,7 @@ export const sleepAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        dailyDataType: DailyDataType.AppleHealthSleepMinutes,        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -252,13 +233,7 @@ export const liveSleepAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        dailyDataType: DailyDataType.AppleHealthSleepMinutes,        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -272,13 +247,7 @@ export const liveSleepCoreAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthCoreSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        dailyDataType: DailyDataType.AppleHealthCoreSleepMinutes,        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -293,12 +262,7 @@ export const liveSleepRemAppleHealthBarChart = {
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
         dailyDataType: DailyDataType.AppleHealthRemSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -312,13 +276,7 @@ export const liveSleepDeepAppleHealthBarChart = {
         title: "Sleep",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.AppleHealthDeepSleepMinutes,
-        valueFormatter: (value: number) => {
-            var hours = Math.floor(value / 60);
-            var displayValue = hours > 0 ? (hours + "h ") : "";
-            displayValue = displayValue + (Math.round(value - (hours * 60)) + "m");
-            return displayValue;
-        },
+        dailyDataType: DailyDataType.AppleHealthDeepSleepMinutes,        
         valueConverter: (value: number) => {
             return value / 60.0;
         },
@@ -331,10 +289,7 @@ export const liveAppleHealthNumberOfAlcoholicBeveragesBarChart = {
     args: {
         title: "Number of Alcoholic Beverages",
         intervalType: "Month",
-        dailyDataType: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,
-        valueFormatter: (value: number) => {
-            return value.toFixed(1);
-        },
+        dailyDataType: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,        
         chartType: "Bar",
     },
     render: render
@@ -345,7 +300,6 @@ export const noData = {
         title: "Steps",
         intervalType: "Week",
         dailyDataType: DailyDataType.Steps,
-        valueFormatter: (value: number) => Number(value.toFixed(0)).toLocaleString(),
         chartType: "Line",
         previewDataProvider: (start: Date, end: Date) => {
             return Promise.resolve({});
