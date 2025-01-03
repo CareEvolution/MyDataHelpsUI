@@ -9,6 +9,7 @@ export interface AllergiesViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
     onViewTermInfo?(termInfo: TermInformationReference): void
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 /**
@@ -25,7 +26,7 @@ export default function AllergiesView(props: AllergiesViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>

@@ -3,7 +3,7 @@ import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
 import { faCheckCircle, faTriangleExclamation, faAddressCard } from "@fortawesome/free-solid-svg-icons"
-import MyDataHelps from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ProjectInfo } from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import ConnectEHR from "../../../assets/connect-ehr.svg";
@@ -29,7 +29,7 @@ export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnecte
 export default function (props: ConnectEhrProps) {
 	const [loading, setLoading] = useState(true);
 	const [ehrEnabled, setEhrEnabled] = useState(false);
-	const [projectName, setProjectName] = useState<null | string>(null);
+	const [project, setProject] = useState<ProjectInfo | null>(null);
 	const [connected, setConnected] = useState<boolean>(false);
 	const [needsAttention, setNeedsAttention] = useState<boolean>(false);
 
@@ -39,7 +39,10 @@ export default function (props: ConnectEhrProps) {
 				return;
 			}
 			setEhrEnabled(true);
-			setProjectName("PROJECT");
+			setProject({
+				name: "PROJECT",
+				type: "Research Study"
+			} as ProjectInfo);
 			if (props.previewState == "enabledConnected") {
 				setConnected(true);
 				setNeedsAttention(false);
@@ -54,7 +57,7 @@ export default function (props: ConnectEhrProps) {
 			setEhrEnabled(settings.ehrEnabled);
 			if (settings.ehrEnabled) {
 				MyDataHelps.getProjectInfo().then(function (projectInfo) {
-					setProjectName(projectInfo.name);
+					setProject(projectInfo);
 					MyDataHelps.getExternalAccounts().then(function (accounts) {
 						accounts = accounts.filter(a => ["Provider", "Health Plan"].indexOf(a.provider.category) != -1);
 						setConnected(accounts.length > 0);
@@ -108,8 +111,12 @@ export default function (props: ConnectEhrProps) {
 	let title = props.title || defaultTitle;
 
 	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
-	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
-	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
+
+	let connectedString = project?.type == "Research Study" ? language("connect-ehr-text-connected-research") : language("connect-ehr-text-connected-generic");
+	let notConnectedString = project?.type == "Research Study" ? language("connect-ehr-text-research") : language("connect-ehr-text-generic");
+
+	let connectedText = props.connectedText || connectedString.replace(projectNameSubstitutionTarget, project?.name || "");
+	let notConnectedText = props.notConnectedText || notConnectedString.replace(projectNameSubstitutionTarget, project?.name || "");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";

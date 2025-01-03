@@ -11,6 +11,9 @@ export interface HealthAndWellnessViewProps {
     connectEhrApplicationUrl: string
     externalAccountsApplicationUrl: string
     variant?: "default" | "cardBased"
+    onViewLabs?(): void
+    onViewTermInfo?(termInfo: TermInformationReference): void
+    onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
 }
 
 /**
@@ -19,15 +22,30 @@ export interface HealthAndWellnessViewProps {
  */
 export default function HealthAndWellnessView(props: HealthAndWellnessViewProps) {
     function viewLabs() {
+        if (props.onViewLabs) {
+            props.onViewLabs();
+            return;
+        }
+
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/LabReports.html?lang=" + MyDataHelps.getCurrentLanguage());
     }
 
     function viewTermInfo(termInfo: TermInformationReference) {
+        if (props.onViewTermInfo) {
+            props.onViewTermInfo(termInfo);
+            return;
+        }
+
         var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
     }
 
     function viewHealthSectionDetails(concept: HealthPreviewSectionConcept) {
+        if (props.onViewHealthSectionDetails) {
+            props.onViewHealthSectionDetails(concept);
+            return;
+        }
+
         MyDataHelps.openApplication("https://hw.careevolutionapps.com/" + concept + ".html");
     }
 
@@ -50,7 +68,7 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <StatusBarBackground />
-            <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
+            <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} triggerWebExternalAccountSyncComplete />
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />

@@ -9,6 +9,7 @@ export interface ConditionsViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
     onViewTermInfo?(termInfo: TermInformationReference): void
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export default function (props: ConditionsViewProps) {
@@ -22,7 +23,7 @@ export default function (props: ConditionsViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>

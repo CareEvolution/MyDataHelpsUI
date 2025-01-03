@@ -1,1 +1,1 @@
-export { default } from "./EhrNewsFeed";
+export { default, EhrNewsFeedEventReference } from "./EhrNewsFeed";
