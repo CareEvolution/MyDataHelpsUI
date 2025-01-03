@@ -56,6 +56,7 @@
     "support": "Support",
     "all-notifications": "All Notifications",
     "steps": "Steps",
+    "steps-with-google-fit": "Steps (incl. Google Fit)",
     "resting-heart-rate": "Resting Heart Rate",
     "distance-traveled": "Distance Traveled",
     "google-fit-share": "Tap to share fitness data",

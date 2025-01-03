@@ -56,6 +56,7 @@ let strings: { [key: string]: string } = {
     "support": "Wsparcie",
     "all-notifications": "Wszystkie powiadomienia",
     "steps": "Kroki",
+    "steps-with-google-fit": "Kroki (w tym Google Fit)",
     "resting-heart-rate": "Tętno spoczynkowe",
     "distance-traveled": "Przebyty dystans",
     "google-fit-share": "Kliknij, aby udostępnić dane dotyczące fitnessu",
