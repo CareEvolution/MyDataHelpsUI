@@ -68,6 +68,7 @@ export enum DailyDataType {
 	GoogleFitSteps = "GoogleFitSteps",
 	GoogleFitTherapyMinutes = "GoogleFitTherapyMinutes",
 	Steps = "Steps",
+	StepsWithGoogleFit = "StepsWithGoogleFit",
 	RestingHeartRate = "RestingHeartRate",
 	SleepMinutes = "SleepMinutes",
 	MindfulMinutes = "MindfulMinutes",
