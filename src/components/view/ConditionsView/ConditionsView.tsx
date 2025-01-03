@@ -23,7 +23,7 @@ export default function (props: ConditionsViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>
