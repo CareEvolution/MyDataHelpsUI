@@ -68,7 +68,7 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <StatusBarBackground />
-            <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
+            <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} triggerWebExternalAccountSyncComplete />
             {variant == "default" &&
                 <Section noTopMargin>
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
