@@ -21,7 +21,7 @@ export interface ConnectDevicesMenuProps {
     accountTypes?: DeviceAccountType[]
     title?: string
     text?: string
-    previewState?: "iOS" | "Android" | "Web" | "ConnectedStates" | "iOSConnected"
+    previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
     headerVariant?: "large" | "medium"
     connectExternalAccountOptions?: ConnectExternalAccountOptions
     enableAppleHealthSurvey?: string
@@ -44,19 +44,18 @@ export default function (props: ConnectDevicesMenuProps) {
             setSettings(settings);
 
             setDeviceExternalAccounts([]);
-            if (props.previewState == "ConnectedStates") {
-                setDeviceExternalAccounts(previewAccounts);
-            }
 
             setPlatform("Web");
-            if (props.previewState == "iOS" || props.previewState == "iOSConnected") {
+            if (props.previewState == "ConnectedStates") {
+                setDeviceExternalAccounts(previewAccounts);
+                setPlatform("iOS");
+                setHasRecentAppleHealthData(true);
+            }
+
+            if (props.previewState == "iOS") {
                 setPlatform("iOS");
             } else if (props.previewState == "Android") {
                 setPlatform("Android");
-            }
-
-            if (props.previewState == "iOSConnected") {
-                setHasRecentAppleHealthData(true);
             }
 
             setLoading(false);
