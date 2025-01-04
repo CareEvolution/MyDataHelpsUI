@@ -53,6 +53,14 @@ export const MediumHeader = {
     render: render
 };
 
+export const AppleHealthConnected = {
+    name: "Apple Health Connected",
+    args: {
+        previewState: "iOSConnected"
+    },
+    render: render
+};
+
 export const iOSEnableAppleHealthSurvey = {
     name: "Enable Apple Health Survey",
     args: {
