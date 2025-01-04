@@ -1,4 +1,4 @@
-import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, DeviceDataPointQuery, ExternalAccount } from '@careevolution/mydatahelps-js';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
@@ -12,7 +12,7 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
-import { add } from 'date-fns';
+import { add, formatISO } from 'date-fns';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -33,7 +33,7 @@ export default function (props: ConnectDevicesMenuProps) {
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);
     const [platform, setPlatform] = useState<string | null>(null);
-    const [hasRecentAppleHealthSync, setHasRecentAppleHealthSync] = useState<boolean>(false);
+    const [hasRecentAppleHealthData, setHasRecentAppleHealthData] = useState<boolean>(false);
     const [completedEnableAppleHealthSurvey, setCompletedEnableAppleHealthSurvey] = useState<boolean>(false);
     const [completedEnableGoogleFitSurvey, setCompletedEnableGoogleFitSurvey] = useState<boolean>(false);
 
@@ -54,7 +54,7 @@ export default function (props: ConnectDevicesMenuProps) {
             }
 
             if (props.previewState == "iOSConnected") {
-                setHasRecentAppleHealthSync(true);
+                setHasRecentAppleHealthData(true);
             }
 
             setLoading(false);
@@ -77,17 +77,21 @@ export default function (props: ConnectDevicesMenuProps) {
                 }
 
                 if (deviceInfo?.platform == "iOS") {
-                    let syncDate = deviceInfo.properties["LastHealthKitFullSyncDate"];
-                    if (syncDate) {
-                        let lastSyncDate = new Date(syncDate);
-                        let today = new Date();
-                        setHasRecentAppleHealthSync(add(lastSyncDate, { days: 3 }) > today);
+                    let promises: Promise<any>[] = [
+                        MyDataHelps.queryDeviceData({
+                            namespace: "AppleHealth",
+                            observedAfter: formatISO(add(new Date(), { days: -3 })),
+                            limit: 1
+                        })
+                    ];
+                    if (props.enableAppleHealthSurvey) {
+                        promises.push(MyDataHelps.querySurveyAnswers({ surveyName: props.enableAppleHealthSurvey, limit: 1 }));
                     }
-                }
-
-                if (deviceInfo?.platform == "iOS" && props.enableAppleHealthSurvey) {
-                    MyDataHelps.querySurveyAnswers({ surveyName: props.enableAppleHealthSurvey, limit: 1 }).then((results) => {
-                        setCompletedEnableAppleHealthSurvey(results.surveyAnswers.length > 0);
+                    Promise.all(promises).then((results) => {
+                        setHasRecentAppleHealthData(results[0].deviceDataPoints.length > 0);
+                        if (props.enableAppleHealthSurvey) {
+                            setCompletedEnableAppleHealthSurvey(results[1].surveyAnswers.length > 0);
+                        }
                         setLoading(false);
                     });
                 }
@@ -207,7 +211,7 @@ export default function (props: ConnectDevicesMenuProps) {
         let appleHealthRequested = !!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth");
         return <AppleHealthMenuItem preview={!!props.previewState}
             platform={platform!}
-            connected={hasRecentAppleHealthSync}
+            connected={hasRecentAppleHealthData}
             requested={appleHealthRequested}
             enableAppleHealthSurvey={props.enableAppleHealthSurvey}
             completedEnableAppleHealthSurvey={completedEnableAppleHealthSurvey} />;
