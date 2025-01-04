@@ -37,7 +37,11 @@ export default function (props: ConnectDevicesMenuProps) {
 
     function initialize() {
         if (props.previewState) {
-            setSettings(previewSettings);
+            let settings = { ...previewSettings };
+            if (props.enableAppleHealthSurvey || props.enableGoogleFitSurvey) {
+                settings.queryableDeviceDataTypes = [];
+            }
+            setSettings(settings);
 
             setDeviceExternalAccounts([]);
             if (props.previewState == "ConnectedStates") {
