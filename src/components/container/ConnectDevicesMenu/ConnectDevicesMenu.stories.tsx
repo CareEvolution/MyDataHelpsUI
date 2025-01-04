@@ -13,7 +13,7 @@ export const Web = {
 };
 
 export const iOS = {
-    name:"iOS",
+    name: "iOS",
     args: {
         previewState: "iOS"
     },
@@ -21,7 +21,7 @@ export const iOS = {
 };
 
 export const Android = {
-    name:"Android",
+    name: "Android",
     args: {
         previewState: "Android"
     },
@@ -49,6 +49,24 @@ export const MediumHeader = {
     args: {
         previewState: "Web",
         headerVariant: "medium"
+    },
+    render: render
+};
+
+export const iOSEnableAppleHealthSurvey = {
+    name: "Enable Apple Health Survey",
+    args: {
+        previewState: "iOS",
+        enableAppleHealthSurvey: "EnableAppleHealth"
+    },
+    render: render
+};
+
+export const AndroidEnableAppleHealthSurvey = {
+    name: "Enable Google Fit Survey",
+    args: {
+        previewState: "Android",
+        enableGoogleFitSurvey: "EnableGoogleFit"
     },
     render: render
 };

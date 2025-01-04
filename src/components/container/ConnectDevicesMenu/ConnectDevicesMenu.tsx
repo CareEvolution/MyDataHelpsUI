@@ -1,4 +1,4 @@
-import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, DeviceDataPointQuery, ExternalAccount } from '@careevolution/mydatahelps-js';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
@@ -12,6 +12,7 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
+import { add, formatISO } from 'date-fns';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -23,6 +24,8 @@ export interface ConnectDevicesMenuProps {
     previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
     headerVariant?: "large" | "medium"
     connectExternalAccountOptions?: ConnectExternalAccountOptions
+    enableAppleHealthSurvey?: string
+    enableGoogleFitSurvey?: string
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -30,6 +33,9 @@ export default function (props: ConnectDevicesMenuProps) {
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);
     const [platform, setPlatform] = useState<string | null>(null);
+    const [hasRecentAppleHealthData, setHasRecentAppleHealthData] = useState<boolean>(false);
+    const [completedEnableAppleHealthSurvey, setCompletedEnableAppleHealthSurvey] = useState<boolean>(false);
+    const [completedEnableGoogleFitSurvey, setCompletedEnableGoogleFitSurvey] = useState<boolean>(false);
 
     function initialize() {
         if (props.previewState) {
@@ -50,7 +56,12 @@ export default function (props: ConnectDevicesMenuProps) {
             return;
         }
 
-        Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getExternalAccounts(), MyDataHelps.getDeviceInfo()])
+
+        Promise.all([
+            MyDataHelps.getDataCollectionSettings(),
+            MyDataHelps.getExternalAccounts(),
+            MyDataHelps.getDeviceInfo()
+        ])
             .then(([settings, accounts, deviceInfo]) => {
                 setSettings(settings);
                 setDeviceExternalAccounts(accounts);
@@ -59,7 +70,34 @@ export default function (props: ConnectDevicesMenuProps) {
                 } else {
                     setPlatform("Web");
                 }
-                setLoading(false);
+
+                if (deviceInfo?.platform == "iOS") {
+                    let promises: Promise<any>[] = [
+                        MyDataHelps.queryDeviceData({
+                            namespace: "AppleHealth",
+                            observedAfter: formatISO(add(new Date(), { days: -3 })),
+                            limit: 1
+                        })
+                    ];
+                    if (props.enableAppleHealthSurvey) {
+                        promises.push(MyDataHelps.querySurveyAnswers({ surveyName: props.enableAppleHealthSurvey, limit: 1 }));
+                    }
+                    Promise.all(promises).then((results) => {
+                        setHasRecentAppleHealthData(results[0].deviceDataPoints.length > 0);
+                        if (props.enableAppleHealthSurvey) {
+                            setCompletedEnableAppleHealthSurvey(results[1].surveyAnswers.length > 0);
+                        }
+                        setLoading(false);
+                    });
+                }
+                else if (deviceInfo?.platform == "Android" && props.enableGoogleFitSurvey) {
+                    MyDataHelps.querySurveyAnswers({ surveyName: props.enableGoogleFitSurvey, limit: 1 }).then((results) => {
+                        setCompletedEnableGoogleFitSurvey(results.surveyAnswers.length > 0);
+                        setLoading(false);
+                    });
+                } else {
+                    setLoading(false);
+                }
             });
     }
 
@@ -88,18 +126,12 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
-    if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth")) {
-        accountTypes = accountTypes.filter(a => a != "AppleHealth");
-    }
-    if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
-        accountTypes = accountTypes.filter(a => a != "GoogleFit");
-    }
     if (!accountTypes.length) {
         return null;
     }
 
-    function onMenuItemClicked( action?: () => void ) {
-        if ( props.previewState || !action ) return;
+    function onMenuItemClicked(action?: () => void) {
+        if (props.previewState || !action) return;
         action();
     }
 
@@ -165,16 +197,32 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        return <AppleHealthMenuItem preview={!!props.previewState} platform={platform!} />;
+        let appleHealthRequested = !!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth");
+        return <AppleHealthMenuItem preview={!!props.previewState}
+            platform={platform!}
+            connected={hasRecentAppleHealthData}
+            requested={appleHealthRequested}
+            enableAppleHealthSurvey={props.enableAppleHealthSurvey}
+            completedEnableAppleHealthSurvey={completedEnableAppleHealthSurvey} />;
     }
 
     function getGoogleFitMenuItem() {
-        if (!accountTypes.includes("GoogleFit") || platform == "iOS") {
+        if (!accountTypes.includes("GoogleFit")) {
+            return null;
+        }
+
+        let googleFitRequested = settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit");
+        if (platform == "iOS" || (!googleFitRequested && !props.enableGoogleFitSurvey)) {
             return null;
         }
 
         let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
+
+        if (props.enableGoogleFitSurvey && (!googleFitRequested || !completedEnableGoogleFitSurvey)) {
+            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurvey!);
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+        }
 
         if (platform == "Web") {
             action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
@@ -211,21 +259,33 @@ export default function (props: ConnectDevicesMenuProps) {
 interface AppleHealthMenuItemProps {
     preview: boolean;
     platform: string;
+    connected?: boolean;
+    requested: boolean;
+    completedEnableAppleHealthSurvey: boolean;
+    enableAppleHealthSurvey?: string;
 }
 
 function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     let [expanded, setExpanded] = useState(false);
 
-    if (props.platform == "Android") {
+    if (props.platform == "Android" || (!props.requested && !props.enableAppleHealthSurvey)) {
         return null;
     }
 
     let action = () => setExpanded(!expanded);
-    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("how-to-enable")}</div>;
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language(props.connected ? "connected" : "how-to-enable")}</div>;
+
+    if (props.enableAppleHealthSurvey && (!props.requested || !props.completedEnableAppleHealthSurvey)) {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.startSurvey(props.enableAppleHealthSurvey!);
+        }
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+    }
 
     if (props.platform == "Web") {
         action = () => {
-            if ( props.preview ) return;
+            if (props.preview) return;
             MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
         }
         indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;

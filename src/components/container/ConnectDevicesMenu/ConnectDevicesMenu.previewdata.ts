@@ -65,5 +65,6 @@ export const previewSettings:DataCollectionSettings = {
     airQualityEnabled: true,
     weatherEnabled: true,
     ehrEnabled: true,
-    sensorDataCollectionEndDate: ""
+    sensorDataCollectionEndDate: "",
+    omronEnabled: true
 };
