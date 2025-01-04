@@ -34,8 +34,6 @@ export default function (props: ConnectDevicesMenuProps) {
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);
     const [platform, setPlatform] = useState<string | null>(null);
     const [hasRecentAppleHealthData, setHasRecentAppleHealthData] = useState<boolean>(false);
-    const [completedEnableAppleHealthSurvey, setCompletedEnableAppleHealthSurvey] = useState<boolean>(false);
-    const [completedEnableGoogleFitSurvey, setCompletedEnableGoogleFitSurvey] = useState<boolean>(false);
 
     function initialize() {
         if (props.previewState) {
@@ -77,30 +75,14 @@ export default function (props: ConnectDevicesMenuProps) {
                 }
 
                 if (deviceInfo?.platform == "iOS") {
-                    let promises: Promise<any>[] = [
-                        MyDataHelps.queryDeviceData({
-                            namespace: "AppleHealth",
-                            observedAfter: formatISO(add(new Date(), { days: -3 })),
-                            limit: 1
-                        })
-                    ];
-                    if (props.enableAppleHealthSurvey) {
-                        promises.push(MyDataHelps.querySurveyAnswers({ surveyName: props.enableAppleHealthSurvey, limit: 1 }));
-                    }
-                    Promise.all(promises).then((results) => {
-                        setHasRecentAppleHealthData(results[0].deviceDataPoints.length > 0);
-                        if (props.enableAppleHealthSurvey) {
-                            setCompletedEnableAppleHealthSurvey(results[1].surveyAnswers.length > 0);
-                        }
-                        setLoading(false);
+                    MyDataHelps.queryDeviceData({
+                        namespace: "AppleHealth",
+                        observedAfter: formatISO(add(new Date(), { days: -3 })),
+                        limit: 1
+                    }).then((result) => {
+                        setHasRecentAppleHealthData(result.deviceDataPoints.length > 0);
                     });
-                }
-                else if (deviceInfo?.platform == "Android" && props.enableGoogleFitSurvey) {
-                    MyDataHelps.querySurveyAnswers({ surveyName: props.enableGoogleFitSurvey, limit: 1 }).then((results) => {
-                        setCompletedEnableGoogleFitSurvey(results.surveyAnswers.length > 0);
-                        setLoading(false);
-                    });
-                } else {
+                } {
                     setLoading(false);
                 }
             });
@@ -213,8 +195,7 @@ export default function (props: ConnectDevicesMenuProps) {
             platform={platform!}
             connected={hasRecentAppleHealthData}
             requested={appleHealthRequested}
-            enableAppleHealthSurvey={props.enableAppleHealthSurvey}
-            completedEnableAppleHealthSurvey={completedEnableAppleHealthSurvey} />;
+            enableAppleHealthSurvey={props.enableAppleHealthSurvey} />;
     }
 
     function getGoogleFitMenuItem() {
@@ -226,7 +207,7 @@ export default function (props: ConnectDevicesMenuProps) {
         let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
-        if (props.enableGoogleFitSurvey && (!googleFitRequested || !completedEnableGoogleFitSurvey)) {
+        if (props.enableGoogleFitSurvey && !googleFitRequested) {
             action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurvey!);
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         }
@@ -268,7 +249,6 @@ interface AppleHealthMenuItemProps {
     platform: string;
     connected?: boolean;
     requested: boolean;
-    completedEnableAppleHealthSurvey: boolean;
     enableAppleHealthSurvey?: string;
 }
 
@@ -278,7 +258,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     let action = () => setExpanded(!expanded);
     let indicator = <div className="mdhui-connect-devices-menu-connect">{language(props.connected ? "connected" : "how-to-enable")}</div>;
 
-    if (props.enableAppleHealthSurvey && (!props.requested || !props.completedEnableAppleHealthSurvey)) {
+    if (props.enableAppleHealthSurvey && !props.requested) {
         action = () => {
             if (props.preview) return;
             MyDataHelps.startSurvey(props.enableAppleHealthSurvey!);
