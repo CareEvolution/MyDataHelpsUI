@@ -81,6 +81,7 @@ export default function (props: ConnectDevicesMenuProps) {
                         limit: 1
                     }).then((result) => {
                         setHasRecentAppleHealthData(result.deviceDataPoints.length > 0);
+                        setLoading(false);
                     });
                 } {
                     setLoading(false);
@@ -113,14 +114,14 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
-    if (!accountTypes.length) {
-        return null;
-    }
     if (platform == "Android" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth") && !props.enableAppleHealthSurvey)) {
         accountTypes = accountTypes.filter(a => a != "AppleHealth");
     }
     if (platform == "iOS" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit") && !props.enableGoogleFitSurvey)) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
+    }
+    if (!accountTypes.length) {
+        return null;
     }
 
     function onMenuItemClicked(action?: () => void) {
