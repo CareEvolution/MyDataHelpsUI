@@ -134,6 +134,12 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!accountTypes.length) {
         return null;
     }
+    if (platform == "Android" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth") && !props.enableAppleHealthSurvey)) {
+        accountTypes = accountTypes.filter(a => a != "AppleHealth");
+    }
+    if (platform == "iOS" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit") && !props.enableGoogleFitSurvey)) {
+        accountTypes = accountTypes.filter(a => a != "GoogleFit");
+    }
 
     function onMenuItemClicked(action?: () => void) {
         if (props.previewState || !action) return;
@@ -217,10 +223,6 @@ export default function (props: ConnectDevicesMenuProps) {
         }
 
         let googleFitRequested = settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit");
-        if (platform == "iOS" || (!googleFitRequested && !props.enableGoogleFitSurvey)) {
-            return null;
-        }
-
         let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
@@ -272,10 +274,6 @@ interface AppleHealthMenuItemProps {
 
 function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     let [expanded, setExpanded] = useState(false);
-
-    if (props.platform == "Android" || (!props.requested && !props.enableAppleHealthSurvey)) {
-        return null;
-    }
 
     let action = () => setExpanded(!expanded);
     let indicator = <div className="mdhui-connect-devices-menu-connect">{language(props.connected ? "connected" : "how-to-enable")}</div>;
