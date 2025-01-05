@@ -8,7 +8,6 @@ export interface MonthlyActivityViewProps {
     presentation?: "Modal" | "Push"
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
-    dataTypes?: RelativeActivityDataType[]
 }
 
 export default function MonthlyActivityView(props: MonthlyActivityViewProps) {
