@@ -517,7 +517,9 @@ let strings: { [key: string]: string } = {
     "connect-to-device": "Mit @@DEVICE@@ verbinden",
     "symptoms-and-treatments": "Symptome & Behandlungen",
     "subsequent-evaluation-note": "Nachfolgende Bewertungsnotiz",
-    "summary": "Zusammenfassung"
+    "summary": "Zusammenfassung",
+    "view-monthly-activity": "Monatliche Aktivität anzeigen",
+    "view-daily-activity": "Tägliche Aktivität anzeigen"
 };
 
 export default strings;
