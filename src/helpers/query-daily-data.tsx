@@ -65,7 +65,7 @@ export async function queryPreviewDailyData(type: string, startDate: Date, endDa
 
 	// Modulo repeatable random numbers to get a value in range.
 	let currentDate = startDate;
-	while (currentDate <= endDate && currentDate < today) {
+	while (currentDate <= endDate && currentDate < new Date()) {
 		const currentDayKey = getDayKey(currentDate);
 		if (!fillPercentage || ((await predictableRandomNumber(currentDayKey + "_" + type + "_fill") % 100) / 100) <= fillPercentage) {
 			result[currentDayKey] = ((await predictableRandomNumber(currentDayKey + "_" + type)) % (range[1] - range[0])) + range[0];

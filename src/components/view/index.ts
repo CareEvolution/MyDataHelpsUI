@@ -1,6 +1,7 @@
 export { default as AllergiesView } from "./AllergiesView"
 export { default as BlankView } from "./BlankView"
 export { default as ConditionsView } from "./ConditionsView"
+export { default as ConnectDevicesView } from "./ConnectDevicesView"
 export { default as ConnectEhrView } from "./ConnectEhrView"
 export { default as DeviceDataView } from "./DeviceDataView"
 export { default as EhrNewsFeedView } from "./EhrNewsFeedView";
@@ -19,6 +20,7 @@ export { default as NewPointsView, NewPointsViewProps, NewPointsEntry, showNewPo
 export { default as InboxView } from "./InboxView"
 export { default as InboxHistoryView } from "./InboxHistoryView"
 export { default as InboxMessageView } from "./InboxMessageView"
+export { default as RelativeDailyActivityView } from "./RelativeDailyActivityView"
 export { default as ResourceListView } from "./ResourceListView"
 export { default as StandaloneHealthAndWellnessView } from "./StandaloneHealthAndWellnessView"
 export { default as TermInformationView } from "./TermInformationView"
