@@ -62,7 +62,7 @@ export const iOSEnableAppleHealthSurvey = {
     render: render
 };
 
-export const AndroidEnableAppleHealthSurvey = {
+export const AndroidEnableGoogleFitSurvey = {
     name: "Enable Google Fit Survey",
     args: {
         previewState: "Android",
