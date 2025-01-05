@@ -86,7 +86,7 @@ export default function (props: ConnectDevicesMenuProps) {
                         setHasRecentAppleHealthData(result.deviceDataPoints.length > 0);
                         setLoading(false);
                     });
-                } {
+                } else {
                     setLoading(false);
                 }
             });
