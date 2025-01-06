@@ -1,7 +1,6 @@
 import { add, startOfDay } from 'date-fns';
 import { Meal } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import grilledCheese from '../../../assets/grilled_cheese.png';
 
 export type MealCoordinatorPreviewState = 'no data' | 'with data';
 
@@ -45,7 +44,7 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
         ];
 
         const imageUrls: { [key: string]: string } = {};
-        imageUrls[grilledCheeseMealId] = grilledCheese;
+        imageUrls[grilledCheeseMealId] = 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png';
 
         return {
             allMeals: [
