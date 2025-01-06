@@ -1,10 +1,10 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPersonRunning, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faHourglassHalf, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import { combinedSleepDataProvider, combinedStepsDataProvider, combinedMindfulMinutesDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
+import { combinedMindfulMinutesDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
@@ -25,7 +25,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 return true;
             }
 
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "RestingHeartRateInBeatsPerMinute")(modifiedAfter);
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
         },
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -39,8 +39,8 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
             const settings = await MyDataHelps.getDataCollectionSettings();
 
-            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "Steps")
-                && await simpleAvailabilityCheck("AppleHealth", "Steps")(modifiedAfter)) {
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "HourlySteps")
+                && await simpleAvailabilityCheck("AppleHealth", "HourlySteps")(modifiedAfter)) {
                 return true;
             }
 
@@ -48,7 +48,35 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 return true;
             }
 
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Steps")(modifiedAfter);
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
+        },
+        labelKey: "steps",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.StepsWithGoogleFit,
+        dataProvider: (startDate: Date, endDate: Date) => combinedStepsDataProvider(startDate, endDate, true),
+        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
+            const settings = await MyDataHelps.getDataCollectionSettings();
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "HourlySteps")
+                && await simpleAvailabilityCheck("AppleHealth", "HourlySteps")(modifiedAfter)) {
+                return true;
+            }
+
+            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "GoogleFit" && dt.type == "Steps")
+                && await simpleAvailabilityCheck("GoogleFit", "Steps")(modifiedAfter)) {
+                return true;
+            }
+
+            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", "Steps")(modifiedAfter)) {
+                return true;
+            }
+
+            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
         },
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
