@@ -56,7 +56,6 @@
     "support": "Soporte",
     "all-notifications": "Todas las notificaciones",
     "steps": "Pasos",
-    "steps-with-google-fit": "Pasos (incl. Google Fit)",
     "resting-heart-rate": "Ritmo cardíaco en reposo",
     "distance-traveled": "Distancia Viajada",
     "google-fit-share": "Toca para compartir datos de condición físic",

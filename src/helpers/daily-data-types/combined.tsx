@@ -78,7 +78,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
 
             return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
         },
-        labelKey: "steps-with-google-fit",
+        labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
