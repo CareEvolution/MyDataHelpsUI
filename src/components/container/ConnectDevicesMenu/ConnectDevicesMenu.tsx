@@ -1,4 +1,4 @@
-import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount, HealthConnectStatus } from '@careevolution/mydatahelps-js';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
@@ -11,9 +11,10 @@ import GarminLogo from '../../../assets/garmin-logo.svg';
 import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
+import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
 
-export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron";
+export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect";
 
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
@@ -30,6 +31,7 @@ export default function (props: ConnectDevicesMenuProps) {
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);
     const [platform, setPlatform] = useState<string | null>(null);
+    const [healthConnectStatus, setHealthConnectStatus] = useState<HealthConnectStatus | null>(null);
 
     function initialize() {
         if (props.previewState) {
@@ -58,6 +60,12 @@ export default function (props: ConnectDevicesMenuProps) {
                     setPlatform(deviceInfo.platform);
                 } else {
                     setPlatform("Web");
+                }
+
+                if (deviceInfo.platform == "Android") {
+                    MyDataHelps.getHealthConnectStatus().then(status => {
+                        setHealthConnectStatus(status);
+                    });
                 }
                 setLoading(false);
             });
@@ -88,18 +96,21 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
-    if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth")) {
+    if (!settings?.appleHealthEnabled) {
         accountTypes = accountTypes.filter(a => a != "AppleHealth");
     }
-    if (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
+    if (!settings?.googleFitEnabled) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
+    }
+    if (!settings?.healthConnectEnabled) {
+        accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
     if (!accountTypes.length) {
         return null;
     }
 
-    function onMenuItemClicked( action?: () => void ) {
-        if ( props.previewState || !action ) return;
+    function onMenuItemClicked(action?: () => void) {
+        if (props.previewState || !action) return;
         action();
     }
 
@@ -188,6 +199,36 @@ export default function (props: ConnectDevicesMenuProps) {
         </div>;
     }
 
+    function getHealthConnectMenuItem() {
+        if (!accountTypes.includes("HealthConnect") || platform == "iOS") {
+            return null;
+        }
+
+        let action = () => MyDataHelps.showHealthConnectPrompt();
+        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+
+        if (platform == "Web") {
+            action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
+        }
+        else {
+            if (!healthConnectStatus || !healthConnectStatus.available || healthConnectStatus.requestedQueryRules.length == 0) {
+                return null;
+            }
+
+            if (healthConnectStatus.requestedQueryRules.every(r => healthConnectStatus.enabledQueryRules.includes(r))) {
+                action = () => MyDataHelps.showHealthConnectSettings();
+                indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
+            }
+        }
+
+        return <div className="mdhui-connect-devices-menu-device">
+            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
+                <Title autosizeImage image={<img src={HealthConnectLogo} />} order={4}>Health Connect</Title>
+            </Action>
+        </div>
+    }
+
     let title = props.title || language("connect-devices-title");
     let text = props.text || language("connect-devices-text");
     let headerVariant = props.headerVariant || "large";
@@ -202,6 +243,7 @@ export default function (props: ConnectDevicesMenuProps) {
             {getGarminMenuItem()}
             {getDexcomMenuItem()}
             {getAppleHealthMenuItem()}
+            {getHealthConnectMenuItem()}
             {getGoogleFitMenuItem()}
             {getOmronMenuItem()}
         </div>
@@ -225,7 +267,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
 
     if (props.platform == "Web") {
         action = () => {
-            if ( props.preview ) return;
+            if (props.preview) return;
             MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
         }
         indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;

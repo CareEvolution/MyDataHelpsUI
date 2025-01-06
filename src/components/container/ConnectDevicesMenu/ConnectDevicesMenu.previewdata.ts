@@ -65,5 +65,10 @@ export const previewSettings:DataCollectionSettings = {
     airQualityEnabled: true,
     weatherEnabled: true,
     ehrEnabled: true,
-    sensorDataCollectionEndDate: ""
+    sensorDataCollectionEndDate: "",
+    omronEnabled: true,
+    healthConnectEnabled: true,
+    appleHealthEnabled: true,
+    googleFitEnabled: true,
+    appleHealthRecordsEnabled: true
 };
