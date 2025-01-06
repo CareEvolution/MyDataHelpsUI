@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
-import { previewAccounts, previewSettings } from './ConnectDevicesMenu.previewdata';
+import { previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
 import FitbitLogo from '../../../assets/fitbit-logo.svg';
@@ -36,7 +36,6 @@ export default function (props: ConnectDevicesMenuProps) {
     function initialize() {
         if (props.previewState) {
             setSettings(previewSettings);
-
             setDeviceExternalAccounts([]);
             if (props.previewState == "ConnectedStates") {
                 setDeviceExternalAccounts(previewAccounts);
@@ -48,6 +47,11 @@ export default function (props: ConnectDevicesMenuProps) {
             } else if (props.previewState == "Android") {
                 setPlatform("Android");
             }
+
+            if (props.previewState == "Android") {
+                setHealthConnectStatus(previewHealthConnectStatus);
+            }
+
             setLoading(false);
             return;
         }
@@ -86,7 +90,7 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     //Omron excluded by default
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
