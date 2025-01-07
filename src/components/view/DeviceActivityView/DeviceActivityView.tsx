@@ -27,7 +27,7 @@ export default function DeviceActivityView(props: DeviceActivityViewProps) {
                 style={{ marginLeft: "16px", marginRight: "16px", marginBottom: selectedView == "daily" ? "16px" : "0px" }}
                 variant="default"
                 defaultMargin
-                segments={[{ title: "Daily", key: "daily" }, { title: "Weekly", key: "weekly" }, { title: "Monthly", key: "monthly" }]}
+                segments={[{ title: language("daily"), key: "daily" }, { title: language("weekly"), key: "weekly" }, { title: language("monthly"), key: "monthly" }]}
                 onSegmentSelected={(s) => setSelectedView(s as any)}
                 selectedSegment={selectedView} />
             {selectedView == "daily" &&
