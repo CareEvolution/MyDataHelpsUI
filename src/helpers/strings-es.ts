@@ -518,8 +518,10 @@
     "symptoms-and-treatments": "Síntomas y Tratamientos",
     "subsequent-evaluation-note": "Nota de evaluación subsecuente",
     "summary": "Resumen",
-    "view-monthly-activity": "Ver actividad mensual",
-    "view-daily-activity": "Ver actividad diaria"
+    "device-activity": "Actividad del dispositivo",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual"
 };
 
 export default strings;

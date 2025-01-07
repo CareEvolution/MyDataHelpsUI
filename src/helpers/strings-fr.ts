@@ -518,8 +518,10 @@ let strings: { [key: string]: string } = {
     "symptoms-and-treatments": "Symptômes et traitements",
     "subsequent-evaluation-note": "Note d'évaluation ultérieure",
     "summary": "Résumé",
-    "view-monthly-activity": "Voir l'activité mensuelle",
-    "view-daily-activity": "Voir l'activité quotidienne"
+    "device-activity": "Activité de l'appareil",
+    "daily": "Quotidien",
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuel"
 };
 
 export default strings;

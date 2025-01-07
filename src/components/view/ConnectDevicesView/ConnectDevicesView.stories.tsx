@@ -4,6 +4,6 @@ import ConnectDevicesView, { ConnectDevicesViewProps } from "./ConnectDevicesVie
 export default { title: "View/ConnectDevicesView", component: ConnectDevicesView, parameters: { layout: 'fullscreen' } };
 let render = (args: ConnectDevicesViewProps) => <ConnectDevicesView {...args} />
 export const Default = {
-    args: { presentation: "Push", previewState: "default", relativeDailyActivityViewUrl: "preview", monthlyActivityViewUrl: "preview" },
+    args: { presentation: "Push", previewState: "default", deviceActivityViewUrl: "preview" },
     render: render
 };
