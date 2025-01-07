@@ -66,7 +66,7 @@ export default function (props: ConnectDevicesMenuProps) {
                     setPlatform("Web");
                 }
 
-                if (deviceInfo.platform == "Android") {
+                if (deviceInfo.platform == "Android" && accountTypes.includes("HealthConnect")) {
                     MyDataHelps.getHealthConnectStatus().then(status => {
                         setHealthConnectStatus(status);
                     });
@@ -106,9 +106,10 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.googleFitEnabled) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
     }
-    if (!settings?.healthConnectEnabled) {
-        accountTypes = accountTypes.filter(a => a != "HealthConnect");
-    }
+    //HACK uncommon once data collection settings update is available
+    // if (!settings?.healthConnectEnabled) {
+    //     accountTypes = accountTypes.filter(a => a != "HealthConnect");
+    // }
     if (!accountTypes.length) {
         return null;
     }
