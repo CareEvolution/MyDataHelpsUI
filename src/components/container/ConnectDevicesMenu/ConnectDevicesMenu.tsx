@@ -33,6 +33,31 @@ export default function (props: ConnectDevicesMenuProps) {
     const [platform, setPlatform] = useState<string | null>(null);
     const [healthConnectStatus, setHealthConnectStatus] = useState<HealthConnectStatus | null>(null);
 
+    function getAccountTypes(settings: DataCollectionSettings): DeviceAccountType[] {
+        //Omron excluded by default
+        let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
+        if (!settings?.fitbitEnabled) {
+            accountTypes = accountTypes.filter(a => a != "Fitbit");
+        }
+        if (!settings?.garminEnabled) {
+            accountTypes = accountTypes.filter(a => a != "Garmin");
+        }
+        if (!settings?.dexcomEnabled) {
+            accountTypes = accountTypes.filter(a => a != "Dexcom");
+        }
+        if (!settings?.appleHealthEnabled) {
+            accountTypes = accountTypes.filter(a => a != "AppleHealth");
+        }
+        if (!settings?.googleFitEnabled) {
+            accountTypes = accountTypes.filter(a => a != "GoogleFit");
+        }
+        //HACK uncomment once data collection settings update is available
+        // if (!settings?.healthConnectEnabled) {
+        //     accountTypes = accountTypes.filter(a => a != "HealthConnect");
+        // }
+        return accountTypes;
+    }
+
     function initialize() {
         if (props.previewState) {
             setSettings(previewSettings);
@@ -66,7 +91,7 @@ export default function (props: ConnectDevicesMenuProps) {
                     setPlatform("Web");
                 }
 
-                if (deviceInfo.platform == "Android" && accountTypes.includes("HealthConnect")) {
+                if (deviceInfo.platform == "Android" && getAccountTypes(settings).includes("HealthConnect")) {
                     MyDataHelps.getHealthConnectStatus().then(status => {
                         setHealthConnectStatus(status);
                     });
@@ -89,27 +114,8 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
-    //Omron excluded by default
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
-    if (!settings?.fitbitEnabled) {
-        accountTypes = accountTypes.filter(a => a != "Fitbit");
-    }
-    if (!settings?.garminEnabled) {
-        accountTypes = accountTypes.filter(a => a != "Garmin");
-    }
-    if (!settings?.dexcomEnabled) {
-        accountTypes = accountTypes.filter(a => a != "Dexcom");
-    }
-    if (!settings?.appleHealthEnabled) {
-        accountTypes = accountTypes.filter(a => a != "AppleHealth");
-    }
-    if (!settings?.googleFitEnabled) {
-        accountTypes = accountTypes.filter(a => a != "GoogleFit");
-    }
-    //HACK uncommon once data collection settings update is available
-    // if (!settings?.healthConnectEnabled) {
-    //     accountTypes = accountTypes.filter(a => a != "HealthConnect");
-    // }
+    let accountTypes = getAccountTypes(settings!);
+
     if (!accountTypes.length) {
         return null;
     }
