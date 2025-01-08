@@ -14,6 +14,8 @@ export interface HealthAndWellnessViewProps {
     onViewLabs?(): void
     onViewTermInfo?(termInfo: TermInformationReference): void
     onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
+    connectEhrNotConnectedText?: string
+    connectEhrConnectedText?: string
 }
 
 /**
@@ -108,7 +110,12 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
                 </>
             }
             <Card>
-                <ConnectEhr bottomBorder applicationUrl={props.connectEhrApplicationUrl} previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
+                <ConnectEhr
+                    notConnectedText={props.connectEhrNotConnectedText}
+                    connectedText={props.connectEhrConnectedText}
+                    bottomBorder
+                    applicationUrl={props.connectEhrApplicationUrl}
+                    previewState={props.previewState == "default" ? "enabledConnected" : undefined} />
             </Card>
         </Layout>
     )
