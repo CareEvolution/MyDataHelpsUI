@@ -64,6 +64,13 @@ export function getDayOfWeekLetter(dayOrDate: Day | Date) : string {
 	return capitalizeFirstLetterForLocale(locale.localize?.day(dayOrDate, { width: "narrow" }));
 }
 
+/** Digits-only day of the month, e.g., 1-31 */
+export function getDayOfMonth(dateOrDateString: Date | string) {
+	const date = toDate(dateOrDateString);
+	return formatDateForLocale(date, "d");
+
+}
+
 /** e.g., Mon or Fri */
 export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 	if (dayOrDate instanceof Date) {

@@ -5,7 +5,7 @@ import { toDate, daysInMonth, getDayOfWeek, getDayOfWeekLetter,
     getAbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
     getFullDateString, getLongDateString, getShortDateString, getShortestDateString,
     getMonthName, getAbbreviatedMonthName, getTimeFromNowString,
-    getRelativeDateString, getTimeOfDayString } from '../../../src/helpers/date-helpers';
+    getRelativeDateString, getTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
 import { describe, it } from '@jest/globals';
 
 let mockMDHLanguage = "en";
@@ -98,6 +98,19 @@ describe('Date Helper Tests', () => {
             mockMDHLanguage = "de-DE";
             const result = getDayOfWeekLetter(new Date(2024, 11, 5));
             expect(result).toBe("D");
+        });
+    });
+
+    describe('getDayOfMonth', () => {        
+        it('Should return a day number.', () => {            
+            mockMDHLanguage = "en";
+            const result = getDayOfMonth(new Date(2024, 11, 5));
+            expect(result).toBe("5");
+        });
+        it('Should not be affected by localization.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = getDayOfMonth(new Date(2024, 11, 5));
+            expect(result).toBe("5");
         });
     });
 

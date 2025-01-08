@@ -4,8 +4,7 @@ import "./WeekCalendar.css"
 import { add, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
 import debounce from 'lodash/debounce';
-import { formatDateForLocale } from '../../../helpers/locale';
-import { getDayOfWeekLetter } from "../../../helpers/date-helpers";
+import { getDayOfWeekLetter, getDayOfMonth } from "../../../helpers/date-helpers";
 
 export interface WeekCalendarProps {
 	selectedDate?: Date;
@@ -67,7 +66,7 @@ export default function (props: WeekCalendarProps) {
 	function getLabel(date: Date) {
 		return <div className="mdhui-week-calendar-date-label">
 			<div className="mdhui-week-calendar-day-of-week"> {getDayOfWeekLetter(date)}</div>
-			<div className="mdhui-week-calendar-day-of-month">{formatDateForLocale(date, "d")}</div>
+			<div className="mdhui-week-calendar-day-of-month">{getDayOfMonth(date)}</div>
 		</div>
 	}
 
