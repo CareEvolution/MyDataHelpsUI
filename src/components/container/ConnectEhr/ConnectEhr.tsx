@@ -109,8 +109,8 @@ export default function (props: ConnectEhrProps) {
 
 	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
 
-	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
-	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
+	let connectedText = props.connectedText || language("connect-ehr-text-connected-research").replace(projectNameSubstitutionTarget, projectName || "");
+	let notConnectedText = props.notConnectedText || language("connect-ehr-text-research").replace(projectNameSubstitutionTarget, projectName || "");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";

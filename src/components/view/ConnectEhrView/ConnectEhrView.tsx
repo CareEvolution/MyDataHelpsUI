@@ -49,7 +49,7 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
                 <StatusBarBackground />
             }
             <TextBlock>
-                {props.introText ?? language('ehr-intro')}
+                {props.introText ?? language('ehr-intro-research')}
             </TextBlock>
             {props.onViewEhr &&
                 <Card>
