@@ -1,7 +1,6 @@
 import { add, startOfDay } from 'date-fns';
 import { Meal } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import grilledCheese from '../../../assets/grilled_cheese.png';
 
 export type MealEditorPreviewState = 'without existing image' | 'with existing image';
 
@@ -43,7 +42,7 @@ export const createPreviewData = (previewState: MealEditorPreviewState, date: Da
         ],
         activeMeals: activeMeals,
         mealToEdit: activeMeals[1],
-        imageUrl: previewState === 'with existing image' ? grilledCheese : undefined
+        imageUrl: previewState === 'with existing image' ? 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png' : undefined
     };
 };
 
