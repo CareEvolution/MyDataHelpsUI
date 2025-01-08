@@ -56,7 +56,7 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
                     <ViewEhr previewState={props.preview ? "fetchingData" : undefined} onClick={props.onViewEhr} />
                 </Card>
             }
-            {!props.externalAccountsApplicationUrl &&
+            {props.externalAccountsApplicationUrl &&
                 <Card>
                     <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true} />
                 </Card>
