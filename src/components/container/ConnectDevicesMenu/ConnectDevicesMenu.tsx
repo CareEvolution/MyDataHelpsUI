@@ -52,8 +52,7 @@ export default function (props: ConnectDevicesMenuProps) {
                 setPlatform("iOS");
                 setHasRecentAppleHealthData(true);
             }
-
-            if (props.previewState == "iOS") {
+            else if (props.previewState == "iOS") {
                 setPlatform("iOS");
             } else if (props.previewState == "Android") {
                 setPlatform("Android");
@@ -166,11 +165,11 @@ export default function (props: ConnectDevicesMenuProps) {
                 indicator = <div className="mdhui-connect-devices-menu-connected">{language("connected")}</div>;
                 action = undefined;
             }
-            if (externalAccount.status == "fetchingData") {
+            else if (externalAccount.status == "fetchingData") {
                 indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}</div>;
                 action = undefined;
             }
-            if (externalAccount.status == "unauthorized") {
+            else if (externalAccount.status == "unauthorized") {
                 indicator = <div className="mdhui-connect-devices-menu-reconnect">{language("reconnect")} </div>;
             }
         }
@@ -200,18 +199,18 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        let googleFitRequested = settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit");
-        let action = () => MyDataHelps.showGoogleFitSettings();
-        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
-        if (props.enableGoogleFitSurveyName && !googleFitRequested) {
-            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
-            indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
-        }
-
+        let action: () => void;
+        let indicator: React.JSX.Element;
         if (platform == "Web") {
             action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
+        } else if (props.enableGoogleFitSurveyName && !settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
+            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+        } else {
+            action = () => MyDataHelps.showGoogleFitSettings();
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
         }
 
         return <div className="mdhui-connect-devices-menu-device">
@@ -252,23 +251,25 @@ interface AppleHealthMenuItemProps {
 function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     let [expanded, setExpanded] = useState(false);
 
-    let action = () => setExpanded(!expanded);
-    let indicator = <div className="mdhui-connect-devices-menu-connect">{language(props.connected ? "connected" : "how-to-enable")}</div>;
-
-    if (props.enableAppleHealthSurvey && !props.requested) {
-        action = () => {
-            if (props.preview) return;
-            MyDataHelps.startSurvey(props.enableAppleHealthSurvey!);
-        }
-        indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
-    }
-
+    let action: () => void;
+    let indicator: React.JSX.Element;
     if (props.platform == "Web") {
         action = () => {
             if (props.preview) return;
             MyDataHelps.openExternalUrl("https://apps.apple.com/us/app/mydatahelps/id1286789190");
         }
         indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
+    }
+    else if (props.enableAppleHealthSurvey && !props.requested) {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.startSurvey(props.enableAppleHealthSurvey!);
+        }
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+    }
+    else {
+        action = () => setExpanded(!expanded);
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language(props.connected ? "connected" : "how-to-enable")}</div>;
     }
 
     return <div className="mdhui-connect-devices-menu-device">
