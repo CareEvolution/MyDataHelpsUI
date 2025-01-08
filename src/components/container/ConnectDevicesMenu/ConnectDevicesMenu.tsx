@@ -13,6 +13,7 @@ import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
 import { add, formatISO } from 'date-fns';
+import { useInitializeView } from '../../../helpers';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron";
 
@@ -92,15 +93,7 @@ export default function (props: ConnectDevicesMenuProps) {
             });
     }
 
-    useEffect(() => {
-        initialize();
-        MyDataHelps.on("applicationDidBecomeVisible", initialize);
-        MyDataHelps.on("externalAccountSyncComplete", initialize);
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", initialize);
-            MyDataHelps.off("externalAccountSyncComplete", initialize);
-        }
-    }, []);
+    useInitializeView(initialize, ["externalAccountSyncComplete"]);
 
     if (loading) {
         return null;
