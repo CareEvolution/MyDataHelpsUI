@@ -29,7 +29,7 @@ export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnecte
 export default function (props: ConnectEhrProps) {
 	const [loading, setLoading] = useState(true);
 	const [ehrEnabled, setEhrEnabled] = useState(false);
-	const [project, setProject] = useState<ProjectInfo | null>(null);
+	const [projectName, setProjectName] = useState<null | string>(null);
 	const [connected, setConnected] = useState<boolean>(false);
 	const [needsAttention, setNeedsAttention] = useState<boolean>(false);
 
@@ -39,10 +39,7 @@ export default function (props: ConnectEhrProps) {
 				return;
 			}
 			setEhrEnabled(true);
-			setProject({
-				name: "PROJECT",
-				type: "Research Study"
-			} as ProjectInfo);
+			setProjectName("PROJECT");
 			if (props.previewState == "enabledConnected") {
 				setConnected(true);
 				setNeedsAttention(false);
@@ -57,7 +54,7 @@ export default function (props: ConnectEhrProps) {
 			setEhrEnabled(settings.ehrEnabled);
 			if (settings.ehrEnabled) {
 				MyDataHelps.getProjectInfo().then(function (projectInfo) {
-					setProject(projectInfo);
+					setProjectName(projectInfo.name);
 					MyDataHelps.getExternalAccounts().then(function (accounts) {
 						accounts = accounts.filter(a => ["Provider", "Health Plan"].indexOf(a.provider.category) != -1);
 						setConnected(accounts.length > 0);
@@ -112,11 +109,8 @@ export default function (props: ConnectEhrProps) {
 
 	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
 
-	let connectedString = project?.type == "Research Study" ? language("connect-ehr-text-connected-research") : language("connect-ehr-text-connected-generic");
-	let notConnectedString = project?.type == "Research Study" ? language("connect-ehr-text-research") : language("connect-ehr-text-generic");
-
-	let connectedText = props.connectedText || connectedString.replace(projectNameSubstitutionTarget, project?.name || "");
-	let notConnectedText = props.notConnectedText || notConnectedString.replace(projectNameSubstitutionTarget, project?.name || "");
+	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
+	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";
