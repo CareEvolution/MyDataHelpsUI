@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { toDate, daysInMonth, getDayOfWeek, getDayOfWeekLetter, 
-    getAbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
+    getAbbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
     getFullDateString, getLongDateString, getShortDateString, getShortestDateString,
     getMonthName, getAbbreviatedMonthName, getTimeFromNowString,
     getRelativeDateString, getTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
@@ -114,15 +114,15 @@ describe('Date Helper Tests', () => {
         });
     });
 
-    describe('getAbreviatedDayOfWeek', () => {        
+    describe('getAbbreviatedDayOfWeek', () => {        
         it('Should return an abbreviated day.', () => {            
             mockMDHLanguage = "en";
-            const result = getAbreviatedDayOfWeek(new Date(2024, 11, 5));
+            const result = getAbbreviatedDayOfWeek(new Date(2024, 11, 5));
             expect(result).toBe("Th");
         });
         it('Should return a localized abbreviated day.', () => {            
             mockMDHLanguage = "de-DE";
-            const result = getAbreviatedDayOfWeek(new Date(2024, 11, 5));
+            const result = getAbbreviatedDayOfWeek(new Date(2024, 11, 5));
             expect(result).toBe("Do");
         });
     });    

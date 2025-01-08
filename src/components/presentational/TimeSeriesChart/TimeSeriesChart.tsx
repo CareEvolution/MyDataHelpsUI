@@ -6,7 +6,7 @@ import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { getAbbreviatedMonthName, getAbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
+import { getAbbreviatedMonthName, getAbbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
 import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
@@ -56,7 +56,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = getAbreviatedDayOfWeek(currentDate);
+                    dayOfWeek = getAbbreviatedDayOfWeek(currentDate);
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });

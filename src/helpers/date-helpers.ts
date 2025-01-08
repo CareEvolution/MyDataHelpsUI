@@ -72,7 +72,7 @@ export function getDayOfMonth(dateOrDateString: Date | string) {
 }
 
 /** e.g., Mon or Fri */
-export function getAbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
+export function getAbbreviatedDayOfWeek(dayOrDate: Day | Date) : string {
 	if (dayOrDate instanceof Date) {
 		return formatDateForLocale(dayOrDate, "EEEEEE");
 	}
