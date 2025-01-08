@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
+import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section, NavigationBar } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
@@ -16,6 +16,7 @@ export interface HealthAndWellnessViewProps {
     onViewHealthSectionDetails?(concept: HealthPreviewSectionConcept): void
     connectEhrNotConnectedText?: string
     connectEhrConnectedText?: string
+    presentation?: "Modal" | "Push"
 }
 
 /**
@@ -69,7 +70,14 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
 
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
-            <StatusBarBackground />
+            {props.presentation &&
+                <NavigationBar
+                    showBackButton={props.presentation == "Push"}
+                    showCloseButton={props.presentation == "Modal"} />
+            }
+            {!props.presentation &&
+                <StatusBarBackground />
+            }
             <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} triggerWebExternalAccountSyncComplete />
             {variant == "default" &&
                 <Section noTopMargin>
