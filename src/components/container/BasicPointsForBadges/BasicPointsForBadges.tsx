@@ -90,7 +90,7 @@ export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
         {badges !== undefined && points !== undefined &&
             <>
                 <Title order={1} className="mdhui-basic-points-for-badges-points-toward-badge" color={props.pointsLabelColor} >
-                    {props.showTotalPoints ? formatNumberForLocale(points) : (props.pointsPerBadge - pointsUntilNextBadge()).toLocaleString()}{language('points-abbreviation')}
+                    {props.showTotalPoints ? formatNumberForLocale(points) : formatNumberForLocale(props.pointsPerBadge - pointsUntilNextBadge())}{language('points-abbreviation')}
                 </Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}

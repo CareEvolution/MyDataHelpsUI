@@ -48,4 +48,9 @@ export function getLanguageFromIso(language: string): Language {
 	return "";
 }
 
+export function getCountryCodeFromIso(language: string) : string | undefined {
+    const code = language.toLowerCase().split(/[-_]/)[1];
+    return code;
+}
+
 export default language;

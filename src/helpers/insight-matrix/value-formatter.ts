@@ -1,3 +1,6 @@
+import { formatNumberForLocale } from "../locale";
+import { language } from "../language";
+
 export interface InsightMatrixValueFormatter {
     format: (value: number) => string;
 }
@@ -6,23 +9,23 @@ export const createShrinkThousandsInsightMatrixValueFormatter = (): InsightMatri
     return {
         format: value => {
             if (value >= 1000) {
-                return (value / 1000).toFixed(1) + 'k';
+                return formatNumberForLocale(value / 1000, 1) + 'k'; // k is SI notation, not localized
             }
-            return value.toFixed(0);
+            return formatNumberForLocale(value);
         }
     };
 };
 
 export const createMinutesToHoursInsightMatrixValueFormatter = (): InsightMatrixValueFormatter => {
     return {
-        format: value => (value / 60).toFixed(1) + 'hr'
+        format: value => formatNumberForLocale(value / 60, 1) + language("hours-abbreviation")
     };
 };
 
 export const createIntegerInsightMatrixValueFormatter = (suffix?: string): InsightMatrixValueFormatter => {
     return {
         format: value => {
-            let formattedValue = Number(value.toFixed(0)).toLocaleString();
+            let formattedValue = formatNumberForLocale(value);
             if (suffix) {
                 formattedValue += suffix;
             }

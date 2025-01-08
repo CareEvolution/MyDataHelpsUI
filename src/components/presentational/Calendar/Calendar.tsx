@@ -1,8 +1,7 @@
 import React from 'react';
-import { getLocaleFromIso } from '../../../helpers/locale';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { Day } from "date-fns";
+import { getDayOfWeekLetter } from '../../../helpers/date-helpers';
 import "./Calendar.css";
-import { Day } from 'date-fns';
 
 export interface CalendarProps {
 	month: number,
@@ -23,7 +22,6 @@ interface CalendarDay {
 
 export default function (props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
-	var locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 
 	var daysOfTheWeekIndices = Array.from(Array(7).keys());
 	var weekStartsOn = props.weekStartsOn && props.weekStartsOn < 7 ? props.weekStartsOn : 0;
@@ -33,9 +31,7 @@ export default function (props: CalendarProps) {
 		}
 	}
 
-	const weekdays = daysOfTheWeekIndices.map((i) =>
-		locale.localize?.day(i as Day, { width: "narrow" })
-	);
+	const weekdays = daysOfTheWeekIndices.map((i) => getDayOfWeekLetter(i as Day));
 
 	var daysInMonth = function (m: number, y: number) {
 		return 32 - new Date(y, m, 32).getDate();

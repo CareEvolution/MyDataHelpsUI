@@ -517,7 +517,8 @@
     "connect-to-device": "Connect to @@DEVICE@@",
     "symptoms-and-treatments": "Symptoms & Treatments",
     "subsequent-evaluation-note": "Subsequent evaluation note",
-    "summary": "Summary"
+    "summary": "Summary",
+    "bonus": "Bonus"
 };
 
 export default strings;

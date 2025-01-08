@@ -3,7 +3,7 @@ import "./LabResultWithSparkline.css"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TermInformationReference } from "../../container/TermInformation/TermInformation";
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getShortDateString } from "../../../helpers/date-helpers";
 
 export interface LabResultValue {
     Type: string,
@@ -57,7 +57,7 @@ export default function (props: LabResultWithSparklineProps) {
                         <span className="mdhui-lab-result-with-sparkline-acuity mdhui-lab-result-with-sparkline-acuity-low">L</span>
                     }
                 </div>
-                <div className="mdhui-lab-result-with-sparkline-date">{formatDateForLocale(props.labResultValue.MostRecentDate, "MM/dd/yy")}</div>
+                <div className="mdhui-lab-result-with-sparkline-date">{getShortDateString(props.labResultValue.MostRecentDate)}</div>
             </div>
             <div className="mdhui-lab-result-with-sparkline-container">
                 {!!props.labResultValue.SparklinePoints.length &&

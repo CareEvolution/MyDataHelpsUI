@@ -5,6 +5,7 @@ import { BasicBadge, Button, Layout, LoadingIndicator, TextBlock, Title } from "
 import "./NewBadgeView.css";
 import { parsePointsAndBadgesState } from "../../../helpers/BasicPointsAndBadges/Activities";
 import { startConfetti, stopConfetti } from '../../../helpers/confetti';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface NewBadgeViewProps {
     title?: string;
@@ -48,7 +49,7 @@ export default function (props: NewBadgeViewProps) {
                     <BasicBadge size="xl" backgroundColor={getColorFromAssortment(badges.length - 1)}>
                         <>
                             {props.showBadgePoints &&
-                                <>{Math.max(...badges).toLocaleString()}<br />points</>
+                                <>{formatNumberForLocale(Math.max(...badges))}<br />points</>
                             }
                         </>
                     </BasicBadge>

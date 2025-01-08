@@ -1,54 +1,133 @@
-import { format, formatRelative, formatDistanceToNow, parseISO } from 'date-fns';
-import { es, enUS, nl, de, fr, pt, it, pl, Locale } from 'date-fns/locale';
+import { format } from 'date-fns';
+import { es, enUS, enAU, enCA, enGB, enIE, enIN, enNZ, enZA, nl, nlBE, de, deAT, fr, frCA, frCH, pt, ptBR, it, itCH, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import language from "./language";
+import language, { getCountryCodeFromIso, getLanguageFromIso } from "./language";
+import { toDate } from "./date-helpers";
 
-export function getLocaleFromIso(language: string): Locale {
-    if (language.length < 2) return enUS;
+// Returns a locale string suitable for use with the Intl library. Mostly used for 
+// localizing numbers.
+//
+// Priority for locale selection:
+// 1. If MDH locale has a country code (like "en-AU") use that.
+// 2. If MDH locale does NOT have a locale code (like "en"), use the browser locale. 
+//    The browser often has more locale specificity than MDH.
+// 3. Fall back to the original language string.
+export function getIntlLocale() : string {
+    // Intl libraries don't support underscores, so it needs "en-US" not "en_US".
+    const lang =`${MyDataHelps.getCurrentLanguage()}`.replace("_", "-");
 
-    const currentLanguage = language.toLowerCase().slice(0,2);
+    if (lang.length < 2) return "en-us";
 
-    if (currentLanguage == "en") return enUS;
-    if (currentLanguage == "es") return es;
-    if (currentLanguage == "nl") return nl;
-    if (currentLanguage == "de") return de;
-    if (currentLanguage == "fr") return fr;
-    if (currentLanguage == "pt") return pt;
-    if (currentLanguage == "it") return it;
-    if (currentLanguage == "pl") return pl;
+    let countryCode = getCountryCodeFromIso(lang);
+    let intlLocale;
+    
+    if (countryCode) {
+        intlLocale = lang;
+    }
+    else {
+        intlLocale = navigator?.language || lang;
+    }
+    return intlLocale.toLowerCase();
+}
+
+// Returns a date-fns locale suitable for date formatting.
+//
+// Note that date-fns does not accept an arbitrary locale string
+// (e.g., "en-AU") but requires us to specify one of its locale
+// packages.
+//
+// Priority for locale selection:
+// 1. If MDH language has a country code (like "en-AU") use it to
+//    select the appropriate locale for that language.
+// 2. If MDH language does NOT have a country code (like "en"), use the browser language
+//    to determine locale. The browser often has more locale specificity than MDH.
+// 3. If neither MDH nor browser specifies a locale, use the
+//    default locale based on the current language.
+export function getDateLocale(): Locale {
+    const lang = MyDataHelps.getCurrentLanguage();
+    if (lang.length < 2) return enUS;
+
+    let languageCode = lang.toLowerCase().slice(0,2);
+
+    let countryCode = getCountryCodeFromIso(lang);
+    if (!countryCode && navigator?.language) {
+        languageCode = getLanguageFromIso(navigator.language) || "en";
+        countryCode = getCountryCodeFromIso(navigator.language);
+    }
+
+    if (languageCode == "en") {
+        switch (countryCode) {
+            case "au":
+                return enAU;
+            case "ca":
+                return enCA;
+            case "gb":
+                return enGB;                
+            case "ie":
+                return enIE;
+            case "in":
+                return enIN;
+            case "nz":
+                return enNZ;
+            case "za":
+                return enZA;
+            default:
+                return enUS;
+        }
+    }
+    if (languageCode == "es") return es;
+
+    if (languageCode == "de") {
+        if (countryCode == 'at') return deAT;
+        return de;
+    }
+
+    if (languageCode == "fr") {
+        if (countryCode == 'ca') return frCA;
+        if (countryCode == 'ch') return frCH;
+        return fr;
+    }
+
+    if (languageCode == "it") {
+        if (countryCode == 'ch') return itCH;
+        return it;
+    }
+
+    if (languageCode == "nl") {
+        if (countryCode == 'be') return nlBE;
+        return nl;
+    }
+
+    if (languageCode == "pt") {
+        if (countryCode == 'br') return ptBR;
+        return pt;
+    }
+
+    if (languageCode == "pl") return pl;
 
     return enUS;
 }
 
-function toDate(dateOrDateString: string | Date): Date {
-    var date;
-    if (typeof(dateOrDateString) === 'string') {
-        date = parseISO(dateOrDateString);
-    } else {
-        date = dateOrDateString;
-    }
-    return date;
-}
-
-export function formatDateForLocale(dateOrDateString: string | Date, formatString: string): string {
+/** 
+ * Uses date-fns format strings.
+ * Note that some languages don't treat day/month names as proper nouns, so a string might come
+ * back like "27 marzo 2024". The capitalize param lets you auto-capitalize the first letter in case
+ * the string is being used like a title/heading.
+ */
+export function formatDateForLocale(dateOrDateString: string | Date | undefined, formatString: string, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
-    return format(date, formatString, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+    if (!date) { return "" };
+    const formatted = format(date, formatString, { locale: getDateLocale() });
+    return capitalize ? capitalizeFirstLetterForLocale(formatted) : formatted;
 }
 
-export function formatRelativeDateForLocale(dateOrDateString: string | Date, baseDate: Date): string {
-    const date = toDate(dateOrDateString);
-    return formatRelative(date, baseDate, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
+export function formatNumberForLocale(value: number | undefined, fractionDigits?: number) {
+    if (value === undefined || value === null) return "";
+    const locale = getIntlLocale();
+    return Number(value.toFixed(fractionDigits || 0)).toLocaleString(locale);
 }
 
-export function formatTimeFromNowForLocale(dateOrDateString: string | Date) {
-    const date = toDate(dateOrDateString);
-    return formatDistanceToNow(date, { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
-}
-
-export function formatNumberForLocale(value: number, fractionDigits?: number) {
-    return Number(value.toFixed(fractionDigits || 0)).toLocaleString(MyDataHelps.getCurrentLanguage())
-}
-
+/** e.g., 7h 5m */
 export function formatMinutesForLocale(value: number) {
     var hours = Math.floor(value / 60);
     var displayValue = hours > 0 ? (`${hours}${language("hours-abbreviation")} `) : "";
@@ -58,8 +137,8 @@ export function formatMinutesForLocale(value: number) {
     return displayValue;
 }
 
-export function capitalizeForLocale(str: string) {
-    // This won't be adequate if we expand to RTL or symbol-based (e.g., Chinese/Japanese/Korean) languages.
+export function capitalizeFirstLetterForLocale(str: string) {
+    // MVP implementation will need to be refined if we expand to RTL or symbol-based (e.g., Chinese/Japanese/Korean) languages.
     if (!str) {
         return '';
     }

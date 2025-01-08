@@ -7,7 +7,7 @@ import { parseISO, startOfDay, startOfMonth } from "date-fns";
 import { CalendarDay, CalendarDayStateConfiguration, DateRangeContext, LoadingIndicator } from "../../presentational";
 import { previewSeverityData } from "./SeverityCalendar.previewdata";
 import { useInitializeView } from "../../../helpers/Initialization";
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getShortDateString } from '../../../helpers/date-helpers';
 
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
@@ -65,7 +65,7 @@ export default function (props: SeverityCalendarProps) {
                 var severity = severityValueMapper(grouping.severityAnswer.answers[0]);
                 if (severity) {
                     let dateOfSeverity = parseISO(grouping.dateObservedAnswer ? grouping.dateObservedAnswer.answers[0] : grouping.severityAnswer.date);
-                    let key = formatDateForLocale(startOfDay(dateOfSeverity), 'MM/dd/yyyy');
+                    let key = getShortDateString(startOfDay(dateOfSeverity));
                     let exists = resultByDateMap.get(key);
                     if (exists) {
                         if (grouping.severityAnswer.date > exists.dateEntered) {
@@ -128,7 +128,7 @@ export default function (props: SeverityCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string => {
-        let key: string = formatDateForLocale(startOfDay(date), 'MM/dd/yyyy');
+        let key: string = getShortDateString(startOfDay(date));
         return data?.get(key)?.severity ?? "";
     };
 
