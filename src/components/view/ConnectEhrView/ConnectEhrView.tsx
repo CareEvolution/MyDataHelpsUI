@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from '../../../helpers/language'
-import { ProviderSearch, ViewEhr } from '../../container'
+import { ProviderSearch } from '../../container'
 import { TextBlock } from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
 
@@ -47,8 +47,11 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
             {!props.presentation &&
                 <StatusBarBackground />
             }
+            <TextBlock>
+                {language("ehr-intro")}
+            </TextBlock>
             <Card>
-                <ViewEhr onClick={() => { }} previewState={props.preview ? "fetchingData" : undefined} />
+                <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true} />
             </Card>
             <Card>
                 <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} />
