@@ -9,8 +9,8 @@ export interface ConnectDevicesViewProps {
     presentation?: "Modal" | "Push"
     previewState?: "default"
     colorScheme?: "auto" | "light" | "dark"
-    enableAppleHealthSurvey?: string
-    enableGoogleFitSurvey?: string
+    enableAppleHealthSurveyName?: string
+    enableGoogleFitSurveyName?: string
     deviceActivityViewUrl?: string
 }
 
@@ -27,8 +27,8 @@ export default function ConnectDevicesView(props: ConnectDevicesViewProps) {
             }
             <Card>
                 <ConnectDevicesMenu previewState={props.previewState ? "Web" : undefined}
-                    enableAppleHealthSurvey={props.enableAppleHealthSurvey}
-                    enableGoogleFitSurvey={props.enableGoogleFitSurvey} />
+                    enableAppleHealthSurveyName={props.enableAppleHealthSurveyName}
+                    enableGoogleFitSurveyName={props.enableGoogleFitSurveyName} />
             </Card>
             <Card>
                 <FitbitDevices previewState={props.previewState ? "connected" : undefined} />

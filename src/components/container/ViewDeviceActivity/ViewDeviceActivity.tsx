@@ -26,7 +26,6 @@ export default function (props: ViewDeviceActivityProps) {
 
     function initialize() {
         if (props.previewState) {
-            console.log("ViewDeviceActivityProps.previewState is set to " + props.previewState);
             let devicePreviewAccounts = previewAccounts.filter(a => a.provider.category == "Device Manufacturer");
             devicePreviewAccounts[0].status = props.previewState;
             updateExternalAccounts(devicePreviewAccounts);

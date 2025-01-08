@@ -1,8 +1,8 @@
 import React from 'react'
-import {Card, Layout, NavigationBar, StatusBarBackground} from "../.."
+import { Card, Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from '../../../helpers/language'
-import {ProviderSearch} from '../../container'
-import {TextBlock} from '../../presentational'
+import { ProviderSearch, ViewEhr } from '../../container'
+import { TextBlock } from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
 
 export interface ConnectEhrViewProps {
@@ -40,21 +40,18 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             {props.presentation &&
-            <NavigationBar title={title}
-                           showBackButton={props.presentation == "Push"}
-                           showCloseButton={props.presentation == "Modal"}/>
+                <NavigationBar title={title}
+                    showBackButton={props.presentation == "Push"}
+                    showCloseButton={props.presentation == "Modal"} />
             }
             {!props.presentation &&
-            <StatusBarBackground />
+                <StatusBarBackground />
             }
-            <TextBlock>
-                {language("ehr-intro")}
-            </TextBlock>
             <Card>
-                <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true}/>
+                <ViewEhr onClick={() => { }} previewState={props.preview ? "fetchingData" : undefined} />
             </Card>
             <Card>
-                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories}/>
+                <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} />
             </Card>
         </Layout>
     )

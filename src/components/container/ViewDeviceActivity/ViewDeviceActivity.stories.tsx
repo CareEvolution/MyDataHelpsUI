@@ -13,9 +13,17 @@ export default {
 
 let render = (args: ViewDeviceActivityProps) => <Layout colorScheme="auto"><Card><ViewDeviceActivity {...args} /></Card></Layout>
 
-export const Default = {
+export const Loading = {
     args: {
         previewState: "fetchingData"
+    },
+    render: render
+};
+
+
+export const Loaded = {
+    args: {
+        previewState: "fetchComplete"
     },
     render: render
 };

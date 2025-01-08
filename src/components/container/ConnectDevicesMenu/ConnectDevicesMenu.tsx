@@ -24,8 +24,8 @@ export interface ConnectDevicesMenuProps {
     previewState?: "iOS" | "Android" | "Web" | "ConnectedStates"
     headerVariant?: "large" | "medium"
     connectExternalAccountOptions?: ConnectExternalAccountOptions
-    enableAppleHealthSurvey?: string
-    enableGoogleFitSurvey?: string
+    enableAppleHealthSurveyName?: string
+    enableGoogleFitSurveyName?: string
 }
 
 export default function (props: ConnectDevicesMenuProps) {
@@ -38,7 +38,7 @@ export default function (props: ConnectDevicesMenuProps) {
     function initialize() {
         if (props.previewState) {
             let settings = { ...previewSettings };
-            if (props.enableAppleHealthSurvey || props.enableGoogleFitSurvey) {
+            if (props.enableAppleHealthSurveyName || props.enableGoogleFitSurveyName) {
                 settings.queryableDeviceDataTypes = [];
             }
             setSettings(settings);
@@ -117,10 +117,10 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
-    if (platform == "Android" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth") && !props.enableAppleHealthSurvey)) {
+    if (platform == "Android" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth") && !props.enableAppleHealthSurveyName)) {
         accountTypes = accountTypes.filter(a => a != "AppleHealth");
     }
-    if (platform == "iOS" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit") && !props.enableGoogleFitSurvey)) {
+    if (platform == "iOS" || (!settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit") && !props.enableGoogleFitSurveyName)) {
         accountTypes = accountTypes.filter(a => a != "GoogleFit");
     }
     if (!accountTypes.length) {
@@ -199,7 +199,7 @@ export default function (props: ConnectDevicesMenuProps) {
             platform={platform!}
             connected={hasRecentAppleHealthData}
             requested={appleHealthRequested}
-            enableAppleHealthSurvey={props.enableAppleHealthSurvey} />;
+            enableAppleHealthSurvey={props.enableAppleHealthSurveyName} />;
     }
 
     function getGoogleFitMenuItem() {
@@ -211,8 +211,8 @@ export default function (props: ConnectDevicesMenuProps) {
         let action = () => MyDataHelps.showGoogleFitSettings();
         let indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
 
-        if (props.enableGoogleFitSurvey && !googleFitRequested) {
-            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurvey!);
+        if (props.enableGoogleFitSurveyName && !googleFitRequested) {
+            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         }
 
