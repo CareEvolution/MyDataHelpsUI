@@ -60,7 +60,6 @@ export function queryDailyData(type: string, startDate: Date, endDate: Date, pre
 export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date, fillPercentage?: number) {
 	const result: DailyDataQueryResult = {};
 
-	const today = startOfToday();
 	const range = getDailyDataTypeDefinition(type).previewDataRange;
 
 	// Modulo repeatable random numbers to get a value in range.
