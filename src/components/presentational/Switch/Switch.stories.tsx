@@ -1,35 +1,40 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Layout from "../Layout"
-import Switch, { SwitchProps } from "./Switch"
+import Layout from "../Layout";
+import Switch, { SwitchProps } from "./Switch";
 import TextBlock from "../TextBlock";
 import Card from "../Card";
+import { Meta, StoryObj } from "@storybook/react/*";
 
-export default {
+const meta: Meta<typeof Switch> = {
 	title: "Presentational/Switch",
 	component: Switch,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof Switch>;
+};
 
-const Template: ComponentStory<typeof Switch> = (args: SwitchProps) =>
-	<Layout colorScheme="auto">
-		<Card>
-			<TextBlock>
-				<Switch  {...args} />
-			</TextBlock>
-		</Card>
-	</Layout>;
+export default meta;
+type Story = StoryObj<typeof Switch>;
 
-export const Default = Template.bind({});
-Default.args = {
-	isOn: false
-}
+const render = (args: SwitchProps) => <Layout colorScheme="auto">
+	<Card>
+		<TextBlock>
+			<Switch  {...args} />
+		</TextBlock>
+	</Card>
+</Layout>;
 
+export const Default: Story = {
+	args: {
+		isOn: false
+	},
+	render: render
+};
 
-export const CustomBackground = Template.bind({});
-CustomBackground.args = {
-	isOn: true,
-	onBackgroundColor: "green"
-}
+export const CustomBackground: Story = {
+	args: {
+		isOn: true,
+		onBackgroundColor: "green"
+	},
+	render: render
+};

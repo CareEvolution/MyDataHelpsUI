@@ -1,51 +1,62 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Layout from "../Layout"
 import DateRangeNavigator, { DateRangeNavigatorProps } from "./DateRangeNavigator";
+import { Meta, StoryObj } from "@storybook/react/*";
 
-export default {
+const meta: Meta<typeof DateRangeNavigator> = {
 	title: "Presentational/DateRangeNavigator",
 	component: DateRangeNavigator,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof DateRangeNavigator>;
+};
 
-const Template: ComponentStory<typeof DateRangeNavigator> = (args: DateRangeNavigatorProps) =>
-	<Layout colorScheme="auto">
-		<DateRangeNavigator {...args} />
-	</Layout>;
+export default meta;
+type Story = StoryObj<typeof DateRangeNavigator>;
+
+const render = (args: DateRangeNavigatorProps) => <Layout colorScheme="auto">
+	<DateRangeNavigator {...args} />
+</Layout>;
 
 var currentDate = new Date();
-export const Day = Template.bind({});
-Day.args = {
-	intervalStart: new Date(),
-	intervalType: "Day"
+
+export const Day: Story = {
+	args: {
+		intervalStart: new Date(),
+		intervalType: "Day"
+	},
+	render: render
 }
 
-
-export const Month = Template.bind({});
-Month.args = {
-	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
-	intervalType: "Month"
+export const Week: Story = {
+	args: {
+		intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
+		intervalType: "Week"
+	},
+	render: render
 }
 
-export const SixMonth = Template.bind({});
-SixMonth.args = {
-	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
-	intervalType: "6Month"
+export const Month: Story = {
+	args: {
+		intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
+		intervalType: "Month"
+	},
+	render: render
 }
 
-
-export const Week = Template.bind({});
-Week.args = {
-	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
-	intervalType: "Week"
+export const SixMonth: Story = {
+	args: {
+		intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0),
+		intervalType: "6Month"
+	},
+	render: render
 }
 
-export const Rounded = Template.bind({});
-Rounded.args = {
-	intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
-	intervalType: "Week",
-	variant: "rounded"
+export const Rounded: Story = {
+	args: {
+		intervalStart: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0),
+		intervalType: "Week",
+		variant: "rounded"
+	},
+	render: render
 }

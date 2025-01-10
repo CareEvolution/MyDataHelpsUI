@@ -1,79 +1,61 @@
 import React from "react";
-import {ComponentMeta, ComponentStory} from "@storybook/react";
-import SingleExternalAccount, {SingleExternalAccountProps} from "./SingleExternalAccount";
+import { Meta, StoryObj } from "@storybook/react/*";
+import SingleExternalAccount, { SingleExternalAccountProps } from "./SingleExternalAccount";
 import Layout from "../Layout"
-import {add} from "date-fns";
+import { add } from "date-fns";
+import { ExternalAccount } from "@careevolution/mydatahelps-js";
 
-export default {
+const meta: Meta<typeof SingleExternalAccount> = {
     title: "Presentational/SingleExternalAccount",
     component: SingleExternalAccount,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof SingleExternalAccount>;
+};
 
-const Template: ComponentStory<typeof SingleExternalAccount> = (args: SingleExternalAccountProps) => <Layout colorScheme="auto"><SingleExternalAccount {...args} /></Layout>;
+export default meta;
+type Story = StoryObj<typeof SingleExternalAccount>;
 
-export const FetchComplete = Template.bind({});
-FetchComplete.args = {
-    externalAccount: {
-        id: 1,
-        lastRefreshDate: add(new Date(), {days: -1}).toISOString(),
-        status: "fetchComplete",
-        provider:
-            {
-                "id": 37,
-                "name": "Cedars-Sinai Health System",
-                "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-            }
+const render = (args: SingleExternalAccountProps) => <Layout colorScheme="auto"><SingleExternalAccount {...args} /></Layout>;
+
+const externalAccount: ExternalAccount = {
+    id: 1,
+    lastRefreshDate: add(new Date(), { days: -1 }).toISOString(),
+    status: "fetchComplete",
+    provider:
+    {
+        "id": 37,
+        "name": "Cedars-Sinai Health System",
+        "category": "Provider",
+        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
     }
-}
+};
 
-export const FetchingData = Template.bind({});
-FetchingData.args = {
-    externalAccount: {
-        id: 1,
-        lastRefreshDate: add(new Date(), {days: -1}).toISOString(),
-        status: "fetchingData",
-        provider:
-            {
-                "id": 37,
-                "name": "Cedars-Sinai Health System",
-                "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-            }
-    }
-}
+export const FetchComplete: Story = {
+    args: {
+        externalAccount: { ...externalAccount }
+    },
+    render: render
+};
 
-export const Unauthorized = Template.bind({});
-Unauthorized.args = {
-    externalAccount: {
-        id: 1,
-        lastRefreshDate: add(new Date(), {days: -1}).toISOString(),
-        status: "unauthorized",
-        provider:
-            {
-                "id": 37,
-                "name": "Cedars-Sinai Health System",
-                "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-            }
-    }
-}
 
-export const Error = Template.bind({});
-Error.args = {
-    externalAccount: {
-        id: 1,
-        lastRefreshDate: add(new Date(), {days: -1}).toISOString(),
-        status: "error",
-        provider:
-            {
-                "id": 37,
-                "name": "Cedars-Sinai Health System",
-                "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-            }
-    }
-}
+export const FetchingData: Story = {
+    args: {
+        externalAccount: { ...externalAccount, status: "fetchingData" }
+    },
+    render: render
+};
+
+export const Unauthorized: Story = {
+    args: {
+        externalAccount: { ...externalAccount, status: "unauthorized" }
+    },
+    render: render
+};
+
+export const Error: Story = {
+    args: {
+        externalAccount: { ...externalAccount, status: "error" }
+    },
+    render: render
+};

@@ -1,19 +1,22 @@
 import React from "react";
-import {ComponentMeta, ComponentStory} from "@storybook/react";
-import Calendar, {CalendarProps} from "./Calendar";
+import Calendar, { CalendarProps } from "./Calendar";
 import Layout from "../Layout";
+import { Meta, StoryObj } from "@storybook/react/*";
 
-export default {
+const meta: Meta<typeof Calendar> = {
     title: "Presentational/Calendar",
     component: Calendar,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof Calendar>;
+};
 
-const Template: ComponentStory<typeof Calendar> = (args: CalendarProps) => <Layout colorScheme="auto"><Calendar {...args} /></Layout>;
+export default meta;
+type Story = StoryObj<typeof Calendar>;
 
-let plainCalendarDay = function (year: number, month: number, day? : number) {
+const render = (args: CalendarProps) => <Layout colorScheme="auto"><Calendar {...args} /></Layout>;
+
+let plainCalendarDay = function (year: number, month: number, day?: number) {
     return (
         <div>
             {day &&
@@ -23,12 +26,14 @@ let plainCalendarDay = function (year: number, month: number, day? : number) {
     );
 }
 
-export const Default = Template.bind({});
-Default.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  dayRenderer: (year, month, day) => {
-    return plainCalendarDay(year, month, day);
-  },
-  weekStartsOn: 0
-};
+export const Default: Story = {
+    args: {
+        month: new Date().getMonth(),
+        year: new Date().getFullYear(),
+        dayRenderer: (year, month, day) => {
+            return plainCalendarDay(year, month, day);
+        },
+        weekStartsOn: 0
+    },
+    render: render
+}

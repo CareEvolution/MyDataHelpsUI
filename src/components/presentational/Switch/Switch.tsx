@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import UnstyledButton from '../UnstyledButton';
-import "./Switch.css"
+import "./Switch.css";
 
 export interface SwitchProps {
 	isOn: Boolean;
@@ -10,7 +10,7 @@ export interface SwitchProps {
 	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
-export default function (props: SwitchProps) {
+export default function Switch(props: SwitchProps) {
 	return (
 		<UnstyledButton innerRef={props.innerRef}
 			onClick={() => props.onValueChanged(!props.isOn)}

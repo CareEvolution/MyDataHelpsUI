@@ -13,7 +13,7 @@ export interface HistogramProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: HistogramProps) {
+export default function Histogram(props: HistogramProps) {
 	let maxValue = 0;
 	props.entries.forEach(function (e) {
 		if (e.value > maxValue) {

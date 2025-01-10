@@ -1,37 +1,33 @@
-import React from "react"
-import { StoryObj } from "@storybook/react"
-import { Notification } from "@careevolution/mydatahelps-js"
-import SingleNotification, { SingleNotificationProps } from "./SingleNotification"
-import Layout from "../../presentational/Layout"
-import { Card } from "../../presentational"
-import add from 'date-fns/add'
+import React from "react";
+import Layout from "../Layout";
+import SingleNotification, { SingleNotificationProps } from "./SingleNotification";
+import { Meta, StoryObj } from "@storybook/react/*";
+import { Card } from "..";
+import { addDays } from "date-fns";
 
-export default {
-    title: 'Presentational/SingleNotification',
-    component: SingleNotification,
-    parameters: { layout: 'fullscreen' }
+const meta: Meta<typeof SingleNotification> = {
+	title:  "Presentational/SingleNotification",
+	component: SingleNotification,
+	parameters: {
+		layout: 'fullscreen'
+	}
 };
 
-interface SingleNotificationStoryArgs {
-  notification: Notification
-}
-
+export default meta;
 type Story = StoryObj<typeof SingleNotification>;
 
-const render = (args: SingleNotificationProps) => {
-	return <Layout>
-		<Card>
-			<SingleNotification {...args} />
-		</Card>
-	</Layout>;
-};
+const render = (args: SingleNotificationProps) => <Layout>
+    <Card>
+        <SingleNotification {...args} />
+    </Card>
+</Layout>;
 
 export const Default: Story = {
 	args: {
 		notification: {
             "id": "4",
             "identifier": "SurveyReminder",
-            "sentDate": add(new Date(), { days: -1 }).toISOString(),
+            "sentDate": addDays(new Date(), -1).toISOString(),
             "statusCode": "Succeeded",
             "type": "Push",
             "content": {
@@ -39,8 +35,7 @@ export const Default: Story = {
             },
             recipients: [],
             contentVersion: 1
-        }        
-	},	
+        }
+	},
 	render: render
 };
-
