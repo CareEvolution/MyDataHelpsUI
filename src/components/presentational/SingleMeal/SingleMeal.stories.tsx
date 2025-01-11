@@ -3,7 +3,6 @@ import { Layout } from '../../presentational';
 import SingleMeal from './SingleMeal';
 import { Meal } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import grilledCheese from '../../../assets/grilled_cheese.png';
 
 export default {
     title: 'Presentational/SingleMeal',
@@ -40,7 +39,7 @@ const render = (args: SingleMealStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <SingleMeal
             meal={meal}
-            mealImageUrl={args.withImage ? grilledCheese : undefined}
+            mealImageUrl={args.withImage ? 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png' : undefined}
             number={args.withNumber ? 2 : undefined}
             color='orange'
             selected={selected}

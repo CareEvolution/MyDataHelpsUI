@@ -7,7 +7,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 import { Bar } from "recharts";
 import { startOfToday } from "date-fns";
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getTimeOfDayString } from "../../../helpers/date-helpers";
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -488,7 +488,7 @@ export const customizedLineChart: StoryObj = {
             if (value === chartDomain[0] || value === chartDomain[1]) {
                 return "";
             }
-            return formatDateForLocale(new Date(value), 'h aaa');
+            return getTimeOfDayString(new Date(value));
         }
 
         return <Layout colorScheme="auto">

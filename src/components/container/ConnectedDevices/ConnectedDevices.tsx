@@ -5,7 +5,7 @@ import language from "../../../helpers/language"
 import { CardTitle } from '../../presentational';
 import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faWeightScale } from "@fortawesome/free-solid-svg-icons"
 import * as FeatherIcon from 'react-feather'
-import { formatRelativeDateForLocale } from '../../../helpers/locale';
+import { getRelativeDateString } from '../../../helpers/date-helpers';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -77,7 +77,7 @@ export default function (props: ConnectedDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-								{language("last-sync")} {formatRelativeDateForLocale(device.observationDate, new Date())}
+								{language("last-sync")} {getRelativeDateString(device.observationDate, new Date())}
 							</div>
 						}
 					</div>

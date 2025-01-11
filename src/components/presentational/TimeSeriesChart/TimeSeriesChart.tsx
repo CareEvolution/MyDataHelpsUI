@@ -6,7 +6,8 @@ import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { formatDateForLocale } from '../../../helpers/locale';
+import { getAbbreviatedMonthName, getAbbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -45,7 +46,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType === "Month") {
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
-            let monthLabel = currentDate.getDate() === 1 ? formatDateForLocale(currentDate, "LLL") : "";
+            let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
@@ -55,7 +56,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = formatDateForLocale(currentDate, "EEEEEE");
+                    dayOfWeek = getAbbreviatedDayOfWeek(currentDate);
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -69,7 +70,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{formatDateForLocale(currentDate, "h aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getTimeOfDayString(currentDate)}</text>
             </>;
         }
         return <>
@@ -115,9 +116,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     function tickFormatter(args: any) {
         if (args >= 10000) {
-            return Number((args / 1000).toFixed(1)) + 'K';
+            return formatNumberForLocale(args / 1000, 1) + 'K'; // K is SI prefix - not localized
         } else {
-            return Number(args.toFixed(1)).toString();
+            return formatNumberForLocale(args, 1);
         }
     }
 

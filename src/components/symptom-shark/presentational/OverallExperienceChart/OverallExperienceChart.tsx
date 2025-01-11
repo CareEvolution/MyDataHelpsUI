@@ -5,6 +5,7 @@ import { getDatesForMonth } from "../../../../helpers/date-helpers";
 import { SymptomSharkVisualizationContext } from "../../container/VisualizationCoordinator/VisualizationCoordinator";
 import { DateRangeContext } from "../../../presentational/DateRangeCoordinator/DateRangeCoordinator";
 import { startOfMonth } from "date-fns";
+import { formatNumberForLocale } from "../../../../helpers/locale";
 
 export interface OverallExperienceChartProps {
     intervalStart?: Date;
@@ -84,7 +85,7 @@ export default function (props: OverallExperienceChartProps) {
             {overallFeelingAverage &&
                 <div className="mdhui-ss-oe-chart-average-wrapper">
                     {language("average")}: <div className="mdhui-ss-oe-chart-average">
-                        {overallFeelingAverage!.toFixed(1)}
+                        {formatNumberForLocale(overallFeelingAverage, 1)}
                         <Face className="mdhui-ss-oe-chart-face" selected={true} faceValue={parseInt(overallFeelingAverage!.toFixed(0))} />
                     </div>
                 </div>

@@ -521,7 +521,8 @@
     "device-activity": "Device Activity",
     "daily": "Daily",
     "weekly": "Weekly",
-    "monthly": "Monthly"
+    "monthly": "Monthly",
+    "bonus": "Bonus"
 };
 
 export default strings;
