@@ -57,7 +57,7 @@ export const iOSEnableAppleHealthSurvey = {
     name: "Enable Apple Health Survey",
     args: {
         previewState: "iOS",
-        enableAppleHealthSurvey: "EnableAppleHealth"
+        enableAppleHealthSurveyName: "EnableAppleHealth"
     },
     render: render
 };
@@ -66,7 +66,7 @@ export const AndroidEnableGoogleFitSurvey = {
     name: "Enable Google Fit Survey",
     args: {
         previewState: "Android",
-        enableGoogleFitSurvey: "EnableGoogleFit"
+        enableGoogleFitSurveyName: "EnableGoogleFit"
     },
     render: render
 };
