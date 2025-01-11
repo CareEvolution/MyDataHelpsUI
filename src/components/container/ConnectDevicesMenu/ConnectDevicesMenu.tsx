@@ -40,7 +40,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
     function getAccountTypes(settings: DataCollectionSettings): DeviceAccountType[] {
         //Omron excluded by default
-        let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit"];
+        let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
         if (!settings?.fitbitEnabled) {
             accountTypes = accountTypes.filter(a => a != "Fitbit");
         }
@@ -66,7 +66,8 @@ export default function (props: ConnectDevicesMenuProps) {
         if (props.previewState) {
             let settings = { ...previewSettings };
             if (props.enableAppleHealthSurveyName || props.enableGoogleFitSurveyName) {
-                settings.queryableDeviceDataTypes = [];
+                settings.appleHealthEnabled = false;
+                settings.googleFitEnabled = false;
             }
             setSettings(settings);
 
@@ -204,11 +205,10 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        let appleHealthRequested = !!settings?.queryableDeviceDataTypes.find(a => a.namespace == "AppleHealth");
         return <AppleHealthMenuItem preview={!!props.previewState}
             platform={platform!}
             connected={hasRecentAppleHealthData}
-            requested={appleHealthRequested}
+            requested={settings!.appleHealthEnabled}
             enableAppleHealthSurvey={props.enableAppleHealthSurveyName} />;
     }
 
@@ -217,13 +217,12 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-
         let action: () => void;
         let indicator: React.JSX.Element;
         if (platform == "Web") {
             action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
-        } else if (props.enableGoogleFitSurveyName && !settings?.queryableDeviceDataTypes.find(a => a.namespace == "GoogleFit")) {
+        } else if (props.enableGoogleFitSurveyName && !settings!.googleFitEnabled) {
             action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
             indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
         } else {
