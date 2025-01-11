@@ -22,11 +22,11 @@ export default function DeviceActivityView(props: DeviceActivityViewProps) {
 
     return (
         <BlankView showBackButton={props.presentation == "Push"}
-            showCloseButton={props.presentation == "Modal"}>
+            showCloseButton={props.presentation == "Modal"}
+            colorScheme={props.colorScheme}>
             <SegmentedControl
                 style={{ marginLeft: "16px", marginRight: "16px", marginBottom: selectedView == "daily" ? "16px" : "0px" }}
                 variant="default"
-                defaultMargin
                 segments={[{ title: language("daily"), key: "daily" }, { title: language("weekly"), key: "weekly" }, { title: language("monthly"), key: "monthly" }]}
                 onSegmentSelected={(s) => setSelectedView(s as any)}
                 selectedSegment={selectedView} />

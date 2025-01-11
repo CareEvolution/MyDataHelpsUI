@@ -11,7 +11,6 @@ export interface SegmentedControlProps {
 	color?: string;
 	variant?: "default" | "optionsHorizontal" | "optionsVertical";
 	innerRef?: React.Ref<HTMLDivElement>;
-	defaultMargin?: boolean;
 	style?: React.CSSProperties;
 }
 
