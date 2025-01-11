@@ -8,7 +8,7 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import { ColorDefinition } from '../../../helpers/colors'
 import "./ViewDeviceActivity.css"
 import { ButtonVariant } from '../../presentational/Button/Button'
-import { DailyDataTypeDefinition } from '../../../helpers'
+import { DailyDataTypeDefinition, useInitializeView } from '../../../helpers'
 
 export interface ViewDeviceActivityProps {
     onClick(): void;
@@ -52,16 +52,7 @@ export default function (props: ViewDeviceActivityProps) {
         setDeviceAccounts(accounts);
     }
 
-    useEffect(() => {
-        initialize();
-
-        MyDataHelps.on("applicationDidBecomeVisible", initialize);
-        MyDataHelps.on("externalAccountSyncComplete", initialize);
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", initialize);
-            MyDataHelps.off("externalAccountSyncComplete", initialize);
-        }
-    }, []);
+    useInitializeView(initialize, ["externalAccountSyncComplete"]);
 
     if ((!deviceAccounts || !deviceAccounts.length) && !deviceDataAvailable) {
         return null;
