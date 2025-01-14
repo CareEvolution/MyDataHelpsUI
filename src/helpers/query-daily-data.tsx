@@ -36,7 +36,7 @@ function parseDailyDataTypes(type: string) : DailyDataTypeDefinition[] {
 	const findDailyDataType = (type: string) : DailyDataTypeDefinition => {
 		const dailyDataType = dailyDataTypes.get(type);
 		if (!dailyDataType) {
-			throw "Unknown data type:" + type;
+			throw "Unknown data type: " + type;
 		}
 		return dailyDataType;
 	};
