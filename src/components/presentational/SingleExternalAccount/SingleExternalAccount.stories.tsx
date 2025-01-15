@@ -1,5 +1,5 @@
 import React from "react";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 import SingleExternalAccount, { SingleExternalAccountProps } from "./SingleExternalAccount";
 import Layout from "../Layout"
 import { add } from "date-fns";
@@ -53,7 +53,7 @@ export const Unauthorized: Story = {
     render: render
 };
 
-export const Error: Story = {
+export const WithError: Story = {
     args: {
         externalAccount: { ...externalAccount, status: "error" }
     },

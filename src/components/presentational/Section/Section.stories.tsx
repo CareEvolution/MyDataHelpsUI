@@ -1,30 +1,40 @@
 ﻿﻿import React from "react";
-import Action, { ActionProps } from "../Action/Action";
-import Layout from "../Layout"
-import Section from "./Section"
-import { Meta, StoryObj } from "@storybook/react/*";
+import Action from "../Action/Action";
+import Layout from "../Layout";
+import Section, { SectionProps } from "./Section";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Section> = {
 	title: "Presentational/Section",
-	component: Action,
+	component: Section,
 	parameters: {
 		layout: 'fullscreen'
 	}
 };
 
 export default meta;
-type Story = StoryObj<typeof Action>;
+type Story = StoryObj<typeof Section>;
 
-const render = (args: ActionProps) => <Layout colorScheme="auto">
-	<Section >
-		<Action {...args} />
+const render = (args: SectionProps) => <Layout colorScheme="auto">
+	<Section {...args}>
+		<Action title="Baseline Survey" subtitle="Tap here to start your baseline survey" />
 	</Section>
 </Layout>;
 
-export const SectionAction: Story = {
-	args: { 
-		title: "Baseline Survey",
-		subtitle: "Tap here to start your baseline survey"
-	},
+export const Default: Story = {
 	render: render
 };
+
+export const NoTopMargin: Story = {
+	args: {
+		noTopMargin: true
+	},
+	render: render
+}
+
+export const WithBackgroundColor: Story = {
+	args: {
+		backgroundColor: "yellow"
+	},
+	render: render
+}

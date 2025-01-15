@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../Layout"
 import SegmentedControl, { SegmentedControlProps } from "./SegmentedControl"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof SegmentedControl> = {
 	title: "Presentational/SegmentedControl",

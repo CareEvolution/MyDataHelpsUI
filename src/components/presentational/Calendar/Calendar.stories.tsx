@@ -1,7 +1,7 @@
 import React from "react";
 import Calendar, { CalendarProps } from "./Calendar";
 import Layout from "../Layout";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Calendar> = {
     title: "Presentational/Calendar",

@@ -3,7 +3,7 @@ import Layout from "../Layout";
 import { LayoutProps } from "./Layout";
 import TextBlock from "../TextBlock";
 import Card from "../Card";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Layout> = {
     title: "Presentational/Layout",

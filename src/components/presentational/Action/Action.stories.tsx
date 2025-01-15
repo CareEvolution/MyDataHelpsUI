@@ -1,10 +1,10 @@
 ﻿import React from "react";
 import Action, { ActionProps } from "./Action";
-import Layout from "../Layout"
+import Layout from "../Layout";
 import './Action.stories.css';
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Action> = {
 	title: "Presentational/Action",

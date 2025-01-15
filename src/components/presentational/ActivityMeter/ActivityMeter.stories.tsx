@@ -5,7 +5,7 @@ import { faShoePrints, faBed } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Card from "../Card";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof ActivityMeter> = {
 	title: "Presentational/ActivityMeter",

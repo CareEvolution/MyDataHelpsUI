@@ -3,7 +3,7 @@ import Button, { ButtonProps } from "./Button";
 import Layout from "../Layout"
 import TextBlock from "../TextBlock";
 import Section from "../Section";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Button> = {
 	title: "Presentational/Button",

@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import Layout from "../Layout"
 import DateRangeNavigator, { DateRangeNavigatorProps } from "./DateRangeNavigator";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof DateRangeNavigator> = {
 	title: "Presentational/DateRangeNavigator",

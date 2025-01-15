@@ -9,7 +9,7 @@ export interface DataPoint {
     dataSet2: ClosedInterval;
 }
 
-export interface Dumbbell {
+export interface DumbbellDataPoint {
     dataPoint?: DataPoint;
     xValue: string,
     class?: DumbbellClass
@@ -23,7 +23,7 @@ export interface Axis {
 
 export interface DumbBellChartProps {
     axis: Axis;
-    dumbbells: Dumbbell[];
+    dumbbells: DumbbellDataPoint[];
 }
 
 export enum DumbbellClass {
@@ -38,7 +38,7 @@ export default function DumbbellChart(props: DumbBellChartProps) {
 
     function buildYAxis() {
         const increments = _range / props.axis.yIncrement;
-        const yAxis: any[] = [];
+        const yAxis: React.ReactElement[] = [];
         var yValue = props.axis.yRange.values[0];
         var bottom = 0;
         var style = { "bottom": `${0}%` };

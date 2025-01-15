@@ -3,7 +3,7 @@ import Layout from "../Layout";
 import Switch, { SwitchProps } from "./Switch";
 import TextBlock from "../TextBlock";
 import Card from "../Card";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Switch> = {
 	title: "Presentational/Switch",

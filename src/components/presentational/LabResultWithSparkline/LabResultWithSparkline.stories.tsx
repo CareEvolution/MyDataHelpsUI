@@ -3,7 +3,7 @@ import LabResultWithSparkline, { LabResultWithSparklineProps } from "./LabResult
 import Card from "../Card"
 import Layout from "../Layout"
 import { TermInformationReference } from "../../container/TermInformation/TermInformation"
-import { Meta, StoryObj } from "@storybook/react/*"
+import { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta<typeof LabResultWithSparkline> = {
 	title: "Presentational/LabResultWithSparkline",

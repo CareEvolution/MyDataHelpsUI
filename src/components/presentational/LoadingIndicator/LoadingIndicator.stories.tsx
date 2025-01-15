@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import LoadingIndicator from "./LoadingIndicator";
 import Layout from "../Layout"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof LoadingIndicator> = {
 	title: "Presentational/LoadingIndicator",

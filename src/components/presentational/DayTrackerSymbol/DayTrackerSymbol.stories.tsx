@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import DayTrackerSymbol, { DayTrackerSymbolProps } from "./DayTrackerSymbol";
 import Layout from "../Layout"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof DayTrackerSymbol> = {
 	title: "Presentational/DayTrackerSymbol",

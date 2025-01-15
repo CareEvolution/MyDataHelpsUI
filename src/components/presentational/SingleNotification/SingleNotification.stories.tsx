@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../Layout";
 import SingleNotification, { SingleNotificationProps } from "./SingleNotification";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 import { Card } from "..";
 import { addDays } from "date-fns";
 

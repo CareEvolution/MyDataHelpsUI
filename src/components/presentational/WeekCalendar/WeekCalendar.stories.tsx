@@ -4,7 +4,7 @@ import Layout from "../Layout"
 import DateRangeNavigator from "../DateRangeNavigator";
 import { add } from "date-fns";
 import { Section, SparkBarChart } from "..";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof WeekCalendar> = {
 	title: "Presentational/WeekCalendar",

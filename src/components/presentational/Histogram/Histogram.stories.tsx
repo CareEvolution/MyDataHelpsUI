@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import Histogram, {HistogramProps} from "./Histogram";
 import Layout from "../Layout";
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Histogram> = {
 	title: "Presentational/Histogram",

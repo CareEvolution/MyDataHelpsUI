@@ -2,7 +2,7 @@
 import Layout from "../Layout"
 import Card from "../Card"
 import CardTitle, { CardTitleProps } from "./CardTitle"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof CardTitle> = {
 	title: "Presentational/CardTitle",

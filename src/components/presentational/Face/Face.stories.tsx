@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../Layout"
 import Face, { FaceProps } from "./Face"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Face> = {
 	title: "Presentational/Face",

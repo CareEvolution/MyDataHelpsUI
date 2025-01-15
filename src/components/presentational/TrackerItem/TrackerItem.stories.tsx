@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import TrackerItem, { TrackerItemProps } from "./TrackerItem";
 import Layout from "../Layout"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof TrackerItem> = {
 	title: "Presentational/TrackerItem",
