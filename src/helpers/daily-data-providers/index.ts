@@ -11,7 +11,7 @@ export { asleepDeepTime as appleHealthSleepDeepDataProvider } from "./apple-heal
 export { inBedTime as appleHealthInBedDataProvider } from "./apple-health-sleep"
 export { default as appleHealthStandTimeDataProvider } from "./apple-health-stand-time"
 export { default as appleHealthStepsDataProvider } from "./apple-health-steps"
-export { default as appleHealthStepsWhileWearingWatchDataProvider } from "./apple-health-steps-while-wearing-watch"
+export { default as appleHealthStepsWhileWearingDeviceDataProvider } from "./apple-health-steps-while-wearing-device"
 export { default as appleHealthTherapyMinutesDataProvider } from "./apple-health-therapy-minutes"
 export { default as appleHealthWalkingHeartRateAverageDataProvider } from "./apple-health-walking-heart-rate-average"
 export { default as appleHealthActiveEnergyBurnedDataProvider } from "./apple-health-active-energy-burned"

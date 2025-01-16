@@ -4,7 +4,7 @@ import {
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingWatchDataProvider
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
@@ -147,13 +147,14 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         previewDataRange: [4000, 8000]
     },
     {
-        type: DailyDataType.AppleHealthStepsWhileWearingWatch,
-        dataProvider: appleHealthStepsWhileWearingWatchDataProvider,
+        type: DailyDataType.AppleHealthStepsWhileWearingDevice,
+        dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
-        previewDataRange: [4000, 8000]
+        previewDataRange: [4000, 8000],
+        requiresV2Api: true
     },
     {
         type: DailyDataType.AppleHealthTherapyMinutes,
