@@ -161,6 +161,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     const xAxisTicks = getXAxisTicks();
+    
+    if(props.data?.length === 1 && props.chartType === 'Bar'){
+        let currentPoint = new Date(props.data[0].timestamp);
+        let nextExpectedPoint = add(currentPoint, props.expectedDataInterval || {days: 1});
+        dataToDisplay?.push({
+            timestamp: nextExpectedPoint.getTime()
+        });
+    }
 
     return <div className="mdhui-time-series-chart" ref={props.innerRef}>
         {props.title &&
