@@ -1,9 +1,10 @@
 import React from 'react'
-import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section } from "../.."
+import { Layout, StatusBarBackground, LabResultsSummary, LabResultsBloodType, ExternalAccountsPreview, ConnectEhr, Card, Section, Action, Button } from "../.."
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { TermInformationReference } from "../../container/TermInformation/TermInformation";
 import HealthPreviewSection, { HealthPreviewSectionConcept } from '../../container/HealthPreviewSection/HealthPreviewSection';
 import ExternalAccountsLoadingIndicator from '../../container/ExternalAccountsLoadingIndicator';
+import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 
 export interface HealthAndWellnessViewProps {
     previewState?: "default"
@@ -53,6 +54,13 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
             <ExternalAccountsLoadingIndicator previewState={props.previewState == "default" ? "externalAccountsLoaded" : undefined} externalAccountCategories={["Provider", "Health Plan"]} />
             {variant == "default" &&
                 <Section noTopMargin>
+                    <Action
+                        bottomBorder
+                        title="Sync with Health Connect"
+                        subtitle='Choose data to write to and read from Health Connect'
+                        titleIcon={<img style={{ width: "15px", marginRight: "8px" }} src={HealthConnectLogo} />}
+                        indicator={<Button onClick={() => { }}>Connect</Button>}
+                    />
                     <LabResultsSummary onViewTermInfo={(t) => viewTermInfo(t)} onClick={() => viewLabs()} previewState={props.previewState == "default" ? "ImportantLabs" : undefined} />
                     <LabResultsBloodType previewState={props.previewState == "default" ? "BloodTypeLabs" : undefined} />
                     {getHealthPreviewSection("Medications")}
@@ -61,6 +69,13 @@ export default function HealthAndWellnessView(props: HealthAndWellnessViewProps)
                     {getHealthPreviewSection("Allergies")}
                     {getHealthPreviewSection("Conditions")}
                     {getHealthPreviewSection("Procedures")}
+                    <Action
+                        bottomBorder
+                        title="Sync with Health Connect"
+                        subtitle='Last synced 5 minutes ago'
+                        titleIcon={<img style={{ width: "15px", marginRight: "8px" }} src={HealthConnectLogo} />}
+                        indicator={<Button variant="subtle" onClick={() => { }}>Settings</Button>}
+                    />
                     <ExternalAccountsPreview
                         excludeDeviceManufacturers
                         applicationUrl={props.externalAccountsApplicationUrl}
