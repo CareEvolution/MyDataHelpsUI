@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, Duration, parseISO } from 'date-fns'
+import { add, compareAsc, Duration, parseISO } from 'date-fns'
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
@@ -93,7 +93,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
     function processPages(pages: SurveyAnswer[][]) {
         var newDailyData: { [key: string]: SurveyAnswer[] } = {};
         for (var i = 0; i < props.series.length; i++) {
-            newDailyData[getDataKey(props.series[i])] = pages[i] || [];
+            newDailyData[getDataKey(props.series[i])] = pages[i]?.sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date))) || [];
         }
         
         return newDailyData;
