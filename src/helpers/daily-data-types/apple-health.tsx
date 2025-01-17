@@ -1,9 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider, 
+import {
+    appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider } from "../daily-data-providers";
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
+} from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
@@ -143,6 +145,16 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
+    },
+    {
+        type: DailyDataType.AppleHealthStepsWhileWearingDevice,
+        dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
+        labelKey: "steps",
+        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000],
+        requiresV2Api: true
     },
     {
         type: DailyDataType.AppleHealthTherapyMinutes,
