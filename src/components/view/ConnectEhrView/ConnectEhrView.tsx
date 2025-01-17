@@ -2,9 +2,8 @@ import React from 'react'
 import { Card, Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from '../../../helpers/language'
 import { ProviderSearch } from '../../container'
-import { Action, Button, TextBlock } from '../../presentational'
+import { TextBlock } from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
-import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 
 export interface ConnectEhrViewProps {
     externalAccountsApplicationUrl: string,
@@ -48,20 +47,12 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
             {!props.presentation &&
                 <StatusBarBackground />
             }
-            {/* <TextBlock>
+            <TextBlock>
                 {language("ehr-intro")}
-            </TextBlock> */}
+            </TextBlock>
             <Card>
-                <Action
-                    title="Sync with Health Connect"
-                    subtitle='Choose data to write to and read from Health Connect'
-                    titleIcon={<img style={{ width: "15px", marginRight: "8px" }} src={HealthConnectLogo} />}
-                    indicator={<Button onClick={() => { }}>Connect</Button>}
-                />
-            </Card>
-            {/* <Card>
                 <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true} />
-            </Card> */}
+            </Card>
             <Card>
                 <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} />
             </Card>
