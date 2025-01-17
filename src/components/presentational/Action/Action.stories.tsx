@@ -22,43 +22,28 @@ const render = (args: ActionProps) =>
 		<Action {...args} />
 	</Layout>;
 
+const baseArgs : ActionProps = {
+	title: "Baseline Survey",
+	subtitle: "Tap here to start your baseline survey",
+	onClick: () => alert("Clicked")
+};
 
-export const StartSurvey: Story = {
-	args: {
-		title: "Baseline Survey",
-		subtitle: "Tap here to start your baseline survey",
-		onClick: () => alert("Clicked")
-	},
+export const WithClickEvent: Story = {
+	args: {...baseArgs},
 	render: render
 }
 
 export const WithClass: Story = {
-	args: {
-		title: "Baseline Survey",
-		subtitle: "Tap here to start your baseline survey",
-		className: "action-story-primary",
-		renderAs: "div",
-		onClick: () => alert("Clicked")
-	},
+	args: {...baseArgs, className: "action-story-primary", renderAs: "div"},
 	render: render
 }
 
 export const WithIcon: Story = {
-	args: {
-		title: "Baseline Survey",
-		subtitle: "Tap here to start your baseline survey",
-		icon: <FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />,
-		onClick: () => alert("Clicked")
-	},
+	args: {...baseArgs, icon: <FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />},
 	render: render
 }
 
 export const WithTitleIcon: Story = {
-	args: {
-		titleIcon: <span><FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />&nbsp;</span>,
-		title: "Baseline Survey",
-		subtitle: "Tap here to start your baseline survey",
-		onClick: () => alert("Clicked")
-	},
+	args: {...baseArgs, titleIcon: <FontAwesomeSvgIcon icon={faFile} color="#2e6e9e" />},
 	render: render
 }

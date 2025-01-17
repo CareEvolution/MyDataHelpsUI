@@ -22,7 +22,7 @@ var currentDate = new Date();
 
 export const Day: Story = {
 	args: {
-		intervalStart: new Date(),
+		intervalStart: currentDate,
 		intervalType: "Day"
 	},
 	render: render

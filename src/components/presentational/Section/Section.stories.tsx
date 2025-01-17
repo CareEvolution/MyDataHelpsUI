@@ -16,25 +16,17 @@ export default meta;
 type Story = StoryObj<typeof Section>;
 
 const render = (args: SectionProps) => <Layout colorScheme="auto">
+	<Section noTopMargin={true}>
+		<div>Section with NO TOP MARGIN</div>
+	</Section>
+	<Section backgroundColor={"yellow"}>
+		<div>Section with YELLOW background color</div>
+	</Section>
 	<Section {...args}>
-		<Action title="Baseline Survey" subtitle="Tap here to start your baseline survey" />
+		<div>Default Section. Has a top margin by default</div>
 	</Section>
 </Layout>;
 
 export const Default: Story = {
 	render: render
 };
-
-export const NoTopMargin: Story = {
-	args: {
-		noTopMargin: true
-	},
-	render: render
-}
-
-export const WithBackgroundColor: Story = {
-	args: {
-		backgroundColor: "yellow"
-	},
-	render: render
-}

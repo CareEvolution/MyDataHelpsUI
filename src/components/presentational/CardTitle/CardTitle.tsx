@@ -11,7 +11,7 @@ export interface CardTitleProps {
 	color?: ColorDefinition;
 }
 
-export default function Card(props: CardTitleProps) {
+export default function CardTitle(props: CardTitleProps) {
 	let context = useContext(LayoutContext);
 	return (
 		<div style={{ color: resolveColor(context.colorScheme, props.color) }} ref={props.innerRef} className="mdhui-card-title">

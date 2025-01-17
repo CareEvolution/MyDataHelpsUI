@@ -22,11 +22,18 @@ const render = (args: CardTitleProps) => <Layout colorScheme="auto">
 	</Card>
 </Layout>;
 
+const baseArgs: CardTitleProps = {
+	title: "Card Title",
+	detailLinkText: "Detail Link",
+	onDetailClick: () => { alert("Detail Link Clicked") }
+};
+
 export const Default: Story = {
-	args: {
-		title: "Card Title",
-		detailLinkText: "Detail Link",
-		onDetailClick: () => { }
-	},
+	args: {...baseArgs},
+	render: render
+}
+
+export const WithTitleColor: Story = {
+	args: {...baseArgs, color: "#ff0000"},
 	render: render
 }

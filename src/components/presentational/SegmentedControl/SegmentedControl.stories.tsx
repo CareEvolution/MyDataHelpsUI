@@ -35,7 +35,7 @@ const defaultArgs: SegmentedControlProps = {
 		}
 	],
 	selectedSegment: "Month",
-	color: "--var(--mdhui-color-primary)",
+	color: "var(--mdhui-color-primary)",
 	onSegmentSelected: (segmentKey) => console.log(segmentKey)
 };
 
