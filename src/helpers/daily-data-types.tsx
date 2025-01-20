@@ -16,6 +16,7 @@ export enum DailyDataType {
 	AppleHealthInBedMinutes = "AppleHealthInBedMinutes",
 	AppleHealthStandMinutes = "AppleHealthStandMinutes",
 	AppleHealthSteps = "AppleHealthSteps",
+	AppleHealthStepsWhileWearingDevice = "AppleHealthStepsWhileWearingDevice",
 	AppleHealthTherapyMinutes = "AppleHealthTherapyMinutes",
 	AppleHealthWalkingHeartRateAverage = "AppleHealthWalkingHeartRateAverage",
 	AppleHealthActiveEnergyBurned = "AppleHealthActiveEnergyBurned",
@@ -87,4 +88,5 @@ export interface DailyDataTypeDefinition {
 	formatter: (value: number) => string;
 	yAxisConverter?: (value: number) => number;
 	previewDataRange: [number, number];
+	requiresV2Api?: boolean;
 }

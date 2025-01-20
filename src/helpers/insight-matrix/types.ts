@@ -8,7 +8,7 @@ import { InsightMatrixValueThreshold } from './value-threshold';
 
 export interface InsightMatrixDataConfiguration {
     label?: string;
-    rawDataType: DailyDataType | SurveyDataType;
+    rawDataType: string | SurveyDataType;
 }
 
 export interface InsightMatrixGroupByDataConfiguration extends InsightMatrixDataConfiguration {

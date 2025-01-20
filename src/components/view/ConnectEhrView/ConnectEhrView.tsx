@@ -1,26 +1,24 @@
 import React from 'react'
 import { Card, Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from '../../../helpers/language'
-import { ProviderSearch } from '../../container'
+import { ProviderSearch, ViewEhr } from '../../container'
 import { TextBlock } from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
 
 export interface ConnectEhrViewProps {
-    externalAccountsApplicationUrl: string,
+    externalAccountsApplicationUrl?: string,
+    onViewEhr?: () => void,
     excludeProviders?: boolean,
     excludeHealthPlans?: boolean,
-    presentation?: ViewPresentationType,
+    presentation?: "Modal" | "Push",
     preview?: boolean,
     colorScheme?: "auto" | "light" | "dark"
 }
-
-export type ViewPresentationType = "Modal" | "Push";
 
 /**
  * This view enables participants to connect with their EHR providers and/or health plans.
  */
 export default function ConnectEhrView(props: ConnectEhrViewProps) {
-
     let title = '';
     let providerCategories: string[] = [];
 
@@ -47,13 +45,20 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
             {!props.presentation &&
                 <StatusBarBackground />
             }
-            <TextBlock>
-                {language("ehr-intro")}
-            </TextBlock>
+            {props.onViewEhr &&
+                <Card>
+                    <ViewEhr previewState={props.preview ? "fetchingData" : undefined} onClick={props.onViewEhr} />
+                </Card>
+            }
+            {props.externalAccountsApplicationUrl &&
+                <Card>
+                    <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true} />
+                </Card>
+            }
             <Card>
-                <ExternalAccountsPreview previewState={props.preview ? "Default" : undefined} applicationUrl={props.externalAccountsApplicationUrl} excludeProviders={props.excludeProviders} excludeHealthPlans={props.excludeHealthPlans} excludeDeviceManufacturers={true} />
-            </Card>
-            <Card>
+                <TextBlock>
+                    {language('ehr-intro-search')}
+                </TextBlock>
                 <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} />
             </Card>
         </Layout>

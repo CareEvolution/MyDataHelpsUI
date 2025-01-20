@@ -50,7 +50,7 @@ async function getRandomDataWithGaps(start: Date, end: Date) {
 async function getRandomMultipointData(start: Date, end: Date) {
     var responses = [];
     let currentDate = new Date(start);
-    while (currentDate < end) {
+    while (currentDate <= end) {
         responses.push({
             timestamp: currentDate.setHours(0, 0, 0, 0),
             key1: (await predictableRandomNumber(`${currentDate.toISOString()}key1`)) % 200,
@@ -354,6 +354,42 @@ export const multipleBarChart: Story = {
     loaders: [
         async () => ({
             randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 6))
+        })
+    ]
+};
+
+export const multipleBarChartSingleDataPoint: Story = {
+    args: {
+        title: "Multiple Bar Chart Single Data Point",
+        intervalType: "Week",
+        chartType: "Bar",
+        chartHasData: true,
+        data: [],
+        series: [{ dataKey: 'key1', color: 'red' }, { dataKey: 'key2', color: 'green' }, { dataKey: 'key3' }],
+        intervalStart: new Date(),
+        tooltip
+    },
+    loaders: [
+        async () => ({
+            randomData: await getRandomMultipointData(new Date(), addDays(new Date(), 0))
+        })
+    ]
+};
+
+export const multipleBarChartSingleDataPointEndOfWeek: Story = {
+    args: {
+        title: "Multiple Bar Chart Single Data Point",
+        intervalType: "Week",
+        chartType: "Bar",
+        chartHasData: true,
+        data: [],
+        series: [{ dataKey: 'key1', color: 'red' }, { dataKey: 'key2', color: 'green' }, { dataKey: 'key3' }],
+        intervalStart: new Date(),
+        tooltip
+    },
+    loaders: [
+        async () => ({
+            randomData: await getRandomMultipointData(addDays(new Date(), 5), addDays(new Date(), 5))
         })
     ]
 };

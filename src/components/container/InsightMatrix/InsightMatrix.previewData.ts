@@ -15,6 +15,6 @@ export function createPreviewDataProvider<T extends InsightMatrixDataConfigurati
     }
     return {
         configuration: configuration,
-        loadData: (startDate: Date, endDate: Date) => queryPreviewDailyData(configuration.rawDataType as DailyDataType, startDate, endDate, 0.5)
+        loadData: (startDate: Date, endDate: Date) => queryPreviewDailyData(configuration.rawDataType as string, startDate, endDate, 0.5)
     };
 }

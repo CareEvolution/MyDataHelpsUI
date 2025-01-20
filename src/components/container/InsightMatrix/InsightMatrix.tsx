@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext, useState } from 'react';
-import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getSurveyDataProvider, InsightMatrixComparisonDataConfiguration, InsightMatrixData, InsightMatrixDataConfiguration, InsightMatrixDataProvider, InsightMatrixGroupByDataConfiguration, isSurveyDataType, NotEnteredThreshold, resolveColor, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeThresholdDays, getDailyDataTypeDefinition, getSurveyDataProvider, InsightMatrixComparisonDataConfiguration, InsightMatrixData, InsightMatrixDataConfiguration, InsightMatrixDataProvider, InsightMatrixGroupByDataConfiguration, isSurveyDataType, NotEnteredThreshold, queryDailyData, resolveColor, useInitializeView } from '../../../helpers';
 import { LayoutContext, LoadingIndicator } from '../../presentational';
 import './InsightMatrix.css';
 import { add, startOfToday } from 'date-fns';
@@ -46,7 +46,7 @@ export default function InsightMatrix(props: InsightMatrixProps) {
         if (isSurveyDataType(configuration.rawDataType)) {
             return { configuration: configuration, loadData: getSurveyDataProvider(configuration.rawDataType) };
         }
-        return { configuration: configuration, loadData: getDailyDataTypeDefinition(configuration.rawDataType).dataProvider };
+        return { configuration: configuration, loadData: (startDate: Date, endDate: Date) => queryDailyData(configuration.rawDataType as string, startDate, endDate) };
     };
 
     const getGroupByDataProvider = (): InsightMatrixDataProvider<InsightMatrixGroupByDataConfiguration> => {
