@@ -8,12 +8,13 @@ export interface TermInformationViewProps {
     term?: TermInformationReference
     labObservationID?: string
     openLinksInNewWindow?: boolean
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export default function (props: TermInformationViewProps) {
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>

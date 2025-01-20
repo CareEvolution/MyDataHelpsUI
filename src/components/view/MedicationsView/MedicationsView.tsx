@@ -9,6 +9,7 @@ export interface MedicationsViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
     onViewTermInfo?(termInfo: TermInformationReference): void
+    colorScheme?: "auto" | "light" | "dark"
 }
 
 export default function (props: MedicationsViewProps) {
@@ -22,7 +23,7 @@ export default function (props: MedicationsViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>

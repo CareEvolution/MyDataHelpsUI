@@ -81,12 +81,11 @@ export async function queryDailyData(type: string, startDate: Date, endDate: Dat
 export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date, fillPercentage?: number) {
 	const result: DailyDataQueryResult = {};
 
-	const today = startOfToday();
 	const range = getDailyDataTypeDefinition(type).previewDataRange;
 
 	// Modulo repeatable random numbers to get a value in range.
 	let currentDate = startDate;
-	while (currentDate <= endDate && currentDate <= today) {
+	while (currentDate <= endDate && currentDate < new Date()) {
 		const currentDayKey = getDayKey(currentDate);
 		if (!fillPercentage || ((await predictableRandomNumber(currentDayKey + "_" + type + "_fill") % 100) / 100) <= fillPercentage) {
 			result[currentDayKey] = ((await predictableRandomNumber(currentDayKey + "_" + type)) % (range[1] - range[0])) + range[0];
