@@ -86,6 +86,7 @@ export default function (props: EhrNewsFeedProps) {
     function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
         return events.filter((event) => {
             let keywords = eventTypeDefinitions[event.Type].getKeywords(event);
+            if(event.Type == "Immunization" && !keywords.length) { return false; }
             if (!keywords.length) { return !filter; }
             return keywords.some((keyword) => keyword.toLowerCase().includes(filter.toLowerCase()));
         });
