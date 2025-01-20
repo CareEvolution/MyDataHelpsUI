@@ -3,7 +3,7 @@ import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
 import { faCheckCircle, faTriangleExclamation, faAddressCard } from "@fortawesome/free-solid-svg-icons"
-import MyDataHelps, { ProjectInfo } from "@careevolution/mydatahelps-js"
+import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import ConnectEHR from "../../../assets/connect-ehr.svg";
