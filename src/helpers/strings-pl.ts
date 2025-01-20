@@ -64,6 +64,7 @@ let strings: { [key: string]: string } = {
     "devices": "Urządzenia",
     "last-sync": "Ostatnia synchronizacja",
     "completed": "Ukończono",
+    "ehr-intro-search": "Wyszukaj, wpisując nazwę swojego dostawcy usług medycznych lub portalu członkowskiego dla swojego dostawcy usług medycznych lub planu zdrowotnego.",
     "ehr-intro-research": "Twoje elektroniczne karty zdrowia (EHR) są ważnym źródłem informacji. Jeśli nam pomożesz zbierać swoje EHR, badacze wykorzystają te dane do dokonywania odkryć.",
     "ehr-intro-generic": "Połącz się z dostawcą usług medycznych lub planem zdrowotnym, aby wyświetlić wyniki badań, schorzenia, leki i inne dane.",
     "external-accounts-title-divider": " / ",

@@ -13,7 +13,6 @@ export interface ConnectEhrViewProps {
     presentation?: "Modal" | "Push",
     preview?: boolean,
     colorScheme?: "auto" | "light" | "dark"
-    introText?: string
 }
 
 /**
@@ -46,9 +45,6 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
             {!props.presentation &&
                 <StatusBarBackground />
             }
-            <TextBlock>
-                {props.introText ?? language('ehr-intro-research')}
-            </TextBlock>
             {props.onViewEhr &&
                 <Card>
                     <ViewEhr previewState={props.preview ? "fetchingData" : undefined} onClick={props.onViewEhr} />
@@ -60,6 +56,9 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
                 </Card>
             }
             <Card>
+                <TextBlock>
+                    {language('ehr-intro-search')}
+                </TextBlock>
                 <ProviderSearch previewState={props.preview ? "Default" : undefined} providerCategories={providerCategories} />
             </Card>
         </Layout>

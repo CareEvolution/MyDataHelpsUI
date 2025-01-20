@@ -64,6 +64,7 @@ let strings: { [key: string]: string } = {
     "devices": "Dispositivi",
     "last-sync": "Ultima sincronizzazione",
     "completed": "Completato",
+    "ehr-intro-search": "Cerca inserendo il nome del tuo medico o del portale per i membri del tuo fornitore di assistenza sanitaria o del tuo piano sanitario.",
     "ehr-intro-research": "I tuoi record sanitari elettronici (EHR) sono una fonte importante di informazioni. Se ci aiuti a raccogliere il tuo EHR, i ricercatori utilizzeranno questi dati per fare scoperte.",
     "ehr-intro-generic": "Collega il tuo medico o il tuo piano sanitario per visualizzare i tuoi risultati di laboratorio, condizioni, farmaci e altro ancora.",
     "external-accounts-title-divider": " / ",

@@ -64,6 +64,7 @@
     "devices": "Dispositivos",
     "last-sync": "Última sincronización",
     "completed": "Completadas",
+    "ehr-intro-search": "Busca ingresando el nombre de tu proveedor o portal de miembros de tu proveedor de atención médica o plan de salud.",
     "ehr-intro-research": "Sus registros de salud electrónicos son fuentes importantes de información. Pueden ayudar a investigadores hacer nuevos descubrimientos.",
     "ehr-intro-generic": "Conecta tu proveedor o plan de salud para ver tus resultados de laboratorio, condiciones, medicamentos y más.",
     "external-accounts-title-divider": " / ",

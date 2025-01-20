@@ -64,6 +64,7 @@ let strings: { [key: string]: string } = {
     "devices": "Apparaten",
     "last-sync": "Laatst gesynchroniseerd",
     "completed": "Voltooid",
+    "ehr-intro-search": "Zoek door de naam van uw zorgverlener of ledenportaal voor uw zorgverlener of zorgverzekeraar in te voeren.",
     "ehr-intro-research": "Uw elektronische medische dossiers (EHR) zijn een belangrijke informatiebron. Als u ons helpt uw EHR te verzamelen, zullen onderzoekers deze gegevens gebruiken om ontdekkingen te doen.",
     "ehr-intro-generic": "Verbind uw zorgverlener of zorgverzekeraar om uw labresultaten, aandoeningen, medicijnen en meer te bekijken.",
     "external-accounts-title-divider": " / ",

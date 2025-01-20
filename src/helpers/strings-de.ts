@@ -64,6 +64,7 @@ let strings: { [key: string]: string } = {
     "devices": "Geräte",
     "last-sync": "Zuletzt synchronisiert",
     "completed": "Abgeschlossen",
+    "ehr-intro-search": "Suchen Sie, indem Sie den Namen Ihres Anbieters oder des Mitgliederportals für Ihren Gesundheitsdienstleister oder Ihre Krankenkasse eingeben.",
     "ehr-intro-research": "Ihre elektronischen Gesundheitsdaten (EHR) sind eine wichtige Informationsquelle. Wenn Sie uns dabei helfen, Ihre EHR zu sammeln, werden Forscher diese Daten nutzen, um Entdeckungen zu machen.",
     "ehr-intro-generic": "Verbinden Sie Ihren Anbieter oder Ihre Krankenkasse, um Ihre Laborergebnisse, Erkrankungen, Medikamente und mehr anzuzeigen.",
     "external-accounts-title-divider": " / ",

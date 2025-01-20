@@ -64,6 +64,7 @@
     "devices": "Devices",
     "last-sync": "Last synced",
     "completed": "Completed",
+    "ehr-intro-search": "Search by entering the name of your provider or member portal for your healthcare provider or health plan.",
     "ehr-intro-research": "Your electronic health records (EHR) are an important source of information. If you help us gather your EHR, researchers will use this data to make discoveries.",
     "ehr-intro-generic": "Connect your provider or health plan to view your lab results, conditions, medications and more.",
     "external-accounts-title-divider": " / ",
