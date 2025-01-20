@@ -239,10 +239,10 @@ export const immunizationEvent: EhrNewsFeedEventModel = {
 export const noTitleImmunizationEvent: EhrNewsFeedEventModel = {
     "Type": "Immunization",
     "Category": "Immunization",
-    "ID": "2eb48143-41fe-ed11-aabb-e477137a3627",
+    "ID": "2eb48143-41fe-ed11-aabb-e477137a3628",
     "Date": "2020-12-16T00:00:00-05:00",
     "Event": {
-        "ID": "2eb48143-41fe-ed11-aabb-e477137a3627",
+        "ID": "2eb48143-41fe-ed11-aabb-e477137a3628",
         "Date": "2020-12-11T00:00:00-05:00"
     },
     "Patient": {
