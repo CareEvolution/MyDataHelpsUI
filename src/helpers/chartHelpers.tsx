@@ -78,7 +78,7 @@ export function createBarChartDefs(layoutContext: LayoutContext, gradientKey: st
             </linearGradient>
         )}
         {options?.thresholds?.map((threshold, index) =>
-            <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient key={`lg_thresh_${index}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
                 <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
             </linearGradient>

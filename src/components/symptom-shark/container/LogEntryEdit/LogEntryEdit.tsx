@@ -9,7 +9,7 @@ import symptomSharkData, { DailyLogEntry, SymptomConfiguration, SymptomSharkConf
 import { Button, DayTrackerSymbol, Face, LoadingIndicator, NavigationBar, NotesInput, SegmentedControl, Title, TrackerItem } from '../../../presentational';
 import debounce from 'lodash/debounce';
 import { previewConfiguration, previewLogEntry } from '../LogToday/LogToday.previewData';
-import { formatDateForLocale } from '../../../../helpers/locale';
+import { getLongDateString } from '../../../../helpers/date-helpers';
 
 export interface SymptomSharkLogEntryEditProps {
     date: Date;
@@ -151,7 +151,7 @@ export default function (props: SymptomSharkLogEntryEditProps) {
     };
 
     var dateLabel = getDayOfWeek(props.date);
-    dateLabel += (", " + formatDateForLocale(props.date, "MMM d, yyyy"));
+    dateLabel += (", " + getLongDateString(props.date));
 
     function getDayTracker(entry: DailyLogEntry) {
         var primaryColors = entry.symptoms.map(t => configuration!.symptoms.find(s => s.id == t.id)?.color).filter(t => !!t).map(t => t!);

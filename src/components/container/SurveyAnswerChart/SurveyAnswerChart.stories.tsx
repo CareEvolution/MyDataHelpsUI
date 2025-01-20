@@ -126,6 +126,59 @@ export const ffwelBarChart = {
     render: render
 };
 
+export const ffwelBarChartWithOneDataPoint = {
+    args: {
+        title: "FFWEL Response Bar Chart",
+        options: {
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
+        },
+        intervalType: "6Month",
+        weekStartsOn: "6DaysAgo",
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" },
+                {  color: "#4daf4a", dataKey: "Social Self", surveyName: "FFWEL", stepIdentifier: "SocialSelf", resultIdentifier: "SocialSelf" }],
+        chartType: "Bar",
+        previewState: 'default',
+        previewDataProvider: async (start: Date, end: Date) => {
+            var data = await getRandomFFWELData(start, end);
+            var returnedData = [
+                [data[0][0]],
+                [data[1][0]],
+                [data[2][0]]
+            ]
+            return Promise.resolve(returnedData);
+        }
+    },
+    render: render
+};
+
+export const ffwelBarChartWithTwoDataPoints = {
+    args: {
+        title: "FFWEL Response Bar Chart",
+        options: {
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
+        },
+        intervalType: "6Month",
+        weekStartsOn: "6DaysAgo",
+        series: [{ color: "#e41a1c", dataKey: "Creative Self", surveyName: "FFWEL", stepIdentifier: "CreativeSelf", resultIdentifier: "CreativeSelf" },
+                {  color: "#377eb8", dataKey: "Coping Self", surveyName: "FFWEL", stepIdentifier: "CopingSelf", resultIdentifier: "CopingSelf" }],
+        chartType: "Bar",
+        previewState: 'default',
+        previewDataProvider: async (start: Date, end: Date) => {
+            var data = await getRandomFFWELData(start, end);
+            var returnedData = [
+                [data[0][0], data[0][1]],
+                [data[1][0], data[1][1]]
+            ]
+            return Promise.resolve(returnedData);
+        }
+    },
+    render: render
+};
 
 export const ffwelBarChartThresholds = {
     args: {
