@@ -10,13 +10,11 @@ export interface ConnectEhrViewProps {
     onViewEhr?: () => void,
     excludeProviders?: boolean,
     excludeHealthPlans?: boolean,
-    presentation?: ViewPresentationType,
+    presentation?: "Modal" | "Push",
     preview?: boolean,
     colorScheme?: "auto" | "light" | "dark"
     introText?: string
 }
-
-export type ViewPresentationType = "Modal" | "Push";
 
 /**
  * This view enables participants to connect with their EHR providers and/or health plans.
