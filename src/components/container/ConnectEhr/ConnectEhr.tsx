@@ -102,8 +102,8 @@ export default function (props: ConnectEhrProps) {
 	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
 	let title = props.title || defaultTitle;
 
-	let connectedText = language("connect-ehr-text-connected");
-	let notConnectedText = language("connect-ehr-text");
+	let connectedText = props.connectedText ?? language("connect-ehr-text-connected");
+	let notConnectedText = props.notConnectedText ?? language("connect-ehr-text");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";
