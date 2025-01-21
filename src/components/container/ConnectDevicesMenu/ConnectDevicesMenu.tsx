@@ -30,83 +30,76 @@ export interface ConnectDevicesMenuProps {
     enableGoogleFitSurveyName?: string
 }
 
-export default function (props: ConnectDevicesMenuProps) {
-    const [loading, setLoading] = useState(true);
-    const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
-    const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);
-    const [platform, setPlatform] = useState<string | null>(null);
-    const [hasRecentAppleHealthData, setHasRecentAppleHealthData] = useState<boolean>(false);
-    const [healthConnectStatus, setHealthConnectStatus] = useState<HealthConnectStatus | null>(null);
+interface ConnectDevicesMenuState {
+    loading: boolean;
+    settings: DataCollectionSettings | null;
+    deviceExternalAccounts: ExternalAccount[] | null;
+    platform: string | null;
+    hasRecentAppleHealthData: boolean;
+    healthConnectStatus: HealthConnectStatus | null;
+}
 
-    function getAccountTypes(settings: DataCollectionSettings): DeviceAccountType[] {
-        //Omron excluded by default
-        let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
-        if (!settings?.fitbitEnabled) {
-            accountTypes = accountTypes.filter(a => a != "Fitbit");
+function useConnectDevicesMenuState(
+    previewState?: "iOS" | "Android" | "Web" | "ConnectedStates",
+    enableAppleHealthSurveyName?: string,
+    enableGoogleFitSurveyName?: string): ConnectDevicesMenuState {
+    const [state, setState] = useState<ConnectDevicesMenuState>({
+        loading: true,
+        settings: null,
+        deviceExternalAccounts: null,
+        platform: null,
+        hasRecentAppleHealthData: false,
+        healthConnectStatus: null
+    });
+
+    if (previewState) {
+        let settings = { ...previewSettings };
+        if (enableAppleHealthSurveyName || enableGoogleFitSurveyName) {
+            settings.appleHealthEnabled = false;
+            settings.googleFitEnabled = false;
         }
-        if (!settings?.garminEnabled) {
-            accountTypes = accountTypes.filter(a => a != "Garmin");
+
+        let previewStateObject: ConnectDevicesMenuState = {
+            loading: false,
+            settings: settings,
+            deviceExternalAccounts: [],
+            platform: "Web",
+            hasRecentAppleHealthData: false,
+            healthConnectStatus: null
         }
-        if (!settings?.dexcomEnabled) {
-            accountTypes = accountTypes.filter(a => a != "Dexcom");
+
+        if (previewState == "ConnectedStates") {
+            previewStateObject.deviceExternalAccounts = previewAccounts;
+            previewStateObject.platform = "iOS";
+            previewStateObject.hasRecentAppleHealthData = true;
         }
-        if (platform == "Android" || (!settings.appleHealthEnabled && !props.enableAppleHealthSurveyName)) {
-            accountTypes = accountTypes.filter(a => a != "AppleHealth");
+        else if (previewState == "iOS") {
+            previewStateObject.platform = "iOS";
+        } else if (previewState == "Android") {
+            previewStateObject.platform = "Android";
         }
-        if (platform == "iOS" || (!settings.googleFitEnabled && !props.enableGoogleFitSurveyName)) {
-            accountTypes = accountTypes.filter(a => a != "GoogleFit");
+
+        if (previewState == "Android") {
+            previewStateObject.healthConnectStatus = previewHealthConnectStatus;
         }
-        if (platform == "iOS" || !settings?.healthConnectEnabled) {
-            accountTypes = accountTypes.filter(a => a != "HealthConnect");
-        }
-        return accountTypes;
+        return previewStateObject;
     }
 
     function initialize() {
-        if (props.previewState) {
-            let settings = { ...previewSettings };
-            if (props.enableAppleHealthSurveyName || props.enableGoogleFitSurveyName) {
-                settings.appleHealthEnabled = false;
-                settings.googleFitEnabled = false;
-            }
-            setSettings(settings);
-
-            setDeviceExternalAccounts([]);
-
-            setPlatform("Web");
-            if (props.previewState == "ConnectedStates") {
-                setDeviceExternalAccounts(previewAccounts);
-                setPlatform("iOS");
-                setHasRecentAppleHealthData(true);
-            }
-            else if (props.previewState == "iOS") {
-                setPlatform("iOS");
-            } else if (props.previewState == "Android") {
-                setPlatform("Android");
-            }
-
-            if (props.previewState == "Android") {
-                setHealthConnectStatus(previewHealthConnectStatus);
-            }
-
-            setLoading(false);
-            return;
-        }
-
-
         Promise.all([
             MyDataHelps.getDataCollectionSettings(),
             MyDataHelps.getExternalAccounts(),
             MyDataHelps.getDeviceInfo()
         ])
             .then(([settings, accounts, deviceInfo]) => {
-                setSettings(settings);
-                setDeviceExternalAccounts(accounts);
-                if (deviceInfo) {
-                    setPlatform(deviceInfo.platform);
-                } else {
-                    setPlatform("Web");
-                }
+                let newState: ConnectDevicesMenuState = {
+                    loading: true,
+                    settings: settings,
+                    deviceExternalAccounts: accounts,
+                    platform: deviceInfo ? deviceInfo.platform : "Web",
+                    hasRecentAppleHealthData: false,
+                    healthConnectStatus: null
+                };
 
                 if (deviceInfo?.platform == "iOS") {
                     MyDataHelps.queryDeviceData({
@@ -114,34 +107,56 @@ export default function (props: ConnectDevicesMenuProps) {
                         observedAfter: formatISO(add(new Date(), { days: -3 })),
                         limit: 1
                     }).then((result) => {
-                        setHasRecentAppleHealthData(result.deviceDataPoints.length > 0);
+                        newState.hasRecentAppleHealthData = result.deviceDataPoints.length > 0;
                     }).finally(() => {
-                        setLoading(false);
+                        newState.loading = false;
+                        setState(newState);
                     });
                 }
-                else if (deviceInfo.platform == "Android" && getAccountTypes(settings).includes("HealthConnect")) {
+                else if (deviceInfo.platform == "Android" && settings.healthConnectEnabled) {
                     MyDataHelps.getHealthConnectStatus().then(status => {
-                        setHealthConnectStatus(status);
+                        newState.healthConnectStatus = status;
                     }).finally(() => {
-                        setLoading(false);
+                        newState.loading = false;
+                        setState(newState);
                     });
                 } else {
-                    setLoading(false);
+                    newState.loading = false;
+                    setState(newState);
                 }
             });
     }
 
     useInitializeView(initialize, ["externalAccountSyncComplete"]);
+    return state;
+}
+
+export default function (props: ConnectDevicesMenuProps) {
+    const { loading, settings, deviceExternalAccounts, platform, hasRecentAppleHealthData, healthConnectStatus } =
+        useConnectDevicesMenuState(props.previewState, props.enableAppleHealthSurveyName, props.enableGoogleFitSurveyName);
 
     if (loading) {
         return null;
     }
 
-    let accountTypes = getAccountTypes(settings!);
-
-    function onMenuItemClicked(action?: () => void) {
-        if (props.previewState || !action) return;
-        action();
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
+    if (!settings?.fitbitEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Fitbit");
+    }
+    if (!settings?.garminEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Garmin");
+    }
+    if (!settings?.dexcomEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Dexcom");
+    }
+    if (platform == "Android" || (!settings!.appleHealthEnabled && !props.enableAppleHealthSurveyName)) {
+        accountTypes = accountTypes.filter(a => a != "AppleHealth");
+    }
+    if (platform == "iOS" || (!settings!.googleFitEnabled && !props.enableGoogleFitSurveyName)) {
+        accountTypes = accountTypes.filter(a => a != "GoogleFit");
+    }
+    if (platform == "iOS" || !settings?.healthConnectEnabled) {
+        accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
 
     function getFitbitMenuItem() {
@@ -174,31 +189,12 @@ export default function (props: ConnectDevicesMenuProps) {
 
     function getExternalAccountMenuItem(providerName: string, providerID: number, image: ReactNode) {
         let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
-
-        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
-        let action: (() => void) | undefined = () => {
-            MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true });
-        };
-
-        if (externalAccount) {
-            if (externalAccount.status == "fetchComplete") {
-                indicator = <div className="mdhui-connect-devices-menu-connected">{language("connected")}</div>;
-                action = undefined;
-            }
-            else if (externalAccount.status == "fetchingData") {
-                indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}</div>;
-                action = undefined;
-            }
-            else if (externalAccount.status == "unauthorized") {
-                indicator = <div className="mdhui-connect-devices-menu-reconnect">{language("reconnect")} </div>;
-            }
-        }
-
-        return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
-                <Title autosizeImage order={4} image={image}>{providerName}</Title>
-            </Action>
-        </div>;
+        return <ExternalAccountMenuItem preview={!!props.previewState}
+            providerName={providerName}
+            providerID={providerID}
+            image={image}
+            externalAccount={externalAccount}
+            connectExternalAccountOptions={props.connectExternalAccountOptions} />;
     }
 
     function getAppleHealthMenuItem() {
@@ -213,29 +209,16 @@ export default function (props: ConnectDevicesMenuProps) {
             enableAppleHealthSurvey={props.enableAppleHealthSurveyName} />;
     }
 
+
     function getGoogleFitMenuItem() {
         if (!accountTypes.includes("GoogleFit")) {
             return null;
         }
 
-        let action: () => void;
-        let indicator: React.JSX.Element;
-        if (platform == "Web") {
-            action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
-            indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
-        } else if (props.enableGoogleFitSurveyName && !settings!.googleFitEnabled) {
-            action = () => MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
-            indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
-        } else {
-            action = () => MyDataHelps.showGoogleFitSettings();
-            indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
-        }
-
-        return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
-                <Title autosizeImage image={<img src={GoogleFitLogo} />} order={4}>Google Fit</Title>
-            </Action>
-        </div>;
+        return <GoogleFitMenuItem preview={!!props.previewState}
+            platform={platform!}
+            requested={settings!.googleFitEnabled}
+            enableGoogleFitSurveyName={props.enableGoogleFitSurveyName} />;
     }
 
     function getHealthConnectMenuItem() {
@@ -243,29 +226,10 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        let action = () => MyDataHelps.showHealthConnectPrompt();
-        let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
-
-        if (platform == "Web") {
-            action = () => MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
-            indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
-        }
-        else {
-            if (!healthConnectStatus || !healthConnectStatus.available || healthConnectStatus.requestedQueryRules.length == 0) {
-                return null;
-            }
-
-            if (healthConnectStatus.requestedQueryRules.every(r => healthConnectStatus.enabledQueryRules.includes(r))) {
-                action = () => MyDataHelps.showHealthConnectSettings();
-                indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
-            }
-        }
-
-        return <div className="mdhui-connect-devices-menu-device">
-            <Action onClick={() => onMenuItemClicked(action)} indicator={indicator}>
-                <Title autosizeImage image={<img src={HealthConnectLogo} />} order={4}>Health Connect</Title>
-            </Action>
-        </div>
+        return <HealthConnectMenuItem
+            preview={!!props.previewState}
+            platform={platform!}
+            healthConnectStatus={healthConnectStatus} />;
     }
 
     let title = props.title || language("connect-devices-title");
@@ -287,6 +251,121 @@ export default function (props: ConnectDevicesMenuProps) {
             {getOmronMenuItem()}
         </div>
     </div>
+}
+
+interface HealthConnectMenuItemProps {
+    preview: boolean;
+    platform: string;
+    healthConnectStatus: HealthConnectStatus | null;
+}
+
+function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
+    let action = () => {
+        if (props.preview) return;
+        MyDataHelps.showHealthConnectPrompt();
+    }
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+
+    if (props.platform == "Web") {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
+        }
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
+    }
+    else {
+        if (!props.healthConnectStatus || !props.healthConnectStatus.available || props.healthConnectStatus.requestedQueryRules.length == 0) {
+            return null;
+        }
+
+        if (props.healthConnectStatus.requestedQueryRules.every(r => props.healthConnectStatus?.enabledQueryRules.includes(r))) {
+            action = () => {
+                if (props.preview) return;
+                MyDataHelps.showHealthConnectSettings();
+            }
+            indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
+        }
+    }
+
+    return <div className="mdhui-connect-devices-menu-device">
+        <Action onClick={() => action} indicator={indicator}>
+            <Title autosizeImage image={<img src={HealthConnectLogo} />} order={4}>Health Connect</Title>
+        </Action>
+    </div>
+}
+
+interface ExternalAccountMenuItemProps {
+    preview: boolean;
+    providerName: string;
+    providerID: number;
+    image: ReactNode;
+    externalAccount?: ExternalAccount;
+    connectExternalAccountOptions?: ConnectExternalAccountOptions;
+}
+
+function ExternalAccountMenuItem(props: ExternalAccountMenuItemProps) {
+    let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+    let action: (() => void) | undefined = () => {
+        if (props.preview) return;
+        MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true });
+    };
+
+    if (props.externalAccount) {
+        if (props.externalAccount.status == "fetchComplete") {
+            indicator = <div className="mdhui-connect-devices-menu-connected">{language("connected")}</div>;
+            action = undefined;
+        }
+        else if (props.externalAccount.status == "fetchingData") {
+            indicator = <div className="mdhui-connect-devices-menu-connected">{language("downloading-data-menu")}</div>;
+            action = undefined;
+        }
+        else if (props.externalAccount.status == "unauthorized") {
+            indicator = <div className="mdhui-connect-devices-menu-reconnect">{language("reconnect")} </div>;
+        }
+    }
+
+    return <div className="mdhui-connect-devices-menu-device">
+        <Action onClick={() => action} indicator={indicator}>
+            <Title autosizeImage order={4} image={props.image}>{props.providerName}</Title>
+        </Action>
+    </div>;
+}
+
+interface GoogleFitMenuItemProps {
+    preview: boolean;
+    requested: boolean;
+    platform: string;
+    enableGoogleFitSurveyName?: string;
+}
+
+function GoogleFitMenuItem(props: GoogleFitMenuItemProps) {
+    let action: () => void;
+    let indicator: React.JSX.Element;
+    if (props.platform == "Web") {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.openExternalUrl("https://play.google.com/store/apps/details?id=com.careevolution.mydatahelps&hl=en_US&gl=US");
+        };
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("download-mydatahelps")}</div>;
+    } else if (props.enableGoogleFitSurveyName && !props.requested) {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.startSurvey(props.enableGoogleFitSurveyName!);
+        };
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
+    } else {
+        action = () => {
+            if (props.preview) return;
+            MyDataHelps.showGoogleFitSettings();
+        };
+        indicator = <div className="mdhui-connect-devices-menu-connect">{language("settings")}</div>;
+    }
+
+    return <div className="mdhui-connect-devices-menu-device">
+        <Action onClick={action} indicator={indicator}>
+            <Title autosizeImage image={<img src={GoogleFitLogo} />} order={4}>Google Fit</Title>
+        </Action>
+    </div>;
 }
 
 interface AppleHealthMenuItemProps {
