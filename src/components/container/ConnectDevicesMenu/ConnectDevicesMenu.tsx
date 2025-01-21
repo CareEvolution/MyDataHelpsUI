@@ -56,7 +56,7 @@ export default function (props: ConnectDevicesMenuProps) {
         if (platform == "iOS" || (!settings.googleFitEnabled && !props.enableGoogleFitSurveyName)) {
             accountTypes = accountTypes.filter(a => a != "GoogleFit");
         }
-        if (!settings?.healthConnectEnabled) {
+        if (platform == "iOS" || !settings?.healthConnectEnabled) {
             accountTypes = accountTypes.filter(a => a != "HealthConnect");
         }
         return accountTypes;
@@ -238,7 +238,7 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getHealthConnectMenuItem() {
-        if (!accountTypes.includes("HealthConnect") || platform == "iOS") {
+        if (!accountTypes.includes("HealthConnect")) {
             return null;
         }
 
