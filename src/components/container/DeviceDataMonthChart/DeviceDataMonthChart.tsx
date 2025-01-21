@@ -45,7 +45,10 @@ function DayTick(props: TickProps) {
 	);
 }
 
-export default function (props: DeviceDataMonthChartProps) {
+/** 
+ * Displays one of the supportd Daily Data Types in a line chart.
+ */
+export default function DeviceDataMonthChart(props: DeviceDataMonthChartProps) {
 	const [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [hasData, setHasData] = useState(false);

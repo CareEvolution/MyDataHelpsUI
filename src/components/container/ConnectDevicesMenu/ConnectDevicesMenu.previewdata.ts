@@ -52,6 +52,7 @@ export const previewSettings:DataCollectionSettings = {
     fitbitEnabled: true,
     garminEnabled: true,
     dexcomEnabled: true,
+    omronEnabled: false,
     queryableDeviceDataTypes: [
         {
             namespace: "AppleHealth",

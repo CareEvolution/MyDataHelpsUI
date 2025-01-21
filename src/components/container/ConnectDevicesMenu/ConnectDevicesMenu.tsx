@@ -25,7 +25,10 @@ export interface ConnectDevicesMenuProps {
     connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
-export default function (props: ConnectDevicesMenuProps) {
+/**
+ * Used to establish connections to any one of the MyDataHelps supported devices.
+ */
+export default function ConnectDevicesMenu(props: ConnectDevicesMenuProps) {
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState<DataCollectionSettings | null>(null);
     const [deviceExternalAccounts, setDeviceExternalAccounts] = useState<ExternalAccount[] | null>(null);

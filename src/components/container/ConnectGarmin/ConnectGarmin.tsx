@@ -16,7 +16,10 @@ export interface ConnectGarminProps {
 
 export type ConnectGarminPreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
 
-export default function (props: ConnectGarminProps) {
+/**
+ * Creates a connection to the participant's Garmin account
+ */
+export default function ConnectGarmin(props: ConnectGarminProps) {
 	function getInternalGarminProviderID() {
 		return props.garminProviderID || getGarminProviderID();
 	}
