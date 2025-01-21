@@ -516,6 +516,7 @@ let strings: { [key: string]: string } = {
     "download-pdf-report": "PDF-rapport downloaden",
     "connect-to-device": "Verbinden met @@DEVICE@@",
     "symptoms-and-treatments": "Symptomen en Behandelingen",
+    "summary": "Samenvatting",
     "device-activity": "Apparaatactiviteit",
     "daily": "Dagelijks",
     "weekly": "Wekelijks",
