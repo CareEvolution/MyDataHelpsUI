@@ -1,4 +1,4 @@
-import { DataCollectionSettings, ExternalAccount } from "@careevolution/mydatahelps-js";
+import { DataCollectionSettings, ExternalAccount, HealthConnectStatus } from "@careevolution/mydatahelps-js";
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
 export const previewAccounts:ExternalAccount[] = [
@@ -65,5 +65,21 @@ export const previewSettings:DataCollectionSettings = {
     airQualityEnabled: true,
     weatherEnabled: true,
     ehrEnabled: true,
-    sensorDataCollectionEndDate: ""
+    sensorDataCollectionEndDate: "",
+    omronEnabled: true,
+    healthConnectEnabled: true,
+    googleFitEnabled: true,
+    appleHealthEnabled: true,
+    appleHealthRecordsEnabled: true
+};
+
+
+export const previewHealthConnectStatus: HealthConnectStatus = {
+    available: true,
+    requestedQueryRules: [
+        "Steps"
+    ],
+    enabledQueryRules: [],
+    running: false,
+    lastPrompted: ""
 };

@@ -1,7 +1,9 @@
 export { default as AllergiesView } from "./AllergiesView"
 export { default as BlankView } from "./BlankView"
 export { default as ConditionsView } from "./ConditionsView"
+export { default as ConnectDevicesView } from "./ConnectDevicesView"
 export { default as ConnectEhrView } from "./ConnectEhrView"
+export { default as DeviceActivityView } from "./DeviceActivityView"
 export { default as DeviceDataView } from "./DeviceDataView"
 export { default as EhrNewsFeedView } from "./EhrNewsFeedView";
 export { default as EhrNewsFeedEventDetailView } from "./EhrNewsFeedEventDetailView";

@@ -61,3 +61,7 @@
 .mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment:last-child {
     border: none;
 }
+
+.mdhui-segmented-control.mdhui-segmented-control-default-margin {
+    margin: 16px;
+}

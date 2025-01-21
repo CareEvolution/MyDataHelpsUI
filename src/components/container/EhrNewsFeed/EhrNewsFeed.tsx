@@ -161,7 +161,7 @@ export default function (props: EhrNewsFeedProps) {
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
     let date = toDate(props.event.Date);
-    let timeString = getTimeOfDayString(date!);
+    let timeString = date ? getTimeOfDayString(date) : undefined;
 
     function getTitle() {
         let titleItems = definition.getTitleItems(props.event);
