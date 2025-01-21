@@ -293,7 +293,7 @@ function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
     }
 
     return <div className="mdhui-connect-devices-menu-device">
-        <Action onClick={() => action} indicator={indicator}>
+        <Action onClick={action} indicator={indicator}>
             <Title autosizeImage image={<img src={HealthConnectLogo} />} order={4}>Health Connect</Title>
         </Action>
     </div>
@@ -330,7 +330,7 @@ function ExternalAccountMenuItem(props: ExternalAccountMenuItemProps) {
     }
 
     return <div className="mdhui-connect-devices-menu-device">
-        <Action onClick={() => action} indicator={indicator}>
+        <Action onClick={action} indicator={indicator}>
             <Title autosizeImage order={4} image={props.image}>{props.providerName}</Title>
         </Action>
     </div>;
