@@ -11,9 +11,8 @@ export interface DeviceActivityViewProps {
 }
 
 export default function DeviceActivityView(props: DeviceActivityViewProps) {
-    let [selectedView, setSelectedView] = React.useState<"daily" | "weekly" | "monthly">("daily");
-
-    let dataTypes = standardDailyDataTypes.map((dataType): RelativeActivityDataType => {
+    const [selectedView, setSelectedView] = React.useState<"daily" | "weekly" | "monthly">("daily");
+    const dataTypes = standardDailyDataTypes.map((dataType): RelativeActivityDataType => {
         return {
             dailyDataType: dataType.type,
             color: dataType.color
@@ -34,7 +33,7 @@ export default function DeviceActivityView(props: DeviceActivityViewProps) {
                 <RelativeActivityDayCoordinator dataTypes={dataTypes} previewState={props.previewState}>
                     <Card>
                         <DateRangeTitle defaultMargin />
-                        <RelativeActivity useContext previewState="Default" />
+                        <RelativeActivity useContext previewState={props.previewState ? "Default" : undefined} />
                     </Card>
                 </RelativeActivityDayCoordinator>
             }

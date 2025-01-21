@@ -58,9 +58,9 @@ export default function (props: ViewDeviceActivityProps) {
         return null;
     }
 
-    const indicator = <Button color={props.buttonColor} variant={props.buttonVariant || 'light'} onClick={() => { }}>{language("view")}</Button>;
+    const viewButton = <Button color={props.buttonColor} variant={props.buttonVariant || 'light'} onClick={() => { }}>{language("view")}</Button>;
     return (
-        <Action innerRef={props.innerRef} className="mdhui-view-device-activity" renderAs='div' onClick={() => props.onClick()} indicator={indicator}>
+        <Action innerRef={props.innerRef} className="mdhui-view-device-activity" renderAs='div' onClick={() => props.onClick()} indicator={viewButton}>
             <Title order={3}>{props.title || language("device-activity")}</Title>
             {deviceAccounts?.find(e => e.status == "fetchingData") && <div className="mdhui-view-device-activity-status"><FontAwesomeSvgIcon icon={faRefresh} spin /> {language("external-account-fetching-data")}</div>}
         </Action>
