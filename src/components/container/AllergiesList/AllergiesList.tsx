@@ -6,6 +6,7 @@ import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
 import language from "../../../helpers/language";
+import { getAllergies, getPersonID } from "../../../helpers/fhir";
 
 export interface AllergiesListProps {
     previewState?: "default"
@@ -52,6 +53,15 @@ export default function (props: AllergiesListProps) {
         MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Allergies", "GET", "", true).then(function (response) {
             setAllergies(response);
         });
+
+        MyDataHelps.getParticipantInfo().then(function (participantInfo) {
+            getPersonID(participantInfo.participantID).then(function (personID) {
+                getAllergies(personID).then(function (response) {
+                    console.log(response);
+                });
+            });
+        });
+
     }
 
     useMyDataHelps(load, ["externalAccountSyncComplete", "applicationDidBecomeVisible"]);
@@ -71,3 +81,4 @@ export default function (props: AllergiesListProps) {
         )}
     </div>
 }
+
