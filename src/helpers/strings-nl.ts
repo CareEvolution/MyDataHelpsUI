@@ -516,8 +516,11 @@ let strings: { [key: string]: string } = {
     "download-pdf-report": "PDF-rapport downloaden",
     "connect-to-device": "Verbinden met @@DEVICE@@",
     "symptoms-and-treatments": "Symptomen en Behandelingen",
-    "subsequent-evaluation-note": "Opmerking bij volgende evaluatie",
-    "summary": "Samenvatting"
+    "summary": "Samenvatting",
+    "device-activity": "Apparaatactiviteit",
+    "daily": "Dagelijks",
+    "weekly": "Wekelijks",
+    "monthly": "Maandelijks"
 };
 
 export default strings;

@@ -518,6 +518,10 @@
     "symptoms-and-treatments": "Symptoms & Treatments",
     "subsequent-evaluation-note": "Subsequent evaluation note",
     "summary": "Summary",
+    "device-activity": "Device Activity",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
     "bonus": "Bonus"
 };
 

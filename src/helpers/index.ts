@@ -13,6 +13,7 @@ export * from './relative-activity';
 export * from './BasicPointsAndBadges/PointsAndBadges';
 export { simpleAvailabilityCheck } from './daily-data-types/availability-check';
 export { default as dailyDataTypeDefinitions } from './daily-data-types/all';
+export { default as standardDailyDataTypes } from './daily-data-types/standard';
 export * from './chartOptions';
 export * from './chartHelpers';
 export * from './heart-rate-data-providers';

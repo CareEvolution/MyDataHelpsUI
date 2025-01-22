@@ -517,7 +517,11 @@
     "connect-to-device": "Conectar a @@DEVICE@@",
     "symptoms-and-treatments": "Síntomas y Tratamientos",
     "subsequent-evaluation-note": "Nota de evaluación subsecuente",
-    "summary": "Resumen"
+    "summary": "Resumen",
+    "device-activity": "Actividad del dispositivo",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual"
 };
 
 export default strings;
