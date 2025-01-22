@@ -236,11 +236,29 @@ export const immunizationEvent: EhrNewsFeedEventModel = {
     }
 }
 
+export const noTitleImmunizationEvent: EhrNewsFeedEventModel = {
+    "Type": "Immunization",
+    "Category": "Immunization",
+    "ID": "2eb48143-41fe-ed11-aabb-e477137a3628",
+    "Date": "2020-12-16T00:00:00-05:00",
+    "Event": {
+        "ID": "2eb48143-41fe-ed11-aabb-e477137a3628",
+        "Date": "2020-12-11T00:00:00-05:00"
+    },
+    "Patient": {
+        "PatientID": "b990b7f0-a3ba-46d8-890d-ca18384a35e0",
+        "PersonID": "22ab3e2c-6dc4-40f5-913d-163cbad9d96c",
+        "PatientName": "",
+        "RecordAuthority": "Cedars-Sinai Health System"
+    }
+}
+
 export const previewFeed: EhrNewsFeedEventModel[] = [
     procedureGroupEvent,
     claimServiceGroupEvent,
     claimProcedureGroupEvent,
     labReportEvent,
     reportEvent,
-    immunizationEvent
+    immunizationEvent,
+    noTitleImmunizationEvent
 ];

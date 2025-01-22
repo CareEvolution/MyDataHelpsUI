@@ -24,7 +24,7 @@ export default function DeviceActivityView(props: DeviceActivityViewProps) {
             showCloseButton={props.presentation == "Modal"}
             colorScheme={props.colorScheme}>
             <SegmentedControl
-                style={{ marginLeft: "16px", marginRight: "16px", marginBottom: selectedView == "daily" ? "16px" : "0px" }}
+                style={{ marginTop: !props.presentation ? "16px" : "0px", marginLeft: "16px", marginRight: "16px", marginBottom: selectedView == "daily" ? "16px" : "0px" }}
                 variant="default"
                 segments={[{ title: language("daily"), key: "daily" }, { title: language("weekly"), key: "weekly" }, { title: language("monthly"), key: "monthly" }]}
                 onSegmentSelected={(s) => setSelectedView(s as any)}
