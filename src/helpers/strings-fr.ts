@@ -25,6 +25,7 @@ let strings: { [key: string]: string } = {
     "connect-ehr-text-connected": "Connectez un autre prestataire pour partager plus de données ou gérer vos connexions EHR.",
     "connect-ehr-not-enabled": "Le lien EHR n'est pas activé pour ce projet.",
     "search-for-provider": "Rechercher un fournisseur ou un plan de santé",
+    "request-add-provider": "Demande d'ajout d'un fournisseur ou d'un plan de santé",
     "expired-reconnect": "Connexion expirée. Veuillez reconnecter.",
     "connect-error-reconnect": "Erreur inattendue. Veuillez reconnecter.",
     "connected": "Connecté",
