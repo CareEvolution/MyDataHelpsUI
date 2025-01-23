@@ -33,7 +33,7 @@ export const Default: Story = {
 export const onProviderSelected: Story = {
 	args: {
 		previewState: "Default",
-		onProviderConnected: (provider : ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
 	},
 	render: render
 }
@@ -56,12 +56,12 @@ export const Searching: Story = {
 export const Live: Story = {
 	args: {
 		previewState: "Default",
-		onProviderConnected: (provider : ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
 	},
 	render: render
 }
 
-export const LiveStandalone: Story = {  
+export const LiveStandalone: Story = {
 	args: {
 		connectExternalAccountOptions: {
 			openNewWindow: false,
