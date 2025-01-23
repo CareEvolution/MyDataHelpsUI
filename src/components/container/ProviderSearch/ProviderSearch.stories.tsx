@@ -30,6 +30,22 @@ export const Default: Story = {
 	render: render
 }
 
+export const ProvidersOnly: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider"]
+	},
+	render: render
+}
+
+export const HealthPlanOnly: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Health Plan"]
+	},
+	render: render
+}
+
 export const onProviderSelected: Story = {
 	args: {
 		previewState: "Default",
@@ -41,7 +57,7 @@ export const onProviderSelected: Story = {
 export const hideAddNewAction: Story = {
 	args: {
 		previewState: "Default",
-		hideAddProviderOrHealthPlanButton: true
+		hideRequestProviderButton: true
 	},
 	render: render
 }

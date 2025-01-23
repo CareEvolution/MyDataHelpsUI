@@ -25,7 +25,7 @@
     "connect-ehr-text-connected": "Conecta otro proveedor para compartir más datos o gestionar tus conexiones EHR.",
     "connect-ehr-not-enabled": "EHR enlacando no está habilitado para este proyecto.",
     "search-for-provider": "Encontrar a mi Proveedor",
-    "request-add-provider": "Solicitud para agregar proveedor o plan de salud",
+    "request-add": "Solicitud para agregar",
     "expired-reconnect": "Volver a conectar",
     "connect-error-reconnect": "Error imprevisto.  Volver a conectar.",
     "connected": "Conectado",

@@ -15,7 +15,7 @@ export interface ProviderSearchProps {
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
     connectExternalAccountOptions?: ConnectExternalAccountOptions,
-    hideAddProviderOrHealthPlanButton?: boolean
+    hideRequestProviderButton?: boolean
 }
 
 export type ProviderSearchPreviewState = "Default" | "Searching";
@@ -130,7 +130,23 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setCurrentPage(currentPage + 1);
     }
 
-    const addNewProviderAction = () => {
+    function buildActionTitle() {
+        let title = language("request-add");
+
+        if (!props.providerCategories || props.providerCategories.length == 0) {
+            return `${title} ${language('external-accounts-title-providers')} ${language('external-accounts-title-divider')} ${language('external-accounts-title-health-plans')}`;
+        }
+
+        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Provider") {
+            return `${title} ${language('external-accounts-title-providers')}`;
+        }
+
+        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Health Plan") {
+            return `${title} ${language('external-accounts-title-health-plans')}`;
+        }
+    }
+
+    const requestProviderAction = () => {
         MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
     }
 
@@ -174,8 +190,8 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                     </UnstyledButton>
                 )}
                 {!searching &&
-                    !props.hideAddProviderOrHealthPlanButton &&
-                    <Action onClick={addNewProviderAction} title={language("request-add-provider")} />}
+                    !props.hideRequestProviderButton &&
+                    <Action onClick={requestProviderAction} title={buildActionTitle()} />}
                 {searching &&
                     <LoadingIndicator />
                 }
