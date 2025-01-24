@@ -25,6 +25,7 @@ let strings: { [key: string]: string } = {
     "connect-ehr-text-connected": "Verbinden Sie einen weiteren Anbieter, um mehr Daten zu teilen oder Ihre EHR-Verbindungen zu verwalten.",
     "connect-ehr-not-enabled": "Die Verknüpfung von EHR ist für dieses Projekt nicht aktiviert.",
     "search-for-provider": "Suche nach Anbieter oder Krankenversicherung",
+    "request-add": "Anfrage zum Hinzufügen",
     "expired-reconnect": "Verbindung abgelaufen. Bitte erneut verbinden.",
     "connect-error-reconnect": "Unerwarteter Fehler. Bitte erneut verbinden.",
     "connected": "Verbunden",

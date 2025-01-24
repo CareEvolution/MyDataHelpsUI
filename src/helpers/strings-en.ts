@@ -25,6 +25,7 @@
     "connect-ehr-text-connected": "Connect another provider to share more data or manage your EHR connections.",
     "connect-ehr-not-enabled": "EHR linking is not enabled for this project.",
     "search-for-provider": "Search for Provider or Health Plan",
+    "request-add": "Request to add",
     "expired-reconnect": "Connection expired.  Please reconnect.",
     "connect-error-reconnect": "Unexpected error.  Please reconnect.",
     "connected": "Connected",

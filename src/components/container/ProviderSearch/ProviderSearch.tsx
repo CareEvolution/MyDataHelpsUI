@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
 import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
-import { LoadingIndicator, UnstyledButton } from '../../presentational';
+import { Action, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
 import language from "../../../helpers/language"
@@ -14,20 +14,24 @@ export interface ProviderSearchProps {
     providerCategories?: string[];
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>
-    connectExternalAccountOptions?: ConnectExternalAccountOptions
+    connectExternalAccountOptions?: ConnectExternalAccountOptions,
+    hideRequestProviderButton?: boolean
 }
 
-export type ProviderSearchPreviewState = "Default"
+export type ProviderSearchPreviewState = "Default" | "Searching";
 
 let currentRequestID = 0;
 
-export default function (props: ProviderSearchProps) {
+/** Supports searching for Providers, and Health Plans for the purpose of connecting to participant data
+ */
+export default function ProviderSearch(props: ProviderSearchProps) {
     const [linkedExternalAccounts, setLinkedExternalAccounts] = useState<{ [id: number]: ExternalAccount; }>({});
     const [searchResults, setSearchResults] = useState<ExternalAccountProvider[]>([]);
     const [searching, setSearching] = useState(true);
     const [searchString, _setSearchString] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
+    const addNewProviderUrl = "https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635";
 
     const searchStringRef = useRef(searchString);
     const setSearchString = (data: string) => {
@@ -38,9 +42,11 @@ export default function (props: ProviderSearchProps) {
     const pageSize = 100;
 
     function initialize() {
-        if (props.previewState == "Default") {
-            updateSearchResults(previewProviders);
-            setSearching(false);
+        if (props.previewState) {
+            if (props.previewState == "Default") {
+                updateSearchResults(previewProviders);
+                setSearching(false);
+            }
             return;
         }
 
@@ -124,6 +130,26 @@ export default function (props: ProviderSearchProps) {
         setCurrentPage(currentPage + 1);
     }
 
+    function buildActionTitle() {
+        let title = language("request-add");
+
+        if (!props.providerCategories || props.providerCategories.length == 0) {
+            return `${title} ${language('external-accounts-title-providers')} ${language('external-accounts-title-divider')} ${language('external-accounts-title-health-plans')}`;
+        }
+
+        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Provider") {
+            return `${title} ${language('external-accounts-title-providers')}`;
+        }
+
+        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Health Plan") {
+            return `${title} ${language('external-accounts-title-health-plans')}`;
+        }
+    }
+
+    const requestProviderAction = () => {
+        MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
+    }
+
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
@@ -163,6 +189,9 @@ export default function (props: ProviderSearchProps) {
                         </div>
                     </UnstyledButton>
                 )}
+                {!searching &&
+                    !props.hideRequestProviderButton &&
+                    <Action onClick={requestProviderAction} title={buildActionTitle()} />}
                 {searching &&
                     <LoadingIndicator />
                 }

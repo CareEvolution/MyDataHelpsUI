@@ -25,6 +25,7 @@ let strings: { [key: string]: string } = {
     "connect-ehr-text-connected": "Verbind een andere zorgverlener om meer gegevens te delen of uw EHR-verbindingen te beheren.",
     "connect-ehr-not-enabled": "EHR-koppeling is niet ingeschakeld voor dit project.",
     "search-for-provider": "Zoek naar Provider of Zorgverzekering",
+    "request-add": "Verzoek om toe te voegen",
     "expired-reconnect": "Verbinding verlopen. Maak opnieuw verbinding a.u.b.",
     "connect-error-reconnect": "Onverwachte fout. Maak opnieuw verbinding a.u.b.",
     "connected": "Verbonden",
