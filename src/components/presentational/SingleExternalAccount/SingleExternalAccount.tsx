@@ -15,7 +15,7 @@ export interface SingleExternalAccountProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: SingleExternalAccountProps) {
+export default function SingleExternalAccount (props: SingleExternalAccountProps) {
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {

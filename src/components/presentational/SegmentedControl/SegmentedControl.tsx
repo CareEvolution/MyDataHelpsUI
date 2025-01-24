@@ -14,7 +14,7 @@ export interface SegmentedControlProps {
 	style?: React.CSSProperties;
 }
 
-export default function (props: SegmentedControlProps) {
+export default function SegmentedControl(props: SegmentedControlProps) {
 	var width = 100 / props.segments.length;
 
 	let classes = ["mdhui-segmented-control"];

@@ -1,6 +1,6 @@
-import React from 'react'
-import "./SingleNotification.css"
-import { Notification } from "@careevolution/mydatahelps-js"
+import React from 'react';
+import "./SingleNotification.css";
+import { Notification } from "@careevolution/mydatahelps-js";
 import { getRelativeDateString } from '../../../helpers/date-helpers';
 
 export interface SingleNotificationProps {

@@ -28,7 +28,7 @@ export interface LayoutContext {
 
 export const LayoutContext = createContext<LayoutContext>({ colorScheme: "light", bodyBackgroundColor: "var(--mdhui-background-color-1)" });
 
-export default function (props: LayoutProps) {
+export default function Layout(props: LayoutProps) {
 	let className = "mdhui-layout";
 	if (props.className) {
 		className += " " + props.className;

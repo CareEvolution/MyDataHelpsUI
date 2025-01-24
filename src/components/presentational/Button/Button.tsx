@@ -19,12 +19,12 @@ export interface ButtonProps {
 	fullWidth?: boolean;
 }
 
-export default function (props: ButtonProps) {
+export default function Button(props: ButtonProps) {
 	let classes = ["mdhui-button"];
 	if (props.className) {
 		classes.push(props.className);
 	}
-	if(props.fullWidth ?? true){
+	if (props.fullWidth ?? true) {
 		classes.push("mdhui-button-full-width");
 	}
 	if (props.defaultMargin) {

@@ -11,10 +11,10 @@ export interface CardTitleProps {
 	color?: ColorDefinition;
 }
 
-export default function (props: CardTitleProps) {
+export default function CardTitle(props: CardTitleProps) {
 	let context = useContext(LayoutContext);
 	return (
-		<div style={{color:resolveColor(context.colorScheme, props.color)}} ref={props.innerRef} className="mdhui-card-title">
+		<div style={{ color: resolveColor(context.colorScheme, props.color) }} ref={props.innerRef} className="mdhui-card-title">
 			{props.title}
 			{props.onDetailClick && props.detailLinkText &&
 				<a className="detail-link" onClick={() => props.onDetailClick ? props.onDetailClick() : null}>

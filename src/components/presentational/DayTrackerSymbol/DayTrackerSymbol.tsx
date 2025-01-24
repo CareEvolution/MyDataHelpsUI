@@ -9,7 +9,7 @@ export interface DayTrackerSymbolProps {
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: DayTrackerSymbolProps) {
+export default function DayTrackerSymbol(props: DayTrackerSymbolProps) {
 	//calculate background gradient
 	var chunkPercent = 100 / props.primaryColors.length;
 	var background = "conic-gradient(";

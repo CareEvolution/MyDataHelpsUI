@@ -1,16 +1,19 @@
 ﻿import React from "react";
-import {ComponentMeta, ComponentStory} from "@storybook/react";
-import Layout from "../Layout"
 import LoadingIndicator from "./LoadingIndicator";
+import Layout from "../Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
-    title: "Presentational/LoadingIndicator",
-    component: LoadingIndicator,
-    parameters: {
-        layout: 'fullscreen',
-    }
-} as ComponentMeta<typeof LoadingIndicator>;
+const meta: Meta<typeof LoadingIndicator> = {
+	title: "Presentational/LoadingIndicator",
+	component: LoadingIndicator,
+	parameters: {
+		layout: 'fullscreen'
+	}
+};
 
-const Template: ComponentStory<typeof LoadingIndicator> = () => <Layout colorScheme="auto"> <LoadingIndicator/> </Layout>;
+export default meta;
+type Story = StoryObj<typeof LoadingIndicator>;
 
-export const Default = Template.bind({});
+export const Default: Story = {
+	render: () => <Layout colorScheme="auto"> <LoadingIndicator/> </Layout>
+};

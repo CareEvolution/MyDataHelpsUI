@@ -12,7 +12,7 @@ export interface SectionProps {
 	style?: React.CSSProperties;
 }
 
-export default function (props: SectionProps) {
+export default function Section(props: SectionProps) {
 	if (!props.children) {
 		return null;
 	}

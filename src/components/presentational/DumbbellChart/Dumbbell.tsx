@@ -1,9 +1,9 @@
 import React from "react";
-import { Dumbbell, DumbbellClass, Axis } from "./DumbbellChart";
+import { DumbbellDataPoint, DumbbellClass, Axis } from "./DumbbellChart";
 import "./DumbbellChart.css";
 
 export interface DumbbellProps {
-    dumbbell? :Dumbbell;
+    dumbbell? :DumbbellDataPoint;
     axis : Axis;
     index : number;
 }

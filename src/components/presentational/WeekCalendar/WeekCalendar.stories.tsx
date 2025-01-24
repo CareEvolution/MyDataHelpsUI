@@ -1,31 +1,34 @@
 ﻿import React, { useState } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import WeekCalendar, { WeekCalendarProps } from "./WeekCalendar";
 import Layout from "../Layout"
 import DateRangeNavigator from "../DateRangeNavigator";
 import { add } from "date-fns";
 import { Section, SparkBarChart } from "..";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof WeekCalendar> = {
 	title: "Presentational/WeekCalendar",
 	component: WeekCalendar,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof WeekCalendar>;
+};
 
-export function Empty() {
-	var currentDate = new Date();
-	currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
-	var initialIntervalStart = currentDate;
-	while (initialIntervalStart.getDay() != 0) {
-		initialIntervalStart = add(initialIntervalStart, { days: -1 });
-	}
+export default meta;
+type Story = StoryObj<typeof WeekCalendar>;
 
+let currentDate = new Date();
+currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
+var initialIntervalStart = currentDate;
+while (initialIntervalStart.getDay() != 0) {
+	initialIntervalStart = add(initialIntervalStart, { days: -1 });
+}
+
+const renderEmpty = (args: WeekCalendarProps) => {
 	const [selectedDate, setSelectedDate] = useState(currentDate);
 	const [intervalStartDate, setIntervalStartDate] = useState(initialIntervalStart);
 
-	return <Layout colorScheme="auto">
+	return (<Layout colorScheme="auto">
 		<WeekCalendar hideDateLabel={false}
 			dayRenderer={() => null}
 			loading={false}
@@ -33,17 +36,14 @@ export function Empty() {
 			selectedDate={selectedDate}
 			onDateSelected={(d) => setSelectedDate(d)}
 			onStartDateChange={(d) => setIntervalStartDate(d)} />
-	</Layout>
+	</Layout>);
+};
+
+export const Empty: Story = {
+	render: renderEmpty
 }
 
-export function WithNavigator() {
-	var currentDate = new Date();
-	currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0, 0);
-	var initialIntervalStart = currentDate;
-	while (initialIntervalStart.getDay() != 0) {
-		initialIntervalStart = add(initialIntervalStart, { days: -1 });
-	}
-
+const renderWithNavigator = (args: WeekCalendarProps) => {
 	const [selectedDate, setSelectedDate] = useState(currentDate);
 	const [intervalStartDate, setIntervalStartDate] = useState(initialIntervalStart);
 
@@ -81,7 +81,7 @@ export function WithNavigator() {
 		return <div style={{ paddingTop: "8px" }}><SparkBarChart averageFillPercent={0.3} bars={bars} /></div>;
 	}
 
-	return <Layout colorScheme="auto">
+	return (<Layout colorScheme="auto">
 		<DateRangeNavigator intervalStart={intervalStartDate}
 			intervalType="Week"
 			onIntervalChange={(n, _) => setIntervalStartDate(n)} />
@@ -94,5 +94,9 @@ export function WithNavigator() {
 				onDateSelected={(d) => setSelectedDate(d)}
 				onStartDateChange={(d) => setIntervalStartDate(d)} />
 		</Section>
-	</Layout>
+	</Layout>);
+};
+
+export const WithNavigator: Story = {
+	render: renderWithNavigator
 }

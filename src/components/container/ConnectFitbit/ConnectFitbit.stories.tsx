@@ -2,7 +2,7 @@
 import ConnectFitbit, { ConnectFitbitProps } from "./ConnectFitbit"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { Meta, StoryObj } from "@storybook/react/*";
+import { Meta, StoryObj } from "@storybook/react";
 
 
 const meta: Meta<typeof ConnectFitbit> = {

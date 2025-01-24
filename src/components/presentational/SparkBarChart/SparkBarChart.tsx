@@ -1,6 +1,6 @@
 ﻿import React, { useContext } from 'react';
 import { LayoutContext, ShinyOverlay } from '..';
-import "./SparkBarChart.css"
+import "./SparkBarChart.css";
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
 export interface SparkBarChartProps {
@@ -14,7 +14,7 @@ export interface SparkBarChartBar {
 	barFillPercent: number;
 }
 
-export default function (props: SparkBarChartProps) {
+export default function SparkBarChart(props: SparkBarChartProps) {
 	var width = (100 / props.bars.length);
 	let context = useContext(LayoutContext);
 

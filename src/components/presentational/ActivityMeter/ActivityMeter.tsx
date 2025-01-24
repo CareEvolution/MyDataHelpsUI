@@ -18,7 +18,7 @@ export interface ActivityMeterProps {
 	thresholdLabel?: string;
 }
 
-export default function (props: ActivityMeterProps) {
+export default function ActivityMeter(props: ActivityMeterProps) {
 	let context = useContext(LayoutContext);
 
 	return <div ref={props.innerRef} className={"mdhui-activity-meter " + (props.className || "")}>

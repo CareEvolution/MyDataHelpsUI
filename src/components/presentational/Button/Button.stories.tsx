@@ -1,21 +1,22 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Button, { ButtonProps } from "./Button";
 import Layout from "../Layout"
 import TextBlock from "../TextBlock";
 import Section from "../Section";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof Button> = {
 	title: "Presentational/Button",
 	component: Button,
 	parameters: {
-		// More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof Button>;
+};
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args: ButtonProps) =>
+export default meta;
+type Story = StoryObj<typeof Button>;
+
+const render = (args: ButtonProps) =>
 	<Layout colorScheme="auto">
 		<Section>
 			<TextBlock>
@@ -24,56 +25,72 @@ const Template: ComponentStory<typeof Button> = (args: ButtonProps) =>
 		</Section>
 	</Layout>;
 
-export const Enabled = Template.bind({});
-Enabled.args = {
-	children: "Click Me",
-	disabled: false
+export const Enabled: Story = {
+	args: {
+		children: "Click Me",
+		disabled: false
+	},
+	render: render
 }
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	children: "Click Me",
-	disabled: true
+export const Disabled: Story = {
+	args: {
+		children: "Click Me",
+		disabled: true
+	},
+	render: render
 }
 
-export const CustomColor = Template.bind({});
-CustomColor.args = {
-	disabled: false,
-	children: "Click Me",
-	color: "red"
+export const CustomColor: Story = {
+	args: {
+		disabled: false,
+		children: "Click Me",
+		color: "red"
+	},
+	render: render
 }
 
-export const Loading = Template.bind({});
-Loading.args = {
-	disabled: false,
-	children: "Doing Something...",
-	loading: true
+export const Loading: Story = {
+	args: {
+		disabled: false,
+		children: "Doing Something...",
+		loading: true
+	},
+	render: render
 }
 
-export const SubtleVariant = Template.bind({});
-SubtleVariant.args = {
-	disabled: false,
-	children: "Click Here",
-	variant: "subtle"
+export const SubtleVariant: Story = {
+	args: {
+		disabled: false,
+		children: "Click Here",
+		variant: "subtle"
+	},
+	render: render
 }
 
-export const LightVariant = Template.bind({});
-LightVariant.args = {
-	disabled: false,
-	children: "Click Here",
-	variant: "light"
+export const LightVariant: Story = {
+	args: {
+		disabled: false,
+		children: "Click Here",
+		variant: "light"
+	},
+	render: render
 }
 
-export const NotFullWidth = Template.bind({});
-NotFullWidth.args = {
-	disabled: false,
-	children: "Click Here",
-	fullWidth: false
+export const NotFullWidth: Story = {
+	args: {
+		disabled: false,
+		children: "Click Here",
+		fullWidth: false
+	},
+	render: render
 }
 
-export const DefaultMargin = Template.bind({});
-DefaultMargin.args = {
-	disabled: false,
-	children: "Click Here",
-	defaultMargin: true
+export const DefaultMargin: Story = {
+	args: {
+		disabled: false,
+		children: "Click Here",
+		defaultMargin: true
+	},
+	render: render
 }
