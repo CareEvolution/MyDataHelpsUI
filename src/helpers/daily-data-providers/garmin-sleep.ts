@@ -24,7 +24,7 @@ function querySleep(property: string, startDate: Date, endDate: Date, divideBy?:
                 value = value / divideBy;
             }
 
-            if (!data[dataKey] || data[dataKey] > value) {
+            if (!data[dataKey] || data[dataKey] < value) {
                 data[dataKey] = value;
             }
         });
