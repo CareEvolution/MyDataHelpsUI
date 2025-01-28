@@ -5,7 +5,7 @@ import { toDate, daysInMonth, getDayOfWeek, getDayOfWeekLetter,
     getAbbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
     getFullDateString, getLongDateString, getShortDateString, getShortestDateString,
     getMonthName, getAbbreviatedMonthName, getTimeFromNowString,
-    getRelativeDateString, getTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
+    getRelativeDateString, getTimeOfDayString, getShortTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
 import { describe, it } from '@jest/globals';
 
 let mockMDHLanguage = "en";
@@ -273,5 +273,23 @@ describe('Date Helper Tests', () => {
             const result = getTimeOfDayString(new Date(2024, 11, 4));
             expect(result).toBe("");
         });
-    });        
+    });
+    
+    describe('getShortTimeOfDayString', () => {        
+        it('Should return an English short time string.', () => {            
+            mockMDHLanguage = "en";
+            const result = getShortTimeOfDayString(new Date(2024, 11, 4, 3, 22));
+            expect(result).toBe("3 AM");
+        });
+        it('Should return a localized short time string.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = getShortTimeOfDayString(new Date(2024, 11, 4, 3, 22));
+            expect(result).toBe("03:22");
+        });
+        it('Should return an empty string if mising a time.', () => {            
+            mockMDHLanguage = "de-DE";
+            const result = getShortTimeOfDayString(new Date(2024, 11, 4));
+            expect(result).toBe("");
+        });
+    });
 });
