@@ -190,7 +190,7 @@ export function getTimeOfDayString(dateOrDateString: Date | string) {
 	return formatDateForLocale(date, "p");
 }
 
-/** e.g., 12p (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
+/** e.g., 12 P (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
 export function getShortTimeOfDayString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
 	if (!date || (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0)) {
