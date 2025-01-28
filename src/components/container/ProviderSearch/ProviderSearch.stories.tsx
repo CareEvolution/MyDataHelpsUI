@@ -49,7 +49,23 @@ export const HealthPlanOnly: Story = {
 export const onProviderSelected: Story = {
 	args: {
 		previewState: "Default",
-		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		onProviderSelected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+	},
+	render: render
+}
+
+export const onProviderConnected: Story = {
+	args: {
+		previewState: "Default",
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You connected to ${provider.name}`)
+	},
+	render: render
+}
+
+export const publicEndpoint: Story = {
+	args: {
+		publicProviderSearchApiUrl: "https://designer.mydatahelps.dev/api/fhirpublicproviders",
+		onProviderSelected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
 	},
 	render: render
 }
@@ -72,7 +88,7 @@ export const Searching: Story = {
 export const Live: Story = {
 	args: {
 		previewState: "Default",
-		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You connected to ${provider.name}`)
 	},
 	render: render
 }

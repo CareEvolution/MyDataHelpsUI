@@ -12,10 +12,12 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    onProviderSelected?: (provider: ExternalAccountProvider) => void;
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
-    innerRef?: React.Ref<HTMLDivElement>
-    connectExternalAccountOptions?: ConnectExternalAccountOptions,
-    hideRequestProviderButton?: boolean
+    innerRef?: React.Ref<HTMLDivElement>;
+    connectExternalAccountOptions?: ConnectExternalAccountOptions;
+    hideRequestProviderButton?: boolean;
+    publicProviderSearchApiUrl?: string;
 }
 
 export type ProviderSearchPreviewState = "Default" | "Searching";
@@ -69,13 +71,31 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setSearching(true);
         let requestID = ++currentRequestID;
 
-        MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
-            if (requestID == currentRequestID) {
-                updateSearchResults(searchResultsResponse.externalAccountProviders);
-                setTotalResults(searchResultsResponse.totalExternalAccountProviders);
-                setSearching(false);
-            }
-        });
+        if (!props.publicProviderSearchApiUrl) {
+            MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
+                if (requestID == currentRequestID) {
+                    updateSearchResults(searchResultsResponse.externalAccountProviders);
+                    setTotalResults(searchResultsResponse.totalExternalAccountProviders);
+                    setSearching(false);
+                }
+            });
+        }
+        else {
+            fetch(`${props.publicProviderSearchApiUrl}?keyword=${search}&pageSize=${pageSize}&pageNumber=${currentPage}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+            })
+                .then((response) => response.json())
+                .then(function (searchResultsResponse) {
+                    if (requestID == currentRequestID) {
+                        updateSearchResults(searchResultsResponse.Providers.map((p: any) => ({ id: p.ID, name: p.OrganizationName, logoUrl: p.LogoURL, category: p.Category } as ExternalAccountProvider)) || []);
+                        setTotalResults(searchResultsResponse.TotalCount);
+                        setSearching(false);
+                    }
+                });
+        }
     }
 
     function updateSearchResults(providers: ExternalAccountProvider[]) {
@@ -174,7 +194,13 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider)}>
+                    <UnstyledButton key={provider.id} className="provider" onClick={() => {
+                        if (props.onProviderSelected) {
+                            props.onProviderSelected(provider);
+                        } else {
+                            connectToProvider(provider);
+                        }
+                    }}>
                         {provider.logoUrl &&
                             <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
                         }
