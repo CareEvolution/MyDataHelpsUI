@@ -38,12 +38,52 @@ export const ProvidersOnly: Story = {
 	render: render
 }
 
-export const HealthPlanOnly: Story = {
+export const HealthPlansOnly: Story = {
 	args: {
 		previewState: "Default",
 		providerCategories: ["Health Plan"]
 	},
 	render: render
+}
+
+export const DeviceManufacturersOnly: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Device Manufacturer"]
+	},
+	render: render
+}
+
+export const ProvidersAndHealthPlans: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider", "Health Plan"]
+	},
+	render: render
+}
+
+export const ProvidersAndDeviceManufacturers: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider", "Device Manufacturer"]
+	},
+	render: render
+}
+
+export const HealthPlansAndDeviceManufacturers: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Health Plan", "Device Manufacturer"]
+	},
+	render: render
+}
+
+export const ProvidersAndHealthPlansAndDeviceManufacturers: Story = {
+    args: {
+        previewState: "Default",
+        providerCategories: ["Provider", "Health Plan", "Device Manufacturer"]
+    },
+    render: render
 }
 
 export const onProviderSelected: Story = {

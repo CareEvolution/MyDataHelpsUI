@@ -9,6 +9,12 @@ export var previewProviders: ExternalAccountProvider[] =
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/20/logo"
         },
         {
+            "id": 2,
+            "name": "Fitbit",
+            "category": "Device Manufacturer",
+            "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo"
+        },
+        {
             "id": 13,
             "name": "A Woman's Place, LLC",
             "category": "Provider",
