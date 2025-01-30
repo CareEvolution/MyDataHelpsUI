@@ -79,7 +79,6 @@ export default function (props: MostRecentNotificationProps) {
 
 	async function findMatchingNotification(queryParams: NotificationQueryParameters, identifierRegex: string): Promise<Notification | null> {
 
-		const foundNotification: Notification | null = null;
 		let count = 1;
 		do {
 			queryParams.limit = Math.min(100, count * 20);
@@ -91,9 +90,9 @@ export default function (props: MostRecentNotificationProps) {
 			}
 			queryParams.pageID = result.nextPageID;
 
-		} while (queryParams.pageID !== null && !foundNotification && count < 100);
+		} while (queryParams.pageID !== null && count < 100); // limit to 100 requests just for sanity
 
-		return foundNotification;
+		return null;
 
 	}
 
