@@ -80,7 +80,15 @@ export default function (props: MostRecentNotificationProps) {
 	async function findMatchingNotification(queryParams: NotificationQueryParameters, identifierRegex: string): Promise<Notification | null> {
 
 		let count = 1;
+		const MAX_PAGES = 100;
+
 		do {
+
+			//limit to 100 requests just for sanity
+			if (count >= MAX_PAGES) {
+				return null;
+			}
+
 			queryParams.limit = Math.min(100, count * 20);
 			count++;
 			const result = await MyDataHelps.queryNotifications(queryParams);
@@ -88,11 +96,13 @@ export default function (props: MostRecentNotificationProps) {
 			if (matchingNotification) {
 				return matchingNotification;
 			}
+			if (!result.nextPageID) {
+				return null;
+			}
 			queryParams.pageID = result.nextPageID;
 
-		} while (queryParams.pageID !== null && count < 100); // limit to 100 requests just for sanity
+		} while (true);
 
-		return null;
 
 	}
 
