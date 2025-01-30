@@ -25,6 +25,7 @@ export default function (props: MostRecentNotificationProps) {
 	async function initialize() {
 		setLoading(true);
 		if (props.previewState === 'loading') {
+			setNotification(null);
 			return;
 		}
 
@@ -43,6 +44,7 @@ export default function (props: MostRecentNotificationProps) {
 		}
 
 		if (props.previewState === 'loaded with no data') {
+			setNotification(null);
 			setLoading(false);
 			return;
 		}
