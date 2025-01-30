@@ -81,16 +81,12 @@ export default function (props: MostRecentNotificationProps) {
 
 		let count = 1;
 		const MAX_PAGES = 100;
+		const MAX_PAGE_SIZE = 100;
+		const LIMIT_INCREASE_STEP = 20;
 
 		do {
-
-			//limit to 100 requests just for sanity
-			if (count >= MAX_PAGES) {
-				return null;
-			}
-
-			queryParams.limit = Math.min(100, count * 20);
 			count++;
+			queryParams.limit = Math.min(MAX_PAGE_SIZE, count * LIMIT_INCREASE_STEP);
 			const result = await MyDataHelps.queryNotifications(queryParams);
 			const matchingNotification = result.notifications.find(n => n.identifier.match(identifierRegex));
 			if (matchingNotification) {
@@ -101,7 +97,7 @@ export default function (props: MostRecentNotificationProps) {
 			}
 			queryParams.pageID = result.nextPageID;
 
-		} while (true);
+		} while (count <= MAX_PAGES); //limit to 100 requests just for sanity
 
 
 	}
