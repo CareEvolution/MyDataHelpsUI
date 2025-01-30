@@ -34,8 +34,6 @@ const render = (args: MostRecentNotificationStoryArgs) => {
 		}
 	}
 
-	console.log("args", args)
-
 	return <Layout colorScheme={args.colorScheme}>
 		<Card>
 			<MostRecentNotification
