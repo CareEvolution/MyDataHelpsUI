@@ -22,6 +22,23 @@ export default function (props: MostRecentNotificationProps) {
 	const [notification, setNotification] = useState<Notification | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
+	function validateRegex(regex: RegExp | undefined): boolean {
+		if (!regex) {
+			return true;
+		}
+		try {
+			// Limit the length of the regex pattern to prevent ReDoS attacks
+			if (regex.source.length > 100) {
+				return false;
+			}
+			new RegExp(regex.source);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+
 	async function initialize() {
 		setLoading(true);
 		if (props.previewState === 'loading') {
@@ -69,7 +86,7 @@ export default function (props: MostRecentNotificationProps) {
 				setNotification(notificationPage.notifications[0]);
 			}
 		} else {
-			const notification = await findMatchingNotification(parameters, props.notificationIdentifierRegex.source);
+			const notification = await findMatchingNotification(parameters, props.notificationIdentifierRegex);
 			setLoading(false);
 			if (notification) {
 				setNotification(notification);
@@ -77,7 +94,7 @@ export default function (props: MostRecentNotificationProps) {
 		}
 	}
 
-	async function findMatchingNotification(queryParams: NotificationQueryParameters, identifierRegex: string): Promise<Notification | null> {
+	async function findMatchingNotification(queryParams: NotificationQueryParameters, identifierRegex: RegExp): Promise<Notification | null> {
 
 		let count = 1;
 		const MAX_PAGES = 100;
@@ -103,6 +120,10 @@ export default function (props: MostRecentNotificationProps) {
 	}
 
 	useInitializeView(() => {
+		if (!validateRegex(props.notificationIdentifierRegex)) {
+			console.error("Invalid regex pattern");
+			return;
+		}
 		initialize().catch(console.error);
 	}, [], [props.previewState, props.notificationType, props.notificationIdentifierRegex, props.hideAfterHours]);
 
