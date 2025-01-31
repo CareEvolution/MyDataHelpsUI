@@ -17,11 +17,11 @@ export interface DateRangeNavigatorProps {
 	sticky?: boolean;
 }
 
-export default function (props: DateRangeNavigatorProps) {
-	const duration: Duration = props.intervalType === "Month" ? { months: 1 } 
-							: props.intervalType === "Day" ? { days: 1 } 
-							: props.intervalType === "6Month" ? { months: 6 }
-							: { weeks: 1 };
+export default function DateRangeNavigator(props: DateRangeNavigatorProps) {
+	const duration: Duration = props.intervalType === "Month" ? { months: 1 }
+		: props.intervalType === "Day" ? { days: 1 }
+			: props.intervalType === "6Month" ? { months: 6 }
+				: { weeks: 1 };
 
 	const nextInterval = () => {
 		var newIntervalStart = add(props.intervalStart, duration);
@@ -39,7 +39,7 @@ export default function (props: DateRangeNavigatorProps) {
 	if (props.intervalStart <= currentDate && currentDate < intervalEnd) {
 		isCurrentInterval = true;
 	}
-	
+
 	let classes = ["mdhui-date-range-navigator"]
 	if (props.variant == "rounded") {
 		classes.push("mdhui-date-range-navigator-rounded");
