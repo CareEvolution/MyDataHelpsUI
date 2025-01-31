@@ -16,7 +16,12 @@ export interface LabResultsSummaryProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: LabResultsSummaryProps) {
+/** Displays participant EHR Lab data. A connection to an EHR provider is required to display the data.
+ * Can be configured to show Recent, or Important labs. Important labs can include sparklines. 
+ * An onClick event is supported for customizing where the user will go when drillin into the full lab report
+ * A onViewTermInfo event is supported for customizing what happens when the user clicks on a term information button
+*/
+export default function LabResultsSummary(props: LabResultsSummaryProps) {
     const [model, setModel] = useState<any>(null);
     const [noOverflow, setNoOverflow] = useState<boolean>(false);
 
