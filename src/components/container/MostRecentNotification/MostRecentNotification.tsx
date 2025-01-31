@@ -99,16 +99,12 @@ export default function (props: MostRecentNotificationProps) {
 
 		} while (count <= MAX_PAGES); //limit to 100 requests just for sanity
 
-
+		return null;
 	}
 
 	useInitializeView(() => {
 		initialize().catch(console.error);
 	}, [], [props.previewState, props.notificationType, props.notificationIdentifierRegex, props.hideAfterHours]);
-
-	if (!notification) {
-		return null;
-	}
 
 	return (
 		<div ref={props.innerRef} className="mdhui-most-recent-notification">

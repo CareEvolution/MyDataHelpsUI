@@ -4,11 +4,18 @@ import { Notification } from "@careevolution/mydatahelps-js"
 import { getRelativeDateString } from '../../../helpers/date-helpers';
 
 export interface SingleNotificationProps {
-	notification: Notification
+	notification: Notification | null
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleNotificationProps) {
+	if (!props.notification) {
+		return (
+			<div ref={props.innerRef} className="mdhui-single-notification">
+				<div className="notification-body">No notifications received</div>
+			</div>
+		)
+	}
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
