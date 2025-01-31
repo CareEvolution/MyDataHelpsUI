@@ -4,6 +4,7 @@ import combinedTypeDefinitions from "./combined";
 import fitbitTypeDefinitions from "./fitbit";
 import garminTypeDefinitions from "./garmin";
 import googleFitTypeDefinitions from "./google-fit";
+import healthConnectTypeDefinitions from "./health-connect";
 
 const allTypeDefinitions = [
 	...appleHealthTypeDefinitions,
@@ -11,6 +12,8 @@ const allTypeDefinitions = [
 	...garminTypeDefinitions,
 	...combinedTypeDefinitions,
 	...airQualityTypeDefinitions,
-	...googleFitTypeDefinitions
+	...googleFitTypeDefinitions,
+	...healthConnectTypeDefinitions
+
 ];
 export default allTypeDefinitions;

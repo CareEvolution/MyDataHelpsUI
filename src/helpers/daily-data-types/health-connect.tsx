@@ -14,7 +14,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     type: DailyDataType.HealthConnectTotalExerciseMinutes,
     dataProvider: healthConnectTotalExerciseMinutesDataProvider,
     availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
-      "Exercise",
+      "exercise",
     ]),
     labelKey: "heart-rate-range",
     icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -26,7 +26,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     type: DailyDataType.HealthConnectAverageRestingHeartRate,
     dataProvider: healthConnectAverageRestingHeartRateDataProvider,
     availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
-      "RestingHeartRate",
+      "resting-heart-rate",
     ]),
     labelKey: "resting-heart-rate",
     icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,

@@ -17,3 +17,8 @@ export const Modal = {
     args: { presentation: "Modal", previewState: "default" },
     render: render
 };
+
+export const Live = {
+    args: { previewState: "live" },
+    render: render
+};
