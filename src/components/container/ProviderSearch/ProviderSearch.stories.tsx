@@ -79,22 +79,14 @@ export const HealthPlansAndDeviceManufacturers: Story = {
 }
 
 export const ProvidersAndHealthPlansAndDeviceManufacturers: Story = {
-    args: {
-        previewState: "Default",
-        providerCategories: ["Provider", "Health Plan", "Device Manufacturer"]
-    },
-    render: render
-}
-
-export const onProviderSelected: Story = {
 	args: {
 		previewState: "Default",
-		onProviderConnected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		providerCategories: ["Provider", "Health Plan", "Device Manufacturer"]
 	},
 	render: render
 }
 
-export const hideAddNewAction: Story = {
+export const HideAddNewAction: Story = {
 	args: {
 		previewState: "Default",
 		hideRequestProviderButton: true
@@ -123,6 +115,13 @@ export const LiveStandalone: Story = {
 			openNewWindow: false,
 			standaloneModeFinalRedirectPath: "https://mydatahelps.org"// replace with actual redirect url for this to work
 		}
+	},
+	render: render
+}
+
+export const LiveOnProviderConnected: Story = {
+	args: {
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`Provider ${provider.name} connected.`)
 	},
 	render: render
 }
