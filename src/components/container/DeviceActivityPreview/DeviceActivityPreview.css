@@ -1,0 +1,53 @@
+.mdhui-device-activity-preview .mdhui-device-activity-preview-items {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.mdhui-device-activity-preview .mdhui-device-activity-preview-item {
+    width: 50%;
+}
+
+.mdhui-device-activity-preview .mdhui-device-activity-preview-label {
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-transform: uppercase;
+    padding-top: 16px;
+}
+
+.mdhui-device-activity-preview .mdhui-device-activity-preview-icon {
+    position: absolute;
+    line-height: 32px;
+    text-align: center;
+    left: 16px;
+    top: calc(50% - 8px);
+    color: var(--mdhui-color-primary);
+    font-size: 1em;
+}
+
+.mdhui-device-activity-preview .mdhui-device-activity-preview-value {
+    font-weight: bold;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.mdhui-device-activity-preview-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.mdhui-device-activity-preview-chart {
+    height: 100%;
+    width: 50%;
+}
