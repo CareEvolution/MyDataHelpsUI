@@ -105,7 +105,7 @@ export default function HealthPreviewSection(props: HealthPreviewSectionProps) {
     }
 
     return <div ref={props.innerRef}>
-        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick() ?? {}}>
+        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={props.onClick}>
             <div>
                 {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
             </div>
