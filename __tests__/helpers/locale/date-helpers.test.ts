@@ -268,7 +268,7 @@ describe('Date Helper Tests', () => {
             const result = getTimeOfDayString(new Date(2024, 11, 4, 3, 22));
             expect(result).toBe("03:22");
         });
-        it('Should return an empty string if mising a time.', () => {            
+        it('Should return an empty string if missing a time.', () => {            
             mockMDHLanguage = "de-DE";
             const result = getTimeOfDayString(new Date(2024, 11, 4));
             expect(result).toBe("");
@@ -286,7 +286,7 @@ describe('Date Helper Tests', () => {
             const result = getShortTimeOfDayString(new Date(2024, 11, 4, 3, 22));
             expect(result).toBe("03:22");
         });
-        it('Should return an empty string if mising a time.', () => {            
+        it('Should return an empty string if missing a time.', () => {            
             mockMDHLanguage = "de-DE";
             const result = getShortTimeOfDayString(new Date(2024, 11, 4));
             expect(result).toBe("");
