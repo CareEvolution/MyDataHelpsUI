@@ -8,7 +8,7 @@ import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
-import { getTimeOfDayString } from '../../../helpers/date-helpers';
+import { getShortTimeOfDayString, getTimeOfDayString } from '../../../helpers/date-helpers';
 import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface GlucoseChartProps {
@@ -112,7 +112,7 @@ export default function (props: GlucoseChartProps) {
         add(selectedDate, { hours: 18 }).valueOf(),
         add(selectedDate, { hours: 21 }).valueOf()
     ];
-    let chartTickFormatter = (value: number) => getTimeOfDayString(new Date(value));
+    let chartTickFormatter = (value: number) => getShortTimeOfDayString(new Date(value));
 
     if (selectedMeal) {
         chartDomain = [add(selectedMeal.timestamp, { minutes: -3 }).valueOf(), add(selectedMeal.timestamp, { hours: 2 }).valueOf()];

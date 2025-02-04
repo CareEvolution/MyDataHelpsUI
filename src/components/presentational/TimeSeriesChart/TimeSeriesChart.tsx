@@ -6,7 +6,7 @@ import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { getAbbreviatedMonthName, getAbbreviatedDayOfWeek, getTimeOfDayString } from '../../../helpers/date-helpers'
+import { getAbbreviatedMonthName, getAbbreviatedDayOfWeek, getShortTimeOfDayString } from '../../../helpers/date-helpers'
 import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
@@ -70,7 +70,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getTimeOfDayString(currentDate)}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getShortTimeOfDayString(currentDate)}</text>
             </>;
         }
         return <>
