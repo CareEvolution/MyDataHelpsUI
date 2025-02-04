@@ -202,5 +202,5 @@ export function getShortTimeOfDayString(dateOrDateString: Date | string) {
 		timeStyle: 'short',
 		}).resolvedOptions();
 
-		return formatOptions.hour12 ? formatDateForLocale(date, "h a") : formatDateForLocale(date, 'p');
+		return formatDateForLocale(date, formatOptions.hour12 ? "h a" : "p");
 }
