@@ -6,7 +6,7 @@ import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
 import language from "../../../helpers/language";
-import { getAllergies, getPersonID } from "../../../helpers/fhir";
+import { downloadAndStoreFHIRData, getAllergies } from "../../../helpers/fhir";
 
 export interface AllergiesListProps {
     previewState?: "default"
@@ -55,11 +55,10 @@ export default function (props: AllergiesListProps) {
         });
 
         MyDataHelps.getParticipantInfo().then(function (participantInfo) {
-            getPersonID(participantInfo.participantID).then(function (personID) {
-                getAllergies(personID).then(function (response) {
-                    console.log(response);
+            //getPersonID(participantInfo.participantID).then(function (personID) {
+                downloadAndStoreFHIRData().then(function (response) {
                 });
-            });
+            //});
         });
 
     }
