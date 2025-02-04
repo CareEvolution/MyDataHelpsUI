@@ -1,4 +1,8 @@
-.mdhui-device-activity-preview .mdhui-device-activity-preview-items {
+.mdhui-device-activity-preview {
+    padding: 16px;
+}
+
+.mdhui-device-activity-preview-items {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -16,7 +20,6 @@
     text-overflow: ellipsis;
     overflow: hidden;
     text-transform: uppercase;
-    padding-top: 16px;
 }
 
 .mdhui-device-activity-preview .mdhui-device-activity-preview-icon {
@@ -31,7 +34,6 @@
 
 .mdhui-device-activity-preview .mdhui-device-activity-preview-value {
     font-weight: bold;
-    margin-bottom: 4px;
     margin-top: 4px;
     display: block;
     white-space: nowrap;
@@ -48,6 +50,5 @@
 }
 
 .mdhui-device-activity-preview-chart {
-    height: 100%;
-    width: 50%;
+    width: 35%;
 }

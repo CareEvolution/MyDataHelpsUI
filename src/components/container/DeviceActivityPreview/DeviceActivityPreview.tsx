@@ -66,24 +66,16 @@ export default function DeviceActivityPreview(props: DeviceActivityPreviewProps)
         </div>
     }
 
-    return <div ref={props.innerRef}>
-        <Action
-            className="mdhui-device-activity-preview mdhui-health-preview-section"
-            bottomBorder
-            title={language("device-activity")}
-            titleIcon={<img className="mdhui-health-preview-icon" src={icon} />}
-            onClick={() => drilldown()}
-            indicatorValue={"All"}
-            indicatorPosition={"topRight"}>
-            {!results &&
-                <LoadingIndicator />
-            }
-            <div className="mdhui-device-activity-preview-items">
-                {results && props.dataTypes.map(d =>
-                    getPreviewItem(d)
-                )}
-            </div>
-        </Action>
+    return <div ref={props.innerRef} className="mdhui-device-activity-preview">
+
+        {!results &&
+            <LoadingIndicator />
+        }
+        <div className="mdhui-device-activity-preview-items">
+            {results && props.dataTypes.map(d =>
+                getPreviewItem(d)
+            )}
+        </div>
     </div>
 
 
