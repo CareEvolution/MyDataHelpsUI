@@ -1,16 +1,12 @@
 .mdhui-device-activity-preview {
-    padding: 16px;
-}
-
-.mdhui-device-activity-preview-items {
     display: flex;
-    width: 100%;
     flex-direction: row;
-    gap: 16px;
+    justify-content: space-between;
+    margin: 16px;
 }
 
-.mdhui-device-activity-preview .mdhui-device-activity-preview-item {
-    width: 50%;
+.mdhui-device-activity-preview .mdhui-device-activity-preview-chart {
+    width: 35%;
 }
 
 .mdhui-device-activity-preview .mdhui-device-activity-preview-label {
@@ -39,16 +35,4 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-
-.mdhui-device-activity-preview-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-}
-
-.mdhui-device-activity-preview-chart {
-    width: 35%;
 }
