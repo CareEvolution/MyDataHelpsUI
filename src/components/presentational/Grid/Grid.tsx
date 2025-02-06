@@ -31,12 +31,9 @@ export function Grid(props: GridProps) {
     }
 
     let style = { ...props.style };
-    if (props.gap) {
-        style.gap = props.gap + "px";
-    } else {
-        style.gap = "16px";
-    }
-    return <GridContext.Provider value={{ gap: props.gap || 16 }}>
+    let gap = (props.gap || props.gap === 0) ? props.gap : 16;
+    style.gap = `${gap}px`;
+    return <GridContext.Provider value={{ gap: gap }}>
         <div className={classes.join(" ")} style={style}>{props.children}</div>
     </GridContext.Provider>
 }

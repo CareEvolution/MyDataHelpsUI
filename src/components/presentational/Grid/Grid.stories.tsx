@@ -5,6 +5,7 @@ import Layout from "../../presentational/Layout"
 import { Grid, GridProps } from "./Grid";
 import DailyDataGoal from "../../container/DailyDataGoal/DailyDataGoal";
 import { DailyDataType } from "../../../helpers";
+import MicroTrend from "../../container/MicroTrend/MicroTrend";
 
 export default {
     title: "Presentational/Grid",
@@ -106,4 +107,58 @@ let dailyDataGoals: GridProps = {
 export const DailyDataGoals = {
     args: dailyDataGoals,
     render: render
+};
+
+
+
+let trendGrid: GridProps = {
+    children: [
+        <>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        dailyDataType: DailyDataType.Steps,
+                        color: "rgba(255, 166, 102, 1)"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        dailyDataType: DailyDataType.SleepMinutes,
+                        color: "rgba(74, 144, 226, 1)"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        label: "Air Quality",
+                        dailyDataType: DailyDataType.HomeAirQuality,
+                        color: "rgb(53, 166, 160)"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        dailyDataType: DailyDataType.RestingHeartRate,
+                        color: "#e35c33"
+                    }} />
+                </Card>
+            </Grid.Column>
+        </>
+    ],
+    gap: 16,
+    style: {
+        marginLeft: "16px",
+        marginTop: "16px"
+    }
+}
+
+export const TrendGrid = {
+    args: trendGrid,
+    render: (args: GridProps) => <Layout colorScheme='auto'>
+        <Grid {...args} />
+    </Layout>
 };

@@ -1,15 +1,15 @@
-.mdhui-device-activity-preview {
+.mdhui-micro-trend {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: 16px;
 }
 
-.mdhui-device-activity-preview .mdhui-device-activity-preview-chart {
+.mdhui-micro-trend .mdhui-micro-trend-chart {
     width: 35%;
 }
 
-.mdhui-device-activity-preview .mdhui-device-activity-preview-label {
+.mdhui-micro-trend .mdhui-micro-trend-label {
     font-size: .7em;
     color: var(--mdhui-text-color-2);
     white-space: nowrap;
@@ -18,7 +18,7 @@
     text-transform: uppercase;
 }
 
-.mdhui-device-activity-preview .mdhui-device-activity-preview-icon {
+.mdhui-micro-trend .mdhui-micro-trend-icon {
     position: absolute;
     line-height: 32px;
     text-align: center;
@@ -28,7 +28,7 @@
     font-size: 1em;
 }
 
-.mdhui-device-activity-preview .mdhui-device-activity-preview-value {
+.mdhui-micro-trend .mdhui-micro-trend-value {
     font-weight: bold;
     margin-top: 4px;
     display: block;

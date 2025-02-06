@@ -1,6 +1,7 @@
 .mdhui-grid {
     display: flex;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .mdhui-grid.mdhui-grid-default-margin {
@@ -10,4 +11,12 @@
 .mdhui-grid .mdhui-grid-column {
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.mdhui-grid .mdhui-grid-column:empty {
+    display: none;
+}
+
+.mdhui-grid .mdhui-grid-column > .mdhui-card {
+    margin: 0;
 }
