@@ -109,8 +109,6 @@ export const DailyDataGoals = {
     render: render
 };
 
-
-
 let trendGrid: GridProps = {
     children: [
         <>

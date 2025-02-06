@@ -1,8 +1,11 @@
 .mdhui-micro-trend {
+    margin: 16px;
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-info {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 16px;
 }
 
 .mdhui-micro-trend .mdhui-micro-trend-chart {
