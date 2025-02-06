@@ -189,3 +189,18 @@ export function getTimeOfDayString(dateOrDateString: Date | string) {
 	}
 	return formatDateForLocale(date, "p");
 }
+
+/** e.g., 12 P (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
+export function getShortTimeOfDayString(dateOrDateString: Date | string) {
+	const date = toDate(dateOrDateString);
+	if (!date || (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0)) {
+		return "";
+	}
+	// date-fns doesn't have a format for this one, so we have to fall back to Intl
+	const locale = getIntlLocale();
+	const formatOptions = new Intl.DateTimeFormat(locale, {
+		timeStyle: 'short',
+		}).resolvedOptions();
+
+		return formatDateForLocale(date, formatOptions.hour12 ? "h a" : "p");
+}
