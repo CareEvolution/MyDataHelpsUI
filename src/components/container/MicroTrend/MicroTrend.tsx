@@ -25,6 +25,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     }
 
     useInitializeView(loadData, ["externalAccountSyncComplete"]);
+
     if (!results) {
         return null;
     }
@@ -34,8 +35,8 @@ export default function MicroTrend(props: MicroTrendProps) {
         return null;
     }
 
-    let definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
-    let formatter = props.dataType.formatter ?? definition.formatter;
+    const definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
+    const formatter = props.dataType.formatter ?? definition.formatter;
     let formattedValue = "--";
     let noData = true;
     if (results![getDayKey(date)]?.value) {
@@ -43,13 +44,13 @@ export default function MicroTrend(props: MicroTrendProps) {
         noData = false;
     }
 
-    var bars: SparkBarChartBar[] = [];
+    const bars: SparkBarChartBar[] = [];
     for (var i = -6; i <= 0; i++) {
-        let dayKey = getDayKey(add(date, { days: i }));
-        let dayData = results[dayKey];
-        let value = dayData?.value ?? 0;
-        let threshold = dayData?.threshold ?? 0;
-        let relativePercent = dayData?.relativePercent ?? 0;
+        const dayKey = getDayKey(add(date, { days: i }));
+        const dayData = results[dayKey];
+        const value = dayData?.value ?? 0;
+        const threshold = dayData?.threshold ?? 0;
+        const relativePercent = dayData?.relativePercent ?? 0;
         bars.push({
             barFillPercent: relativePercent,
             color: (value > threshold ? (props.dataType.overThresholdColor ?? props.dataType.color) : props.dataType.color) || "var(--mdhui-color-primary)"
