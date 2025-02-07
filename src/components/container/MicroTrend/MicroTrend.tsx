@@ -25,13 +25,11 @@ export default function MicroTrend(props: MicroTrendProps) {
     }
 
     useInitializeView(loadData, ["externalAccountSyncComplete"]);
-
     if (!results) {
         return null;
     }
 
     const hasRecentData = Object.keys(results).some(k => results[k].value > 0);
-    // if no results in the last 7 days, don't render
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
