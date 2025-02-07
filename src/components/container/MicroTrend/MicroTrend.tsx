@@ -13,10 +13,10 @@ export interface MicroTrendProps {
 }
 
 export default function MicroTrend(props: MicroTrendProps) {
-    let context = useContext(LayoutContext);
-    let [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
-    let dateRangeContext = useContext(DateRangeContext);
-    let date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
+    const context = useContext(LayoutContext);
+    const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
+    const dateRangeContext = useContext(DateRangeContext);
+    const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
 
     function loadData() {
         queryRelativeActivity(add(date, { days: -6 }), date, [props.dataType], !!props.previewState).then(results => {
