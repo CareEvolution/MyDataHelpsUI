@@ -38,14 +38,14 @@ export default function MicroTrend(props: MicroTrendProps) {
     let formatter = props.dataType.formatter ?? definition.formatter;
     let formattedValue = "--";
     let noData = true;
-    if (results![getDayKey(new Date())]?.value) {
-        formattedValue = formatter(results![getDayKey(new Date())].value);
+    if (results![getDayKey(date)]?.value) {
+        formattedValue = formatter(results![getDayKey(date)].value);
         noData = false;
     }
 
     var bars: SparkBarChartBar[] = [];
     for (var i = -6; i <= 0; i++) {
-        let dayKey = getDayKey(add(new Date(), { days: i }));
+        let dayKey = getDayKey(add(date, { days: i }));
         let dayData = results[dayKey];
         let value = dayData?.value ?? 0;
         let threshold = dayData?.threshold ?? 0;
