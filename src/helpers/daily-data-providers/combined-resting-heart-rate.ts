@@ -1,5 +1,5 @@
 ﻿import { add } from "date-fns";
-import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider } from ".";
+import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, healthConnectAverageRestingHeartRateDataProvider } from ".";
 import getDayKey from "../get-day-key";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
@@ -15,6 +15,9 @@ export default function (startDate: Date, endDate: Date) {
 		}
 		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
 			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
+		}
+		if (settings.healthConnectEnabled) {
+			providers.push(healthConnectAverageRestingHeartRateDataProvider(startDate, endDate));
 		}
 
 		if (!providers.length) {

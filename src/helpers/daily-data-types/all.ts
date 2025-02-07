@@ -14,6 +14,5 @@ const allTypeDefinitions = [
 	...airQualityTypeDefinitions,
 	...googleFitTypeDefinitions,
 	...healthConnectTypeDefinitions
-
 ];
 export default allTypeDefinitions;
