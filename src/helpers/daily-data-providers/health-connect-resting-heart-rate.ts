@@ -8,7 +8,7 @@ export async function averageRestingHeartRateProvider(
 ): Promise<DailyDataQueryResult> {
   const aggregates = await queryAllDeviceDataV2Aggregates({
     namespace: "HealthConnect",
-    type: "RestingHeartRate",
+    type: "resting-heart-rate",
     intervalAmount: 1,
     intervalType: "Days",
     aggregateFunctions: ["avg"],
