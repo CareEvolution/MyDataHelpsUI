@@ -39,6 +39,10 @@ export function Grid(props: GridProps) {
 }
 
 Grid.Column = function (props: GridColumnProps) {
+    if (!props.children) {
+		return null;
+	}
+
     let widthPercent = props.span / 12 * 100;
     let gridContext = React.useContext(GridContext);
     let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
