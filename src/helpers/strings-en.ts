@@ -14,6 +14,10 @@
     "remove": "Remove",
     "help": "Help",
     "view": "View",
+    "documents": "Documents",
+    "upload": "Upload",
+    "name" : "Name",
+    "date" : "Date",
     "health-records": "Health Records",
     "connect-ehr-title-prefix": "Connect ",
     "connect-ehr-title-divider": " or ",
@@ -523,7 +527,10 @@
     "daily": "Daily",
     "weekly": "Weekly",
     "monthly": "Monthly",
-    "bonus": "Bonus"
+    "bonus": "Bonus",
+    "download": "Download",
+    "delete-file-confirm": "Are you sure you want to delete this file?",
+    "file-not-loaded": "The file could not be loaded. Please contact support.",
 };
 
 export default strings;
