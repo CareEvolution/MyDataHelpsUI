@@ -76,3 +76,7 @@ export const createRandomIntegerValueProvider = (maxValue: number): RandomIntege
 export const createCustomFieldIntegerValueProvider = (customField: string): CustomFieldIntegerValueProvider => {
     return new CustomFieldIntegerValueProvider(customField);
 };
+
+export const createDaysWithDataValueProvider = (dataType: string, daysInPast: number): DaysWithDataValueProvider => {
+    return new DaysWithDataValueProvider(dataType, daysInPast);
+};
