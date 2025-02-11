@@ -1,6 +1,6 @@
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { queryDailyData } from './query-daily-data';
-import { startOfDay, subDays } from 'date-fns';
+import { startOfToday, subDays } from 'date-fns';
 
 export type SingleValueProviderType = 'static integer' | 'random integer' | 'custom field integer' | 'days with data';
 
