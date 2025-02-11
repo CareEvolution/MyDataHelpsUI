@@ -61,7 +61,7 @@ export class DaysWithDataValueProvider extends SingleValueProvider<number> {
     }
 
     async getValue(): Promise<number | undefined> {
-        const today = startOfDay(new Date());
+        const today = startOfToday();
         const startDate = subDays(today, this.daysInPast);
         const data = await queryDailyData(this.dataType, startDate, today);
         if(!data || data.length === 0) {
