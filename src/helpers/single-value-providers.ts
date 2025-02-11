@@ -54,6 +54,9 @@ export class CustomFieldIntegerValueProvider extends SingleValueProvider<number>
 
 export class DaysWithDataValueProvider extends SingleValueProvider<number> {
     constructor(public dataType: string, public daysInPast: number) {
+        if(daysInPast < 0) {
+            throw new Error('daysInPast must be a non-negative number');
+        }
         super('days with data');
     }
 
@@ -61,6 +64,9 @@ export class DaysWithDataValueProvider extends SingleValueProvider<number> {
         const today = new Date();
         const startDate = startOfDay(subDays(today, this.daysInPast));
         const data = await queryDailyData(this.dataType, startDate, today);
+        if(!data || data.length === 0) {
+            return 0;
+        }
         return new Set(Object.keys(data)).size;
     }
 }
