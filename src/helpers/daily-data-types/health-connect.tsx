@@ -1,42 +1,42 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import {
-  healthConnectTotalExerciseMinutesDataProvider,
-  healthConnectAverageRestingHeartRateDataProvider,
+    healthConnectStepsDataProvider,
+    healthConnectAverageRestingHeartRateDataProvider,
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faHeartbeat } from "@fortawesome/free-solid-svg-icons";
+import { faHeartbeat, faWalking } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { heartRateFormatter, minutesFormatter } from "./formatters";
+import { defaultFormatter, heartRateFormatter } from "./formatters";
 import { simpleAvailabilityCheckV2 } from "./availability-check";
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
-  {
-    type: DailyDataType.HealthConnectTotalExerciseMinutes,
-    dataProvider: healthConnectTotalExerciseMinutesDataProvider,
-    availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
-      "exercise",
-    ]),
-    labelKey: "heart-rate-range",
-    icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-    formatter: minutesFormatter,
-    previewDataRange: [20, 100],
-    requiresV2Api: true,
-  },
-  {
-    type: DailyDataType.HealthConnectAverageRestingHeartRate,
-    dataProvider: healthConnectAverageRestingHeartRateDataProvider,
-    availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
-      "resting-heart-rate",
-    ]),
-    labelKey: "resting-heart-rate",
-    icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
-    formatter: heartRateFormatter,
-    previewDataRange: [60, 70],
-    requiresV2Api: true,
-  },
+    {
+        type: DailyDataType.HealthConnectSteps,
+        dataProvider: healthConnectStepsDataProvider,
+        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+            "steps",
+        ]),
+        labelKey: "steps",
+        icon: <FontAwesomeSvgIcon icon={faWalking} />,
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000],
+        requiresV2Api: true,
+    },
+    {
+        type: DailyDataType.HealthConnectAverageRestingHeartRate,
+        dataProvider: healthConnectAverageRestingHeartRateDataProvider,
+        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+            "resting-heart-rate",
+        ]),
+        labelKey: "resting-heart-rate",
+        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        formatter: heartRateFormatter,
+        previewDataRange: [60, 70],
+        requiresV2Api: true,
+    },
 ];
 healthConnectTypeDefinitions.forEach((def) => {
-  def.dataSource = "HealthConnect";
+    def.dataSource = "HealthConnect";
 });
 
 export default healthConnectTypeDefinitions;

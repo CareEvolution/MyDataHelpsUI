@@ -71,6 +71,6 @@ export { awakeSleepMinutes as garminAwakeMinutesDataProvider } from "./garmin-sl
 export { sleepScore as garminSleepScoreDataProvider } from "./garmin-sleep"
 export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
-export { totalRestingHeartRateProvider as healthConnectTotalExerciseMinutesDataProvider } from "./health-connect-exercise-minutes";
+export { stepsProvider as healthConnectStepsDataProvider } from "./health-connect-steps";
 export { averageRestingHeartRateProvider as healthConnectAverageRestingHeartRateDataProvider } from "./health-connect-resting-heart-rate";
 export * from './shared'

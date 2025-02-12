@@ -295,12 +295,12 @@ export const liveAppleHealthNumberOfAlcoholicBeveragesBarChart = {
     render: render
 };
 
-export const liveHealthConnectExerciseMinutesBarChart = {
+export const liveHealthConnectStepsBarChart = {
     args: {
-        title: "Exercise Minutes",
+        title: "Steps",
         intervalType: "Week",
         weekStartsOn: "6DaysAgo",
-        dailyDataType: DailyDataType.HealthConnectTotalExerciseMinutes,        
+        dailyDataType: DailyDataType.HealthConnectSteps,        
         chartType: "Bar",
     },
     render: render
@@ -308,7 +308,7 @@ export const liveHealthConnectExerciseMinutesBarChart = {
 
 export const liveHealthConnectRestingHeartRateBarChart = {
     args: {
-        title: "Heart Rate",
+        title: "Resting Heart Rate",
         intervalType: "Month",
         dailyDataType: DailyDataType.HealthConnectAverageRestingHeartRate,        
         chartType: "Bar",

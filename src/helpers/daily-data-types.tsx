@@ -77,7 +77,7 @@ export enum DailyDataType {
 	HomeAirQuality = "HomeAirQuality",
 	WorkAirQuality = "WorkAirQuality",
 	HealthConnectAverageRestingHeartRate = "HealthConnectAverageRestingHeartRate",
-	HealthConnectTotalExerciseMinutes = "HealthConnectTotalExerciseMinutes",
+	HealthConnectSteps = "HealthConnectSteps",
 };
 
 export interface DailyDataTypeDefinition {

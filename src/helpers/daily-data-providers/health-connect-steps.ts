@@ -2,16 +2,16 @@
 import { DailyDataQueryResult } from "../query-daily-data";
 import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 
-export async function averageRestingHeartRateProvider(
+export async function stepsProvider(
     startDate: Date,
     endDate: Date,
 ): Promise<DailyDataQueryResult> {
     const aggregates = await queryAllDeviceDataV2Aggregates({
         namespace: "HealthConnect",
-        type: "resting-heart-rate",
+        type: "steps",
         intervalAmount: 1,
         intervalType: "Days",
-        aggregateFunctions: ["avg"],
+        aggregateFunctions: ["sum"],
         observedAfter: add(startDate, { days: -1 }).toISOString(),
         observedBefore: add(endDate, { days: 1 }).toISOString(),
     });
@@ -19,7 +19,7 @@ export async function averageRestingHeartRateProvider(
     const result: DailyDataQueryResult = {};
     aggregates.forEach((agg) => {
         const dateKey = agg.date.split("T")[0];
-        result[dateKey] = agg.statistics.avg;
+        result[dateKey] = agg.statistics.sum;
     });
     return result;
 }
