@@ -3,7 +3,7 @@ import React from 'react';
 import { Action, Button } from '../../presentational';
 import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import MyDataHelps, { HealthConnectPhrStatus } from '@careevolution/mydatahelps-js';
-import { useInitializeView } from '../../../helpers';
+import { language, useInitializeView } from '../../../helpers';
 import { useInterval } from '../../../hooks';
 
 export interface HealthConnectPhrSyncProps {
@@ -58,17 +58,17 @@ export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
         return null;
     }
 
-    let subtitle = "Choose health records to read to and write from Health Connect";
-    let indicator = <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>Connect</Button>;
+    let subtitle = language("health-connect-phr-sync-prompt");
+    let indicator = <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>{language("connect")}</Button>;
 
     if (status.enabledPermissions.length > 0) {
-        subtitle = status.running ? "Syncing data..." : "Enabled";
-        indicator = <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>Settings</Button>;
+        subtitle = status.running ? language("syncing-data") : language("connected");
+        indicator = <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>{language("settings")}</Button>;
     }
 
     return <Action innerRef={props.innerRef} titleIcon={<img width={15} style={{ marginRight: "8px" }} src={HealthConnectLogo} />}
         bottomBorder
-        title="Sync with Health Connect"
+        title={language("health-connect-phr-sync-title")}
         renderAs="div"
         subtitle={subtitle}
         indicator={indicator}>
