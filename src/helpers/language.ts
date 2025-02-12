@@ -7,8 +7,9 @@ import frenchStrings from "./strings-fr"
 import portugueseStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
+import portuguesePTStrings from "./strings-pt-pt"
 
-export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
+export type Language = "" | "en" | "es" | "nl" | "fr" | "de" | "it" | "pt" | "pt-pt" | "pl"
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
 	if (!resolvedString || !args) return resolvedString;
@@ -22,10 +23,11 @@ export function language(key: string, specifiedLanguage?: string, args?: { [key:
 	if (currentLanguage == "en") resolvedString = englishStrings[key];
 	if (currentLanguage == "es") resolvedString = spanishStrings[key];
 	if (currentLanguage == "nl") resolvedString = dutchStrings[key];
-	if (currentLanguage == "de") resolvedString = germanStrings[key];
 	if (currentLanguage == "fr") resolvedString = frenchStrings[key];
-	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
 	if (currentLanguage == "it") resolvedString = italianStrings[key];
+	if (currentLanguage == "de") resolvedString = germanStrings[key];
+	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
+	if (currentLanguage == "pt-pt") resolvedString = portuguesePTStrings[key];
 	if (currentLanguage == "pl") resolvedString = polishStrings[key];
 	if (resolvedString != null) return format(resolvedString, args);
 
@@ -39,10 +41,10 @@ export function getLanguageFromIso(language: string): Language {
 	if (beginningOfLanguage == "en") return "en";
 	if (beginningOfLanguage == "es") return "es";
 	if (beginningOfLanguage == "nl") return "nl";
-	if (beginningOfLanguage == "de") return "de";
 	if (beginningOfLanguage == "fr") return "fr";
-	if (beginningOfLanguage == "pt") return "pt";
+	if (beginningOfLanguage == "de") return "de";
 	if (beginningOfLanguage == "it") return "it";
+	if (beginningOfLanguage == "pt") return "pt";
 	if (beginningOfLanguage == "pl") return "pl";
 
 	return "";
