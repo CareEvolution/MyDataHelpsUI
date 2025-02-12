@@ -54,10 +54,10 @@ HealthConnectSteps.args = {
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
-			showAverage: true,
-			dailyDataType: DailyDataType.HealthConnectSteps,
-			label: "Steps"
-		}],
+		showAverage: true,
+		dailyDataType: DailyDataType.HealthConnectSteps,
+		label: "Steps"
+	}],
 	syncId: "HealthConnect"
 };
 
@@ -67,10 +67,10 @@ HealthConnectAverageRestingHeartRate.args = {
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
-			showAverage: true,
-			dailyDataType: DailyDataType.HealthConnectAverageRestingHeartRate,
-			label: "Average Resting Heart Rate"
-		}],
+		showAverage: true,
+		dailyDataType: DailyDataType.HealthConnectAverageRestingHeartRate,
+		label: "Average Resting Heart Rate"
+	}],
 	syncId: "HealthConnect"
 };
 
