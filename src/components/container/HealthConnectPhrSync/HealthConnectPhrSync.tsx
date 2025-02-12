@@ -10,12 +10,19 @@ export interface HealthConnectPhrSyncProps {
     showWhen?: "anyPermissionsEnabled" | "noPermissionsEnabled";
     triggerSyncCompleteEvent?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
+    previewState?: "permissionsEnabled" | "noPermissionsEnabled" | "running";
 }
 
-export function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
+export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
     let [status, setStatus] = React.useState<HealthConnectPhrStatus | undefined>();
 
     function refreshStatus() {
+        if (props.previewState) {
+            let hasEnabledPermissions = props.previewState == "permissionsEnabled" || props.previewState == "running";
+            setStatus({ available: true, running: props.previewState == "running", requestedPermissions: ["something"], enabledPermissions: hasEnabledPermissions ? ["read", "write"] : [] });
+            return;
+        }
+
         MyDataHelps.getHealthConnectPhrStatus().then(function (newStatus) {
             setStatus(newStatus);
             if (status?.running && !newStatus.running) {
@@ -27,8 +34,9 @@ export function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
     }
 
     useInitializeView(() => {
+        if (props.previewState) { refreshStatus(); }
         MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-            if (deviceInfo.platform === "Android") {
+            if (deviceInfo?.platform === "Android") {
                 refreshStatus();
             }
         });
@@ -38,7 +46,7 @@ export function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
         refreshStatus();
     }, (status?.running) ? 3000 : null);
 
-    if (!status) {
+    if (!status || !status?.available) {
         return null;
     }
 
@@ -54,8 +62,8 @@ export function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
     let indicator = <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>Connect</Button>;
 
     if (status.enabledPermissions.length > 0) {
-        subtitle = "Enabled";
-        indicator = <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>Reconnect</Button>;
+        subtitle = status.running ? "Syncing data..." : "Enabled";
+        indicator = <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>Settings</Button>;
     }
 
     return <Action innerRef={props.innerRef} titleIcon={<img width={15} style={{ marginRight: "8px" }} src={HealthConnectLogo} />}
