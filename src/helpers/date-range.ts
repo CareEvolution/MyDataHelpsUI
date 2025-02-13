@@ -91,14 +91,14 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours?: number)
     return dateRanges;
 }
 
-export function rangesHaveOverlap(range1: DateRange, range2: DateRange): boolean {
+function rangesHaveOverlap(range1: DateRange, range2: DateRange): boolean {
     return (range2.startDate >= range1.startDate && range2.startDate <= range1.endDate) ||
         (range2.endDate >= range1.startDate && range2.endDate <= range1.endDate) ||
         (range1.startDate >= range2.startDate && range1.startDate <= range2.endDate) ||
         (range1.endDate >= range2.startDate && range1.endDate <= range2.endDate);
 }
 
-export function combineRanges(range1: DateRange, range2: DateRange): DateRange {
+function combineRanges(range1: DateRange, range2: DateRange): DateRange {
     return {
         startDate: (range2.startDate < range1.startDate) ? range2.startDate : range1.startDate,
         endDate: (range2.endDate > range1.endDate) ? range2.endDate : range1.endDate

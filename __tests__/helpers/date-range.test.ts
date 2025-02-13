@@ -1,7 +1,7 @@
 import { add, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
 import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
-import { combineRanges, computeDayRanges, rangesHaveOverlap } from '../../src/helpers/date-range';
+import { computeDayRanges } from '../../src/helpers/date-range';
 import getDayKey from '../../src/helpers/get-day-key';
 
 describe('DateRange - Helper Function Tests', () => {
@@ -23,10 +23,10 @@ describe('DateRange - Helper Function Tests', () => {
 
             expect(Object.keys(dayRanges)).toHaveLength(1);
 
-            const ranges = dayRanges[getDayKey(startDate)];
-            expect(ranges.length).toBe(1);
-            expect(ranges[0].startDate).toEqual(startDate);
-            expect(ranges[0].endDate).toEqual(observationDate);
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges.length).toBe(1);
+            expect(todayRanges[0].startDate).toEqual(startDate);
+            expect(todayRanges[0].endDate).toEqual(observationDate);
         });
 
         it('Should return two day ranges when the start date is from the prior day.', async () => {
@@ -134,70 +134,132 @@ describe('DateRange - Helper Function Tests', () => {
             expect(tomorrowRanges[0].startDate).toEqual(add(tomorrow, { hours: -6 }));
             expect(tomorrowRanges[0].endDate).toEqual(observationDate);
         });
-    });
 
-    describe('Ranges Have Overlap', () => {
-        it('Should return true when the tail of the first range overlaps the start of the second range.', async () => {
-            const range1 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 2 }) };
-            const range2 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
+        it('Should merge ranges when the tail of the first range overlaps the start of the second range.', async () => {
+            const startDate1 = add(today, { hours: 1 });
+            const observationDate1 = add(today, { hours: 2 });
+            const dataPoint1: DeviceDataPoint = {
+                startDate: startDate1.toISOString(),
+                observationDate: observationDate1.toISOString()
+            } as DeviceDataPoint;
 
-            expect(rangesHaveOverlap(range1, range2)).toBe(true);
+            const startDate2 = add(today, { hours: 2 });
+            const observationDate2 = add(today, { hours: 3 });
+            const dataPoint2: DeviceDataPoint = {
+                startDate: startDate2.toISOString(),
+                observationDate: observationDate2.toISOString()
+            } as DeviceDataPoint;
+
+            const dayRanges = computeDayRanges([dataPoint1, dataPoint2]);
+
+            expect(Object.keys(dayRanges)).toHaveLength(1);
+
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges).toHaveLength(1);
+            expect(todayRanges[0].startDate).toEqual(startDate1);
+            expect(todayRanges[0].endDate).toEqual(observationDate2);
         });
 
-        it('Should return true when the tail of the second range overlaps the start of the first range.', async () => {
-            const range1 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
-            const range2 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 2 }) };
+        it('Should merge ranges when the tail of the second range overlaps the start of the first range.', async () => {
+            const startDate1 = add(today, { hours: 2 });
+            const observationDate1 = add(today, { hours: 3 });
+            const dataPoint1: DeviceDataPoint = {
+                startDate: startDate1.toISOString(),
+                observationDate: observationDate1.toISOString()
+            } as DeviceDataPoint;
 
-            expect(rangesHaveOverlap(range1, range2)).toBe(true);
+            const startDate2 = add(today, { hours: 1 });
+            const observationDate2 = add(today, { hours: 2 });
+            const dataPoint2: DeviceDataPoint = {
+                startDate: startDate2.toISOString(),
+                observationDate: observationDate2.toISOString()
+            } as DeviceDataPoint;
+
+            const dayRanges = computeDayRanges([dataPoint1, dataPoint2]);
+
+            expect(Object.keys(dayRanges)).toHaveLength(1);
+
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges).toHaveLength(1);
+            expect(todayRanges[0].startDate).toEqual(startDate2);
+            expect(todayRanges[0].endDate).toEqual(observationDate1);
         });
 
-        it('Should return true when the first range falls completely within the second range.', async () => {
-            const range1 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
-            const range2 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 4 }) };
+        it('Should merge ranges when the first range falls completely within the second range.', async () => {
+            const startDate1 = add(today, { hours: 2 });
+            const observationDate1 = add(today, { hours: 3 });
+            const dataPoint1: DeviceDataPoint = {
+                startDate: startDate1.toISOString(),
+                observationDate: observationDate1.toISOString()
+            } as DeviceDataPoint;
 
-            expect(rangesHaveOverlap(range1, range2)).toBe(true);
+            const startDate2 = add(today, { hours: 1 });
+            const observationDate2 = add(today, { hours: 4 });
+            const dataPoint2: DeviceDataPoint = {
+                startDate: startDate2.toISOString(),
+                observationDate: observationDate2.toISOString()
+            } as DeviceDataPoint;
+
+            const dayRanges = computeDayRanges([dataPoint1, dataPoint2]);
+
+            expect(Object.keys(dayRanges)).toHaveLength(1);
+
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges).toHaveLength(1);
+            expect(todayRanges[0].startDate).toEqual(startDate2);
+            expect(todayRanges[0].endDate).toEqual(observationDate2);
         });
 
-        it('Should return true when the second range falls completely within the first range.', async () => {
-            const range1 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 4 }) };
-            const range2 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
+        it('Should merge ranges when the second range falls completely within the first range.', async () => {
+            const startDate1 = add(today, { hours: 1 });
+            const observationDate1 = add(today, { hours: 4 });
+            const dataPoint1: DeviceDataPoint = {
+                startDate: startDate1.toISOString(),
+                observationDate: observationDate1.toISOString()
+            } as DeviceDataPoint;
 
-            expect(rangesHaveOverlap(range1, range2)).toBe(true);
+            const startDate2 = add(today, { hours: 2 });
+            const observationDate2 = add(today, { hours: 3 });
+            const dataPoint2: DeviceDataPoint = {
+                startDate: startDate2.toISOString(),
+                observationDate: observationDate2.toISOString()
+            } as DeviceDataPoint;
+
+            const dayRanges = computeDayRanges([dataPoint1, dataPoint2]);
+
+            expect(Object.keys(dayRanges)).toHaveLength(1);
+
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges).toHaveLength(1);
+            expect(todayRanges[0].startDate).toEqual(startDate1);
+            expect(todayRanges[0].endDate).toEqual(observationDate1);
         });
 
-        it('Should return false when there is no overlap at all.', async () => {
-            const range1 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 2 }) };
-            const range2 = { startDate: add(today, { hours: 3 }), endDate: add(today, { hours: 4 }) };
+        it('Should not merge ranges when there is no overlap at all.', async () => {
+            const startDate1 = add(today, { hours: 1 });
+            const observationDate1 = add(today, { hours: 2 });
+            const dataPoint1: DeviceDataPoint = {
+                startDate: startDate1.toISOString(),
+                observationDate: observationDate1.toISOString()
+            } as DeviceDataPoint;
 
-            expect(rangesHaveOverlap(range1, range2)).toBe(false);
-        });
-    });
+            const startDate2 = add(today, { hours: 3 });
+            const observationDate2 = add(today, { hours: 4 });
+            const dataPoint2: DeviceDataPoint = {
+                startDate: startDate2.toISOString(),
+                observationDate: observationDate2.toISOString()
+            } as DeviceDataPoint;
 
-    describe('Combine Ranges', () => {
-        it('Should return a new range using the minimum start date and maximum end date from across both ranges.', async () => {
-            const range1 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 2 }) };
-            const range2 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
+            const dayRanges = computeDayRanges([dataPoint1, dataPoint2]);
 
-            const combinedRange1 = combineRanges(range1, range2);
-            expect(combinedRange1.startDate).toBe(range1.startDate);
-            expect(combinedRange1.endDate).toBe(range2.endDate);
+            expect(Object.keys(dayRanges)).toHaveLength(1);
 
-            const combinedRange2 = combineRanges(range2, range1);
-            expect(combinedRange2.startDate).toBe(range1.startDate);
-            expect(combinedRange2.endDate).toBe(range2.endDate);
-        });
-
-        it('Should return a new range using the minimum start date and maximum end date from the same range.', async () => {
-            const range1 = { startDate: add(today, { hours: 1 }), endDate: add(today, { hours: 4 }) };
-            const range2 = { startDate: add(today, { hours: 2 }), endDate: add(today, { hours: 3 }) };
-
-            const combinedRange1 = combineRanges(range1, range2);
-            expect(combinedRange1.startDate).toBe(range1.startDate);
-            expect(combinedRange1.endDate).toBe(range1.endDate);
-
-            const combinedRange2 = combineRanges(range2, range1);
-            expect(combinedRange2.startDate).toBe(range1.startDate);
-            expect(combinedRange2.endDate).toBe(range1.endDate);
+            const todayRanges = dayRanges[getDayKey(today)];
+            expect(todayRanges).toHaveLength(2);
+            expect(todayRanges[0].startDate).toEqual(startDate1);
+            expect(todayRanges[0].endDate).toEqual(observationDate1);
+            expect(todayRanges[1].startDate).toEqual(startDate2);
+            expect(todayRanges[1].endDate).toEqual(observationDate2);
         });
     });
 });
