@@ -63,7 +63,7 @@ export function computeMinutesResultFromDayRanges(startDate: Date, endDate: Date
     return result;
 }
 
-export function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours?: number): DateRange[] {
+function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours?: number): DateRange[] {
     if (!dataPoint.startDate || !dataPoint.observationDate) {
         return [];
     }
