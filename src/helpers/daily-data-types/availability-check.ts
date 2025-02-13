@@ -37,9 +37,7 @@ export function simpleAvailabilityCheckV2(
             namespace: namespace,
             type: Array.isArray(type) ? type.join(",") : type,
             limit: 1,
-            ...(modifiedAfter && {
-                modifiedAfter: modifiedAfter.toISOString(),
-            }),
+            modifiedAfter: modifiedAfter?.toISOString(),
         };
         try {
             const result = await MyDataHelps.queryDeviceDataV2(parameters);
