@@ -5,7 +5,7 @@ import getDayKey from '../get-day-key';
 
 export function isSilverCloudCbtDataPoint(dataPoint: DeviceDataPoint): boolean {
     return dataPoint.source?.properties?.['SourceIdentifier'] === 'com.silvercloudhealth.SilverCloud'
-        && dataPoint.source.properties['Metadata_sub-type'] === 'CBT';
+        && dataPoint.properties?.['Metadata_sub-type'] === 'CBT';
 }
 
 export function collateDataPoints(dataPoints: DeviceDataPoint[]) {
