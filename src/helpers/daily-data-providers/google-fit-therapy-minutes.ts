@@ -2,7 +2,7 @@ import { add } from 'date-fns';
 import queryAllDeviceData from './query-all-device-data';
 import { DailyDataQueryResult } from '../query-daily-data';
 import { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
-import { collateDataPoints } from './common-mindful-and-therapy';
+import { computeDayRanges, computeMinutesResultFromDayRanges } from '../date-range';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const parameters: DeviceDataPointQuery = {
@@ -13,5 +13,6 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     };
 
     const dataPoints = await queryAllDeviceData(parameters);
-    return collateDataPoints(dataPoints);
+    const dayRanges = computeDayRanges(dataPoints);
+    return computeMinutesResultFromDayRanges(startDate, endDate, dayRanges);
 }
