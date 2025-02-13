@@ -37,6 +37,54 @@ export default function (props: HealthConnectMonthChartsProps) {
                     title: language("resting-heart-rate"),
                     syncId: "health-connect",
                 },
+                {
+                    lines: [
+                        {
+                            showAverage: true,
+                            dailyDataType:
+                                DailyDataType.HealthConnectTotalSleepMinutes,
+                            label: language("sleep-time"),
+                        },
+                    ],
+                    title: language("sleep-time"),
+                    syncId: "health-connect",
+                },
+                {
+                    lines: [
+                        {
+                            showAverage: true,
+                            dailyDataType:
+                                DailyDataType.HealthConnectLightSleepMinutes,
+                            label: language("light-sleep-time"),
+                        },
+                    ],
+                    title: language("light-sleep-time"),
+                    syncId: "health-connect",
+                },
+                {
+                    lines: [
+                        {
+                            showAverage: true,
+                            dailyDataType:
+                                DailyDataType.HealthConnectRemSleepMinutes,
+                            label: language("rem-sleep-time"),
+                        },
+                    ],
+                    title: language("rem-sleep-time"),
+                    syncId: "health-connect",
+                },
+                {
+                    lines: [
+                        {
+                            showAverage: true,
+                            dailyDataType:
+                                DailyDataType.HealthConnectDeepSleepMinutes,
+                            label: language("deep-sleep-time"),
+                        },
+                    ],
+                    title: language("deep-sleep-time"),
+                    syncId: "health-connect",
+                },
             ]}
         />
     );

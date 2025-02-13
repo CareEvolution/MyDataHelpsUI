@@ -73,4 +73,8 @@ export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
 export { stepsProvider as healthConnectStepsDataProvider } from "./health-connect-steps";
 export { averageRestingHeartRateProvider as healthConnectAverageRestingHeartRateDataProvider } from "./health-connect-resting-heart-rate";
+export { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from "./health-connect-sleep";
+export { lightSleepMinutes as healthConnectLightSleepMinutesDataProvider } from "./health-connect-sleep";
+export { remSleepMinutes as healthConnectRemSleepMinutesDataProvider } from "./health-connect-sleep";
+export { deepSleepMinutes as healthConnectDeepSleepMinutesDataProvider } from "./health-connect-sleep";
 export * from './shared'

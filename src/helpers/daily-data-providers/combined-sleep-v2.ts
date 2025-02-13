@@ -2,6 +2,7 @@ import { add } from 'date-fns';
 import { totalSleepMinutes as fitbitTotalSleepMinutesDataProvider } from './fitbit-sleep-v2'
 import { totalSleepMinutes as garminTotalSleepMinutesDataProvider } from './garmin-sleep-v2'
 import { totalSleepMinutes as appleHealthSleepMinutesDataProvider } from './apple-health-sleep-v2';
+import { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from './health-connect-sleep';
 import getDayKey from '../get-day-key';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
@@ -18,6 +19,10 @@ export default async function (startDate: Date, endDate: Date): Promise<{ [key: 
     if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
         providers.push(appleHealthSleepMinutesDataProvider(startDate, endDate));
     }
+    if (settings.healthConnectEnabled) {
+        providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+
 
     const results = providers.length ? await Promise.all(providers) : [];
 
