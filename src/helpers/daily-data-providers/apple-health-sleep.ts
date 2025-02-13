@@ -1,53 +1,6 @@
-﻿import { add, differenceInMinutes, formatISO, parseISO } from "date-fns";
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
+﻿import { add, differenceInMinutes, formatISO } from "date-fns";
 import queryAllDeviceData from "./query-all-device-data";
-
-interface DateRange {
-	startDate: Date;
-	endDate: Date;
-}
-
-function rangesHaveOverlap(range1: DateRange, range2: DateRange) {
-	return (range2.startDate >= range1.startDate && range2.startDate <= range1.endDate) ||
-		(range2.endDate >= range1.startDate && range2.endDate <= range1.endDate) ||
-		(range1.startDate >= range2.startDate && range1.startDate <= range2.endDate) ||
-		(range1.endDate >= range2.startDate && range1.endDate <= range2.endDate);
-}
-
-function combineRanges(range1: DateRange, range2: DateRange) {
-	var start = range1.startDate;
-	if (range2.startDate < start) {
-		start = range2.startDate;
-	}
-	var end = range1.endDate;
-	if (range2.endDate > end) {
-		end = range2.endDate;
-	}
-	return { startDate: start, endDate: end };
-}
-
-function splitSleepSampleIntoRanges(dataPoint: DeviceDataPoint) {
-	var result: { startDate: Date, endDate: Date }[] = [];
-	var startDate = parseISO(dataPoint.startDate!);
-	var observationDate = parseISO(dataPoint.observationDate!);
-	var dayCutoff = add(new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 18, 0, 0, 0), { days: -1 });
-	while (dayCutoff < observationDate) {
-		var nextDayCutoff = add(dayCutoff, { days: 1 });
-		if (nextDayCutoff > startDate) {
-			var sampleStart = new Date(dayCutoff);
-			var sampleEnd = new Date(nextDayCutoff);
-			if (startDate >= dayCutoff && startDate < nextDayCutoff) {
-				sampleStart = startDate;
-			}
-			if (observationDate >= dayCutoff && observationDate < nextDayCutoff) {
-				sampleEnd = observationDate;
-			}
-			result.push({ startDate: sampleStart, endDate: sampleEnd });
-		}
-		dayCutoff = nextDayCutoff;
-	}
-	return result;
-}
+import { combineRanges, DateRange, rangesHaveOverlap, splitSampleIntoRanges } from "../date-range";
 
 function calculateSleepTime(ranges: DateRange[]) {
 	ranges = ranges.sort(
@@ -92,7 +45,7 @@ function coreSleepMultiValues(startDate: Date, endDate: Date, values: SleepType[
 		ddp.forEach((d) => {
 			if (!d.observationDate || !d.startDate) { return; }
 			if (!values.find(x => x == d.value) ) { return; }
-			var ranges = splitSleepSampleIntoRanges(d);
+			var ranges = splitSampleIntoRanges(d, -6);
 			for (var i = 0; i < ranges.length; i++) {
 				var anchorDate = add(ranges[i].startDate, { hours: 6 });
 				var day = formatISO(anchorDate).substring(0, 10);
