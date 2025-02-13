@@ -21,8 +21,6 @@ const standardDailyDataTypes: StandardDailyDataTypeDefinition[] = [
     { ...getDailyDataTypeDefinition(DailyDataType.AppleHealthMaxHeartRate), color: heartColor },
     { ...getDailyDataTypeDefinition(DailyDataType.GarminMaxHeartRate), color: heartColor },
     { ...getDailyDataTypeDefinition(DailyDataType.RestingHeartRate), color: heartColor },
-    { ...getDailyDataTypeDefinition(DailyDataType.HealthConnectSteps), color: activityColor },
-    { ...getDailyDataTypeDefinition(DailyDataType.HealthConnectAverageRestingHeartRate), color: heartColor }
 ];
 
 export default standardDailyDataTypes;

@@ -1,5 +1,10 @@
 ﻿import { add } from "date-fns";
-import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, healthConnectAverageRestingHeartRateDataProvider } from ".";
+import {
+    appleHealthRestingHeartRateDataProvider,
+    fitbitRestingHeartRateDataProvider,
+    garminRestingHeartRateDataProvider,
+    healthConnectAverageRestingHeartRateDataProvider
+} from ".";
 import getDayKey from "../get-day-key";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
