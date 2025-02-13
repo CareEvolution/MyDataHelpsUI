@@ -14,6 +14,7 @@ export interface TitleProps {
     imageAlignment?: "top" | "left"
     defaultMargin?: boolean
     innerRef?: React.Ref<HTMLDivElement>
+    accessory?: ReactNode
 }
 
 export default function (props: TitleProps) {
@@ -22,7 +23,6 @@ export default function (props: TitleProps) {
     if (props.className) {
         classes.push(props.className);
     }
-
 
     let context = useContext(LayoutContext);
     let color = resolveColor(context?.colorScheme, props.color);
@@ -69,5 +69,6 @@ export default function (props: TitleProps) {
             </div>
         }
         <Tag style={{ ...props.style, color: color }}>{props.children}</Tag>
+        {props.accessory}
     </div>
 }

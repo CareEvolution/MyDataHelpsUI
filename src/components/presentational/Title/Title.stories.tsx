@@ -1,7 +1,9 @@
 import React from "react";
-import { Layout } from "../../presentational";
+import { Button, Layout, UnstyledButton } from "../../presentational";
 import Title, { TitleProps } from "./Title";
 import FitbitLogo from '../../../assets/fitbit-logo.svg';
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 export default { title: "Presentational/Title", component: Title, parameters: { layout: 'fullscreen' } };
 let render = (args: TitleProps) => <Layout><Title {...args} /></Layout>
@@ -72,6 +74,26 @@ export const H6 = {
     args: {
         children: "H6 Title",
         order: 6
+    },
+    render: render
+};
+
+export const Accessory = {
+    args: {
+        children: "Health Records",
+        order: 3,
+        defaultMargin: true,
+        accessory: <UnstyledButton style={{ color: "var(--mdhui-color-primary)" }} onClick={() => { }}>Add <FontAwesomeSvgIcon icon={faCirclePlus} /></UnstyledButton>
+    },
+    render: render
+};
+
+export const AccessoryButton = {
+    args: {
+        children: "Health Records",
+        order: 3,
+        defaultMargin: true,
+        accessory: <Button fullWidth={false} onClick={() => { }}>Add <FontAwesomeSvgIcon icon={faCirclePlus} /></Button>
     },
     render: render
 };
