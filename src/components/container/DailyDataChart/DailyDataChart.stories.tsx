@@ -303,7 +303,7 @@ export const liveHealthConnectStepsBarChart = {
         dailyDataType: DailyDataType.HealthConnectSteps,        
         chartType: "Bar",
     },
-    render: render
+    render: renderDRC
 };
 
 export const liveHealthConnectRestingHeartRateBarChart = {
@@ -313,7 +313,17 @@ export const liveHealthConnectRestingHeartRateBarChart = {
         dailyDataType: DailyDataType.HealthConnectAverageRestingHeartRate,        
         chartType: "Bar",
     },
-    render: render
+    render: renderDRC
+};
+
+export const liveHealthConnectTotalSleepingMinutesLineChart = {
+    args: {
+        title: "Sleeping",
+        intervalType: "Month",
+        dailyDataType: DailyDataType.HealthConnectTotalSleepMinutes,        
+        chartType: "Line",
+    },
+    render: renderDRC
 };
 
 export const noData = {
