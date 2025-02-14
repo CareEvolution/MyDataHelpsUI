@@ -9,7 +9,8 @@ import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
 
-export type Language = "" | "en" | "es" | "nl" | "fr" | "de" | "it" | "pt" | "pt-pt" | "pl"
+// NOTE! If you modify this list, be sure to also check getDateLocale() and language()
+const SupportedLocales = [ "", "en", "es", "nl", "fr", "de", "it", "pt", "pt-pt", "pl" ]
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
 	if (!resolvedString || !args) return resolvedString;
@@ -17,10 +18,13 @@ function format(resolvedString: string, args?: { [key: string]: string }) {
 }
 
 export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
-	// Normalize formats like pt-PT or pt_PT to a consistent pt-pt for lookup.
-	const currentLocale = (specifiedLocale || MyDataHelps.getCurrentLanguage() || "").replace("_", "-").toLowerCase();
+	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
 	
-	const localeToStringsMap : any = {
+	interface LocaleStrings {
+		[key: string]: string;
+	}
+
+	const localeToStringsMap : Record<string, LocaleStrings> = {
 		"en": englishStrings,
 		"es": spanishStrings,
 		"nl": dutchStrings,
@@ -32,34 +36,45 @@ export function language(key: string, specifiedLocale?: string, args?: { [key: s
 		"pl": polishStrings
 	};
 
-	let stringTable = localeToStringsMap[currentLocale];
-	if (!stringTable) {
-		const baseLanguage = currentLocale.split("-")[0];
-		stringTable = localeToStringsMap[baseLanguage] || englishStrings;
+	let localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
+	if (!localeStrings) {
+		const languageCode = getLanguageCodeFromIso(currentLocale);
+		localeStrings = localeToStringsMap[languageCode] || englishStrings;
 	}
 	
-	return format(stringTable[key] || "", args);
+	return format(localeStrings[key] || key, args);
 }
 
-export function getLanguageFromIso(language: string): Language {
-	if (language.length < 2) return "";
-
-	var beginningOfLanguage = language.slice(0, 2);
-	if (beginningOfLanguage == "en") return "en";
-	if (beginningOfLanguage == "es") return "es";
-	if (beginningOfLanguage == "nl") return "nl";
-	if (beginningOfLanguage == "fr") return "fr";
-	if (beginningOfLanguage == "de") return "de";
-	if (beginningOfLanguage == "it") return "it";
-	if (beginningOfLanguage == "pt") return "pt";
-	if (beginningOfLanguage == "pl") return "pl";
-
-	return "";
+/** Checks whether the locale (an ISO string like en or en-US) is supported. 
+ * First checks the full locale, then the base language. */
+export function isLocaleSupported(locale: string) : boolean {
+	const normalizedLocale = normalizeLocaleString(locale);
+	if (SupportedLocales.includes(normalizedLocale)) {
+		return true;
+	} else {
+		const languageCode = getLanguageCodeFromIso(normalizedLocale);
+		return SupportedLocales.includes(languageCode);
+	}
 }
 
-export function getCountryCodeFromIso(language: string) : string | undefined {
-    const code = language.toLowerCase().split(/[-_]/)[1];
-    return code;
+/** Gets the language code from an ISO locale string (e.g., en-US returns en. */
+export function getLanguageCodeFromIso(locale: string): string {
+	const normalizedLocale = normalizeLocaleString(locale);
+	return normalizedLocale.split("-")[0];
+}
+
+/** Gets the country code from an ISO locale string (e.g., en-US returns us). */
+export function getCountryCodeFromIso(locale: string) : string | undefined {
+	const normalizedLocale = normalizeLocaleString(locale);
+    return normalizedLocale.split("-")[1];
+}
+
+/** Normalize variations in ISO locale strings, including:
+ *    - separators (hyphens or underscores) -> all hyphens
+ *    - capitalization -> all lowercase
+ */
+function normalizeLocaleString(locale: string) {
+	return (locale || "").replace("_", "-").toLowerCase();
 }
 
 export default language;
