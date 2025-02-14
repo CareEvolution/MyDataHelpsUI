@@ -1,4 +1,4 @@
-import { getLanguageCodeFromIso, getCountryCodeFromIso, isLocaleSupported, language } from '../../../src/helpers/language';
+import { getLanguageCodeFromIso, getCountryCodeFromIso, language } from '../../../src/helpers/language';
 import { describe, it } from '@jest/globals';
 
 describe('Language Tests', () => {
@@ -29,21 +29,6 @@ describe('Language Tests', () => {
         it('Should handle underscores too.', () => {
             const result = getCountryCodeFromIso("en_UK");
             expect(result).toBe("uk");
-        });
-    });
-
-    describe('isLocaleSupported', () => {
-        it('Should return true if specific locale supported.', () => {
-            const result = isLocaleSupported("PT-PT");
-            expect(result).toBe(true);
-        });
-        it('Should return true if base language but not specific locale supported.', () => {
-            const result = isLocaleSupported("PT-xx");
-            expect(result).toBe(true);
-        });
-        it('Should return false if language is not at all supported.', () => {
-            const result = isLocaleSupported("xx");
-            expect(result).toBe(false);
         });
     });
 

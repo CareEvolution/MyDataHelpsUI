@@ -8,9 +8,7 @@ import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
-
-// NOTE! If you modify this list, be sure to also check getDateLocale() and language()
-const SupportedLocales = [ "", "en", "es", "nl", "fr", "de", "it", "pt", "pt-pt", "pl" ]
+// NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
 	if (!resolvedString || !args) return resolvedString;
@@ -43,18 +41,6 @@ export function language(key: string, specifiedLocale?: string, args?: { [key: s
 	}
 	
 	return format(localeStrings[key] || key, args);
-}
-
-/** Checks whether the locale (an ISO string like en or en-US) is supported. 
- * First checks the full locale, then the base language. */
-export function isLocaleSupported(locale: string) : boolean {
-	const normalizedLocale = normalizeLocaleString(locale);
-	if (SupportedLocales.includes(normalizedLocale)) {
-		return true;
-	} else {
-		const languageCode = getLanguageCodeFromIso(normalizedLocale);
-		return SupportedLocales.includes(languageCode);
-	}
 }
 
 /** Gets the language code from an ISO locale string (e.g., en-US returns en. */
