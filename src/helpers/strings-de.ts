@@ -522,7 +522,10 @@ let strings: { [key: string]: string } = {
     "device-activity": "Geräteaktivität",
     "daily": "Täglich",
     "weekly": "Wöchentlich",
-    "monthly": "Monatlich"
+    "monthly": "Monatlich",
+    "syncing-data": "Daten werden synchronisiert...",
+    "health-connect-phr-sync-title": "Mit Health Connect synchronisieren",
+    "health-connect-phr-sync-prompt": "Wähle Gesundheitsdaten zum Lesen und Schreiben in Health Connect aus"
 };
 
 export default strings;

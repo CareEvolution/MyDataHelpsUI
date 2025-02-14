@@ -8,6 +8,7 @@ import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
 import { TermInformationReference } from "../TermInformation/TermInformation";
+import { useInitializeView } from "../../../helpers";
 
 export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
@@ -46,20 +47,12 @@ export default function (props: LabResultsSummaryProps) {
             });
     }
 
-    useEffect(() => {
+    useInitializeView(() => {
         if (getScrollbarWidth() > 0) {
             setNoOverflow(true);
         }
-
         getLabResultsSummary();
-
-        MyDataHelps.on("externalAccountSyncComplete", getLabResultsSummary);
-        MyDataHelps.on("applicationDidBecomeVisible", getLabResultsSummary);
-        return () => {
-            MyDataHelps.off("externalAccountSyncComplete", getLabResultsSummary);
-            MyDataHelps.off("applicationDidBecomeVisible", getLabResultsSummary);
-        }
-    }, []);
+    }, ["externalAccountSyncComplete", "healthConnectPhrSyncComplete"], []);
 
     var getScrollbarWidth = function () {
         var div: any, width: any = (getScrollbarWidth as any).width;
