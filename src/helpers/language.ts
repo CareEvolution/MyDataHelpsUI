@@ -4,10 +4,10 @@ import spanishStrings from "./strings-es"
 import dutchStrings from "./strings-nl"
 import germanStrings from "./strings-de"
 import frenchStrings from "./strings-fr"
-import portugueseStrings from "./strings-pt"
+import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
-import portuguesePTStrings from "./strings-pt-pt"
+import portuguesePortugalStrings from "./strings-pt-pt"
 
 export type Language = "" | "en" | "es" | "nl" | "fr" | "de" | "it" | "pt" | "pt-pt" | "pl"
 
@@ -16,22 +16,29 @@ function format(resolvedString: string, args?: { [key: string]: string }) {
 	return resolvedString.replace(/\{\s*([^}\s]+)\s*}/g, (_, key) => args[key]);
 }
 
-export function language(key: string, specifiedLanguage?: string, args?: { [key: string]: string }): string {
-	const currentLanguage: Language = getLanguageFromIso(specifiedLanguage || MyDataHelps.getCurrentLanguage());
+export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
+	// Normalize formats like pt-PT or pt_PT to a consistent pt-pt for lookup.
+	const currentLocale = (specifiedLocale || MyDataHelps.getCurrentLanguage() || "").replace("_", "-").toLowerCase();
+	
+	const localeToStringsMap : any = {
+		"en": englishStrings,
+		"es": spanishStrings,
+		"nl": dutchStrings,
+		"fr": frenchStrings,
+		"it": italianStrings,
+		"de": germanStrings,
+		"pt": portugueseBrazilStrings,
+		"pt-pt": portuguesePortugalStrings,
+		"pl": polishStrings
+	};
 
-	let resolvedString = null;
-	if (currentLanguage == "en") resolvedString = englishStrings[key];
-	if (currentLanguage == "es") resolvedString = spanishStrings[key];
-	if (currentLanguage == "nl") resolvedString = dutchStrings[key];
-	if (currentLanguage == "fr") resolvedString = frenchStrings[key];
-	if (currentLanguage == "it") resolvedString = italianStrings[key];
-	if (currentLanguage == "de") resolvedString = germanStrings[key];
-	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
-	if (currentLanguage == "pt-pt") resolvedString = portuguesePTStrings[key];
-	if (currentLanguage == "pl") resolvedString = polishStrings[key];
-	if (resolvedString != null) return format(resolvedString, args);
-
-	return format(englishStrings[key], args);
+	let stringTable = localeToStringsMap[currentLocale];
+	if (!stringTable) {
+		const baseLanguage = currentLocale.split("-")[0];
+		stringTable = localeToStringsMap[baseLanguage] || englishStrings;
+	}
+	
+	return format(stringTable[key] || "", args);
 }
 
 export function getLanguageFromIso(language: string): Language {
