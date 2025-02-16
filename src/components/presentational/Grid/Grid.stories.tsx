@@ -145,6 +145,38 @@ let trendGrid: GridProps = {
                     }} />
                 </Card>
             </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        dailyDataType: DailyDataType.RestingHeartRate,
+                        color: "#e35c33"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend dataType={{
+                        dailyDataType: DailyDataType.RestingHeartRate,
+                        color: "#e35c33"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend dataType={{
+                        dailyDataType: DailyDataType.RestingHeartRate,
+                        color: "#e35c33"
+                    }} />
+                </Card>
+            </Grid.Column>
+            <Grid.Column span={6}>
+                <Card>
+                    <MicroTrend previewState="default" dataType={{
+                        dailyDataType: DailyDataType.RestingHeartRate,
+                        color: "#e35c33"
+                    }} />
+                </Card>
+            </Grid.Column>
         </>
     ],
     gap: 16,
