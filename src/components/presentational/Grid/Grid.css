@@ -17,7 +17,7 @@
     display: none;
 }
 
-.mdhui-grid .mdhui-grid-column:has(> .mdhui-card:empty):not(:has(> .mdhui-card:not(:empty))) {
+.mdhui-grid .mdhui-grid-column:has(> .mdhui-card:empty):not(:has(> *:not(:empty))) {
     display: none;
 }
 
