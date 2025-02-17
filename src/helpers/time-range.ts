@@ -10,13 +10,13 @@ export interface TimeRange {
 
 export type DailyTimeRanges = { [key: string]: TimeRange[] };
 
-export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHours?: number): DailyTimeRanges {
+export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHours: number = 0): DailyTimeRanges {
     const dailyTimeRanges: DailyTimeRanges = {};
 
     dataPoints.forEach(dataPoint => {
         const ranges = splitSampleIntoRanges(dataPoint, offsetHours);
         for (const timeRange of ranges) {
-            const anchorDate = add(timeRange.startTime, { hours: -(offsetHours ?? 0) });
+            const anchorDate = add(timeRange.startTime, { hours: -offsetHours });
             const dayKey = getDayKey(anchorDate);
             if (!dailyTimeRanges[dayKey]) {
                 dailyTimeRanges[dayKey] = [];
@@ -65,7 +65,7 @@ export function buildMinutesResultFromDailyTimeRanges(startDate: Date, endDate: 
     return result;
 }
 
-function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours?: number): TimeRange[] {
+function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours: number): TimeRange[] {
     if (!dataPoint.startDate || !dataPoint.observationDate) {
         return [];
     }
@@ -73,10 +73,7 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours?: number)
     const startDate = parseISO(dataPoint.startDate!);
     const observationDate = parseISO(dataPoint.observationDate!);
 
-    let dayCutoff = startOfDay(startDate);
-    if (offsetHours) {
-        dayCutoff = add(dayCutoff, { hours: offsetHours });
-    }
+    let dayCutoff = add(startOfDay(startDate), { hours: offsetHours });
 
     const ranges: TimeRange[] = [];
     while (dayCutoff < observationDate) {
