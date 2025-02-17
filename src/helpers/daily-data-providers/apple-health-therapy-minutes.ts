@@ -3,7 +3,7 @@ import queryAllDeviceData from './query-all-device-data';
 import { DailyDataQueryResult } from '../query-daily-data';
 import { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
 import { isSilverCloudCbtDataPoint } from './common-mindful-and-therapy';
-import { computeDayRanges, computeMinutesResultFromDayRanges } from '../date-range';
+import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges } from '../time-range';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const parameters: DeviceDataPointQuery = {
@@ -14,6 +14,6 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     };
 
     const dataPoints = await queryAllDeviceData(parameters);
-    const dayRanges = computeDayRanges(dataPoints.filter(dataPoint => isSilverCloudCbtDataPoint(dataPoint)));
-    return computeMinutesResultFromDayRanges(startDate, endDate, dayRanges);
+    const dailyTimeRanges = computeDailyTimeRanges(dataPoints.filter(dataPoint => isSilverCloudCbtDataPoint(dataPoint)));
+    return buildMinutesResultFromDailyTimeRanges(startDate, endDate, dailyTimeRanges);
 }

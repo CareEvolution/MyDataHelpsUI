@@ -1,6 +1,6 @@
 ﻿import { add } from "date-fns";
 import queryAllDeviceData from "./query-all-device-data";
-import { computeDayRanges, computeMinutesResultFromDayRanges } from "../date-range";
+import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges } from "../time-range";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { DeviceDataPointQuery } from "@careevolution/mydatahelps-js";
 
@@ -15,8 +15,8 @@ async function coreSleep(startDate: Date, endDate: Date, values: SleepType[]): P
     };
 
     const dataPoints = await queryAllDeviceData(parameters);
-    const dayRanges = computeDayRanges(dataPoints.filter(dataPoint => values.includes(dataPoint.value as SleepType)), -6);
-    return computeMinutesResultFromDayRanges(startDate, endDate, dayRanges);
+    const dailyTimeRanges = computeDailyTimeRanges(dataPoints.filter(dataPoint => values.includes(dataPoint.value as SleepType)), -6);
+    return buildMinutesResultFromDailyTimeRanges(startDate, endDate, dailyTimeRanges);
 }
 
 export function inBedTime(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
