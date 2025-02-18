@@ -30,19 +30,17 @@ export default function MicroTrend(props: MicroTrendProps) {
         return null;
     }
 
-    const hasRecentData = Object.keys(results).some(k => results[k].value > 0);
+    const hasRecentData = Object.values(results).some(r => r.value > 0);
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
 
     const definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
     const formatter = props.dataType.formatter ?? definition.formatter;
-    let formattedValue = "--";
-    let noData = true;
-    if (results![getDayKey(date)]?.value) {
-        formattedValue = formatter(results![getDayKey(date)].value);
-        noData = false;
-    }
+    const todayKey = getDayKey(date);
+    const todayValue = results[todayKey]?.value ?? 0;
+    const noData = todayValue === 0;
+    const formattedValue = noData ? "--" : formatter(todayValue);
 
     const bars: SparkBarChartBar[] = [];
     for (var i = -6; i <= 0; i++) {

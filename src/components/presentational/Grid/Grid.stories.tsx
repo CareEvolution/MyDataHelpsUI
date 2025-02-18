@@ -153,6 +153,7 @@ let trendGrid: GridProps = {
                     }} />
                 </Card>
             </Grid.Column>
+            {/* Preview state not specified on purpose to ensure the grid collapses correctly */}
             <Grid.Column span={6}>
                 <Card>
                     <MicroTrend dataType={{
@@ -186,7 +187,7 @@ let trendGrid: GridProps = {
     }
 }
 
-export const TrendGrid = {
+export const TrendGridCollapsesCorrectly = {
     args: trendGrid,
     render: (args: GridProps) => <Layout colorScheme='auto'>
         <Grid {...args} />
