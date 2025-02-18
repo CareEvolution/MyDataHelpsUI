@@ -15,13 +15,13 @@ export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHour
 
     dataPoints.forEach(dataPoint => {
         const ranges = splitSampleIntoRanges(dataPoint, offsetHours);
-        for (const timeRange of ranges) {
-            const anchorDate = add(timeRange.startTime, { hours: -offsetHours });
+        for (const range of ranges) {
+            const anchorDate = add(range.startTime, { hours: -offsetHours });
             const dayKey = getDayKey(anchorDate);
             if (!dailyTimeRanges[dayKey]) {
                 dailyTimeRanges[dayKey] = [];
             }
-            dailyTimeRanges[dayKey].push(timeRange);
+            dailyTimeRanges[dayKey].push(range);
         }
     });
 
