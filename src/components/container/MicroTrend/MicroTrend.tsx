@@ -37,12 +37,10 @@ export default function MicroTrend(props: MicroTrendProps) {
 
     const definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
     const formatter = props.dataType.formatter ?? definition.formatter;
-    let formattedValue = "--";
-    let noData = true;
-     const todayKey = getDayKey(date);
-     const todayValue = results[todayKey]?.value ?? 0;
-     const noData = todayValue === 0;
-     const formattedValue = noData ? "--" : formatter(todayValue);
+    const todayKey = getDayKey(date);
+    const todayValue = results[todayKey]?.value ?? 0;
+    const noData = todayValue === 0;
+    const formattedValue = noData ? "--" : formatter(todayValue);
 
     const bars: SparkBarChartBar[] = [];
     for (var i = -6; i <= 0; i++) {

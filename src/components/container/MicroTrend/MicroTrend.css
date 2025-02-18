@@ -1,5 +1,5 @@
 .mdhui-micro-trend {
-    margin: 16px;
+    margin: var(--mdhui-padding-md);
 }
 
 .mdhui-micro-trend .mdhui-micro-trend-info {
@@ -25,7 +25,7 @@
     position: absolute;
     line-height: 32px;
     text-align: center;
-    left: 16px;
+    left: var(--mdhui-padding-md);
     top: calc(50% - 8px);
     color: var(--mdhui-color-primary);
     font-size: 1em;

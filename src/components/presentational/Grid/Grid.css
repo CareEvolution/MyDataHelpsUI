@@ -1,11 +1,11 @@
 .mdhui-grid {
     display: flex;
-    gap: 16px;
+    gap: var(--mdhui-padding-md);
     flex-wrap: wrap;
 }
 
 .mdhui-grid.mdhui-grid-default-margin {
-    margin: 16px;
+    margin: var(--mdhui-padding-md);
 }
 
 .mdhui-grid .mdhui-grid-column {
