@@ -526,7 +526,7 @@
     "bonus": "Bonus",
     "syncing-data": "Syncing data...",
     "health-connect-phr-sync-title": "Sync with Health Connect",
-    "health-connect-phr-sync-prompt": "Choose health records to read to and write from Health Connect"
+    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect"
 };
 
 export default strings;
