@@ -1,7 +1,7 @@
 import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { add, differenceInSeconds, parseISO, startOfDay } from 'date-fns';
 import getDayKey from './get-day-key';
-import { DailyDataQueryResult } from "./query-daily-data";
+import { DailyDataQueryResult } from './query-daily-data';
 
 export interface TimeRange {
     startTime: Date;
