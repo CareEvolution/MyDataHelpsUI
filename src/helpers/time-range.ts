@@ -33,7 +33,7 @@ export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHour
         const mergedRanges: TimeRange[] = [];
         let currentMergedRange: TimeRange = ranges[0];
         for (const range of ranges.slice(1)) {
-            if (rangesHaveOverlap(currentMergedRange, range)) {
+            if (currentMergedRange.endTime >= range.startTime) {
                 currentMergedRange = combineRanges(currentMergedRange, range);
             } else {
                 mergedRanges.push(currentMergedRange);
@@ -88,10 +88,6 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours: number):
     }
 
     return ranges;
-}
-
-function rangesHaveOverlap(range1: TimeRange, range2: TimeRange): boolean {
-    return range1.endTime >= range2.startTime && range1.startTime <= range2.endTime;
 }
 
 function combineRanges(range1: TimeRange, range2: TimeRange): TimeRange {
