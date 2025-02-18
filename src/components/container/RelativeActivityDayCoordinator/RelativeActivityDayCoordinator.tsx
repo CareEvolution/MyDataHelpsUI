@@ -44,9 +44,9 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
     };
 
     const dayRenderer = (dayKey: string): React.JSX.Element | null => {
-        if (!props.dataTypes.length) return null;
+        if (!props.dataTypes.length || !availableDataTypes?.length) return null;
 
-        let bars: SparkBarChartBar[] = props.dataTypes.map(dataType => {
+        let bars: SparkBarChartBar[] = availableDataTypes.map(dataType => {
             if (!relativeActivityData || !relativeActivityData[dataType.dailyDataType] || !relativeActivityData[dataType.dailyDataType][dayKey]) {
                 return { color: 'var(--mdhui-color-primary)', barFillPercent: 0 };
             }
