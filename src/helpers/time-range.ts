@@ -91,10 +91,7 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours: number):
 }
 
 function rangesHaveOverlap(range1: TimeRange, range2: TimeRange): boolean {
-    return (range2.startTime >= range1.startTime && range2.startTime <= range1.endTime) ||
-        (range2.endTime >= range1.startTime && range2.endTime <= range1.endTime) ||
-        (range1.startTime >= range2.startTime && range1.startTime <= range2.endTime) ||
-        (range1.endTime >= range2.startTime && range1.endTime <= range2.endTime);
+    return range1.endTime >= range2.startTime && range1.startTime <= range2.endTime;
 }
 
 function combineRanges(range1: TimeRange, range2: TimeRange): TimeRange {
