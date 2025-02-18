@@ -1,13 +1,27 @@
 .mdhui-grid {
     display: flex;
-    gap: 16px;
+    gap: var(--mdhui-padding-md);
+    flex-wrap: wrap;
 }
 
 .mdhui-grid.mdhui-grid-default-margin {
-    margin: 16px;
+    margin: var(--mdhui-padding-md);
 }
 
 .mdhui-grid .mdhui-grid-column {
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.mdhui-grid .mdhui-grid-column:empty {
+    display: none;
+}
+
+/* If there is only an empty card and no other non-empty elements in the column, hide the column */
+.mdhui-grid .mdhui-grid-column:has(> .mdhui-card:empty):not(:has(> *:not(:empty))) {
+    display: none;
+}
+
+.mdhui-grid .mdhui-grid-column>.mdhui-card {
+    margin: 0;
 }
