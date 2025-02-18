@@ -8,7 +8,7 @@ export interface TimeRange {
     endTime: Date;
 }
 
-export type DailyTimeRanges = { [key: string]: TimeRange[] };
+export type DailyTimeRanges = Record<string, TimeRange[]>;
 
 export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHours: number = 0): DailyTimeRanges {
     const dailyTimeRanges: DailyTimeRanges = {};
