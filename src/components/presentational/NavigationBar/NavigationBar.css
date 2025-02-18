@@ -1,7 +1,7 @@
 ﻿.mdhui-navigation-bar {
     text-align: left;
     padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px;
-    min-height: 56px;
+    min-height: calc(56px + env(safe-area-inset-top, 0px));
     margin-bottom: 8px;
     box-sizing: border-box;
     position: -webkit-sticky;
