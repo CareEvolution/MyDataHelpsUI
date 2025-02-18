@@ -522,7 +522,10 @@
     "device-activity": "Actividad del dispositivo",
     "daily": "Diario",
     "weekly": "Semanal",
-    "monthly": "Mensual"
+    "monthly": "Mensual",
+    "syncing-data": "Sincronizando datos...",
+    "health-connect-phr-sync-title": "Sincronizar con Health Connect",
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
 };
 
 export default strings;

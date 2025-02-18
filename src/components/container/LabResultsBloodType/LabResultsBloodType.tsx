@@ -6,6 +6,7 @@ import language from "../../../helpers/language";
 import { bloodTypeLabs, singleLabs, manyLabs } from "./LabResultsBloodType.previewdata";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import iconBloodType from "./icon-bloodtype.svg";
+import { useInitializeView } from "../../../helpers";
 
 export interface LabResultsBloodTypeProps {
     previewState?: "BloodTypeLabs" | "SingleLabs" | "ManyLabs" | "NoData"
@@ -55,16 +56,9 @@ export default function (props: LabResultsBloodTypeProps) {
             });
     }
 
-    useEffect(() => {
+    useInitializeView(() => {
         getLabResultsSummary();
-
-        MyDataHelps.on("externalAccountSyncComplete", getLabResultsSummary);
-        MyDataHelps.on("applicationDidBecomeVisible", getLabResultsSummary);
-        return () => {
-            MyDataHelps.off("externalAccountSyncComplete", getLabResultsSummary);
-            MyDataHelps.off("applicationDidBecomeVisible", getLabResultsSummary);
-        }
-    }, []);
+    }, ["externalAccountSyncComplete", "healthConnectPhrSyncComplete"], []);
 
     if (!model) {
         return <div ref={props.innerRef} className="mdhui-health-preview-section"><LoadingIndicator /></div>
