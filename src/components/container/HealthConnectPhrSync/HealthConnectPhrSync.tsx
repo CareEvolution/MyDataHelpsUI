@@ -14,32 +14,39 @@ export interface HealthConnectPhrSyncProps {
 }
 
 export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
-    let [status, setStatus] = React.useState<HealthConnectPhrStatus | undefined>();
+    const [status, setStatus] = React.useState<HealthConnectPhrStatus | undefined>();
 
-    function refreshStatus() {
+    function getPreviewStatus(): HealthConnectPhrStatus {
+        const hasEnabledPermissions = props.previewState == "permissionsEnabled" || props.previewState == "running";
+        return {
+            available: true,
+            running: props.previewState == "running",
+            requestedPermissions: ["something"],
+            enabledPermissions: hasEnabledPermissions ? ["read", "write"] : []
+        }
+    }
+
+    async function refreshStatus() {
         if (props.previewState) {
-            let hasEnabledPermissions = props.previewState == "permissionsEnabled" || props.previewState == "running";
-            setStatus({ available: true, running: props.previewState == "running", requestedPermissions: ["something"], enabledPermissions: hasEnabledPermissions ? ["read", "write"] : [] });
+            setStatus(getPreviewStatus());
             return;
         }
 
-        MyDataHelps.getHealthConnectPhrStatus().then(function (newStatus) {
-            setStatus(newStatus);
-            if (status?.running && !newStatus.running) {
-                if (props.triggerSyncCompleteEvent) {
-                    MyDataHelps.triggerEvent({ type: "healthConnectPhrSyncComplete" });
-                }
+        let newStatus = await MyDataHelps.getHealthConnectPhrStatus();
+        setStatus(newStatus);
+        if (status?.running && !newStatus.running) {
+            if (props.triggerSyncCompleteEvent) {
+                MyDataHelps.triggerEvent({ type: "healthConnectPhrSyncComplete" });
             }
-        });
+        }
     }
 
-    useInitializeView(() => {
+    useInitializeView(async () => {
         if (props.previewState) { refreshStatus(); }
-        MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-            if (deviceInfo?.platform === "Android") {
-                refreshStatus();
-            }
-        });
+        let deviceInfo = await MyDataHelps.getDeviceInfo();
+        if (deviceInfo?.platform === "Android") {
+            refreshStatus();
+        }
     });
 
     useInterval(() => {
