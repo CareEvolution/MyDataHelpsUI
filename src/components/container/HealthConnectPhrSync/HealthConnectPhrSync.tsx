@@ -65,19 +65,25 @@ export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
         return null;
     }
 
-    let subtitle = language("health-connect-phr-sync-prompt");
-    let indicator = <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>{language("connect")}</Button>;
+    function getSubtitle() {
+        if (status!.enabledPermissions.length > 0) {
+            return status!.running ? language("syncing-data") : language("connected");
+        }
+        return language("health-connect-phr-sync-prompt");
+    }
 
-    if (status.enabledPermissions.length > 0) {
-        subtitle = status.running ? language("syncing-data") : language("connected");
-        indicator = <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>{language("settings")}</Button>;
+    function getIndicator() {
+        if (status!.enabledPermissions.length > 0) {
+            return <Button variant='subtle' onClick={() => MyDataHelps.showHealthConnectSettings()}>{language("settings")}</Button>;
+        }
+        return <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>{language("connect")}</Button>;
     }
 
     return <Action innerRef={props.innerRef} titleIcon={<img width={15} style={{ marginRight: "8px" }} src={HealthConnectLogo} />}
         bottomBorder
         title={language("health-connect-phr-sync-title")}
         renderAs="div"
-        subtitle={subtitle}
-        indicator={indicator}>
+        subtitle={getSubtitle()}
+        indicator={getIndicator()}>
     </Action>
 }
