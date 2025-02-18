@@ -17,6 +17,7 @@
     display: none;
 }
 
+/* If there is only an empty card and no other non-empty elements in the column, hide the column */
 .mdhui-grid .mdhui-grid-column:has(> .mdhui-card:empty):not(:has(> .mdhui-card:not(:empty))) {
     display: none;
 }
