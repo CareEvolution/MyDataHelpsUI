@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { DataAvailability, ExternalAccount } from "@careevolution/mydatahelps-js"
 import { Action, Button, LayoutContext, Title } from '../../presentational'
 import language from '../../../helpers/language'
 import { previewAccounts } from '../ExternalAccountsPreview/ExternalAccountsPreview.previewdata'
@@ -20,6 +20,7 @@ export interface ViewEhrProps {
 
 export default function (props: ViewEhrProps) {
     const [ehrAccounts, setEhrAccounts] = useState<ExternalAccount[] | null>(null);
+    const [dataAvailability, setDataAvailability] = useState<DataAvailability | null>(null);
 
     function initialize() {
         if (props.previewState) {
@@ -28,8 +29,9 @@ export default function (props: ViewEhrProps) {
             return;
         }
 
-        MyDataHelps.getExternalAccounts().then(function (accounts) {
+        Promise.all([MyDataHelps.getExternalAccounts(), MyDataHelps.getDataAvailability()]).then(function ([accounts, dataAvailability]) {
             updateExternalAccounts(accounts);
+            setDataAvailability(dataAvailability);
         });
     }
 
@@ -49,7 +51,7 @@ export default function (props: ViewEhrProps) {
         }
     }, []);
 
-    if (!ehrAccounts || !ehrAccounts.length) {
+    if ((!ehrAccounts || !ehrAccounts.length) && !dataAvailability?.appleHealthRecords && !dataAvailability?.healthConnectPhr) {
         return null;
     }
 
@@ -57,7 +59,7 @@ export default function (props: ViewEhrProps) {
     return (
         <Action innerRef={props.innerRef} className="mdhui-view-ehr" renderAs='div' onClick={() => props.onClick()} indicator={indicator}>
             <Title order={3}>{props.title || language("health-records")}</Title>
-            {ehrAccounts.find(e => e.status == "fetchingData") && <div className="mdhui-view-ehr-status"><FontAwesomeSvgIcon icon={faRefresh} spin /> {language("external-account-fetching-data")}</div>}
+            {ehrAccounts?.find(e => e.status == "fetchingData") && <div className="mdhui-view-ehr-status"><FontAwesomeSvgIcon icon={faRefresh} spin /> {language("external-account-fetching-data")}</div>}
         </Action>
     );
 }

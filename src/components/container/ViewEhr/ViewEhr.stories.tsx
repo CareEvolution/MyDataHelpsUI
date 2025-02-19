@@ -19,3 +19,10 @@ export const Default = {
     },
     render: render
 };
+
+
+export const Live = {
+    args: {
+    },
+    render: render
+};
