@@ -51,9 +51,12 @@ export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHour
 export function buildMinutesResultFromDailyTimeRanges(startDate: Date, endDate: Date, dailyTimeRanges: DailyTimeRanges): DailyDataQueryResult {
     const result: DailyDataQueryResult = {};
 
+    const lowerBound = startOfDay(startDate);
+    const upperBound = startOfDay(endDate);
+
     for (const dayKey of Object.keys(dailyTimeRanges)) {
         const dayDate = parseISO(dayKey);
-        if (startDate <= dayDate && dayDate < endDate) {
+        if (lowerBound <= dayDate && dayDate < upperBound) {
             const ranges = dailyTimeRanges[dayKey];
             const totalSeconds = ranges.reduce((totalSeconds, range) => totalSeconds + differenceInSeconds(range.endTime, range.startTime), 0);
             result[dayKey] = Math.floor(totalSeconds / 60);

@@ -298,6 +298,12 @@ describe('TimeRange - Helper Function Tests', () => {
                     endTime: add(threeDaysAgo, { hours: 12, minutes: 15, seconds: 30 })
                 }
             ];
+            dailyTimeRanges[getDayKey(today)] = [
+                {
+                    startTime: add(today, { hours: 9 }),
+                    endTime: add(today, { hours: 9, minutes: 30 })
+                }
+            ];
 
             const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, today, dailyTimeRanges);
 
