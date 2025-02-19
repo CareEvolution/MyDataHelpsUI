@@ -530,7 +530,7 @@ let strings: { [key: string]: string } = {
     "bonus": "Bonus",
     "download": "Télécharger",
     "delete-file-confirm": "Êtes-vous sûr de vouloir supprimer ce fichier ?",
-    "file-not-loaded": "Le fichier n'a pas pu être chargé. Veuillez contacter le support."
+    "file-not-loaded": "Le fichier n'a pas pu être chargé. Veuillez contacter le support.",
     "syncing-data": "Synchronisation des données...",
     "health-connect-phr-sync-title": "Synchroniser avec Health Connect",
     "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire avec Health Connect"

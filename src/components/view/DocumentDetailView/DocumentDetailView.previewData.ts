@@ -29,7 +29,7 @@ const previewPdfData: DocumentDetail = {
     type: "Test Results",
     notes: "These are some notes for a sample PDF",
     date: new Date(),
-    presignedDocUrl: "https://freelawlibrary.org/wp-content/uploads/2022/10/The-Constitution-Full-Text-The-National-Constitution-Center.pdf",//"https://constitutioncenter.org/media/files/constitution.pdf",
+    presignedDocUrl: "https://freelawlibrary.org/wp-content/uploads/2022/10/The-Constitution-Full-Text-The-National-Constitution-Center.pdf",
     presignedImageUrl: "",
     showDownload: false,
     fileKey: "file key"

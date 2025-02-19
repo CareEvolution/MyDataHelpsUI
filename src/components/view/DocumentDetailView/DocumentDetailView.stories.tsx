@@ -49,6 +49,11 @@ export const Csv: Story = {
     render: render
 };
 
+export const Video: Story = {
+    args: { ...uploadDocumentSurveyProps, preview: 'PreviewMp4' },
+    render: render
+};
+
 export const Unsupported: Story = {
     args: { ...uploadDocumentSurveyProps, preview: 'PreviewUnknown' },
     render: render
