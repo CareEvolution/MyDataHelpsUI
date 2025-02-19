@@ -521,7 +521,15 @@ let strings: { [key: string]: string } = {
     "device-activity": "Apparaatactiviteit",
     "daily": "Dagelijks",
     "weekly": "Wekelijks",
-    "monthly": "Maandelijks"
+    "monthly": "Maandelijks",
+    "documents": "Documenten",
+    "upload": "Uploaden",
+    "name": "Naam",
+    "date": "Datum",
+    "bonus": "Bonus",
+    "download": "Downloaden",
+    "delete-file-confirm": "Weet je zeker dat je dit bestand wilt verwijderen?",
+    "file-not-loaded": "Het bestand kon niet worden geladen. Neem contact op met de ondersteuning."
 };
 
 export default strings;

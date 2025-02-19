@@ -522,7 +522,15 @@
     "device-activity": "Actividad del dispositivo",
     "daily": "Diario",
     "weekly": "Semanal",
-    "monthly": "Mensual"
+    "monthly": "Mensual",
+    "documents": "Documentos",
+    "upload": "Subir",
+    "name": "Nombre",
+    "date": "Fecha",
+    "bonus": "Bono",
+    "download": "Descargar",
+    "delete-file-confirm": "¿Estás seguro de que deseas eliminar este archivo?",
+    "file-not-loaded": "No se pudo cargar el archivo. Por favor, contacta con soporte."
 };
 
 export default strings;

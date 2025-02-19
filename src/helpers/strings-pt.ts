@@ -522,7 +522,15 @@ let strings: { [key: string]: string } = {
     "device-activity": "Atividade do dispositivo",
     "daily": "Diário",
     "weekly": "Semanal",
-    "monthly": "Mensal"
+    "monthly": "Mensal",
+    "documents": "Documentos",
+    "upload": "Carregar",
+    "name": "Nome",
+    "date": "Data",
+    "bonus": "Bônus",
+    "download": "Baixar",
+    "delete-file-confirm": "Tem certeza de que deseja excluir este arquivo?",
+    "file-not-loaded": "Não foi possível carregar o arquivo. Por favor, entre em contato com o suporte."
 };
 
 export default strings;
