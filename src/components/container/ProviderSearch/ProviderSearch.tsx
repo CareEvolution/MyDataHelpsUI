@@ -101,7 +101,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function updateSearchResults(providers: ExternalAccountProvider[]) {
         let newResults: ExternalAccountProvider[] = searchResults;
-        if (searchString === "" && props.featuredProviders) {
+        if (searchStringRef.current === "" && props.featuredProviders) {
             newResults = newResults.concat(props.featuredProviders);
         }
         setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
