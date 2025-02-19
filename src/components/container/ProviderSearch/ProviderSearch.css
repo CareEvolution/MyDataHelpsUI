@@ -45,6 +45,7 @@
     flex-direction: row;
     gap: 16px;
     align-items: center;
+    min-height: 61px;
 }
 
 .mdhui-provider-search .search-results .provider .provider-info {
