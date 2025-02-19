@@ -18,6 +18,7 @@ export interface ProviderSearchProps {
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
     hideRequestProviderButton?: boolean;
     publicProviderSearchApiUrl?: string;
+    featuredProviders?: ExternalAccountProvider[];
 }
 
 export type ProviderSearchPreviewState = "Default" | "Searching";
@@ -99,7 +100,11 @@ export default function ProviderSearch(props: ProviderSearchProps) {
     }
 
     function updateSearchResults(providers: ExternalAccountProvider[]) {
-        setSearchResults(searchResults.concat(providers.filter(a => props.providerCategories?.indexOf(a.category) != -1)));
+        let newResults: ExternalAccountProvider[] = searchResults;
+        if (searchString === "" && props.featuredProviders) {
+            newResults = newResults.concat(props.featuredProviders);
+        }
+        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
     }
 
     const debounce = (fn: Function, ms = 300) => {
@@ -213,9 +218,6 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             connectToProvider(provider);
                         }
                     }}>
-                        {provider.logoUrl &&
-                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
-                        }
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
@@ -225,6 +227,9 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                                 <div className="provider-status connected-status">{language("connected")}</div>
                             }
                         </div>
+                        {provider.logoUrl &&
+                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
+                        }
                     </UnstyledButton>
                 )}
                 {shouldShowRequestProviderAction() &&

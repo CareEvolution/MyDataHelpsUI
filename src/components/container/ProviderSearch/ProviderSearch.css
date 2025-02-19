@@ -36,24 +36,31 @@
 .mdhui-provider-search .search-results .provider {
     border-bottom: solid 1px var(--mdhui-border-color-1);
     padding: 16px;
-    position: relative;
-    padding-right: 96px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     cursor: pointer;
     font-size: .88em;
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
 }
 
+.mdhui-provider-search .search-results .provider .provider-info {
+    flex-grow: 1;
+}
+
+
 .mdhui-provider-search .search-results .provider .provider-logo {
-    height: 37px;
-    width: 64px;
-    position: absolute;
-    right: 16px;
-    top: 8px;
+    height: 44px;
+    width: 72px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
-    background-color:#FFF;
+    background-color: #FFF;
     border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .mdhui-provider-search .search-results .provider .provider-status {
