@@ -16,7 +16,7 @@ export const globalTypes = {
 				{ value: 'de', title: 'German' },
 				{ value: 'fr', title: 'French' },
 				{ value: 'pt', title: 'Portuguese (Brasil)' },
-				{ value: 'pt-pt', title: 'Portuguese (Portugal)' },
+				{ value: 'pt-PT', title: 'Portuguese (Portugal)' },
 				{ value: 'it', title: 'Italian' },
 				{ value: 'pl', title: 'Polish' },
 			],

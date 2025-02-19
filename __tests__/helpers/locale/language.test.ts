@@ -4,7 +4,7 @@ import { describe, it } from '@jest/globals';
 describe('Language Tests', () => {
     describe('getLanguageCodeFromIso', () => {
         it('Should return lowercase language code if specified.', () => {
-            const result = getLanguageCodeFromIso("en-us");
+            const result = getLanguageCodeFromIso("EN-US");
             expect(result).toBe("en");
         });
         it('Should return empty string if no language.', () => {
@@ -12,7 +12,7 @@ describe('Language Tests', () => {
             expect(result).toBe("");
         });
         it('Should handle underscores too.', () => {
-            const result = getLanguageCodeFromIso("en-uk");
+            const result = getLanguageCodeFromIso("en_UK");
             expect(result).toBe("en");
         });
     });
@@ -27,18 +27,18 @@ describe('Language Tests', () => {
             expect(result).toBe(undefined);
         });
         it('Should handle underscores too.', () => {
-            const result = getCountryCodeFromIso("en-uk");
+            const result = getCountryCodeFromIso("en_UK");
             expect(result).toBe("uk");
         });
     });
 
     describe('language', () => {
         it('Should return a string from a specific supported locale.', () => {
-            const result = language("settings", "pt-pt");
+            const result = language("settings", "PT-PT");
             expect(result).toBe("Definições");
         });
         it('Should return a string from the base language if specific locale unsupported.', () => {
-            const result = language("settings", "pt-xx");
+            const result = language("settings", "PT-xx");
             expect(result).toBe("Configurações");
         });
         it('Should return English if entire language is unsupported.', () => {
