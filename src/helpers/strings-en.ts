@@ -531,7 +531,6 @@
     "download": "Download",
     "delete-file-confirm": "Are you sure you want to delete this file?",
     "file-not-loaded": "The file could not be loaded. Please contact support.",
-    "bonus": "Bonus",
     "syncing-data": "Syncing data...",
     "health-connect-phr-sync-title": "Sync with Health Connect",
     "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect"
