@@ -150,26 +150,6 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setCurrentPage(currentPage + 1);
     }
 
-    function buildActionTitle() {
-        let title = language("request-add");
-
-        if (!props.providerCategories || props.providerCategories.length == 0) {
-            return `${title} ${language('external-accounts-title-providers')} ${language('external-accounts-title-divider')} ${language('external-accounts-title-health-plans')}`;
-        }
-
-        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Provider") {
-            return `${title} ${language('external-accounts-title-providers')}`;
-        }
-
-        if (props.providerCategories.length == 1 && props.providerCategories[0] === "Health Plan") {
-            return `${title} ${language('external-accounts-title-health-plans')}`;
-        }
-    }
-
-    const requestProviderAction = () => {
-        MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
-    }
-
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
@@ -183,6 +163,38 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             performSearch(searchStringRef.current)
         }
     }, [currentPage]);
+
+    const supportsRequestProviderAction = (): boolean => {
+        return !props.providerCategories
+            || props.providerCategories.length == 0
+            || props.providerCategories.includes("Provider")
+            || props.providerCategories.includes("Health Plan");
+    };
+
+    const shouldShowRequestProviderAction = (): boolean => {
+        return !searching && !props.hideRequestProviderButton && supportsRequestProviderAction();
+    };
+
+    const buildRequestProviderActionTitle = (): string => {
+        let titleSuffix = "";
+
+        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes("Provider")) {
+            titleSuffix += language('external-accounts-title-providers');
+        }
+
+        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes("Health Plan")) {
+            if (titleSuffix.length > 0) {
+                titleSuffix += language('external-accounts-title-divider');
+            }
+            titleSuffix += language('external-accounts-title-health-plans');
+        }
+
+        return `${(language("request-add"))} ${titleSuffix}`;
+    };
+
+    const requestProviderAction = (): void => {
+        MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
+    };
 
     return (
         <div ref={props.innerRef} className="mdhui-provider-search">
@@ -215,9 +227,9 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                         </div>
                     </UnstyledButton>
                 )}
-                {!searching &&
-                    !props.hideRequestProviderButton &&
-                    <Action onClick={requestProviderAction} title={buildActionTitle()} />}
+                {shouldShowRequestProviderAction() &&
+                    <Action onClick={requestProviderAction} title={buildRequestProviderActionTitle()} />
+                }
                 {searching &&
                     <LoadingIndicator />
                 }

@@ -11,6 +11,7 @@ import procedureIcon from "../../../assets/icon-procedure.svg";
 import immunizationIcon from "../../../assets/icon-immunization.svg";
 import "./HealthPreviewSection.css"
 import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata";
+import { useInitializeView } from "../../../helpers";
 
 export type HealthPreviewSectionConcept = "Medications" | "Immunizations" | "Reports" | "Allergies" | "Conditions" | "Procedures";
 
@@ -47,15 +48,9 @@ export default function (props: HealthPreviewSectionProps) {
             });
     }
 
-    useEffect(() => {
+    useInitializeView(() => {
         loadData();
-        MyDataHelps.on("externalAccountSyncComplete", loadData);
-        MyDataHelps.on("applicationDidBecomeVisible", loadData);
-        return () => {
-            MyDataHelps.off("externalAccountSyncComplete", loadData);
-            MyDataHelps.off("applicationDidBecomeVisible", loadData);
-        }
-    }, [props.concept]);
+    }, ["externalAccountSyncComplete", "healthConnectPhrSyncComplete"], [props.concept]);
 
     function getIconUrl() {
         switch (props.concept) {

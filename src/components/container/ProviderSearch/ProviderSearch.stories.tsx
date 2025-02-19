@@ -38,7 +38,7 @@ export const ProvidersOnly: Story = {
 	render: render
 }
 
-export const HealthPlanOnly: Story = {
+export const HealthPlansOnly: Story = {
 	args: {
 		previewState: "Default",
 		providerCategories: ["Health Plan"]
@@ -46,10 +46,10 @@ export const HealthPlanOnly: Story = {
 	render: render
 }
 
-export const onProviderSelected: Story = {
+export const DeviceManufacturersOnly: Story = {
 	args: {
 		previewState: "Default",
-		onProviderSelected: (provider: ExternalAccountProvider) => alert(`You selected ${provider.name}`)
+		providerCategories: ["Device Manufacturer"]
 	},
 	render: render
 }
@@ -70,7 +70,39 @@ export const publicEndpoint: Story = {
 	render: render
 }
 
-export const hideAddNewAction: Story = {
+export const ProvidersAndHealthPlans: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider", "Health Plan"]
+	},
+	render: render
+}
+
+export const ProvidersAndDeviceManufacturers: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider", "Device Manufacturer"]
+	},
+	render: render
+}
+
+export const HealthPlansAndDeviceManufacturers: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Health Plan", "Device Manufacturer"]
+	},
+	render: render
+}
+
+export const ProvidersAndHealthPlansAndDeviceManufacturers: Story = {
+	args: {
+		previewState: "Default",
+		providerCategories: ["Provider", "Health Plan", "Device Manufacturer"]
+	},
+	render: render
+}
+
+export const HideAddNewAction: Story = {
 	args: {
 		previewState: "Default",
 		hideRequestProviderButton: true
@@ -99,6 +131,13 @@ export const LiveStandalone: Story = {
 			openNewWindow: false,
 			standaloneModeFinalRedirectPath: "https://mydatahelps.org"// replace with actual redirect url for this to work
 		}
+	},
+	render: render
+}
+
+export const LiveOnProviderConnected: Story = {
+	args: {
+		onProviderConnected: (provider: ExternalAccountProvider) => alert(`Provider ${provider.name} connected.`)
 	},
 	render: render
 }

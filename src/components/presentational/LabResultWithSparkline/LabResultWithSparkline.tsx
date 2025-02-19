@@ -27,7 +27,7 @@ export interface LabResultWithSparklineProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: LabResultWithSparklineProps) {
+export default function LabResultWithSparkline(props: LabResultWithSparklineProps) {
     let [sparklineXRange, setSparklineXRange] = useState(0);
     let [sparklineYRange, setSparklineYRange] = useState(0);
     let sparklineSvg = useRef<SVGSVGElement>(null);

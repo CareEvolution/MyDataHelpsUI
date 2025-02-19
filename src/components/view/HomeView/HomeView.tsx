@@ -57,7 +57,7 @@ export default function HomeView(props: HomeViewProps) {
 				<MostRecentNotification
 					notificationType={notificationType}
 					onViewMore={props.notificationsViewUrl ? () => viewAllNotifications() : undefined}
-					previewState={props.preview ? "Default" : undefined}
+					previewState={props.preview ? "loaded with data" : undefined}
 					hideAfterHours={props.notificationHideAfterHours} />
 			</Card>
 			<SurveyTaskList

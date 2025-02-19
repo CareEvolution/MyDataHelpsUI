@@ -20,7 +20,7 @@ interface CalendarDay {
 	day?: number
 }
 
-export default function (props: CalendarProps) {
+export default function Calendar(props: CalendarProps) {
 	var weeks: CalendarWeek[] = []
 
 	var daysOfTheWeekIndices = Array.from(Array(7).keys());
