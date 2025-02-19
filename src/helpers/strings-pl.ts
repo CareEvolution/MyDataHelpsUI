@@ -531,6 +531,9 @@ let strings: { [key: string]: string } = {
     "download": "Pobierz",
     "delete-file-confirm": "Czy na pewno chcesz usunąć ten plik?",
     "file-not-loaded": "Nie udało się załadować pliku. Proszę skontaktować się z pomocą techniczną."
+    "syncing-data": "Synchronizowanie danych...",
+    "health-connect-phr-sync-title": "Synchronizuj z Health Connect",
+    "health-connect-phr-sync-prompt": "Wybierz rekordy zdrowotne do odczytu i zapisu w Health Connect"
 };
 
 export default strings;

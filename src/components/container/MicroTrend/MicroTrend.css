@@ -1,0 +1,41 @@
+.mdhui-micro-trend {
+    margin: var(--mdhui-padding-md);
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-chart {
+    width: 35%;
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-label {
+    font-size: .7em;
+    color: var(--mdhui-text-color-2);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-icon {
+    position: absolute;
+    line-height: 32px;
+    text-align: center;
+    left: var(--mdhui-padding-md);
+    top: calc(50% - 8px);
+    color: var(--mdhui-color-primary);
+    font-size: 1em;
+}
+
+.mdhui-micro-trend .mdhui-micro-trend-value {
+    font-weight: bold;
+    margin-top: 4px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
