@@ -101,7 +101,12 @@ export default function (props: InboxItemListProps) {
         if (inboxItem.type === 'message' && props.messageViewerUrl) {
             viewInboxMessage(inboxItem as InboxMessage, props.messageViewerUrl);
         } else if (inboxItem.type === 'survey') {
-            MyDataHelps.startSurvey((inboxItem as InboxSurvey).name);
+            MyDataHelps.querySurveyTasks({ status: 'incomplete' }).then(surveyTasksPage => {
+                const surveyName = surveyTasksPage.surveyTasks.find(t => t.id === inboxItem.id)?.surveyName;
+                if (surveyName) {
+                    MyDataHelps.startSurvey(surveyName);
+                }
+            });
         } else if (inboxItem.type === 'resource') {
             MyDataHelps.openEmbeddedUrl((inboxItem as InboxResource).url);
         }
