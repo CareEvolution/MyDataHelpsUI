@@ -1,6 +1,7 @@
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { parseISO } from "date-fns";
 import queryAllSurveyAnswers from "./query-all-survey-answers";
+import { date } from "zod";
 
 export interface SurveyUploadedFile {
     surveyResultId: string,
@@ -30,13 +31,14 @@ export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParamete
         if (answers.length > 0) {
             let resultIds = [...new Set(answers.map(a => a.surveyResultID))];
             resultIds.forEach(async (resultId) => {
-                var resultsForSubmission = answers.filter(a => a.surveyResultID == resultId);
-                var useDate = "";
+                var resultsForSubmission = answers.filter(a => a.surveyResultID === resultId);
+                var useDate = resultsForSubmission[0].date;
                 if (props.dateResultIdentifier) {
                     var dateResults = resultsForSubmission.find(r => r.resultIdentifier == props.dateResultIdentifier);
-                    useDate = dateResults && dateResults.answers ? dateResults.answers[0] : resultsForSubmission[0].date;
-                } else {
-                    useDate = resultsForSubmission[0].date;
+                    useDate = dateResults && dateResults.answers && dateResults.answers[0] ? dateResults.answers[0] : '';
+                    if (!useDate && dateResults) {
+                        useDate = dateResults.date;
+                    }
                 }
                 const titleResults = resultsForSubmission.find(r => r.resultIdentifier == props.nameResultIdentifier);
                 const title = titleResults && titleResults.answers ? titleResults.answers[0] : "";
