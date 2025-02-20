@@ -1,4 +1,4 @@
-import { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { parseISO } from "date-fns";
 import queryAllSurveyAnswers from "./query-all-survey-answers";
 
@@ -13,7 +13,7 @@ export interface SurveyUploadedFile {
 }
 
 export interface SurveyUploadedFileQueryParameters {
-    uploadDocumentSurveyName: string,
+    uploadDocumentSurveyName?: string,
     fileResultIdentifier: string,
     typeResultIdentifier: string,
     nameResultIdentifier: string,
@@ -22,7 +22,7 @@ export interface SurveyUploadedFileQueryParameters {
     surveyResultId?: string
 }
 
-export default async function (props: SurveyUploadedFileQueryParameters): Promise<SurveyUploadedFile[]> {
+export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParameters): Promise<SurveyUploadedFile[]> {
 
     async function groupSurveyAnswersByResults(answers: SurveyAnswer[]) {
         let uploadedFiles: SurveyUploadedFile[] = [];
@@ -68,12 +68,19 @@ export default async function (props: SurveyUploadedFileQueryParameters): Promis
         return uploadedFiles;
     }
 
+    if (!props.uploadDocumentSurveyName && !props.surveyResultId) {
+        throw new Error("Either survey name or surveyResultId is required");
+    }
+
     let queryParameters: SurveyAnswersQuery = {
-        surveyName : props.uploadDocumentSurveyName,
         resultIdentifier : [props.fileResultIdentifier!,
             props.typeResultIdentifier!, props.nameResultIdentifier!,
             props.dateResultIdentifier!, props.notesResultIdentifier!]
     };
+
+    if (props.uploadDocumentSurveyName) {
+        queryParameters.surveyName = props.uploadDocumentSurveyName;
+    }
 
     if (props.surveyResultId) {
         queryParameters.surveyResultID = props.surveyResultId;
@@ -82,4 +89,18 @@ export default async function (props: SurveyUploadedFileQueryParameters): Promis
     return await queryAllSurveyAnswers(queryParameters).then((surveyAnswers: SurveyAnswer[]) => {
         return groupSurveyAnswersByResults(surveyAnswers);
     });
-}
+};
+
+
+export async function deleteSurveyResultFiles(surveyResultId: string, fileKey: string) {
+
+    if (!fileKey || !surveyResultId) return;
+
+    return await MyDataHelps.deleteSurveyResult(surveyResultId).then(() => {
+        MyDataHelps.deleteFile(fileKey);
+    }).catch((error) => {
+        console.error('Error deleting survey results', error);
+        console.error('The survey must be configured to support result deletion'); 
+    });
+};
+

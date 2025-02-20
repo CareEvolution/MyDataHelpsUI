@@ -6,7 +6,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { getShortDateString } from "../../../helpers/date-helpers";
-import queryAllSurveyFiles, { SurveyUploadedFile, SurveyUploadedFileQueryParameters } from "../../../helpers/query-all-survey-files";
+import { queryAllSurveyFiles, SurveyUploadedFile, SurveyUploadedFileQueryParameters } from "../../../helpers";
 import { getPreviewData } from "./DocumentLibraryView.previewData";
 
 export interface DocumentLibraryViewProps {
@@ -47,7 +47,6 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         selectedSegment: selectedSegment,
         color: "var(--mdhui-color-primary)",
         onSegmentSelected: (segmentKey) => {
-            console.log(`Change in selected segment ${segmentKey}`);
             setSelectedSegment(segmentKey as "date" | "name" | "type");
         },
         style: {
@@ -66,13 +65,12 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
 
         if (props.documentViewBaseUrl) {
             const documentDetailViewUrl = props.documentViewBaseUrl + '?surveyResultId=' + encodeURIComponent(file.surveyResultId)
-                + '&uploadDocumentSurveyName=' + encodeURIComponent(props.uploadDocumentSurveyName)
                 + '&fileResultIdentifier=' + encodeURIComponent(props.fileResultIdentifier)
                 + '&typeResultIdentifier=' + encodeURIComponent(props.typeResultIdentifier)
                 + '&nameResultIdentifier=' + encodeURIComponent(props.nameResultIdentifier)
                 + '&dateResultIdentifier=' + encodeURIComponent(props.dateResultIdentifier)
                 + '&notesResultIdentifier=' + encodeURIComponent(props.notesResultIdentifier);
-            MyDataHelps.openApplication(documentDetailViewUrl, { modal: true });
+            MyDataHelps.openApplication(documentDetailViewUrl);
         }
     }
 

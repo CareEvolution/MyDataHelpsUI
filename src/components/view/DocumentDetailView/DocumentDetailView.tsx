@@ -1,9 +1,8 @@
 import React from "react";
 import { Button, Layout, LoadingIndicator, Title } from "../../presentational";
 import MyDataHelps from "@careevolution/mydatahelps-js";
-import { language, SurveyUploadedFileQueryParameters, useInitializeView } from "../../../helpers";
-import "./DocumentDetailView.css"
-import queryAllSurveyFiles, { SurveyUploadedFile } from "../../../helpers/query-all-survey-files";
+import { language, SurveyUploadedFileQueryParameters, queryAllSurveyFiles, SurveyUploadedFile, useInitializeView, deleteSurveyResultFiles } from "../../../helpers";
+import "./DocumentDetailView.css";
 import { getShortDateString } from "../../../helpers/date-helpers";
 import { getPreviewData } from "./DocumentDetailView.previewData";
 
@@ -12,7 +11,6 @@ export type DocumentDetailViewPreviewType = "PreviewPdf" | "PreviewText" | "Prev
 export interface DocumentDetailViewProps {
   preview?: DocumentDetailViewPreviewType,
   surveyResultId: string,
-  uploadDocumentSurveyName: string,
   fileResultIdentifier: string,
   typeResultIdentifier: string,
   nameResultIdentifier: string,
@@ -28,13 +26,14 @@ export interface DocumentDetail extends SurveyUploadedFile {
   fileKey: string
 }
 
-/** This view display a file uploaded by the user via specified survey */
+/** This view displays a file uploaded by the user via specified survey 
+ * The survey must be configured to allow deleting of survey results
+*/
 export default function DocumentDetailView(props: DocumentDetailViewProps) {
   let [documentDetail, setDocumentDetail] = React.useState<DocumentDetail>();
 
   async function initialize() {
     const params: SurveyUploadedFileQueryParameters = {
-      uploadDocumentSurveyName: props.uploadDocumentSurveyName,
       fileResultIdentifier: props.fileResultIdentifier,
       typeResultIdentifier: props.typeResultIdentifier,
       nameResultIdentifier: props.nameResultIdentifier,
@@ -90,7 +89,6 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff', '.svg', '.ico', '.avif'];
     const lowerCaseFileName = fileName.toLowerCase();
-
     return imageExtensions.some(ext => lowerCaseFileName.endsWith(ext));
   }
 
@@ -104,16 +102,16 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     }
   }
 
-  const deleteFile = () => {
+  const deleteFile = async () => {
     if (!documentDetail?.fileKey || !documentDetail?.surveyResultId) {
       return;
     }
 
     if (window.confirm(language("delete-file-confirm"))) {
-      MyDataHelps.deleteSurveyResult(props.surveyResultId);
-      MyDataHelps.deleteFile(documentDetail?.fileKey!);
-      setDocumentDetail(undefined);
-      MyDataHelps.dismiss();
+      deleteSurveyResultFiles(documentDetail.surveyResultId, documentDetail.fileKey).then(() => {
+        setDocumentDetail(undefined);
+        MyDataHelps.dismiss();
+      });
     }
   };
 
@@ -150,7 +148,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             <div className="mdhui-survey-answer-file-document-details">{`${documentDetail?.title} - ${getShortDateString(documentDetail?.date!)}`}</div>
             <Title order={3}>{language("notes")}</Title>
             <div className="mdhui-survey-answer-file-document-details">{documentDetail?.notes}</div>
-            <Button variant="default" onClick={() => deleteFile} children={language("delete")} ></Button>
+            <Button variant="default" onClick={deleteFile} children={language("delete")} ></Button>
           </div>
         </>
       }

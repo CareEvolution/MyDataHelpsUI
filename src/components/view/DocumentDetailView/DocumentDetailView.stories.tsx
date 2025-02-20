@@ -21,7 +21,6 @@ const render = (args: DocumentDetailViewProps) => <DocumentDetailView {...args} 
 
 const uploadDocumentSurveyProps: DocumentDetailViewProps = {
     surveyResultId: '',
-    uploadDocumentSurveyName: 'UploadDocument',
     fileResultIdentifier: 'document',
     typeResultIdentifier: 'document_type',
     nameResultIdentifier: 'document_name',
@@ -69,11 +68,6 @@ export const FileNotFound: Story = {
     render: render
 };
 
-export const LiveMultiPagePdf: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: '' },
-    render: render
-};
-
 export const LiveSingleLandscapePdf: Story = {
     args: { ...uploadDocumentSurveyProps, surveyResultId: '2e3f7062-87e8-ef11-bafe-0affe8024cad' },
     render: render
@@ -84,13 +78,8 @@ export const LiveSinglePortraitPdf: Story = {
     render: render
 };
 
-export const LiveCsv: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: '540e6dc9-eeee-ef11-bafe-0affe8024cad' },
-    render: render
-};
-
 export const LiveText: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'b1508427-a3e8-ef11-bafe-0affe8024cad' },
+    args: { ...uploadDocumentSurveyProps, surveyResultId: 'ad6d89b3-a1ef-ef11-bafe-0affe8024cad' },
     render: render
 };
 
