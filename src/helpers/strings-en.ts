@@ -10,6 +10,7 @@
     "settings": "Settings",
     "connect": "Connect",
     "reconnect": "Reconnect",
+    "setup": "Setup",
     "refresh": "Refresh",
     "remove": "Remove",
     "help": "Help",

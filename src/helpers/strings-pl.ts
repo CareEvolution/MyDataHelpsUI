@@ -11,6 +11,7 @@ let strings: { [key: string]: string } = {
     "connect": "Połącz",
     "reconnect": "Połącz ponownie",
     "refresh": "Odśwież",
+    "setup" : "Konfiguracja",
     "remove": "Usuń",
     "help": "Pomoc",
     "view": "Wyświetl",

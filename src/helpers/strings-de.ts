@@ -10,6 +10,7 @@ let strings: { [key: string]: string } = {
     "settings": "Einstellungen",
     "connect": "Verbinden",
     "reconnect": "Erneut verbinden",
+    "setup" : "Einrichten",
     "refresh": "Aktualisieren",
     "remove": "Entfernen",
     "help": "Hilfe",

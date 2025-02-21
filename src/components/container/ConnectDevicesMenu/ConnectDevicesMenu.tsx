@@ -1,9 +1,9 @@
-import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount, HealthConnectStatus } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount, HealthConnectStatus, ParticipantInfo } from '@careevolution/mydatahelps-js';
 import React, { ReactNode, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
-import { previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
+import { previewAccounts, previewHealthConnectStatus, previewSettings, sampleParticipantInfo } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
 import FitbitLogo from '../../../assets/fitbit-logo.svg';
@@ -15,8 +15,10 @@ import OmronLogo from '../../../assets/omron-logo.png';
 import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun } from '@fortawesome/free-regular-svg-icons';
 
-export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect";
+export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Weather";
 
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
@@ -28,6 +30,7 @@ export interface ConnectDevicesMenuProps {
     connectExternalAccountOptions?: ConnectExternalAccountOptions
     enableAppleHealthSurveyName?: string
     enableGoogleFitSurveyName?: string
+    postalCodeSurveyName?: string
 }
 
 interface ConnectDevicesMenuState {
@@ -37,6 +40,7 @@ interface ConnectDevicesMenuState {
     platform: string | null;
     hasRecentAppleHealthData: boolean;
     healthConnectStatus: HealthConnectStatus | null;
+    participantInfo: ParticipantInfo | null;
 }
 
 function useConnectDevicesMenuState(
@@ -49,7 +53,8 @@ function useConnectDevicesMenuState(
         deviceExternalAccounts: null,
         platform: null,
         hasRecentAppleHealthData: false,
-        healthConnectStatus: null
+        healthConnectStatus: null,
+        participantInfo: null
     });
 
     if (previewState) {
@@ -65,13 +70,15 @@ function useConnectDevicesMenuState(
             deviceExternalAccounts: [],
             platform: "Web",
             hasRecentAppleHealthData: false,
-            healthConnectStatus: null
+            healthConnectStatus: null,
+            participantInfo: sampleParticipantInfo
         }
 
         if (previewState == "ConnectedStates") {
             previewStateObject.deviceExternalAccounts = previewAccounts;
             previewStateObject.platform = "iOS";
             previewStateObject.hasRecentAppleHealthData = true;
+            previewStateObject.participantInfo!.demographics.postalCode = "00000";
         }
         else if (previewState == "iOS") {
             previewStateObject.platform = "iOS";
@@ -89,16 +96,18 @@ function useConnectDevicesMenuState(
         Promise.all([
             MyDataHelps.getDataCollectionSettings(),
             MyDataHelps.getExternalAccounts(),
-            MyDataHelps.getDeviceInfo()
+            MyDataHelps.getDeviceInfo(),
+            MyDataHelps.getParticipantInfo()
         ])
-            .then(([settings, accounts, deviceInfo]) => {
+            .then(([settings, accounts, deviceInfo, participantInfo]) => {
                 let newState: ConnectDevicesMenuState = {
                     loading: true,
                     settings: settings,
                     deviceExternalAccounts: accounts,
                     platform: deviceInfo ? deviceInfo.platform : "Web",
                     hasRecentAppleHealthData: false,
-                    healthConnectStatus: null
+                    healthConnectStatus: null,
+                    participantInfo: participantInfo
                 };
 
                 if (deviceInfo?.platform == "iOS") {
@@ -132,7 +141,7 @@ function useConnectDevicesMenuState(
 }
 
 export default function (props: ConnectDevicesMenuProps) {
-    const { loading, settings, deviceExternalAccounts, platform, hasRecentAppleHealthData, healthConnectStatus } =
+    const { loading, settings, deviceExternalAccounts, platform, hasRecentAppleHealthData, healthConnectStatus, participantInfo } =
         useConnectDevicesMenuState(props.previewState, props.enableAppleHealthSurveyName, props.enableGoogleFitSurveyName);
 
     if (loading) {
@@ -141,7 +150,7 @@ export default function (props: ConnectDevicesMenuProps) {
 
     console.log("settings", deviceExternalAccounts);
 
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Weather"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
@@ -159,6 +168,9 @@ export default function (props: ConnectDevicesMenuProps) {
     }
     if (platform == "iOS" || !settings?.healthConnectEnabled) {
         accountTypes = accountTypes.filter(a => a != "HealthConnect");
+    }
+    if (!settings?.airQualityEnabled) { 
+        accountTypes = accountTypes.filter(a => a != "Weather");
     }
 
     function getFitbitMenuItem() {
@@ -237,6 +249,14 @@ export default function (props: ConnectDevicesMenuProps) {
             healthConnectStatus={healthConnectStatus} />;
     }
 
+    function getWeatherMenuItem() {
+        if (!accountTypes.includes("Weather") || !props.postalCodeSurveyName) {
+            return null;
+        }
+
+        return <WeatherMenuItem postalCode={participantInfo?.demographics.postalCode} postalCodeSurveyName={props.postalCodeSurveyName}/>
+    }
+
     let title = props.title || language("connect-devices-title");
     let text = props.text || language("connect-devices-text");
     let headerVariant = props.headerVariant || "large";
@@ -254,6 +274,7 @@ export default function (props: ConnectDevicesMenuProps) {
             {getHealthConnectMenuItem()}
             {getGoogleFitMenuItem()}
             {getOmronMenuItem()}
+            {getWeatherMenuItem()}
         </div>
     </div>
 }
@@ -422,4 +443,22 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
             </div>
         }
     </div>;
+}
+
+function WeatherMenuItem(props: { postalCode?: string, postalCodeSurveyName: string }){
+    let action = () => {
+        MyDataHelps.startSurvey(props.postalCodeSurveyName);
+    }
+
+    let indicator = props.postalCode ? 
+        <div className="mdhui-connect-devices-menu-connect">{props.postalCode}</div> :
+        <div className="mdhui-connect-devices-menu-connect">{language("setup")}</div>;
+
+    return (
+        <div className="mdhui-connect-devices-menu-device">
+            <Action onClick={action} indicator={indicator}>
+                <Title autosizeImage image={<FontAwesomeIcon icon={faSun} color={"yellow"}/>} order={4}>Air Quality / Weather</Title>
+            </Action>
+        </div>
+    )
 }
