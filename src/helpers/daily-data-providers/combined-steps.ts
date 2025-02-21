@@ -1,5 +1,11 @@
 ﻿import { add } from "date-fns";
-import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider } from ".";
+import {
+    appleHealthStepsDataProvider,
+    fitbitStepsDataProvider,
+    garminStepsDataProvider,
+    googleFitStepsDataProvider,
+    healthConnectStepsDataProvider
+} from ".";
 import getDayKey from "../get-day-key";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
@@ -19,6 +25,9 @@ export default function (startDate: Date, endDate: Date, includeGoogleFit?: bool
         }
         if (includeGoogleFit && settings.queryableDeviceDataTypes.find(s => s.namespace == "GoogleFit" && s.type == "Steps")) {
             providers.push(googleFitStepsDataProvider(startDate, endDate));
+        }
+        if (settings.healthConnectEnabled) {
+            providers.push(healthConnectStepsDataProvider(startDate, endDate));
         }
 
         if (!providers.length) {
