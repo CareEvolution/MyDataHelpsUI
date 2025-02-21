@@ -43,7 +43,8 @@
     color: var(--mdhui-text-color-2);
 }
 
-.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device img {
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device img,
+.mdhui-connect-devices-menu .mdhui-connect-devices-menu-device svg {
     width: 24px;
     display: flex;
 }

@@ -31,7 +31,8 @@ export const Android = {
 export const ConnectedStates = {
     args: {
         previewState: "ConnectedStates",
-        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect"]
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Weather"],
+        postalCodeSurveyName: "SetPostalCode"
     },
     render: render
 };
@@ -70,6 +71,16 @@ export const AndroidEnableGoogleFitSurvey = {
     },
     render: render
 };
+
+export const ConnectWeather = {
+    name: "Connect Weather Collection",
+    args: {
+        previewState: "Web",
+        postalCodeSurveyName: "SetPostalCode"
+    },
+    render: render
+};
+
 
 export const Live = {
     args: {
