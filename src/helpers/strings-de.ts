@@ -407,6 +407,7 @@ let strings: { [key: string]: string } = {
     "services-performed": "Durchgeführte Leistungen",
     "device-data-month-chart-minutes": "Minuten",
     "device-data-month-chart-sleep": "Schlaf",
+    "air-quality": "Luftqualität",
     "air-quality-home": "Luftqualität (Zuhause)",
     "air-quality-work": "Luftqualität (Arbeit)",
     "sedentary-time": "Sitzzeit",

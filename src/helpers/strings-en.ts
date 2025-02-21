@@ -407,6 +407,7 @@
     "services-performed": "Services Performed",
     "device-data-month-chart-minutes": "Minutes",
     "device-data-month-chart-sleep": "Sleep",
+    "air-quality": "Air Quality",
     "air-quality-home": "Air Quality (Home)",
     "air-quality-work": "Air Quality (Work)",
     "sedentary-time": "Sedentary Time",
