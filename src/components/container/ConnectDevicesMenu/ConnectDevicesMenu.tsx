@@ -84,6 +84,8 @@ function useConnectDevicesMenuState(
             previewStateObject.platform = "iOS";
         } else if (previewState == "Android") {
             previewStateObject.platform = "Android";
+        } else {
+            previewStateObject.participantInfo!.demographics.postalCode = "";
         }
 
         if (previewState == "Android") {
@@ -169,7 +171,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (platform == "iOS" || !settings?.healthConnectEnabled) {
         accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
-    if (!settings?.airQualityEnabled) { 
+    if (!settings?.airQualityEnabled && !settings?.weatherEnabled) { 
         accountTypes = accountTypes.filter(a => a != "Weather");
     }
 
@@ -254,7 +256,7 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        return <WeatherMenuItem postalCode={participantInfo?.demographics.postalCode} postalCodeSurveyName={props.postalCodeSurveyName}/>
+        return <WeatherMenuItem settings={settings} participantInfo={participantInfo} postalCodeSurveyName={props.postalCodeSurveyName}/>
     }
 
     let title = props.title || language("connect-devices-title");
@@ -445,19 +447,32 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     </div>;
 }
 
-function WeatherMenuItem(props: { postalCode?: string, postalCodeSurveyName: string }){
+function WeatherMenuItem(props: { settings: DataCollectionSettings | null, participantInfo: ParticipantInfo | null, postalCodeSurveyName: string }){
     let action = () => {
         MyDataHelps.startSurvey(props.postalCodeSurveyName);
     }
 
-    let indicator = props.postalCode ? 
-        <div className="mdhui-connect-devices-menu-connect">{props.postalCode}</div> :
+    const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter( (k) => k.endsWith('PostalCode'));
+    const postalCodes = [...postalCodeCustomFields.map((cf) => props.participantInfo?.customFields[cf]), props.participantInfo?.demographics.postalCode];
+    const postalCode = postalCodes.find((p) => !!p);
+
+    const indicator = postalCode ? 
+        <div className="mdhui-connect-devices-menu-connect">{postalCode}</div> :
         <div className="mdhui-connect-devices-menu-connect">{language("setup")}</div>;
+
+    const titleBits = [];
+    if(props.settings?.airQualityEnabled) {
+        titleBits.push('Air Quality');
+    }
+    if(props.settings?.weatherEnabled) {
+        titleBits.push('Weather');
+    }
+    const title = titleBits.join(" / ");
 
     return (
         <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title autosizeImage image={<FontAwesomeIcon icon={faSun} color={"yellow"}/>} order={4}>Air Quality / Weather</Title>
+                <Title autosizeImage image={<FontAwesomeIcon icon={faSun} color={"yellow"}/>} order={4}>{title}</Title>
             </Action>
         </div>
     )
