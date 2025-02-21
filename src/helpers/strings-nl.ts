@@ -78,7 +78,7 @@ let strings: { [key: string]: string } = {
     "external-account-reconnect": "Opnieuw verbinden",
     "external-account-refresh": "Vernieuwen",
     "external-account-remove": "Verwijderen",
-    "device-data-no-data": "Als u Apple Health, Google Fit, Fitbit of Garmin hebt aangesloten, kom dan later terug om uw gegevens te bekijken.",
+    "device-data-no-data": "Als u uw apparaat hebt aangesloten, kom dan later terug om uw gegevens te bekijken.",
     "no-notifications-received": "Geen meldingen ontvangen",
     "next-button-text": "Volgende",
     "lab-results-title": "Laboratoriumresultaten",
