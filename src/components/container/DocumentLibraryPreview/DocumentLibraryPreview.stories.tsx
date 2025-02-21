@@ -1,12 +1,12 @@
 import React from "react"
 import { Meta, StoryObj } from "@storybook/react"
 import { Description } from "@storybook/blocks"
-import DocumentLibraryView, { DocumentLibraryViewProps } from "./DocumentLibraryView"
-import { Action } from "../../presentational";
+import DocumentLibraryPreview, { DocumentLibraryPreviewProps } from "./DocumentLibraryPreview";
+import { Layout } from "../../presentational";
 
-const meta: Meta<typeof DocumentLibraryView> = {
-    title: "View/DocumentLibraryView",
-    component: DocumentLibraryView,
+const meta: Meta<typeof DocumentLibraryPreview> = {
+    title: "Container/DocumentLibraryPreview",
+    component: DocumentLibraryPreview,
     parameters: {
         layout: 'fullscreen',
         docs: {
@@ -16,13 +16,14 @@ const meta: Meta<typeof DocumentLibraryView> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof DocumentLibraryView>;
+type Story = StoryObj<typeof DocumentLibraryPreview>;
 
-const render = (args: DocumentLibraryViewProps) => 
-    <DocumentLibraryView {...args} />;
+const render = (args: DocumentLibraryPreviewProps) => 
+    <Layout colorScheme="auto">
+        <DocumentLibraryPreview {...args} />
+    </Layout>;
 
-const defaultProps : DocumentLibraryViewProps = {
-    colorScheme: 'auto',
+const defaultProps: DocumentLibraryPreviewProps = {
     uploadDocumentSurveyName: 'UploadDocument',
     fileResultIdentifier: 'document',
     typeResultIdentifier: 'document_type',
@@ -32,8 +33,13 @@ const defaultProps : DocumentLibraryViewProps = {
     documentViewBaseUrl: ''
 };
 
-export const Default: Story = {
-    args: { ...defaultProps, preview: 'Preview' },
+export const NoUploadedFiles: Story = {
+    args: { ...defaultProps, preview: 'PreviewNoDocuments' },
+    render: render
+};
+
+export const UploadedFiles: Story = {
+    args: { ...defaultProps, preview: 'PreviewDocuments' },
     render: render
 };
 

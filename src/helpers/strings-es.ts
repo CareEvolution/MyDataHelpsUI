@@ -533,7 +533,10 @@
     "file-not-loaded": "No se pudo cargar el archivo. Por favor, contacta con soporte.",
     "syncing-data": "Sincronizando datos...",
     "health-connect-phr-sync-title": "Sincronizar con Health Connect",
-    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect",
+    "uploaded-documents": "Documentos Subidos",
+    "upload-documents-subtitle": "Escanea y organiza tus registros médicos impresos",
+    "upload-button": "Subir"
 };
 
 export default strings;

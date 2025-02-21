@@ -20,6 +20,7 @@ type Story = StoryObj<typeof DocumentDetailView>;
 const render = (args: DocumentDetailViewProps) => <DocumentDetailView {...args} />;
 
 const uploadDocumentSurveyProps: DocumentDetailViewProps = {
+    colorScheme: 'auto',
     surveyResultId: '',
     fileResultIdentifier: 'document',
     typeResultIdentifier: 'document_type',
@@ -68,22 +69,7 @@ export const FileNotFound: Story = {
     render: render
 };
 
-export const LiveSingleLandscapePdf: Story = {
+export const Live: Story = {
     args: { ...uploadDocumentSurveyProps, surveyResultId: '2e3f7062-87e8-ef11-bafe-0affe8024cad' },
-    render: render
-};
-
-export const LiveSinglePortraitPdf: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: '97477698-85e9-ef11-bafe-0affe8024cad' },
-    render: render
-};
-
-export const LiveText: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'ad6d89b3-a1ef-ef11-bafe-0affe8024cad' },
-    render: render
-};
-
-export const LiveImage: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'a90c0337-cfe4-ef11-bafe-0affe8024cad' },
     render: render
 };

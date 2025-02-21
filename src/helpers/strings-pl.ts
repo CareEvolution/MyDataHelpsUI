@@ -533,7 +533,10 @@ let strings: { [key: string]: string } = {
     "file-not-loaded": "Nie udało się załadować pliku. Proszę skontaktować się z pomocą techniczną.",
     "syncing-data": "Synchronizowanie danych...",
     "health-connect-phr-sync-title": "Synchronizuj z Health Connect",
-    "health-connect-phr-sync-prompt": "Wybierz rekordy zdrowotne do odczytu i zapisu w Health Connect"
+    "health-connect-phr-sync-prompt": "Wybierz rekordy zdrowotne do odczytu i zapisu w Health Connect",
+    "uploaded-documents": "Przesłane Dokumenty",
+    "upload-documents-subtitle": "Zeskanuj i uporządkuj swoje wydrukowane dokumenty medyczne",
+    "upload-button": "Prześlij"
 };
 
 export default strings;
