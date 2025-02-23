@@ -10,37 +10,41 @@ import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
 // NOTE! If you add a new locale, be sure to also update getDateLocale()
 
+interface LocaleStrings {
+	[key: string]: string;
+}
+
+const localeToStringsMap : Record<string, LocaleStrings> = {
+	"en": englishStrings,
+	"es": spanishStrings,
+	"nl": dutchStrings,
+	"fr": frenchStrings,
+	"it": italianStrings,
+	"de": germanStrings,
+	"pt": portugueseBrazilStrings,
+	"pt-pt": portuguesePortugalStrings,
+	"pl": polishStrings
+};
+
 function format(resolvedString: string, args?: { [key: string]: string }) {
 	if (!resolvedString || !args) return resolvedString;
 	return resolvedString.replace(/\{\s*([^}\s]+)\s*}/g, (_, key) => args[key]);
 }
 
+export function supportedLocales() {
+	return Object.keys(localeToStringsMap);
+}
+
 export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
 	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
 	
-	interface LocaleStrings {
-		[key: string]: string;
-	}
-
-	const localeToStringsMap : Record<string, LocaleStrings> = {
-		"en": englishStrings,
-		"es": spanishStrings,
-		"nl": dutchStrings,
-		"fr": frenchStrings,
-		"it": italianStrings,
-		"de": germanStrings,
-		"pt": portugueseBrazilStrings,
-		"pt-pt": portuguesePortugalStrings,
-		"pl": polishStrings
-	};
-
 	let localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
 	if (!localeStrings) {
 		const languageCode = getLanguageCodeFromIso(currentLocale);
 		localeStrings = localeToStringsMap[languageCode] || englishStrings;
 	}
 	
-	return format(localeStrings[key] || key, args);
+	return format(localeStrings[key] || "", args);
 }
 
 /** Gets the language code from an ISO locale string (e.g., en-US returns en. */

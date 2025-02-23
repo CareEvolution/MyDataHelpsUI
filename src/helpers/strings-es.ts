@@ -294,7 +294,7 @@
     "asthma-log-entry-details-impacts-label": "Impactos",
     "asthma-log-entry-details-triggers-label": "Disparadores",
     "asthma-log-entry-details-component-no-data-p1": "No se han registrado ",
-    "asthma-log-entry-details-component-no-data-p2": "",
+    "asthma-log-entry-details-component-no-data-p2": "registrado",
     "asthma-log-entry-header-today-log-label": "Hoy",
     "asthma-log-entry-header-yesterday-log-label": "Ayer",
     "asthma-log-entry-header-not-logged-yet": "Aún no registrado",
@@ -525,7 +525,8 @@
     "monthly": "Mensual",
     "syncing-data": "Sincronizando datos...",
     "health-connect-phr-sync-title": "Sincronizar con Health Connect",
-    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect",
+    "bonus": "Prima"
 };
 
 export default strings;

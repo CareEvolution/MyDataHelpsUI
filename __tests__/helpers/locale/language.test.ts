@@ -1,5 +1,6 @@
-import { getLanguageCodeFromIso, getCountryCodeFromIso, language } from '../../../src/helpers/language';
+import { getLanguageCodeFromIso, getCountryCodeFromIso, language, supportedLocales } from '../../../src/helpers/language';
 import { describe, it } from '@jest/globals';
+import englishStrings from "../../../src/helpers/strings-en"
 
 describe('Language Tests', () => {
     describe('getLanguageCodeFromIso', () => {
@@ -45,9 +46,23 @@ describe('Language Tests', () => {
             const result = language("settings", "xx");
             expect(result).toBe("Settings");
         });
-        it('Should return the string key if the key is not found.', () => {
+        it('Should return empty string if the key is not found.', () => {
             const result = language("no_such_string", "xx");
-            expect(result).toBe("no_such_string");
+            expect(result).toBe("");
         });
     });
+
+    describe('supportedLocales', () => {
+        it('Should have all strings in all locales', () => {
+            Object.keys(englishStrings).forEach(localeStr => {
+                supportedLocales().forEach(localeName => {
+                    const otherString = language(localeStr, localeName);
+                    if (!otherString) {
+                       console.log(`Missing ${localeStr} in ${localeName}`);
+                       expect(otherString).toBeTruthy();
+                    }
+                })
+            })
+        });
+    })
 });
