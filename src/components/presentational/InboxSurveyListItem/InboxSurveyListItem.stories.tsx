@@ -12,6 +12,7 @@ export default {
 interface InboxSurveyListItemStoryArgs {
     colorScheme: 'auto' | 'light' | 'dark';
     name: string;
+    displayName?: string;
     status: InboxItemStatus;
     description?: string;
     dueDate?: number;
@@ -27,6 +28,7 @@ const onClick = () => {
 const render = (args: InboxSurveyListItemStoryArgs) => {
     const survey = {
         name: args.name,
+        displayName: args.displayName,
         description: args.description,
         status: args.status,
         dueDate: args.dueDate ? new Date(args.dueDate).toISOString() : undefined,
@@ -49,6 +51,7 @@ export const Default = {
         variant: 'default',
         status: 'incomplete',
         name: 'Survey Name',
+        displayName: undefined,
         description: 'This is the survey description.',
         dueDate: undefined,
         hasSavedProgress: false,
@@ -67,6 +70,10 @@ export const Default = {
         status: {
             control: 'radio',
             options: ['incomplete', 'complete', 'closed']
+        },
+        displayName: {
+            name: 'display name',
+            control: 'text'
         },
         description: {
             if: { arg: 'status', 'eq': 'incomplete' }

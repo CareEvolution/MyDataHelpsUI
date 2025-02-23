@@ -23,7 +23,7 @@ export default function (props: InboxSurveyListItemProps) {
             <SingleSurveyTask
                 task={{
                     surveyName: props.survey.name,
-                    surveyDisplayName: props.survey.name,
+                    surveyDisplayName: props.survey.displayName ?? props.survey.name,
                     surveyDescription: props.survey.description,
                     endDate: props.survey.endDate,
                     status: props.survey.status as SurveyTaskStatus,
