@@ -1,1 +1,1 @@
-export { default, DocumentLibraryPreviewProps } from "./DocumentLibraryPreview";
+export { default } from "./DocumentLibraryPreview";
