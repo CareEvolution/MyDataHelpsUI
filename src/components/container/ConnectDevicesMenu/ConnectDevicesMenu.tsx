@@ -150,8 +150,6 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
-    console.log("settings", deviceExternalAccounts);
-
     let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
@@ -204,10 +202,7 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getExternalAccountMenuItem(providerName: string, providerID: number, image: ReactNode) {
-        console.log("deviceExternalAccounts", deviceExternalAccounts);
-        console.log("providerID", providerID);
         let externalAccount = deviceExternalAccounts?.find(a => a.provider.id == providerID);
-        console.log("externalAccount", externalAccount);
         return <ExternalAccountMenuItem preview={!!props.previewState}
             providerName={providerName}
             providerID={providerID}
