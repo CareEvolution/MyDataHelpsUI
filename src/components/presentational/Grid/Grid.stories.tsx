@@ -112,71 +112,55 @@ export const DailyDataGoals = {
 let trendGrid: GridProps = {
     children: [
         <>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        dailyDataType: DailyDataType.Steps,
-                        color: "rgba(255, 166, 102, 1)"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    dailyDataType: DailyDataType.Steps,
+                    color: "rgba(255, 166, 102, 1)"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        dailyDataType: DailyDataType.SleepMinutes,
-                        color: "rgba(74, 144, 226, 1)"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    dailyDataType: DailyDataType.SleepMinutes,
+                    color: "rgba(74, 144, 226, 1)"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        label: "Air Quality",
-                        dailyDataType: DailyDataType.HomeAirQuality,
-                        color: "rgb(53, 166, 160)"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    label: "Air Quality",
+                    dailyDataType: DailyDataType.HomeAirQuality,
+                    color: "rgb(53, 166, 160)"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        dailyDataType: DailyDataType.RestingHeartRate,
-                        color: "#e35c33"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    dailyDataType: DailyDataType.RestingHeartRate,
+                    color: "#e35c33"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        dailyDataType: DailyDataType.RestingHeartRate,
-                        color: "#e35c33"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    dailyDataType: DailyDataType.RestingHeartRate,
+                    color: "#e35c33"
+                }} />
             </Grid.Column>
             {/* Preview state not specified on purpose to ensure the grid collapses correctly */}
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend dataType={{
-                        dailyDataType: DailyDataType.RestingHeartRate,
-                        color: "#e35c33"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend dataType={{
+                    dailyDataType: DailyDataType.RestingHeartRate,
+                    color: "#e35c33"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend dataType={{
-                        dailyDataType: DailyDataType.RestingHeartRate,
-                        color: "#e35c33"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend dataType={{
+                    dailyDataType: DailyDataType.RestingHeartRate,
+                    color: "#e35c33"
+                }} />
             </Grid.Column>
-            <Grid.Column span={6}>
-                <Card>
-                    <MicroTrend previewState="default" dataType={{
-                        dailyDataType: DailyDataType.RestingHeartRate,
-                        color: "#e35c33"
-                    }} />
-                </Card>
+            <Grid.Column span={6} variant="card">
+                <MicroTrend previewState="default" dataType={{
+                    dailyDataType: DailyDataType.RestingHeartRate,
+                    color: "#e35c33"
+                }} />
             </Grid.Column>
         </>
     ],
