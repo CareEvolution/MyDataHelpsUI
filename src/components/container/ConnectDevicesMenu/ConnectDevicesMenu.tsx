@@ -15,8 +15,8 @@ import OmronLogo from '../../../assets/omron-logo.png';
 import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Environmental";
 
@@ -467,8 +467,8 @@ function EnvironmentalMenuItem(props: { settings: DataCollectionSettings | null,
     return (
         <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title autosizeImage image={<FontAwesomeIcon icon={faSun} color={"yellow"}/>} order={4}>{title}</Title>
+                <Title autosizeImage image={<FontAwesomeSvgIcon icon={faSun} color={"yellow"}/>} order={4}>{title}</Title>
             </Action>
         </div>
-    )
+    );
 }
