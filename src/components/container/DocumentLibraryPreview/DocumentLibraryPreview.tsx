@@ -6,6 +6,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { getPreviewData } from "./DocumentLibraryPreview.previewData";
 import "./DocumentLibraryPreview.css";
+import { noop } from "../../../helpers/functions";
 
 export interface DocumentLibraryPreviewProps {
     preview?: "PreviewNoDocuments" | "PreviewDocuments" | "PreviewLoading",
@@ -53,11 +54,14 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
         });
     }
 
-    const onUploadClick = () => {
+    const onPreviewClick = () => {
         if (props.preview) return;
 
-        setSurveyFiles(undefined);
-        MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
+        if (surveyFiles && surveyFiles.length > 0) {
+            MyDataHelps.openApplication(props.documentViewBaseUrl);
+        } else {
+            MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
+        }
     }
 
     useInitializeView(() => {
@@ -69,6 +73,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
             {!surveyFiles && <LoadingIndicator />}
             {surveyFiles &&
                 <Action title={` ${language("uploaded-documents")}`}
+                    onClick={onPreviewClick}
                     className="font-size"
                     indicatorPosition="default"
                     subtitle={surveyFiles.length === 0
@@ -81,7 +86,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                     titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
                     indicatorValue={surveyFiles.length > 0 ? surveyFiles.length.toString() : undefined}
                     indicator={surveyFiles.length === 0
-                        ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>
+                        ? <Button variant="default" fullWidth={false} onClick={noop}>{language("upload-button")}</Button>
                         : undefined}
                 />
             }
