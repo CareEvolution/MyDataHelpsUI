@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
-import { previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
+import { generateSampleParticipantInfo, previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
 import FitbitLogo from '../../../assets/fitbit-logo.svg';
@@ -71,12 +71,7 @@ function useConnectDevicesMenuState(
             platform: "Web",
             hasRecentAppleHealthData: false,
             healthConnectStatus: null,
-            participantInfo: {
-                demographics: {
-                    postalCode: ""
-                },
-                customFields: {}
-            } as ParticipantInfo
+            participantInfo: generateSampleParticipantInfo()
         }
 
         if (previewState == "ConnectedStates") {
@@ -84,6 +79,9 @@ function useConnectDevicesMenuState(
             previewStateObject.platform = "iOS";
             previewStateObject.hasRecentAppleHealthData = true;
             previewStateObject.participantInfo!.demographics.postalCode = "00000";
+            previewStateObject.participantInfo!.customFields.homePostalCode = "00001";
+            previewStateObject.participantInfo!.customFields.workPostalCode = "00002";
+            previewStateObject.participantInfo!.customFields.vacationPostalCode = "00002";
         }
         else if (previewState == "iOS") {
             previewStateObject.platform = "iOS";
@@ -449,7 +447,10 @@ function EnvironmentalMenuItem(props: { settings: DataCollectionSettings | null,
 
     const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter( (k) => k.endsWith('PostalCode'));
     const postalCodes = [...postalCodeCustomFields.map((cf) => props.participantInfo?.customFields[cf]), props.participantInfo?.demographics.postalCode];
-    const postalCode = postalCodes.find((p) => !!p);
+    var postalCode = postalCodes.filter((p) => !!p).slice(0,3).join(', ');
+    if(postalCodes.length > 3) {
+        postalCode = postalCode + ", ...";
+    }
 
     const indicator = postalCode ? 
         <div className="mdhui-connect-devices-menu-connect">{postalCode}</div> :

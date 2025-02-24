@@ -83,3 +83,12 @@ export const previewHealthConnectStatus: HealthConnectStatus = {
     running: false,
     lastPrompted: ""
 };
+
+export const generateSampleParticipantInfo = () => {
+    return {
+        demographics: {
+            postalCode: ""
+        },
+        customFields: {}
+    } as ParticipantInfo;
+}
