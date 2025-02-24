@@ -24,17 +24,27 @@ export interface NavigationBarProps {
 	navigationBarLeft?: React.ReactNode;
 	navigationBarRight?: React.ReactNode;
 	backgroundColor?: ColorDefinition;
+	onClose?: () => void;
+	onBack?: () => void;
 }
 
 export default function (props: NavigationBarProps) {
 	const navBar = useRef<HTMLDivElement>(null);
 
 	function back() {
-		MyDataHelps.back();
+		if (props.onBack) {
+			props.onBack();
+		} else {
+			MyDataHelps.back();
+		}
 	}
 
 	function close() {
-		MyDataHelps.dismiss();
+		if (props.onClose) {
+			props.onClose();
+		} else {
+			MyDataHelps.dismiss();
+		}
 	}
 
 	useLayoutEffect(() => {
