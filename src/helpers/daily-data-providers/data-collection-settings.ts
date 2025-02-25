@@ -19,7 +19,13 @@ export class DataCollectionSettings {
 
     static async create(): Promise<DataCollectionSettings> {
         const settings = await MyDataHelps.getDataCollectionSettings();
-        const deviceDataTypes = await MyDataHelps.getDeviceDataV2AllDataTypes();
+        let deviceDataTypes: SupportedDeviceDataV2DataType[] = [];
+        
+        // HACK HACK HACK: Need a better way to tell if V2 is needed.
+        if (settings.healthConnectEnabled) {
+            deviceDataTypes = await MyDataHelps.getDeviceDataV2AllDataTypes();
+        }
+        
         return new DataCollectionSettings(settings, deviceDataTypes);
     }
 
@@ -36,7 +42,9 @@ export class DataCollectionSettings {
                 if (this.settings.healthConnectEnabled) {
                     return this.deviceDataTypes.some(
                         (t) =>
-                            t.namespace === "HealthConnect" && t.type === type,
+                            t.namespace === "HealthConnect" &&
+                            t.type === type &&
+                            t.enabled === true,
                     );
                 }
                 return false;
