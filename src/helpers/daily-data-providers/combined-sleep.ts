@@ -1,42 +1,54 @@
 import { add } from "date-fns";
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider } from ".";
+import {
+    appleHealthSleepDataProvider,
+    fitbitTotalSleepMinutesDataProvider,
+    garminTotalSleepMinutesDataProvider,
+    healthConnectTotalSleepMinutesDataProvider,
+} from ".";
 import getDayKey from "../get-day-key";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import { DataCollectionSettings } from "./data-collection-settings";
 
-export default function (startDate: Date, endDate: Date) {
-    let providers: Promise<{ [key: string]: number }>[] = [];
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.garminEnabled) {
-            providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
-            providers.push(appleHealthSleepDataProvider(startDate, endDate));
-        }
+export default async function (startDate: Date, endDate: Date) {
+    const settings = await DataCollectionSettings.create();
+    const providers: Promise<Record<string, number>>[] = [];
 
-        if (!providers.length) {
-            return {};
-        }
+    if (settings.isFitbitEnabled()) {
+        providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.isGarminEnabled()) {
+        providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.isAppleHealthEnabled("SleepAnalysisInterval")) {
+        providers.push(appleHealthSleepDataProvider(startDate, endDate));
+    }
+    if (await settings.isHealthConnectEnabled("sleep")) {
+        providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
+    }
 
-        return Promise.all(providers).then((values) => {
-            var data: { [key: string]: number } = {};
-            while (startDate < endDate) {
-                var dayKey = getDayKey(startDate);
-                var sleep: number | null = null;
-                values.forEach((value) => {
-                    if (value[dayKey] && (sleep == null || sleep < value[dayKey])) {
-                        sleep = value[dayKey];
-                    }
-                });
-                if (sleep) {
-                    data[dayKey] = sleep;
-                }
-                startDate = add(startDate, { days: 1 });
+    if (!providers.length) {
+        return {};
+    }
+
+    const values = await Promise.all(providers);
+    const data: Record<string, number> = {};
+
+    while (startDate < endDate) {
+        const dayKey = getDayKey(startDate);
+        let maxSleep: number | null = null;
+
+        values.forEach((value) => {
+            if (value[dayKey] && (maxSleep == null || maxSleep < value[dayKey])) {
+                maxSleep = value[dayKey];
             }
-            return data;
         });
-    });
+
+        if (maxSleep !== null) {
+            data[dayKey] = maxSleep;
+        }
+
+        startDate = add(startDate, { days: 1 });
+    }
+
+    return data;
 }

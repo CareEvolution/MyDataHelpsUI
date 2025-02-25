@@ -2,26 +2,30 @@ import { add } from 'date-fns';
 import { totalSleepMinutes as fitbitTotalSleepMinutesDataProvider } from './fitbit-sleep-v2'
 import { totalSleepMinutes as garminTotalSleepMinutesDataProvider } from './garmin-sleep-v2'
 import { totalSleepMinutes as appleHealthSleepMinutesDataProvider } from './apple-health-sleep-v2';
+import { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from './health-connect-sleep';
 import getDayKey from '../get-day-key';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { DataCollectionSettings } from './data-collection-settings';
 
-export default async function (startDate: Date, endDate: Date): Promise<{ [key: string]: number }> {
-    let providers: Promise<{ [key: string]: number }>[] = [];
+export default async function (startDate: Date, endDate: Date): Promise<Record<string, number>> {
+    const settings = await DataCollectionSettings.create();
+    const providers: Promise<Record<string, number>>[] = [];
 
-    const settings = await MyDataHelps.getDataCollectionSettings();
-    if (settings.fitbitEnabled) {
+    if (settings.isFitbitEnabled()) {
         providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.garminEnabled) {
+    if (settings.isGarminEnabled()) {
         providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
+    if (settings.isAppleHealthEnabled("SleepAnalysisInterval")) {
         providers.push(appleHealthSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (await settings.isHealthConnectEnabled("sleep")) {
+        providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
     }
 
     const results = providers.length ? await Promise.all(providers) : [];
 
-    let data: { [key: string]: number; } = {};
+    const data: Record<string, number> = {};
     let currentDate = startDate;
     while (currentDate < endDate) {
         let dayKey = getDayKey(currentDate);
