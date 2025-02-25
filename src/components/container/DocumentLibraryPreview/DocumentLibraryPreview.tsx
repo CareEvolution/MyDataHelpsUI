@@ -22,12 +22,15 @@ export interface DocumentLibraryPreviewProps {
 
 export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProps) {
     const [surveyFiles, setSurveyFiles] = React.useState<string[] | undefined>(undefined);
+    const [surveyCount, setSurveyCount] = React.useState<number>(0);
 
     async function initialize() {
         if (props.preview) {
             if (props.preview === "PreviewNoDocuments") {
+                setSurveyCount(0);
                 setSurveyFiles([]);
             } else if (props.preview === "PreviewDocuments") {
+                setSurveyCount(6);
                 setSurveyFiles(getPreviewData());
             }
             return;
@@ -47,6 +50,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                 return a.date > b.date ? -1 : 1;
             });
 
+            setSurveyCount(uploadedFiles.length);
             const top3Files = sortedFiles.slice(0, 3).map((file: SurveyUploadedFile, index: number) =>
                 file.title
             );
@@ -84,7 +88,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                         : undefined
                     }
                     titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
-                    indicatorValue={surveyFiles.length > 0 ? surveyFiles.length.toString() : undefined}
+                    indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
                     indicator={surveyFiles.length === 0
                         ? <Button variant="default" fullWidth={false} onClick={noop}>{language("upload-button")}</Button>
                         : undefined}
