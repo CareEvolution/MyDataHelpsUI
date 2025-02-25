@@ -1,52 +1,51 @@
 import MyDataHelps, {
+    DeviceDataNamespace,
+    DeviceDataV2Namespace,
     DataCollectionSettings as MDHDataCollectionSettings,
     SupportedDeviceDataV2DataType,
 } from "@careevolution/mydatahelps-js";
 
 export class DataCollectionSettings {
     private settings: MDHDataCollectionSettings;
-    private deviceDataTypes: SupportedDeviceDataV2DataType[] | null = null;
+    private deviceDataTypes: SupportedDeviceDataV2DataType[];
 
-    private constructor(settings: MDHDataCollectionSettings) {
+    private constructor(
+        settings: MDHDataCollectionSettings,
+        deviceDataTypes: SupportedDeviceDataV2DataType[],
+    ) {
         this.settings = settings;
+        this.deviceDataTypes = deviceDataTypes;
     }
 
     static async create(): Promise<DataCollectionSettings> {
         const settings = await MyDataHelps.getDataCollectionSettings();
-        return new DataCollectionSettings(settings);
+        const deviceDataTypes = await MyDataHelps.getDeviceDataV2AllDataTypes();
+        return new DataCollectionSettings(settings, deviceDataTypes);
     }
 
-    private async getDeviceDataTypes(): Promise<
-        SupportedDeviceDataV2DataType[]
-    > {
-        if (!this.deviceDataTypes) {
-            this.deviceDataTypes =
-                await MyDataHelps.getDeviceDataV2AllDataTypes();
+    isEnabled(
+        namespace: DeviceDataNamespace | DeviceDataV2Namespace,
+        type?: string,
+    ): boolean {
+        switch (namespace) {
+            case "AppleHealth":
+                return this.settings.queryableDeviceDataTypes.some(
+                    (s) => s.namespace === "AppleHealth" && s.type === type,
+                );
+            case "HealthConnect":
+                if (this.settings.healthConnectEnabled) {
+                    return this.deviceDataTypes.some(
+                        (t) =>
+                            t.namespace === "HealthConnect" && t.type === type,
+                    );
+                }
+                return false;
+            case "Fitbit":
+                return this.settings.fitbitEnabled;
+            case "Garmin":
+                return this.settings.garminEnabled;
+            default:
+                return false;
         }
-        return this.deviceDataTypes;
-    }
-
-    isAppleHealthEnabled(type: string): boolean {
-        return this.settings.queryableDeviceDataTypes.some(
-            (s) => s.namespace === "AppleHealth" && s.type === type,
-        );
-    }
-
-    async isHealthConnectEnabled(type: string): Promise<boolean> {
-        if (this.settings.healthConnectEnabled) {
-            const types = await this.getDeviceDataTypes();
-            return types.some(
-                (t) => t.namespace === "HealthConnect" && t.type === type,
-            );
-        }
-        return false;
-    }
-
-    isFitbitEnabled(): boolean {
-        return this.settings.fitbitEnabled;
-    }
-
-    isGarminEnabled(): boolean {
-        return this.settings.garminEnabled;
     }
 }

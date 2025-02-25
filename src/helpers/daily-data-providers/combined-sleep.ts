@@ -13,16 +13,16 @@ export default async function (startDate: Date, endDate: Date) {
     const settings = await DataCollectionSettings.create();
     const providers: Promise<Record<string, number>>[] = [];
 
-    if (settings.isFitbitEnabled()) {
+    if (settings.isEnabled( "Fitbit" )) {
         providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.isGarminEnabled()) {
+    if (settings.isEnabled( "Garmin" )) {
         providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.isAppleHealthEnabled("SleepAnalysisInterval")) {
+    if (settings.isEnabled( "AppleHealth", "SleepAnalysisInterval" )) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
     }
-    if (await settings.isHealthConnectEnabled("sleep")) {
+    if (settings.isEnabled( "HealthConnect", "sleep")) {
         providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
     }
 

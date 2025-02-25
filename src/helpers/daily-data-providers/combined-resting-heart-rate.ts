@@ -12,16 +12,17 @@ export default async function (startDate: Date, endDate: Date): Promise<Record<s
 	const providers: Promise<Record<string, number>>[] = [];
 
 	const settings = await DataCollectionSettings.create();
-	if (settings.isFitbitEnabled()) {
+
+	if (settings.isEnabled( "Fitbit" )) {
 			providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
 	}
-	if (settings.isGarminEnabled()) {
+	if (settings.isEnabled( "Garmin" )) {
 			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
 	}
-	if (settings.isAppleHealthEnabled("RestingHeartRate")) {
+	if (settings.isEnabled( "AppleHealth", "RestingHeartRate" )) {
 			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
 	}
-	if (await settings.isHealthConnectEnabled("resting-heart-rate")) {
+	if (settings.isEnabled( "HealthConnect", "resting-heart-rate" )) {
 			providers.push(healthConnectAverageRestingHeartRateDataProvider(startDate, endDate));
 	}
 
