@@ -1,6 +1,5 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import {
-    healthConnectStepsDataProvider,
     healthConnectAverageRestingHeartRateDataProvider,
     healthConnectTotalSleepMinutesDataProvider,
     healthConnectRemSleepMinutesDataProvider,
@@ -11,11 +10,9 @@ import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import {
     faBed,
     faHeartbeat,
-    faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import {
-    defaultFormatter,
     heartRateFormatter,
     minutesFormatter,
     sleepYAxisConverter,
@@ -23,18 +20,6 @@ import {
 import { simpleAvailabilityCheckV2 } from "./availability-check";
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
-    {
-        type: DailyDataType.HealthConnectSteps,
-        dataProvider: healthConnectStepsDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
-            "steps",
-        ]),
-        labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faWalking} />,
-        formatter: defaultFormatter,
-        previewDataRange: [4000, 8000],
-        requiresV2Api: true,
-    },
     {
         type: DailyDataType.HealthConnectAverageRestingHeartRate,
         dataProvider: healthConnectAverageRestingHeartRateDataProvider,

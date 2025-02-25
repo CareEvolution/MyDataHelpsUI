@@ -29,7 +29,6 @@ export { default as GlucoseDayCoordinator, GlucoseContext, GlucoseDayCoordinator
 export { default as Goal, GoalPreviewState } from "./Goal"
 export { default as HealthConnectPhrSync } from "./HealthConnectPhrSync"
 export { default as HealthPreviewSection } from "./HealthPreviewSection"
-export { default as HealthConnectMonthCharts } from "./HealthConnectMonthCharts"
 export { default as InboxItemList, InboxItemListPreviewState } from "./InboxItemList"
 export { default as InboxItemListCoordinator } from "./InboxItemListCoordinator"
 export { default as InsightMatrix } from "./InsightMatrix"

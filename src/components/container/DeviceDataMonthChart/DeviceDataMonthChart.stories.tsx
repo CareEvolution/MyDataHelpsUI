@@ -57,21 +57,6 @@ FitbitSteps.args = {
     syncId: "Fitbit",
 };
 
-export const HealthConnectSteps = Template.bind({});
-HealthConnectSteps.args = {
-    title: "Steps",
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-    lines: [
-        {
-            showAverage: true,
-            dailyDataType: DailyDataType.HealthConnectSteps,
-            label: "Steps",
-        },
-    ],
-    syncId: "HealthConnect",
-};
-
 export const HealthConnectAverageRestingHeartRate = Template.bind({});
 HealthConnectAverageRestingHeartRate.args = {
     title: "Average Resting Heart Rate",

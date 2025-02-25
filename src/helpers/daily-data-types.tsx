@@ -78,7 +78,6 @@ export enum DailyDataType {
 	HomeAirQuality = "HomeAirQuality",
 	WorkAirQuality = "WorkAirQuality",
 	HealthConnectAverageRestingHeartRate = "HealthConnectAverageRestingHeartRate",
-	HealthConnectSteps = "HealthConnectSteps",
 	HealthConnectTotalSleepMinutes = "HealthConnectTotalSleepMinutes",
 	HealthConnectLightSleepMinutes = "HealthConnectLightSleepMinutes",
 	HealthConnectRemSleepMinutes = "HealthConnectRemSleepMinutes",
