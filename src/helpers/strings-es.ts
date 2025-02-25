@@ -6,7 +6,7 @@
     "add": "Agregar",
     "edit": "Editar",
     "cancel": "Cancelar",
-    "clear": "claro",
+    "clear": "limpiar",
     "settings": "Configuración",
     "connect": "Conectar",
     "reconnect": "Volver a conectar",

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { es, enUS, enAU, enCA, enGB, enIE, enIN, enNZ, enZA, nl, nlBE, de, deAT, fr, frCA, frCH, pt, ptBR, it, itCH, pl, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import language, { getCountryCodeFromIso, getLanguageFromIso } from "./language";
+import language, { getCountryCodeFromIso, getLanguageCodeFromIso } from "./language";
 import { toDate } from "./date-helpers";
 
 // Returns a locale string suitable for use with the Intl library. Mostly used for 
@@ -51,7 +51,7 @@ export function getDateLocale(): Locale {
 
     let countryCode = getCountryCodeFromIso(lang);
     if (!countryCode && navigator?.language) {
-        languageCode = getLanguageFromIso(navigator.language) || "en";
+        languageCode = getLanguageCodeFromIso(navigator.language) || "en";
         countryCode = getCountryCodeFromIso(navigator.language);
     }
 

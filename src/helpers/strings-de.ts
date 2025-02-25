@@ -6,7 +6,7 @@ let strings: { [key: string]: string } = {
     "add": "Hinzufügen",
     "edit": "Bearbeiten",
     "cancel": "Abbrechen",
-    "clear": "klar",
+    "clear": "leeren",
     "settings": "Einstellungen",
     "connect": "Verbinden",
     "reconnect": "Erneut verbinden",
