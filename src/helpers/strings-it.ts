@@ -6,11 +6,12 @@ let strings: { [key: string]: string } = {
     "add": "Aggiungi",
     "edit": "Modificare",
     "cancel": "Annulla",
-    "clear": "chiaro",
+    "clear": "svuota",
     "settings": "Impostazioni",
     "connect": "Collega",
     "reconnect": "Riconnetti",
     "refresh": "Aggiorna",
+    "setup": "Imposta",
     "remove": "Rimuovi",
     "help": "Aiuto",
     "view": "Visualizza",
@@ -406,6 +407,7 @@ let strings: { [key: string]: string } = {
     "services-performed": "Servizi Eseguiti",
     "device-data-month-chart-minutes": "Minuti",
     "device-data-month-chart-sleep": "Sonno",
+    "air-quality": "Qualità dell'Aria",
     "air-quality-home": "Qualità dell'Aria (Casa)",
     "air-quality-work": "Qualità dell'Aria (Lavoro)",
     "sedentary-time": "Tempo Sedentario",
@@ -522,7 +524,10 @@ let strings: { [key: string]: string } = {
     "device-activity": "Attività del dispositivo",
     "daily": "Quotidiano",
     "weekly": "Settimanale",
-    "monthly": "Mensile"
+    "monthly": "Mensile",
+    "syncing-data": "Sincronizzazione dei dati...",
+    "health-connect-phr-sync-title": "Sincronizza con Health Connect",
+    "health-connect-phr-sync-prompt": "Scegli i dati sanitari da leggere e scrivere con Health Connect"
 };
 
 export default strings;

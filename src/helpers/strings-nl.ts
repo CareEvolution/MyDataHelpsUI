@@ -6,11 +6,12 @@ let strings: { [key: string]: string } = {
     "add": "Toevoegen",
     "edit": "Bewerken",
     "cancel": "Annuleren",
-    "clear": "duidelijk",
+    "clear": "wissen",
     "settings": "Instellingen",
     "connect": "Verbinden",
     "reconnect": "Opnieuw verbinden",
     "refresh": "Vernieuwen",
+    "setup" : "Instellen",
     "remove": "Verwijderen",
     "help": "Help",
     "view": "Bekijken",
@@ -406,6 +407,7 @@ let strings: { [key: string]: string } = {
     "services-performed": "Uitgevoerde Diensten",
     "device-data-month-chart-minutes": "Minuten",
     "device-data-month-chart-sleep": "Slaap",
+    "air-quality": "Luchtkwaliteit",
     "air-quality-home": "Luchtkwaliteit (Thuis)",
     "air-quality-work": "Luchtkwaliteit (Werk)",
     "sedentary-time": "Zittende Tijd",
@@ -521,7 +523,10 @@ let strings: { [key: string]: string } = {
     "device-activity": "Apparaatactiviteit",
     "daily": "Dagelijks",
     "weekly": "Wekelijks",
-    "monthly": "Maandelijks"
+    "monthly": "Maandelijks",
+    "syncing-data": "Gegevens synchroniseren...",
+    "health-connect-phr-sync-title": "Synchroniseren met Health Connect",
+    "health-connect-phr-sync-prompt": "Kies welke gezondheidsgegevens je wilt lezen en schrijven met Health Connect"
 };
 
 export default strings;

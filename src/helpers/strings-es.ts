@@ -6,10 +6,11 @@
     "add": "Agregar",
     "edit": "Editar",
     "cancel": "Cancelar",
-    "clear": "claro",
+    "clear": "limpiar",
     "settings": "Configuración",
     "connect": "Conectar",
     "reconnect": "Volver a conectar",
+    "setup" : "Configurar",
     "refresh": "Actualizar",
     "remove": "Eliminar",
     "help": "Ayuda",
@@ -406,6 +407,7 @@
     "services-performed": "Servicios Realizados",
     "device-data-month-chart-minutes": "Minutos",
     "device-data-month-chart-sleep": "Dormir",
+    "air-quality": "Calidad del Aire",
     "air-quality-home": "Calidad del Aire (Hogar)",
     "air-quality-work": "Calidad del Aire (Trabajo)",
     "sedentary-time": "Tiempo Sedentario",
@@ -522,7 +524,10 @@
     "device-activity": "Actividad del dispositivo",
     "daily": "Diario",
     "weekly": "Semanal",
-    "monthly": "Mensual"
+    "monthly": "Mensual",
+    "syncing-data": "Sincronizando datos...",
+    "health-connect-phr-sync-title": "Sincronizar con Health Connect",
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
 };
 
 export default strings;

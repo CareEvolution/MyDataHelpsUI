@@ -1,16 +1,77 @@
 import { Notification } from "@careevolution/mydatahelps-js";
+import { add } from 'date-fns'
 
-export var previewNotification: Notification =
-{
-	"id": "1",
-	"identifier": "SurveyReminder",
-	"sentDate": "2022-03-10T13:37:41.16+00:00",
-	"statusCode": "Succeeded",
-	"type": "Push",
-	"content": {
-		"title": "Please Complete Your Surveys",
-		"body": "Your latest surveys are due"
+export var previewNotifications: Notification[] =
+	[{
+		"id": "1",
+		"identifier": "SurveyReminder-Thanks",
+		"sentDate": (new Date()).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Push",
+		"content": {
+			"body": "Thank you for completing your surveys!"
+		},
+		recipients: [],
+		contentVersion: 1
+	}, {
+		"id": "2",
+		"identifier": "SurveyReminder",
+		"sentDate": add(new Date(), { hours: -1 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Push",
+		"content": {
+			"title": "Please Complete Your Surveys",
+			"body": "Your latest surveys are due"
+		},
+		recipients: [],
+		contentVersion: 1
+	}, {
+		"id": "4",
+		"identifier": "SurveyReminder-Fitbit",
+		"sentDate": add(new Date(), { days: -1 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Push",
+		"content": {
+			"title": "Have you received your Fitbit? Connect it!"
+		},
+		recipients: [],
+		contentVersion: 1
+	}, {
+		"id": "5",
+		"identifier": "SurveyReminder-Fitbit2",
+		"sentDate": add(new Date(), { days: -2 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Push",
+		"content": {
+			"title": "Consent and get a Fitbit",
+			"body": "Are you missing out on a Fitbit device? Complete your consent - you could get a new Fitbit at no cost to you!"
+		},
+		recipients: [],
+		contentVersion: 1
 	},
-	recipients: [],
-	contentVersion: 0
-};
+	{
+		"id": "6",
+		"identifier": "EmailSurveyReminder",
+		"sentDate": add(new Date(), { days: -3 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Email",
+		"content": {
+			"subject": "Subject - Email reminder to complete daily survey",
+			"body": "Complete your daily survey to earn rewards!"
+		},
+		recipients: [],
+		contentVersion: 1
+	},
+	{
+		"id": "7",
+		"identifier": "SMSSurveyReminder",
+		"sentDate": add(new Date(), { days: -4 }).toISOString(),
+		"statusCode": "Succeeded",
+		"type": "Sms",
+		"content": {
+			"title": "SMS Title - complete daily survey",
+			"body": "Visit MDH to complete your daily survey"
+		},
+		recipients: [],
+		contentVersion: 1
+	}];

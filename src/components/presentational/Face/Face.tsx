@@ -16,7 +16,7 @@ export interface FaceProps {
 	innerRef?: React.Ref<HTMLButtonElement>;
 }
 
-export default function (props: FaceProps) {
+export default function Face (props: FaceProps) {
 	let layoutContext = useContext(LayoutContext);
 	let imageStyle: React.CSSProperties = {};
 	if (layoutContext.colorScheme == "dark" && !props.selected) {

@@ -1,23 +1,25 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Layout from "../Layout"
 import SegmentedControl, { SegmentedControlProps } from "./SegmentedControl"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof SegmentedControl> = {
 	title: "Presentational/SegmentedControl",
 	component: SegmentedControl,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof SegmentedControl>;
+};
 
-const Template: ComponentStory<typeof SegmentedControl> = (args: SegmentedControlProps) =>
-	<Layout colorScheme="auto">
-		<SegmentedControl  {...args} />
-	</Layout>;
+export default meta;
+type Story = StoryObj<typeof SegmentedControl>;
 
-export const Default = Template.bind({});
-Default.args = {
+const render = (args: SegmentedControlProps) =>
+(<Layout colorScheme="auto">
+	<SegmentedControl  {...args} />
+</Layout>)
+
+const defaultArgs: SegmentedControlProps = {
 	segments: [
 		{
 			key: "Week",
@@ -33,45 +35,21 @@ Default.args = {
 		}
 	],
 	selectedSegment: "Month",
-	color: "--var(--mdhui-color-primary)"
-}
+	color: "var(--mdhui-color-primary)",
+	onSegmentSelected: (segmentKey) => console.log(segmentKey)
+};
 
-export const OptionsHorizontal = Template.bind({});
-OptionsHorizontal.args = {
-	variant: "optionsHorizontal",
-	segments: [
-		{
-			key: "Week",
-			title: "Week"
-		},
-		{
-			key: "Month",
-			title: "Month"
-		},
-		{
-			key: "Year",
-			title: "Year"
-		}
-	],
-	selectedSegment: "Month"
-}
+export const Default: Story = {
+	args: defaultArgs,
+	render: render
+};
 
-export const OptionsVertical = Template.bind({});
-OptionsVertical.args = {
-	variant: "optionsVertical",
-	segments: [
-		{
-			key: "Week",
-			title: "Week"
-		},
-		{
-			key: "Month",
-			title: "Month"
-		},
-		{
-			key: "Year",
-			title: "Year"
-		}
-	],
-	selectedSegment: "Month"
-}
+export const OptionsHorizontal: Story = {
+	args: { ...defaultArgs, variant: "optionsHorizontal" },
+	render: render
+};
+
+export const OptionsVertical: Story = {
+	args: { ...defaultArgs, variant: "optionsVertical" },
+	render: render
+};

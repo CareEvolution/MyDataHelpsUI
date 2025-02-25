@@ -14,7 +14,7 @@ export interface TrackerItemProps {
 	noBoxShadow?: boolean;
 }
 
-export default function (props: TrackerItemProps) {
+export default function TrackerItem(props: TrackerItemProps) {
 	var classes = ["mdhui-tracker-item"];
 	if (props.onClick) {
 		classes.push("selectable");

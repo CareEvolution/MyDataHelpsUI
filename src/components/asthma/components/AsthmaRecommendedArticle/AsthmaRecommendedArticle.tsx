@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getLanguageFromIso, language, Language, useInitializeView } from '../../../../helpers';
+import { getLanguageCodeFromIso, language, useInitializeView } from '../../../../helpers';
 import { Resource, ResourceButtonVariant, ResourceDefinition, ResourceImageAlignment } from '../../../presentational';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
@@ -27,7 +27,7 @@ export default function (props: AsthmaRecommendedArticleProps) {
     const [recommendedArticle, setRecommendedArticle] = useState<Article>();
 
     const createResourceDefinition = (article: Article): ResourceDefinition => {
-        let currentLanguage: Language = getLanguageFromIso(MyDataHelps.getCurrentLanguage());
+        let currentLanguage: string = getLanguageCodeFromIso(MyDataHelps.getCurrentLanguage());
         return {
             title: language(`asthma-recommended-article-${article.number}-title`),
             subTitle: language(`asthma-recommended-article-${article.number}-subtitle`),

@@ -69,6 +69,7 @@ export { deepSleepMinutes as garminDeepSleepMinutesDataProvider } from "./garmin
 export { lightSleepMinutes as garminLightSleepMinutesDataProvider } from "./garmin-sleep"
 export { awakeSleepMinutes as garminAwakeMinutesDataProvider } from "./garmin-sleep"
 export { sleepScore as garminSleepScoreDataProvider } from "./garmin-sleep"
+export { default as airQualityDataProvider } from './air-quality'
 export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
 export { stepsProvider as healthConnectStepsDataProvider } from "./health-connect-steps";
