@@ -167,7 +167,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (platform == "iOS" || !settings?.healthConnectEnabled) {
         accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
-    if (!settings?.airQualityEnabled && !settings?.weatherEnabled) { 
+    if ((!settings?.airQualityEnabled && !settings?.weatherEnabled) || !props.postalCodeSurveyName ) { 
         accountTypes = accountTypes.filter(a => a != "Environmental");
     }
 
@@ -245,11 +245,11 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     function getEnvironmentalMenuItem() {
-        if (!accountTypes.includes("Environmental") || !props.postalCodeSurveyName) {
+        if (!accountTypes.includes("Environmental")) {
             return null;
         }
 
-        return <EnvironmentalMenuItem settings={settings} participantInfo={participantInfo} postalCodeSurveyName={props.postalCodeSurveyName}/>
+        return <EnvironmentalMenuItem settings={settings!} participantInfo={participantInfo!} postalCodeSurveyName={props.postalCodeSurveyName!}/>
     }
 
     let title = props.title || language("connect-devices-title");
@@ -440,7 +440,7 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     </div>;
 }
 
-function EnvironmentalMenuItem(props: { settings: DataCollectionSettings | null, participantInfo: ParticipantInfo | null, postalCodeSurveyName: string }){
+function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, participantInfo: ParticipantInfo, postalCodeSurveyName: string }){
     let action = () => {
         MyDataHelps.startSurvey(props.postalCodeSurveyName);
     }
