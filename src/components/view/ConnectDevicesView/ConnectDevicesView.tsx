@@ -18,7 +18,8 @@ export interface ConnectDevicesViewProps {
 export default function ConnectDevicesView(props: ConnectDevicesViewProps) {
     return (
         <BlankView showBackButton={props.presentation == "Push"}
-            showCloseButton={props.presentation == "Modal"}>
+            showCloseButton={props.presentation == "Modal"}
+            colorScheme={props.colorScheme}>
             {props.deviceActivityViewUrl &&
                 <Card>
                     <ViewDeviceActivity onClick={() => MyDataHelps.openApplication(props.deviceActivityViewUrl!)}
