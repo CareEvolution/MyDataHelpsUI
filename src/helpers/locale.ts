@@ -9,23 +9,21 @@ import { toDate } from "./date-helpers";
 //
 // Priority for locale selection:
 // 1. If MDH locale has a country code (like "en-AU") use that.
-// 2. If MDH locale does NOT have a locale code (like "en"), use the browser locale. 
-//    The browser often has more locale specificity than MDH.
+// 2. If MDH locale does NOT have a locale code (like "en"), use the browser locale
+//    as long as the language code matches. The browser often has more locale
+//    specificity than MDH.
 // 3. Fall back to the original language string.
 export function getIntlLocale() : string {
     // Intl libraries don't support underscores, so it needs "en-US" not "en_US".
     const lang =`${MyDataHelps.getCurrentLanguage()}`.replace("_", "-");
-
     if (lang.length < 2) return "en-us";
 
-    let countryCode = getCountryCodeFromIso(lang);
-    let intlLocale;
-    
-    if (countryCode) {
-        intlLocale = lang;
-    }
-    else {
-        intlLocale = navigator?.language || lang;
+    const languageCode = getLanguageCodeFromIso(lang);
+    const countryCode = getCountryCodeFromIso(lang);
+
+    let intlLocale = lang;
+    if (!countryCode && navigator?.language && getLanguageCodeFromIso(navigator.language) === languageCode) {
+        intlLocale = navigator.language;
     }
     return intlLocale.toLowerCase();
 }
@@ -40,18 +38,18 @@ export function getIntlLocale() : string {
 // 1. If MDH language has a country code (like "en-AU") use it to
 //    select the appropriate locale for that language.
 // 2. If MDH language does NOT have a country code (like "en"), use the browser language
-//    to determine locale. The browser often has more locale specificity than MDH.
+//    to determine locale as long as the language code matches. The browser often has
+//    more locale specificity than MDH.
 // 3. If neither MDH nor browser specifies a locale, use the
 //    default locale based on the current language.
 export function getDateLocale(): Locale {
     const lang = MyDataHelps.getCurrentLanguage();
     if (lang.length < 2) return enUS;
 
-    let languageCode = lang.toLowerCase().slice(0,2);
-
+    const languageCode = getLanguageCodeFromIso(lang);
     let countryCode = getCountryCodeFromIso(lang);
-    if (!countryCode && navigator?.language) {
-        languageCode = getLanguageCodeFromIso(navigator.language) || "en";
+
+    if (!countryCode && navigator?.language && getLanguageCodeFromIso(navigator.language) === languageCode) {
         countryCode = getCountryCodeFromIso(navigator.language);
     }
 
