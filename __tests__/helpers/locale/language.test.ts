@@ -54,12 +54,20 @@ describe('Language Tests', () => {
 
     describe('supportedLocales', () => {
         it('Should have all strings in all locales', () => {
+            const deliberatelyBlankStrings = 
+            { 
+                "asthma-log-entry-details-component-no-data-p2" : [ "es" ] 
+            };
+
             Object.keys(englishStrings).forEach(localeStr => {
                 supportedLocales().forEach(localeName => {
                     const otherString = language(localeStr, localeName);
                     if (!otherString) {
-                       console.log(`Missing ${localeStr} in ${localeName}`);
-                       expect(otherString).toBeTruthy();
+                        const exceptions = deliberatelyBlankStrings[localeStr] || [];
+                        if (!exceptions.includes(localeName)) {
+                            console.log(`Missing ${localeStr} in ${localeName}`);
+                            expect(otherString).toBeTruthy();
+                        }
                     }
                 })
             })
