@@ -4,10 +4,19 @@ import { faWind } from "@fortawesome/free-solid-svg-icons";
 import language, { Language } from "../language";
 import React from "react";
 import { defaultFormatter } from "./formatters";
-import { homeAirQualityDataProvider, workAirQualityDataProvider } from "../daily-data-providers";
+import { airQualityDataProvider, homeAirQualityDataProvider, workAirQualityDataProvider } from "../daily-data-providers";
 import { simpleAvailabilityCheck } from "./availability-check";
 
 let airQualityTypeDefinitions: DailyDataTypeDefinition[] = [
+    {
+        type: DailyDataType.AirQuality,
+        dataProvider: airQualityDataProvider,
+        availabilityCheck: simpleAvailabilityCheck('AirNowApi', ['AirQuality']),
+        labelKey: "air-quality",
+        icon: <FontAwesomeSvgIcon icon={faWind} />,
+        formatter: defaultFormatter,
+        previewDataRange: [20, 80]
+    },
     {
         type: DailyDataType.HomeAirQuality,
         dataProvider: homeAirQualityDataProvider,

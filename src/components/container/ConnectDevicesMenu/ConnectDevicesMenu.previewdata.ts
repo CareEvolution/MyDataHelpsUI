@@ -1,4 +1,4 @@
-import { DataCollectionSettings, ExternalAccount, HealthConnectStatus } from "@careevolution/mydatahelps-js";
+import { DataCollectionSettings, ExternalAccount, HealthConnectStatus, ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
 
 export const previewAccounts:ExternalAccount[] = [
@@ -83,3 +83,12 @@ export const previewHealthConnectStatus: HealthConnectStatus = {
     running: false,
     lastPrompted: ""
 };
+
+export const generateSampleParticipantInfo = () => {
+    return {
+        demographics: {
+            postalCode: ""
+        },
+        customFields: {}
+    } as ParticipantInfo;
+}
