@@ -50,8 +50,7 @@ export function getDateLocale(): Locale {
     let languageCode = lang.toLowerCase().slice(0,2);
 
     let countryCode = getCountryCodeFromIso(lang);
-    if (!countryCode && navigator?.language) {
-        languageCode = getLanguageCodeFromIso(navigator.language) || "en";
+    if (!countryCode && navigator?.language && getLanguageCodeFromIso(navigator.language) === languageCode) {
         countryCode = getCountryCodeFromIso(navigator.language);
     }
 

@@ -68,11 +68,11 @@ describe('Locale Tests', () => {
             const result = getDateLocale();
             expect(result).toBe(enUS);
         });     
-        it('Should use browser locale even if it set to a different (supported) language.', () => {
+        it('Should not use browser locale if it is set to a different language.', () => {
             mockMDHLanguage = "en";
             jest.spyOn(navigator, 'language', 'get').mockReturnValue('es-es');
             const result = getDateLocale();
-            expect(result).toBe(es);
+            expect(result).toBe(enUS);
         });
         it('Should use base language if browser is set to an unsupported language.', () => {
             mockMDHLanguage = "en";
