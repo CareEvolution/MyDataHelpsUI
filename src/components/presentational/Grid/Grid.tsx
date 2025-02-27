@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import "./Grid.css"
+import Card from '../Card';
 
 export interface GridProps {
     children?: React.ReactNode;
@@ -12,6 +13,7 @@ export interface GridProps {
 export interface GridColumnProps {
     children?: React.ReactNode;
     span: number;
+    variant?: "default" | "card";
 }
 
 export interface GridContext {
@@ -40,11 +42,16 @@ export function Grid(props: GridProps) {
 
 Grid.Column = function (props: GridColumnProps) {
     if (!props.children) {
-		return null;
-	}
+        return null;
+    }
 
     let widthPercent = props.span / 12 * 100;
     let gridContext = React.useContext(GridContext);
     let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
-    return <div className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+
+    if (props.variant === "card") {
+        return <Card className="mdhui-grid-column" style={{ width: width }}>{props.children}</Card>
+    } else {
+        return <div className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+    }
 }
