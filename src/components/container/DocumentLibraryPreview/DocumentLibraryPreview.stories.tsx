@@ -30,7 +30,7 @@ const defaultProps: DocumentLibraryPreviewProps = {
     nameResultIdentifier: 'document_name',
     dateResultIdentifier: 'document_date',
     notesResultIdentifier: 'document_notes',
-    documentViewBaseUrl: ''
+    documentLibraryViewBaseUrl: ''
 };
 
 export const NoUploadedFiles: Story = {

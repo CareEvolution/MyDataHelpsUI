@@ -1,6 +1,6 @@
 import React from "react";
 import { language, queryAllSurveyFiles, SurveyUploadedFile, SurveyUploadedFileQueryParameters, useInitializeView } from "../../../helpers";
-import { Action, Button, LoadingIndicator } from "../../presentational";
+import { Action, Button, Card, LoadingIndicator } from "../../presentational";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import MyDataHelps from "@careevolution/mydatahelps-js";
@@ -59,7 +59,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
     }
 
     const onShowDocumentLibraryClick = () => {
-        if (props.preview) {
+        if (props.preview || !props.documentLibraryViewBaseUrl) {
             console.log("onShowDocumentLibraryClick");
             return;
         }
@@ -96,27 +96,29 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
         <div ref={props.innerRef} className="mdhui-document-library-preview">
             {!surveyFiles && <LoadingIndicator />}
             {surveyFiles &&
-                <Action title={` ${language("uploaded-documents")}`}
-                    renderAs="div"
-                    className="font-size"
-                    indicatorPosition="default"
-                    subtitle={surveyFiles.length === 0
-                        ? language("upload-documents-subtitle")
-                        : ""}
-                    titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
-                    indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
-                    onClick={surveyFiles.length === 0 
-                        ? undefined : 
-                        onShowDocumentLibraryClick}
-                    indicator={surveyFiles.length === 0
-                        ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>
-                        : undefined}
-                >
-                    {surveyFiles.length > 0
-                        ? surveyFiles.map((file, index) => <div className="file-title" key={index}>{file}</div>)
-                        : undefined
-                    }
-                </Action>
+                <Card>
+                    <Action title={` ${language("uploaded-documents")}`}
+                        renderAs="div"
+                        className="font-size"
+                        indicatorPosition="default"
+                        subtitle={surveyFiles.length === 0
+                            ? language("upload-documents-subtitle")
+                            : ""}
+                        titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
+                        indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
+                        onClick={surveyFiles.length === 0 
+                            ? undefined : 
+                            onShowDocumentLibraryClick}
+                        indicator={surveyFiles.length === 0
+                            ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>
+                            : undefined}
+                    >
+                        {surveyFiles.length > 0
+                            ? surveyFiles.map((file, index) => <div className="file-title" key={index}>{file}</div>)
+                            : undefined
+                        }
+                    </Action>
+                </Card>
             }
         </div>
     )
