@@ -524,9 +524,20 @@ let strings: { [key: string]: string } = {
     "daily": "Dagelijks",
     "weekly": "Wekelijks",
     "monthly": "Maandelijks",
+    "documents": "Documenten",
+    "upload": "Uploaden",
+    "name": "Naam",
+    "date": "Datum",
+    "bonus": "Bonus",
+    "download": "Downloaden",
+    "delete-file-confirm": "Weet je zeker dat je dit bestand wilt verwijderen?",
+    "file-not-loaded": "Het bestand kon niet worden geladen. Neem contact op met de ondersteuning.",
     "syncing-data": "Gegevens synchroniseren...",
     "health-connect-phr-sync-title": "Synchroniseren met Health Connect",
-    "health-connect-phr-sync-prompt": "Kies welke gezondheidsgegevens je wilt lezen en schrijven met Health Connect"
+    "health-connect-phr-sync-prompt": "Kies welke gezondheidsgegevens je wilt lezen en schrijven met Health Connect",
+    "uploaded-documents": "Geüploade Documenten",
+    "upload-documents-subtitle": "Scan en organiseer je geprinte medische dossiers",
+    "upload-button": "Uploaden"
 };
 
 export default strings;

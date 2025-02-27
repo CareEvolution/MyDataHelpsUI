@@ -8,6 +8,7 @@ export * from './get-interval-start';
 export * from './colors';
 export * from './blood-pressure-data-providers'
 export * from './query-all-survey-answers';
+export { queryAllSurveyFiles, deleteSurveyResultFiles, SurveyUploadedFileQueryParameters, SurveyUploadedFile} from './query-all-survey-files';
 export * from './Initialization';
 export * from './relative-activity';
 export * from './BasicPointsAndBadges/PointsAndBadges';
