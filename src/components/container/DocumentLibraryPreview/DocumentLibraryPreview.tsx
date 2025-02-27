@@ -82,7 +82,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
     const onUploadClick = () => {
         if (props.preview) {
             console.log("onUploadClick");
-            return;
+            return; 
         }
 
         MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
