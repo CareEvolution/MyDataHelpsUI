@@ -12,7 +12,9 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    /** @param props.onProviderSelected - Callback function triggered when a provider is selected. If this function is defined it will override the normal action taken when selecting provider.*/
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
+    /** @param props.onProviderConnected - Callback function triggered after a provider is connected. */
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
     innerRef?: React.Ref<HTMLDivElement>;
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
