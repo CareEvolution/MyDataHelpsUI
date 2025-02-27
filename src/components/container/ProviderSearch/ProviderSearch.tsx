@@ -83,14 +83,19 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                     setTotalResults(searchResultsResponse.totalExternalAccountProviders);
                     setSearching(false);
                 }
-            });
+            }).catch(function (error) {
+                console.error("Error fetching external account providers", error);
+                setSearching(false);
+            });;
         }
         else {
-            fetch(`${props.publicProviderSearchApiUrl}?keyword=${search}&pageSize=${pageSize}&pageNumber=${currentPage}`, {
+            const url = new URL(props.publicProviderSearchApiUrl);
+            url.searchParams.append('keyword', search);
+            url.searchParams.append('pageSize', String(pageSize));
+            url.searchParams.append('pageNumber', String(currentPage));
+            fetch(url.toString(), {
                 method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                },
+                headers: { "Accept": "application/json" },
             })
                 .then((response) => response.json())
                 .then(function (searchResultsResponse) {
@@ -99,6 +104,9 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                         setTotalResults(searchResultsResponse.TotalCount);
                         setSearching(false);
                     }
+                }).catch(function (error) {
+                    console.error("Error fetching external account providers", error);
+                    setSearching(false);
                 });
         }
     }
