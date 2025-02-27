@@ -29,11 +29,16 @@ const defaultProps : DocumentLibraryViewProps = {
     nameResultIdentifier: 'document_name',
     dateResultIdentifier: 'document_date',
     notesResultIdentifier: 'document_notes',
-    documentViewBaseUrl: ''
+    documentDetailViewBaseUrl: ''
 };
 
 export const Default: Story = {
     args: { ...defaultProps, preview: 'Preview' },
+    render: render
+};
+
+export const NoFiles: Story = {
+    args: { ...defaultProps, preview: 'PreviewNoFiles' },
     render: render
 };
 

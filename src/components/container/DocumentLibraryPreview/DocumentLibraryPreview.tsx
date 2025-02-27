@@ -16,7 +16,7 @@ export interface DocumentLibraryPreviewProps {
     nameResultIdentifier: string,
     dateResultIdentifier: string,
     notesResultIdentifier: string,
-    documentViewBaseUrl: string,
+    documentLibraryViewBaseUrl: string,
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -58,14 +58,34 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
         });
     }
 
-    const onPreviewClick = () => {
-        if (props.preview) return;
-
-        if (surveyFiles && surveyFiles.length > 0) {
-            MyDataHelps.openApplication(props.documentViewBaseUrl);
-        } else {
-            MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
+    const onShowDocumentLibraryClick = () => {
+        if (props.preview) {
+            console.log("onShowDocumentLibraryClick");
+            return;
         }
+
+        const params = new URLSearchParams({
+            uploadDocumentSurveyName: props.uploadDocumentSurveyName,
+            fileResultIdentifier: props.fileResultIdentifier,
+            typeResultIdentifier: props.typeResultIdentifier,
+            nameResultIdentifier: props.nameResultIdentifier,
+            dateResultIdentifier: props.dateResultIdentifier,
+            notesResultIdentifier: props.notesResultIdentifier,
+            documentDetailViewBaseUrl: props.documentLibraryViewBaseUrl
+        });
+
+        const separator = props.documentLibraryViewBaseUrl.includes('?') ? '&' : '?';
+        const documentLibraryViewUrl = `${props.documentLibraryViewBaseUrl}${separator}${params.toString()}`;
+        MyDataHelps.openApplication(documentLibraryViewUrl);
+    }
+
+    const onUploadClick = () => {
+        if (props.preview) {
+            console.log("onUploadClick");
+            return;
+        }
+
+        MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
     }
 
     useInitializeView(() => {
@@ -77,22 +97,26 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
             {!surveyFiles && <LoadingIndicator />}
             {surveyFiles &&
                 <Action title={` ${language("uploaded-documents")}`}
-                    onClick={onPreviewClick}
+                    renderAs="div"
                     className="font-size"
                     indicatorPosition="default"
                     subtitle={surveyFiles.length === 0
                         ? language("upload-documents-subtitle")
                         : ""}
-                    children={surveyFiles.length > 0
+                    titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
+                    indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
+                    onClick={surveyFiles.length === 0 
+                        ? undefined : 
+                        onShowDocumentLibraryClick}
+                    indicator={surveyFiles.length === 0
+                        ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>
+                        : undefined}
+                >
+                    {surveyFiles.length > 0
                         ? surveyFiles.map((file, index) => <div className="file-title" key={index}>{file}</div>)
                         : undefined
                     }
-                    titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
-                    indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
-                    indicator={surveyFiles.length === 0
-                        ? <Button variant="default" fullWidth={false} onClick={noop}>{language("upload-button")}</Button>
-                        : undefined}
-                />
+                </Action>
             }
         </div>
     )

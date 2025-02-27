@@ -1,21 +1,23 @@
+.mdhui-survey-answer-details {
+    display: flex;
+    flex-direction: column;
+    margin: 16px;
+}
+
 .mdhui-survey-answer-file-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 16px;
     border-radius: 8px;
-    background: #f9f9f9;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .mdhui-survey-answer-file-preview-container {
     width: 100%;
     height: 55vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #fff;
     border-radius: 8px;
     overflow: hidden;
+    background-color: var(--mdhui-background-color-2);
 }
 
 .mdhui-survey-answer-file-preview-content {
@@ -25,23 +27,30 @@
     width: 90%;
 }
 
+.mdhui-survey-answer-file-preview-file {
+    background-color: white;
+}
+
 .mdhui-survey-answer-file-image-preview {
+    margin-top: 16px;
     object-fit: contain;
 }
 
 .mdhui-survey-answer-file-document-file-name {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    padding-top: var(--mdhui-padding-sm);
+    margin-bottom: var(--mdhui-padding-sm);
+    padding-bottom: var(--mdhui-padding-sm);
 }
 
 .mdhui-survey-answer-file-document-details-parent {
-    padding: 10px;
+    padding-top: 15px;
 }
 
 .mdhui-survey-answer-file-document-details {
     font-size: .88em;
-    margin: 5px;
+    padding-bottom: var(--mdhui-padding-xs);
 }
 
 .mdhui-survey-answer-file-download-button {
@@ -49,5 +58,15 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.mdhui-survey-answer-file-delete-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
     margin-bottom: 10px;
 }

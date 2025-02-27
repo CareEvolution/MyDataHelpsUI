@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Layout, LoadingIndicator, Title } from "../../presentational";
+import { Button, Layout, LoadingIndicator, NavigationBar, Title } from "../../presentational";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { language, SurveyUploadedFileQueryParameters, queryAllSurveyFiles, SurveyUploadedFile, useInitializeView, deleteSurveyResultFiles } from "../../../helpers";
 import "./DocumentDetailView.css";
@@ -31,6 +31,7 @@ export interface DocumentDetail extends SurveyUploadedFile {
 */
 export default function DocumentDetailView(props: DocumentDetailViewProps) {
   let [documentDetail, setDocumentDetail] = React.useState<DocumentDetail>();
+  let [loading, setLoading] = React.useState<boolean>(false);
 
   async function initialize() {
     const params: SurveyUploadedFileQueryParameters = {
@@ -108,9 +109,14 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     }
 
     if (window.confirm(language("delete-file-confirm"))) {
+      setLoading(true);
       deleteSurveyResultFiles(documentDetail.surveyResultId, documentDetail.fileKey).then(() => {
         setDocumentDetail(undefined);
         MyDataHelps.dismiss();
+      }).catch(error => {
+        console.error('Failed to delete file:', error);
+      }).finally(() => {
+        setLoading(false);
       });
     }
   };
@@ -121,26 +127,29 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
   }, [], []);
 
   return (
-    <Layout colorScheme={props.colorScheme} >
-      {(!documentDetail) && <LoadingIndicator />}
-      {documentDetail?.showDownload &&
-        <div className="mdhui-survey-answer-file-download-button">
-          <Button onClick={() => downloadFile()} fullWidth={false} children={language("download")} ></Button>
-        </div>
-      }
-
+    <Layout bodyBackgroundColor={"white"} colorScheme={props.colorScheme ?? "auto"} >
+      <NavigationBar
+        showBackButton={true}>
+        {documentDetail?.showDownload &&
+          <div className="mdhui-survey-answer-file-download-button">
+            <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
+          </div>
+        }
+      </NavigationBar>
+      {(!documentDetail || loading) && <LoadingIndicator />}
       {documentDetail &&
-        <>
-          <div className="mdhui-survey-answer-details-container">
+        <div className="mdhui-survey-answer-details">
+          <div className="mdhui-survey-answer-file-container">
             <div className="mdhui-survey-answer-file-preview-container">
               {documentDetail?.presignedDocUrl &&
-                <iframe src={documentDetail?.presignedDocUrl} className="mdhui-survey-answer-file-preview-content"></iframe>}
+                <iframe src={documentDetail?.presignedDocUrl} className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-preview-file"></iframe>}
               {documentDetail?.presignedImageUrl &&
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
                   className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-image-preview" />}
               {!documentDetail.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
+              <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>  
             </div>
-            <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>
+            {/* <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div> */}
           </div>
 
           <div className="mdhui-survey-answer-file-document-details-parent">
@@ -148,9 +157,11 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             <div className="mdhui-survey-answer-file-document-details">{`${documentDetail?.title} - ${getShortDateString(documentDetail?.date!)}`}</div>
             <Title order={3}>{language("notes")}</Title>
             <div className="mdhui-survey-answer-file-document-details">{documentDetail?.notes}</div>
-            <Button variant="default" onClick={deleteFile} children={language("delete")} ></Button>
           </div>
-        </>
+          <div className="mdhui-survey-answer-file-delete-button">
+            <Button variant="light" color={"var(--mdhui-color-danger)"}  onClick={deleteFile}>{language("delete")}</Button>
+          </div>
+        </div>
       }
     </Layout>
   );

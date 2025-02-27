@@ -1,5 +1,5 @@
 import React from "react";
-import { Action, Button, Layout, LoadingIndicator, Title } from "../../presentational";
+import { Action, Button, Card, Layout, LoadingIndicator, NavigationBar, Title } from "../../presentational";
 import { language, useInitializeView } from "../../../helpers";
 import SegmentedControl, { SegmentedControlProps } from "../../presentational/SegmentedControl/SegmentedControl";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
@@ -8,16 +8,17 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 import { getShortDateString } from "../../../helpers/date-helpers";
 import { queryAllSurveyFiles, SurveyUploadedFile, SurveyUploadedFileQueryParameters } from "../../../helpers";
 import { getPreviewData } from "./DocumentLibraryView.previewData";
+import "./DocumentLibraryView.css";
 
 export interface DocumentLibraryViewProps {
-    preview?: "Preview" | "PreviewLoading",
+    preview?: "Preview" | "PreviewNoFiles" | "PreviewLoading",
     uploadDocumentSurveyName: string,
     fileResultIdentifier: string,
     typeResultIdentifier: string,
     nameResultIdentifier: string,
     dateResultIdentifier: string,
     notesResultIdentifier: string,
-    documentViewBaseUrl: string,
+    documentDetailViewBaseUrl: string,
     colorScheme?: "auto" | "light" | "dark"
 }
 
@@ -61,15 +62,20 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     }
 
     const onFileClick = (file: SurveyUploadedFile) => {
-        //console.log(`Opening File ${file.title} ${file.fileName} ${file.type} ${file.date} SurveyResultID: ${file.surveyResultId}`);
+        console.log(`Opening File ${file.title} ${file.fileName} ${file.type} ${file.date} SurveyResultID: ${file.surveyResultId}`);
 
-        if (props.documentViewBaseUrl) {
-            const documentDetailViewUrl = props.documentViewBaseUrl + '?surveyResultId=' + encodeURIComponent(file.surveyResultId)
-                + '&fileResultIdentifier=' + encodeURIComponent(props.fileResultIdentifier)
-                + '&typeResultIdentifier=' + encodeURIComponent(props.typeResultIdentifier)
-                + '&nameResultIdentifier=' + encodeURIComponent(props.nameResultIdentifier)
-                + '&dateResultIdentifier=' + encodeURIComponent(props.dateResultIdentifier)
-                + '&notesResultIdentifier=' + encodeURIComponent(props.notesResultIdentifier);
+        if (!props.preview) {
+            const params = new URLSearchParams({
+                surveyResultId: file.surveyResultId,
+                fileResultIdentifier: props.fileResultIdentifier,
+                typeResultIdentifier: props.typeResultIdentifier,
+                nameResultIdentifier: props.nameResultIdentifier,
+                dateResultIdentifier: props.dateResultIdentifier,
+                notesResultIdentifier: props.notesResultIdentifier
+            });
+
+            const separator = props.documentDetailViewBaseUrl.includes('?') ? '&' : '?';
+            const documentDetailViewUrl = `${props.documentDetailViewBaseUrl}${separator}${params.toString()}`;
             MyDataHelps.openApplication(documentDetailViewUrl);
         }
     }
@@ -78,8 +84,12 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         setLoading(true);
 
         if (props.preview) {
+            let previewData : SurveyUploadedFile[] = [];
             if (props.preview === "Preview") {
-                setFiles(getPreviewData());
+                previewData = getPreviewData();
+            }
+            if (props.preview !== "PreviewLoading") {
+                setFiles(previewData);
                 setLoading(false);
             }
             return;
@@ -96,6 +106,9 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
 
         queryAllSurveyFiles({ ...params }).then((uploadedFiles: SurveyUploadedFile[]) => {
             setFiles(uploadedFiles);
+        }).catch(error => {
+            console.error('Failed to query files:', error);
+        }).finally(() => {
             setLoading(false);
         });
     }
@@ -112,10 +125,12 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         });
 
         return sortedFiles.map((file: SurveyUploadedFile, index: number) =>
-            <Action key={`suf_${index}`} title={`${file.title} (${file.type})`}
-                subtitle={`${getShortDateString(file.date)} ${file.fileName}`}
-                icon={<FontAwesomeSvgIcon icon={faFileLines} />}
-                onClick={() => onFileClick(file)}></Action>
+            <Card key={`file_${index}`}>
+                <Action key={`suf_${index}`} title={`${file.title} (${file.type})`}
+                    subtitle={`${getShortDateString(file.date)} ${file.fileName}`}
+                    icon={<FontAwesomeSvgIcon icon={faFileLines} />}
+                    onClick={() => onFileClick(file)}></Action>
+            </Card>
         );
     }
 
@@ -124,15 +139,18 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     }, [], []);
 
     return (
-        <Layout colorScheme={props.colorScheme}>
+        <Layout colorScheme={props.colorScheme ?? "auto"}>
+            <NavigationBar
+                showBackButton={true}
+                showCloseButton={true}>
+                    <div className="mdhui-document-library-view-title-div">
+                        <Title order={1} >{language('documents')}</Title>
+                        {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
+                    </div>
+            </NavigationBar>
             {loading && <LoadingIndicator />}
             {!loading && <>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Title order={1} >{language('documents')}</Title>
-                    <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>
-                </div>
-
-                <SegmentedControl  {...segmentedControlProps} />
+                <SegmentedControl className="mdhui-document-library-view-segment-control" {...segmentedControlProps} />
                 {files.length > 0 && buildFileList(files, selectedSegment)}
             </>}
         </Layout>
