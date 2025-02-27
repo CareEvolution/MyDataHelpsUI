@@ -4,53 +4,63 @@ import spanishStrings from "./strings-es"
 import dutchStrings from "./strings-nl"
 import germanStrings from "./strings-de"
 import frenchStrings from "./strings-fr"
-import portugueseStrings from "./strings-pt"
+import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
-
-export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
+import portuguesePortugalStrings from "./strings-pt-pt"
+// NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
 	if (!resolvedString || !args) return resolvedString;
 	return resolvedString.replace(/\{\s*([^}\s]+)\s*}/g, (_, key) => args[key]);
 }
 
-export function language(key: string, specifiedLanguage?: string, args?: { [key: string]: string }): string {
-	const currentLanguage: Language = getLanguageFromIso(specifiedLanguage || MyDataHelps.getCurrentLanguage());
+export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
+	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
+	
+	interface LocaleStrings {
+		[key: string]: string;
+	}
 
-	let resolvedString = null;
-	if (currentLanguage == "en") resolvedString = englishStrings[key];
-	if (currentLanguage == "es") resolvedString = spanishStrings[key];
-	if (currentLanguage == "nl") resolvedString = dutchStrings[key];
-	if (currentLanguage == "de") resolvedString = germanStrings[key];
-	if (currentLanguage == "fr") resolvedString = frenchStrings[key];
-	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
-	if (currentLanguage == "it") resolvedString = italianStrings[key];
-	if (currentLanguage == "pl") resolvedString = polishStrings[key];
-	if (resolvedString != null) return format(resolvedString, args);
+	const localeToStringsMap : Record<string, LocaleStrings> = {
+		"en": englishStrings,
+		"es": spanishStrings,
+		"nl": dutchStrings,
+		"fr": frenchStrings,
+		"it": italianStrings,
+		"de": germanStrings,
+		"pt": portugueseBrazilStrings,
+		"pt-pt": portuguesePortugalStrings,
+		"pl": polishStrings
+	};
 
-	return format(englishStrings[key], args);
+	let localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
+	if (!localeStrings) {
+		const languageCode = getLanguageCodeFromIso(currentLocale);
+		localeStrings = localeToStringsMap[languageCode] || englishStrings;
+	}
+	
+	return format(localeStrings[key] || key, args);
 }
 
-export function getLanguageFromIso(language: string): Language {
-	if (language.length < 2) return "";
-
-	var beginningOfLanguage = language.slice(0, 2);
-	if (beginningOfLanguage == "en") return "en";
-	if (beginningOfLanguage == "es") return "es";
-	if (beginningOfLanguage == "nl") return "nl";
-	if (beginningOfLanguage == "de") return "de";
-	if (beginningOfLanguage == "fr") return "fr";
-	if (beginningOfLanguage == "pt") return "pt";
-	if (beginningOfLanguage == "it") return "it";
-	if (beginningOfLanguage == "pl") return "pl";
-
-	return "";
+/** Gets the language code from an ISO locale string (e.g., en-US returns en. */
+export function getLanguageCodeFromIso(locale: string): string {
+	const normalizedLocale = normalizeLocaleString(locale);
+	return normalizedLocale.split("-")[0];
 }
 
-export function getCountryCodeFromIso(language: string) : string | undefined {
-    const code = language.toLowerCase().split(/[-_]/)[1];
-    return code;
+/** Gets the country code from an ISO locale string (e.g., en-US returns us). */
+export function getCountryCodeFromIso(locale: string) : string | undefined {
+	const normalizedLocale = normalizeLocaleString(locale);
+    return normalizedLocale.split("-")[1];
+}
+
+/** Normalize variations in ISO locale strings, including:
+ *    - separators (hyphens or underscores) -> all hyphens
+ *    - capitalization -> all lowercase
+ */
+function normalizeLocaleString(locale: string) {
+	return (locale || "").replace("_", "-").toLowerCase();
 }
 
 export default language;
