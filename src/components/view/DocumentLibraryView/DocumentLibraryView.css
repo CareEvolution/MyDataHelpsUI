@@ -1,0 +1,10 @@
+.mdhui-document-library-view-segment-control {
+  margin: 16px;
+}
+
+.mdhui-document-library-view-title-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

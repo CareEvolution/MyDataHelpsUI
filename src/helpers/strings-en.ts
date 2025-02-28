@@ -525,10 +525,20 @@
     "daily": "Daily",
     "weekly": "Weekly",
     "monthly": "Monthly",
+    "documents": "Documents",
+    "upload": "Upload",
+    "name" : "Name",
+    "date" : "Date",
     "bonus": "Bonus",
+    "download": "Download",
+    "delete-file-confirm": "Are you sure you want to delete this file?",
+    "file-not-loaded": "The file could not be loaded. Please contact support.",
     "syncing-data": "Syncing data...",
     "health-connect-phr-sync-title": "Sync with Health Connect",
-    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect"
+    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect",
+    "uploaded-documents": "Uploaded Documents",
+    "upload-documents-subtitle": "Scan and organize your printed medical records",
+    "upload-button": "Upload",
 };
 
 export default strings;

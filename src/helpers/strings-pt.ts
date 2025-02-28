@@ -525,9 +525,20 @@ let strings: { [key: string]: string } = {
     "daily": "Diário",
     "weekly": "Semanal",
     "monthly": "Mensal",
+    "documents": "Documentos",
+    "upload": "Carregar",
+    "name": "Nome",
+    "date": "Data",
+    "bonus": "Bônus",
+    "download": "Baixar",
+    "delete-file-confirm": "Tem certeza de que deseja excluir este arquivo?",
+    "file-not-loaded": "Não foi possível carregar o arquivo. Por favor, entre em contato com o suporte.",
     "syncing-data": "Sincronizando dados...",
     "health-connect-phr-sync-title": "Sincronizar com Health Connect",
-    "health-connect-phr-sync-prompt": "Escolha os registros de saúde para ler e escrever no Health Connect"
+    "health-connect-phr-sync-prompt": "Escolha os registros de saúde para ler e escrever no Health Connect",
+    "uploaded-documents": "Documentos Enviados",
+    "upload-documents-subtitle": "Escaneie e organize seus registros médicos impressos",
+    "upload-button": "Enviar"
 };
 
 export default strings;
