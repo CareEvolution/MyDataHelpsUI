@@ -527,7 +527,8 @@ let strings: { [key: string]: string } = {
     "monthly": "Monatlich",
     "syncing-data": "Daten werden synchronisiert...",
     "health-connect-phr-sync-title": "Mit Health Connect synchronisieren",
-    "health-connect-phr-sync-prompt": "Wähle Gesundheitsdaten zum Lesen und Schreiben in Health Connect aus"
+    "health-connect-phr-sync-prompt": "Wähle Gesundheitsdaten zum Lesen und Schreiben in Health Connect aus",
+    "bonus": "Bonus"
 };
 
 export default strings;

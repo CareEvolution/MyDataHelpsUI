@@ -527,7 +527,8 @@
     "monthly": "Mensual",
     "syncing-data": "Sincronizando datos...",
     "health-connect-phr-sync-title": "Sincronizar con Health Connect",
-    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect",
+    "bonus": "Prima"
 };
 
 export default strings;
