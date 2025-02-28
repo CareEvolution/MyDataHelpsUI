@@ -54,7 +54,10 @@ describe('Language Tests', () => {
 
     describe('supportedLocales', () => {
         it('Should have all strings in all locales', () => {
-            const deliberatelyBlankStrings = 
+
+            // Workaround for some strings that are deliberately blank in 
+            // certain locales. Format is stringkey: [ list of locales it's blank in ]
+            const deliberatelyBlankStrings: { [key: string]: string[] } = 
             { 
                 "asthma-log-entry-details-component-no-data-p2" : [ "es" ] 
             };
@@ -65,8 +68,7 @@ describe('Language Tests', () => {
                     if (!otherString) {
                         const exceptions = deliberatelyBlankStrings[localeStr] || [];
                         if (!exceptions.includes(localeName)) {
-                            console.log(`Missing ${localeStr} in ${localeName}`);
-                            expect(otherString).toBeTruthy();
+                            throw `Missing ${localeStr} in ${localeName}`;
                         }
                     }
                 })
