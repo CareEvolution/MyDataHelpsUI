@@ -70,8 +70,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
             typeResultIdentifier: props.typeResultIdentifier,
             nameResultIdentifier: props.nameResultIdentifier,
             dateResultIdentifier: props.dateResultIdentifier,
-            notesResultIdentifier: props.notesResultIdentifier,
-            documentDetailViewBaseUrl: props.documentLibraryViewBaseUrl
+            notesResultIdentifier: props.notesResultIdentifier
         });
 
         const separator = props.documentLibraryViewBaseUrl.includes('?') ? '&' : '?';
