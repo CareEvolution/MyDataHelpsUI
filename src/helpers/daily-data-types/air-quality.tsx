@@ -1,7 +1,6 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faWind } from "@fortawesome/free-solid-svg-icons";
-import language, { Language } from "../language";
 import React from "react";
 import { defaultFormatter } from "./formatters";
 import { airQualityDataProvider, homeAirQualityDataProvider, workAirQualityDataProvider } from "../daily-data-providers";
