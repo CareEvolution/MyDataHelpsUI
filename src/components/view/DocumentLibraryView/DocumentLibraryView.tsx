@@ -62,7 +62,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     }
 
     const onFileClick = (file: SurveyUploadedFile) => {
-        console.log(`Opening File ${file.title} ${file.fileName} ${file.type} ${file.date} SurveyResultID: ${file.surveyResultId}`);
+        console.log(`Opening File ${file.title} ${file.fileName} ${file.type} ${file.date} SurveyResultID: ${file.surveyResultId}`); //TODO: Remove
 
         if (!props.preview) {
             const params = new URLSearchParams({
@@ -141,8 +141,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <NavigationBar
-                showBackButton={true}
-                showCloseButton={true}>
+                showBackButton={true}>
                     <div className="mdhui-document-library-view-title-div">
                         <Title order={1} >{language('documents')}</Title>
                         {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
