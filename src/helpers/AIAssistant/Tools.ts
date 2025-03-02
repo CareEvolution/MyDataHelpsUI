@@ -268,7 +268,7 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input, config: LangGraphRunnableConfig): Promise<string> => {
 
-    let codeRunnerUrl = isDevelopment() ? 'https://api.mydatahelps.dev/run-code' : 'https://rbbfx4e6nlhghaxv4zbv5krzzu0dound.lambda-url.us-east-1.on.aws';
+    let codeRunnerUrl = isDevelopment() ? 'https://api.mydatahelps.dev/run-code' : 'https://api.mydatahelps.org/run-code';
     let response = await fetch(codeRunnerUrl, {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
