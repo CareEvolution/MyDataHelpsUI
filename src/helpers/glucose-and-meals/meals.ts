@@ -12,6 +12,8 @@ interface SerializedMeal {
     description?: string;
     hasImage?: boolean;
     archiveTimestamp?: string;
+    created?: string;
+    lastModified?: string;
 }
 
 interface SerializedMealReference {
@@ -104,7 +106,9 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         type: serializedMeal.type as MealType,
         description: serializedMeal.description,
         hasImage: serializedMeal.hasImage,
-        archiveTimestamp: serializedMeal.archiveTimestamp ? parseISO(serializedMeal.archiveTimestamp) : undefined
+        archiveTimestamp: serializedMeal.archiveTimestamp ? parseISO(serializedMeal.archiveTimestamp) : undefined,
+        created: serializedMeal.created ? parseISO(serializedMeal.created) : undefined,
+        lastModified: serializedMeal.lastModified ? parseISO(serializedMeal.lastModified) : undefined
     };
 }
 
