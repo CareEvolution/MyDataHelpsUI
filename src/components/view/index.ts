@@ -6,6 +6,7 @@ export { default as ConnectEhrView } from "./ConnectEhrView"
 export { default as DeviceActivityView } from "./DeviceActivityView"
 export { default as DeviceDataView } from "./DeviceDataView"
 export { default as DocumentDetailView } from "./DocumentDetailView"
+export { default as DocumentDetailReactView } from "./DocumentDetailReactView"
 export { default as DocumentLibraryView } from "./DocumentLibraryView"
 export { default as EhrNewsFeedView } from "./EhrNewsFeedView";
 export { default as EhrNewsFeedEventDetailView } from "./EhrNewsFeedEventDetailView";
