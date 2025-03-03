@@ -22,7 +22,6 @@ export interface DocumentDetailViewProps {
 export interface DocumentDetail extends SurveyUploadedFile {
   presignedDocUrl: string,
   presignedImageUrl: string,
-  showDownload: boolean,
   fileKey: string
 }
 
@@ -30,8 +29,9 @@ export interface DocumentDetail extends SurveyUploadedFile {
  * The survey must be configured to allow deleting of survey results
 */
 export default function DocumentDetailView(props: DocumentDetailViewProps) {
-  let [documentDetail, setDocumentDetail] = React.useState<DocumentDetail>();
-  let [loading, setLoading] = React.useState<boolean>(false);
+  const [documentDetail, setDocumentDetail] = React.useState<DocumentDetail>();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [downloadAsWeb, setDownloadAsWeb] = React.useState<boolean>(true);
 
   async function initialize() {
     const params: SurveyUploadedFileQueryParameters = {
@@ -55,6 +55,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
       MyDataHelps.getDeviceInfo(),
       queryAllSurveyFiles({ ...params })
     ]).then(([deviceInfo, uploadedFiles]) => {
+      setDownloadAsWeb(!deviceInfo || deviceInfo.platform === "Web");
+      
       if (uploadedFiles.length > 0) {
         const file = uploadedFiles[0];
         MyDataHelps.queryFiles({ category: file.fileCategory }).then(function (files) {
@@ -68,7 +70,6 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
               ...file,
               presignedDocUrl: "",
               presignedImageUrl: "",
-              showDownload: !["iOS", "Android"].includes(deviceInfo?.platform) && !file.fileName.endsWith("pdf"),
               fileKey: files.files[0].key
             };
 
@@ -94,9 +95,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
   }
 
   async function downloadFile() {
-    const deviceInfo = await MyDataHelps.getDeviceInfo();
 
-    if (!deviceInfo || deviceInfo.platform == "Web") {
+    if (downloadAsWeb) {
       window.open(documentDetail?.presignedDocUrl ?? documentDetail?.presignedImageUrl, "_blank");
     } else {
       (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl ?? documentDetail?.presignedImageUrl });
@@ -130,11 +130,6 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     <Layout bodyBackgroundColor={"white"} colorScheme={props.colorScheme ?? "auto"} >
       <NavigationBar
         showBackButton={true}>
-        {documentDetail?.showDownload &&
-          <div className="mdhui-survey-answer-file-download-button">
-            <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
-          </div>
-        }
       </NavigationBar>
       {(!documentDetail || loading) && <LoadingIndicator />}
       {documentDetail &&
@@ -142,14 +137,14 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
           <div className="mdhui-survey-answer-file-container">
             <div className="mdhui-survey-answer-file-preview-container">
               {documentDetail?.presignedDocUrl &&
-                <iframe src={documentDetail?.presignedDocUrl} className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-preview-file"></iframe>}
+                <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
+              }
               {documentDetail?.presignedImageUrl &&
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
                   className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-image-preview" />}
               {!documentDetail.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
               <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>  
             </div>
-            {/* <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div> */}
           </div>
 
           <div className="mdhui-survey-answer-file-document-details-parent">
