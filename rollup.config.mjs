@@ -42,7 +42,9 @@ export default [
 			sourcemap: true,
 			manualChunks
 		},
-		plugins: getPlugins()
+		external: ["canvas"],
+		plugins: getPlugins(),
+		
 	},
 	{
 		input: "src/index.ts",
@@ -52,6 +54,7 @@ export default [
 			sourcemap: true,
 			manualChunks
 		},
+		external: ["canvas"],
 		plugins: getPlugins()
 	},
 	{
@@ -62,12 +65,14 @@ export default [
 			sourcemap: true,
 			manualChunks
 		},
+		external: ["canvas"],
 		plugins: getPlugins({ browser: true, minify: true })
 	},
 	{
 		input: "src/index.ts",
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
+		external: ["canvas"],
 		external: [/\.css$/, /\.stories.tsx$/, /\.previewData.ts$/]
 	}
 ];

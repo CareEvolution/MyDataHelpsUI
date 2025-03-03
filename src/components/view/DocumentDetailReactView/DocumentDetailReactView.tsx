@@ -1,12 +1,16 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Button, Layout, LoadingIndicator, NavigationBar, Title } from "../../presentational";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { language, SurveyUploadedFileQueryParameters, queryAllSurveyFiles, SurveyUploadedFile, useInitializeView, deleteSurveyResultFiles } from "../../../helpers";
 import "./DocumentDetailReactView.css";
 import { getShortDateString } from "../../../helpers/date-helpers";
 import { getPreviewData } from "./DocumentDetailReactView.previewData";
-import { Viewer, Worker, SpecialZoomLevel } from '@react-pdf-viewer/core';
+//import { Viewer, Worker, SpecialZoomLevel } from '@react-pdf-viewer/core';
+import { Worker } from '@react-pdf-viewer/core';
+import { PdfJs } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+const Viewer = lazy(() => import('@react-pdf-viewer/core').then(module => ({ default: module.Viewer })));
+
 // Import styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
@@ -130,15 +134,17 @@ export default function DocumentDetailReactView(props: DocumentDetailReactViewPr
 
   const pdfViewer = (fileUrl: string) => {
     return (
+      <Suspense fallback={<div>Loading...</div>}>
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <div className={'h-screen mdhui-survey-answer-file-preview-content'}>
           <Viewer
-            defaultScale={SpecialZoomLevel.PageWidth}
+            // defaultScale={SpecialZoomLevel.PageWidth}
             fileUrl={'https://files.ecatholic.com/14947/documents/2025/2/2025%20March%202%20Bulletin.pdf'}
             plugins={ [defaultLayoutPluginInstance]}
           />
         </div>
       </Worker>
+      </Suspense>
     );
   }
 
