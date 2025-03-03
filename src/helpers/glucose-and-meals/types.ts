@@ -29,6 +29,8 @@ export interface Meal {
     description?: string;
     hasImage?: boolean;
     archiveTimestamp?: Date;
+    created?: Date;
+    lastModified?: Date;
 }
 
 export interface MealReference {
