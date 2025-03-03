@@ -31,7 +31,6 @@ const previewPdfData: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "https://freelawlibrary.org/wp-content/uploads/2022/10/The-Constitution-Full-Text-The-National-Constitution-Center.pdf",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -45,7 +44,6 @@ const previewTxtData: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "https://www.gutenberg.org/cache/epub/42671/pg42671.txt",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -59,7 +57,6 @@ const previewImageData: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "",
     presignedImageUrl: "https://careevolution.com/wp-content/themes/careevolution-2023/assets/images/logo.svg",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -73,7 +70,6 @@ const previewFileNotFoundData: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -87,7 +83,6 @@ const previewCsvFile: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "https://people.sc.fsu.edu/~jburkardt/data/csv/airtravel.csv",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -101,7 +96,6 @@ const previewMp4: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
 
@@ -115,6 +109,5 @@ const previewFileNotSupported: DocumentDetail = {
     date: new Date(),
     presignedDocUrl: "https:/abc.123.org/AFailingDocument.zip",
     presignedImageUrl: "",
-    showDownload: false,
     fileKey: "file key"
 };
