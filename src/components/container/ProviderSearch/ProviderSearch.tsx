@@ -12,10 +12,17 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
+    /** Callback function triggered when a provider is selected. If this function is defined it will override the normal action taken when selecting provider.*/
+    onProviderSelected?: (provider: ExternalAccountProvider) => void;
+    /** Callback function triggered after a provider is connected. */
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
-    innerRef?: React.Ref<HTMLDivElement>
-    connectExternalAccountOptions?: ConnectExternalAccountOptions,
-    hideRequestProviderButton?: boolean
+    innerRef?: React.Ref<HTMLDivElement>;
+    connectExternalAccountOptions?: ConnectExternalAccountOptions;
+    hideRequestProviderButton?: boolean;
+    /** URL for the public provider search API. If provided, this endpoint will be used instead of MyDataHelps.getExternalAccountProviders. */
+    publicProviderSearchApiUrl?: string;
+    /** List of providers to display at the top when no search is active. */
+    featuredProviders?: ExternalAccountProvider[];
 }
 
 export type ProviderSearchPreviewState = "Default" | "Searching";
@@ -69,17 +76,48 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setSearching(true);
         let requestID = ++currentRequestID;
 
-        MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
-            if (requestID == currentRequestID) {
-                updateSearchResults(searchResultsResponse.externalAccountProviders);
-                setTotalResults(searchResultsResponse.totalExternalAccountProviders);
+        if (!props.publicProviderSearchApiUrl) {
+            MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
+                if (requestID == currentRequestID) {
+                    updateSearchResults(searchResultsResponse.externalAccountProviders);
+                    setTotalResults(searchResultsResponse.totalExternalAccountProviders);
+                    setSearching(false);
+                }
+            }).catch(function (error) {
+                console.error("Error fetching external account providers", error);
                 setSearching(false);
-            }
-        });
+            });;
+        }
+        else {
+            const url = new URL(props.publicProviderSearchApiUrl);
+            url.searchParams.append('keyword', search);
+            url.searchParams.append('pageSize', String(pageSize));
+            url.searchParams.append('pageNumber', String(currentPage));
+            fetch(url.toString(), {
+                method: "GET",
+                headers: { "Accept": "application/json" },
+            })
+                .then((response) => response.json())
+                .then(function (searchResultsResponse) {
+                    if (requestID == currentRequestID) {
+                        updateSearchResults(searchResultsResponse.Providers.map((p: any) => ({ id: p.ID, name: p.OrganizationName, logoUrl: p.LogoURL, category: p.Category } as ExternalAccountProvider)) || []);
+                        setTotalResults(searchResultsResponse.TotalCount);
+                        setSearching(false);
+                    }
+                }).catch(function (error) {
+                    console.error("Error fetching external account providers", error);
+                    setSearching(false);
+                });
+        }
     }
 
     function updateSearchResults(providers: ExternalAccountProvider[]) {
-        setSearchResults(searchResults.concat(providers.filter(a => props.providerCategories?.indexOf(a.category) != -1)));
+        let newResults: ExternalAccountProvider[] = searchResults;
+        if (searchStringRef.current === "" && props.featuredProviders) {
+            newResults = newResults.concat(props.featuredProviders);
+            providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
+        }
+        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
     }
 
     const debounce = (fn: Function, ms = 300) => {
@@ -186,10 +224,13 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => connectToProvider(provider)}>
-                        {provider.logoUrl &&
-                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
+                    <UnstyledButton key={provider.id} className="provider" onClick={() => {
+                        if (props.onProviderSelected) {
+                            props.onProviderSelected(provider);
+                        } else {
+                            connectToProvider(provider);
                         }
+                    }}>
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
@@ -199,6 +240,9 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                                 <div className="provider-status connected-status">{language("connected")}</div>
                             }
                         </div>
+                        {provider.logoUrl &&
+                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
+                        }
                     </UnstyledButton>
                 )}
                 {shouldShowRequestProviderAction() &&
