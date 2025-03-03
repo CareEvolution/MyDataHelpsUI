@@ -4,7 +4,7 @@ import { Button, DateRangeContext, TextBlock } from '../index';
 import { MealContext } from '../../container';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCookie, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { getMealTypeDisplayText, MealType, prepareMealForEditing } from '../../../helpers';
+import { getMealTypeDisplayText, Meal, MealType, prepareMealForEditing } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 import { add, startOfDay } from 'date-fns';
 
@@ -37,10 +37,11 @@ export default function MealButtons(props: MealButtonsProps) {
         }
 
         let now = new Date();
-        const meal = {
+        const meal : Meal = {
             id: uuid(),
             timestamp: dateRangeContext ? add(startOfDay(dateRangeContext.intervalStart), { hours: now.getHours(), minutes: now.getMinutes() }) : now,
-            type: type
+            type: type,
+            created: now
         };
         mealContext.addMeal(meal).then(() => {
             if (props.autoLaunchEditor && props.onEditMeal) {
