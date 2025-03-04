@@ -103,9 +103,9 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     } */
       MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
         if (!deviceInfo || deviceInfo.platform == "Web") {
-            window.open(documentDetail?.presignedDocUrl);
+            return window.open(documentDetail?.presignedDocUrl);
         } else {
-            (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+            return (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
         }
       });
   }
