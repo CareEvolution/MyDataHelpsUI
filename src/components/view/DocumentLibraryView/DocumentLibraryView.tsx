@@ -84,7 +84,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         setLoading(true);
 
         if (props.preview) {
-            let previewData : SurveyUploadedFile[] = [];
+            let previewData: SurveyUploadedFile[] = [];
             if (props.preview === "Preview") {
                 previewData = getPreviewData();
             }
@@ -142,10 +142,10 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <NavigationBar
                 showBackButton={true}>
-                    <div className="mdhui-document-library-view-title-div">
-                        <Title order={1} >{language('documents')}</Title>
-                        {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
-                    </div>
+                <div className="mdhui-document-library-view-title-div">
+                    <Title order={1} >{language('documents')}</Title>
+                    {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
+                </div>
             </NavigationBar>
             {loading && <LoadingIndicator />}
             {!loading && <>

@@ -18,10 +18,10 @@ const meta: Meta<typeof DocumentLibraryView> = {
 export default meta;
 type Story = StoryObj<typeof DocumentLibraryView>;
 
-const render = (args: DocumentLibraryViewProps) => 
+const render = (args: DocumentLibraryViewProps) =>
     <DocumentLibraryView {...args} />;
 
-const defaultProps : DocumentLibraryViewProps = {
+const defaultProps: DocumentLibraryViewProps = {
     colorScheme: 'auto',
     uploadDocumentSurveyName: 'UploadDocument',
     fileResultIdentifier: 'document',

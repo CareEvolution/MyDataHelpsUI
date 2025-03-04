@@ -18,7 +18,7 @@ const meta: Meta<typeof DocumentLibraryPreview> = {
 export default meta;
 type Story = StoryObj<typeof DocumentLibraryPreview>;
 
-const render = (args: DocumentLibraryPreviewProps) => 
+const render = (args: DocumentLibraryPreviewProps) =>
     <Layout colorScheme="auto">
         <DocumentLibraryPreview {...args} />
     </Layout>;

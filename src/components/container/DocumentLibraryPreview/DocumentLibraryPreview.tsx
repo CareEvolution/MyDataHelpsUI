@@ -81,7 +81,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
     const onUploadClick = () => {
         if (props.preview) {
             console.log("onUploadClick");
-            return; 
+            return;
         }
 
         MyDataHelps.startSurvey(props.uploadDocumentSurveyName);
@@ -105,8 +105,8 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                             : ""}
                         titleIcon={<FontAwesomeSvgIcon icon={faCamera} />}
                         indicatorValue={surveyCount > 0 ? surveyCount.toString() : undefined}
-                        onClick={surveyFiles.length === 0 
-                            ? undefined : 
+                        onClick={surveyFiles.length === 0
+                            ? undefined :
                             onShowDocumentLibraryClick}
                         indicator={surveyFiles.length === 0
                             ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>

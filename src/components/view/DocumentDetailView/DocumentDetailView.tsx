@@ -56,7 +56,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
       queryAllSurveyFiles({ ...params })
     ]).then(([deviceInfo, uploadedFiles]) => {
       setDownloadAsWeb(!deviceInfo || deviceInfo.platform === "Web");
-      
+
       if (uploadedFiles.length > 0) {
         const file = uploadedFiles[0];
         MyDataHelps.queryFiles({ category: file.fileCategory }).then(function (files) {
@@ -96,11 +96,18 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
   async function downloadFile() {
 
-    if (downloadAsWeb) {
+    /* if (downloadAsWeb) {
       window.open(documentDetail?.presignedDocUrl ?? documentDetail?.presignedImageUrl, "_blank");
     } else {
-      (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl ?? documentDetail?.presignedImageUrl });
-    }
+      (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+    } */
+      MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
+        if (!deviceInfo || deviceInfo.platform == "Web") {
+            window.open(documentDetail?.presignedDocUrl);
+        } else {
+            (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+        }
+      });
   }
 
   const deleteFile = async () => {
@@ -143,7 +150,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
                   className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-image-preview" />}
               {!documentDetail.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
-              <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>  
+              <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>
             </div>
           </div>
 
@@ -154,7 +161,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             <div className="mdhui-survey-answer-file-document-details">{documentDetail?.notes}</div>
           </div>
           <div className="mdhui-survey-answer-file-delete-button">
-            <Button variant="light" color={"var(--mdhui-color-danger)"}  onClick={deleteFile}>{language("delete")}</Button>
+            <Button variant="light" color={"var(--mdhui-color-danger)"} onClick={deleteFile}>{language("delete")}</Button>
           </div>
         </div>
       }
