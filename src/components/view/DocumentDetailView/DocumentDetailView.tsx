@@ -110,6 +110,14 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
       });
   }
 
+  function openWindowsFile() {
+    window.open(documentDetail?.presignedDocUrl, "_blank");
+  }
+
+  function openiOSFile() {
+    (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+  }
+
   const deleteFile = async () => {
     if (!documentDetail?.fileKey || !documentDetail?.surveyResultId) {
       return;
@@ -144,7 +152,11 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
           <div className="mdhui-survey-answer-file-container">
             <div className="mdhui-survey-answer-file-preview-container">
               {documentDetail?.presignedDocUrl &&
-                <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
+                <>
+                  <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
+                  <Button onClick={() => openWindowsFile()} fullWidth={false}>Windows Download</Button>
+                  <Button onClick={() => openiOSFile()} fullWidth={false}>iOS Download</Button>
+                </>
               }
               {documentDetail?.presignedImageUrl &&
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
