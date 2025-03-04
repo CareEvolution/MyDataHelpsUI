@@ -76,7 +76,7 @@ export const LiveText: Story = {
 
 
 export const LivePdf: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'ad038eea-79f4-ef11-bafe-0affe8024cad' },
+    args: { ...uploadDocumentSurveyProps, surveyResultId: 'c8fd5680-d4f9-ef11-baff-0affe8024cad' },
     render: render
 };
 

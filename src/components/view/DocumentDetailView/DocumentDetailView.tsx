@@ -103,9 +103,9 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     } */
       MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
         if (!deviceInfo || deviceInfo.platform == "Web") {
-            return window.open(documentDetail?.presignedDocUrl);
+            window.open(documentDetail?.presignedDocUrl);
         } else {
-            return (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+            (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
         }
       });
   }
@@ -115,7 +115,12 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
   }
 
   function openiOSFile() {
-    (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+    //(window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
+    if (documentDetail?.presignedDocUrl) {
+      MyDataHelps.openEmbeddedUrl(documentDetail?.presignedDocUrl);
+    } else {
+      window.confirm("the file url is empty");
+    }
   }
 
   const deleteFile = async () => {
