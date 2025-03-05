@@ -138,16 +138,15 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         initialize();
     }, [], []);
 
+    //Getting some blinking when returning from DocumentDetailView. useMemo is not helping.
     const fileList = useMemo(() => buildFileList(files, selectedSegment), [files, selectedSegment]);
 
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <NavigationBar
                 showBackButton={true}>
-                <div className="mdhui-document-library-view-title-div">
-                    <Title order={1} >{language('documents')}</Title>
-                    {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
-                </div>
+                <Title order={1}
+                    accessory={<Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>} >{language('documents')}</Title>
             </NavigationBar>
             <SegmentedControl className="mdhui-document-library-view-segment-control" {...segmentedControlProps} />
             {loading && <LoadingIndicator />}

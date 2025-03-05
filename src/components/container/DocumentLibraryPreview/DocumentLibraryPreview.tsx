@@ -109,7 +109,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                             ? undefined :
                             onShowDocumentLibraryClick}
                         indicator={surveyFiles.length === 0
-                            ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload-button")}</Button>
+                            ? <Button variant="default" fullWidth={false} onClick={onUploadClick}>{language("upload")}</Button>
                             : undefined}
                     >
                         {surveyFiles.length > 0

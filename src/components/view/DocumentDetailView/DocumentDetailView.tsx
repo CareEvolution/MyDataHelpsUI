@@ -126,7 +126,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
   }, [], []);
 
   return (
-    <Layout bodyBackgroundColor={"white"} colorScheme={props.colorScheme ?? "auto"} >
+    <Layout bodyBackgroundColor={"var(--mdhui-background-color-0)"} colorScheme={props.colorScheme ?? "auto"} >
       <NavigationBar
         showBackButton={true}>
       </NavigationBar>
@@ -140,7 +140,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
               }
               {documentDetail?.presignedImageUrl &&
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
-                  className="mdhui-survey-answer-file-preview-content mdhui-survey-answer-file-image-preview" />}
+                  className="mdhui-survey-answer-file-preview-content" />}
               {!documentDetail.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
               <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>
             </div>

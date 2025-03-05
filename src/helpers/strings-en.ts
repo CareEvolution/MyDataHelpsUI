@@ -537,8 +537,7 @@
     "health-connect-phr-sync-title": "Sync with Health Connect",
     "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect",
     "uploaded-documents": "Uploaded Documents",
-    "upload-documents-subtitle": "Scan and organize your printed medical records",
-    "upload-button": "Upload",
+    "upload-documents-subtitle": "Scan and organize your printed medical records"
 };
 
 export default strings;

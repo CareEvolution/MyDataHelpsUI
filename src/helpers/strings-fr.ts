@@ -537,8 +537,7 @@ let strings: { [key: string]: string } = {
     "health-connect-phr-sync-title": "Synchroniser avec Health Connect",
     "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire avec Health Connect",
     "uploaded-documents": "Documents Téléversés",
-    "upload-documents-subtitle": "Scannez et organisez vos dossiers médicaux imprimés",
-    "upload-button": "Téléverser"
+    "upload-documents-subtitle": "Scannez et organisez vos dossiers médicaux imprimés"
 };
 
 export default strings;
