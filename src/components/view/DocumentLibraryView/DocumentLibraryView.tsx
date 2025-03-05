@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Action, Button, Card, Layout, LoadingIndicator, NavigationBar, Title } from "../../presentational";
 import { language, useInitializeView } from "../../../helpers";
 import SegmentedControl, { SegmentedControlProps } from "../../presentational/SegmentedControl/SegmentedControl";
@@ -138,6 +138,8 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         initialize();
     }, [], []);
 
+    const fileList = useMemo(() => buildFileList(files, selectedSegment), [files, selectedSegment]);
+
     return (
         <Layout colorScheme={props.colorScheme ?? "auto"}>
             <NavigationBar
@@ -149,7 +151,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             </NavigationBar>
             <SegmentedControl className="mdhui-document-library-view-segment-control" {...segmentedControlProps} />
             {loading && <LoadingIndicator />}
-            {!loading && buildFileList(files, selectedSegment)}
+            {!loading && fileList}
         </Layout>
     )
 }
