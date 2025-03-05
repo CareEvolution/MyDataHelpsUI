@@ -50,6 +50,9 @@ describe('Meals - Helper Function Tests', () => {
             const meal2: Meal = { id: uuid(), timestamp: add(today, { hours: 11 }), type: 'meal', archiveTimestamp: add(today, { hours: 11, minutes: 30 }) };
             const meal3: Meal = { id: uuid(), timestamp: add(today, { hours: 10 }), type: 'meal', hasImage: true, lastModified: add(today, { hours: 16 }) };
 
+            (meal3 as any).reviewed = true;
+            (meal3 as any).foodItems = [{ "name": "daikon radish", "score": 0.95 }, { "name": "turnip", "score": 0.6 }, { "name": "jicama", "score": 0.55 }];
+
             setupMeals([meal1, meal2, meal3]);
 
             const meals = await getMeals(today);

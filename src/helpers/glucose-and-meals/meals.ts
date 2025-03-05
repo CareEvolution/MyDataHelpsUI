@@ -100,7 +100,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
 }
 
 function toMeal(serializedMeal: SerializedMeal): Meal {
-    return {
+    const meal: Meal = {
         id: serializedMeal.id as Guid,
         timestamp: parseISO(serializedMeal.timestamp),
         type: serializedMeal.type as MealType,
@@ -110,6 +110,10 @@ function toMeal(serializedMeal: SerializedMeal): Meal {
         created: serializedMeal.created ? parseISO(serializedMeal.created) : undefined,
         lastModified: serializedMeal.lastModified ? parseISO(serializedMeal.lastModified) : undefined
     };
+    Object.keys(serializedMeal)
+        .filter(key => !(meal as any)[key])
+        .forEach(key => (meal as any)[key] = (serializedMeal as any)[key]);
+    return meal;
 }
 
 function toMealReference(serializedMealReference: SerializedMealReference): MealReference {
