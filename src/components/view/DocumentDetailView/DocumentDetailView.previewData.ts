@@ -14,8 +14,6 @@ export function getPreviewData(preview: DocumentDetailViewPreviewType): Document
             return previewMp4;
         case "PreviewFileNotFound":
             return previewFileNotFoundData;
-        case "PreviewUnknown":
-            return previewFileNotSupported;
         default:
             return undefined;
     }
@@ -95,19 +93,6 @@ const previewMp4: DocumentDetail = {
     notes: "The story follows Big Buck Bunny, a gentle and kind-hearted rabbit who enjoys nature. However, his peaceful life is disrupted by three mischievous rodents who bully smaller animals. After they go too far, Bunny decides to fight back, leading to a hilarious and satisfying revenge sequence.",
     date: new Date(),
     presignedDocUrl: "https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4",
-    presignedImageUrl: "",
-    fileKey: "file key"
-};
-
-const previewFileNotSupported: DocumentDetail = {
-    surveyResultId: "12345",
-    fileCategory: "test category",
-    title: "Failing Document",
-    fileName: "AFailingDocument.zip",
-    type: "Zip",
-    notes: "This should display an error message",
-    date: new Date(),
-    presignedDocUrl: "https:/abc.123.org/AFailingDocument.zip",
     presignedImageUrl: "",
     fileKey: "file key"
 };

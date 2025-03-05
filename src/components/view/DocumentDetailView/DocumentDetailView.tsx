@@ -95,31 +95,10 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
   }
 
   async function downloadFile() {
-
-    /* if (downloadAsWeb) {
+    if (downloadAsWeb) {
       window.open(documentDetail?.presignedDocUrl ?? documentDetail?.presignedImageUrl, "_blank");
     } else {
-      (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
-    } */
-      MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
-        if (!deviceInfo || deviceInfo.platform == "Web") {
-            window.open(documentDetail?.presignedDocUrl);
-        } else {
-            (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
-        }
-      });
-  }
-
-  function openWindowsFile() {
-    window.open(documentDetail?.presignedDocUrl, "_blank");
-  }
-
-  function openiOSFile() {
-    //(window as any).webkit.messageHandlers.OpenFile.postMessage({ url: documentDetail?.presignedDocUrl });
-    if (documentDetail?.presignedDocUrl) {
-      MyDataHelps.openEmbeddedUrl(documentDetail?.presignedDocUrl);
-    } else {
-      window.confirm("the file url is empty");
+      MyDataHelps.openEmbeddedUrl(documentDetail?.presignedDocUrl!);
     }
   }
 
@@ -157,11 +136,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
           <div className="mdhui-survey-answer-file-container">
             <div className="mdhui-survey-answer-file-preview-container">
               {documentDetail?.presignedDocUrl &&
-                <>
-                  <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
-                  <Button onClick={() => openWindowsFile()} fullWidth={false}>Windows Download</Button>
-                  <Button onClick={() => openiOSFile()} fullWidth={false}>iOS Download</Button>
-                </>
+                <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
               }
               {documentDetail?.presignedImageUrl &&
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}

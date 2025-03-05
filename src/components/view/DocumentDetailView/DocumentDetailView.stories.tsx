@@ -54,11 +54,6 @@ export const Video: Story = {
     render: render
 };
 
-export const Unsupported: Story = {
-    args: { ...uploadDocumentSurveyProps, preview: 'PreviewUnknown' },
-    render: render
-};
-
 export const Loading: Story = {
     args: { ...uploadDocumentSurveyProps, preview: 'PreviewLoading' },
     render: render
@@ -69,18 +64,7 @@ export const FileNotFound: Story = {
     render: render
 };
 
-export const LiveText: Story = {
+export const Live: Story = {
     args: { ...uploadDocumentSurveyProps, surveyResultId: '536298d2-79f4-ef11-bafe-0affe8024cad' },
-    render: render
-};
-
-
-export const LivePdf: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'c8fd5680-d4f9-ef11-baff-0affe8024cad' },
-    render: render
-};
-
-export const LiveImage: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: 'a90c0337-cfe4-ef11-bafe-0affe8024cad' },
     render: render
 };

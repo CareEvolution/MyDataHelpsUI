@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Action, Button, Card, Layout, LoadingIndicator, NavigationBar, Title } from "../../presentational";
 import { language, useInitializeView } from "../../../helpers";
 import SegmentedControl, { SegmentedControlProps } from "../../presentational/SegmentedControl/SegmentedControl";
@@ -26,9 +26,9 @@ export interface DocumentLibraryViewProps {
  * This view displays a list of documents uploaded by the user via specified survey.
  */
 export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [selectedSegment, setSelectedSegment] = React.useState<"date" | "name" | "type">("date");
-    const [files, setFiles] = React.useState<SurveyUploadedFile[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [selectedSegment, setSelectedSegment] = useState<"date" | "name" | "type">("date");
+    const [files, setFiles] = useState<SurveyUploadedFile[]>([]);
 
     const segmentedControlProps: SegmentedControlProps = {
         segments: [
@@ -147,11 +147,9 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
                     {!loading && <Button fullWidth={false} onClick={() => onUploadClick()}>{language('upload')}</Button>}
                 </div>
             </NavigationBar>
+            <SegmentedControl className="mdhui-document-library-view-segment-control" {...segmentedControlProps} />
             {loading && <LoadingIndicator />}
-            {!loading && <>
-                <SegmentedControl className="mdhui-document-library-view-segment-control" {...segmentedControlProps} />
-                {files.length > 0 && buildFileList(files, selectedSegment)}
-            </>}
+            {!loading && buildFileList(files, selectedSegment)}
         </Layout>
     )
 }
