@@ -170,7 +170,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (platform == "iOS" || !settings?.healthConnectEnabled) {
         accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
-    if ((!settings?.airQualityEnabled && !settings?.weatherEnabled) || !props.postalCodeSurveyName) {
+    if ((!settings?.airQualityEnabled && !settings?.weatherEnabled) || !props.postalCodeSurveyName ) { 
         accountTypes = accountTypes.filter(a => a != "Environmental");
     }
 
@@ -252,7 +252,7 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        return <EnvironmentalMenuItem settings={settings!} participantInfo={participantInfo!} postalCodeSurveyName={props.postalCodeSurveyName!} />
+        return <EnvironmentalMenuItem settings={settings!} participantInfo={participantInfo!} postalCodeSurveyName={props.postalCodeSurveyName!}/>
     }
 
     let title = props.title || language("connect-devices-title");
@@ -443,27 +443,27 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     </div>;
 }
 
-function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, participantInfo: ParticipantInfo, postalCodeSurveyName: string }) {
+function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, participantInfo: ParticipantInfo, postalCodeSurveyName: string }){
     let action = () => {
         MyDataHelps.startSurvey(props.postalCodeSurveyName);
     }
 
-    const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter((k) => k.endsWith('PostalCode'));
+    const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter( (k) => k.endsWith('PostalCode'));
     const postalCodes = [...postalCodeCustomFields.map((cf) => props.participantInfo?.customFields[cf]), props.participantInfo?.demographics.postalCode];
-    var postalCode = postalCodes.filter((p) => !!p).slice(0, 3).join(', ');
-    if (postalCodes.length > 3) {
+    var postalCode = postalCodes.filter((p) => !!p).slice(0,3).join(', ');
+    if(postalCodes.length > 3) {
         postalCode = postalCode + ", ...";
     }
 
-    const indicator = postalCode ?
+    const indicator = postalCode ? 
         <div className="mdhui-connect-devices-menu-connect">{postalCode}</div> :
         <div className="mdhui-connect-devices-menu-connect">{language("setup")}</div>;
 
     const titleBits = [];
-    if (props.settings?.airQualityEnabled) {
+    if(props.settings?.airQualityEnabled) {
         titleBits.push('Air Quality');
     }
-    if (props.settings?.weatherEnabled) {
+    if(props.settings?.weatherEnabled) {
         titleBits.push('Weather');
     }
     const title = titleBits.join(" / ");
@@ -471,7 +471,7 @@ function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, partic
     return (
         <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title autosizeImage image={<FontAwesomeSvgIcon icon={faSun} color={"yellow"} />} order={4}>{title}</Title>
+                <Title autosizeImage image={<FontAwesomeSvgIcon icon={faSun} color={"yellow"}/>} order={4}>{title}</Title>
             </Action>
         </div>
     );
