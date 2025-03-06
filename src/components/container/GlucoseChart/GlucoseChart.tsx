@@ -155,13 +155,13 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
+    let minGlucose = glucose?.length && props.variant == "minimal" ? Math.min(...glucose.map(r => r.value)) : 0;
+    let maxGlucose = glucose?.length && props.variant == "minimal" ? Math.max(...glucose.map(r => r.value)) : 240;
+
     let filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
     let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
-    let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
-    let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
-
-    let minGlucose = glucose?.length ? Math.min(...glucose.map(r => r.value)) : 0;
-    let maxGlucose = glucose?.length ? Math.max(...glucose.map(r => r.value)) : 0;
+    let stepsScale = maxSteps > 0 ? (maxGlucose - minGlucose) / maxSteps : 1;
+    let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale + minGlucose }));
 
     function getInnerComponents() {
         return <><div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
