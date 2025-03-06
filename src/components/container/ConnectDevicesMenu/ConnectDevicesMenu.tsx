@@ -148,12 +148,15 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Omron", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
     if (!settings?.garminEnabled) {
         accountTypes = accountTypes.filter(a => a != "Garmin");
+    }
+    if (!settings?.omronEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Omron");
     }
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
