@@ -31,6 +31,7 @@ export interface TimeSeriesChartProps {
     syncId?: string;
     children?: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
+    variant?: "default" | "minimal";
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
@@ -161,10 +162,10 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     const xAxisTicks = getXAxisTicks();
-    
-    if(props.data?.length === 1 && props.chartType === 'Bar'){
+
+    if (props.data?.length === 1 && props.chartType === 'Bar') {
         let currentPoint = new Date(props.data[0].timestamp);
-        let nextExpectedPoint = add(currentPoint, props.expectedDataInterval || {days: 1});
+        let nextExpectedPoint = add(currentPoint, props.expectedDataInterval || { days: 1 });
         dataToDisplay?.push({
             timestamp: nextExpectedPoint.getTime()
         });
@@ -177,18 +178,21 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         <div className="chart-container">
             {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">{language('no-data')}</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
-            <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
+            <ResponsiveContainer width="100%" height={props.variant == "minimal" ? 50 : 150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
                     }
-                    <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    {props.variant !== "minimal" &&
+                        <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    }
+
                     <YAxis
                         tickFormatter={tickFormatter}
                         axisLine={false}
                         interval={0}
                         tickLine={false}
-                        width={32}
+                        width={props.variant === "minimal" ? 0 : 24}
                         domain={props.chartType === 'Line' ? ['auto', 'auto'] : undefined}
                         allowDataOverflow
                         {...props.options?.yAxisOptions}
@@ -197,7 +201,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         id="myXAxis"
                         domain={[xAxisTicks![0], xAxisTicks![xAxisTicks!.length - 1]]}
                         padding={props.chartType === 'Bar' ? 'gap' : { left: 0, right: 0 }}
-                        tick={!props.options?.xAxisOptions?.tickFormatter ? DayTick : undefined}
+                        tick={false} // !props.options?.xAxisOptions?.tickFormatter ? DayTick : undefined}
                         scale={'time'}
                         type={'number'}
                         axisLine={false}
@@ -208,6 +212,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                         ticks={xAxisTicks}
                         allowDataOverflow
                         interval={0}
+                        height={props.variant === "minimal" ? 0 : undefined}
                         {...props.options?.xAxisOptions}
                     />
                     {props.children}

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { Action, DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, getTime, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -16,6 +16,9 @@ export interface GlucoseChartProps {
     showStats?: boolean;
     averageGlucoseLineColor?: ColorDefinition;
     innerRef?: React.Ref<HTMLDivElement>;
+    variant?: "default" | "minimal";
+    onClick?: () => void;
+    hideIfNoData?: boolean;
 }
 
 export default function (props: GlucoseChartProps) {
@@ -74,6 +77,10 @@ export default function (props: GlucoseChartProps) {
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
+
+    if (props.hideIfNoData && filteredGlucose.length === 0) {
+        return null;
+    }
 
     let filteredMeals = meals.filter(meal => {
         if (filteredGlucose.length === 0) return false;
@@ -153,9 +160,22 @@ export default function (props: GlucoseChartProps) {
     let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
     let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
 
-    return <div className="mdhui-glucose-chart" ref={props.innerRef}>
-        <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
+    let minGlucose = glucose?.length ? Math.min(...glucose.map(r => r.value)) : 0;
+    let maxGlucose = glucose?.length ? Math.max(...glucose.map(r => r.value)) : 0;
+
+    function getInnerComponents() {
+        return <><div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
+            {props.showStats && props.variant === "minimal" &&
+                <GlucoseStats
+                    loading={loading}
+                    glucoseReadings={filteredGlucose}
+                    steps={!selectedMeal ? filteredSteps : []}
+                    sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
+                    variant={props.variant}
+                />
+            }
             <TimeSeriesChart
+                variant={props.variant == "minimal" ? 'minimal' : 'default'}
                 intervalType="Day"
                 intervalStart={selectedDate}
                 data={chartData as any}
@@ -170,7 +190,7 @@ export default function (props: GlucoseChartProps) {
                         animationDuration: 500
                     },
                     containerOptions: {
-                        height: 166
+                        height: props.variant == "minimal" ? 60 : 166
                     },
                     xAxisOptions: {
                         domain: chartDomain,
@@ -178,9 +198,8 @@ export default function (props: GlucoseChartProps) {
                         tickFormatter: chartTickFormatter
                     },
                     yAxisOptions: {
-                        width: 24,
-                        domain: [0, 240],
-                        ticks: [40, 80, 120, 160, 200, 240]
+                        domain: props.variant !== "minimal" ? [0, 240] : [minGlucose - 10, maxGlucose + 10],
+                        ticks: props.variant !== "minimal" ? [40, 80, 120, 160, 200, 240] : undefined
                     }
                 }}
             >
@@ -210,19 +229,38 @@ export default function (props: GlucoseChartProps) {
                     />
                 }
             </TimeSeriesChart>
-            <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+            {props.variant !== "minimal" &&
+                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+            }
         </div>
-        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{language('glucose-chart-no-data')}</div>
-        <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
-            <LoadingIndicator />
-        </div>
-        {props.showStats &&
-            <GlucoseStats
-                loading={loading}
-                glucoseReadings={filteredGlucose}
-                steps={!selectedMeal ? filteredSteps : []}
-                sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
-            />
+            <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{language('glucose-chart-no-data')}</div>
+            <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
+                <LoadingIndicator />
+            </div>
+            {props.showStats && props.variant !== "minimal" &&
+                <GlucoseStats
+                    loading={loading}
+                    glucoseReadings={filteredGlucose}
+                    steps={!selectedMeal ? filteredSteps : []}
+                    sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
+                    variant={props.variant}
+                />
+            }</>;
+    }
+
+    let classes = ['mdhui-glucose-chart'];
+    if (props.variant == "minimal") {
+        classes.push('mdhui-glucose-chart-minimal');
+    }
+
+    return <div className={classes.join(" ")} ref={props.innerRef}>
+        {props.onClick &&
+            <Action className='mdhui-glucose-chart-action' onClick={props.onClick}>
+                {getInnerComponents()}
+            </Action>
+        }
+        {!props.onClick &&
+            getInnerComponents()
         }
     </div>;
 }

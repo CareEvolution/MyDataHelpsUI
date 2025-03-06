@@ -2,6 +2,12 @@
     margin-top: 0;
 }
 
+.mdhui-glucose-chart .mdhui-action.mdhui-glucose-chart-action {
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 .mdhui-glucose-chart-day {
     text-align: center;
     color: #aaa;
@@ -13,9 +19,30 @@
     position: relative;
 }
 
-.mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
-    padding-top: 20px;
+.mdhui-glucose-chart .mdhui-action.mdhui-glucose-chart-action .mdhui-glucose-chart-chart {
+    padding-right: 0;
+    pointer-events: none;
 }
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart {
+    height: auto;
+    margin: 0;
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart .chart-container {
+    padding-top: 0;
+    padding-right: 0;
+    padding: 0;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-top: -16px;
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-action.mdhui-glucose-chart-action .mdhui-glucose-chart-chart .chart-container {
+    margin-right: -48px;
+}
+
 
 .mdhui-glucose-chart-chart .steps-icon {
     position: absolute;

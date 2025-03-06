@@ -14,6 +14,7 @@ interface GlucoseChartStoryArgs extends GlucoseChartProps {
     colorScheme: 'auto' | 'light' | 'dark';
     state: GlucoseChartPreviewState | 'live';
     withMeals: true;
+    clickable: "true" | "false";
 }
 
 const render = (args: GlucoseChartStoryArgs) => {
@@ -22,13 +23,17 @@ const render = (args: GlucoseChartStoryArgs) => {
             <DateRangeTitle defaultMargin />
             {!args.withMeals &&
                 <Card>
-                    <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                    <GlucoseChart {...args}
+                        previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined}
+                        onClick={args.clickable == "true" ? () => { } : undefined} />
                 </Card>
             }
             {args.withMeals &&
                 <MealCoordinator previewState={args.state !== 'live' ? 'with data' : undefined}>
                     <Card>
-                        <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                        <GlucoseChart {...args}
+                            previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined}
+                            onClick={args.clickable == "true" ? () => { } : undefined} />
                     </Card>
                 </MealCoordinator>
             }
@@ -42,9 +47,17 @@ export const Default = {
         state: 'with data',
         withMeals: true,
         showStats: true,
-        averageGlucoseLineColor: undefined
+        averageGlucoseLineColor: undefined,
+        variant: 'default',
+        clickable: "false",
+        hideIfNoData: false
     },
     argTypes: {
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'minimal']
+        },
         colorScheme: {
             name: 'color scheme',
             control: 'radio',
@@ -64,6 +77,11 @@ export const Default = {
         averageGlucoseLineColor: {
             name: 'average glucose line color',
             control: 'color'
+        },
+        clickable: {
+            name: 'clickable',
+            control: 'radio',
+            options: ["true", "false"]
         }
     },
     render: render

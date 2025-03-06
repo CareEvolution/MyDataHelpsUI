@@ -13,6 +13,7 @@ export interface GlucoseStatsProps {
     steps: Reading[];
     sleepMinutes: number | undefined;
     innerRef?: React.Ref<HTMLDivElement>;
+    variant?: 'default' | 'minimal';
 }
 
 export default function (props: GlucoseStatsProps) {
@@ -55,20 +56,24 @@ export default function (props: GlucoseStatsProps) {
             iconColor="#d36540"
             value={avgGlucose ? `${formatNumberForLocale(avgGlucose)} mg/dL` : undefined}
         />
-        <SingleGlucoseStat
-            loading={props.loading}
-            label={language('glucose-stats-steps-label')}
-            icon={faShoePrints}
-            iconColor="#f5b722"
-            value={steps ? `${formatNumberForLocale(steps)}` : undefined}
-        />
-        <SingleGlucoseStat
-            loading={props.loading}
-            label={language('glucose-stats-sleep-label')}
-            icon={faBed}
-            iconColor="#8287bb"
-            value={(sleepHours || sleepMinutes) ? formatMinutesForLocale(totalSleepMinutes) : undefined}
-        />
+        {props.variant !== 'minimal' &&
+            <>
+                <SingleGlucoseStat
+                    loading={props.loading}
+                    label={language('glucose-stats-steps-label')}
+                    icon={faShoePrints}
+                    iconColor="#f5b722"
+                    value={steps ? `${formatNumberForLocale(steps)}` : undefined}
+                />
+                <SingleGlucoseStat
+                    loading={props.loading}
+                    label={language('glucose-stats-sleep-label')}
+                    icon={faBed}
+                    iconColor="#8287bb"
+                    value={(sleepHours || sleepMinutes) ? formatMinutesForLocale(totalSleepMinutes) : undefined}
+                />
+            </>
+        }
     </div>;
 }
 
