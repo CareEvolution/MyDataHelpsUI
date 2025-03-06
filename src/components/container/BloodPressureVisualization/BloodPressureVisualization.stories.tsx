@@ -78,7 +78,8 @@ export const Minimal = {
 		surveyDataSource: bpSurveyParams,
 		variant: "minimal",
 		weekStartsOn: "6DaysAgo",
-		deviceDataSource: ["AppleHealth", "GoogleFit", "Omron"]
+		deviceDataSource: ["AppleHealth", "GoogleFit", "Omron"],
+		onClick: () => { }
 	},
 	render: renderMinimal
 };

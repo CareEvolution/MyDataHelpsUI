@@ -60,7 +60,7 @@ export default function DumbbellChart(props: DumbBellChartProps) {
     }
 
     function buildDumbbells() {
-        return (props.dumbbells.map((db, index) => <Dumbbell key={`mdhui-dumbbell-${index}`} dumbbell={db} axis={props.axis} index={index + 1} />));
+        return (props.dumbbells.map((db, index) => <Dumbbell hideXAxis={props.variant == "minimal"} key={`mdhui-dumbbell-${index}`} dumbbell={db} axis={props.axis} index={index + 1} />));
     }
 
     let classes = ["mdhui-dumbbell-visualization"];

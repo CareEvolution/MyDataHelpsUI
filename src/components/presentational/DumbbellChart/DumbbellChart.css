@@ -28,6 +28,11 @@
     border-top-color: var(--mdhui-border-color-0);
 }
 
+.mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-y-axis:last-child {
+    border-top: none;
+}
+
+
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell-x-axis {
     position: absolute;
     bottom: -15px;

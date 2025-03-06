@@ -1,7 +1,7 @@
 import "./BloodPressureVisualization.css";
 import { useContext, useState } from "react";
 import React from "react";
-import { DateRangeContext, Grid, LoadingIndicator } from "../../presentational";
+import { Action, DateRangeContext, Grid, LoadingIndicator } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { ClosedInterval, Axis, DataPoint, DumbbellClass, DumbbellDataPoint } from "../../presentational/DumbbellChart/DumbbellChart";
 import { addDays, startOfDay } from "date-fns";
@@ -296,20 +296,33 @@ export default function (props: BloodPressureVisualizationProps) {
         }
 
         return (
-            <div ref={props.innerRef}>
+            <>
                 {props.variant === "minimal" && buildMinimalMetrics(bpDataForMetrics)}
                 <DumbbellChart variant={props.variant} dumbbells={weekData} axis={axis} ></DumbbellChart>
                 {props.variant !== "minimal" && buildMetrics(bpDataForMetrics)}
-            </div>
+            </>
         );
     }
 
     useInitializeView(initialize, [], [props.previewState, props.weekStartsOn]);
 
+    let classes = ["mdhui-blood-pressure-visualization"];
+    if (props.variant === "minimal") {
+        classes.push("mdhui-blood-pressure-visualization-minimal");
+    }
+
     if (!bloodPressureData) {
         return <LoadingIndicator innerRef={props.innerRef} />;
     }
     else {
-        return buildVisualization(intervalStart);
+        if (props.onClick) {
+            return <Action innerRef={props.innerRef} onClick={props.onClick} className={classes.join(" ")}>
+                {buildVisualization(intervalStart)}
+            </Action>;
+        } else {
+            return <div ref={props.innerRef} className={classes.join(" ")}>
+                {buildVisualization(intervalStart)}
+            </div>;
+        }
     }
 }
