@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
-import { ColorDefinition, computeBestFitGlucoseValue, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, useInitializeView } from '../../../helpers';
+import { ColorDefinition, computeBestFitGlucoseValue, formatNumberForLocale, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, TimeSeriesChartLineOptions, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
 import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
-import { add, compareAsc, getTime, isSameDay, startOfToday } from 'date-fns';
+import { add, compareAsc, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
 import { getShortTimeOfDayString, getTimeOfDayString } from '../../../helpers/date-helpers';
-import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
@@ -29,9 +28,9 @@ export default function (props: GlucoseChartProps) {
     const [steps, setSteps] = useState<Reading[]>();
     const [sleepMinutes, setSleepMinutes] = useState<number | undefined>();
 
-    let selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
-    let meals = mealContext?.meals ?? [];
-    let selectedMeal = mealContext?.selectedMeal;
+    const selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
+    const meals = mealContext?.meals ?? [];
+    const selectedMeal = mealContext?.selectedMeal;
 
     const getGlucoseReadingsFromContext = () => {
         return Promise.resolve(glucoseContext?.readings?.filter(reading => isSameDay(selectedDate, reading.timestamp)) ?? []);
@@ -54,50 +53,44 @@ export default function (props: GlucoseChartProps) {
             return;
         }
 
-        let glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate);
-        let stepsLoader = getSteps(selectedDate);
-        let sleepMinutesLoader = getSleepMinutes(selectedDate);
+        const glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate);
+        const stepsLoader = getSteps(selectedDate);
+        const sleepMinutesLoader = getSleepMinutes(selectedDate);
         Promise.all([glucoseReadingLoader, stepsLoader, sleepMinutesLoader]).then(results => {
             setGlucose(results[0]);
             setSteps(results[1]);
             setSleepMinutes(results[2]);
             setLoading(false);
         });
-
     }, [], [props.previewState, dateRangeContext?.intervalStart]);
 
-    let filteredGlucose = glucose?.filter(reading => {
+    const filteredGlucose = glucose?.filter(reading => {
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.timestamp;
-        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
+        const minDate = selectedMeal.timestamp;
+        const maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return reading.timestamp >= minDate && reading.timestamp <= maxDate;
     }) ?? [];
 
-    let filteredMeals = meals.filter(meal => {
-        if (filteredGlucose.length === 0) return false;
+    const filteredMeals = meals.filter(meal => {
+        if (!glucose?.length) return false;
         if (!selectedMeal) return true;
 
-        let minDate = selectedMeal.timestamp;
-        let maxDate = add(selectedMeal.timestamp, { hours: 2 });
+        const minDate = selectedMeal.timestamp;
+        const maxDate = add(selectedMeal.timestamp, { hours: 2 });
 
         return meal.timestamp >= minDate && meal.timestamp <= maxDate;
     });
 
-    let chartData: { timestamp: Date, value: number, meal?: boolean }[] = [];
+    const chartData: { timestamp: Date, value?: number, mealValue?: number }[] = [];
 
     filteredGlucose.forEach(reading => {
         chartData.push({ timestamp: reading.timestamp, value: reading.value });
     });
 
     filteredMeals.forEach(meal => {
-        let entry = chartData.find(entry => entry.timestamp === meal.timestamp);
-        if (!entry) {
-            entry = { timestamp: meal.timestamp, value: computeBestFitGlucoseValue(meal.timestamp, filteredGlucose) }
-            chartData.push(entry);
-        }
-        entry.meal = true;
+        chartData.push({ timestamp: meal.timestamp, mealValue: computeBestFitGlucoseValue(meal.timestamp, glucose!) });
     });
 
     chartData.sort((a, b) => compareAsc(a.timestamp, b.timestamp));
@@ -124,11 +117,11 @@ export default function (props: GlucoseChartProps) {
         chartTickFormatter = (value: number) => getTimeOfDayString(new Date(value));
     }
 
-    const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, meal?: boolean } }) => {
+    const customDot = (props: { cx: number, cy?: number, payload: { timestamp: Date, mealValue?: number } }) => {
         const { cx, cy, payload } = props;
-        if (!cy || !payload.meal) return <></>;
+        if (!cy || !payload.mealValue) return <></>;
 
-        let mealIndex = meals.findIndex(meal => meal.timestamp === payload.timestamp);
+        const mealIndex = meals.findIndex(meal => meal.timestamp === payload.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <svg>
@@ -136,22 +129,23 @@ export default function (props: GlucoseChartProps) {
         </svg>;
     };
 
-    const customDotLabel = (props: any) => {
+    const customDotLabel = (props: { x: number, y: number, index: number }) => {
         const { x, y, index } = props;
+        if (!y) return <></>;
 
-        let entry = chartData[index];
-        if (!entry.meal) return <></>;
+        const entry = chartData[index];
+        if (!entry.mealValue) return <></>;
 
-        let mealIndex = meals.findIndex(meal => meal.timestamp === entry.timestamp);
+        const mealIndex = meals.findIndex(meal => meal.timestamp === entry.timestamp);
         if (mealIndex < 0) return <></>;
 
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
-    let filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
-    let maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
-    let stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
-    let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
+    const filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
+    const maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
+    const stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
+    const overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
 
     return <div className="mdhui-glucose-chart" ref={props.innerRef}>
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
@@ -159,7 +153,7 @@ export default function (props: GlucoseChartProps) {
                 intervalType="Day"
                 intervalStart={selectedDate}
                 data={chartData as any}
-                series={[{ dataKey: 'value', color: '#999' }]}
+                series={[{ dataKey: 'value', color: '#999' }, { dataKey: 'mealValue', color: 'transparent' }]}
                 chartHasData={!!glucose && glucose.length > 0}
                 chartType="Line"
                 options={{
@@ -167,8 +161,10 @@ export default function (props: GlucoseChartProps) {
                         dot: customDot,
                         label: customDotLabel,
                         strokeWidth: 1.5,
-                        animationDuration: 500
-                    },
+                        animationDuration: 500,
+                        connectNulls: true,
+                        type: 'linear'
+                    } as TimeSeriesChartLineOptions,
                     containerOptions: {
                         height: 166
                     },
