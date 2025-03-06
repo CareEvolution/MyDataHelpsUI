@@ -65,6 +65,6 @@ export const FileNotFound: Story = {
 };
 
 export const Live: Story = {
-    args: { ...uploadDocumentSurveyProps, surveyResultId: '005030fa-d5f9-ef11-baff-0affe8024cad' },
+    args: { ...uploadDocumentSurveyProps, surveyResultId: 'c8fd5680-d4f9-ef11-baff-0affe8024cad' },
     render: render
 };
