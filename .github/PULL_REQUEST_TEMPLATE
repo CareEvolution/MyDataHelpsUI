@@ -20,7 +20,7 @@ DESCRIBE BRIEFLY WHAT SECURITY RISKS YOU CONSIDERED, WHY THEY DON'T APPLY, OR HO
 
 > Consider whether the changes might have device-specific behaviors (screen padding, new APIs, etc.) and check one of the following boxes:
 
-- [ ] This change can be adequately tested using the MDH Storybook. (Use PR preview.)
+- [ ] This change can be adequately tested using the MDH Storybook.
 - [ ] This change requires additional testing in the MDH iOS/Android/Web apps. (Create a pre-release tag/build and test in a ViewBuilder PR.)
 
 DESCRIBE YOUR TEST PLAN
