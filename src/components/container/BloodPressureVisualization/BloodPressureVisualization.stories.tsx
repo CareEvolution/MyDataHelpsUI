@@ -65,3 +65,21 @@ export const Live = {
 	},
 	render: render
 };
+
+
+const renderMinimal = (args: BloodPressureVisualizationProps) => <Layout colorScheme='auto'>
+	<Card>
+		<BloodPressureVisualization {...args} />
+	</Card>
+</Layout>;
+
+export const Minimal = {
+	args: {
+		surveyDataSource: bpSurveyParams,
+		variant: "minimal",
+		weekStartsOn: "6DaysAgo",
+		deviceDataSource: ["AppleHealth", "GoogleFit", "Omron"]
+	},
+	render: renderMinimal
+};
+

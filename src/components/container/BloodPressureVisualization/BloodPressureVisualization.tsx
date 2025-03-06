@@ -1,7 +1,7 @@
 import "./BloodPressureVisualization.css";
 import { useContext, useState } from "react";
 import React from "react";
-import { DateRangeContext, LoadingIndicator } from "../../presentational";
+import { DateRangeContext, Grid, LoadingIndicator } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
 import { ClosedInterval, Axis, DataPoint, DumbbellClass, DumbbellDataPoint } from "../../presentational/DumbbellChart/DumbbellChart";
 import { addDays, startOfDay } from "date-fns";
@@ -11,6 +11,8 @@ import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start"
 import { useInitializeView } from "../../../helpers/Initialization";
 import { BloodPressureDataPoint, BloodPressureDeviceDataSource, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
 import { getShortestDateString } from "../../../helpers/date-helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeartbeat } from "@fortawesome/free-solid-svg-icons";
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
 export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
@@ -21,6 +23,8 @@ export interface BloodPressureVisualizationProps {
     weekStartsOn?: WeekStartsOn,
     deviceDataSource?: BloodPressureDeviceDataSource[],
     innerRef?: React.Ref<HTMLDivElement>
+    variant?: "default" | "minimal";
+    onClick?: () => void;
 };
 
 interface BloodPressureMetrics {
@@ -36,6 +40,8 @@ interface BloodPressureMetrics {
     minSystolic?: number,
     minSystolicAlert?: Category,
     minSystolicAlertClass: string
+    combinedAlert?: Category
+    combinedAlertClass: string
 }
 
 export default function (props: BloodPressureVisualizationProps) {
@@ -78,7 +84,6 @@ export default function (props: BloodPressureVisualizationProps) {
     }
 
     function assignClass(avgSystolic: number, avgDiastolic: number) {
-
         const systolicCategory = getSystolicCategory(avgSystolic);
         const diastolicCategory = getDiastolicCategory(avgDiastolic);
 
@@ -178,12 +183,13 @@ export default function (props: BloodPressureVisualizationProps) {
     }
 
     function buildAggregates(data: BloodPressureDataPoint[]) {
-
         let bpMetrics: BloodPressureMetrics = {
             averageDiastolicAlertClass: "",
             averageSystolicAlertClass: "",
             minSystolicAlertClass: "",
-            maxSystolicAlertClass: ""
+            maxSystolicAlertClass: "",
+            combinedAlertClass: "",
+            combinedAlert: Category.Normal
         };
 
         if (!data || data.length === 0) {
@@ -218,6 +224,9 @@ export default function (props: BloodPressureVisualizationProps) {
         let systolicLowAlert = getSystolicCategory(systolicLow);
         bpMetrics.minSystolicAlert = systolicLowAlert;
         bpMetrics.minSystolicAlertClass = systolicLowAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
+
+        bpMetrics.combinedAlert = systolicHighAlert > diastolicWeeklyAvgAlert ? systolicHighAlert : diastolicWeeklyAvgAlert;
+        bpMetrics.combinedAlertClass = bpMetrics.combinedAlert === Category.Normal ? "mdhui-blood-pressure-metric-normal" : "mdhui-blood-pressure-metric-not-normal";
 
         return bpMetrics;
     }
@@ -254,6 +263,23 @@ export default function (props: BloodPressureVisualizationProps) {
         return db;
     }
 
+    function buildMinimalMetrics(data: BloodPressureDataPoint[]) {
+        const metrics = buildAggregates(data);
+
+        return <div className="mdhui-micro-trend">
+            <div className="mdhui-micro-trend-label">
+                Average Blood Pressure
+            </div>
+            <div className="mdhui-micro-trend-info">
+                <span className="mdhui-micro-trend-value">
+                    <span style={{ color: "#e35c33" }}><FontAwesomeIcon icon={faHeartbeat} /></span>&nbsp;
+                    {metrics.averageSystolic} / {metrics.averageDiastolic} <span className={metrics.combinedAlertClass}>({getAlertPrompt(metrics.combinedAlert)})</span>
+                </span>
+            </div>
+        </div>
+    }
+
+
     function buildVisualization(start: Date) {
         const intervalEnd = addDays(start, 6);
         var bpDataForMetrics: BloodPressureDataPoint[] = [];
@@ -269,11 +295,11 @@ export default function (props: BloodPressureVisualizationProps) {
             }
         }
 
-        const metrics = buildMetrics(bpDataForMetrics);
         return (
             <div ref={props.innerRef}>
-                <DumbbellChart dumbbells={weekData} axis={axis} ></DumbbellChart>
-                {metrics}
+                {props.variant === "minimal" && buildMinimalMetrics(bpDataForMetrics)}
+                <DumbbellChart variant={props.variant} dumbbells={weekData} axis={axis} ></DumbbellChart>
+                {props.variant !== "minimal" && buildMetrics(bpDataForMetrics)}
             </div>
         );
     }

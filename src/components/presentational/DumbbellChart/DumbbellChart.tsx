@@ -24,6 +24,7 @@ export interface Axis {
 export interface DumbBellChartProps {
     axis: Axis;
     dumbbells: DumbbellDataPoint[];
+    variant?: "default" | "minimal";
 }
 
 export enum DumbbellClass {
@@ -62,9 +63,13 @@ export default function DumbbellChart(props: DumbBellChartProps) {
         return (props.dumbbells.map((db, index) => <Dumbbell key={`mdhui-dumbbell-${index}`} dumbbell={db} axis={props.axis} index={index + 1} />));
     }
 
+    let classes = ["mdhui-dumbbell-visualization"];
+    if (props.variant === "minimal") {
+        classes.push("mdhui-dumbbell-visualization-minimal");
+    }
 
     return (
-        <div className="mdhui-dumbbell-visualization">
+        <div className={classes.join(" ")}>
             <div className="mdhui-dumbbell-chart">
                 {buildDumbbells()}
                 {buildYAxis()}
