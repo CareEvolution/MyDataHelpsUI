@@ -1,1 +1,1 @@
-export type deviceType = 'Fitbit' | 'Garmin' | 'Omron';
+export type deviceType = 'Fitbit' | 'Garmin' | 'Omron' | 'Oura';
