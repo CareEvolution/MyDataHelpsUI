@@ -16,6 +16,7 @@ export interface GridColumnProps {
     span: number;
     variant?: "default" | "card";
     innerRef?: React.Ref<HTMLDivElement>;
+    style?: React.CSSProperties;
 }
 
 export interface GridContext {
@@ -50,10 +51,11 @@ Grid.Column = function (props: GridColumnProps) {
     let widthPercent = props.span / 12 * 100;
     let gridContext = React.useContext(GridContext);
     let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
+    let style = { ...props.style, width: width };
 
     if (props.variant === "card") {
-        return <Card innerRef={props.innerRef} className="mdhui-grid-column" style={{ width: width }}>{props.children}</Card>
+        return <Card innerRef={props.innerRef} className="mdhui-grid-column" style={style}>{props.children}</Card>
     } else {
-        return <div ref={props.innerRef} className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+        return <div ref={props.innerRef} className="mdhui-grid-column" style={style}>{props.children}</div>
     }
 }
