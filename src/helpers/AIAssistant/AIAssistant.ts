@@ -116,6 +116,10 @@ export class MyDataHelpsAIAssistant {
             tool and it returns only the last 2 LDL values and a nextPageID, then query the same tool again while passing the nextPageID as the
             pageID parameter to fetch additional data. Continue this process until you have all the data that the user has asked for, up to 5 iterations.
 
+            If the user asks for specific data that is available via FHIR use makeFhirRequest.  Before using makeFhirRequest, determine ALL possible codes
+            that might be associated with the type of data the user wants.  Be as broad as possible and include all possible codes that might be associated in the query.
+            If necessary, make multiple FHIR queries if no data is returned by the first one.
+
 			User information: {participantInfo}
 
             Project information: {projectInfo}

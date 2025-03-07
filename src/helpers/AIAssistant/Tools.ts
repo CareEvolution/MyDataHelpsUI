@@ -270,22 +270,12 @@ export const MakeFhirRequestTool = tool(
   async (input): Promise<string> => {
     const response = await makeFhirApiRequest(input.resourceType, input.queryParams);
     let jsonResponse = JSON.stringify(response);
-    console.log(jsonResponse);
     return jsonResponse;
   },
   {
     name: "makeFhirRequest",
-    description: `Get electronic health record (EHR) data for the participant using the FHIR standard.
-      The FHIR query is constructed using the resourceType and queryParams. The queryParams should not include the patient ID, as it is automatically added.
-      
-      When using codes, specify all possible applicable codes to the query, not just one - for instance, use both 2089-1 and 13457-7 for LDL.
-      Do not be overly restrictive as codes may not match perfectly, so use broad queries and filter the resulting JSON.
-
-      First make a specific query, and if no results are returned, make a second query that is broader.
-      
-      Make multiple queries if needed to check multiple resource types.  For instance, if looking for a result, you might need to query both diagnostic reports and lab observations.
-
-      Use both SNOMED and LOINC codes when querying for lab results. `
+    description: `Get electronic health record (EHR) data for the participant using the FHIR standard.  Do not supply a code parameter and instead query for all data.
+ `
     ,
     schema: z.object({
       resourceType: z.enum(["AllergyIntolerance",
