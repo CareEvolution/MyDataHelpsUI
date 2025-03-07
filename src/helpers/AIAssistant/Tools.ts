@@ -266,13 +266,13 @@ export const GetEhrNewsFeedPageTool = tool(
   }
 );
 
-export const MakeFhirRequest = tool(
+export const MakeFhirRequestTool = tool(
   async (input): Promise<string> => {
     const response = await makeFhirApiRequest(input.resourceType, input.queryParams);
     return JSON.stringify(response);
   },
   {
-    name: "get FHIR data",
+    name: "makeFhirRequest",
     description: "Get electronic health record (EHR) data for the participant.",
     schema: z.object({
       resourceType: z.enum(["AllergyIntolerance",
