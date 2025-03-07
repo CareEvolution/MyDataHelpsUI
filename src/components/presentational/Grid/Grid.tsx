@@ -8,6 +8,7 @@ export interface GridProps {
     style?: React.CSSProperties;
     className?: string;
     defaultMargin?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface GridColumnProps {
@@ -36,7 +37,7 @@ export function Grid(props: GridProps) {
     let gap = (props.gap || props.gap === 0) ? props.gap : 16;
     style.gap = `${gap}px`;
     return <GridContext.Provider value={{ gap: gap }}>
-        <div className={classes.join(" ")} style={style}>{props.children}</div>
+        <div ref={props.innerRef} className={classes.join(" ")} style={style}>{props.children}</div>
     </GridContext.Provider>
 }
 
