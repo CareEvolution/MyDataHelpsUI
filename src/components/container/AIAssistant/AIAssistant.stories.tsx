@@ -65,6 +65,7 @@ export default {
                 queryDailyDataTool: MyDataHelpsTools.QueryDailyDataTool,
                 getAllDailyDataTypes: MyDataHelpsTools.GetAllDailyDataTypesTool,
                 getEhrNewsFeedPage: MyDataHelpsTools.GetEhrNewsFeedPageTool,
+                makeFhirRequest: MyDataHelpsTools.MakeFhirRequest,
                 getDeviceDataV2AllDataTypes: MyDataHelpsTools.GetDeviceDataV2AllDataTypesTool,
                 graphingTool: MyDataHelpsTools.GraphingTool,
                 uploadedFileQueryTool: MyDataHelpsTools.UploadedFileQueryTool,

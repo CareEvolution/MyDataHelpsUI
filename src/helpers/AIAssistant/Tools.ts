@@ -5,6 +5,7 @@ import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 import { getNewsFeedPage } from "../news-feed/data";
 import { LangGraphRunnableConfig } from "@langchain/langgraph";
 import { isDevelopment } from "../env";
+import { makeFhirApiRequest } from "../fhir";
 
 const deviceDataV2QuerySchema = z.object({
   namespace: z.enum(["Fitbit", "AppleHealth", "Garmin", "Dexcom", "HealthConnect"])
@@ -261,6 +262,44 @@ export const GetEhrNewsFeedPageTool = tool(
       feed: z.enum(["Immunizations", "LabReports", "Procedures", "Reports"]).describe("The type of feed to query."),
       pageID: z.string().optional().describe("The page ID to continue from if you need to fetch more results."),
       pageDate: z.string().optional().describe("The date of the page to continue from if you are doing a time-based query.")
+    })
+  }
+);
+
+export const MakeFhirRequest = tool(
+  async (input): Promise<string> => {
+    const response = await makeFhirApiRequest(input.resourceType, input.queryParams);
+    return JSON.stringify(response);
+  },
+  {
+    name: "get FHIR data",
+    description: "Get electronic health record (EHR) data for the participant.",
+    schema: z.object({
+      resourceType: z.enum(["AllergyIntolerance",
+        "AuditEvent",
+        "CarePlan",
+        "Claim",
+        "Condition",
+        "Coverage",
+        "Device",
+        "DiagnosticReport",
+        "DocumentReference",
+        "Encounter",
+        "ExplanationOfBenefit",
+        "FamilyMemberHistory",
+        "Goal",
+        "Immunization",
+        "Location",
+        "MedicationAdministration",
+        "MedicationDispense",
+        "MedicationRequest",
+        "Observation",
+        "Practitioner",
+        "Procedure",
+        "Provenance",
+        "ServiceRequest",
+        "ValueSet"]).describe("The type of feed to query."),
+      queryParams: z.string().describe("Query string to attach to the FHIR query. There is no need to attach a patient ID to the query, as it is automatically added.")
     })
   }
 );
