@@ -27,7 +27,7 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
                 type: 'snack'
             }, {
                 id: uuid(),
-                timestamp: createDate(date, 9, 25),
+                timestamp: createDate(date, 9, 45),
                 type: 'meal',
                 description: 'Three pancakes, two eggs, hashbrowns, three strips of bacon, and a piece of toast.'
             }, {
