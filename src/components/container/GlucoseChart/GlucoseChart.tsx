@@ -37,9 +37,8 @@ export default function (props: GlucoseChartProps) {
     };
 
     useInitializeView(() => {
-        setLoading(true);
-
         if (props.previewState === 'loading') {
+            setLoading(true);
             return;
         }
 
