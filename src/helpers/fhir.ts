@@ -58,5 +58,5 @@ export async function makeFhirApiRequest(resource: ResourceType, params: string)
         method: "GET",
         headers: headers
     };
-    await fetch(url, init).then((response) => response.json());
+    return await fetch(url, init).then((response) => response.json());
 }

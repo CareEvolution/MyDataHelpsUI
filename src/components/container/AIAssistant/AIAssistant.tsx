@@ -96,7 +96,7 @@ export default function AIAssistant(props: AIAssistantProps) {
         setInputDisabled(true);
 
         await assistantRef.current?.ask(newMessage, async function (streamEvent: StreamEvent) {
-
+            console.log(streamEvent);
             const [kind, type] = getEventKindType(streamEvent.event);
 
             if (type === "stream" && kind !== "chain") {

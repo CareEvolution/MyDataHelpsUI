@@ -21,7 +21,7 @@ import {
     QuerySurveyAnswersTool,
     QueryDailyDataTool,
     GetAllDailyDataTypesTool,
-    GetEhrNewsFeedPageTool,
+    //GetEhrNewsFeedPageTool,
     MakeFhirRequestTool,
     GetDeviceDataV2AllDataTypesTool,
     GraphingTool,
