@@ -38,6 +38,10 @@ export class DataCollectionSettings {
                 return this.settings.queryableDeviceDataTypes.some(
                     (s) => s.namespace === "AppleHealth" && s.type === type,
                 );
+            case "GoogleFit":
+                return this.settings.queryableDeviceDataTypes.some(
+                    (s) => s.namespace === "GoogleFit" && s.type === type,
+                );
             case "HealthConnect":
                 if (this.settings.healthConnectEnabled) {
                     return this.deviceDataTypes.some(
