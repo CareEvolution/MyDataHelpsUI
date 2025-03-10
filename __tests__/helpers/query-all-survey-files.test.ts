@@ -10,9 +10,9 @@ jest.mock('@careevolution/mydatahelps-js', () => {
         {id: "mno345", surveyResultID: "abc123", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileDate", answers: ["2025-01-01"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "pqr678", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileName", answers: ["BCBS Insurance"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "stu901", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "file", answers: ["BCBS.png"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
-        {id: "vwx234", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileNotes", answers: ["From my phone"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
+        {id: "vwx234", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileNotes", answers: [], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "yza567", surveyResultID: "pqr6789", surveyName: "wrong-test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileType", answers: ["Insurance"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
-        {id: "bcd890", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileDate", answers: ["1-2-2025"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
+        {id: "bcd890", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "fileDate", answers: ["2025-02-01"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "efg123", surveyResultID: "pqr678", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2021-01-01", stepIdentifier: "step1", resultIdentifier: "result11", answers: ["answer11"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "a3c123", surveyResultID: "456abc", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2025-01-01", stepIdentifier: "step1", resultIdentifier: "fileName", answers: ["Mammography Report"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
         {id: "d3f456", surveyResultID: "456abc", surveyName: "test-survey", surveyDisplayName: "Test Survey", date: "2025-01-01", stepIdentifier: "step1", resultIdentifier: "file", answers: ["TestsResults.pdf"], insertedDate: "2021-01-01", surveyID: "123456", surveyVersion: 1},
@@ -65,6 +65,14 @@ const mammographyReport : SurveyUploadedFile = {
     date: new Date("2024-01-01T00:00:00") //confirms use of result date when answer not on file
 };
 
+const emptyOptionalFieldsReport : SurveyUploadedFile = {
+    surveyResultId: "pqr678",
+    fileCategory: "surveyresult_pqr678",
+    title: "BCBS Insurance",
+    fileName: "BCBS.png",
+    date: new Date("2025-02-01T00:00:00")
+};
+
 test("a SurveyUploadedFile is returned when all required fields are on file", async () => {
     const surveyFiles = await queryAllSurveyFiles({
         uploadDocumentSurveyName: "test-survey",
@@ -75,9 +83,10 @@ test("a SurveyUploadedFile is returned when all required fields are on file", as
         notesResultIdentifier: "fileNotes"
     });
 
-    expect(surveyFiles).toHaveLength(2);
+    expect(surveyFiles).toHaveLength(3);
     expect(surveyFiles).toContainEqual(mammographyReport);
     expect(surveyFiles).toContainEqual(colonoscopyReport);
+    expect(surveyFiles).toContainEqual(emptyOptionalFieldsReport);
 });
 
 test("should call both MyDataHelps.deleteSurveyResult and MyDataHelps.deleteFile", async () => {

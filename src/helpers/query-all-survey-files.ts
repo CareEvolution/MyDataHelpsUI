@@ -8,7 +8,7 @@ export interface SurveyUploadedFile {
     fileCategory: string,
     title: string,
     fileName: string,
-    type: string,
+    type?: string,
     notes?: string,
     date: Date
 }
@@ -46,9 +46,9 @@ export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParamete
                 const fileName = fileNameResults && fileNameResults.answers ? fileNameResults.answers[0] : "";
                 const fileNameResultID = fileNameResults && fileNameResults.surveyResultID ? `${fileNameResults.surveyResultID}` : "";
                 var typeResults = resultsForSubmission.find(r => r.resultIdentifier == props.typeResultIdentifier);
-                const type = typeResults && typeResults.answers ? typeResults.answers[0] : "";
+                const type = typeResults && typeResults.answers ? typeResults.answers[0] : undefined;
                 var notesResults = resultsForSubmission.find(r => r.resultIdentifier == props.notesResultIdentifier);
-                const notes = notesResults && notesResults.answers ? notesResults.answers[0] : "";
+                const notes = notesResults && notesResults.answers ? notesResults.answers[0] : undefined;
 
                 if (!Number.isNaN(Date.parse(useDate)) &&
                     title && fileName) {
