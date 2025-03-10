@@ -1,5 +1,10 @@
 ﻿import { add } from "date-fns";
-import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider } from ".";
+import {
+    appleHealthStepsDataProvider,
+    fitbitStepsDataProvider,
+    garminStepsDataProvider,
+    googleFitStepsDataProvider,
+} from ".";
 import getDayKey from "../get-day-key";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";

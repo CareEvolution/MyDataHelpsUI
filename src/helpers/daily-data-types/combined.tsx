@@ -5,9 +5,10 @@ import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import { combinedMindfulMinutesDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
-import { simpleAvailabilityCheck } from "./availability-check";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import { checkSourceAvailability, simpleAvailabilityCheck } from "./availability-check";
+import MyDataHelps, { DeviceDataNamespace, DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
 import { formatNumberForLocale } from "../../helpers/locale";
+import { DataCollectionSettings } from "../daily-data-providers/data-collection-settings";
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -15,18 +16,16 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
         availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            const settings = await MyDataHelps.getDataCollectionSettings();
+            const settings = await DataCollectionSettings.create();
 
-            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "RestingHeartRate")
-                && await simpleAvailabilityCheck("AppleHealth", "RestingHeartRate")(modifiedAfter)) {
-                return true;
-            }
+            const sources: {namespace: DeviceDataNamespace | DeviceDataV2Namespace, type: string[]}[] = [
+                { namespace: "AppleHealth", type: ["RestingHeartRate"] },
+                { namespace: "Fitbit", type: ["RestingHeartRate"] },
+                { namespace: "Garmin", type: ["Daily"] },
+                { namespace: "HealthConnect", type: ["resting-heart-rate"] }
+            ];
 
-            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", "RestingHeartRate")(modifiedAfter)) {
-                return true;
-            }
-
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
+            return await checkSourceAvailability(settings, sources, modifiedAfter);
         },
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -89,18 +88,15 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.SleepMinutes,
         dataProvider: combinedSleepDataProvider,
         availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            const settings = await MyDataHelps.getDataCollectionSettings();
+            const settings = await DataCollectionSettings.create();
+            const sources: {namespace: DeviceDataNamespace | DeviceDataV2Namespace, type: string[]}[] = [
+                { namespace: "AppleHealth", type: ["SleepAnalysisInterval"] },
+                { namespace: "Fitbit", type: ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]},
+                { namespace: "Garmin", type: ["Sleep"] },
+                { namespace: "HealthConnect", type: ["sleep"] }
+            ] as const;
 
-            if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == "AppleHealth" && dt.type == "SleepAnalysisInterval")
-                && await simpleAvailabilityCheck("AppleHealth", "SleepAnalysisInterval")(modifiedAfter)) {
-                return true;
-            }
-
-            if (settings.fitbitEnabled && await simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter)) {
-                return true;
-            }
-
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Sleep")(modifiedAfter);
+            return await checkSourceAvailability(settings, sources, modifiedAfter);
         },
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,

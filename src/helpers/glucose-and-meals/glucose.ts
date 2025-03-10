@@ -1,9 +1,11 @@
-import MyDataHelps, { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { DeviceDataPointQuery, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { Reading, ReadingRange } from './types';
 import { getFirstValueReadings } from './util';
 import { getDayKey } from "../index";
+import queryAllDeviceDataV2 from '../query-all-device-data-v2';
+import { DataCollectionSettings } from '../daily-data-providers/data-collection-settings';
 
 export async function appleHealthBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
@@ -41,20 +43,39 @@ export async function googleFitBloodGlucoseDataProvider(startDate: Date, endDate
     });
 }
 
+export async function healthConnectBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
+    let query: DeviceDataV2Query = {
+        namespace: "HealthConnect",
+        type: "blood-glucose",
+        observedAfter: add(startDate, { days: -1 }).toISOString(),
+        observedBefore: add(endDate, { days: 1 }).toISOString()
+    };
+
+    const dataPoints = await queryAllDeviceDataV2(query);
+    return dataPoints.map(dataPoint => {
+        return {
+            timestamp: parseISO(dataPoint.observationDate!),
+            value: parseInt(dataPoint.value)
+        };
+    });
+}
+
 export async function getGlucoseReadings(startDate: Date, endDate?: Date): Promise<Reading[]> {
     let providers: Promise<Reading[]>[] = [];
 
     endDate = endDate ?? startDate;
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == 'AppleHealth' && dt.type == 'BloodGlucose')) {
-            providers.push(appleHealthBloodGlucoseDataProvider(startDate, endDate!));
-        }
-        if (settings.queryableDeviceDataTypes.find(dt => dt.namespace == 'GoogleFit' && dt.type == 'BloodGlucose')) {
-            providers.push(googleFitBloodGlucoseDataProvider(startDate, endDate!));
-        }
-        return providers.length > 0 ? getFirstValueReadings(providers) : [];
-    });
+    const settings = await DataCollectionSettings.create();
+    if (settings.isEnabled("AppleHealth", "BloodGlucose")) {
+        providers.push(appleHealthBloodGlucoseDataProvider(startDate, endDate!));
+    }
+    if (settings.isEnabled("GoogleFit", "BloodGlucose")) {
+        providers.push(googleFitBloodGlucoseDataProvider(startDate, endDate!));
+    }
+    if (settings.isEnabled("HealthConnect", "blood-glucose")) {
+        providers.push(healthConnectBloodGlucoseDataProvider(startDate, endDate!));
+    }
+    return providers.length > 0 ? getFirstValueReadings(providers) : [];
 }
 
 export function computeBestFitGlucoseValue(observationDate: Date, readings: Reading[]) {
