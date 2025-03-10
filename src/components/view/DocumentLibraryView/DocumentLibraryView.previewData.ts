@@ -8,11 +8,15 @@ export function getPreviewData(): SurveyUploadedFile[] {
         createUploadedFile("Sample Image File", "CareevolutionLogo.svg", "Images", "These are some notes for a sample image file"),
         createUploadedFile("Second Sample Portrait PDF", "PDF32000_2008.pdf", "Test Results", "These are some notes for a sample PDF"),
         createUploadedFile("Second Sample Text File", "MITLicense.MD", "Other", "These are some notes for a sample text file"),
-        createUploadedFile("Second Sample Image File", "CareevolutionLogo.svg", "Images", "These are some notes for a sample image file")
+        createUploadedFile("Second Sample Image File", "CareevolutionLogo.svg", "Images", "These are some notes for a sample image file"),
+        createUploadedFile("One File W Optional Fields", "CareevolutionLogo1.svg"),
+        createUploadedFile("Second File W Optional Fields", "CareevolutionLogo2.svg"),
+        createUploadedFile("Third File W Optional Fields", "CareevolutionLogo3.svg"),
+        createUploadedFile("Fourth File W Optional Fields", "CareevolutionLogo4.svg")
     ];
 }
 
-function createUploadedFile(title: string, fileName: string, type: string, notes?: string): SurveyUploadedFile {
+function createUploadedFile(title: string, fileName: string, type?: string, notes?: string): SurveyUploadedFile {
     return {
         surveyResultId: "12345",
         fileCategory: "",

@@ -120,13 +120,20 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             } else if (selectedSegment === "name") {
                 return a.title < b.title ? -1 : 1;
             } else {
-                return a.type < b.type ? -1 : 1;
+                return (a.type ?? "") > (b.type ?? "") ? -1 : 1;
             }
         });
 
+        function getFileName(title: string, type?: string) {
+            if (type) {
+                return `${title} (${type})`;
+            }
+            return title;
+        }
+
         return sortedFiles.map((file: SurveyUploadedFile, index: number) =>
             <Card key={`file_${index}`}>
-                <Action key={`suf_${index}`} title={`${file.title} (${file.type})`}
+                <Action key={`suf_${index}`} title={getFileName(file.title, file.type)}
                     subtitle={`${getShortDateString(file.date)} ${file.fileName}`}
                     icon={<FontAwesomeSvgIcon icon={faFileLines} />}
                     onClick={() => onFileClick(file)}></Action>
