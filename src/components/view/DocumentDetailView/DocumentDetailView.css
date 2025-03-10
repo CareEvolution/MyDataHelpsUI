@@ -66,6 +66,7 @@
 
 .mdhui-survey-answer-file-document-notes {
     margin-top: var(--mdhui-padding-sm);
+    overflow-wrap: anywhere;
 }
 
 .mdhui-survey-answer-file-button-row {
