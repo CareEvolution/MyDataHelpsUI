@@ -29,8 +29,13 @@ const uploadDocumentSurveyProps: DocumentDetailViewProps = {
     notesResultIdentifier: 'document_notes'
 }
 
-export const Pdf: Story = {
+export const AllFields: Story = {
     args: { ...uploadDocumentSurveyProps, preview: 'PreviewPdf' },
+    render: render
+};
+
+export const EmptyOptionalFields: Story = {
+    args: { ...uploadDocumentSurveyProps, preview: 'PreviewOptionalFields' },
     render: render
 };
 

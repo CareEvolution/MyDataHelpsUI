@@ -4,6 +4,8 @@ export function getPreviewData(preview: DocumentDetailViewPreviewType): Document
     switch (preview) {
         case "PreviewPdf":
             return previewPdfData;
+        case "PreviewOptionalFields":
+            return {...previewPdfData, type: "", notes: ""};
         case "PreviewText":
             return previewTxtData;
         case "PreviewImage":

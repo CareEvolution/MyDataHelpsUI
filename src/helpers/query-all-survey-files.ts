@@ -51,7 +51,7 @@ export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParamete
                 const notes = notesResults && notesResults.answers ? notesResults.answers[0] : "";
 
                 if (!Number.isNaN(Date.parse(useDate)) &&
-                    title && fileName && type) {
+                    title && fileName) {
                     const useFileDate = parseISO(useDate);
                     const newUploadedFile: SurveyUploadedFile = {
                         surveyResultId: `${resultId}`,
@@ -62,7 +62,7 @@ export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParamete
                         notes: notes,
                         date: useFileDate
                     };
-                    
+
                     uploadedFiles.push(newUploadedFile);
                 }
             });
@@ -75,9 +75,9 @@ export async function queryAllSurveyFiles(props: SurveyUploadedFileQueryParamete
     }
 
     let queryParameters: SurveyAnswersQuery = {
-        resultIdentifier : [props.fileResultIdentifier!,
-            props.typeResultIdentifier!, props.nameResultIdentifier!,
-            props.dateResultIdentifier!, props.notesResultIdentifier!]
+        resultIdentifier: [props.fileResultIdentifier!,
+        props.typeResultIdentifier!, props.nameResultIdentifier!,
+        props.dateResultIdentifier!, props.notesResultIdentifier!]
     };
 
     if (props.uploadDocumentSurveyName) {
@@ -102,7 +102,7 @@ export async function deleteSurveyResultFiles(surveyResultId: string, fileKey: s
         MyDataHelps.deleteFile(fileKey);
     }).catch((error) => {
         console.error('Error deleting survey results', error);
-        console.error('The survey must be configured to support result deletion'); 
+        console.error('The survey must be configured to support result deletion');
     });
 };
 

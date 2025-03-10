@@ -1,7 +1,8 @@
 .mdhui-survey-answer-details {
+    padding: var(--mdhui-padding-sm);
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    margin: var(--mdhui-padding-sm);
 }
 
 .mdhui-survey-answer-file-container {
@@ -17,7 +18,7 @@
     border-radius: 8px;
     overflow: hidden;
     background-color: var(--mdhui-background-color-2);
-    padding-top: var(--mdhui-padding-sm); 
+    padding-top: var(--mdhui-padding-sm);
     padding-bottom: var(--mdhui-padding-sm);
 }
 
@@ -29,25 +30,50 @@
     object-fit: contain;
 }
 
-.mdhui-survey-answer-file-document-file-name {
-    display: flex;
-    justify-content: center;
-}
-
-.mdhui-survey-answer-file-document-details-parent {
+.mdhui-survey-answer-file-document-info-row-parent {
     padding-top: var(--mdhui-padding-sm);
-}
-
-.mdhui-survey-answer-file-document-details {
-    font-size: .88em;
-    padding-bottom: var(--mdhui-padding-xs);
-}
-
-.mdhui-survey-answer-file-delete-button {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+@media screen and (min-width: 576px) {
+    .mdhui-survey-answer-file-document-info-row {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .mdhui-survey-answer-file-document-info-row {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.mdhui-survey-answer-file-document-type {
     margin-top: var(--mdhui-padding-sm);
-    margin-bottom: var(--mdhui-padding-sm); 
+    display: flex;
+    align-items: center;
+}
+
+.mdhui-survey-answer-file-document-type-text {
+    padding-left: var(--mdhui-padding-xs);
+}
+
+.mdhui-survey-answer-file-document-notes {
+    margin-top: var(--mdhui-padding-sm);
+}
+
+.mdhui-survey-answer-file-button-row {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--mdhui-padding-md);
+}
+
+.mdhui-survey-answer-file-button-row>button:only-child {
+    margin-left: auto;
 }

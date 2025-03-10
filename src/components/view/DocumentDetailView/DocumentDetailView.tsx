@@ -6,7 +6,7 @@ import "./DocumentDetailView.css";
 import { getShortDateString } from "../../../helpers/date-helpers";
 import { getPreviewData } from "./DocumentDetailView.previewData";
 
-export type DocumentDetailViewPreviewType = "PreviewPdf" | "PreviewText" | "PreviewImage" | "PreviewUnknown" | "PreviewCsvFile" | "PreviewMp4" | "PreviewFileNotFound" | "PreviewLoading";
+export type DocumentDetailViewPreviewType = "PreviewPdf" | "PreviewOptionalFields" | "PreviewText" | "PreviewImage" | "PreviewUnknown" | "PreviewCsvFile" | "PreviewMp4" | "PreviewFileNotFound" | "PreviewLoading";
 
 export interface DocumentDetailViewProps {
   preview?: DocumentDetailViewPreviewType,
@@ -134,26 +134,42 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
       {documentDetail &&
         <div className="mdhui-survey-answer-details">
           <div className="mdhui-survey-answer-file-container">
-            <div className="mdhui-survey-answer-file-preview-container">
-              {documentDetail?.presignedDocUrl &&
-                <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
-              }
-              {documentDetail?.presignedImageUrl &&
+            {documentDetail?.presignedImageUrl &&
+              <div className="mdhui-survey-answer-file-preview-container">
                 <img src={documentDetail?.presignedImageUrl} alt={language("file-not-loaded")}
-                  className="mdhui-survey-answer-file-preview-content" />}
-              {!documentDetail.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
-              <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>
-            </div>
+                  className="mdhui-survey-answer-file-preview-content" />
+
+              </div>
+            }
+            {!documentDetail?.presignedDocUrl && !documentDetail.presignedImageUrl && <div className="mdhui-survey-answer-file-document-file-name">{language("file-not-loaded")}</div>}
           </div>
 
-          <div className="mdhui-survey-answer-file-document-details-parent">
-            <Title order={3}>{documentDetail?.type}</Title>
-            <div className="mdhui-survey-answer-file-document-details">{`${documentDetail?.title} - ${getShortDateString(documentDetail?.date!)}`}</div>
-            <Title order={3}>{language("notes")}</Title>
-            <div className="mdhui-survey-answer-file-document-details">{documentDetail?.notes}</div>
+          <div className="mdhui-survey-answer-file-document-info-row-parent">
+            <div className="mdhui-survey-answer-file-document-info-row">
+              <Title order={3}>{documentDetail?.title}</Title>
+              <div className="mdhui-survey-answer-file-document-file-name">{documentDetail?.fileName}</div>
+            </div>
+            <div className="mdhui-survey-answer-file-document-info-row"  >
+              {documentDetail?.type &&
+                <div className="mdhui-survey-answer-file-document-type">
+                  <Title order={4}>{language("document-type")}:</Title>
+                  <div className="mdhui-survey-answer-file-document-type-text">{documentDetail?.type}</div>
+                </div>
+              }
+              <div>{getShortDateString(documentDetail?.date!)}</div>
+            </div>
+            {documentDetail?.notes &&
+              <div className="mdhui-survey-answer-file-document-notes">
+                <Title order={4}>{language("notes")}</Title>
+                <div>{documentDetail?.notes}</div>
+              </div>
+            }
           </div>
-          <div className="mdhui-survey-answer-file-delete-button">
-            <Button variant="light" color={"var(--mdhui-color-danger)"} onClick={deleteFile}>{language("delete")}</Button>
+          <div className="mdhui-survey-answer-file-button-row"  >
+            <Button variant="light" color={"var(--mdhui-color-danger)"} onClick={deleteFile} fullWidth={documentDetail?.presignedDocUrl ? false : true}>{language("delete")}</Button>
+            {documentDetail?.presignedDocUrl &&
+              <Button onClick={() => downloadFile()} fullWidth={false}>{language("download")}</Button>
+            }
           </div>
         </div>
       }
