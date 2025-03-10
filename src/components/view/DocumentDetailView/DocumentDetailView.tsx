@@ -111,7 +111,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
       setLoading(true);
       deleteSurveyResultFiles(documentDetail.surveyResultId, documentDetail.fileKey).then(() => {
         setDocumentDetail(undefined);
-        MyDataHelps.dismiss();
+        MyDataHelps.back();
       }).catch(error => {
         console.error('Failed to delete file:', error);
       }).finally(() => {
