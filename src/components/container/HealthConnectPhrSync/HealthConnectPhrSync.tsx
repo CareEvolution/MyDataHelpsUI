@@ -1,6 +1,6 @@
 
-import React, { useContext } from 'react';
-import { Action, Button, LayoutContext } from '../../presentational';
+import React from 'react';
+import { Action, Button } from '../../presentational';
 import MyDataHelps, { HealthConnectPhrStatus } from '@careevolution/mydatahelps-js';
 import { language, useInitializeView } from '../../../helpers';
 import { useInterval } from '../../../hooks';
@@ -15,7 +15,6 @@ export interface HealthConnectPhrSyncProps {
 
 export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
     const [status, setStatus] = React.useState<HealthConnectPhrStatus | undefined>();
-    const layoutContext = useContext<LayoutContext>(LayoutContext);
 
     function getPreviewStatus(): HealthConnectPhrStatus {
         const hasEnabledPermissions = props.previewState == "permissionsEnabled" || props.previewState == "running";

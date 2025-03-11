@@ -1,6 +1,6 @@
 import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount, HealthConnectStatus, ParticipantInfo } from '@careevolution/mydatahelps-js';
-import React, { ReactNode, useContext, useState } from 'react';
-import { Action, LayoutContext, TextBlock, Title } from '../../presentational';
+import React, { ReactNode, useState } from 'react';
+import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
 import { generateSampleParticipantInfo, previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
