@@ -44,7 +44,7 @@ export async function googleFitBloodGlucoseDataProvider(startDate: Date, endDate
 }
 
 export async function healthConnectBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
-    let query: DeviceDataV2Query = {
+    const query: DeviceDataV2Query = {
         namespace: "HealthConnect",
         type: "blood-glucose",
         observedAfter: add(startDate, { days: -1 }).toISOString(),

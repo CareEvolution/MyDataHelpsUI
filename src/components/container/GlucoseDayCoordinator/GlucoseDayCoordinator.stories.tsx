@@ -27,22 +27,32 @@ export default meta;
 
 type Story = StoryObj<GlucoseDayCoordinatorStoryArgs>;
 
+const sharedArgTypes = {
+    colorScheme: {
+        name: 'color scheme',
+        control: { type: 'radio' as const },
+        options: ['auto', 'light', 'dark']
+    },
+    state: {
+        name: 'state',
+        control: { type: 'radio' as const },
+        options: ['no data', 'some data', 'all data', 'live']
+    }
+};
+
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
         state: 'all data'
     },
-    argTypes: {
-        colorScheme: {
-            name: 'color scheme',
-            control: 'radio',
-            options: ['auto', 'light', 'dark']
-        },
-        state: {
-            name: 'state',
-            control: 'radio',
-            options: ['no data', 'some data', 'all data', 'live']
-        }
-    }
+    argTypes: sharedArgTypes
+};
+
+export const Live: Story = {
+    args: {
+        colorScheme: 'auto',
+        state: 'live'
+    },
+    argTypes: sharedArgTypes
 };
 
