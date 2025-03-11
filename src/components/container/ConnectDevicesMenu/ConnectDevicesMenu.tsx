@@ -12,12 +12,11 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
-import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
-import HealthConnectLogoWhite from '../../../assets/healthconnect-logo-white.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import HealthConnectIcon from '../../presentational/HealthConnectIcon/HealthConnectIcon';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Environmental";
 
@@ -282,7 +281,6 @@ interface HealthConnectMenuItemProps {
 }
 
 function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
-    const layoutContext = useContext<LayoutContext>(LayoutContext);
 
     let action = () => {
         if (props.preview) return;
@@ -313,7 +311,7 @@ function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
 
     return <div className="mdhui-connect-devices-menu-device">
         <Action onClick={action} indicator={indicator}>
-            <Title autosizeImage image={<img src={layoutContext?.colorScheme == "dark" ? HealthConnectLogoWhite : HealthConnectLogo} />} order={4}>Health Connect</Title>
+            <Title autosizeImage image={<HealthConnectIcon />} order={4}>Health Connect</Title>
         </Action>
     </div>
 }
