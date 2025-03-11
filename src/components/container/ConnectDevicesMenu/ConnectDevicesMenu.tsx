@@ -12,11 +12,11 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
-import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import HealthConnectIcon from '../../presentational/HealthConnectIcon/HealthConnectIcon';
 
 export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Environmental";
 
@@ -167,7 +167,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (platform == "iOS" || !settings?.healthConnectEnabled) {
         accountTypes = accountTypes.filter(a => a != "HealthConnect");
     }
-    if ((!settings?.airQualityEnabled && !settings?.weatherEnabled) || !props.postalCodeSurveyName ) { 
+    if ((!settings?.airQualityEnabled && !settings?.weatherEnabled) || !props.postalCodeSurveyName) {
         accountTypes = accountTypes.filter(a => a != "Environmental");
     }
 
@@ -249,7 +249,7 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
 
-        return <EnvironmentalMenuItem settings={settings!} participantInfo={participantInfo!} postalCodeSurveyName={props.postalCodeSurveyName!}/>
+        return <EnvironmentalMenuItem settings={settings!} participantInfo={participantInfo!} postalCodeSurveyName={props.postalCodeSurveyName!} />
     }
 
     let title = props.title || language("connect-devices-title");
@@ -281,6 +281,7 @@ interface HealthConnectMenuItemProps {
 }
 
 function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
+
     let action = () => {
         if (props.preview) return;
         MyDataHelps.showHealthConnectPrompt();
@@ -310,7 +311,7 @@ function HealthConnectMenuItem(props: HealthConnectMenuItemProps) {
 
     return <div className="mdhui-connect-devices-menu-device">
         <Action onClick={action} indicator={indicator}>
-            <Title autosizeImage image={<img src={HealthConnectLogo} />} order={4}>Health Connect</Title>
+            <Title autosizeImage image={<HealthConnectIcon />} order={4}>Health Connect</Title>
         </Action>
     </div>
 }
@@ -440,27 +441,27 @@ function AppleHealthMenuItem(props: AppleHealthMenuItemProps) {
     </div>;
 }
 
-function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, participantInfo: ParticipantInfo, postalCodeSurveyName: string }){
+function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, participantInfo: ParticipantInfo, postalCodeSurveyName: string }) {
     let action = () => {
         MyDataHelps.startSurvey(props.postalCodeSurveyName);
     }
 
-    const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter( (k) => k.endsWith('PostalCode'));
+    const postalCodeCustomFields = Object.keys(props.participantInfo ? props.participantInfo.customFields : {}).filter((k) => k.endsWith('PostalCode'));
     const postalCodes = [...postalCodeCustomFields.map((cf) => props.participantInfo?.customFields[cf]), props.participantInfo?.demographics.postalCode];
-    var postalCode = postalCodes.filter((p) => !!p).slice(0,3).join(', ');
-    if(postalCodes.length > 3) {
+    var postalCode = postalCodes.filter((p) => !!p).slice(0, 3).join(', ');
+    if (postalCodes.length > 3) {
         postalCode = postalCode + ", ...";
     }
 
-    const indicator = postalCode ? 
+    const indicator = postalCode ?
         <div className="mdhui-connect-devices-menu-connect">{postalCode}</div> :
         <div className="mdhui-connect-devices-menu-connect">{language("setup")}</div>;
 
     const titleBits = [];
-    if(props.settings?.airQualityEnabled) {
+    if (props.settings?.airQualityEnabled) {
         titleBits.push('Air Quality');
     }
-    if(props.settings?.weatherEnabled) {
+    if (props.settings?.weatherEnabled) {
         titleBits.push('Weather');
     }
     const title = titleBits.join(" / ");
@@ -468,7 +469,7 @@ function EnvironmentalMenuItem(props: { settings: DataCollectionSettings, partic
     return (
         <div className="mdhui-connect-devices-menu-device">
             <Action onClick={action} indicator={indicator}>
-                <Title autosizeImage image={<FontAwesomeSvgIcon icon={faSun} color={"yellow"}/>} order={4}>{title}</Title>
+                <Title autosizeImage image={<FontAwesomeSvgIcon icon={faSun} color={"yellow"} />} order={4}>{title}</Title>
             </Action>
         </div>
     );
