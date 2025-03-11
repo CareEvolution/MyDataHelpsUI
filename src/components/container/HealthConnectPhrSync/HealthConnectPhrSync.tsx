@@ -1,7 +1,8 @@
 
-import React from 'react';
-import { Action, Button } from '../../presentational';
+import React, { useContext } from 'react';
+import { Action, Button, LayoutContext } from '../../presentational';
 import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
+import HealthConnectLogoWhite from '../../../assets/healthconnect-logo-white.svg';
 import MyDataHelps, { HealthConnectPhrStatus } from '@careevolution/mydatahelps-js';
 import { language, useInitializeView } from '../../../helpers';
 import { useInterval } from '../../../hooks';
@@ -15,6 +16,7 @@ export interface HealthConnectPhrSyncProps {
 
 export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
     const [status, setStatus] = React.useState<HealthConnectPhrStatus | undefined>();
+    const layoutContext = useContext<LayoutContext>(LayoutContext);
 
     function getPreviewStatus(): HealthConnectPhrStatus {
         const hasEnabledPermissions = props.previewState == "permissionsEnabled" || props.previewState == "running";
@@ -79,7 +81,7 @@ export default function HealthConnectPhrSync(props: HealthConnectPhrSyncProps) {
         return <Button onClick={() => MyDataHelps.showHealthConnectPhrPrompt()}>{language("connect")}</Button>;
     }
 
-    return <Action innerRef={props.innerRef} titleIcon={<img width={15} style={{ marginRight: "8px" }} src={HealthConnectLogo} />}
+    return <Action innerRef={props.innerRef} titleIcon={<img width={15} style={{ marginRight: "8px" }} src={layoutContext.colorScheme == "dark" ? HealthConnectLogoWhite : HealthConnectLogo} />}
         bottomBorder
         title={language("health-connect-phr-sync-title")}
         renderAs="div"
