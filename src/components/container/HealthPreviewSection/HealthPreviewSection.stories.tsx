@@ -1,7 +1,7 @@
 import React from "react"
 import HealthPreviewSection, { HealthPreviewSectionProps } from "./HealthPreviewSection"
 import Layout from "../../presentational/Layout"
-import { userEvent, within } from '@storybook/testing-library'
+import { userEvent, within } from '@storybook/test'
 import { Description } from "@storybook/blocks"
 import { Meta, StoryObj } from "@storybook/react"
 import { language } from "../../../helpers"
@@ -59,7 +59,7 @@ async function interaction(canvasElement: HTMLElement, args: HealthPreviewSectio
 
 export const Medications: Story = {
     args: {
-        concept: "Conditions",
+        concept: "Medications",
         previewState: "Default",
         onClick: jest.fn((...args) => action("Medications clicked")(...args))
     },
@@ -151,6 +151,10 @@ export const NoData: Story = {
         const canvas = within(canvasElement);
         const buttonTitle = language(`${args.concept.toLowerCase()}-title`);
         expect(canvas.queryByText(buttonTitle)).not.toBeInTheDocument();
+
+        const testDataDivs = canvasElement.getElementsByClassName('mdhui-health-preview-item');
+        expect(testDataDivs.length).toBe(0);
+        
     },
     render: render
 };
