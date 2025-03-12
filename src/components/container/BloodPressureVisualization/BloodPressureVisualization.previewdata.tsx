@@ -95,33 +95,28 @@ export var previewBloodPressureDataPoint: BloodPressureDataPoint[] =
         },
         {
             date: startOfDay(add(new Date(), { days: -6 })),
-            systolic: 205,
-            diastolic: 100
-        },
-        {
-            date: startOfDay(add(new Date(), { days: -6 })),
-            systolic: 206,
-            diastolic: 83
+            systolic: 112,
+            diastolic: 72
         },
         {
             date: startOfDay(add(new Date(), { days: -5 })),
-            systolic: 100,
-            diastolic: 90
+            systolic: 125,
+            diastolic: 64
         },
         {
             date: startOfDay(add(new Date(), { days: -4 })),
-            systolic: 200,
-            diastolic: 80
+            systolic: 142,
+            diastolic: 82
         },
         {
             date: startOfDay(add(new Date(), { days: -3 })),
             systolic: 150,
-            diastolic: 60
+            diastolic: 82
         },
         {
             date: startOfDay(add(new Date(), { days: -2 })),
-            systolic: 100,
-            diastolic: 55
+            systolic: 140,
+            diastolic: 88
         },
         {
             date: startOfDay(add(new Date(), { days: -1 })),
@@ -130,7 +125,7 @@ export var previewBloodPressureDataPoint: BloodPressureDataPoint[] =
         },
         {
             date: startOfDay(new Date()),
-            systolic: 200.59,
-            diastolic: 55
+            systolic: 115,
+            diastolic: 72
         },
 ];

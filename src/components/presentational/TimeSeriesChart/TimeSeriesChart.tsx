@@ -178,7 +178,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         <div className="chart-container">
             {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">{language('no-data')}</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
-            <ResponsiveContainer width="100%" height={props.variant == "minimal" ? 50 : 150} {...props.options?.containerOptions}>
+            <ResponsiveContainer width="100%" height={props.variant == "minimal" ? 64 : 150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />

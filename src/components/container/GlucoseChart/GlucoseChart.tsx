@@ -190,7 +190,7 @@ export default function (props: GlucoseChartProps) {
                         animationDuration: 500
                     },
                     containerOptions: {
-                        height: props.variant == "minimal" ? 60 : 166
+                        height: props.variant == "minimal" ? 80 : 166
                     },
                     xAxisOptions: {
                         domain: chartDomain,
