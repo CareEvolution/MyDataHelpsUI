@@ -47,8 +47,8 @@ export async function healthConnectBloodGlucoseDataProvider(startDate: Date, end
     const query: DeviceDataV2Query = {
         namespace: "HealthConnect",
         type: "blood-glucose",
-        observedAfter: add(startDate, { days: -1 }).toISOString(),
-        observedBefore: add(endDate, { days: 1 }).toISOString()
+        observedAfter: startOfDay(startDate).toISOString(),
+        observedBefore: endOfDay(endDate).toISOString()
     };
 
     const dataPoints = await queryAllDeviceDataV2(query);
