@@ -1,11 +1,10 @@
 import React from "react"
 import HealthPreviewSection, { HealthPreviewSectionProps } from "./HealthPreviewSection"
 import Layout from "../../presentational/Layout"
-import { userEvent, within } from '@storybook/test'
+import { userEvent, within, expect, fn } from '@storybook/test'
 import { Description } from "@storybook/blocks"
 import { Meta, StoryObj } from "@storybook/react"
 import { language } from "../../../helpers"
-import { expect, jest } from "@storybook/jest"
 import { action } from "@storybook/addon-actions"
 import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata"
 
@@ -61,7 +60,7 @@ export const Medications: Story = {
     args: {
         concept: "Medications",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Medications clicked")(...args))
+        onClick: fn((...args) => action("Medications clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -73,7 +72,7 @@ export const Immunizations: Story = {
     args: {
         concept: "Immunizations",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Immunizations clicked")(...args))
+        onClick: fn((...args) => action("Immunizations clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -85,7 +84,7 @@ export const Reports: Story = {
     args: {
         concept: "Reports",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Reports clicked")(...args))
+        onClick: fn((...args) => action("Reports clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -97,7 +96,7 @@ export const Allergies: Story = {
     args: {
         concept: "Allergies",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Allergies clicked")(...args))
+        onClick: fn((...args) => action("Allergies clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -109,7 +108,7 @@ export const Conditions: Story = {
     args: {
         concept: "Conditions",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Conditions clicked")(...args))
+        onClick: fn((...args) => action("Conditions clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -121,7 +120,7 @@ export const Procedures: Story = {
     args: {
         concept: "Procedures",
         previewState: "Default",
-        onClick: jest.fn((...args) => action("Procedures clicked")(...args))
+        onClick: fn((...args) => action("Procedures clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -134,7 +133,7 @@ export const IndicatorWithTopRightPosition: Story = {
         concept: "Procedures",
         previewState: "Default",
         indicatorPosition: "topRight",
-        onClick: jest.fn((...args) => action("Procedures clicked")(...args))
+        onClick: fn((...args) => action("Procedures clicked")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);

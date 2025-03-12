@@ -2,13 +2,11 @@ import React from "react"
 import LabResultsSummary, { LabResultsSummaryProps } from "./LabResultsSummary"
 import Layout from "../../presentational/Layout"
 import { Meta, StoryObj } from "@storybook/react"
-import { within, userEvent } from "@storybook/testing-library"
+import { within, userEvent, expect, fn } from "@storybook/test"
 import { language } from "../../../helpers"
 import { Description } from "@storybook/blocks"
 import { action } from "@storybook/addon-actions"
-import { expect, jest } from "@storybook/jest"
 import { importantLabs } from "./LabResultsSummary.previewdata"
-import { LabResultValue } from "../../presentational/LabResultWithSparkline/LabResultWithSparkline"
 
 const meta: Meta<typeof LabResultsSummary> = {
     title: "Container/LabResultsSummary",
@@ -34,7 +32,9 @@ async function interaction(canvasElement: HTMLElement, args: LabResultsSummaryPr
     const labResultsAction = await canvas.findByText(language(`lab-results-title`));
 
     expect(labResultsAction).toBeInTheDocument();
-    await userEvent.click(labResultsAction);
+    const actionDiv = canvasElement.getElementsByClassName('mdhui-action');
+    expect(actionDiv.length).toBe(1);
+    await userEvent.click(actionDiv[0]);
     expect(args.onClick).toHaveBeenCalled();
 
     let expectedIndicatorValue = 0;
@@ -63,8 +63,8 @@ async function interaction(canvasElement: HTMLElement, args: LabResultsSummaryPr
 export const ImportantLabs: Story = {
     args: {
         previewState: "ImportantLabs",
-        onClick: jest.fn((...args) => action("Parent On Click")(...args)),
-        onViewTermInfo: jest.fn((termInfo) => action(`Click term info ${termInfo}`)(termInfo))
+        onClick: fn((...args) => action("Parent On Click")(...args)),
+        onViewTermInfo: fn((...args) => action(`Click term info ${args}`)(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
@@ -75,7 +75,7 @@ export const ImportantLabs: Story = {
 export const RecentLabs: Story = {
     args: {
         previewState: "RecentLabs",
-        onClick: jest.fn((...args) => action("Parent On Click")(...args))
+        onClick: fn((...args) => action("Parent On Click")(...args))
     },
     play: async ({ canvasElement, args }) => {
         await interaction(canvasElement, args);
