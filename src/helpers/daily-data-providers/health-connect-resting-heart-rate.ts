@@ -2,7 +2,7 @@
 import { DailyDataQueryResult } from "../query-daily-data";
 import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 
-export async function averageRestingHeartRateProvider(
+export async function restingHeartRateProvider(
     startDate: Date,
     endDate: Date,
 ): Promise<DailyDataQueryResult> {
