@@ -1,6 +1,6 @@
 import { add, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
+import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges, DailyTimeRanges } from '../../src/helpers/time-range';
 import getDayKey from '../../src/helpers/get-day-key';
 
@@ -255,6 +255,37 @@ describe('TimeRange - Helper Function Tests', () => {
             expect(ranges[0].endTime).toEqual(observationDate1);
             expect(ranges[1].startTime).toEqual(startDate2);
             expect(ranges[1].endTime).toEqual(observationDate2);
+        });
+
+        it('Should work with DeviceDataV2Points as well.', async () => {
+            const startDate = add(priorDay, { hours: 22 });
+            const observationDate = add(nextDay, { hours: 10 });
+
+            const dataPoint: DeviceDataV2Point = {
+                startDate: add(startDate, { minutes: -startDate.getTimezoneOffset() }).toISOString().substring(0, 19),
+                startDateOffset: `-0${startDate.getTimezoneOffset() / 60}:00:00`,
+                observationDate: add(observationDate, { minutes: -observationDate.getTimezoneOffset() }).toISOString().substring(0, 19),
+                observationDateOffset: `-0${observationDate.getTimezoneOffset() / 60}:00:00`,
+            } as DeviceDataV2Point;
+
+            const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
+
+            expect(Object.keys(dailyTimeRanges)).toHaveLength(3);
+
+            const priorDayRanges = dailyTimeRanges[getDayKey(priorDay)];
+            expect(priorDayRanges).toHaveLength(1);
+            expect(priorDayRanges[0].startTime).toEqual(startDate);
+            expect(priorDayRanges[0].endTime).toEqual(someDay);
+
+            const ranges = dailyTimeRanges[getDayKey(someDay)];
+            expect(ranges).toHaveLength(1);
+            expect(ranges[0].startTime).toEqual(someDay);
+            expect(ranges[0].endTime).toEqual(nextDay);
+
+            const nextDayRanges = dailyTimeRanges[getDayKey(nextDay)];
+            expect(nextDayRanges).toHaveLength(1);
+            expect(nextDayRanges[0].startTime).toEqual(nextDay);
+            expect(nextDayRanges[0].endTime).toEqual(observationDate);
         });
     });
 

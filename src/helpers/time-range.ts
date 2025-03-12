@@ -1,4 +1,4 @@
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
+import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { add, differenceInSeconds, parseISO, startOfDay } from 'date-fns';
 import getDayKey from './get-day-key';
 import { DailyDataQueryResult } from './query-daily-data';
@@ -10,7 +10,7 @@ export interface TimeRange {
 
 export type DailyTimeRanges = Record<string, TimeRange[]>;
 
-export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[], offsetHours: number = 0): DailyTimeRanges {
+export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[] | DeviceDataV2Point[], offsetHours: number = 0): DailyTimeRanges {
     const dailyTimeRanges: DailyTimeRanges = {};
 
     dataPoints.forEach(dataPoint => {
@@ -66,13 +66,13 @@ export function buildMinutesResultFromDailyTimeRanges(startDate: Date, endDate: 
     return result;
 }
 
-function splitSampleIntoRanges(dataPoint: DeviceDataPoint, offsetHours: number): TimeRange[] {
+function splitSampleIntoRanges(dataPoint: DeviceDataPoint | DeviceDataV2Point, offsetHours: number): TimeRange[] {
     if (!dataPoint.startDate || !dataPoint.observationDate) {
         return [];
     }
 
-    const startDate = parseISO(dataPoint.startDate!);
-    const observationDate = parseISO(dataPoint.observationDate!);
+    const startDate = parseISO(applyOffsetToDate(dataPoint, 'startDate'));
+    const observationDate = parseISO(applyOffsetToDate(dataPoint, 'observationDate'));
 
     let dayCutoff = add(startOfDay(startDate), { hours: offsetHours });
 
@@ -96,4 +96,15 @@ function combineRanges(range1: TimeRange, range2: TimeRange): TimeRange {
         startTime: (range2.startTime < range1.startTime) ? range2.startTime : range1.startTime,
         endTime: (range2.endTime > range1.endTime) ? range2.endTime : range1.endTime
     };
+}
+
+function applyOffsetToDate(dataPoint: DeviceDataPoint | DeviceDataV2Point, datePropertyName: keyof DeviceDataPoint & keyof DeviceDataV2Point) {
+    const dateStr = dataPoint[datePropertyName];
+
+    const dateOffsetPropertyName = (datePropertyName + 'Offset') as keyof DeviceDataV2Point;
+    if (dataPoint.hasOwnProperty(dateOffsetPropertyName)) {
+        return dateStr + ((dataPoint as DeviceDataV2Point)[dateOffsetPropertyName]?.substring(0, 6) ?? '');
+    }
+
+    return dateStr;
 }
