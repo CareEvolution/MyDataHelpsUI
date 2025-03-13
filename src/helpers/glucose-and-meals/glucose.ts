@@ -73,7 +73,7 @@ export async function getGlucoseReadings(startDate: Date, endDate?: Date): Promi
     if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === "GoogleFit" && type.type === "BloodGlucose")) {
         providers.push(googleFitBloodGlucoseDataProvider(startDate, endDate!));
     }
-    if (settings.healthConnectEnabled && deviceDataV2Types.some(type => type.namespace === "HealthConnect", "blood-glucose")) {
+    if (settings.healthConnectEnabled && deviceDataV2Types.some(type => type.namespace === "HealthConnect" && type.type === "blood-glucose")) {
         providers.push(healthConnectBloodGlucoseDataProvider(startDate, endDate!));
     }
     return providers.length > 0 ? getFirstValueReadings(providers) : [];
