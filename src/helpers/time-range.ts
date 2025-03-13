@@ -10,7 +10,7 @@ export interface TimeRange {
 
 export type DailyTimeRanges = Record<string, TimeRange[]>;
 
-export function computeDailyTimeRanges(dataPoints: DeviceDataPoint[] | DeviceDataV2Point[], offsetHours: number = 0): DailyTimeRanges {
+export function computeDailyTimeRanges(dataPoints: (DeviceDataPoint | DeviceDataV2Point)[], offsetHours: number = 0): DailyTimeRanges {
     const dailyTimeRanges: DailyTimeRanges = {};
 
     dataPoints.forEach(dataPoint => {
