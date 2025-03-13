@@ -23,13 +23,12 @@ const data = [{"id":"123a","participantID":"123","participantIdentifier":"abc1",
 			const startDate = new Date('2025-03-04T00:00:00'); // these dates are ignored since this is a mock
 			const endDate = new Date('2025-03-11T00:00:00');
 			const type = 'total_sleep_duration';
-			const result = await queryOuraSleep(startDate, endDate, type, ["long_sleep", "sleep"]);
+			const result = await queryOuraSleep(startDate, endDate, type, ["long_sleep"]);
 			expect(result).toEqual({
-				'2025-03-10': 540,
 				'2025-03-09': 24240,
 				'2025-03-08': 26760,
 				'2025-03-07': 20760,
-				'2025-03-06': 27090,
+				'2025-03-06': 26640,
 				'2025-03-05': 26730
 			});
 			
