@@ -1,11 +1,11 @@
-import MyDataHelps, { DeviceDataPointQuery, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
+import { DeviceDataPointQuery, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { Reading, ReadingRange } from './types';
 import { getFirstValueReadings } from './util';
 import { getDayKey } from "../index";
 import queryAllDeviceDataV2 from '../query-all-device-data-v2';
-import { DataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
+import { getCombinedDataCollectionSettings  } from '../daily-data-providers/combined-data-collection-settings';
 
 export async function appleHealthBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
@@ -65,14 +65,15 @@ export async function getGlucoseReadings(startDate: Date, endDate?: Date): Promi
 
     endDate = endDate ?? startDate;
 
-    const settings = await DataCollectionSettings.create();
-    if (settings.isEnabled("AppleHealth", "BloodGlucose")) {
+    const combinedSettings = await getCombinedDataCollectionSettings();
+    const { settings, deviceDataV2Types } = combinedSettings;
+    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === "AppleHealth" && type.type === "BloodGlucose")) {
         providers.push(appleHealthBloodGlucoseDataProvider(startDate, endDate!));
     }
-    if (settings.isEnabled("GoogleFit", "BloodGlucose")) {
+    if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === "GoogleFit" && type.type === "BloodGlucose")) {
         providers.push(googleFitBloodGlucoseDataProvider(startDate, endDate!));
     }
-    if (settings.isEnabled("HealthConnect", "blood-glucose")) {
+    if (settings.healthConnectEnabled && deviceDataV2Types.some(type => type.namespace === "HealthConnect", "blood-glucose")) {
         providers.push(healthConnectBloodGlucoseDataProvider(startDate, endDate!));
     }
     return providers.length > 0 ? getFirstValueReadings(providers) : [];
