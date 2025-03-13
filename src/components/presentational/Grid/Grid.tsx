@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import "./Grid.css"
+import Card from '../Card';
 
 export interface GridProps {
     children?: React.ReactNode;
@@ -12,6 +13,7 @@ export interface GridProps {
 export interface GridColumnProps {
     children?: React.ReactNode;
     span: number;
+    variant?: "default" | "card";
 }
 
 export interface GridContext {
@@ -31,19 +33,25 @@ export function Grid(props: GridProps) {
     }
 
     let style = { ...props.style };
-    if (props.gap) {
-        style.gap = props.gap + "px";
-    } else {
-        style.gap = "16px";
-    }
-    return <GridContext.Provider value={{ gap: props.gap || 16 }}>
+    let gap = (props.gap || props.gap === 0) ? props.gap : 16;
+    style.gap = `${gap}px`;
+    return <GridContext.Provider value={{ gap: gap }}>
         <div className={classes.join(" ")} style={style}>{props.children}</div>
     </GridContext.Provider>
 }
 
 Grid.Column = function (props: GridColumnProps) {
+    if (!props.children) {
+        return null;
+    }
+
     let widthPercent = props.span / 12 * 100;
     let gridContext = React.useContext(GridContext);
     let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
-    return <div className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+
+    if (props.variant === "card") {
+        return <Card className="mdhui-grid-column" style={{ width: width }}>{props.children}</Card>
+    } else {
+        return <div className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+    }
 }

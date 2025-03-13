@@ -1,30 +1,37 @@
 ## Overview
 
-Explain your changes, including any issues or relevant context about why they are needed.
+> Explain your changes, including any issues or relevant context about why they are needed.
+
+DESCRIBE YOUR CHANGES
 
 ## Security
 
-REMINDER: All file contents are public.
+> Consider potential security impacts and complete the following checklist. 
+> **REMINDER:** All file contents are public.
 
 - [ ] I have ensured no secure credentials or sensitive information remain in code, metadata, comments, etc.
   - [ ] Please verify that you double checked that .storybook/preview.js does not contain your participant access key details. 
   - [ ] There are no temporary testing changes committed such as API base URLs, access tokens, print/log statements, etc.
 - [ ] These changes do not introduce any security risks, or any such risks have been properly mitigated.
 
-Describe briefly what security risks you considered, why they don't apply, or how they've been mitigated.
+DESCRIBE BRIEFLY WHAT SECURITY RISKS YOU CONSIDERED, WHY THEY DON'T APPLY, OR HOW THEY'VE BEEN MITIGATED.
 
-## Checklist
+## Testing
 
-### Testing
-- [ ] MyDataHelps iOS app
-- [ ] MyDataHelps Android app
-- [ ] [MyDataHelps website](mydatahelps.org)
+> Consider whether the changes might have device-specific behaviors (screen padding, new APIs, etc.) and check one of the following boxes:
+
+- [ ] This change can be adequately tested using the MDH Storybook.
+- [ ] This change requires additional testing in the MDH iOS/Android/Web apps. (Create a pre-release tag/build and test in a ViewBuilder PR.)
+
+DESCRIBE YOUR TEST PLAN
 
 ### Documentation
-- [ ] I have added relevant Storybook updates to this PR as well.
-- [ ] If this feature requires a developer doc update, tag @CareEvolution/api-docs.
 
-Consider "Squash and merge" as needed to keep the commit history reasonable on `main`.
+> Consider whether there are any documentation impacts and check one of the following boxes:
+
+- [ ] I have added relevant Storybook updates to this PR.
+- [ ] If this feature requires a developer doc update, I have tagged `@CareEvolution/api-docs`.
+- [ ] This change does not impact documentation or Storybook.
 
 ## Reviewers
 
@@ -32,3 +39,5 @@ Assign to the appropriate reviewer(s). Minimally, a second set of eyes is needed
 - Subject-matter experts
 - Style/editing reviewers
 - Others requested by the content owner
+
+Consider "Squash and merge" as needed to keep the commit history reasonable on `main`.

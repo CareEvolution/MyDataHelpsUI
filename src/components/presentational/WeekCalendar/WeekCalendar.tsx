@@ -1,6 +1,6 @@
 ﻿import React, { useRef } from "react";
 import { useEffect } from "react";
-import "./WeekCalendar.css"
+import "./WeekCalendar.css";
 import { add, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
 import debounce from 'lodash/debounce';
@@ -17,7 +17,7 @@ export interface WeekCalendarProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: WeekCalendarProps) {
+export default function WeekCalendar(props: WeekCalendarProps) {
 	const element = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {

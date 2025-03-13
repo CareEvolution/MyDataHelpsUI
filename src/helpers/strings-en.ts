@@ -10,6 +10,7 @@
     "settings": "Settings",
     "connect": "Connect",
     "reconnect": "Reconnect",
+    "setup": "Setup",
     "refresh": "Refresh",
     "remove": "Remove",
     "help": "Help",
@@ -406,6 +407,7 @@
     "services-performed": "Services Performed",
     "device-data-month-chart-minutes": "Minutes",
     "device-data-month-chart-sleep": "Sleep",
+    "air-quality": "Air Quality",
     "air-quality-home": "Air Quality (Home)",
     "air-quality-work": "Air Quality (Work)",
     "sedentary-time": "Sedentary Time",
@@ -523,7 +525,10 @@
     "daily": "Daily",
     "weekly": "Weekly",
     "monthly": "Monthly",
-    "bonus": "Bonus"
+    "bonus": "Bonus",
+    "syncing-data": "Syncing data...",
+    "health-connect-phr-sync-title": "Sync with Health Connect",
+    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect"
 };
 
 export default strings;

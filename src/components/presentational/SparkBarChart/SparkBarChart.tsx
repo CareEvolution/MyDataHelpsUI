@@ -1,12 +1,13 @@
 ﻿import React, { useContext } from 'react';
 import { LayoutContext, ShinyOverlay } from '..';
-import "./SparkBarChart.css"
+import "./SparkBarChart.css";
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
 export interface SparkBarChartProps {
 	averageFillPercent?: number;
 	bars: SparkBarChartBar[];
 	innerRef?: React.Ref<HTMLDivElement>;
+	style?: React.CSSProperties
 }
 
 export interface SparkBarChartBar {
@@ -14,11 +15,11 @@ export interface SparkBarChartBar {
 	barFillPercent: number;
 }
 
-export default function (props: SparkBarChartProps) {
+export default function SparkBarChart(props: SparkBarChartProps) {
 	var width = (100 / props.bars.length);
 	let context = useContext(LayoutContext);
 
-	return <div ref={props.innerRef} className="mdhui-spark-bar-chart">
+	return <div ref={props.innerRef} className="mdhui-spark-bar-chart" style={props.style}>
 		{props.averageFillPercent !== undefined &&
 			<div className="mdhui-spark-bar-chart-average" style={{ bottom: props.averageFillPercent * 100 + "%" }}></div>
 		}

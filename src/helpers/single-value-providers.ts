@@ -1,6 +1,8 @@
 import MyDataHelps from '@careevolution/mydatahelps-js';
+import { queryDailyData } from './query-daily-data';
+import { startOfToday, subDays } from 'date-fns';
 
-export type SingleValueProviderType = 'static integer' | 'random integer' | 'custom field integer';
+export type SingleValueProviderType = 'static integer' | 'random integer' | 'custom field integer' | 'days with data';
 
 export abstract class SingleValueProvider<T> {
     protected constructor(public type: SingleValueProviderType) {
@@ -50,6 +52,25 @@ export class CustomFieldIntegerValueProvider extends SingleValueProvider<number>
     }
 }
 
+export class DaysWithDataValueProvider extends SingleValueProvider<number> {
+    constructor(public dataType: string, public daysInPast: number) {
+        if(daysInPast < 0) {
+            throw new Error('daysInPast must be a non-negative number');
+        }
+        super('days with data');
+    }
+
+    async getValue(): Promise<number | undefined> {
+        const today = startOfToday();
+        const startDate = subDays(today, this.daysInPast);
+        const data = await queryDailyData(this.dataType, startDate, today);
+        if(!data || data.length === 0) {
+            return 0;
+        }
+        return Object.keys(data).reduce((daysWithData, dayKey) => daysWithData + (data[dayKey] > 0 ? 1 : 0), 0);
+    }
+}
+
 export const createStaticIntegerValueProvider = (staticValue: number): StaticIntegerValueProvider => {
     return new StaticIntegerValueProvider(staticValue);
 };
@@ -60,4 +81,8 @@ export const createRandomIntegerValueProvider = (maxValue: number): RandomIntege
 
 export const createCustomFieldIntegerValueProvider = (customField: string): CustomFieldIntegerValueProvider => {
     return new CustomFieldIntegerValueProvider(customField);
+};
+
+export const createDaysWithDataValueProvider = (dataType: string, daysInPast: number): DaysWithDataValueProvider => {
+    return new DaysWithDataValueProvider(dataType, daysInPast);
 };

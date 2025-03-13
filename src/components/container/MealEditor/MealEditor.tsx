@@ -2,11 +2,11 @@ import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import './MealEditor.css';
 import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
 import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
-import { parse, startOfDay } from 'date-fns';
+import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { getFullDayAndDateString, getTimeOfDayString } from '../../../helpers/date-helpers';
+import { getFullDayAndDateString } from '../../../helpers/date-helpers';
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -119,6 +119,7 @@ export default function MealEditor(props: MealEditorProps) {
         }
 
         mealToEdit!.description = mealToEdit!.description?.trim();
+        mealToEdit!.lastModified = new Date();
 
         const otherMeals = allMeals!.filter(meal => meal.id !== mealToEdit!.id);
         const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
@@ -198,7 +199,7 @@ export default function MealEditor(props: MealEditorProps) {
                     <input
                         className="mdhui-meal-editor-time-input"
                         type="time"
-                        value={getTimeOfDayString(mealToEdit.timestamp)}
+                        value={format(mealToEdit.timestamp, 'HH:mm')}
                         onChange={event => onTimeChanged(event.target.value)}
                         style={{ colorScheme: layoutContext.colorScheme }}
                     />

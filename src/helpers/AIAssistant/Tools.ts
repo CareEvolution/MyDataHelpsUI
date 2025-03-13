@@ -268,7 +268,7 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input, config: LangGraphRunnableConfig): Promise<string> => {
 
-    let codeRunnerUrl = isDevelopment() ? 'https://kwejahcwmsyzidk5vde5uyv33a0saruz.lambda-url.us-east-1.on.aws' : 'https://rbbfx4e6nlhghaxv4zbv5krzzu0dound.lambda-url.us-east-1.on.aws';
+    let codeRunnerUrl = isDevelopment() ? 'https://api.mydatahelps.dev/run-code' : 'https://api.mydatahelps.org/run-code';
     let response = await fetch(codeRunnerUrl, {
       method: 'POST',
       body: JSON.stringify({ code: input.code }),
@@ -291,7 +291,8 @@ export const GraphingTool = tool(
       that represents an image. After using this tool, the LLM should respond with 'Your generated graph is displayed above.' without interpreting 
       or including the image content in the response. The UI will handle displaying the image.`,
     schema: z.object({
-      code: z.string().describe("The python code that, when executed, will generate an image representing the graph.")
+      code: z.string().describe(`The python code that, when executed, will generate an image representing the graph. Use matplotlib.pyplot
+        to generate the graph. The code should not include any imports, as the necessary imports will be added automatically "import matplotlib.pyplot as plt".`)
     })
   }
 );

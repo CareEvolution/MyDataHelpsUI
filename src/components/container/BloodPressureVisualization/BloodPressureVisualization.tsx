@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import React from "react";
 import { DateRangeContext, LoadingIndicator } from "../../presentational";
 import DumbbellChart from "../../presentational/DumbbellChart";
-import { Dumbbell, ClosedInterval, Axis, DataPoint, DumbbellClass } from "../../presentational/DumbbellChart/DumbbellChart";
+import { ClosedInterval, Axis, DataPoint, DumbbellClass, DumbbellDataPoint } from "../../presentational/DumbbellChart/DumbbellChart";
 import { addDays, startOfDay } from "date-fns";
 import language from "../../../helpers/language";
 import { previewBloodPressureDataPoint } from "./BloodPressureVisualization.previewdata";
@@ -140,26 +140,26 @@ export default function (props: BloodPressureVisualizationProps) {
 
         return Category.Unknown;
     }
-    
+
     function getAlertPrompt(alert: Category | undefined): string {
-       switch (alert) {
-        case undefined:
-            return language('no-data-yet');
-        case Category.Crisis:
-          return language('bp-crisis');
-        case Category.Elevated:
-          return language('bp-elevated');
-        case Category.Low:
-          return language('bp-low');
-        case Category.Normal:
-          return language('bp-normal');
-        case Category["Stage 1"]:
-          return language('bp-stage1');
-        case Category["Stage 2"]:
-          return language('bp-stage2');
-        default:
-          return language('bp-unknown');
-       }
+        switch (alert) {
+            case undefined:
+                return language('no-data-yet');
+            case Category.Crisis:
+                return language('bp-crisis');
+            case Category.Elevated:
+                return language('bp-elevated');
+            case Category.Low:
+                return language('bp-low');
+            case Category.Normal:
+                return language('bp-normal');
+            case Category["Stage 1"]:
+                return language('bp-stage1');
+            case Category["Stage 2"]:
+                return language('bp-stage2');
+            default:
+                return language('bp-unknown');
+        }
     }
 
     function buildMetrics(data: BloodPressureDataPoint[]) {
@@ -250,14 +250,14 @@ export default function (props: BloodPressureVisualizationProps) {
         const diastolicInterval = buildInterval(diastolicEntriesForDate);
         const diastolicAverage = diastolicEntriesForDate.reduce((a, b) => a + b) / diastolicEntriesForDate.length;
         const dataPoint: DataPoint = { dataSet1: diastolicInterval, dataSet2: systolicInterval };
-        var db: Dumbbell = { dataPoint: dataPoint, xValue: getShortestDateString(date), class: assignClass(systolicAverage, diastolicAverage) };
+        var db: DumbbellDataPoint = { dataPoint: dataPoint, xValue: getShortestDateString(date), class: assignClass(systolicAverage, diastolicAverage) };
         return db;
     }
 
     function buildVisualization(start: Date) {
         const intervalEnd = addDays(start, 6);
         var bpDataForMetrics: BloodPressureDataPoint[] = [];
-        const weekData: Dumbbell[] = [];
+        const weekData: DumbbellDataPoint[] = [];
         for (let i = start; i <= intervalEnd; i.setDate(i.getDate() + 1)) {
             var currentDate = startOfDay(i);
             var dataForDay = bloodPressureData?.get(currentDate.toString()) ?? [];
