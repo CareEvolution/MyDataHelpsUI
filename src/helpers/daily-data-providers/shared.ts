@@ -1,4 +1,4 @@
-import MyDataHelps, { DataCollectionSettings, DeviceDataPoint } from "@careevolution/mydatahelps-js";
+import { DeviceDataPoint } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { add, parseISO } from "date-fns";
 import getDayKey from "../get-day-key";

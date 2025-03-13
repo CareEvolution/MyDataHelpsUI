@@ -6,24 +6,41 @@ import {
     healthConnectTotalSleepMinutesDataProvider,
 } from ".";
 import getDayKey from "../get-day-key";
-import { DataCollectionSettings } from "./data-collection-settings";
-
+import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
 export default async function (startDate: Date, endDate: Date) {
-    const settings = await DataCollectionSettings.create();
+    const combinedSettings = await getCombinedDataCollectionSettings();
+    const { settings, deviceDataV2Types } = combinedSettings;
+
     const providers: Promise<Record<string, number>>[] = [];
 
-    if (settings.isEnabled( "Fitbit" )) {
+    if (settings.fitbitEnabled) {
         providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.isEnabled( "Garmin" )) {
+    if (settings.garminEnabled) {
         providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.isEnabled( "AppleHealth", "SleepAnalysisInterval" )) {
+    if (
+        settings.appleHealthEnabled &&
+        settings.queryableDeviceDataTypes.some(
+            (ddt) =>
+                ddt.namespace === "AppleHealth" &&
+                ddt.type === "SleepAnalysisInterval",
+        )
+    ) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
     }
-    if (settings.isEnabled( "HealthConnect", "sleep")) {
-        providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
+    if (
+        settings.healthConnectEnabled &&
+        deviceDataV2Types.some(
+            (ddt) =>
+                ddt.namespace === "HealthConnect" &&
+                ddt.type === "sleep",
+        )
+    ) {
+        providers.push(
+            healthConnectTotalSleepMinutesDataProvider(startDate, endDate),
+        );
     }
 
     if (!providers.length) {
@@ -38,7 +55,10 @@ export default async function (startDate: Date, endDate: Date) {
         let maxSleep: number | null = null;
 
         values.forEach((value) => {
-            if (value[dayKey] && (maxSleep == null || maxSleep < value[dayKey])) {
+            if (
+                value[dayKey] &&
+                (maxSleep == null || maxSleep < value[dayKey])
+            ) {
                 maxSleep = value[dayKey];
             }
         });

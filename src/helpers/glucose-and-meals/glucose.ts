@@ -5,7 +5,7 @@ import { Reading, ReadingRange } from './types';
 import { getFirstValueReadings } from './util';
 import { getDayKey } from "../index";
 import queryAllDeviceDataV2 from '../query-all-device-data-v2';
-import { DataCollectionSettings } from '../daily-data-providers/data-collection-settings';
+import { DataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
 
 export async function appleHealthBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {

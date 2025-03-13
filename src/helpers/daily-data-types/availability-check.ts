@@ -4,7 +4,10 @@ import MyDataHelps, {
     DeviceDataV2Namespace,
     DeviceDataV2Query,
 } from "@careevolution/mydatahelps-js";
-import { DataCollectionSettings } from "../daily-data-providers/data-collection-settings";
+import {
+    CombinedDataCollectionSettings,
+    getCombinedDataCollectionSettings,
+} from "../daily-data-providers/combined-data-collection-settings";
 
 export function simpleAvailabilityCheck(
     namespace: DeviceDataNamespace,
@@ -49,27 +52,76 @@ export function simpleAvailabilityCheckV2(
     };
 }
 
+export type DataSource = {
+    namespace: DeviceDataNamespace | DeviceDataV2Namespace;
+    type: string[];
+};
+
+export function sources(
+    ...items: Array<[string, string | string[]]>
+): DataSource[] {
+    return items.map(([namespace, type]) => ({
+        namespace: namespace as DeviceDataNamespace | DeviceDataV2Namespace,
+        type: Array.isArray(type) ? type : [type],
+    }));
+}
+
+let combinedSettingsPromise: Promise<CombinedDataCollectionSettings> | null =
+    null;
+
+function getCachedCombinedSettings(): Promise<CombinedDataCollectionSettings> {
+    if (!combinedSettingsPromise) {
+        combinedSettingsPromise = getCombinedDataCollectionSettings();
+    }
+    return combinedSettingsPromise;
+}
+
 export async function checkSourceAvailability(
-    settings: DataCollectionSettings,
-    sources: { namespace: DeviceDataNamespace | DeviceDataV2Namespace, type: string[] }[],
-    modifiedAfter?: Date
+    sources: DataSource[],
+    modifiedAfter?: Date,
 ): Promise<boolean> {
+    const combinedSettings = await getCachedCombinedSettings();
+    const { settings, deviceDataV2Types } = combinedSettings;
     const availabilityChecks = sources.map(async ({ namespace, type }) => {
         let enabled: boolean = false;
         let isV2: boolean = false;
 
         switch (namespace) {
             case "AppleHealth":
-                enabled = type.some(t => settings.isEnabled("AppleHealth", t));
+                enabled =
+                    settings.appleHealthEnabled &&
+                    type.some((t) =>
+                        settings.queryableDeviceDataTypes.some(
+                            (d) => d.namespace == "AppleHealth" && d.type == t,
+                        ),
+                    );
+                break;
+            case "GoogleFit":
+                enabled =
+                    settings.googleFitEnabled &&
+                    type.some((t) =>
+                        settings.queryableDeviceDataTypes.some(
+                            (d) => d.namespace == "GoogleFit" && d.type == t,
+                        ),
+                    );
                 break;
             case "Fitbit":
-                enabled = settings.isEnabled("Fitbit");
+                enabled = settings.fitbitEnabled;
                 break;
             case "Garmin":
-                enabled = settings.isEnabled("Garmin");
+                enabled = settings.garminEnabled;
                 break;
             case "HealthConnect":
-                enabled = type.some(t => settings.isEnabled("HealthConnect", t));
+                enabled =
+                    settings.healthConnectEnabled &&
+                    type.some((t) =>
+                        deviceDataV2Types.some(
+                            (d) =>
+                                d.enabled &&
+                                d.namespace == "HealthConnect" &&
+                                d.type == t,
+                        ),
+                    );
                 isV2 = true;
                 break;
         }
@@ -77,12 +129,18 @@ export async function checkSourceAvailability(
         if (!enabled) return false;
 
         if (isV2) {
-            return simpleAvailabilityCheckV2(namespace as DeviceDataV2Namespace, type)(modifiedAfter);
+            return simpleAvailabilityCheckV2(
+                namespace as DeviceDataV2Namespace,
+                type,
+            )(modifiedAfter);
         } else {
-            return simpleAvailabilityCheck(namespace as DeviceDataNamespace, type)(modifiedAfter);
+            return simpleAvailabilityCheck(
+                namespace as DeviceDataNamespace,
+                type,
+            )(modifiedAfter);
         }
     });
 
     const finalResults = await Promise.all(availabilityChecks);
-    return finalResults.some(result => result);
+    return finalResults.some((result) => result);
 }
