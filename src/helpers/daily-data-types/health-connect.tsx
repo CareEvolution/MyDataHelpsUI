@@ -1,6 +1,6 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import {
-    healthConnectAverageRestingHeartRateDataProvider,
+    healthConnectRestingHeartRateDataProvider,
     healthConnectTotalSleepMinutesDataProvider,
     healthConnectRemSleepMinutesDataProvider,
     healthConnectDeepSleepMinutesDataProvider,
@@ -21,8 +21,8 @@ import { simpleAvailabilityCheckV2 } from "./availability-check";
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
-        type: DailyDataType.HealthConnectAverageRestingHeartRate,
-        dataProvider: healthConnectAverageRestingHeartRateDataProvider,
+        type: DailyDataType.HealthConnectRestingHeartRate,
+        dataProvider: healthConnectRestingHeartRateDataProvider,
         availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
             "resting-heart-rate",
         ]),

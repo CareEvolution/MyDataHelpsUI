@@ -33,7 +33,7 @@ export default function (props: RestingHeartRateCalendarProps) {
 		if (dataTypeSource == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
 		if (dataTypeSource == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
 		if (dataTypeSource == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
-		if (dataTypeSource == "HealthConnect") dailyDataType = DailyDataType.HealthConnectAverageRestingHeartRate;
+		if (dataTypeSource == "HealthConnect") dailyDataType = DailyDataType.HealthConnectRestingHeartRate;
 		
 		return queryDailyData(dailyDataType, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
 			setHeartRates(result);
