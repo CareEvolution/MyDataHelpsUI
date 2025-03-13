@@ -76,7 +76,9 @@ export enum DailyDataType {
 	TherapyMinutes = "TherapyMinutes",
 	AirQuality = "AirQuality",
 	HomeAirQuality = "HomeAirQuality",
-	WorkAirQuality = "WorkAirQuality"
+	WorkAirQuality = "WorkAirQuality",
+	OuraSteps = "OuraSteps",
+	OuraRestingHeartRate = "OuraRestingHeartRate",
 };
 
 export interface DailyDataTypeDefinition {

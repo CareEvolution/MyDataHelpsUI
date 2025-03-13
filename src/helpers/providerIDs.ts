@@ -17,5 +17,5 @@ export function getOmronProviderID() {
 }
 
 export function getOuraProviderID() {
-    return isDevelopment() ? 40 : 41; // TODO. update
+    return isDevelopment() ? 10414 : 99999; // TODO. update PROD ID
 }

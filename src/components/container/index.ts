@@ -58,3 +58,4 @@ export { default as TermInformation, TermInformationReference } from "./TermInfo
 export { default as ViewDeviceActivity } from "./ViewDeviceActivity"
 export { default as ViewEhr } from "./ViewEhr"
 export { default as WeeklyDayNavigator } from "./WeeklyDayNavigator"
+export { default as ConnectOura } from "./ConnectOura"

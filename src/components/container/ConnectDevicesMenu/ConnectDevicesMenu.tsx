@@ -2,7 +2,7 @@ import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, Ext
 import React, { ReactNode, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
-import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID } from '../../../helpers/providerIDs';
+import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from '../../../helpers/providerIDs';
 import { generateSampleParticipantInfo, previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
@@ -12,13 +12,14 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
+import OuraLogo from '../../../assets/oura-logo.svg';
 import HealthConnectLogo from '../../../assets/healthconnect-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
-export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Environmental";
+export type DeviceAccountType = "Fitbit" | "Garmin" | "Dexcom" | "AppleHealth" | "GoogleFit" | "Omron" | "HealthConnect" | "Environmental" | "Oura";
 
 export interface ConnectDevicesMenuProps {
     innerRef?: React.Ref<HTMLDivElement>
@@ -148,7 +149,7 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
-    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
+    let accountTypes = props.accountTypes || ["Fitbit", "Garmin", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental", "Oura"];
     if (!settings?.fitbitEnabled) {
         accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
@@ -157,6 +158,9 @@ export default function (props: ConnectDevicesMenuProps) {
     }
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
+    }
+	if (!settings?.ouraEnabled) {
+        accountTypes = accountTypes.filter(a => a != "Oura");
     }
     if (platform == "Android" || (!settings!.appleHealthEnabled && !props.enableAppleHealthSurveyName)) {
         accountTypes = accountTypes.filter(a => a != "AppleHealth");
@@ -197,6 +201,13 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
         return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img src={OmronLogo} />);
+    }
+
+	function getOuraMenuItem() {
+        if (!accountTypes.includes("Oura")) {
+            return null;
+        }
+        return getExternalAccountMenuItem("Oura", getOuraProviderID(), <img src={OuraLogo} />);
     }
 
     function getExternalAccountMenuItem(providerName: string, providerID: number, image: ReactNode) {
@@ -265,6 +276,7 @@ export default function (props: ConnectDevicesMenuProps) {
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
             {getDexcomMenuItem()}
+			{getOuraMenuItem()}
             {getAppleHealthMenuItem()}
             {getHealthConnectMenuItem()}
             {getGoogleFitMenuItem()}

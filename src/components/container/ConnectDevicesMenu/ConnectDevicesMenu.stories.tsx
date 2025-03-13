@@ -31,7 +31,7 @@ export const Android = {
 export const ConnectedStates = {
     args: {
         previewState: "ConnectedStates",
-        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Environmental"],
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Environmental", "Oura"],
         postalCodeSurveyName: "SetPostalCode"
     },
     render: render
