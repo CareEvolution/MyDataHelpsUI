@@ -13,12 +13,12 @@ export default function (startDate: Date, endDate: Date) {
         if (settings.garminEnabled) {
             providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
         }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
-            providers.push(appleHealthSleepDataProvider(startDate, endDate));
-        }
 		if (settings.ouraEnabled) {
 			providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
 		}
+        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
+            providers.push(appleHealthSleepDataProvider(startDate, endDate));
+        }
 
         if (!providers.length) {
             return {};

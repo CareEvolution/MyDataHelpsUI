@@ -13,11 +13,11 @@ export default function (startDate: Date, endDate: Date) {
 		if (settings.garminEnabled) {
 			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
 		}
-		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
-			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
-		}
 		if (settings.ouraEnabled) {
 			providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+		}
+		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
+			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
 		}
 		if (!providers.length) {
 			return {};
