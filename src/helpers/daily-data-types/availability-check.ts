@@ -14,25 +14,24 @@ export function simpleAvailabilityCheck(namespace: DeviceDataNamespace, type: st
 	}
 }
 
-// TODO temporary for now.
 export function simpleAvailabilityCheckV2(
-    namespace: DeviceDataV2Namespace,
-    type: string | string[],
+	namespace: DeviceDataV2Namespace,
+	type: string | string[],
 ) {
-    return async function (modifiedAfter?: Date) {
-        const parameters: DeviceDataV2Query = {
-            namespace: namespace,
-            type: Array.isArray(type) ? type.join(",") : type,
-            limit: 1
-        };
+	return async function (modifiedAfter?: Date) {
+		const parameters: DeviceDataV2Query = {
+			namespace: namespace,
+			type: Array.isArray(type) ? type.join(",") : type,
+			limit: 1
+		};
 		if (modifiedAfter) {
 			parameters.modifiedAfter = modifiedAfter.toISOString();
 		}
-        try {
-            const result = await MyDataHelps.queryDeviceDataV2(parameters);
+		try {
+			const result = await MyDataHelps.queryDeviceDataV2(parameters);
 			return result.deviceDataPoints.length > 0;
-        } catch (e) {
-            return false;
-        }
-    };
+		} catch (e) {
+			return false;
+		}
+	};
 }
