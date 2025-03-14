@@ -15,3 +15,7 @@ export function getDexcomProviderID() {
 export function getOmronProviderID() {
     return isDevelopment() ? 171 : 1466;
 }
+
+export function getOuraProviderID() {
+    return isDevelopment() ? 10414 : 99999; // TODO. update PROD ID
+}

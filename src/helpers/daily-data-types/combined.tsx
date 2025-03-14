@@ -5,7 +5,7 @@ import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import { combinedMindfulMinutesDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
-import { simpleAvailabilityCheck } from "./availability-check";
+import { simpleAvailabilityCheck, simpleAvailabilityCheckV2 } from "./availability-check";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 import { formatNumberForLocale } from "../../helpers/locale";
 
@@ -26,7 +26,12 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 return true;
             }
 
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
+            if (settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter)) {
+                return true;
+            }
+
+            return settings.ouraEnabled && await simpleAvailabilityCheckV2("Oura", "heart-rate")(modifiedAfter);
+
         },
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
@@ -49,7 +54,11 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 return true;
             }
 
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter);
+            if (settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Daily")(modifiedAfter)) {
+                return true;
+            }
+
+			return settings.ouraEnabled && await simpleAvailabilityCheckV2("Oura", "daily-activity")(modifiedAfter);
         },
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
@@ -100,7 +109,11 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
                 return true;
             }
 
-            return settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Sleep")(modifiedAfter);
+            if (settings.garminEnabled && await simpleAvailabilityCheck("Garmin", "Sleep")(modifiedAfter)) {
+				return true;
+			}
+
+			return settings.ouraEnabled && await simpleAvailabilityCheckV2("Oura", "sleep")(modifiedAfter);
         },
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,

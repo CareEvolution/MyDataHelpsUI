@@ -83,3 +83,15 @@ export const OmronDefault: Story = {
     },
     render: render
 };
+
+export const OuraDefault: Story = {
+    args: {
+        title: "Connect Oura",
+        text: "Connect your Oura account to MyDataHelps to share your activity data.",
+        deviceType: "Oura",
+        providerID: 4,
+        styles: {},
+        onConnect: () => {}
+    },
+    render: render
+};

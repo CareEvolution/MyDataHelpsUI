@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
-import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
+import { getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 import { deviceType } from "../../../helpers/deviceType";
 
 /**
@@ -33,6 +33,8 @@ export default function ConnectDeviceAccountStepContainer () {
                 return getOmronProviderID();
             case "Garmin":
                 return getGarminProviderID();
+            case 'Oura':
+                return getOuraProviderID();
         }
     }
 

@@ -72,4 +72,7 @@ export { sleepScore as garminSleepScoreDataProvider } from "./garmin-sleep"
 export { default as airQualityDataProvider } from './air-quality'
 export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
+export { default as ouraStepsDataProvider } from './oura-daily-steps'
+export { default as ouraSleepMinutesDataProvider } from './oura-total-sleep'
+export { default as ouraRestingHeartRateDataProvider } from './oura-resting-heart-rate'
 export * from './shared'

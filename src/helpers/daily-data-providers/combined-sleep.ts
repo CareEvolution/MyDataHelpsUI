@@ -1,5 +1,5 @@
 import { add } from "date-fns";
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider } from ".";
+import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider, } from ".";
 import getDayKey from "../get-day-key";
 import MyDataHelps from "@careevolution/mydatahelps-js";
 
@@ -13,6 +13,9 @@ export default function (startDate: Date, endDate: Date) {
         if (settings.garminEnabled) {
             providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
         }
+		if (settings.ouraEnabled) {
+			providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
+		}
         if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
             providers.push(appleHealthSleepDataProvider(startDate, endDate));
         }
