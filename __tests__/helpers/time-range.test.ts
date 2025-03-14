@@ -1,4 +1,4 @@
-import { add, startOfToday } from 'date-fns';
+import { add, format, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
 import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges, DailyTimeRanges } from '../../src/helpers/time-range';
@@ -28,10 +28,10 @@ describe('TimeRange - Helper Function Tests', () => {
         name: 'DeviceDataV2Point',
         create: (startDate: Date, observationDate: Date): DeviceDataV2Point => {
             return {
-                startDate: add(startDate, { minutes: -startDate.getTimezoneOffset() }).toISOString().substring(0, 19),
-                startDateOffset: `-0${startDate.getTimezoneOffset() / 60}:00:00`,
-                observationDate: add(observationDate, { minutes: -observationDate.getTimezoneOffset() }).toISOString().substring(0, 19),
-                observationDateOffset: `-0${observationDate.getTimezoneOffset() / 60}:00:00`,
+                startDate: format(startDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
+                startDateOffset: format(startDate, 'xxx\':00\''),
+                observationDate: format(observationDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
+                observationDateOffset: format(observationDate, 'xxx\':00\'')
             } as DeviceDataV2Point;
         }
     };
