@@ -12,6 +12,10 @@ export function querySleepMinutesV2(namespace: DeviceDataV2Namespace, type: stri
         observedBefore: add(endDate, { days: 1 }).toISOString()
     };
     return queryAllDeviceDataV2(query).then(dataPoints => {
+        // An offset of -6 hours is used here to shift the day boundary back 6 hours. When computing daily
+        // sleep values, we include sleep time from the prior day after 6pm as part of the value for the
+        // current day.  Put another way, today's sleep value will include all sleep time starting from
+        // yesterday at 6pm through today at 6pm.
         const dailyTimeRanges = computeDailyTimeRanges(dataPoints.filter(dataPoint => levels.includes(dataPoint.value)), -6);
         return buildMinutesResultFromDailyTimeRanges(startDate, endDate, dailyTimeRanges);
     }, () => ({}));
