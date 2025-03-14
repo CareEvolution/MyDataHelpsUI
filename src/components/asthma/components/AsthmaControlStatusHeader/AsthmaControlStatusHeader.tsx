@@ -133,13 +133,13 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         }
         {controlState!.status === 'controlled' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled-p1')}<span className="mdhui-asthma-control-status-header-controlled">{language('asthma-control-status-header-controlled-p2')}</span></p>
+                <p>{formatInnerSpan(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled'), 'mdhui-asthma-control-status-header-controlled')}</p>
             </div>
         }
         {controlState!.status === 'not-controlled' &&
             <div>
                 <div className="mdhui-asthma-control-status-header-text">
-                    <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled-p1')}<span className="mdhui-asthma-control-status-header-not-controlled">{language('asthma-control-status-header-not-controlled-p2')}</span></p>
+                    <p>{formatInnerSpan(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled'), 'mdhui-asthma-control-status-header-not-controlled')}</p>
                 </div>
                 <div className="mdhui-asthma-control-status-header-not-controlled-stats">
                     {getStatDisplay(language('asthma-control-status-header-not-controlled-stat-symptom-days'), controlState!.symptomDaysPast7)}
