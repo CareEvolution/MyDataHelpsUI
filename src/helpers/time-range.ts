@@ -102,8 +102,8 @@ function combineRanges(range1: TimeRange, range2: TimeRange): TimeRange {
     };
 }
 
-function applyOffsetToDate(dataPoint: DeviceDataPoint | DeviceDataV2Point, datePropertyName: keyof DeviceDataPoint & keyof DeviceDataV2Point) {
-    const dateStr = dataPoint[datePropertyName];
+function applyOffsetToDate(dataPoint: DeviceDataPoint | DeviceDataV2Point, datePropertyName: keyof DeviceDataPoint & keyof DeviceDataV2Point): string {
+    const dateStr = dataPoint[datePropertyName] as string;
 
     const dateOffsetPropertyName = (datePropertyName + 'Offset') as keyof DeviceDataV2Point;
     if (dataPoint.hasOwnProperty(dateOffsetPropertyName)) {
