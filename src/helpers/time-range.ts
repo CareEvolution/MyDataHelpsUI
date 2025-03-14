@@ -107,6 +107,7 @@ function applyOffsetToDate(dataPoint: DeviceDataPoint | DeviceDataV2Point, dateP
 
     const dateOffsetPropertyName = (datePropertyName + 'Offset') as keyof DeviceDataV2Point;
     if (dataPoint.hasOwnProperty(dateOffsetPropertyName)) {
+        // The substring call here is to trim the offset values from "-05:00:00" to "-05:00" so they will parse correctly.
         return dateStr + ((dataPoint as DeviceDataV2Point)[dateOffsetPropertyName]?.substring(0, 6) ?? '');
     }
 
