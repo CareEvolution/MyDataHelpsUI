@@ -27,6 +27,9 @@ describe('TimeRange - Helper Function Tests', () => {
     const deviceDataV2PointsFactory: DataPointFactory<DeviceDataV2Point> = {
         name: 'DeviceDataV2Point',
         create: (startDate: Date, observationDate: Date): DeviceDataV2Point => {
+            // Special formatting is used here to simulate the date and offset formats that will be present in V2 data points.
+            // For dates, the format needs to be an ISO 8601 date/time without a timezone offset (e.g. "2025-03-14T15:09:23").
+            // For offsets, the format needs to be an ISO 8601 timezone offset plus ":00" (e.g. "-05:00:00").
             return {
                 startDate: format(startDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
                 startDateOffset: format(startDate, 'xxx\':00\''),
