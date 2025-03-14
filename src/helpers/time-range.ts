@@ -1,5 +1,5 @@
 import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
-import { add, differenceInSeconds, parseISO, startOfDay } from 'date-fns';
+import { add, differenceInSeconds, isBefore, parseISO, startOfDay } from 'date-fns';
 import getDayKey from './get-day-key';
 import { DailyDataQueryResult } from './query-daily-data';
 
@@ -73,6 +73,10 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint | DeviceDataV2Point, o
 
     const startDate = parseISO(applyOffsetToDate(dataPoint, 'startDate'));
     const observationDate = parseISO(applyOffsetToDate(dataPoint, 'observationDate'));
+
+    if (!isBefore(startDate, observationDate)) {
+        return [];
+    }
 
     let dayCutoff = add(startOfDay(startDate), { hours: offsetHours });
 

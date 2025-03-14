@@ -239,6 +239,28 @@ describe('TimeRange - Helper Function Tests', () => {
             expect(ranges[1].startTime).toEqual(startDate2);
             expect(ranges[1].endTime).toEqual(observationDate2);
         });
+
+        it('Should return no time ranges if the start date is greater than the observation date.', async () => {
+            const startDate = add(someDay, { hours: 5 });
+            const observationDate = add(someDay, { hours: 2 });
+
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
+
+            const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
+
+            expect(Object.keys(dailyTimeRanges)).toHaveLength(0);
+        });
+
+        it('Should return no time ranges if the start date is equal to the observation date.', async () => {
+            const startDate = add(someDay, { hours: 5 });
+            const observationDate = add(someDay, { hours: 5 });
+
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
+
+            const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
+
+            expect(Object.keys(dailyTimeRanges)).toHaveLength(0);
+        });
     });
 
     describe('Build Minutes Result From Daily Time Ranges', () => {
