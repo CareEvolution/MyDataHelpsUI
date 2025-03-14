@@ -135,11 +135,11 @@ describe('TimeRange - Helper Function Tests', () => {
             const ranges = dailyTimeRanges[getDayKey(someDay)];
             expect(ranges).toHaveLength(1);
             expect(ranges[0].startTime).toEqual(startDate);
-            expect(ranges[0].endTime).toEqual(add(someDay, { hours: 18 }));
+            expect(ranges[0].endTime).toEqual(add(someDay, { hours: 18, minutes: nextDay.getTimezoneOffset() - someDay.getTimezoneOffset() }));
 
             const nextDayRanges = dailyTimeRanges[getDayKey(nextDay)];
             expect(nextDayRanges).toHaveLength(1);
-            expect(nextDayRanges[0].startTime).toEqual(add(someDay, { hours: 18 }));
+            expect(nextDayRanges[0].startTime).toEqual(add(someDay, { hours: 18, minutes: nextDay.getTimezoneOffset() - someDay.getTimezoneOffset() }));
             expect(nextDayRanges[0].endTime).toEqual(observationDate);
         });
 
