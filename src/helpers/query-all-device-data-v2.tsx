@@ -20,7 +20,6 @@ export default async function (query: DeviceDataV2Query): Promise<DeviceDataV2Po
             queryParameters.pageID = pageID;
         }
         return await MyDataHelps.queryDeviceDataV2(queryParameters);
-
     }
 
     return getDeviceDataV2();

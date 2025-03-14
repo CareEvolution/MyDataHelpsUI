@@ -162,7 +162,7 @@ export default function (props: ConnectDevicesMenuProps) {
     if (!settings?.dexcomEnabled) {
         accountTypes = accountTypes.filter(a => a != "Dexcom");
     }
-	if (!settings?.ouraEnabled) {
+    if (!settings?.ouraEnabled) {
         accountTypes = accountTypes.filter(a => a != "Oura");
     }
     if (platform == "Android" || (!settings!.appleHealthEnabled && !props.enableAppleHealthSurveyName)) {
@@ -206,7 +206,7 @@ export default function (props: ConnectDevicesMenuProps) {
         return getExternalAccountMenuItem("Omron", getOmronProviderID(), <img src={OmronLogo} />);
     }
 
-	function getOuraMenuItem() {
+    function getOuraMenuItem() {
         if (!accountTypes.includes("Oura")) {
             return null;
         }
@@ -279,7 +279,7 @@ export default function (props: ConnectDevicesMenuProps) {
             {getFitbitMenuItem()}
             {getGarminMenuItem()}
             {getDexcomMenuItem()}
-			{getOuraMenuItem()}
+            {getOuraMenuItem()}
             {getAppleHealthMenuItem()}
             {getHealthConnectMenuItem()}
             {getGoogleFitMenuItem()}
