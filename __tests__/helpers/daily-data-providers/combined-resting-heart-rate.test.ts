@@ -1,5 +1,5 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from "@careevolution/mydatahelps-js";
-import combinedSleep from "../../../src/helpers/daily-data-providers/combined-sleep";
+import combinedRestingHeartRate from "../../../src/helpers/daily-data-providers/combined-resting-heart-rate";
 
 jest.mock("@careevolution/mydatahelps-js", () => ({
     __esModule: true,
@@ -11,7 +11,7 @@ jest.mock("@careevolution/mydatahelps-js", () => ({
 }
 ));
 
-describe("combinedSleep", () => {
+describe("combinedRestingHeartRate", () => {
     const startDate = new Date(2023, 0, 1);
     const endDate = new Date(2023, 0, 4);
     const getDataCollectionSettings = (MyDataHelps.getDataCollectionSettings as jest.Mock);
@@ -30,11 +30,11 @@ describe("combinedSleep", () => {
             queryableDeviceDataTypes: []
         });
 
-        const result = await combinedSleep(startDate, endDate);
+        const result = await combinedRestingHeartRate(startDate, endDate);
         expect(result).toEqual({});
     });
 
-    it("should return the maximum sleep for each day", async () => {
+    it("should return the average heart rate for each day", async () => {
         getDataCollectionSettings.mockResolvedValue({
             fitbitEnabled: true,
             garminEnabled: true,
@@ -45,15 +45,15 @@ describe("combinedSleep", () => {
             if (query.namespace === "Fitbit") {
                 return Promise.resolve({
                     deviceDataPoints: [
-                        buildFitbitDataPoint("540", "2023-01-01"),
-                        buildFitbitDataPoint("412", "2023-01-02")
+                        buildFitbitDataPoint("46", "2023-01-01", "RestingHeartRate"),
+                        buildFitbitDataPoint("54", "2023-01-02", "RestingHeartRate")
                     ]
                 });
             } else if (query.namespace === "Garmin") {
                 return Promise.resolve({
                     deviceDataPoints: [
-                        buildGarminDataPoint((510*60).toString(), "2023-01-01T12:02:00", "DurationInSeconds"),
-                        buildGarminDataPoint((533*60).toString(), "2023-01-02T13:01:02", "DurationInSeconds")
+                        buildGarminDataPoint("48", "2023-01-01T12:02:00", "Daily", "RestingHeartRateInBeatsPerMinute"),
+                        buildGarminDataPoint("47", "2023-01-02T13:01:02", "Daily", "RestingHeartRateInBeatsPerMinute")
                     ]
                 });
             }
@@ -62,23 +62,23 @@ describe("combinedSleep", () => {
             if (query.namespace === "Oura") {
                 return Promise.resolve({
                     deviceDataPoints: [
-                        buildOuraDataPoint((433*60).toString(), "2023-01-02", "total_sleep_duration", "long_sleep"),
-                        buildOuraDataPoint((417*60).toString(), "2023-01-03", "total_sleep_duration", "long_sleep"),
+                        buildOuraDataPoint("51", "2023-01-02", "lowest_heart_rate", "long_sleep"),
+                        buildOuraDataPoint("52", "2023-01-03", "lowest_heart_rate", "long_sleep"),
                     ]
                 });
             }
         })
 
-        const result = await combinedSleep(startDate, endDate);
+        const result = await combinedRestingHeartRate(startDate, endDate);
         expect(result).toEqual({
-            "2023-01-01": 540,
-            "2023-01-02": 533,
-            "2023-01-03": 417,
+            "2023-01-01": 47,
+            "2023-01-02": 51,
+            "2023-01-03": 52,
         });
     });
 });
 
-function buildOuraDataPoint(value: string, startDate: string, propertyValueName: string, propertyType: string): DeviceDataV2Point {
+export function buildOuraDataPoint(value: string, startDate: string, propertyValueName: string, propertyType: string): DeviceDataV2Point {
     let ddp = {
         id: "",
         participantID: "",
@@ -98,30 +98,28 @@ function buildOuraDataPoint(value: string, startDate: string, propertyValueName:
     return ddp;
 }
 
-function buildFitbitDataPoint(value: string, startDate: string): DeviceDataPoint {
+export function buildFitbitDataPoint(value: string, startDate: string, ddpType: string): DeviceDataPoint {
     let ddp: DeviceDataPoint = {
         id: "",
         namespace: "Fitbit",
         insertedDate: "",
         modifiedDate: "",
-        observationDate: startDate,
         startDate: startDate,
-        type: "",
+        type: ddpType,
         value: value,
         properties: {},
     };
     return ddp;
 }
 
-function buildGarminDataPoint(value: string, startDate: string, propertyValueName: string): DeviceDataPoint {
+export function buildGarminDataPoint(value: string, startDate: string, ddpType: string, propertyValueName: string): DeviceDataPoint {
     let ddp: DeviceDataPoint = {
         id: "",
         namespace: "Garmin",
         insertedDate: "",
         modifiedDate: "",
-        observationDate: startDate,
         startDate: startDate,
-        type: "",
+        type: ddpType,
         value: value,
         properties: {},
     };
