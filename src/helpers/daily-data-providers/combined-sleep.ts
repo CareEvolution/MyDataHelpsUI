@@ -9,7 +9,8 @@ import getDayKey from "../get-day-key";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
 export default async function (startDate: Date, endDate: Date) {
-    const combinedSettings = await getCombinedDataCollectionSettings();
+    const useV2 = true;
+    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
     const { settings, deviceDataV2Types } = combinedSettings;
 
     const providers: Promise<Record<string, number>>[] = [];

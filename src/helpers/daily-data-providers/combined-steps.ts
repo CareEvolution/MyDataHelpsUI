@@ -10,7 +10,8 @@ import { DailyDataQueryResult } from "../query-daily-data";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
 export default async function (startDate: Date, endDate: Date, includeGoogleFit?: boolean) {
-    const combinedSettings = await getCombinedDataCollectionSettings();
+    const useV2 = false;
+    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
     const { settings } = combinedSettings;
 
     const providers: Promise<DailyDataQueryResult>[] = [];

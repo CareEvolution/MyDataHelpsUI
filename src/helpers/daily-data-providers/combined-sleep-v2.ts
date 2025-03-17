@@ -12,7 +12,8 @@ export default async function (
 ): Promise<Record<string, number>> {
     const providers: Promise<Record<string, number>>[] = [];
 
-    const combinedSettings = await getCombinedDataCollectionSettings();
+    const useV2 = true;
+    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
     const { settings, deviceDataV2Types } = combinedSettings;
 
     if (settings.fitbitEnabled) {

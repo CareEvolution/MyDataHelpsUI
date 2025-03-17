@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js"
 import { Action, Button, Title } from '../../presentational'
 import language from '../../../helpers/language'
@@ -9,6 +9,7 @@ import { ColorDefinition } from '../../../helpers/colors'
 import "./ViewDeviceActivity.css"
 import { ButtonVariant } from '../../presentational/Button/Button'
 import { DailyDataTypeDefinition, useInitializeView } from '../../../helpers'
+import { getCombinedDataCollectionSettings } from '../../../helpers/daily-data-providers/combined-data-collection-settings'
 
 export interface ViewDeviceActivityProps {
     onClick(): void;
@@ -36,15 +37,28 @@ export default function (props: ViewDeviceActivityProps) {
             updateExternalAccounts(accounts);
         });
 
-        //instead of using Promise.all, we can show detail views when the first availability check returns true
-        //to avoid waiting for all of the checks
-        props.dataTypes.forEach(dataType => {
-            dataType.availabilityCheck().then(available => {
-                if (available) {
-                    setDeviceDataAvailable(true);
-                }
+        getCombinedDataCollectionSettings(true).then(combinedSettings => {
+            if (props.dataTypes.length === 0) {
+                setDeviceDataAvailable(false);
+                return;
+            }
+            
+            Promise.any(props.dataTypes.map(dataType => 
+                dataType.availabilityCheck(combinedSettings)
+                    .then(result => {
+                        if (result) {
+                            return true;
+                        }
+                        throw new Error("Result was falsy");
+                    })
+            ))
+            .then(() => {
+                setDeviceDataAvailable(true);
+            })
+            .catch(() => {
+                setDeviceDataAvailable(false);
             });
-        });
+        })
     }
 
     function updateExternalAccounts(accounts: ExternalAccount[]) {

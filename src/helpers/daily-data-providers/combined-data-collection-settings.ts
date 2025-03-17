@@ -8,10 +8,10 @@ export interface CombinedDataCollectionSettings {
     deviceDataV2Types: SupportedDeviceDataV2DataType[];
 }
 
-export async function getCombinedDataCollectionSettings(): Promise<CombinedDataCollectionSettings> {
+export async function getCombinedDataCollectionSettings(useV2: boolean = false): Promise<CombinedDataCollectionSettings> {
     const [settings, deviceDataV2Types] = await Promise.all([
         MyDataHelps.getDataCollectionSettings(),
-        MyDataHelps.getDeviceDataV2AllDataTypes(),
+        useV2 ? MyDataHelps.getDeviceDataV2AllDataTypes() : Promise.resolve([]),
     ]);
 
     return {

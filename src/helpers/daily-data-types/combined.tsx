@@ -20,25 +20,60 @@ import {
     combinedStepsDataProvider,
     combinedTherapyMinutesDataProvider,
 } from "../daily-data-providers";
-import { checkSourceAvailability, sources } from "./availability-check";
+import { combinedAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../../helpers/locale";
+
+const RESTING_HEART_RATE_SOURCES = sources(
+    ["AppleHealth", "RestingHeartRate"],
+    ["Fitbit", "RestingHeartRate"],
+    ["Garmin", "Daily"],
+    ["HealthConnect", "resting-heart-rate", true]
+);
+
+const STEPS_SOURCES = sources(
+    ["AppleHealth", "HourlySteps"],
+    ["Fitbit", "Steps"],
+    ["Garmin", "Daily"]
+);
+
+const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
+    ["AppleHealth", "HourlySteps"],
+    ["GoogleFit", "Steps"],
+    ["Fitbit", "Steps"],
+    ["Garmin", "Daily"]
+);
+
+const SLEEP_MINUTES_SOURCES = sources(
+    ["AppleHealth", "SleepAnalysisInterval"],
+    [
+        "Fitbit",
+        [
+            "SleepLevelRem",
+            "SleepLevelLight",
+            "SleepLevelDeep",
+            "SleepLevelAsleep",
+        ]
+    ],
+    ["Garmin", "Sleep"],
+    ["HealthConnect", "sleep", true]
+);
+
+const MINDFUL_MINUTES_SOURCES = sources(
+    ["AppleHealth", "MindfulSession"],
+    ["GoogleFit", "ActivitySegment"]
+);
+
+const THERAPY_MINUTES_SOURCES = sources(
+    ["AppleHealth", "MindfulSession"],
+    ["GoogleFit", "SilverCloudSession"]
+);
 
 let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "RestingHeartRate"],
-                    ["Fitbit", "RestingHeartRate"],
-                    ["Garmin", "Daily"],
-                    ["HealthConnect", "resting-heart-rate"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(RESTING_HEART_RATE_SOURCES),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -48,16 +83,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.Steps,
         dataProvider: combinedStepsDataProvider,
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "HourlySteps"],
-                    ["Fitbit", "Steps"],
-                    ["Garmin", "Daily"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(STEPS_SOURCES),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
@@ -68,17 +94,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.StepsWithGoogleFit,
         dataProvider: (startDate: Date, endDate: Date) =>
             combinedStepsDataProvider(startDate, endDate, true),
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "HourlySteps"],
-                    ["GoogleFit", "Steps"],
-                    ["Fitbit", "Steps"],
-                    ["Garmin", "Daily"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(STEPS_WITH_GOOGLE_FIT_SOURCES),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
@@ -88,25 +104,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.SleepMinutes,
         dataProvider: combinedSleepDataProvider,
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "SleepAnalysisInterval"],
-                    [
-                        "Fitbit",
-                        [
-                            "SleepLevelRem",
-                            "SleepLevelLight",
-                            "SleepLevelDeep",
-                            "SleepLevelAsleep",
-                        ],
-                    ],
-                    ["Garmin", "Sleep"],
-                    ["HealthConnect", "sleep"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(SLEEP_MINUTES_SOURCES),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -117,15 +115,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.MindfulMinutes,
         dataProvider: combinedMindfulMinutesDataProvider,
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "MindfulSession"],
-                    ["GoogleFit", "ActivitySegment"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(MINDFUL_MINUTES_SOURCES),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: (value) => formatNumberForLocale(value),
@@ -135,15 +125,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.TherapyMinutes,
         dataProvider: combinedTherapyMinutesDataProvider,
-        availabilityCheck: async (modifiedAfter?: Date): Promise<boolean> => {
-            return await checkSourceAvailability(
-                sources(
-                    ["AppleHealth", "MindfulSession"],
-                    ["GoogleFit", "SilverCloudSession"],
-                ),
-                modifiedAfter,
-            );
-        },
+        availabilityCheck: combinedAvailabilityCheck(THERAPY_MINUTES_SOURCES),
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: (value) => formatNumberForLocale(value),

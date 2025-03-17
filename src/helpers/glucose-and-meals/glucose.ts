@@ -65,7 +65,8 @@ export async function getGlucoseReadings(startDate: Date, endDate?: Date): Promi
 
     endDate = endDate ?? startDate;
 
-    const combinedSettings = await getCombinedDataCollectionSettings();
+    const useV2 = true;
+    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
     const { settings, deviceDataV2Types } = combinedSettings;
     if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === "AppleHealth" && type.type === "BloodGlucose")) {
         providers.push(appleHealthBloodGlucoseDataProvider(startDate, endDate!));

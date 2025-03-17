@@ -17,15 +17,15 @@ import {
     minutesFormatter,
     sleepYAxisConverter,
 } from "./formatters";
-import { simpleAvailabilityCheckV2 } from "./availability-check";
+import { simpleAvailabilityCheck } from "./availability-check";
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectRestingHeartRate,
         dataProvider: healthConnectRestingHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", [
             "resting-heart-rate",
-        ]),
+        ], true),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -35,9 +35,9 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectTotalSleepMinutes,
         dataProvider: healthConnectTotalSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", [
             "sleep",
-        ]),
+        ], true),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -47,9 +47,9 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectRemSleepMinutes,
         dataProvider: healthConnectRemSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", [
             "sleep",
-        ]),
+        ], true),
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -59,9 +59,9 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectDeepSleepMinutes,
         dataProvider: healthConnectDeepSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", [
             "sleep",
-        ]),
+        ], true),
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -71,9 +71,9 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectLightSleepMinutes,
         dataProvider: healthConnectLightSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("HealthConnect", [
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", [
             "sleep",
-        ]),
+        ], true),
         labelKey: "light-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
