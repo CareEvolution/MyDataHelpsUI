@@ -136,6 +136,17 @@ async function checkSourceAvailability(
         }
     });
 
-    const finalResults = await Promise.all(availabilityChecks);
-    return finalResults.some((result) => result);
+    try {
+        await Promise.any(availabilityChecks.map(promise => 
+            promise.then(result => {
+                if (result) {
+                    return true;
+                }
+                throw new Error("Result was falsy");
+            })
+        ));
+        return true;
+    } catch {
+        return false;
+    }
 }
