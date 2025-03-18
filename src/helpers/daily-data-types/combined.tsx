@@ -4,21 +4,21 @@ import {
     faBed,
     faHeartbeat,
     faHourglassHalf,
-    faPersonRunning,
+    faPersonRunning
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import {
     defaultFormatter,
     heartRateFormatter,
     minutesFormatter,
-    sleepYAxisConverter,
+    sleepYAxisConverter
 } from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
 import {
     combinedMindfulMinutesDataProvider,
     combinedSleepDataProvider,
     combinedStepsDataProvider,
-    combinedTherapyMinutesDataProvider,
+    combinedTherapyMinutesDataProvider
 } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../../helpers/locale";
@@ -51,7 +51,7 @@ const SLEEP_MINUTES_SOURCES = sources(
             "SleepLevelRem",
             "SleepLevelLight",
             "SleepLevelDeep",
-            "SleepLevelAsleep",
+            "SleepLevelAsleep"
         ]
     ],
     ["Garmin", "Sleep"],
@@ -73,11 +73,13 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
-        availabilityCheck: combinedAvailabilityCheck(RESTING_HEART_RATE_SOURCES),
+        availabilityCheck: combinedAvailabilityCheck(
+            RESTING_HEART_RATE_SOURCES
+        ),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
-        previewDataRange: [40, 100],
+        previewDataRange: [40, 100]
     },
     {
         dataSource: "Unified",
@@ -87,18 +89,20 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
-        previewDataRange: [4000, 8000],
+        previewDataRange: [4000, 8000]
     },
     {
         dataSource: "Unified",
         type: DailyDataType.StepsWithGoogleFit,
         dataProvider: (startDate: Date, endDate: Date) =>
             combinedStepsDataProvider(startDate, endDate, true),
-        availabilityCheck: combinedAvailabilityCheck(STEPS_WITH_GOOGLE_FIT_SOURCES),
+        availabilityCheck: combinedAvailabilityCheck(
+            STEPS_WITH_GOOGLE_FIT_SOURCES
+        ),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
-        previewDataRange: [4000, 8000],
+        previewDataRange: [4000, 8000]
     },
     {
         dataSource: "Unified",
@@ -109,7 +113,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
         yAxisConverter: sleepYAxisConverter,
-        previewDataRange: [420, 540],
+        previewDataRange: [420, 540]
     },
     {
         dataSource: "Unified",
@@ -119,7 +123,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: (value) => formatNumberForLocale(value),
-        previewDataRange: [0, 120],
+        previewDataRange: [0, 120]
     },
     {
         dataSource: "Unified",
@@ -129,7 +133,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: (value) => formatNumberForLocale(value),
-        previewDataRange: [0, 120],
-    },
+        previewDataRange: [0, 120]
+    }
 ];
 export default combinedTypeDefinitions;

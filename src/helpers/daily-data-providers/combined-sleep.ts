@@ -3,7 +3,7 @@ import {
     appleHealthSleepDataProvider,
     fitbitTotalSleepMinutesDataProvider,
     garminTotalSleepMinutesDataProvider,
-    healthConnectTotalSleepMinutesDataProvider,
+    healthConnectTotalSleepMinutesDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
@@ -26,7 +26,7 @@ export default async function (startDate: Date, endDate: Date) {
         settings.queryableDeviceDataTypes.some(
             (ddt) =>
                 ddt.namespace === "AppleHealth" &&
-                ddt.type === "SleepAnalysisInterval",
+                ddt.type === "SleepAnalysisInterval"
         )
     ) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
@@ -34,13 +34,11 @@ export default async function (startDate: Date, endDate: Date) {
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            (ddt) =>
-                ddt.namespace === "HealthConnect" &&
-                ddt.type === "sleep",
+            (ddt) => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
         )
     ) {
         providers.push(
-            healthConnectTotalSleepMinutesDataProvider(startDate, endDate),
+            healthConnectTotalSleepMinutesDataProvider(startDate, endDate)
         );
     }
 

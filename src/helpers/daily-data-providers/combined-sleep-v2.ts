@@ -8,7 +8,7 @@ import { getCombinedDataCollectionSettings } from "./combined-data-collection-se
 
 export default async function (
     startDate: Date,
-    endDate: Date,
+    endDate: Date
 ): Promise<Record<string, number>> {
     const providers: Promise<Record<string, number>>[] = [];
 
@@ -29,7 +29,7 @@ export default async function (
         settings.queryableDeviceDataTypes.some(
             (ddt) =>
                 ddt.namespace === "AppleHealth" &&
-                ddt.type === "SleepAnalysisInterval",
+                ddt.type === "SleepAnalysisInterval"
         )
     ) {
         providers.push(appleHealthSleepMinutesDataProvider(startDate, endDate));
@@ -41,11 +41,11 @@ export default async function (
             (ddt) =>
                 ddt.enabled &&
                 ddt.namespace === "HealthConnect" &&
-                ddt.type === "sleep",
+                ddt.type === "sleep"
         )
     ) {
         providers.push(
-            healthConnectTotalSleepMinutesDataProvider(startDate, endDate),
+            healthConnectTotalSleepMinutesDataProvider(startDate, endDate)
         );
     }
 

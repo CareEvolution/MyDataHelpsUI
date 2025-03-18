@@ -3,14 +3,14 @@ import {
     appleHealthRestingHeartRateDataProvider,
     fitbitRestingHeartRateDataProvider,
     garminRestingHeartRateDataProvider,
-    healthConnectRestingHeartRateDataProvider,
+    healthConnectRestingHeartRateDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
 export default async function (
     startDate: Date,
-    endDate: Date,
+    endDate: Date
 ): Promise<Record<string, number>> {
     const providers: Promise<Record<string, number>>[] = [];
 
@@ -28,11 +28,11 @@ export default async function (
         settings.queryableDeviceDataTypes.some(
             (ddt) =>
                 ddt.namespace === "AppleHealth" &&
-                ddt.type === "RestingHeartRate",
+                ddt.type === "RestingHeartRate"
         )
     ) {
         providers.push(
-            appleHealthRestingHeartRateDataProvider(startDate, endDate),
+            appleHealthRestingHeartRateDataProvider(startDate, endDate)
         );
     }
     if (
@@ -40,11 +40,11 @@ export default async function (
         deviceDataV2Types.some(
             (ddt) =>
                 ddt.namespace === "HealthConnect" &&
-                ddt.type === "resting-heart-rate",
+                ddt.type === "resting-heart-rate"
         )
     ) {
         providers.push(
-            healthConnectRestingHeartRateDataProvider(startDate, endDate),
+            healthConnectRestingHeartRateDataProvider(startDate, endDate)
         );
     }
 
@@ -64,7 +64,7 @@ export default async function (
         });
         if (heartRates.length > 0) {
             data[dayKey] = Math.round(
-                heartRates.reduce((a, b) => a + b) / heartRates.length,
+                heartRates.reduce((a, b) => a + b) / heartRates.length
             );
         }
         startDate = add(startDate, { days: 1 });
