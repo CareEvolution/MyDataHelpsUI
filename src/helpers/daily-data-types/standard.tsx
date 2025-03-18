@@ -20,7 +20,7 @@ const standardDailyDataTypes: StandardDailyDataTypeDefinition[] = [
     { ...getDailyDataTypeDefinition(DailyDataType.FitbitElevatedHeartRateMinutes), color: heartColor },
     { ...getDailyDataTypeDefinition(DailyDataType.AppleHealthMaxHeartRate), color: heartColor },
     { ...getDailyDataTypeDefinition(DailyDataType.GarminMaxHeartRate), color: heartColor },
-    { ...getDailyDataTypeDefinition(DailyDataType.RestingHeartRate), color: heartColor },
+    { ...getDailyDataTypeDefinition(DailyDataType.RestingHeartRate), color: heartColor }
 ];
 
 export default standardDailyDataTypes;

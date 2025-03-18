@@ -16,29 +16,6 @@ interface GlucoseChartStoryArgs extends GlucoseChartProps {
     withMeals: true;
 }
 
-const sharedArgTypes = {
-    colorScheme: {
-        name: 'color scheme',
-        control: { type: 'radio' as const },
-        options: ['auto', 'light', 'dark']
-    },
-    state: {
-        name: 'state',
-        control: { type: 'radio' as const },
-        options: ['loading', 'no data', 'with data', 'live']
-    },
-    withMeals: {
-        name: 'with meals'
-    },
-    showStats: {
-        name: 'show stats'
-    },
-    averageGlucoseLineColor: {
-        name: 'average glucose line color',
-        control: { type: 'color' as const }
-    }
-};
-
 const render = (args: GlucoseChartStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <GlucoseDayCoordinator previewState={args.state !== 'live' ? 'all data' : undefined}>
@@ -67,18 +44,28 @@ export const Default = {
         showStats: true,
         averageGlucoseLineColor: undefined
     },
-    argTypes: sharedArgTypes,
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        state: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'no data', 'with data', 'live']
+        },
+        withMeals: {
+            name: 'with meals'
+        },
+        showStats: {
+            name: 'show stats'
+        },
+        averageGlucoseLineColor: {
+            name: 'average glucose line color',
+            control: 'color'
+        }
+    },
     render: render
 };
 
-export const Live = {
-    args: {
-        colorScheme: 'auto',
-        state: 'live',
-        withMeals: true,
-        showStats: true,
-        averageGlucoseLineColor: undefined
-    },
-    argTypes: sharedArgTypes,
-    render: render
-};

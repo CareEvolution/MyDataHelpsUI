@@ -102,11 +102,3 @@ export const AllDataTypes = {
     },
     render: render
 };
-
-export const AllDataTypesLive = {
-    args: {
-        dataTypes: allDataTypes,
-        title: "Activity",
-    },
-    render: render
-};
