@@ -42,23 +42,25 @@ export default function (props: ViewDeviceActivityProps) {
                 setDeviceDataAvailable(false);
                 return;
             }
-            
-            Promise.any(props.dataTypes.map(dataType => 
-                dataType.availabilityCheck(combinedSettings)
-                    .then(result => {
-                        if (result) {
-                            return true;
-                        }
-                        throw new Error("Result was falsy");
-                    })
-            ))
-            .then(() => {
-                setDeviceDataAvailable(true);
-            })
-            .catch(() => {
-                setDeviceDataAvailable(false);
-            });
-        })
+
+            Promise.any(
+                props.dataTypes.map(dataType =>
+                    dataType
+                        .availabilityCheck(combinedSettings)
+                        .then(result =>
+                            result
+                                ? Promise.resolve()
+                                : Promise.reject()
+                        )
+                )
+            )
+                .then(() => {
+                    setDeviceDataAvailable(true);
+                })
+                .catch(() => {
+                    setDeviceDataAvailable(false);
+                });
+        });
     }
 
     function updateExternalAccounts(accounts: ExternalAccount[]) {

@@ -150,12 +150,9 @@ async function checkSourceAvailability(
     try {
         await Promise.any(
             availabilityChecks.map((promise) =>
-                promise.then((result) => {
-                    if (result) {
-                        return true;
-                    }
-                    throw new Error("Result was falsy");
-                })
+                promise.then((result) =>
+                    result ? Promise.resolve() : Promise.reject()
+                )
             )
         );
         return true;

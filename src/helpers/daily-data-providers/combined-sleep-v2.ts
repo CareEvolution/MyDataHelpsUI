@@ -27,7 +27,7 @@ export default async function (
     if (
         settings.appleHealthEnabled &&
         settings.queryableDeviceDataTypes.some(
-            (ddt) =>
+            ddt =>
                 ddt.namespace === "AppleHealth" &&
                 ddt.type === "SleepAnalysisInterval"
         )
@@ -38,7 +38,7 @@ export default async function (
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            (ddt) =>
+            ddt =>
                 ddt.enabled &&
                 ddt.namespace === "HealthConnect" &&
                 ddt.type === "sleep"
@@ -58,12 +58,12 @@ export default async function (
 
     let currentDate = new Date(startDate);
     while (currentDate < endDate) {
-        let dayKey = getDayKey(currentDate);
+        const dayKey = getDayKey(currentDate);
         let sleepMinutes: number | undefined;
 
         results
-            .filter((result) => result.hasOwnProperty(dayKey))
-            .forEach((result) => {
+            .filter(result => result.hasOwnProperty(dayKey))
+            .forEach(result => {
                 if (
                     sleepMinutes === undefined ||
                     result[dayKey] > sleepMinutes

@@ -54,9 +54,10 @@ export default async function (
 
     const values = await Promise.all(providers);
     const data: Record<string, number> = {};
-    while (startDate < endDate) {
-        let dayKey = getDayKey(startDate);
-        let heartRates: number[] = [];
+    let currentDate = new Date(startDate);
+    while (currentDate < endDate) {
+        const dayKey = getDayKey(currentDate);
+        const heartRates: number[] = [];
         values.forEach((value) => {
             if (value[dayKey] && value[dayKey] > 0) {
                 heartRates.push(value[dayKey]);
@@ -67,7 +68,7 @@ export default async function (
                 heartRates.reduce((a, b) => a + b) / heartRates.length
             );
         }
-        startDate = add(startDate, { days: 1 });
+        currentDate = add(currentDate, { days: 1 });
     }
     return data;
 }

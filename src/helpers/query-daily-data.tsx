@@ -59,12 +59,7 @@ export async function checkDailyDataAvailability(type: string, modifiedAfter?: D
 	try {
 		await Promise.any(dataTypes.map(dataType => 
 			dataType.availabilityCheck(combinedSettings, modifiedAfter)
-				.then(result => {
-					if (result) {
-						return true;
-					}
-					throw new Error("Result was falsy");
-				})
+				.then(result => result ? Promise.resolve() : Promise.reject())
 		));
 		return true;
 	} catch {

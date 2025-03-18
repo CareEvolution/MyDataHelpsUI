@@ -24,7 +24,7 @@ export default async function (startDate: Date, endDate: Date) {
     if (
         settings.appleHealthEnabled &&
         settings.queryableDeviceDataTypes.some(
-            (ddt) =>
+            ddt =>
                 ddt.namespace === "AppleHealth" &&
                 ddt.type === "SleepAnalysisInterval"
         )
@@ -34,7 +34,7 @@ export default async function (startDate: Date, endDate: Date) {
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            (ddt) => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
+            ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
         )
     ) {
         providers.push(
@@ -49,11 +49,12 @@ export default async function (startDate: Date, endDate: Date) {
     const values = await Promise.all(providers);
     const data: Record<string, number> = {};
 
-    while (startDate < endDate) {
-        const dayKey = getDayKey(startDate);
+    let currentDate = new Date(startDate);
+    while (currentDate < endDate) {
+        const dayKey = getDayKey(currentDate);
         let maxSleep: number | null = null;
 
-        values.forEach((value) => {
+        values.forEach(value => {
             if (
                 value[dayKey] &&
                 (maxSleep == null || maxSleep < value[dayKey])
@@ -66,7 +67,7 @@ export default async function (startDate: Date, endDate: Date) {
             data[dayKey] = maxSleep;
         }
 
-        startDate = add(startDate, { days: 1 });
+        currentDate = add(currentDate, { days: 1 });
     }
 
     return data;

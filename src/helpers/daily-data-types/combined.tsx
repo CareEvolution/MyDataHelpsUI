@@ -122,7 +122,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: combinedAvailabilityCheck(MINDFUL_MINUTES_SOURCES),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: (value) => formatNumberForLocale(value),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },
     {
@@ -132,7 +132,7 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: combinedAvailabilityCheck(THERAPY_MINUTES_SOURCES),
         labelKey: "therapy-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
-        formatter: (value) => formatNumberForLocale(value),
+        formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     }
 ];
