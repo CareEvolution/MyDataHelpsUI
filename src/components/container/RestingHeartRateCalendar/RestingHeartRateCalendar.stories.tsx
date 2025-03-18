@@ -51,7 +51,7 @@ Live.argTypes = {
   dataTypeSource: {
     name: 'dataTypeSource',
     control: 'radio',
-    options: ["Combined", "AppleHealth", "Fitbit", "Garmin"],
+    options: ["Combined", "AppleHealth", "Fitbit", "Garmin", "HealthConnect"],
     defaultValue: "Combined"
   }
 };

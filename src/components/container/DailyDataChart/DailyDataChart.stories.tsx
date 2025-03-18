@@ -295,6 +295,26 @@ export const liveAppleHealthNumberOfAlcoholicBeveragesBarChart = {
     render: render
 };
 
+export const liveHealthConnectHeartRateBarChart = {
+    args: {
+        title: "Resting Heart Rate",
+        intervalType: "Month",
+        dailyDataType: DailyDataType.HealthConnectRestingHeartRate,        
+        chartType: "Bar",
+    },
+    render: renderDRC
+};
+
+export const liveHealthConnectTotalSleepingMinutesLineChart = {
+    args: {
+        title: "Sleeping",
+        intervalType: "Month",
+        dailyDataType: DailyDataType.HealthConnectTotalSleepMinutes,        
+        chartType: "Line",
+    },
+    render: renderDRC
+};
+
 export const noData = {
     args: {
         title: "Steps",
