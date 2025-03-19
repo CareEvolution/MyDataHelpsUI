@@ -46,7 +46,7 @@ export const previewAccounts:ExternalAccount[] = [
             },
             status: "fetchComplete"
         },
-		{
+        {
             id: 5,
             lastRefreshDate: "",
             provider: {
@@ -63,7 +63,7 @@ export const previewSettings:DataCollectionSettings = {
     fitbitEnabled: true,
     garminEnabled: true,
     dexcomEnabled: true,
-	ouraEnabled: true,
+    ouraEnabled: true,
     queryableDeviceDataTypes: [
         {
             namespace: "AppleHealth",

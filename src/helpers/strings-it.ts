@@ -40,7 +40,7 @@ let strings: { [key: string]: string } = {
     "connect-oura-intro": "Puoi condividere i dati dal tuo account Oura se ne hai uno. Per iniziare, fai clic o tocca qui sotto per accedere con le tue credenziali Oura.",
     "connect-oura-button": "Collega Oura",
     "received-oura-data": "Stiamo ricevendo i tuoi dati Oura!",
-	"connect-dexcom-intro": "Puoi condividere i dati dal tuo account Dexcom se ne hai uno. Per iniziare, fai clic o tocca qui sotto per accedere con le tue credenziali Dexcom.",
+    "connect-dexcom-intro": "Puoi condividere i dati dal tuo account Dexcom se ne hai uno. Per iniziare, fai clic o tocca qui sotto per accedere con le tue credenziali Dexcom.",
     "connect-dexcom-button": "Collega Dexcom",
     "received-dexcom-data": "Stiamo ricevendo i tuoi dati Dexcom!",
     "downloading-data": "Download dati in corso...",

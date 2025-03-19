@@ -40,7 +40,7 @@
     "connect-oura-intro": "Si ya tiene una cuenta Oura, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Oura:",
     "connect-oura-button": "Conectar a Oura",
     "received-oura-data": "¡Estamos recibiendo su información de Oura!",
-	"connect-dexcom-intro": "Si ya tiene una cuenta Dexcom, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Dexcom:",
+    "connect-dexcom-intro": "Si ya tiene una cuenta Dexcom, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Dexcom:",
     "connect-dexcom-button": "Conectar a Dexcom",
     "received-dexcom-data": "¡Estamos recibiendo su información de Dexcom!",
     "downloading-data": "Descargando datos...",
