@@ -5,7 +5,7 @@ import { DeviceDataV2Query } from "@careevolution/mydatahelps-js";
 export type OuraSleepType = "long_sleep" | "sleep" | "late_nap" | "deleted" | "rest";
 
 export default function (startDate: Date, endDate: Date, type: string, sleepTypeToInclude: OuraSleepType[]) {
-	let query: DeviceDataV2Query = {
+	const query: DeviceDataV2Query = {
 		namespace: "Oura",
 		type: "sleep",
 		observedAfter: add(startDate, { days: -1 }).toISOString(),

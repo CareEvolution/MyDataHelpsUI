@@ -3,7 +3,7 @@ import queryAllDeviceDataV2 from "../query-all-device-data-v2";
 import { DeviceDataV2Query } from "@careevolution/mydatahelps-js";
 
 export default function (startDate: Date, endDate: Date, type: string) {
-    let query: DeviceDataV2Query = {
+    const query: DeviceDataV2Query = {
         namespace: "Oura",
         type: "daily-activity",
         observedAfter: add(startDate, { days: -1 }).toISOString(),
