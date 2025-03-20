@@ -16,6 +16,7 @@ export default function (startDate: Date, endDate: Date, type: string) {
             if (!d.properties) { return; }
             if (!d.properties[type]) { return; }
             if (parseInt(d.properties[type]) <= 0) { return; }
+            // dayKey is the date part of the ISO string
             var dayKey = d.observationDate!.substring(0, 10);
             data[dayKey] = Math.round(parseFloat(d.properties[type]));
         });
