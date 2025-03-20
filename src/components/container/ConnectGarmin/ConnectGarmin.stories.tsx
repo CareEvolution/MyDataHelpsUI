@@ -1,50 +1,104 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import ConnectGarmin, { ConnectGarminProps } from "./ConnectGarmin"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof ConnectGarmin> = {
 	title: "Container/ConnectGarmin",
 	component: ConnectGarmin,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof ConnectGarmin>;
+};
 
-const Template: ComponentStory<typeof ConnectGarmin> = (args: ConnectGarminProps) =>
+export default meta;
+type Story = StoryObj<typeof ConnectGarmin>;
+
+const render = (args: ConnectGarminProps) =>
 	<Layout>
 		<Card>
 			<ConnectGarmin {...args} />
 		</Card>
 	</Layout>;
 
-export const NotConnected = Template.bind({});
-NotConnected.args = { previewState: "notConnected", title: "Garmin" };
+export const NotConnected: Story = {
+	args: {
+		previewState: "notConnected", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const Unauthorized = Template.bind({});
-Unauthorized.args = { previewState: "unauthorized", title: "Garmin" };
+export const Unauthorized: Story = {
+	args: {
+		previewState: "unauthorized", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const ConnectionError = Template.bind({});
-ConnectionError.args = { previewState: "error", title: "Garmin" };
+export const ConnectionError: Story = {
+	args: {
+		previewState: "error", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const FetchComplete = Template.bind({});
-FetchComplete.args = { previewState: "fetchComplete", title: "Garmin" };
+export const FetchComplete: Story = {
+	args: {
+		previewState: "fetchComplete", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const FetchingData = Template.bind({});
-FetchingData.args = { previewState: "fetchingData", title: "Garmin" };
+export const FetchingData: Story = {
+	args: {
+		previewState: "fetchingData", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const NotEnabledDefault = Template.bind({});
-NotEnabledDefault.args = { previewState: "notEnabled", title: "Garmin" };
+export const NotEnabledDefault: Story = {
+	args: {
+		previewState: "notEnabled", 
+		title: "Garmin"
+	},
+	render: render
+}
 
-export const NotEnabledHide = Template.bind({});
-NotEnabledHide.args = { previewState: "notEnabled", title: "Garmin", disabledBehavior: "hide" };
+export const NotEnabledHide: Story = {
+	args: {
+		previewState: "notEnabled", 
+		title: "Garmin",
+		disabledBehavior: "hide"
+	},
+	render: render
+}
 
-export const NotEnabledDisplayError = Template.bind({});
-NotEnabledDisplayError.args = { previewState: "notEnabled", title: "Garmin", disabledBehavior: "displayError" };
+export const NotEnabledDisplayError: Story = {
+	args: {
+		previewState: "notEnabled", 
+		title: "Garmin",
+		disabledBehavior: "displayError"
+	},
+	render: render
+}
 
-export const HideConnected = Template.bind({});
-HideConnected.args = { previewState: "fetchComplete", hideWhenConnected: true };
-HideConnected.argTypes = { previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"]}};
-
-
+export const HideConnected: Story = {
+	args: {
+		previewState: "fetchComplete", 
+		hideWhenConnected: true
+	},
+	argTypes: { 
+		previewState: { 
+			name: "Connection State", 
+			control: "radio", 
+			options: ["fetchComplete", "fetchingData", "unauthorized", "error"]
+		}
+	},
+	render: render
+}

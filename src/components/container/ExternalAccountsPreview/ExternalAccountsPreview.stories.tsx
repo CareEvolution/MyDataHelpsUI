@@ -1,68 +1,60 @@
 ﻿import React from "react"
-import { ComponentMeta, ComponentStory } from "@storybook/react"
 import ExternalAccountsPreview, { ExternalAccountsPreviewProps } from "./ExternalAccountsPreview"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof ExternalAccountsPreview> = {
     title: "Container/ExternalAccountsPreview",
     component: ExternalAccountsPreview,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof ExternalAccountsPreview>;
+};
 
-const Template: ComponentStory<typeof ExternalAccountsPreview> = (args: ExternalAccountsPreviewProps) =>
+export default meta;
+type Story = StoryObj<typeof ExternalAccountsPreview>;
+
+const render = (args: ExternalAccountsPreviewProps) =>
     <Layout colorScheme="auto">
         <ExternalAccountsPreview {...args} />
     </Layout>;
 
-export const Default = Template.bind({});
-Default.args = {
+const baseArgs: ExternalAccountsPreviewProps = {
     previewState: "Default",
     onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-};
+}
+export const Default: Story = {
+    args: { ...baseArgs },
+    render: render
+}
 
-export const ProvidersOnly = Template.bind({});
-ProvidersOnly.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeHealthPlans: true,
-    excludeDeviceManufacturers: true
-};
+export const ProvidersOnly: Story = {
+    args: { ...baseArgs, excludeHealthPlans: true, excludeDeviceManufacturers: true },
+    render: render
+}
 
-export const HealthPlansOnly = Template.bind({});
-HealthPlansOnly.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeProviders: true,
-    excludeDeviceManufacturers: true
-};
+//todo: test this in prev data
+export const HealthPlansOnly: Story = {
+    args: { ...baseArgs, excludeProviders: true, excludeDeviceManufacturers: true },
+    render: render
+}
 
-export const DeviceManufacturersOnly = Template.bind({});
-DeviceManufacturersOnly.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeProviders: true,
-    excludeHealthPlans: true
-};
+export const DeviceManufacturersOnly: Story = {
+    args: { ...baseArgs, excludeProviders: true, excludeHealthPlans: true },
+    render: render
+}
 
-export const ProvidersAndHealthPlans = Template.bind({});
-ProvidersAndHealthPlans.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeDeviceManufacturers: true
-};
+export const ProvidersAndHealthPlans: Story = {
+    args: { ...baseArgs, excludeDeviceManufacturers: true },
+    render: render
+}
 
-export const ProvidersAndDeviceManufacturers = Template.bind({});
-ProvidersAndDeviceManufacturers.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeHealthPlans: true
-};
+export const ProvidersAndDeviceManufacturers: Story = {
+    args: { ...baseArgs, excludeHealthPlans: true },
+    render: render
+}
 
-export const HealthPlansAndDeviceManufacturers = Template.bind({});
-HealthPlansAndDeviceManufacturers.args = {
-    previewState: "Default",
-    onClick: () => { console.log("PREVIEW: Opening the external accounts application."); },
-    excludeProviders: true
-};
+export const HealthPlansAndDeviceManufacturers: Story = {
+    args: { ...baseArgs, excludeProviders: true },
+    render: render
+}

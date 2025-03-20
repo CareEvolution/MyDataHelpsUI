@@ -1,51 +1,52 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import RestingHeartRateCalendar, { RestingHeartRateCalendarProps } from "./RestingHeartRateCalendar"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react"
 
-export default {
+const meta: Meta<typeof RestingHeartRateCalendar> = {
 	title: "Container/RestingHeartRateCalendar",
 	component: RestingHeartRateCalendar,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof RestingHeartRateCalendar>;
+};
 
-const Template: ComponentStory<typeof RestingHeartRateCalendar> = (args: RestingHeartRateCalendarProps) =>
+export default meta;
+type Story = StoryObj<typeof RestingHeartRateCalendar>;
+
+const render = (args: RestingHeartRateCalendarProps) =>
 	<Layout colorScheme="auto">
 		<Card>
 			<RestingHeartRateCalendar  {...args} />
 		</Card>
 	</Layout>;
 
-export const Default = Template.bind({});
-Default.args = {
+const baseArgs: RestingHeartRateCalendarProps = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
-  showPreviewData: "WithData",
+  showPreviewData: "WithData"
 };
 
-export const NoData = Template.bind({});
-NoData.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  showPreviewData: "NoData",
-};
+export const Default: Story = {
+  args: baseArgs,
+  render: render
+}
 
-export const Loading = Template.bind({});
-Loading.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  showPreviewData: "Loading",
-};
+export const NoData: Story = {
+  args: {...baseArgs, showPreviewData: "NoData"},
+  render: render
+}
 
-export const Live = Template.bind({});
-Live.args = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  dataTypeSource: "Combined"
-};
+export const Loading: Story = {
+  args: {...baseArgs, showPreviewData: "Loading"},
+  render: render
+}
+
+export const Live: Story = {
+  args: {...baseArgs, showPreviewData: undefined, dataTypeSource: "Combined"},
+  render: render
+}
 
 Live.argTypes = {
   dataTypeSource: {

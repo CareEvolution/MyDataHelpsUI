@@ -1,29 +1,31 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataMonthChart, { DeviceDataMonthChartProps } from "./DeviceDataMonthChart"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers"
+import { Meta, StoryObj } from "@storybook/react"
 
-export default {
+const meta: Meta<typeof DeviceDataMonthChart> = {
 	title: "Container/DeviceDataMonthChart",
 	component: DeviceDataMonthChart,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof DeviceDataMonthChart>;
+};
 
-const Template: ComponentStory<typeof DeviceDataMonthChart> = (args: DeviceDataMonthChartProps) =>
+export default meta;
+type Story = StoryObj<typeof DeviceDataMonthChart>;
+
+const render = (args: DeviceDataMonthChartProps) =>
 	<Layout colorScheme="auto">
 		<Card>
 			<DeviceDataMonthChart {...args} />
 		</Card>
 	</Layout>;
 
-export const Loading = Template.bind({});
-Loading.args = {
-	title: "Steps",
+const baseArgs: DeviceDataMonthChartProps = {
 	previewState: "Loading",
+	title: "Steps",
 	month: new Date().getMonth(),
 	year: new Date().getFullYear(),
 	lines: [{
@@ -34,30 +36,16 @@ Loading.args = {
 	syncId: "Fitbit"
 };
 
-export const FitbitSteps = Template.bind({});
-FitbitSteps.args = {
-	title: "Steps",
-	previewState: "WithData",
-	month: new Date().getMonth(),
-	year: new Date().getFullYear(),
-	lines: [{
-			showAverage: true,
-			dailyDataType: DailyDataType.FitbitSteps,
-			label: "Steps"
-		}],
-	syncId: "Fitbit"
-};
+export const Loading: Story = {
+	args: {...baseArgs},
+	render: render
+}
 
-export const NoData = Template.bind({});
-NoData.args = {
-	title: "Resting Heart Rate",
-	previewState: "NoData",
-	month: new Date().getMonth(),
-	year: new Date().getFullYear(),
-	lines: [{
-		dailyDataType: DailyDataType.FitbitRestingHeartRate,
-		showAverage: true,
-		label: "Steps",
-	}],
-	syncId: "Fitbit"
-};
+export const FitbitSteps : Story = {
+	args: {...baseArgs, previewState : "WithData"},
+	render: render
+}
+export const NoData : Story = {
+	args: {...baseArgs, previewState : "NoData"},
+	render: render
+}

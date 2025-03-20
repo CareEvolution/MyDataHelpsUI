@@ -1,30 +1,39 @@
 import React from "react"
-import {ComponentMeta, ComponentStory} from "@storybook/react"
-import ExternalAccountsLoadingIndicator, {ExternalAccountsLoadingIndicatorProps} from "./ExternalAccountsLoadingIndicator"
+import ExternalAccountsLoadingIndicator, { ExternalAccountsLoadingIndicatorProps } from "./ExternalAccountsLoadingIndicator"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof ExternalAccountsLoadingIndicator> = {
     title: "Container/ExternalAccountsLoadingIndicator",
     component: ExternalAccountsLoadingIndicator,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof ExternalAccountsLoadingIndicator>;
+};
 
-const Template: ComponentStory<typeof ExternalAccountsLoadingIndicator> = (args: ExternalAccountsLoadingIndicatorProps) =>
+export default meta;
+type Story = StoryObj<typeof ExternalAccountsLoadingIndicator>;
+
+const render = (args: ExternalAccountsLoadingIndicatorProps) =>
     <Layout colorScheme="auto">
         <ExternalAccountsLoadingIndicator {...args} />
     </Layout>;
 
-export const ExternalAccountsFetchingData = Template.bind({});
-ExternalAccountsFetchingData.args = {
-    previewState: "externalAccountsFetchingData"
-};
+export const ExternalAccountsFetchingData: Story = {
+    args: {
+        previewState: "externalAccountsFetchingData"
+    },
+    render: render
+}
 
-export const ExternalAccountsFetchComplete = Template.bind({});
-ExternalAccountsFetchComplete.args = {
-    previewState: "externalAccountsLoaded"
-};
+export const ExternalAccountsFetchComplete: Story = {
+    args: {
+        previewState: "externalAccountsLoaded"
+    },
+    render: render
+}
 
-export const Live = Template.bind({});
-Live.args = {};
+export const Live: Story = {
+    args: {},
+    render: render
+}
