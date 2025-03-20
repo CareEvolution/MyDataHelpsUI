@@ -39,6 +39,8 @@ jobs:
       - name: npm ci
         run: npm ci
         continue-on-error: false
+      - name: Run Build
+        run: npm run rollup	
       - name: build
         run: npm run build-storybook
         continue-on-error: false
