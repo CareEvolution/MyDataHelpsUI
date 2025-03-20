@@ -2,7 +2,7 @@ import React from 'react'
 import { ConnectExternalAccountOptions, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import ConnectDevice from '../ConnectDevice';
 import { getOuraProviderID } from '../../../helpers/providerIDs';
-import OuraLogo from '../../../assets/oura-logo.svg';
+import OuraLogo from '../../../assets/oura-logo.png';
 
 export interface ConnectOuraProps {
 	title?: string,
