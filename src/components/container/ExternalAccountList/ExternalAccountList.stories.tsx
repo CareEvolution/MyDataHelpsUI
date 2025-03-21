@@ -1,64 +1,67 @@
 import React from "react"
-import {ComponentMeta, ComponentStory} from "@storybook/react"
-import ExternalAccountList, {ExternalAccountListProps} from "./ExternalAccountList"
+import ExternalAccountList, { ExternalAccountListProps } from "./ExternalAccountList"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof ExternalAccountList> = {
     title: "Container/ExternalAccountList",
     component: ExternalAccountList,
     parameters: {
-        layout: 'fullscreen',
+        layout: 'fullscreen'
     }
-} as ComponentMeta<typeof ExternalAccountList>;
+};
 
-const Template: ComponentStory<typeof ExternalAccountList> = (args: ExternalAccountListProps) =>
+export default meta;
+type Story = StoryObj<typeof ExternalAccountList>;
+
+const render = (args: ExternalAccountListProps) =>
     <Layout colorScheme="auto">
         <ExternalAccountList {...args} />
     </Layout>;
 
-export const Default = Template.bind({});
-Default.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
+const baseArgs: ExternalAccountListProps = {
+    previewState: "default",
+    externalAccountProviderCategories: []
 };
 
-export const ProvidersOnly = Template.bind({});
-ProvidersOnly.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Provider"]
-};
+export const Default: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"] },
+    render: render
+}
 
-export const HealthPlansOnly = Template.bind({});
-HealthPlansOnly.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Health Plan"]
-};
+export const ProvidersOnly: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Provider"] },
+    render: render
+}
 
-export const DeviceManufacturersOnly = Template.bind({});
-DeviceManufacturersOnly.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Device Manufacturer"]
-};
+export const HealthPlansOnly: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Health Plan"] },
+    render: render
+}
 
-export const ProvidersAndHealthPlans = Template.bind({});
-ProvidersAndHealthPlans.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Provider", "Health Plan"]
-};
+export const DeviceManufacturersOnly: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Device Manufacturer"] },
+    render: render
+}
 
-export const ProvidersAndDeviceManufacturers = Template.bind({});
-ProvidersAndDeviceManufacturers.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Provider", "Device Manufacturer"]
-};
+export const ProvidersAndHealthPlans: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Provider", "Health Plan"] },
+    render: render
+}
 
-export const HealthPlansAndDeviceManufacturers = Template.bind({});
-HealthPlansAndDeviceManufacturers.args = {
-    previewState: "Default",
-    externalAccountProviderCategories: ["Health Plan", "Device Manufacturer"]
-};
+export const ProvidersAndDeviceManufacturers: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Provider", "Device Manufacturer"] },
+    render: render
+}
 
-export const Live = Template.bind({});
-Default.args = {
-    externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
-};
+export const HealthPlansAndDeviceManufacturers: Story = {
+    args: { ...baseArgs, externalAccountProviderCategories: ["Health Plan", "Device Manufacturer"] },
+    render: render
+}
+
+export const Live: Story = {
+    args: {
+        externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
+    },
+    render: render
+}

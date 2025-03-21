@@ -1,30 +1,37 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import DeviceDataMonthCharts, { DeviceDataMonthChartsProps } from "./DeviceDataMonthCharts"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react"
 
-export default {
+const meta: Meta<typeof DeviceDataMonthCharts> = {
 	title: "Container/DeviceDataMonthCharts",
 	component: DeviceDataMonthCharts,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof DeviceDataMonthCharts>;
+};
 
-const Template: ComponentStory<typeof DeviceDataMonthCharts> = (args: DeviceDataMonthChartsProps) =>
+export default meta;
+type Story = StoryObj<typeof DeviceDataMonthCharts>;
+
+const render = (args: DeviceDataMonthChartsProps) =>
 	<Layout colorScheme="auto">
 		<Card allowOverflow={true}>
 			<DeviceDataMonthCharts {...args} />
 		</Card>
 	</Layout>;
 
-export const Default = Template.bind({});
-Default.args = {
-	previewState: "Default"
+export const Default: Story = {
+	args: {
+		previewState: "Default"
+	},
+	render: render
 };
 
-export const NoData = Template.bind({});
-NoData.args = {
-	previewState: "NoData"
+export const NoData: Story = {
+	args: {
+		previewState: "NoData"
+	},
+	render: render
 };

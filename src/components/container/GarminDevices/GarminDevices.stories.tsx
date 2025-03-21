@@ -1,35 +1,44 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import GarminDevices, { GarminDevicesProps } from "./GarminDevices"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react"
 
-export default {
+const meta: Meta<typeof GarminDevices> = {
 	title: "Container/GarminDevices",
 	component: GarminDevices,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof GarminDevices>;
+};
 
-const Template: ComponentStory<typeof GarminDevices> = (args: GarminDevicesProps) =>
-	<Layout>
+export default meta;
+type Story = StoryObj<typeof GarminDevices>;
+
+const render = (args: GarminDevicesProps) =>
+	<Layout colorScheme="auto">
 		<Card>
 			<GarminDevices {...args} />
 		</Card>
 	</Layout>;
 
-export const NotEnabled = Template.bind({});
-NotEnabled.args = {
-	previewState: "notEnabled"
-};
+export const NotEnabled: Story = {
+	args: {
+		previewState: "notEnabled"
+	},
+	render: render
+}
 
-export const NotConnected = Template.bind({});
-NotConnected.args = {
-	previewState: "notConnected"
-};
+export const NotConnected: Story = {
+	args: {
+		previewState: "notConnected"
+	},
+	render: render
+}
 
-export const Connected = Template.bind({});
-Connected.args = {
-	previewState: "connected"
-};
+export const Connected: Story = {
+	args: {
+		previewState: "connected"
+	},
+	render: render
+}

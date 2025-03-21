@@ -1,35 +1,44 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import FitbitMonthCharts, { FitbitMonthChartsProps } from "./FitbitMonthCharts"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof FitbitMonthCharts> = {
 	title: "Container/FitbitMonthCharts",
 	component: FitbitMonthCharts,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof FitbitMonthCharts>;
+};
 
-const Template: ComponentStory<typeof FitbitMonthCharts> = (args: FitbitMonthChartsProps) =>
+export default meta;
+type Story = StoryObj<typeof FitbitMonthCharts>;
+
+const render = (args: FitbitMonthChartsProps) =>
 	<Layout colorScheme="auto">
 		<Card>
 			<FitbitMonthCharts {...args} />
 		</Card>
 	</Layout>;
 
-export const NotEnabled = Template.bind({});
-NotEnabled.args = {
-	previewState: "notEnabled"
-};
+export const NotEnabled: Story = {
+	args: {
+		previewState: "notEnabled"
+	},
+	render: render
+}
 
-export const NotConnected = Template.bind({});
-NotConnected.args = {
-	previewState: "notConnected"
-};
+export const NotConnected: Story = {
+	args: {
+		previewState: "notConnected"
+	},
+	render: render
+}
 
-export const Connected = Template.bind({});
-Connected.args = {
-	previewState: "connected"
-};
+export const Connected: Story = {
+	args: {
+		previewState: "connected"
+	},
+	render: render
+}

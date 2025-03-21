@@ -1,35 +1,74 @@
 ﻿import React from 'react'
-import {ComponentMeta, ComponentStory} from '@storybook/react'
 import Layout from '../../presentational/Layout'
-import PlatformSpecificContent, {PlatformSpecificContentProps} from './PlatformSpecificContent';
+import PlatformSpecificContent, {PlatformSpecificContentProps} from './PlatformSpecificContent'
+import { Meta, StoryObj } from "@storybook/react"
 
-export default {
-    title: 'Container/PlatformSpecificContent',
-    component: PlatformSpecificContent,
-    parameters: {
-        layout: 'fullscreen',
-    }
-} as ComponentMeta<typeof PlatformSpecificContent>;
+const meta: Meta<typeof PlatformSpecificContent> = {
+	title: "Container/PlatformSpecificContent",
+	component: PlatformSpecificContent,
+	parameters: {
+		layout: 'fullscreen'
+	}
+};
 
-const Template: ComponentStory<typeof PlatformSpecificContent> = (args: PlatformSpecificContentProps) =>
-    <Layout colorScheme="auto">
+export default meta;
+type Story = StoryObj<typeof PlatformSpecificContent>;
+
+const render = (args: PlatformSpecificContentProps) =>
+	<Layout colorScheme="auto">
         <PlatformSpecificContent {...args} />
     </Layout>;
 
-export const WebVisible = Template.bind({});
-WebVisible.args = {platforms: ['Web'], children: 'Web Content', previewDevicePlatform: 'Web'};
+export const WebVisible: Story = {
+    args: {
+        platforms: ['Web'],
+        children: 'Web Content',
+        previewDevicePlatform: 'Web'
+    },
+    render: render
+}
 
-export const WebNotVisible = Template.bind({});
-WebNotVisible.args = {platforms: [], children: 'Web Content', previewDevicePlatform: 'Web'};
+export const WebNotVisible: Story = {
+    args: {
+        platforms: [],
+        children: 'Web Content',
+        previewDevicePlatform: 'Web'
+    },
+    render: render
+}
 
-export const AndroidVisible = Template.bind({});
-AndroidVisible.args = {platforms: ['Android'], children: 'Android Content', previewDevicePlatform: 'Android'};
+export const AndroidVisible: Story = {
+    args: {
+        platforms: ['Android'],
+        children: 'Android Content',
+        previewDevicePlatform: 'Android'
+    },
+    render: render
+}
 
-export const AndroidNotVisible = Template.bind({});
-AndroidNotVisible.args = {platforms: [], children: 'Android Content', previewDevicePlatform: 'Android'};
+export const AndroidNotVisible: Story = {
+    args: {
+        platforms: [],
+        children: 'Android Content',
+        previewDevicePlatform: 'Android'
+    },
+    render: render
+}
 
-export const IOSVisible = Template.bind({});
-IOSVisible.args = {platforms: ['iOS'], children: 'iOS Content', previewDevicePlatform: 'iOS'};
+export const IOSVisible: Story = {
+    args: {
+        platforms: ['iOS'],
+        children: 'iOS Content',
+        previewDevicePlatform: 'iOS'
+    },
+    render: render
+}
 
-export const IOSNotVisible = Template.bind({});
-IOSNotVisible.args = {platforms: [], children: 'iOS Content', previewDevicePlatform: 'iOS'};
+export const IOSNotVisible: Story = {
+    args: {
+        platforms: [],
+        children: 'iOS Content',
+        previewDevicePlatform: 'iOS'
+    },
+    render: render
+}
