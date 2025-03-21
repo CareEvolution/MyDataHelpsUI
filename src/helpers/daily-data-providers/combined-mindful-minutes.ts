@@ -1,7 +1,7 @@
 import { appleHealthMindfulMinutesDataProvider, googleFitMindfulMinutesDataProvider } from '.';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { DailyDataQueryResult } from '../query-daily-data';
-import { combineResults } from './common-mindful-and-therapy';
+import { combineResultsUsingFirstValue } from './daily-data';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
@@ -14,5 +14,5 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
         providers.push(googleFitMindfulMinutesDataProvider(startDate, endDate));
     }
 
-    return providers.length ? combineResults(startDate, endDate, await Promise.all(providers)) : {};
+    return providers.length ? combineResultsUsingFirstValue(startDate, endDate, await Promise.all(providers)) : {};
 }

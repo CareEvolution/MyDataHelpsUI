@@ -1,20 +1,7 @@
-import { add } from "date-fns";
-import queryAllDeviceData from "./query-all-device-data";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { buildMostRecentValueResult, getStartDate, queryForDailyData } from "./daily-data";
 
-export default function (type: string, startDate: Date, endDate: Date) {
-	return queryAllDeviceData({
-		namespace: "Fitbit",
-		type: type,
-		observedAfter: add(startDate, { days: -1 }).toISOString(),
-		observedBefore: add(endDate, { days: 1 }).toISOString()
-	}).then(function (result) {
-		var data: { [key: string]: number } = {};
-		result.forEach((d) => {
-			if (!d.startDate) { return; }
-			if (parseInt(d.value) == 0) { return; }
-			var dayKey = d.startDate!.substr(0, 10);
-			data[dayKey] = Math.round(parseFloat(d.value));
-		});
-		return data;
-	});
+export default async function (type: string, startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    const dailyData = await queryForDailyData("Fitbit", type, startDate, endDate, getStartDate);
+    return buildMostRecentValueResult(dailyData, dataPoint => Math.round(parseFloat(dataPoint.value)));
 }
