@@ -1,12 +1,7 @@
-import queryOuraSleep from './query-oura-sleep';
+import queryOuraSleep from "./query-oura-sleep";
+import { DailyDataQueryResult } from "../query-daily-data";
 
-export default function (startDate: Date, endDate: Date) {
-	// total sleep is in second, convert to minutes
-	return queryOuraSleep(startDate, endDate, "total_sleep_duration", ["long_sleep"]).then(data => {
-		var result: { [key: string]: number } = {};
-		Object.keys(data).forEach((key) => {
-			result[key] = Math.round(data[key] / 60);
-		});
-		return result;
-	});
+export default function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    // Total sleep is in seconds.  Past a divideBy value of 60 to convert to minutes.
+    return queryOuraSleep(startDate, endDate, "total_sleep_duration", ["long_sleep"], 60);
 }

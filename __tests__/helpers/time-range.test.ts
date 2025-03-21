@@ -17,9 +17,15 @@ describe('TimeRange - Helper Function Tests', () => {
     const deviceDataPointsFactory: DataPointFactory<DeviceDataPoint> = {
         name: 'DeviceDataPoint',
         create: (startDate: Date, observationDate: Date): DeviceDataPoint => {
+            const getOffsetHours = (date: Date, adjustment: number): string => {
+                const offsetHours = (-date.getTimezoneOffset() / 60) + adjustment;
+                const offsetHoursString = String(Math.abs(offsetHours)).padStart(2, '0');
+                return offsetHours < 0 ? `-${offsetHoursString}` : `+${offsetHoursString}`;
+            };
             return {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
+                // The offset manipulation here is to show that offsets are ignored when parsing dates from V1 data points.
+                startDate: format(startDate, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(startDate, 3)}:00'`),
+                observationDate: format(observationDate, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(observationDate, 3)}:00'`)
             } as DeviceDataPoint;
         }
     };
@@ -269,7 +275,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const sevenDaysAgo = add(today, { days: -7 });
             const fiveDaysAgo = add(today, { days: -5 });
             const threeDaysAgo = add(today, { days: -3 });
-            const tomorrow = add(today, { days: 1 });
+            const yesterday = add(today, { days: -1 });
 
             const dailyTimeRanges: DailyTimeRanges = {};
             dailyTimeRanges[getDayKey(eightDaysAgo)] = [
@@ -302,26 +308,26 @@ describe('TimeRange - Helper Function Tests', () => {
                     endTime: add(threeDaysAgo, { hours: 12, minutes: 15, seconds: 30 })
                 }
             ];
+            dailyTimeRanges[getDayKey(yesterday)] = [
+                {
+                    startTime: add(today, { hours: 6 }),
+                    endTime: add(today, { hours: 8, minutes: 20 })
+                }
+            ];
             dailyTimeRanges[getDayKey(today)] = [
                 {
                     startTime: add(today, { hours: 9 }),
                     endTime: add(today, { hours: 9, minutes: 30 })
                 }
             ];
-            dailyTimeRanges[getDayKey(tomorrow)] = [
-                {
-                    startTime: add(tomorrow, { hours: 5 }),
-                    endTime: add(tomorrow, { hours: 8, minutes: 20 })
-                }
-            ];
 
-            const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, today, dailyTimeRanges);
+            const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, yesterday, dailyTimeRanges);
 
             expect(Object.keys(result)).toHaveLength(3);
 
             expect(result[getDayKey(fiveDaysAgo)]).toBe(146);
             expect(result[getDayKey(threeDaysAgo)]).toBe(147);
-            expect(result[getDayKey(today)]).toBe(30);
+            expect(result[getDayKey(yesterday)]).toBe(140);
         });
     });
 });
