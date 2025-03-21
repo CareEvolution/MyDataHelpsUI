@@ -1,9 +1,10 @@
 import MyDataHelps, { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
+import { parseISOWithoutOffset } from '../device-data';
 import { Reading, ReadingRange } from './types';
 import { getFirstValueReadings } from './util';
-import { getDayKey } from "../index";
+import getDayKey from '../get-day-key';
 
 export async function appleHealthBloodGlucoseDataProvider(startDate: Date, endDate: Date): Promise<Reading[]> {
     const params: DeviceDataPointQuery = {
@@ -16,7 +17,7 @@ export async function appleHealthBloodGlucoseDataProvider(startDate: Date, endDa
     return queryAllDeviceData(params).then(dataPoints => {
         return dataPoints.map(dataPoint => {
             return {
-                timestamp: parseISO(dataPoint.observationDate!),
+                timestamp: parseISOWithoutOffset(dataPoint.observationDate!),
                 value: parseInt(dataPoint.value)
             };
         });
@@ -34,7 +35,7 @@ export async function googleFitBloodGlucoseDataProvider(startDate: Date, endDate
     return queryAllDeviceData(params).then(dataPoints => {
         return dataPoints.map(dataPoint => {
             return {
-                timestamp: parseISO(dataPoint.observationDate!),
+                timestamp: parseISOWithoutOffset(dataPoint.observationDate!),
                 value: parseInt(dataPoint.value)
             };
         });

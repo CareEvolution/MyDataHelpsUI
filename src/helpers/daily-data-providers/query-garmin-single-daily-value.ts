@@ -1,26 +1,17 @@
 import { add } from "date-fns";
 import queryAllDeviceData from "./query-all-device-data";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { buildFirstValueResult } from "./shared";
 
-export default function (type: string, startDate: Date, endDate: Date, divideBy?: number) {
-	return queryAllDeviceData({
-		namespace: "Garmin",
-		type: "Daily",
-		observedAfter: add(startDate, { days: -1 }).toISOString(),
-		observedBefore: add(endDate, { days: 1 }).toISOString()
-	}).then(function (result) {
-		var data: { [key: string]: number } = {};
-		result.forEach((d) => {
-			if (!d.startDate) { return; }
-			if (!d.properties) { return; }
-			if (!d.properties[type]) { return; }
-			//Garmin average stress level is -2 if you are not wearing the device
-			if (parseInt(d.properties[type]) <= 0) { return; }
-			var dayKey = d.startDate!.substring(0, 10);
-			data[dayKey] = Math.round(parseFloat(d.properties[type]));
-			if (divideBy) {
-				data[dayKey] = Math.round(data[dayKey] / divideBy);
-			}
-		});
-		return data;
-	});
+export default async function (type: string, startDate: Date, endDate: Date, divideBy?: number): Promise<DailyDataQueryResult> {
+    const dataPoints = await queryAllDeviceData({
+        namespace: "Garmin",
+        type: "Daily",
+        observedAfter: add(startDate, { days: -1 }).toISOString(),
+        observedBefore: add(endDate, { days: 1 }).toISOString()
+    });
+    return buildFirstValueResult(dataPoints, dataPoint => dataPoint.startDate, startDate, endDate, dataPoint => {
+        const value = parseFloat(dataPoint.properties?.[type] ?? "0");
+        return Math.round(divideBy ? (value / divideBy) : value);
+    });
 }

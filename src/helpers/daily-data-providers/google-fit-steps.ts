@@ -1,24 +1,14 @@
-﻿import { add, formatISO, parseISO } from "date-fns";
+﻿import { add } from "date-fns";
 import queryAllDeviceData from "./query-all-device-data";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { buildTotalValueResult } from "./shared";
 
-export default function (startDate: Date, endDate: Date) {
-	return queryAllDeviceData({
-		namespace: "GoogleFit",
-		type: "Steps",
-		observedAfter: add(startDate, { days: -1 }).toISOString(),
-		observedBefore: add(endDate, { days: 1 }).toISOString()
-	}).then(function (ddp) {
-		var data: { [key: string]: number } = {};
-
-		ddp.forEach((d) => {
-			if (!d.startDate) { return; }
-			var day = formatISO(parseISO(d.startDate)).substring(0, 10);
-			if (!data[day]) {
-				data[day] = 0;
-			}
-			data[day] += parseFloat(d.value);
-		});
-
-		return data;
-	});
+export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    const dataPoints = await queryAllDeviceData({
+        namespace: "GoogleFit",
+        type: "Steps",
+        observedAfter: add(startDate, { days: -1 }).toISOString(),
+        observedBefore: add(endDate, { days: 1 }).toISOString()
+    });
+    return buildTotalValueResult(dataPoints, dataPoint => dataPoint.startDate, startDate, endDate);
 }

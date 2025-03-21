@@ -4,6 +4,7 @@ import { Reading } from './types';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { getMaxValueReadings } from './util';
+import { parseISOWithoutOffset } from '../device-data';
 
 export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
@@ -58,7 +59,7 @@ export function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Readin
     return queryAllDeviceData(params).then(dataPoints => {
         return dataPoints.map(dataPoint => {
             return {
-                timestamp: add(parseISO(dataPoint.observationDate!), { minutes: -15 }),
+                timestamp: add(parseISOWithoutOffset(dataPoint.observationDate!), { minutes: -15 }),
                 value: parseInt(dataPoint.value)
             };
         });

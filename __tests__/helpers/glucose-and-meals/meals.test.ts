@@ -5,6 +5,7 @@ import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPag
 import { v4 as uuid } from 'uuid';
 import * as image from '../../../src/helpers/image';
 import * as queryAllFiles from '../../../src/helpers/query-all-files';
+import getDayKey from '../../../src/helpers/get-day-key';
 
 jest.mock('@careevolution/mydatahelps-js', () => {
     return {
@@ -87,7 +88,7 @@ describe('Meals - Helper Function Tests', () => {
             expect(persistDeviceData).toHaveBeenCalledTimes(1);
             expect(persistDeviceData).toHaveBeenCalledWith([{
                 type: 'Meals',
-                observationDate: startOfDay(today).toISOString(),
+                observationDate: `${getDayKey(startOfDay(today))}T12:00:00-06:00`,
                 value: JSON.stringify(allMeals)
             }]);
         });

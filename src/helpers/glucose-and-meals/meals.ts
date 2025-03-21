@@ -4,6 +4,7 @@ import { Meal, MealReference, MealType } from './types';
 import { timestampSortAsc } from './util';
 import queryAllFiles from '../query-all-files';
 import { createThumbnailIfNecessary } from '../image';
+import getDayKey from '../get-day-key';
 
 interface SerializedMeal {
     id: string,
@@ -29,6 +30,15 @@ export async function getMeals(date: Date): Promise<Meal[]> {
         observedBefore: startOfDay(add(date, { days: 1 })).toISOString()
     });
     if (response.deviceDataPoints.length > 0) {
+        if (response.deviceDataPoints.length > 1) {
+            // There should be a single data point per day.  However, due to a change in the timestamp being
+            // applied to these daily data points, we may end up with more than one.  This code cleans that
+            // up by deleting the extra data points and returning the most recently modified one.
+            const sortedDataPoints = [...response.deviceDataPoints].sort((a, b) => compareDesc(a.modifiedDate, b.modifiedDate));
+            sortedDataPoints.slice(1).forEach(dataPoint => MyDataHelps.deleteDeviceDataPoint(dataPoint.id));
+            const meals = (JSON.parse(sortedDataPoints[0].value) as SerializedMeal[]).map(toMeal);
+            return meals.sort(timestampSortAsc);
+        }
         const meals = (JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal[]).map(toMeal);
         return meals.sort(timestampSortAsc);
     }
@@ -38,7 +48,7 @@ export async function getMeals(date: Date): Promise<Meal[]> {
 export function saveMeals(date: Date, meals: Meal[]): Promise<void> {
     const mealsDataPoint: PersistableDeviceDataPoint = {
         type: 'Meals',
-        observationDate: startOfDay(date).toISOString(),
+        observationDate: `${getDayKey(date)}T12:00:00-06:00`,
         value: JSON.stringify(meals)
     };
     return MyDataHelps.persistDeviceData([mealsDataPoint]);

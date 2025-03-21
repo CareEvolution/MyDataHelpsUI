@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, compareAsc, Duration, parseISO } from 'date-fns'
+import { add, compareAsc, Duration, parseISO, startOfDay } from 'date-fns'
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
 import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
 import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
@@ -10,6 +10,7 @@ import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLi
 import { getDefaultPreviewData } from './SurveyAnswerData.previewdata'
 import { getShortDateString } from '../../../helpers/date-helpers';
 import { formatNumberForLocale } from "../../../helpers/locale";
+import { parseISOWithoutOffset } from "../../../helpers";
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
@@ -112,8 +113,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         props.series.forEach((series) => {
             var dataKey = getDataKey(series);
             currentData![dataKey].forEach((answer) => {
-                var answerDate = parseISO(answer.date);
-                answerDate.setHours(0,0,0,0);
+                var answerDate = startOfDay(parseISOWithoutOffset(answer.date));
                 var dataDay = data!.find((d) => d.timestamp === answerDate.getTime());
                 if(!dataDay) {
                     dataDay = {

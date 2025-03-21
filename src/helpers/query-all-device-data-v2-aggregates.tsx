@@ -1,25 +1,31 @@
 import MyDataHelps, { DeviceDataV2Aggregate, DeviceDataV2AggregatePage, DeviceDataV2AggregateQuery, Guid } from '@careevolution/mydatahelps-js';
 
-export default async function (query: DeviceDataV2AggregateQuery): Promise<DeviceDataV2Aggregate[]> {
+export default function queryAllDeviceDataV2Aggregates(query: DeviceDataV2AggregateQuery): Promise<DeviceDataV2Aggregate[]> {
 
     async function getDeviceDataV2Aggregates(): Promise<DeviceDataV2Aggregate[]> {
-        let page = await getDeviceDataV2AggregatesPage();
-        let allAggregates = page.intervals;
+        const allAggregates: DeviceDataV2Aggregate[] = [];
 
-        while (page.nextPageID) {
-            page = await getDeviceDataV2AggregatesPage(page.nextPageID);
-            allAggregates = allAggregates.concat(page.intervals);
+        try {
+            let page = await getDeviceDataV2AggregatesPage();
+            allAggregates.push(...page.intervals);
+
+            while (page.nextPageID) {
+                page = await getDeviceDataV2AggregatesPage(page.nextPageID);
+                allAggregates.push(...page.intervals);
+            }
+        } catch {
+            // ignore.
         }
 
         return allAggregates;
     }
 
-    async function getDeviceDataV2AggregatesPage(pageID?: Guid): Promise<DeviceDataV2AggregatePage> {
-        let queryParameters: DeviceDataV2AggregateQuery = { ...query };
+    function getDeviceDataV2AggregatesPage(pageID?: Guid): Promise<DeviceDataV2AggregatePage> {
+        const queryParameters: DeviceDataV2AggregateQuery = { ...query };
         if (pageID) {
             queryParameters.pageID = pageID;
         }
-        return await MyDataHelps.queryDeviceDataV2Aggregate(queryParameters);
+        return MyDataHelps.queryDeviceDataV2Aggregate(queryParameters);
     }
 
     return getDeviceDataV2Aggregates();

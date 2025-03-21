@@ -17,9 +17,15 @@ describe('TimeRange - Helper Function Tests', () => {
     const deviceDataPointsFactory: DataPointFactory<DeviceDataPoint> = {
         name: 'DeviceDataPoint',
         create: (startDate: Date, observationDate: Date): DeviceDataPoint => {
+            const getOffsetHours = (date: Date, adjustment: number): string => {
+                const offsetHours = (-date.getTimezoneOffset() / 60) + adjustment;
+                const offsetHoursString = String(Math.abs(offsetHours)).padStart(2, '0');
+                return offsetHours < 0 ? `-${offsetHoursString}` : `+${offsetHoursString}`;
+            };
             return {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
+                // The offset manipulation here is to show that offsets are ignored when parsing dates from V1 data points.
+                startDate: format(startDate, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(startDate, 3)}:00'`),
+                observationDate: format(observationDate, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(observationDate, 3)}:00'`)
             } as DeviceDataPoint;
         }
     };
@@ -27,14 +33,9 @@ describe('TimeRange - Helper Function Tests', () => {
     const deviceDataV2PointsFactory: DataPointFactory<DeviceDataV2Point> = {
         name: 'DeviceDataV2Point',
         create: (startDate: Date, observationDate: Date): DeviceDataV2Point => {
-            // Special formatting is used here to simulate the date and offset formats that will be present in V2 data points.
-            // For dates, the format needs to be an ISO 8601 date/time without a timezone offset (e.g. "2025-03-14T15:09:23").
-            // For offsets, the format needs to be an ISO 8601 timezone offset plus ":00" (e.g. "-05:00:00").
             return {
                 startDate: format(startDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
-                startDateOffset: format(startDate, 'xxx\':00\''),
-                observationDate: format(observationDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
-                observationDateOffset: format(observationDate, 'xxx\':00\'')
+                observationDate: format(observationDate, 'yyyy-MM-dd\'T\'HH:mm:ss')
             } as DeviceDataV2Point;
         }
     };

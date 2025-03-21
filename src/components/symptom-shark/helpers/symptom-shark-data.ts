@@ -1,4 +1,5 @@
 import MyDataHelps, { DeviceDataPointQuery, Guid, ParticipantInfo } from "@careevolution/mydatahelps-js";
+import { getDayKey } from "../../../helpers";
 import { LogEntryIconKey } from "../presentational/LogEntryIcon/LogEntryIcon";
 
 export interface SymptomSharkDataService {
@@ -109,7 +110,7 @@ var service: SymptomSharkDataService = {
 					var logEntry = JSON.parse(dataPoints[i].value);
 					var observationDate = dataPoints[i].observationDate;
 					if (observationDate) {
-						result[observationDate.substring(0, 10)] = upgradeLogEntry(logEntry);
+						result[getDayKey(observationDate)] = upgradeLogEntry(logEntry);
 					}
 				}
 

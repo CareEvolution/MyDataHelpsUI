@@ -1,8 +1,8 @@
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DeviceInfo, Guid, PersistableDeviceDataPoint, SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
-import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, parseISO, startOfDay, startOfToday } from 'date-fns';
+import { add, compareDesc, endOfDay, endOfToday, formatISO, isAfter, isBefore, isToday, startOfDay, startOfToday } from 'date-fns';
 import { AsthmaActionPlan, AsthmaAirQuality, AsthmaAirQualityDescription, AsthmaAirQualityType, AsthmaBiometric, AsthmaBiometricType, AsthmaDataStatus, AsthmaLogEntry, AsthmaParticipant } from '../model';
 import { isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange, isSleepDisturbancesWithinRange, isStepsWithinRange } from './asthma-functions';
-import { registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers";
+import { parseISOWithoutOffset, registerDailyDataProvider, simpleAvailabilityCheck } from "../../../helpers";
 import { daytimeBloodOxygenLevelDataProvider, daytimeRestingHeartRateDataProvider, nighttimeBloodOxygenLevelDataProvider, nighttimeRestingHeartRateDataProvider, respiratoryRateDataProvider, sleepDisturbancesDataProvider, stepsDataProvider } from "./daily-data-providers";
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
 
@@ -45,7 +45,7 @@ const airQualityTypeTermCodes: Record<AsthmaAirQualityType, AirQualityTypeTermCo
 };
 
 const sortDataPointsDesc = (dataPoint1: DeviceDataPoint, dataPoint2: DeviceDataPoint): number => {
-    return compareDesc(parseISO(dataPoint1.observationDate!), parseISO(dataPoint2.observationDate!));
+    return compareDesc(parseISOWithoutOffset(dataPoint1.observationDate!), parseISOWithoutOffset(dataPoint2.observationDate!));
 };
 
 const getDataPointValueAsNumber = (dataPoint: DeviceDataPoint): number => {
@@ -57,15 +57,15 @@ const getDataPointValueAsNumber = (dataPoint: DeviceDataPoint): number => {
 };
 
 const getLatestDataPointValue = (date: Date, dataPoints: DeviceDataPoint[], type: string, offsetDays: number): number | undefined => {
-    let startOfDate = startOfDay(date);
+    const startOfDate = startOfDay(date);
 
-    let start = add(startOfDate, {days: offsetDays});
-    let end = add(startOfDate, {days: offsetDays + 1});
+    const start = add(startOfDate, { days: offsetDays });
+    const end = add(startOfDate, { days: offsetDays + 1 });
 
-    let filteredDataPoints = dataPoints.filter(dp => {
-        if (dp.type !== type) return false;
+    const filteredDataPoints = dataPoints.filter(dataPoint => {
+        if (dataPoint.type !== type) return false;
 
-        let dataPointDate = parseISO(dp.observationDate!);
+        const dataPointDate = parseISOWithoutOffset(dataPoint.observationDate!);
         return !isBefore(dataPointDate, start) && !isAfter(dataPointDate, end);
     });
 
@@ -280,19 +280,19 @@ const service: AsthmaDataService = {
     },
     loadBiometricsForControlStatus: async function (): Promise<AsthmaBiometric[]> {
         let date = new Date();
-        let result = await loadBiometrics(add(startOfDay(date), {days: -2}), endOfDay(date));
+        let result = await loadBiometrics(add(startOfDay(date), { days: -2 }), endOfDay(date));
         return computeBiometricsForControlStatus(date, result.deviceDataPoints);
     },
     loadBiometricsForDate: async function (date: Date): Promise<AsthmaBiometric[]> {
-        let result = await loadBiometrics(add(startOfDay(date), {days: -1}), endOfDay(date));
+        let result = await loadBiometrics(add(startOfDay(date), { days: -1 }), endOfDay(date));
         return computeBiometricsForDate(date, result.deviceDataPoints);
     },
     loadAirQualitiesForControlStatus: async function (homeAirQualityZipCode: string, workAirQualityZipCode: string): Promise<AsthmaAirQuality[]> {
-        let result = await loadAirQualities(add(new Date(), {hours: -12}), endOfToday());
+        let result = await loadAirQualities(add(new Date(), { hours: -12 }), endOfToday());
         const computeAqi = (dataPoints: DeviceDataPoint[]) => getDataPointValueAsNumber(dataPoints.sort(sortDataPointsDesc)[0]);
         return [
-            homeAirQualityZipCode ? computeAirQuality('home', result.deviceDataPoints, computeAqi, 'establishing') : {type: 'home', status: 'not-configured'},
-            workAirQualityZipCode ? computeAirQuality('work', result.deviceDataPoints, computeAqi, 'establishing') : {type: 'work', status: 'not-configured'}
+            homeAirQualityZipCode ? computeAirQuality('home', result.deviceDataPoints, computeAqi, 'establishing') : { type: 'home', status: 'not-configured' },
+            workAirQualityZipCode ? computeAirQuality('work', result.deviceDataPoints, computeAqi, 'establishing') : { type: 'work', status: 'not-configured' }
         ];
     },
     loadAirQualitiesForDate: async function (date: Date): Promise<AsthmaAirQuality[]> {
@@ -360,19 +360,19 @@ const service: AsthmaDataService = {
         return MyDataHelps.persistDeviceData([dataPoint]);
     },
     loadSurveyAnswers: function (surveyName: string | string[], fromDate?: Date): Promise<SurveyAnswer[]> {
-        let query: SurveyAnswersQuery = {surveyName: surveyName};
+        let query: SurveyAnswersQuery = { surveyName: surveyName };
         if (fromDate) {
             query.insertedAfter = formatISO(fromDate);
         }
         return queryAllSurveyAnswers(query);
     },
     checkSurveyAnswerExists: function (surveyName: string | string[]): Promise<boolean> {
-        let query: SurveyAnswersQuery = {surveyName: surveyName, limit: 1};
+        let query: SurveyAnswersQuery = { surveyName: surveyName, limit: 1 };
         return MyDataHelps.querySurveyAnswers(query).then(result => !!result.surveyAnswers.length);
     },
     loadAsthmaActionPlan: async function (): Promise<AsthmaActionPlan | undefined> {
         let result = await MyDataHelps.invokeCustomApi('Asthma.ActionPlan', 'GET', '', true);
-        return result ? {id: result.Id, url: `data:image/jpeg;base64,${result.Content}`} : undefined;
+        return result ? { id: result.Id, url: `data:image/jpeg;base64,${result.Content}` } : undefined;
     }
 };
 

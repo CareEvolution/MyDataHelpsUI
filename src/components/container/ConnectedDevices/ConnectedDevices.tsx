@@ -8,6 +8,7 @@ import * as FeatherIcon from 'react-feather'
 import { getRelativeDateString } from '../../../helpers/date-helpers';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { parseISOWithoutOffset } from "../../../helpers";
 
 export interface ConnectedDevicesProps {
 	providerName: string;
@@ -20,7 +21,7 @@ export interface ConnectedDevicesProps {
 export type ConnectedDevicesPreviewState = "notEnabled" | "notConnected" | "connected";
 
 export default function (props: ConnectedDevicesProps) {
-	const [connectedDevices, setConnectedDevices] = useState<any[]>([]);
+	const [connectedDevices, setConnectedDevices] = useState<DeviceDataPoint[]>([]);
 
 	function initialize() {
 		if (props.previewState == "connected") {
@@ -77,7 +78,7 @@ export default function (props: ConnectedDevicesProps) {
 						</div>
 						{device.observationDate &&
 							<div className="device-sync">
-								{language("last-sync")} {getRelativeDateString(device.observationDate, new Date())}
+								{language("last-sync")} {getRelativeDateString(parseISOWithoutOffset(device.observationDate), new Date())}
 							</div>
 						}
 					</div>

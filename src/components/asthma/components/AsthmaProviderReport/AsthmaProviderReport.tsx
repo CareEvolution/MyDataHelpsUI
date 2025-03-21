@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { getFullDateString, getAbbreviatedMonthName } from "../../../../helpers/date-helpers";
 import { language } from '../../../../helpers/language';
+import { getDayKey } from "../../../../helpers";
 
 export interface AsthmaProviderReportProps {
     previewState?: AsthmaProviderReportPreviewState;
@@ -149,10 +150,10 @@ export default function (props: AsthmaProviderReportProps) {
     });
 
     let highHomeAqiDataPoints = airQualityDataPoints.filter(dp => dp.type === 'HomeAirQuality' && parseFloat(dp.value) > 100);
-    let highHomeAqiDays = new Set(highHomeAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), {representation: 'date'}))).size;
+    let highHomeAqiDays = new Set(highHomeAqiDataPoints.map(dp => getDayKey(dp.observationDate!))).size;
 
     let highWorkAqiDataPoints = airQualityDataPoints.filter(dp => dp.type === 'WorkAirQuality' && parseFloat(dp.value) > 100);
-    let highWorkAqiDays = new Set(highWorkAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), {representation: 'date'}))).size;
+    let highWorkAqiDays = new Set(highWorkAqiDataPoints.map(dp => getDayKey(dp.observationDate!))).size;
 
     const renderDay = (day: number, labelDay: boolean) => {
         let date = add(startDate, {days: day});

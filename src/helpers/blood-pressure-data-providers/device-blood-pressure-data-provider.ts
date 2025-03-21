@@ -1,7 +1,8 @@
 import { DeviceDataNamespace, DeviceDataPoint } from "@careevolution/mydatahelps-js";
 import queryAllDeviceData from "../daily-data-providers/query-all-device-data";
 import { BloodPressureDataPoint } from ".";
-import { parseISO, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
+import { parseISOWithoutOffset } from "../device-data";
 
 export default async function (namespace: DeviceDataNamespace, bloodPressureSystolic: string, bloodPressureDiastolic: string): Promise<BloodPressureDataPoint[]> {
 
@@ -11,7 +12,7 @@ export default async function (namespace: DeviceDataNamespace, bloodPressureSyst
 
         dataPoints.forEach((dataPoint) => {
             if (dataPoint.observationDate && !isNaN(Number(dataPoint.value))) {
-                var bpDate = parseISO(dataPoint.observationDate);
+                var bpDate = parseISOWithoutOffset(dataPoint.observationDate);
                 var exists = bpDataPointsByObservationDateTime.get(dataPoint.observationDate);
                 var bp: BloodPressureDataPoint = exists ?? { date: startOfDay(bpDate), systolic: 0, diastolic: 0 };
                 buildBpDataPoint(dataPoint, bp);
