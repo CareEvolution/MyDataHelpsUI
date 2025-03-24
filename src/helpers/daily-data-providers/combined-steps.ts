@@ -4,6 +4,7 @@ import {
     fitbitStepsDataProvider,
     garminStepsDataProvider,
     googleFitStepsDataProvider,
+    ouraStepsDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
 import { DailyDataQueryResult } from "../query-daily-data";
@@ -27,6 +28,9 @@ export default async function (startDate: Date, endDate: Date, includeGoogleFit?
     }
     if (includeGoogleFit && settings.queryableDeviceDataTypes.find(s => s.namespace == "GoogleFit" && s.type == "Steps")) {
         providers.push(googleFitStepsDataProvider(startDate, endDate));
+    }
+    if (settings.ouraEnabled) {
+        providers.push(ouraStepsDataProvider(startDate, endDate));
     }
 
     if (!providers.length) {

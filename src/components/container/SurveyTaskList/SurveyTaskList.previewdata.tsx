@@ -37,7 +37,7 @@ export var previewIncompleteTasks: SurveyTask[] =
 			"surveyDescription": "10 minutes",
 			"status": "incomplete",
 			"hasSavedProgress": false,
-			"dueDate": null,
+			"dueDate": undefined,
 			"insertedDate": "2022-03-15T16:56:26.703Z",
 			"modifiedDate": "2022-03-15T16:56:26.703Z",
 			linkIdentifier: "1"

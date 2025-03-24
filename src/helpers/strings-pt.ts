@@ -37,6 +37,9 @@ let strings: { [key: string]: string } = {
     "connect-garmin-intro": "Você pode compartilhar dados de sua conta Garmin se tiver uma. Para começar, clique ou toque abaixo para fazer login com suas credenciais do Garmin.",
     "connect-garmin-button": "Conectar Garmin",
     "received-garmin-data": "Estamos recebendo seus dados da Garmin!",
+    "connect-oura-intro": "Você pode compartilhar dados de sua conta Oura se tiver uma. Para começar, clique ou toque abaixo para fazer login com suas credenciais do Oura.",
+    "connect-oura-button": "Conectar Oura",
+    "received-oura-data": "Estamos recebendo seus dados da Oura!",
     "connect-dexcom-intro": "Você pode compartilhar dados de sua conta Dexcom se tiver uma. Para começar, clique ou toque abaixo para fazer login com suas credenciais do Dexcom.",
     "connect-dexcom-button": "Conectar Dexcom",
     "received-dexcom-data": "Estamos recebendo seus dados da Dexcom!",
@@ -527,7 +530,8 @@ let strings: { [key: string]: string } = {
     "monthly": "Mensal",
     "syncing-data": "Sincronizando dados...",
     "health-connect-phr-sync-title": "Sincronizar com Health Connect",
-    "health-connect-phr-sync-prompt": "Escolha os registros de saúde para ler e escrever no Health Connect"
+    "health-connect-phr-sync-prompt": "Escolha os registros de saúde para ler e escrever no Health Connect",
+    "bonus": "Bônus"
 };
 
 export default strings;

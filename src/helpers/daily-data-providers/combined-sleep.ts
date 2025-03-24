@@ -3,6 +3,7 @@ import {
     appleHealthSleepDataProvider,
     fitbitTotalSleepMinutesDataProvider,
     garminTotalSleepMinutesDataProvider,
+    ouraSleepMinutesDataProvider,
     healthConnectTotalSleepMinutesDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
@@ -30,6 +31,9 @@ export default async function (startDate: Date, endDate: Date) {
         )
     ) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
+    }
+    if (settings.ouraEnabled) {
+	   providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
     }
     if (
         settings.healthConnectEnabled &&

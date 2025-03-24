@@ -7,7 +7,10 @@ const meta: Meta<typeof HealthAndWellnessView> = {
     title: "View/HealthAndWellnessView",
     component: HealthAndWellnessView,
     parameters: {
-        layout: 'fullscreen'
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
     }
 };
 

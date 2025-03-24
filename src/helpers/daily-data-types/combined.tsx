@@ -27,13 +27,15 @@ const RESTING_HEART_RATE_SOURCES = sources(
     ["AppleHealth", "RestingHeartRate"],
     ["Fitbit", "RestingHeartRate"],
     ["Garmin", "Daily"],
+    ["Oura", "heart-rate", true],
     ["HealthConnect", "resting-heart-rate", true]
 );
 
 const STEPS_SOURCES = sources(
     ["AppleHealth", "HourlySteps"],
     ["Fitbit", "Steps"],
-    ["Garmin", "Daily"]
+    ["Garmin", "Daily"],
+    ["Oura", "heart-rate", true]
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
@@ -55,6 +57,7 @@ const SLEEP_MINUTES_SOURCES = sources(
         ]
     ],
     ["Garmin", "Sleep"],
+    ["oura", "sleep", true],
     ["HealthConnect", "sleep", true]
 );
 

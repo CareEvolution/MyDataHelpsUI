@@ -3,6 +3,7 @@ import {
     appleHealthRestingHeartRateDataProvider,
     fitbitRestingHeartRateDataProvider,
     garminRestingHeartRateDataProvider,
+    ouraRestingHeartRateDataProvider,	
     healthConnectRestingHeartRateDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
@@ -47,7 +48,9 @@ export default async function (
             healthConnectRestingHeartRateDataProvider(startDate, endDate)
         );
     }
-
+    if (settings.ouraEnabled) {
+	   providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+    }
     if (!providers.length) {
         return {};
     }

@@ -82,10 +82,13 @@ export enum DailyDataType {
 	HealthConnectLightSleepMinutes = "HealthConnectLightSleepMinutes",
 	HealthConnectRemSleepMinutes = "HealthConnectRemSleepMinutes",
 	HealthConnectDeepSleepMinutes = "HealthConnectDeepSleepMinutes",
+	OuraSteps = "OuraSteps",
+	OuraRestingHeartRate = "OuraRestingHeartRate",
+	OuraSleepMinutes = "OuraSleepMinutes"
 };
 
 export interface DailyDataTypeDefinition {
-	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality" | "HealthConnect";
+	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality" | "Oura" | "HealthConnect";
 	type: string;
 	dataProvider: DailyDataProvider;
 	availabilityCheck: DailyDataAvailabilityCheck;

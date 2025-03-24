@@ -11,13 +11,15 @@ export interface ConnectDevicesViewProps {
     colorScheme?: "auto" | "light" | "dark"
     enableAppleHealthSurveyName?: string
     enableGoogleFitSurveyName?: string
+    postalCodeSurveyName?: string
     deviceActivityViewUrl?: string
 }
 
 export default function ConnectDevicesView(props: ConnectDevicesViewProps) {
     return (
         <BlankView showBackButton={props.presentation == "Push"}
-            showCloseButton={props.presentation == "Modal"}>
+            showCloseButton={props.presentation == "Modal"}
+            colorScheme={props.colorScheme}>
             {props.deviceActivityViewUrl &&
                 <Card>
                     <ViewDeviceActivity onClick={() => MyDataHelps.openApplication(props.deviceActivityViewUrl!)}
@@ -28,7 +30,8 @@ export default function ConnectDevicesView(props: ConnectDevicesViewProps) {
             <Card>
                 <ConnectDevicesMenu previewState={props.previewState ? "Web" : undefined}
                     enableAppleHealthSurveyName={props.enableAppleHealthSurveyName}
-                    enableGoogleFitSurveyName={props.enableGoogleFitSurveyName} />
+                    enableGoogleFitSurveyName={props.enableGoogleFitSurveyName}
+                    postalCodeSurveyName={props.postalCodeSurveyName} />
             </Card>
             <Card>
                 <FitbitDevices previewState={props.previewState ? "connected" : undefined} />

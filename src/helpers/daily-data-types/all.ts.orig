@@ -1,0 +1,26 @@
+import airQualityTypeDefinitions from "./air-quality";
+import appleHealthTypeDefinitions from "./apple-health";
+import combinedTypeDefinitions from "./combined";
+import fitbitTypeDefinitions from "./fitbit";
+import garminTypeDefinitions from "./garmin";
+import googleFitTypeDefinitions from "./google-fit";
+<<<<<<< HEAD
+import healthConnectTypeDefinitions from "./health-connect";
+=======
+import ouraTypeDefinitions from "./oura";
+>>>>>>> main
+
+const allTypeDefinitions = [
+	...appleHealthTypeDefinitions,
+	...fitbitTypeDefinitions,
+	...garminTypeDefinitions,
+	...combinedTypeDefinitions,
+	...airQualityTypeDefinitions,
+	...googleFitTypeDefinitions,
+<<<<<<< HEAD
+	...healthConnectTypeDefinitions
+=======
+	...ouraTypeDefinitions
+>>>>>>> main
+];
+export default allTypeDefinitions;

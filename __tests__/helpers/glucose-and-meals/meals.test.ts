@@ -46,9 +46,9 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should return all meals for the given date in ascending timestamp order.', async () => {
-            const meal1: Meal = { id: uuid(), timestamp: add(today, { hours: 12 }), type: 'meal', description: 'Some tasty food!' };
+            const meal1: Meal = { id: uuid(), timestamp: add(today, { hours: 12 }), type: 'meal', description: 'Some tasty food!', created: add(today, { hours: 13 }) };
             const meal2: Meal = { id: uuid(), timestamp: add(today, { hours: 11 }), type: 'meal', archiveTimestamp: add(today, { hours: 11, minutes: 30 }) };
-            const meal3: Meal = { id: uuid(), timestamp: add(today, { hours: 10 }), type: 'meal', hasImage: true };
+            const meal3: Meal = { id: uuid(), timestamp: add(today, { hours: 10 }), type: 'meal', hasImage: true, lastModified: add(today, { hours: 16 }) };
 
             setupMeals([meal1, meal2, meal3]);
 

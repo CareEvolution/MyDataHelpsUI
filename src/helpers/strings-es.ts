@@ -37,6 +37,9 @@
     "connect-garmin-intro": "Si ya tiene una cuenta Garmin, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Garmin:",
     "connect-garmin-button": "Conectar a Garmin",
     "received-garmin-data": "¡Estamos recibiendo su información de Garmin!",
+    "connect-oura-intro": "Si ya tiene una cuenta Oura, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Oura:",
+    "connect-oura-button": "Conectar a Oura",
+    "received-oura-data": "¡Estamos recibiendo su información de Oura!",
     "connect-dexcom-intro": "Si ya tiene una cuenta Dexcom, puede compartir información desde allí. Para empezar, presione el siguiente botón para ingresar a su cuenta de Dexcom:",
     "connect-dexcom-button": "Conectar a Dexcom",
     "received-dexcom-data": "¡Estamos recibiendo su información de Dexcom!",
@@ -527,7 +530,8 @@
     "monthly": "Mensual",
     "syncing-data": "Sincronizando datos...",
     "health-connect-phr-sync-title": "Sincronizar con Health Connect",
-    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect"
+    "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect",
+    "bonus": "Prima"
 };
 
 export default strings;
