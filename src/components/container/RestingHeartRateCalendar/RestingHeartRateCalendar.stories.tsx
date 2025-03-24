@@ -3,24 +3,28 @@ import RestingHeartRateCalendar, { RestingHeartRateCalendarProps } from "./Resti
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof RestingHeartRateCalendar> = {
-	title: "Container/RestingHeartRateCalendar",
-	component: RestingHeartRateCalendar,
-	parameters: {
-		layout: 'fullscreen'
-	}
+  title: "Container/RestingHeartRateCalendar",
+  component: RestingHeartRateCalendar,
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      Description: <Description />
+    }
+  }
 };
 
 export default meta;
 type Story = StoryObj<typeof RestingHeartRateCalendar>;
 
 const render = (args: RestingHeartRateCalendarProps) =>
-	<Layout colorScheme="auto">
-		<Card>
-			<RestingHeartRateCalendar  {...args} />
-		</Card>
-	</Layout>;
+  <Layout colorScheme="auto">
+    <Card>
+      <RestingHeartRateCalendar  {...args} />
+    </Card>
+  </Layout>;
 
 const baseArgs: RestingHeartRateCalendarProps = {
   month: new Date().getMonth(),
@@ -34,17 +38,17 @@ export const Default: Story = {
 }
 
 export const NoData: Story = {
-  args: {...baseArgs, showPreviewData: "NoData"},
+  args: { ...baseArgs, showPreviewData: "NoData" },
   render: render
 }
 
 export const Loading: Story = {
-  args: {...baseArgs, showPreviewData: "Loading"},
+  args: { ...baseArgs, showPreviewData: "Loading" },
   render: render
 }
 
 export const Live: Story = {
-  args: {...baseArgs, showPreviewData: undefined, dataTypeSource: "Combined"},
+  args: { ...baseArgs, showPreviewData: undefined, dataTypeSource: "Combined" },
   render: render
 }
 

@@ -3,12 +3,16 @@ import GarminMonthCharts, { GarminMonthChartsProps } from "./GarminMonthCharts"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof GarminMonthCharts> = {
 	title: "Container/GarminMonthCharts",
 	component: GarminMonthCharts,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	}
 };
 

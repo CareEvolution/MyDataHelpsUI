@@ -9,6 +9,9 @@ export interface FitbitDevicesProps {
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: FitbitDevicesProps) {
+/**
+ * This component displays the list of Fitbit devices connected to the participant's account.
+ */
+export default function FitbitDevices(props: FitbitDevicesProps) {
 	return (<ConnectedDevices innerRef={props.innerRef} providerName="Fitbit" providerNamespace="Fitbit" previewData={fitbitDevicePreviewData} previewState={props.previewState} />);
 }

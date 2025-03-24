@@ -7,7 +7,10 @@ export interface GarminMonthChartsProps {
 	previewState?: MonthChartsPreviewState
 }
 
-export default function (props: GarminMonthChartsProps) {
+/**
+ * This component displays Garmin Steps and Garmin Resting Heart Rate as line charts based on the availability of participant data
+ */
+export default function GarminMonthCharts(props: GarminMonthChartsProps) {
 	return (
 		<MonthCharts previewState={props.previewState} charts={
 			[

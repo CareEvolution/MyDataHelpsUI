@@ -2,13 +2,17 @@
 import FitbitMonthCharts, { FitbitMonthChartsProps } from "./FitbitMonthCharts"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof FitbitMonthCharts> = {
 	title: "Container/FitbitMonthCharts",
 	component: FitbitMonthCharts,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	}
 };
 

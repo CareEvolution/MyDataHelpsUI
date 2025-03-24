@@ -3,12 +3,16 @@ import DeviceDataMonthCharts, { DeviceDataMonthChartsProps } from "./DeviceDataM
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof DeviceDataMonthCharts> = {
 	title: "Container/DeviceDataMonthCharts",
 	component: DeviceDataMonthCharts,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	}
 };
 

@@ -10,7 +10,17 @@ export interface DeviceDataMonthChartsProps {
 
 export type DeviceDataMonthChartsPreviewState = "Default" | "NoData";
 
-export default function (props: DeviceDataMonthChartsProps) {
+/**
+ * This component displays the following line charts based on the availability of participant data
+ * - Fitbit Steps
+ * - Fitbit Resting Heart Rate
+ * - Garmin Steps
+ * - Garmin Resting Heart Rate
+ * - Apple Health Steps
+ * - Apple Health Distance Traveled (Miles)
+ * - Google Fit Steps
+*/
+export default function DeviceDataMonthCharts(props: DeviceDataMonthChartsProps) {
 	const [visible, setVisible] = useState(false);
 	var currentDate = new Date();
 	const [intervalStart, setIntervalStart] = useState(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0));

@@ -1,21 +1,25 @@
 ﻿import React from 'react'
 import Layout from '../../presentational/Layout'
-import PlatformSpecificContent, {PlatformSpecificContentProps} from './PlatformSpecificContent'
+import PlatformSpecificContent, { PlatformSpecificContentProps } from './PlatformSpecificContent'
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof PlatformSpecificContent> = {
-	title: "Container/PlatformSpecificContent",
-	component: PlatformSpecificContent,
-	parameters: {
-		layout: 'fullscreen'
-	}
+    title: "Container/PlatformSpecificContent",
+    component: PlatformSpecificContent,
+    parameters: {
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
+    }
 };
 
 export default meta;
 type Story = StoryObj<typeof PlatformSpecificContent>;
 
 const render = (args: PlatformSpecificContentProps) =>
-	<Layout colorScheme="auto">
+    <Layout colorScheme="auto">
         <PlatformSpecificContent {...args} />
     </Layout>;
 

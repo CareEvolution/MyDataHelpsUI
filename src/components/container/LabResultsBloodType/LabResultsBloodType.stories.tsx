@@ -2,20 +2,24 @@ import React from "react"
 import LabResultsBloodType, { LabResultsBloodTypeProps } from "./LabResultsBloodType"
 import Layout from "../../presentational/Layout"
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof LabResultsBloodType> = {
-	title: "Container/LabResultsBloodType",
-	component: LabResultsBloodType,
-	parameters: {
-		layout: 'fullscreen'
-	}
+    title: "Container/LabResultsBloodType",
+    component: LabResultsBloodType,
+    parameters: {
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
+    }
 };
 
 export default meta;
 type Story = StoryObj<typeof LabResultsBloodType>;
 
 const render = (args: LabResultsBloodTypeProps) =>
-	<Layout colorScheme="auto">
+    <Layout colorScheme="auto">
         <LabResultsBloodType {...args} />
     </Layout>;
 

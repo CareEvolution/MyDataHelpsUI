@@ -4,12 +4,16 @@ import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import { DailyDataType } from "../../../helpers"
 import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof DeviceDataMonthChart> = {
 	title: "Container/DeviceDataMonthChart",
 	component: DeviceDataMonthChart,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	}
 };
 
@@ -37,15 +41,15 @@ const baseArgs: DeviceDataMonthChartProps = {
 };
 
 export const Loading: Story = {
-	args: {...baseArgs},
+	args: { ...baseArgs },
 	render: render
 }
 
-export const FitbitSteps : Story = {
-	args: {...baseArgs, previewState : "WithData"},
+export const FitbitSteps: Story = {
+	args: { ...baseArgs, previewState: "WithData" },
 	render: render
 }
-export const NoData : Story = {
-	args: {...baseArgs, previewState : "NoData"},
+export const NoData: Story = {
+	args: { ...baseArgs, previewState: "NoData" },
 	render: render
 }

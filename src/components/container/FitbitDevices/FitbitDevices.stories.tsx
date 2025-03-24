@@ -2,13 +2,17 @@
 import FitbitDevices, { FitbitDevicesProps } from "./FitbitDevices"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof FitbitDevices> = {
 	title: "Container/FitbitDevices",
 	component: FitbitDevices,
 	parameters: {
-		layout: 'fullscreen'
+		layout: 'fullscreen',
+		docs: {
+			Description: <Description />
+		}
 	}
 };
 

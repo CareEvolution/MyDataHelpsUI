@@ -7,7 +7,10 @@ export interface FitbitMonthChartsProps {
 	previewState?: MonthChartsPreviewState
 }
 
-export default function (props: FitbitMonthChartsProps) {
+/**
+ * This component displays Fitbit Steps and Fitbit Resting Heart Rate as line charts based on the availability of participant data
+ */
+export default function FitbitMonthCharts(props: FitbitMonthChartsProps) {
 	return (
 		<MonthCharts previewState={props.previewState} charts={
 			[

@@ -1,13 +1,17 @@
 import React from "react"
 import ExternalAccountList, { ExternalAccountListProps } from "./ExternalAccountList"
 import Layout from "../../presentational/Layout"
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
 const meta: Meta<typeof ExternalAccountList> = {
     title: "Container/ExternalAccountList",
     component: ExternalAccountList,
     parameters: {
-        layout: 'fullscreen'
+        layout: 'fullscreen',
+        docs: {
+            Description: <Description />
+        }
     }
 };
 
