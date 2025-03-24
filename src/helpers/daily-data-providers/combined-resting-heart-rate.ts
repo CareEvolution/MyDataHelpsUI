@@ -3,7 +3,7 @@ import {
     appleHealthRestingHeartRateDataProvider,
     fitbitRestingHeartRateDataProvider,
     garminRestingHeartRateDataProvider,
-    ouraRestingHeartRateDataProvider,	
+    ouraRestingHeartRateDataProvider,
     healthConnectRestingHeartRateDataProvider
 } from ".";
 import getDayKey from "../get-day-key";
@@ -27,7 +27,7 @@ export default async function (
     if (
         settings.appleHealthEnabled &&
         settings.queryableDeviceDataTypes.some(
-            (ddt) =>
+            ddt =>
                 ddt.namespace === "AppleHealth" &&
                 ddt.type === "RestingHeartRate"
         )
@@ -39,7 +39,7 @@ export default async function (
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            (ddt) =>
+            ddt =>
                 ddt.namespace === "HealthConnect" &&
                 ddt.type === "resting-heart-rate"
         )
@@ -49,7 +49,7 @@ export default async function (
         );
     }
     if (settings.ouraEnabled) {
-	   providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+        providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
     }
     if (!providers.length) {
         return {};
@@ -61,7 +61,7 @@ export default async function (
     while (currentDate < endDate) {
         const dayKey = getDayKey(currentDate);
         const heartRates: number[] = [];
-        values.forEach((value) => {
+        values.forEach(value => {
             if (value[dayKey] && value[dayKey] > 0) {
                 heartRates.push(value[dayKey]);
             }
