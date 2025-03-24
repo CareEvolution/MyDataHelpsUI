@@ -72,19 +72,18 @@ async function checkSourceAvailability(
                 case "AppleHealth":
                     enabled =
                         settings.appleHealthEnabled &&
-                        type.some((t) =>
+                        type.some(t =>
                             settings.queryableDeviceDataTypes.some(
-                                (d) =>
-                                    d.namespace == "AppleHealth" && d.type == t
+                                d => d.namespace == "AppleHealth" && d.type == t
                             )
                         );
                     break;
                 case "GoogleFit":
                     enabled =
                         settings.googleFitEnabled &&
-                        type.some((t) =>
+                        type.some(t =>
                             settings.queryableDeviceDataTypes.some(
-                                (d) => d.namespace == "GoogleFit" && d.type == t
+                                d => d.namespace == "GoogleFit" && d.type == t
                             )
                         );
                     break;
@@ -94,12 +93,16 @@ async function checkSourceAvailability(
                 case "Garmin":
                     enabled = settings.garminEnabled;
                     break;
+                case "Oura":
+                    enabled = settings.ouraEnabled;
+                    isV2 = true; // Oura always uses V2
+                    break;
                 case "HealthConnect":
                     enabled =
                         settings.healthConnectEnabled &&
-                        type.some((t) =>
+                        type.some(t =>
                             deviceDataV2Types.some(
-                                (d) =>
+                                d =>
                                     d.enabled &&
                                     d.namespace == "HealthConnect" &&
                                     d.type == t
@@ -149,8 +152,8 @@ async function checkSourceAvailability(
 
     try {
         await Promise.any(
-            availabilityChecks.map((promise) =>
-                promise.then((result) =>
+            availabilityChecks.map(promise =>
+                promise.then(result =>
                     result ? Promise.resolve() : Promise.reject()
                 )
             )
