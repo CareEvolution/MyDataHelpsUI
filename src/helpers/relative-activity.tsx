@@ -1,6 +1,6 @@
 import { add } from "date-fns";
 import { ColorDefinition } from "./colors";
-import { queryDailyData } from "./query-daily-data";
+import { queryDailyData, DailyDataQueryResult } from "./query-daily-data";
 import getDayKey from "./get-day-key";
 
 export interface RelativeActivityQueryResult {
@@ -27,12 +27,13 @@ export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes:
             add(startDate, { days: dataType.threshold == undefined ? -31 : -1 }),
             add(endDate, { days: 1 }),
             preview));
+
     return Promise.allSettled(promises).then((results) => {
         dataTypes.forEach((dataType, index) => {
             relativeActivityResults[dataType.dailyDataType] = {};
 
             if (results[index].status === "fulfilled") {
-                let dataTypeData = results[index].value;
+                let dataTypeData = (results[index] as PromiseFulfilledResult<DailyDataQueryResult>).value;
                 let currentDate = startDate;
                 while (currentDate <= endDate) {
                     let dayKey = getDayKey(currentDate);

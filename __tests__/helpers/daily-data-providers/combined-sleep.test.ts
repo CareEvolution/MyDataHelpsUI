@@ -62,7 +62,6 @@ describe("combinedSleep", () => {
         queryDeviceData.mockResolvedValue({ deviceDataPoints: [] });
         queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [] });
 
-        // Reset the provider mocks
         (fitbitTotalSleepMinutesDataProvider as jest.Mock).mockClear();
         (garminTotalSleepMinutesDataProvider as jest.Mock).mockClear();
         (ouraSleepMinutesDataProvider as jest.Mock).mockClear();
