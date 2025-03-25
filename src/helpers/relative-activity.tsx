@@ -33,11 +33,11 @@ export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes:
             relativeActivityResults[dataType.dailyDataType] = {};
 
             if (results[index].status === "fulfilled") {
-                let dataTypeData = (results[index] as PromiseFulfilledResult<DailyDataQueryResult>).value;
+                const dataTypeData = (results[index] as PromiseFulfilledResult<DailyDataQueryResult>).value;
                 let currentDate = startDate;
                 while (currentDate <= endDate) {
-                    let dayKey = getDayKey(currentDate);
-                    let value = dataTypeData?.[dayKey] ?? 0;
+                    const dayKey = getDayKey(currentDate);
+                    const value = dataTypeData?.[dayKey] ?? 0;
                     let threshold = (dataType.threshold === "30DayAverage" || dataType.threshold === undefined) ? calculatePrevious30DayAverage(dataTypeData, currentDate) : dataType.threshold;
                     if (threshold !== undefined) {
                         let fillPercent = value / (threshold * 2);
