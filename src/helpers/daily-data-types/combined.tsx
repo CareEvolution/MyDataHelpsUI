@@ -35,7 +35,7 @@ const STEPS_SOURCES = sources(
     ["AppleHealth", "HourlySteps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
-    ["Oura", "heart-rate", true]
+    ["Oura", "steps", true]
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
@@ -71,7 +71,7 @@ const THERAPY_MINUTES_SOURCES = sources(
     ["GoogleFit", "SilverCloudSession"]
 );
 
-let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
+const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
