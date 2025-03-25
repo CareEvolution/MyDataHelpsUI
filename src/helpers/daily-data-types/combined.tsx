@@ -57,7 +57,7 @@ const SLEEP_MINUTES_SOURCES = sources(
         ]
     ],
     ["Garmin", "Sleep"],
-    ["oura", "sleep", true],
+    ["Oura", "sleep", true],
     ["HealthConnect", "sleep", true]
 );
 
