@@ -269,6 +269,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const sevenDaysAgo = add(today, { days: -7 });
             const fiveDaysAgo = add(today, { days: -5 });
             const threeDaysAgo = add(today, { days: -3 });
+            const tomorrow = add(today, { days: 1 });
 
             const dailyTimeRanges: DailyTimeRanges = {};
             dailyTimeRanges[getDayKey(eightDaysAgo)] = [
@@ -307,13 +308,20 @@ describe('TimeRange - Helper Function Tests', () => {
                     endTime: add(today, { hours: 9, minutes: 30 })
                 }
             ];
+            dailyTimeRanges[getDayKey(tomorrow)] = [
+                {
+                    startTime: add(tomorrow, { hours: 5 }),
+                    endTime: add(tomorrow, { hours: 8, minutes: 20 })
+                }
+            ];
 
             const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, today, dailyTimeRanges);
 
-            expect(Object.keys(result)).toHaveLength(2);
+            expect(Object.keys(result)).toHaveLength(3);
 
             expect(result[getDayKey(fiveDaysAgo)]).toBe(146);
             expect(result[getDayKey(threeDaysAgo)]).toBe(147);
+            expect(result[getDayKey(today)]).toBe(30);
         });
     });
 });
