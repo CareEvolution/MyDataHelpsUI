@@ -71,8 +71,8 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint | DeviceDataV2Point, o
         return [];
     }
 
-    const startDate = parseISO(applyOffsetToDate(dataPoint, 'startDate'));
-    const observationDate = parseISO(applyOffsetToDate(dataPoint, 'observationDate'));
+    const startDate = parseISO(dataPoint.startDate);
+    const observationDate = parseISO(dataPoint.observationDate);
 
     if (!isBefore(startDate, observationDate)) {
         return [];
@@ -100,16 +100,4 @@ function combineRanges(range1: TimeRange, range2: TimeRange): TimeRange {
         startTime: (range2.startTime < range1.startTime) ? range2.startTime : range1.startTime,
         endTime: (range2.endTime > range1.endTime) ? range2.endTime : range1.endTime
     };
-}
-
-function applyOffsetToDate(dataPoint: DeviceDataPoint | DeviceDataV2Point, datePropertyName: keyof DeviceDataPoint & keyof DeviceDataV2Point): string {
-    const dateStr = dataPoint[datePropertyName] as string;
-
-    const dateOffsetPropertyName = (datePropertyName + 'Offset') as keyof DeviceDataV2Point;
-    if (dataPoint.hasOwnProperty(dateOffsetPropertyName)) {
-        // The substring call here is to trim the offset values from "-05:00:00" to "-05:00" so they will parse correctly.
-        return dateStr + ((dataPoint as DeviceDataV2Point)[dateOffsetPropertyName]?.substring(0, 6) ?? '');
-    }
-
-    return dateStr;
 }
