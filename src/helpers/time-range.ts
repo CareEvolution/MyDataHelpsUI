@@ -56,7 +56,7 @@ export function buildMinutesResultFromDailyTimeRanges(startDate: Date, endDate: 
 
     for (const dayKey of Object.keys(dailyTimeRanges)) {
         const dayDate = parseISO(dayKey);
-        if (lowerBound <= dayDate && dayDate < upperBound) {
+        if (lowerBound <= dayDate && dayDate <= upperBound) {
             const ranges = dailyTimeRanges[dayKey];
             const totalSeconds = ranges.reduce((totalSeconds, range) => totalSeconds + differenceInSeconds(range.endTime, range.startTime), 0);
             result[dayKey] = Math.floor(totalSeconds / 60);
