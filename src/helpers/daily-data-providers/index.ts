@@ -72,6 +72,11 @@ export { sleepScore as garminSleepScoreDataProvider } from "./garmin-sleep"
 export { default as airQualityDataProvider } from './air-quality'
 export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
+export { restingHeartRateProvider as healthConnectRestingHeartRateDataProvider } from "./health-connect-resting-heart-rate";
+export { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from "./health-connect-sleep";
+export { lightSleepMinutes as healthConnectLightSleepMinutesDataProvider } from "./health-connect-sleep";
+export { remSleepMinutes as healthConnectRemSleepMinutesDataProvider } from "./health-connect-sleep";
+export { deepSleepMinutes as healthConnectDeepSleepMinutesDataProvider } from "./health-connect-sleep";
 export { default as ouraStepsDataProvider } from './oura-daily-steps'
 export { default as ouraSleepMinutesDataProvider } from './oura-total-sleep'
 export { default as ouraRestingHeartRateDataProvider } from './oura-resting-heart-rate'
