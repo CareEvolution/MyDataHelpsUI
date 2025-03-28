@@ -82,7 +82,7 @@
     "external-account-reconnect": "Reconnect",
     "external-account-refresh": "Refresh",
     "external-account-remove": "Remove",
-    "device-data-no-data": "If you have connected Apple Health, Google Fit, Fitbit, or Garmin, check back later to view your data.",
+    "device-data-no-data": "If you have connected your device, check back later to view your data.",
     "no-notifications-received": "No notifications received",
     "next-button-text": "Next",
     "lab-results-title": "Lab Results",
