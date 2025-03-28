@@ -8,6 +8,9 @@ export interface GarminDevicesProps {
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: GarminDevicesProps) {
-	return (<ConnectedDevices innerRef={props.innerRef} providerName="Garmin" providerNamespace="Garmin" previewData={garminDevicePreviewData} previewState={props.previewState}/>);
+/**
+ * This component displays the list of Garmin devices connected to the participant's account.
+ */
+export default function GarminDevices(props: GarminDevicesProps) {
+	return (<ConnectedDevices innerRef={props.innerRef} providerName="Garmin" providerNamespace="Garmin" previewData={garminDevicePreviewData} previewState={props.previewState} />);
 }

@@ -26,7 +26,11 @@ interface LabResultBloodTypeData {
     BloodTypeLabs?: BloodTypeLab[]
 }
 
-export default function (props: LabResultsBloodTypeProps) {
+/** This component displays a participants Blood Type, if the data available in their Lab Results. 
+ * Supports rolling up lab results into a single displayed blood type, 
+ * and displaying the most recent Blood Type Lab Results.
+*/
+export default function LabResultsBloodType(props: LabResultsBloodTypeProps) {
     const [model, setModel] = useState<LabResultBloodTypeData | null>(null);
 
     function getLabResultsSummary() {

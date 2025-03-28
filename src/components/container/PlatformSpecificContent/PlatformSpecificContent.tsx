@@ -8,7 +8,10 @@ export interface PlatformSpecificContentProps {
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: PlatformSpecificContentProps) {
+/**
+ * Displays content based on the device platform (iOS, Android, or Web).
+ */
+export default function PlatformSpecificContent(props: PlatformSpecificContentProps) {
 	const [platform, setPlatform] = useState<string>('');
 
 	useEffect(() => {

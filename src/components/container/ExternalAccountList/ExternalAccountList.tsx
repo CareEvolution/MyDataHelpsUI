@@ -11,7 +11,11 @@ export interface ExternalAccountListProps {
     connectExternalAccountOptions?: ConnectExternalAccountOptions
 }
 
-export default function (props: ExternalAccountListProps) {
+/**
+ * Displays a list of external accounts connectable to a participant's account,  
+ * Supports filtering by Provider, Health Plan, or Device Manufacturer.
+ */
+export default function ExternalAccountList(props: ExternalAccountListProps) {
     const [loading, setLoading] = useState(true);
     const [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>([]);
 

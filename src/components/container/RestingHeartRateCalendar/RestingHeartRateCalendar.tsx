@@ -20,7 +20,11 @@ export interface RestingHeartRateCalendarProps {
 	innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: RestingHeartRateCalendarProps) {
+/**
+ * Displays a calendar of resting heart rate data for a given month. 
+ * Uses dataTypeSource to specify Apple Health, Fitbit, or Garmin; defaults to all sources if unspecified.
+ */
+export default function RestingHeartRateCalendar(props: RestingHeartRateCalendarProps) {
 	const [loading, setLoading] = useState(false);
 	const [heartRates, setHeartRates] = useState<HeartRateMap>({});
 
@@ -29,11 +33,11 @@ export default function (props: RestingHeartRateCalendarProps) {
 
 	function getRestingHeartRates(dataTypeSource?: RestingHeartRateDataSource) {
 		var dailyDataType: DailyDataType = DailyDataType.RestingHeartRate;
-		
+
 		if (dataTypeSource == "AppleHealth") dailyDataType = DailyDataType.AppleHealthRestingHeartRate;
 		if (dataTypeSource == "Fitbit") dailyDataType = DailyDataType.FitbitRestingHeartRate;
 		if (dataTypeSource == "Garmin") dailyDataType = DailyDataType.GarminRestingHeartRate;
-		
+
 		return queryDailyData(dailyDataType, monthStart, monthEnd, props.showPreviewData !== undefined).then(function (result) {
 			setHeartRates(result);
 		});
