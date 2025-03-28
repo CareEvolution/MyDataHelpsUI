@@ -1,6 +1,6 @@
-import { add, startOfToday } from 'date-fns';
+import { add, format, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
+import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges, DailyTimeRanges } from '../../src/helpers/time-range';
 import getDayKey from '../../src/helpers/get-day-key';
 
@@ -9,15 +9,38 @@ describe('TimeRange - Helper Function Tests', () => {
     const priorDay = add(someDay, { days: -1 });
     const nextDay = add(someDay, { days: 1 });
 
-    describe('Compute Daily Time Ranges', () => {
+    interface DataPointFactory<Type extends DeviceDataPoint | DeviceDataV2Point> {
+        name: string;
+        create: (startDate: Date, observationDate: Date) => Type;
+    }
+
+    const deviceDataPointsFactory: DataPointFactory<DeviceDataPoint> = {
+        name: 'DeviceDataPoint',
+        create: (startDate: Date, observationDate: Date): DeviceDataPoint => {
+            return {
+                startDate: startDate.toISOString(),
+                observationDate: observationDate.toISOString()
+            } as DeviceDataPoint;
+        }
+    };
+
+    const deviceDataV2PointsFactory: DataPointFactory<DeviceDataV2Point> = {
+        name: 'DeviceDataV2Point',
+        create: (startDate: Date, observationDate: Date): DeviceDataV2Point => {
+            return {
+                startDate: format(startDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
+                observationDate: format(observationDate, 'yyyy-MM-dd\'T\'HH:mm:ss')
+            } as DeviceDataV2Point;
+        }
+    };
+
+    const dataPointFactories = [deviceDataPointsFactory, deviceDataV2PointsFactory];
+    describe.each(dataPointFactories)('Compute Daily Time Ranges ($name)', (dataPointFactory: DataPointFactory<DeviceDataPoint | DeviceDataV2Point>) => {
         it('Should return a single time range when the start and observation dates are from the same day.', async () => {
             const startDate = add(someDay, { hours: 2 });
             const observationDate = add(someDay, { hours: 10 });
 
-            const dataPoint: DeviceDataPoint = {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
 
@@ -33,10 +56,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const startDate = add(priorDay, { hours: 22 });
             const observationDate = add(someDay, { hours: 10 });
 
-            const dataPoint: DeviceDataPoint = {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
 
@@ -57,10 +77,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const startDate = add(someDay, { hours: 22 });
             const observationDate = add(nextDay, { hours: 10 });
 
-            const dataPoint: DeviceDataPoint = {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
 
@@ -81,10 +98,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const startDate = add(priorDay, { hours: 22 });
             const observationDate = add(nextDay, { hours: 10 });
 
-            const dataPoint: DeviceDataPoint = {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
 
@@ -110,10 +124,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const startDate = add(priorDay, { hours: 22 });
             const observationDate = add(nextDay, { hours: 10 });
 
-            const dataPoint: DeviceDataPoint = {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint], -6);
 
@@ -122,28 +133,22 @@ describe('TimeRange - Helper Function Tests', () => {
             const ranges = dailyTimeRanges[getDayKey(someDay)];
             expect(ranges).toHaveLength(1);
             expect(ranges[0].startTime).toEqual(startDate);
-            expect(ranges[0].endTime).toEqual(add(someDay, { hours: 18 }));
+            expect(ranges[0].endTime).toEqual(add(someDay, { hours: 18, minutes: nextDay.getTimezoneOffset() - someDay.getTimezoneOffset() }));
 
             const nextDayRanges = dailyTimeRanges[getDayKey(nextDay)];
             expect(nextDayRanges).toHaveLength(1);
-            expect(nextDayRanges[0].startTime).toEqual(add(someDay, { hours: 18 }));
+            expect(nextDayRanges[0].startTime).toEqual(add(someDay, { hours: 18, minutes: nextDay.getTimezoneOffset() - someDay.getTimezoneOffset() }));
             expect(nextDayRanges[0].endTime).toEqual(observationDate);
         });
 
         it('Should merge ranges when the tail of the first range overlaps the start of the second range.', async () => {
             const startDate1 = add(someDay, { hours: 1 });
             const observationDate1 = add(someDay, { hours: 2 });
-            const dataPoint1: DeviceDataPoint = {
-                startDate: startDate1.toISOString(),
-                observationDate: observationDate1.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
             const startDate2 = add(someDay, { hours: 2 });
             const observationDate2 = add(someDay, { hours: 3 });
-            const dataPoint2: DeviceDataPoint = {
-                startDate: startDate2.toISOString(),
-                observationDate: observationDate2.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
 
@@ -158,17 +163,11 @@ describe('TimeRange - Helper Function Tests', () => {
         it('Should merge ranges when the tail of the second range overlaps the start of the first range.', async () => {
             const startDate1 = add(someDay, { hours: 2 });
             const observationDate1 = add(someDay, { hours: 3 });
-            const dataPoint1: DeviceDataPoint = {
-                startDate: startDate1.toISOString(),
-                observationDate: observationDate1.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
             const startDate2 = add(someDay, { hours: 1 });
             const observationDate2 = add(someDay, { hours: 2 });
-            const dataPoint2: DeviceDataPoint = {
-                startDate: startDate2.toISOString(),
-                observationDate: observationDate2.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
 
@@ -183,17 +182,11 @@ describe('TimeRange - Helper Function Tests', () => {
         it('Should merge ranges when the first range falls completely within the second range.', async () => {
             const startDate1 = add(someDay, { hours: 2 });
             const observationDate1 = add(someDay, { hours: 3 });
-            const dataPoint1: DeviceDataPoint = {
-                startDate: startDate1.toISOString(),
-                observationDate: observationDate1.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
             const startDate2 = add(someDay, { hours: 1 });
             const observationDate2 = add(someDay, { hours: 4 });
-            const dataPoint2: DeviceDataPoint = {
-                startDate: startDate2.toISOString(),
-                observationDate: observationDate2.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
 
@@ -208,17 +201,11 @@ describe('TimeRange - Helper Function Tests', () => {
         it('Should merge ranges when the second range falls completely within the first range.', async () => {
             const startDate1 = add(someDay, { hours: 1 });
             const observationDate1 = add(someDay, { hours: 4 });
-            const dataPoint1: DeviceDataPoint = {
-                startDate: startDate1.toISOString(),
-                observationDate: observationDate1.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
             const startDate2 = add(someDay, { hours: 2 });
             const observationDate2 = add(someDay, { hours: 3 });
-            const dataPoint2: DeviceDataPoint = {
-                startDate: startDate2.toISOString(),
-                observationDate: observationDate2.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
 
@@ -233,17 +220,11 @@ describe('TimeRange - Helper Function Tests', () => {
         it('Should not merge ranges when there is no overlap at all.', async () => {
             const startDate1 = add(someDay, { hours: 1 });
             const observationDate1 = add(someDay, { hours: 2 });
-            const dataPoint1: DeviceDataPoint = {
-                startDate: startDate1.toISOString(),
-                observationDate: observationDate1.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
             const startDate2 = add(someDay, { hours: 3 });
             const observationDate2 = add(someDay, { hours: 4 });
-            const dataPoint2: DeviceDataPoint = {
-                startDate: startDate2.toISOString(),
-                observationDate: observationDate2.toISOString()
-            } as DeviceDataPoint;
+            const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
 
@@ -256,6 +237,28 @@ describe('TimeRange - Helper Function Tests', () => {
             expect(ranges[1].startTime).toEqual(startDate2);
             expect(ranges[1].endTime).toEqual(observationDate2);
         });
+
+        it('Should return no time ranges if the start date is greater than the observation date.', async () => {
+            const startDate = add(someDay, { hours: 5 });
+            const observationDate = add(someDay, { hours: 2 });
+
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
+
+            const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
+
+            expect(Object.keys(dailyTimeRanges)).toHaveLength(0);
+        });
+
+        it('Should return no time ranges if the start date is equal to the observation date.', async () => {
+            const startDate = add(someDay, { hours: 5 });
+            const observationDate = add(someDay, { hours: 5 });
+
+            const dataPoint = dataPointFactory.create(startDate, observationDate);
+
+            const dailyTimeRanges = computeDailyTimeRanges([dataPoint]);
+
+            expect(Object.keys(dailyTimeRanges)).toHaveLength(0);
+        });
     });
 
     describe('Build Minutes Result From Daily Time Ranges', () => {
@@ -266,6 +269,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const sevenDaysAgo = add(today, { days: -7 });
             const fiveDaysAgo = add(today, { days: -5 });
             const threeDaysAgo = add(today, { days: -3 });
+            const tomorrow = add(today, { days: 1 });
 
             const dailyTimeRanges: DailyTimeRanges = {};
             dailyTimeRanges[getDayKey(eightDaysAgo)] = [
@@ -304,13 +308,20 @@ describe('TimeRange - Helper Function Tests', () => {
                     endTime: add(today, { hours: 9, minutes: 30 })
                 }
             ];
+            dailyTimeRanges[getDayKey(tomorrow)] = [
+                {
+                    startTime: add(tomorrow, { hours: 5 }),
+                    endTime: add(tomorrow, { hours: 8, minutes: 20 })
+                }
+            ];
 
             const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, today, dailyTimeRanges);
 
-            expect(Object.keys(result)).toHaveLength(2);
+            expect(Object.keys(result)).toHaveLength(3);
 
             expect(result[getDayKey(fiveDaysAgo)]).toBe(146);
             expect(result[getDayKey(threeDaysAgo)]).toBe(147);
+            expect(result[getDayKey(today)]).toBe(30);
         });
     });
 });

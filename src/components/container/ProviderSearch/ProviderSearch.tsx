@@ -38,7 +38,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
     const [searchString, _setSearchString] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
-    const addNewProviderUrl = "https://support.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635";
+    const addNewProviderUrl = "https://help.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635";
 
     const searchStringRef = useRef(searchString);
     const setSearchString = (data: string) => {
