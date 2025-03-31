@@ -1,8 +1,7 @@
-import { DailyDataType } from '../daily-data-types';
 import { DailyDataProvider, DailyDataQueryResult } from '../query-daily-data';
 import { SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import getDayKey from '../get-day-key';
-import { add, isSameDay, parseISO } from 'date-fns';
+import { add, compareDesc } from 'date-fns';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
 
 export interface SurveyDataType {
@@ -16,7 +15,7 @@ export function isSurveyDataType(dataType: string | SurveyDataType): dataType is
 }
 
 export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvider {
-    return async (startDate: Date, endDate: Date) => {
+    return async (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> => {
         const query: SurveyAnswersQuery = {
             surveyName: dataType.surveyName,
             stepIdentifier: dataType.stepIdentifier,
@@ -28,14 +27,14 @@ export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvid
             query.resultIdentifier = dataType.resultIdentifier;
         }
 
-        const answers = await queryAllSurveyAnswers(query);
+        const answers = await queryAllSurveyAnswers(query).then(answers => answers.sort((a, b) => compareDesc(a.date, b.date)));
 
         const result: DailyDataQueryResult = {};
 
         let currentDate = startDate;
         while (currentDate <= endDate) {
             const currentDayKey = getDayKey(currentDate);
-            const answerForDate = answers.find(answer => isSameDay(parseISO(answer.date), currentDate))?.answers[0];
+            const answerForDate = answers.find(answer => getDayKey(answer.date) === currentDayKey)?.answers[0];
             if (answerForDate) {
                 const parsedAnswer = parseInt(answerForDate);
                 if (!Number.isNaN(parsedAnswer)) {

@@ -1,44 +1,24 @@
-﻿import { add } from "date-fns";
-import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from ".";
-import getDayKey from "../get-day-key";
+﻿import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from ".";
 import MyDataHelps from "@careevolution/mydatahelps-js";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { combineResultsUsingRoundedAverageValue } from "./daily-data";
 
-export default function (startDate: Date, endDate: Date) {
-	let providers: Promise<{ [key: string]: number }>[] = [];
+export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    const providers: Promise<DailyDataQueryResult>[] = [];
 
-	return MyDataHelps.getDataCollectionSettings().then((settings) => {
-		if (settings.fitbitEnabled) {
-			providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.garminEnabled) {
-			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.ouraEnabled) {
-			providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
-			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (!providers.length) {
-			return {};
-		}
+    const settings = await MyDataHelps.getDataCollectionSettings();
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (settings.garminEnabled) {
+        providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (settings.ouraEnabled) {
+        providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
+        providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
+    }
 
-		return Promise.all(providers).then((values) => {
-			var data: { [key: string]: number } = {};
-			while (startDate < endDate) {
-				var dayKey = getDayKey(startDate);
-				var heartRates: number[] = [];
-				values.forEach((value) => {
-					if (value[dayKey] && value[dayKey] > 0) {
-						heartRates.push(value[dayKey]);
-					}
-				});
-				if (heartRates.length > 0) {
-					data[dayKey] = Math.round( heartRates.reduce((a,b) => a+b) / heartRates.length );
-				}
-				startDate = add(startDate, { days: 1 });
-			}
-			return data;
-		});
-	});
+    return providers.length ? combineResultsUsingRoundedAverageValue(startDate, endDate, await Promise.all(providers)) : {};
 }

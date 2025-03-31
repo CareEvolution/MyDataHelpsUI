@@ -1,18 +1,9 @@
-import { add } from 'date-fns';
-import queryAllDeviceData from './query-all-device-data';
 import { DailyDataQueryResult } from '../query-daily-data';
-import { DeviceDataPointQuery } from '@careevolution/mydatahelps-js';
-import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges } from "../time-range";
+import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges } from '../time-range';
+import { queryForDailyDataPoints } from './daily-data';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    const parameters: DeviceDataPointQuery = {
-        namespace: 'GoogleFit',
-        type: 'ActivitySegment',
-        observedAfter: add(startDate, { days: -1 }).toISOString(),
-        observedBefore: add(endDate, { days: 1 }).toISOString()
-    };
-
-    const dataPoints = await queryAllDeviceData(parameters);
+    const dataPoints = await queryForDailyDataPoints('GoogleFit', 'ActivitySegment', startDate, endDate);
     const dailyTimeRanges = computeDailyTimeRanges(dataPoints.filter(dataPoint => dataPoint.value === 'meditation'));
     return buildMinutesResultFromDailyTimeRanges(startDate, endDate, dailyTimeRanges);
 }

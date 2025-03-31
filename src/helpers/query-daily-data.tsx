@@ -1,4 +1,4 @@
-﻿import { add, startOfToday } from "date-fns";
+﻿import { add } from "date-fns";
 import getDayKey from "./get-day-key";
 import { DailyDataTypeDefinition } from "./daily-data-types";
 import allTypeDefinitions from "./daily-data-types/all";
@@ -7,6 +7,7 @@ import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./daily-data-types/formatters";
 import { predictableRandomNumber } from "./predictableRandomNumber";
+import { combineResultsUsingFirstValue } from "./daily-data-providers/daily-data";
 
 export type DailyDataQueryResult = { [key: string]: number };
 export type DailyDataProvider = (startDate: Date, endDate: Date) => Promise<DailyDataQueryResult>;
@@ -61,21 +62,8 @@ export async function queryDailyData(type: string, startDate: Date, endDate: Dat
 	if (preview) {
 		return await queryPreviewDailyData(type, startDate, endDate);
 	}
-
-	const result: DailyDataQueryResult = {};
-	for (let dailyDataType of parseDailyDataTypes(type)) {
-		const data = await dailyDataType.dataProvider(startDate, endDate);
-
-		let currentDate = startDate;
-		while (currentDate < endDate) {
-			const dayKey = getDayKey(currentDate);
-			if (!result[dayKey] && data[dayKey]) {
-				result[dayKey] = data[dayKey];
-			}
-			currentDate = add(currentDate, { days: 1 });
-		}
-	}
-	return result;
+    const dataProviders = parseDailyDataTypes(type).map(dailyDataType => dailyDataType.dataProvider(startDate, endDate));
+    return combineResultsUsingFirstValue(startDate, endDate, await Promise.all(dataProviders));
 }
 
 export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date, fillPercentage?: number) {
