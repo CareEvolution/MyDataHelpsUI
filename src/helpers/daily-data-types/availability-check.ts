@@ -114,25 +114,30 @@ async function checkSourceAvailability(
 
             if (!enabled) return false;
 
-            let parameters: DeviceDataPointQuery | DeviceDataV2Query;
-
             if (isV2) {
-                parameters = {
-                    namespace: namespace as DeviceDataV2Namespace,
-                    type: type.join(","),
-                    limit: 1,
-                    modifiedAfter: modifiedAfter?.toISOString()
-                };
+                const promises = type.map(async t => {
+                    const parameters: DeviceDataV2Query = {
+                        namespace: namespace as DeviceDataV2Namespace,
+                        type: t,
+                        limit: 1,
+                        modifiedAfter: modifiedAfter?.toISOString()
+                    };
 
-                try {
                     const result =
                         await MyDataHelps.queryDeviceDataV2(parameters);
-                    return result.deviceDataPoints.length > 0;
+                    return await (result.deviceDataPoints.length > 0
+                        ? Promise.resolve(true)
+                        : Promise.reject());
+                });
+
+                try {
+                    const result = await Promise.any(promises);
+                    return result;
                 } catch {
                     return false;
                 }
             } else {
-                parameters = {
+                const parameters: DeviceDataPointQuery = {
                     namespace: namespace as DeviceDataNamespace,
                     type: type,
                     limit: 1,
@@ -151,14 +156,8 @@ async function checkSourceAvailability(
     );
 
     try {
-        await Promise.any(
-            availabilityChecks.map(promise =>
-                promise.then(result =>
-                    result ? Promise.resolve() : Promise.reject()
-                )
-            )
-        );
-        return true;
+        const results = await Promise.all(availabilityChecks);
+        return results.some(result => result === true);
     } catch {
         return false;
     }
