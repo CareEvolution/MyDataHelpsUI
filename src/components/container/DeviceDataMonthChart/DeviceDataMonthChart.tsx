@@ -45,7 +45,11 @@ function DayTick(props: TickProps) {
 	);
 }
 
-export default function (props: DeviceDataMonthChartProps) {
+
+/**
+ * This component displays a line chart reflecting the daily data for a month.
+*/
+export default function DeviceDataMonthChart(props: DeviceDataMonthChartProps) {
 	const [dailyData, setDailyData] = useState<{ [key: string]: DailyDataQueryResult } | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [hasData, setHasData] = useState(false);
@@ -165,7 +169,7 @@ export default function (props: DeviceDataMonthChartProps) {
 							{payload.map((p: any) =>
 								<tr key={p.dataKey}>
 									<th>{labelLookup[p.dataKey]}</th>
-									<td>{formatNumberForLocale(parseFloat(p.value),2)}</td>
+									<td>{formatNumberForLocale(parseFloat(p.value), 2)}</td>
 								</tr>
 							)}
 						</tbody>
