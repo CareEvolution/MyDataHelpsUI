@@ -3,7 +3,7 @@ import './AsthmaControlStatusHeader.css';
 import { asthmaDataService, caregiverVariableLanguage, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
 import { AsthmaAirQuality, AsthmaBiometric, AsthmaControlState, AsthmaParticipant } from '../../model';
 import { language, useInitializeView } from '../../../../helpers';
-import { formatInnerSpan } from "../../helpers/asthma-formatters";
+import { highlightInnerText } from "../../helpers/asthma-formatters";
 import { add } from 'date-fns';
 import { AsthmaControlStatusHeaderPreviewState, previewData } from './AsthmaControlStatusHeader.previewData';
 
@@ -58,7 +58,7 @@ export default function (props: AsthmaControlStatusHeaderProps) {
     }
 
     const getAbnormalRangeAlertDisplay = (alertText: string): React.JSX.Element => {
-        const formattedText = formatInnerSpan(alertText, 'mdhui-asthma-control-status-header-data-out-of-range');
+        const formattedText = highlightInnerText(alertText, 'mdhui-asthma-control-status-header-data-out-of-range');
 
         return <div className="mdhui-asthma-control-status-header-text">
             <p>{formattedText} {language('asthma-control-status-header-complete-daily-entry')}</p>
@@ -125,13 +125,13 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         }
         {controlState!.status === 'controlled' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{formatInnerSpan(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled'), 'mdhui-asthma-control-status-header-controlled')}</p>
+                <p>{highlightInnerText(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled'), 'mdhui-asthma-control-status-header-controlled')}</p>
             </div>
         }
         {controlState!.status === 'not-controlled' &&
             <div>
                 <div className="mdhui-asthma-control-status-header-text">
-                    <p>{formatInnerSpan(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled'), 'mdhui-asthma-control-status-header-not-controlled')}</p>
+                    <p>{highlightInnerText(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled'), 'mdhui-asthma-control-status-header-not-controlled')}</p>
                 </div>
                 <div className="mdhui-asthma-control-status-header-not-controlled-stats">
                     {getStatDisplay(language('asthma-control-status-header-not-controlled-stat-symptom-days'), controlState!.symptomDaysPast7)}

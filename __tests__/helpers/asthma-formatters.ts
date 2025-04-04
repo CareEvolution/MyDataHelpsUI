@@ -1,9 +1,9 @@
-import { formatInnerSpan } from '../../src/components/asthma/helpers/asthma-formatters';
+import { highlightInnerText } from '../../src/components/asthma/helpers/asthma-formatters';
 
-describe('Asthma Formatters', () => {
+describe('highlightInnerText', () => {
     it('Should format placeholder text within other text.', async () => {
             const str = "My test |||placeholder text||| string.";
-            const element = formatInnerSpan(str, "testClass");
+            const element = highlightInnerText(str, "testClass");
             const innerSpan = element.props.children[1];
 
             expect(element.props.children.length).toEqual(3);
@@ -15,7 +15,7 @@ describe('Asthma Formatters', () => {
 
         it('Should format placeholder text before other text.', async () => {
             const str = "|||placeholder text||| string.";
-            const element = formatInnerSpan(str, "testClass");
+            const element = highlightInnerText(str, "testClass");
             const innerSpan = element.props.children[1];
 
             expect(element.props.children.length).toEqual(3);
@@ -27,7 +27,7 @@ describe('Asthma Formatters', () => {
 
         it('Should format placeholder text after other text.', async () => {
             const str = "My test |||placeholder text|||";
-            const element = formatInnerSpan(str, "testClass");
+            const element = highlightInnerText(str, "testClass");
             const innerSpan = element.props.children[1];
 
             expect(element.props.children.length).toEqual(3);
@@ -39,7 +39,7 @@ describe('Asthma Formatters', () => {
 
         it('Should format only placeholder text.', async () => {
             const str = "|||placeholder text|||";
-            const element = formatInnerSpan(str, "testClass");
+            const element = highlightInnerText(str, "testClass");
             const innerSpan = element.props.children[1];
 
             expect(element.props.children.length).toEqual(3);
@@ -51,7 +51,7 @@ describe('Asthma Formatters', () => {
 
         it('Should format text with no placeholder.', async () => {
             const str = "My test string.";
-            const element = formatInnerSpan(str, "testClass");
+            const element = highlightInnerText(str, "testClass");
 
             expect(element.props.children).toEqual("My test string.");
         });
