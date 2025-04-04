@@ -3,6 +3,7 @@ import './AsthmaControlStatusHeader.css';
 import { asthmaDataService, caregiverVariableLanguage, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
 import { AsthmaAirQuality, AsthmaBiometric, AsthmaControlState, AsthmaParticipant } from '../../model';
 import { language, useInitializeView } from '../../../../helpers';
+import { formatInnerSpan } from "../../helpers/asthma-formatters";
 import { add } from 'date-fns';
 import { AsthmaControlStatusHeaderPreviewState, previewData } from './AsthmaControlStatusHeader.previewData';
 
@@ -54,15 +55,6 @@ export default function (props: AsthmaControlStatusHeaderProps) {
 
     if (loading && !controlState) {
         return null;
-    }
-
-    const formatInnerSpan = (text: string, spanClassName: string): React.JSX.Element => {
-
-        if (text.includes("|||")) {
-            const pieces = text.split("|||");
-            return <>{pieces[0]}<span className={spanClassName}>{pieces[1]}</span>{pieces[2]}</>;
-        }
-        return <>{text}</>;
     }
 
     const getAbnormalRangeAlertDisplay = (alertText: string): React.JSX.Element => {
