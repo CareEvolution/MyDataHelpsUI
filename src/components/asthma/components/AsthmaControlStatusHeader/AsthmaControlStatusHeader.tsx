@@ -92,12 +92,12 @@ export default function (props: AsthmaControlStatusHeaderProps) {
             }
 
             if (airQualities!.find(q => q.type === 'home')?.status === 'out-of-range') {
-                const prompt = language('asthma-control-status-header-abnormal-home-aqi', null, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'home')?.description) || "" });
+                const prompt = language('asthma-control-status-header-abnormal-home-aqi', undefined, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'home')?.description) || "" });
                 return getAbnormalRangeAlertDisplay(prompt);
             }
 
             if (airQualities!.find(q => q.type === 'work')?.status === 'out-of-range') {
-                const prompt = language('asthma-control-status-header-abnormal-work-aqi', null, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'work')?.description) || "" });
+                const prompt = language('asthma-control-status-header-abnormal-work-aqi', undefined, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'work')?.description) || "" });
                 return getAbnormalRangeAlertDisplay(prompt);
             }
         }

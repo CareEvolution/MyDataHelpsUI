@@ -35,7 +35,7 @@ export function supportedLocales() {
 	return Object.keys(localeToStringsMap);
 }
 
-export function language(key: string, specifiedLocale?: string | null, args?: { [key: string]: string }): string {
+export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
 	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
 	
 	let localeStrings : LocaleStrings = localeToStringsMap[currentLocale];

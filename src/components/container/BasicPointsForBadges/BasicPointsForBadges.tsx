@@ -102,7 +102,7 @@ export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
                                 <FontAwesomeSvgIcon icon={faStar} size={"1x"} style={{ color: "#FFF", marginTop: "-2px" }} />
                             </ProgressBarStep>
                     }]} />
-                <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge", null, { "points": pointsUntilNextBadge().toString()})}</div>
+                <div className="mdhui-basic-points-for-badges-next-badge">{language("points-until-next-badge", undefined, { "points": pointsUntilNextBadge().toString()})}</div>
             </>
         }
         {!badges === undefined || points === undefined &&
