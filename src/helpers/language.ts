@@ -8,6 +8,14 @@ import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
+import canadianFrenchStrings from "./strings-fr-ca"
+import filipinoStrings from "./strings-fil"
+import romanianStrings from "./strings-ro"
+import samoanStrings from "./strings-sm"
+import somaliStrings from "./strings-so"
+import swahiliStrings from "./strings-sw"
+import tagalogStrings from "./strings-tl"
+import vietnameseStrings from "./strings-vi"
 // NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 interface LocaleStrings {
@@ -16,14 +24,22 @@ interface LocaleStrings {
 
 const localeToStringsMap : Record<string, LocaleStrings> = {
 	"en": englishStrings,
-	"es": spanishStrings,
-	"nl": dutchStrings,
-	"fr": frenchStrings,
-	"it": italianStrings,
-	"de": germanStrings,
-	"pt": portugueseBrazilStrings,
-	"pt-pt": portuguesePortugalStrings,
-	"pl": polishStrings
+    "es": spanishStrings,
+    "nl": dutchStrings,
+    "fr": frenchStrings,
+    "it": italianStrings,
+    "de": germanStrings,
+    "pt": portugueseBrazilStrings,
+    "pt-pt": portuguesePortugalStrings,
+    "pl": polishStrings,
+    "fr-ca": canadianFrenchStrings,
+    "fil": filipinoStrings,
+    "ro": romanianStrings,
+    "sm": samoanStrings,
+	"sw":swahiliStrings,
+    "so": somaliStrings,
+    "tl": tagalogStrings,
+    "vi": vietnameseStrings
 };
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
