@@ -7,7 +7,7 @@ import "./MicroTrend.css"
 export interface MicroTrendProps {
     date?: Date
     dataType: RelativeActivityDataType
-    previewState?: "default"
+    previewState?: "default" | "noTrend"
     innerRef?: React.Ref<HTMLDivElement>
     hideIfNoRecentData?: boolean
 }
@@ -19,9 +19,17 @@ export default function MicroTrend(props: MicroTrendProps) {
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
 
     function loadData() {
-        queryRelativeActivity(add(date, { days: -6 }), date, [props.dataType], !!props.previewState).then(results => {
-            setResults(results[props.dataType.dailyDataType]);
-        });
+        if (props.previewState === "noTrend") {
+            setResults({
+                [getDayKey(date)]: {
+                    value: 5000
+                }
+            });
+        } else {
+            queryRelativeActivity(add(date, { days: -6 }), date, [props.dataType], !!props.previewState).then(results => {
+                setResults(results[props.dataType.dailyDataType]);
+            });
+        }
     }
 
     useInitializeView(loadData, ["externalAccountSyncComplete"]);
