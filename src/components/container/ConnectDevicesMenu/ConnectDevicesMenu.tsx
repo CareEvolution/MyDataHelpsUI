@@ -42,6 +42,7 @@ interface ConnectDevicesMenuState {
     hasRecentAppleHealthData: boolean;
     healthConnectStatus: HealthConnectStatus | null;
     participantInfo: ParticipantInfo | null;
+    refresh: () => void;
 }
 
 function useConnectDevicesMenuState(
@@ -55,7 +56,8 @@ function useConnectDevicesMenuState(
         platform: null,
         hasRecentAppleHealthData: false,
         healthConnectStatus: null,
-        participantInfo: null
+        participantInfo: null,
+        refresh: initialize
     });
 
     if (previewState) {
@@ -72,7 +74,8 @@ function useConnectDevicesMenuState(
             platform: "Web",
             hasRecentAppleHealthData: false,
             healthConnectStatus: null,
-            participantInfo: generateSampleParticipantInfo()
+            participantInfo: generateSampleParticipantInfo(),
+            refresh: initialize
         }
 
         if (previewState == "ConnectedStates") {
@@ -111,7 +114,8 @@ function useConnectDevicesMenuState(
                     platform: deviceInfo ? deviceInfo.platform : "Web",
                     hasRecentAppleHealthData: false,
                     healthConnectStatus: null,
-                    participantInfo: participantInfo
+                    participantInfo: participantInfo,
+                    refresh: initialize
                 };
 
                 if (deviceInfo?.platform == "iOS") {
@@ -142,7 +146,7 @@ function useConnectDevicesMenuState(
 }
 
 export default function (props: ConnectDevicesMenuProps) {
-    const { loading, settings, deviceExternalAccounts, platform, hasRecentAppleHealthData, healthConnectStatus, participantInfo } =
+    const { loading, settings, deviceExternalAccounts, platform, hasRecentAppleHealthData, healthConnectStatus, participantInfo, refresh } =
         useConnectDevicesMenuState(props.previewState, props.enableAppleHealthSurveyName, props.enableGoogleFitSurveyName);
 
     if (loading) {
@@ -220,7 +224,8 @@ export default function (props: ConnectDevicesMenuProps) {
             providerID={providerID}
             image={image}
             externalAccount={externalAccount}
-            connectExternalAccountOptions={props.connectExternalAccountOptions} />;
+            connectExternalAccountOptions={props.connectExternalAccountOptions}
+            onConnect={() => refresh()} />;
     }
 
     function getAppleHealthMenuItem() {
@@ -338,13 +343,16 @@ interface ExternalAccountMenuItemProps {
     image: ReactNode;
     externalAccount?: ExternalAccount;
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
+    onConnect: () => void;
 }
 
 function ExternalAccountMenuItem(props: ExternalAccountMenuItemProps) {
     let indicator = <div className="mdhui-connect-devices-menu-connect">{language("connect")}</div>;
     let action: (() => void) | undefined = () => {
         if (props.preview) return;
-        MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true });
+        MyDataHelps.connectExternalAccount(props.providerID, props.connectExternalAccountOptions || { openNewWindow: true }).then(() => {
+            props.onConnect();
+        });
     };
 
     if (props.externalAccount) {
