@@ -47,11 +47,12 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         if (!props.dataTypes.length || !availableDataTypes?.length) return null;
 
         let bars: SparkBarChartBar[] = availableDataTypes.map(dataType => {
-            if (!relativeActivityData || !relativeActivityData[dataType.dailyDataType] || !relativeActivityData[dataType.dailyDataType][dayKey]) {
+            const relativePercent = relativeActivityData?.[dataType.dailyDataType]?.[dayKey]?.relativePercent;
+            if (relativePercent === undefined) {
                 return { color: 'var(--mdhui-color-primary)', barFillPercent: 0 };
             }
 
-            const value = relativeActivityData[dataType.dailyDataType][dayKey].value || 0;
+            const value = relativeActivityData![dataType.dailyDataType][dayKey].value || 0;
             let color = dataType.color || 'var(--mdhui-color-primary)';
             if (dataType.threshold !== undefined && dataType.threshold !== '30DayAverage' && value > dataType.threshold && dataType.overThresholdColor) {
                 color = dataType.overThresholdColor;
@@ -59,7 +60,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
             return {
                 color: color,
-                barFillPercent: relativeActivityData[dataType.dailyDataType][dayKey].relativePercent
+                barFillPercent: relativePercent
             };
         });
 

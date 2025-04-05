@@ -30,7 +30,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         return null;
     }
 
-    const hasRecentData = Object.values(results).some(r => r.value > 0);
+    const hasRecentData = Object.values(results).some(r => r.value > 0 && r.threshold !== undefined);
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
