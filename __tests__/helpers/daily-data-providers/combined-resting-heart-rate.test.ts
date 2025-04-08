@@ -36,7 +36,7 @@ describe("combinedRestingHeartRate", () => {
         expect(result).toEqual({});
     });
 
-    it("should return an empty object if device data v2 type not available", async () => {
+    it("should return an empty object if ouraEnabled, but device data v2 type sleep not available", async () => {
         getDataCollectionSettings.mockResolvedValue({
             ouraEnabled: true,
             queryableDeviceDataTypes: []
