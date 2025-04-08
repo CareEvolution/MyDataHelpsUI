@@ -5,6 +5,7 @@ jest.mock("@careevolution/mydatahelps-js", () => ({
     __esModule: true,
     default: {
         getDataCollectionSettings: jest.fn(),
+        getDeviceDataV2AllDataTypes: jest.fn(),
         queryDeviceData: jest.fn(),
         queryDeviceDataV2: jest.fn()
     }
@@ -15,6 +16,7 @@ describe("combinedSleep", () => {
     const startDate = new Date(2023, 0, 1);
     const endDate = new Date(2023, 0, 4);
     const getDataCollectionSettings = (MyDataHelps.getDataCollectionSettings as jest.Mock);
+    const getDeviceDataV2AllDataTypes = (MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock);
     const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
     const queryDeviceDataV2 = (MyDataHelps.queryDeviceDataV2 as jest.Mock);
 
@@ -34,6 +36,16 @@ describe("combinedSleep", () => {
         expect(result).toEqual({});
     });
 
+    it("should return an empty object if ouraEnabled, but device data v2 type sleep not available", async () => {
+        getDataCollectionSettings.mockResolvedValue({
+            ouraEnabled: true,
+            queryableDeviceDataTypes: []
+        });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([]);
+        const result = await combinedSleep(startDate, endDate);
+        expect(result).toEqual({});
+    });
+
     it("should return the maximum sleep for each day", async () => {
         getDataCollectionSettings.mockResolvedValue({
             fitbitEnabled: true,
@@ -41,6 +53,13 @@ describe("combinedSleep", () => {
             ouraEnabled: true,
             queryableDeviceDataTypes: []
         });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([
+            {
+                enabled: true,
+                namespace: "Oura",
+                type: "sleep"
+            }
+        ]);
         queryDeviceData.mockImplementation((query: DeviceDataPointQuery) => {
             if (query.namespace === "Fitbit") {
                 return Promise.resolve({
@@ -52,8 +71,8 @@ describe("combinedSleep", () => {
             } else if (query.namespace === "Garmin") {
                 return Promise.resolve({
                     deviceDataPoints: [
-                        buildGarminDataPoint((510*60).toString(), "2023-01-01T12:02:00", "DurationInSeconds"),
-                        buildGarminDataPoint((533*60).toString(), "2023-01-02T13:01:02", "DurationInSeconds")
+                        buildGarminDataPoint((510 * 60).toString(), "2023-01-01T12:02:00", "DurationInSeconds"),
+                        buildGarminDataPoint((533 * 60).toString(), "2023-01-02T13:01:02", "DurationInSeconds")
                     ]
                 });
             }
@@ -62,8 +81,8 @@ describe("combinedSleep", () => {
             if (query.namespace === "Oura") {
                 return Promise.resolve({
                     deviceDataPoints: [
-                        buildOuraDataPoint((433*60).toString(), "2023-01-02", "total_sleep_duration", "long_sleep"),
-                        buildOuraDataPoint((417*60).toString(), "2023-01-03", "total_sleep_duration", "long_sleep"),
+                        buildOuraDataPoint((433 * 60).toString(), "2023-01-02", "total_sleep_duration", "long_sleep"),
+                        buildOuraDataPoint((417 * 60).toString(), "2023-01-03", "total_sleep_duration", "long_sleep"),
                     ]
                 });
             }

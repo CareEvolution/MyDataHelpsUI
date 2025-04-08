@@ -6,14 +6,19 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 export default function (startDate: Date, endDate: Date) {
 	let providers: Promise<{ [key: string]: number }>[] = [];
 
-	return MyDataHelps.getDataCollectionSettings().then((settings) => {
+	return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes()]).then(([settings, deviceDataV2Types]) => {
 		if (settings.fitbitEnabled) {
 			providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
 		}
 		if (settings.garminEnabled) {
 			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
 		}
-		if (settings.ouraEnabled) {
+		if (settings.ouraEnabled && deviceDataV2Types.some(
+			ddt =>
+				ddt.enabled &&
+				ddt.namespace === "Oura" &&
+				ddt.type === "sleep"
+		)) {
 			providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
 		}
 		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {

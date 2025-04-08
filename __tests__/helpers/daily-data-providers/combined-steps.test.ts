@@ -5,6 +5,7 @@ jest.mock("@careevolution/mydatahelps-js", () => ({
     __esModule: true,
     default: {
         getDataCollectionSettings: jest.fn(),
+        getDeviceDataV2AllDataTypes: jest.fn(),
         queryDeviceData: jest.fn(),
         queryDeviceDataV2: jest.fn()
     }
@@ -15,6 +16,7 @@ describe("combinedSteps", () => {
     const startDate = new Date(2023, 0, 1);
     const endDate = new Date(2023, 0, 4);
     const getDataCollectionSettings = (MyDataHelps.getDataCollectionSettings as jest.Mock);
+    const getDeviceDataV2AllDataTypes = (MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock);
     const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
     const queryDeviceDataV2 = (MyDataHelps.queryDeviceDataV2 as jest.Mock);
 
@@ -33,6 +35,16 @@ describe("combinedSteps", () => {
         const result = await combinedSteps(startDate, endDate);
         expect(result).toEqual({});
     });
+    
+    it("should return an empty object if ouraEnabled, but device data v2 type daily-activity not available", async () => {
+        getDataCollectionSettings.mockResolvedValue({
+            ouraEnabled: true,
+            queryableDeviceDataTypes: []
+        });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([]);
+        const result = await combinedSteps(startDate, endDate);
+        expect(result).toEqual({});
+    });    
 
     it("should return the maximum steps for each day", async () => {
         getDataCollectionSettings.mockResolvedValue({
@@ -41,6 +53,13 @@ describe("combinedSteps", () => {
             ouraEnabled: true,
             queryableDeviceDataTypes: []
         });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([
+            {
+                enabled: true,
+                namespace: "Oura",
+                type: "daily-activity"
+            }
+        ]);
         queryDeviceData.mockImplementation((query: DeviceDataPointQuery) => {
             if (query.namespace === "Fitbit") {
                 return Promise.resolve({
