@@ -24,22 +24,22 @@ interface LocaleStrings {
 
 const localeToStringsMap : Record<string, LocaleStrings> = {
 	"en": englishStrings,
-    "es": spanishStrings,
-    "nl": dutchStrings,
-    "fr": frenchStrings,
-    "it": italianStrings,
-    "de": germanStrings,
-    "pt": portugueseBrazilStrings,
-    "pt-pt": portuguesePortugalStrings,
-    "pl": polishStrings,
-    "fr-ca": canadianFrenchStrings,
-    "fil": filipinoStrings,
-    "ro": romanianStrings,
-    "sm": samoanStrings,
-	"sw":swahiliStrings,
-    "so": somaliStrings,
-    "tl": tagalogStrings,
-    "vi": vietnameseStrings
+	"es": spanishStrings,
+	"nl": dutchStrings,
+	"fr": frenchStrings,
+	"it": italianStrings,
+	"de": germanStrings,
+	"pt": portugueseBrazilStrings,
+	"pt-pt": portuguesePortugalStrings,
+	"pl": polishStrings,
+	"fr-ca": canadianFrenchStrings,
+	"fil": filipinoStrings,
+	"ro": romanianStrings,
+	"sm": samoanStrings,
+	"sw": swahiliStrings,
+	"so": somaliStrings,
+	"tl": tagalogStrings,
+	"vi": vietnameseStrings
 };
 
 function format(resolvedString: string, args?: { [key: string]: string }) {
