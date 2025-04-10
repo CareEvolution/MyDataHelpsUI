@@ -6,7 +6,8 @@ import {
 import MyDataHelps, {
     DeviceDataNamespace,
     DeviceDataPointsPage,
-    DeviceDataV2Namespace
+    DeviceDataV2Namespace,
+    SupportedDeviceDataV2DataType
 } from "@careevolution/mydatahelps-js";
 
 jest.mock("@careevolution/mydatahelps-js", () => ({
@@ -44,7 +45,10 @@ function createDataCollectionSettings(providerName = "", enabled = false) {
     return settings;
 }
 
-function createTestContext(settings, deviceDataV2Types = []) {
+function createTestContext(
+    settings,
+    deviceDataV2Types: SupportedDeviceDataV2DataType[] = []
+) {
     return {
         settings,
         deviceDataV2Types
@@ -145,8 +149,16 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
         } as DeviceDataPointsPage);
 
         const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type, true);
-        const result = await checkAvailability(createTestContext(settings));
+        const checkAvailability = simpleAvailabilityCheck(
+            namespace,
+            type,
+            true
+        );
+        const result = await checkAvailability(
+            createTestContext(settings, [
+                { namespace: "Oura", type: "testType", enabled: true }
+            ])
+        );
 
         expect(result).toBe(true);
         expect(queryDeviceDataV2).toHaveBeenCalledWith({
@@ -199,13 +211,17 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
             multipleTypes,
             true
         );
-        const result = await checkAvailability(createTestContext(settings));
+        const result = await checkAvailability(
+            createTestContext(settings, [
+                { namespace: "Oura", type: "Sleep", enabled: true },
+                { namespace: "Oura", type: "Activity", enabled: true },
+                { namespace: "Oura", type: "Readiness", enabled: true }
+            ])
+        );
 
         expect(result).toBe(true);
         expect(queryDeviceDataV2).toHaveBeenCalledTimes(3);
         expect(queryCompleted.Sleep).toBe(true);
-
-        await new Promise(resolve => setTimeout(resolve, 20));
     });
 
     it("should return false when no device data points are available", async () => {
@@ -214,8 +230,16 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
         } as DeviceDataPointsPage);
 
         const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type, true);
-        const result = await checkAvailability(createTestContext(settings));
+        const checkAvailability = simpleAvailabilityCheck(
+            namespace,
+            type,
+            true
+        );
+        const result = await checkAvailability(
+            createTestContext(settings, [
+                { namespace: "Oura", type: "testType", enabled: true }
+            ])
+        );
 
         expect(result).toBe(false);
         expect(queryDeviceDataV2).toHaveBeenCalledWith({
@@ -229,8 +253,16 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
         queryDeviceDataV2.mockRejectedValue(new Error("Query failed"));
 
         const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type, true);
-        const result = await checkAvailability(createTestContext(settings));
+        const checkAvailability = simpleAvailabilityCheck(
+            namespace,
+            type,
+            true
+        );
+        const result = await checkAvailability(
+            createTestContext(settings, [
+                { namespace: "Oura", type: "testType", enabled: true }
+            ])
+        );
 
         expect(result).toBe(false);
         expect(queryDeviceDataV2).toHaveBeenCalledWith({
@@ -245,9 +277,15 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
         queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [{}] });
 
         const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type, true);
+        const checkAvailability = simpleAvailabilityCheck(
+            namespace,
+            type,
+            true
+        );
         const result = await checkAvailability(
-            createTestContext(settings),
+            createTestContext(settings, [
+                { namespace: "Oura", type: "testType", enabled: true }
+            ]),
             modifiedAfter
         );
 
@@ -328,16 +366,20 @@ describe("combinedAvailabilityCheck", () => {
         const startTime = Date.now();
 
         const checkAvailability = combinedAvailabilityCheck(sources);
-        const result = await checkAvailability(createTestContext(settings));
+        const result = await checkAvailability(
+            createTestContext(settings, [
+                { namespace: "Oura", type: "Activity", enabled: true }
+            ])
+        );
 
         const elapsedTime = Date.now() - startTime;
+        console.log("elapsedTime", elapsedTime);
 
         expect(result).toBe(true);
 
         // Should resolve faster than the slowest source (Fitbit: 500ms)
         // but slower than or around the fastest successful source (Oura: 100ms)
-        // Adding some buffer for test overhead
-        expect(elapsedTime).toBeLessThan(600);
+        expect(elapsedTime).toBeLessThan(500);
 
         // Verify that Oura was queried (the fastest success)
         expect(queryDeviceDataV2).toHaveBeenCalledWith(

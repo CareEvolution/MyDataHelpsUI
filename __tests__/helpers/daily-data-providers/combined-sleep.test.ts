@@ -78,7 +78,7 @@ describe("combinedSleep", () => {
     }
 
     function setupDeviceDataV2Types(
-        types: Array<{ namespace: string; type: string }> = []
+        types: Array<{ namespace: string; type: string, enabled: boolean }> = []
     ) {
         getDeviceDataV2AllDataTypes.mockResolvedValue(types);
     }
@@ -125,7 +125,7 @@ describe("combinedSleep", () => {
             healthConnectEnabled: true
         });
 
-        setupDeviceDataV2Types([{ namespace: "HealthConnect", type: "sleep" }]);
+        setupDeviceDataV2Types([{ namespace: "HealthConnect", type: "sleep", enabled: true }]);
 
         const result = await combinedSleep(startDate, endDate);
 

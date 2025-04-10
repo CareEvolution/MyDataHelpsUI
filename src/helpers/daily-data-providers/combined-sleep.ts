@@ -38,7 +38,10 @@ export default async function (startDate: Date, endDate: Date) {
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
+            ddt =>
+                ddt.namespace === "HealthConnect" &&
+                ddt.type === "sleep" &&
+                ddt.enabled
         )
     ) {
         providers.push(

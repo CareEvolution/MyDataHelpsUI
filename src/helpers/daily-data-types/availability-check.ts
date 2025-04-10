@@ -65,7 +65,7 @@ async function checkSourceAvailability(
 ): Promise<boolean> {
     const { settings, deviceDataV2Types } = combinedSettings;
     const availabilityChecks = sources.map(
-        async ({ namespace, type, isV2 = false }) => {
+        async ({ namespace, type, isV2 = false }): Promise<boolean> => {
             let enabled: boolean = false;
 
             switch (namespace) {
@@ -74,7 +74,9 @@ async function checkSourceAvailability(
                         settings.appleHealthEnabled &&
                         type.some(t =>
                             settings.queryableDeviceDataTypes.some(
-                                d => d.namespace == "AppleHealth" && d.type == t
+                                d =>
+                                    d.namespace === "AppleHealth" &&
+                                    d.type === t
                             )
                         );
                     break;
@@ -83,7 +85,7 @@ async function checkSourceAvailability(
                         settings.googleFitEnabled &&
                         type.some(t =>
                             settings.queryableDeviceDataTypes.some(
-                                d => d.namespace == "GoogleFit" && d.type == t
+                                d => d.namespace === "GoogleFit" && d.type === t
                             )
                         );
                     break;
@@ -94,7 +96,16 @@ async function checkSourceAvailability(
                     enabled = settings.garminEnabled;
                     break;
                 case "Oura":
-                    enabled = settings.ouraEnabled;
+                    enabled =
+                        settings.ouraEnabled &&
+                        type.some(t =>
+                            deviceDataV2Types.some(
+                                d =>
+                                    d.enabled &&
+                                    d.namespace === "Oura" &&
+                                    d.type === t
+                            )
+                        );
                     isV2 = true; // Oura always uses V2
                     break;
                 case "HealthConnect":
@@ -104,18 +115,22 @@ async function checkSourceAvailability(
                             deviceDataV2Types.some(
                                 d =>
                                     d.enabled &&
-                                    d.namespace == "HealthConnect" &&
-                                    d.type == t
+                                    d.namespace === "HealthConnect" &&
+                                    d.type === t
                             )
                         );
                     isV2 = true; // HealthConnect always uses V2
                     break;
+                default:
+                    return Promise.reject(new Error("Unsupported namespace"));
             }
 
-            if (!enabled) return false;
+            if (!enabled) {
+                return Promise.reject(new Error("Data source not enabled"));
+            }
 
             if (isV2) {
-                const promises = type.map(async t => {
+                const typePromises = type.map(async t => {
                     const parameters: DeviceDataV2Query = {
                         namespace: namespace as DeviceDataV2Namespace,
                         type: t,
@@ -125,17 +140,15 @@ async function checkSourceAvailability(
 
                     const result =
                         await MyDataHelps.queryDeviceDataV2(parameters);
-                    return await (result.deviceDataPoints.length > 0
-                        ? Promise.resolve(true)
-                        : Promise.reject());
+                    if (result.deviceDataPoints.length === 0) {
+                        return Promise.reject(
+                            new Error(`No data found for ${t}`)
+                        );
+                    }
+                    return true;
                 });
 
-                try {
-                    const result = await Promise.any(promises);
-                    return result;
-                } catch {
-                    return false;
-                }
+                return Promise.any(typePromises);
             } else {
                 const parameters: DeviceDataPointQuery = {
                     namespace: namespace as DeviceDataNamespace,
@@ -144,21 +157,16 @@ async function checkSourceAvailability(
                     modifiedAfter: modifiedAfter?.toISOString()
                 };
 
-                try {
-                    const result =
-                        await MyDataHelps.queryDeviceData(parameters);
-                    return result.deviceDataPoints.length > 0;
-                } catch {
-                    return false;
+                const result = await MyDataHelps.queryDeviceData(parameters);
+                if (result.deviceDataPoints.length === 0) {
+                    return Promise.reject(
+                        new Error(`No data found for ${type}`)
+                    );
                 }
+                return true;
             }
         }
     );
 
-    try {
-        const results = await Promise.all(availabilityChecks);
-        return results.some(result => result === true);
-    } catch {
-        return false;
-    }
+    return Promise.any(availabilityChecks).catch(() => false);
 }
