@@ -82,7 +82,7 @@ let strings: { [key: string]: string } = {
     "external-account-reconnect": "Reconnecter",
     "external-account-refresh": "Actualiser",
     "external-account-remove": "Supprimer",
-    "device-data-no-data": "Si vous avez connecté Apple Health, Google Fit, Fitbit ou Garmin, revenez plus tard pour consulter vos données.",
+    "device-data-no-data": "Si vous avez connecté votre appareil, revenez plus tard pour consulter vos données.",
     "no-notifications-received": "Aucune notification reçue",
     "next-button-text": "Suivant",
     "lab-results-title": "Résultats de laboratoire",
