@@ -1,6 +1,6 @@
 import MyDataHelps, {
     DataCollectionSettings as MDHDataCollectionSettings,
-    SupportedDeviceDataV2DataType,
+    SupportedDeviceDataV2DataType
 } from "@careevolution/mydatahelps-js";
 
 export interface CombinedDataCollectionSettings {
@@ -8,14 +8,18 @@ export interface CombinedDataCollectionSettings {
     deviceDataV2Types: SupportedDeviceDataV2DataType[];
 }
 
-export async function getCombinedDataCollectionSettings(useV2: boolean = false): Promise<CombinedDataCollectionSettings> {
+export async function getCombinedDataCollectionSettings(
+    useV2: boolean = false
+): Promise<CombinedDataCollectionSettings> {
     const [settings, deviceDataV2Types] = await Promise.all([
         MyDataHelps.getDataCollectionSettings(),
-        useV2 ? MyDataHelps.getDeviceDataV2AllDataTypes() : Promise.resolve([]),
+        useV2
+            ? MyDataHelps.getDeviceDataV2AllDataTypes(true)
+            : Promise.resolve([])
     ]);
 
     return {
         settings,
-        deviceDataV2Types,
+        deviceDataV2Types
     };
 }

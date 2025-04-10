@@ -100,10 +100,7 @@ async function checkSourceAvailability(
                         settings.ouraEnabled &&
                         type.some(t =>
                             deviceDataV2Types.some(
-                                d =>
-                                    d.enabled &&
-                                    d.namespace === "Oura" &&
-                                    d.type === t
+                                d => d.namespace === "Oura" && d.type === t
                             )
                         );
                     isV2 = true; // Oura always uses V2
@@ -114,7 +111,6 @@ async function checkSourceAvailability(
                         type.some(t =>
                             deviceDataV2Types.some(
                                 d =>
-                                    d.enabled &&
                                     d.namespace === "HealthConnect" &&
                                     d.type === t
                             )
