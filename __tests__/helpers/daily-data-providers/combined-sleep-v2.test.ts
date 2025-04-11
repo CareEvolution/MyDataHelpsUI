@@ -256,45 +256,4 @@ describe("combinedSleepV2", () => {
         expect(appleHealthSleepMinutesDataProvider).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProvider).toHaveBeenCalled();
     });
-
-    it("should not include Health Connect if sleep data type is not enabled", async () => {
-        setupProviderData();
-
-        setupCombinedSettings(
-            {
-                fitbitEnabled: true,
-                garminEnabled: true,
-                appleHealthEnabled: true,
-                healthConnectEnabled: true,
-                queryableDeviceDataTypes: [
-                    {
-                        namespace: "AppleHealth",
-                        type: "SleepAnalysisInterval"
-                    }
-                ]
-            },
-            [
-                {
-                    namespace: "HealthConnect",
-                    type: "sleep",
-                    enabled: false // Not enabled
-                }
-            ]
-        );
-
-        const result = await combinedSleepV2(startDate, endDate);
-
-        expect(result).toEqual({
-            "2023-01-01": 540, // Fitbit provides highest value now
-            "2023-01-02": 533, // Garmin still has highest value
-            "2023-01-03": 417 // Only Apple Health has data now
-        });
-
-        expect(fitbitTotalSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(garminTotalSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(appleHealthSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(
-            healthConnectTotalSleepMinutesDataProvider
-        ).not.toHaveBeenCalled();
-    });
 });

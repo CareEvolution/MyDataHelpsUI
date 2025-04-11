@@ -1,10 +1,11 @@
 import combinedSteps from "../../../src/helpers/daily-data-providers/combined-steps";
-import MyDataHelps, { DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { DataCollectionSettings, DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from "@careevolution/mydatahelps-js";
 
 jest.mock("@careevolution/mydatahelps-js", () => ({
     __esModule: true,
     default: {
         getDataCollectionSettings: jest.fn(),
+        getDeviceDataV2AllDataTypes: jest.fn(),
         queryDeviceData: jest.fn(),
         queryDeviceDataV2: jest.fn()
     }
@@ -14,9 +15,10 @@ jest.mock("@careevolution/mydatahelps-js", () => ({
 describe("combinedSteps", () => {
     const startDate = new Date(2023, 0, 1);
     const endDate = new Date(2023, 0, 4);
-    const getDataCollectionSettings = (MyDataHelps.getDataCollectionSettings as jest.Mock);
-    const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
-    const queryDeviceDataV2 = (MyDataHelps.queryDeviceDataV2 as jest.Mock);
+    const getDataCollectionSettings = MyDataHelps.getDataCollectionSettings as jest.Mock;
+    const getDeviceDataV2AllDataTypes = MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
+    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
+    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -41,6 +43,9 @@ describe("combinedSteps", () => {
             ouraEnabled: true,
             queryableDeviceDataTypes: []
         });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([
+            { namespace: "Oura", type: 'daily-activity', enabled: true }
+        ]);
         queryDeviceData.mockImplementation((query: DeviceDataPointQuery) => {
             if (query.namespace === "Fitbit") {
                 return Promise.resolve({
