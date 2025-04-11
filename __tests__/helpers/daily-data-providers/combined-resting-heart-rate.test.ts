@@ -27,7 +27,7 @@ describe("combinedRestingHeartRate", () => {
     const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
     const getDeviceDataV2AllDataTypes =
         MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
-    const queryDeviceDataV2Aggregate = 
+    const queryDeviceDataV2Aggregate =
         MyDataHelps.queryDeviceDataV2Aggregate as jest.Mock;
 
     const defaultSettings = {
@@ -145,6 +145,9 @@ describe("combinedRestingHeartRate", () => {
             garminEnabled: true,
             ouraEnabled: true
         });
+        getDeviceDataV2AllDataTypes.mockResolvedValue([
+            { namespace: "Oura", type: "sleep", enabled: true }
+        ]);
 
         setupDeviceDataQueries({ fitbit: true, garmin: true });
         setupDeviceDataV2Queries({ oura: true });
@@ -163,7 +166,7 @@ describe("combinedRestingHeartRate", () => {
             { namespace: "HealthConnect", type: "resting-heart-rate" }
         ]);
         setupDeviceDataV2Queries({ healthConnect: true });
-        
+
         queryDeviceDataV2Aggregate.mockResolvedValue({
             intervals: [
                 { date: "2023-01-01T00:00:00Z", statistics: { avg: 45 } },
@@ -237,7 +240,7 @@ function buildOuraDataPoint(
     propertyValueName: string,
     propertyType: string
 ): DeviceDataV2Point {
-    const properties = { type: propertyType, day: startDate };
+    const properties : Record<string, any> = { type: propertyType, day: startDate };
     properties[propertyValueName] = value;
     return buildBaseDeviceDataV2Point(value, startDate, properties);
 }
@@ -256,7 +259,7 @@ function buildGarminDataPoint(
     ddpType: string,
     propertyValueName: string
 ): DeviceDataPoint {
-    const properties = {};
+    const properties : Record<string, any> = {};
     properties[propertyValueName] = value;
     return buildBaseDeviceDataPoint(value, startDate, "Garmin", ddpType, properties);
 }

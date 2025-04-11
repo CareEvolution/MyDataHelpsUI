@@ -1,8 +1,9 @@
-import { add, format, startOfToday } from 'date-fns';
+import { add, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
 import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges, DailyTimeRanges } from '../../src/helpers/time-range';
 import getDayKey from '../../src/helpers/get-day-key';
+import { getV1DateString, getV2DateString } from "../fixtures/daily-data-providers";
 
 describe('TimeRange - Helper Function Tests', () => {
     const someDay = add(startOfToday(), { days: -5 });
@@ -18,8 +19,8 @@ describe('TimeRange - Helper Function Tests', () => {
         name: 'DeviceDataPoint',
         create: (startDate: Date, observationDate: Date): DeviceDataPoint => {
             return {
-                startDate: startDate.toISOString(),
-                observationDate: observationDate.toISOString()
+                startDate: getV1DateString(startDate),
+                observationDate: getV1DateString(observationDate)
             } as DeviceDataPoint;
         }
     };
@@ -28,8 +29,8 @@ describe('TimeRange - Helper Function Tests', () => {
         name: 'DeviceDataV2Point',
         create: (startDate: Date, observationDate: Date): DeviceDataV2Point => {
             return {
-                startDate: format(startDate, 'yyyy-MM-dd\'T\'HH:mm:ss'),
-                observationDate: format(observationDate, 'yyyy-MM-dd\'T\'HH:mm:ss')
+                startDate: getV2DateString(startDate),
+                observationDate: getV2DateString(observationDate)
             } as DeviceDataV2Point;
         }
     };
@@ -269,7 +270,7 @@ describe('TimeRange - Helper Function Tests', () => {
             const sevenDaysAgo = add(today, { days: -7 });
             const fiveDaysAgo = add(today, { days: -5 });
             const threeDaysAgo = add(today, { days: -3 });
-            const tomorrow = add(today, { days: 1 });
+            const yesterday = add(today, { days: -1 });
 
             const dailyTimeRanges: DailyTimeRanges = {};
             dailyTimeRanges[getDayKey(eightDaysAgo)] = [
@@ -302,26 +303,26 @@ describe('TimeRange - Helper Function Tests', () => {
                     endTime: add(threeDaysAgo, { hours: 12, minutes: 15, seconds: 30 })
                 }
             ];
+            dailyTimeRanges[getDayKey(yesterday)] = [
+                {
+                    startTime: add(today, { hours: 6 }),
+                    endTime: add(today, { hours: 8, minutes: 20 })
+                }
+            ];
             dailyTimeRanges[getDayKey(today)] = [
                 {
                     startTime: add(today, { hours: 9 }),
                     endTime: add(today, { hours: 9, minutes: 30 })
                 }
             ];
-            dailyTimeRanges[getDayKey(tomorrow)] = [
-                {
-                    startTime: add(tomorrow, { hours: 5 }),
-                    endTime: add(tomorrow, { hours: 8, minutes: 20 })
-                }
-            ];
 
-            const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, today, dailyTimeRanges);
+            const result = buildMinutesResultFromDailyTimeRanges(sevenDaysAgo, yesterday, dailyTimeRanges);
 
             expect(Object.keys(result)).toHaveLength(3);
 
             expect(result[getDayKey(fiveDaysAgo)]).toBe(146);
             expect(result[getDayKey(threeDaysAgo)]).toBe(147);
-            expect(result[getDayKey(today)]).toBe(30);
+            expect(result[getDayKey(yesterday)]).toBe(140);
         });
     });
 });

@@ -1,14 +1,7 @@
 ﻿import { DailyDataQueryResult } from '../query-daily-data';
-import queryAllDeviceData from './query-all-device-data';
-import { add } from 'date-fns';
-import { collateMaxValueDataPointsByDate } from './shared';
+import { buildMaxValueResult, getObservationDate, queryForDailyData } from './daily-data';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    const dataPoints = await queryAllDeviceData({
-        namespace: 'AirNowApi',
-        type: 'HomeAirQuality',
-        observedAfter: add(startDate, {days: -1}).toISOString(),
-        observedBefore: add(endDate, {days: 1}).toISOString()
-    });
-    return collateMaxValueDataPointsByDate(dataPoints);
+    const dailyData = await queryForDailyData('AirNowApi', 'HomeAirQuality', startDate, endDate, getObservationDate);
+    return buildMaxValueResult(dailyData);
 }

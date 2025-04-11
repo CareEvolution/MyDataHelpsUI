@@ -125,7 +125,10 @@ describe("combinedSleep", () => {
             healthConnectEnabled: true
         });
 
-        setupDeviceDataV2Types([{ namespace: "HealthConnect", type: "sleep", enabled: true }]);
+        setupDeviceDataV2Types([
+            { namespace: "HealthConnect", type: "sleep", enabled: true },
+            { namespace: "Oura", type: "sleep", enabled: true }
+        ]);
 
         const result = await combinedSleep(startDate, endDate);
 
