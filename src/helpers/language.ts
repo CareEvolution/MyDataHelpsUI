@@ -4,14 +4,19 @@ import spanishStrings from "../../locales/es.json"
 import germanStrings from "../../locales/de.json"
 import filipinoStrings from "../../locales/fil.json"
 import frenchStrings from "../../locales/fr.json"
-import canadianFrenchStrings from "../../locales/fr-CA.json"
+import frenchCanadianStrings from "../../locales/fr-CA.json"
 import italianStrings from "../../locales/it.json"
 import dutchStrings from "../../locales/nl.json"
 import polishStrings from "../../locales/pl.json"
 import portugueseBrazilStrings from "../../locales/pt.json"
 import portuguesePortugalStrings from "../../locales/pt-PT.json"
-import frenchCanadianStrings from "./strings-fr-ca"
-import filipinoStrings from "./strings-fil"
+import romanianStrings from "../../locales/ro.json"
+import samoanStrings from "../../locales/sm.json"
+import somaliStrings from "../../locales/so.json"
+import swahiliStrings from "../../locales/sw.json"
+import tagalogStrings from "../../locales/tl.json"
+import vietnameseStrings from "../../locales/vi.json"
+
 // NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 interface LocaleStrings {
