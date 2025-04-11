@@ -78,7 +78,7 @@ describe("combinedSleep", () => {
     }
 
     function setupDeviceDataV2Types(
-        types: Array<{ namespace: string; type: string, enabled: boolean }> = []
+        types: Array<{ namespace: string; type: string }> = []
     ) {
         getDeviceDataV2AllDataTypes.mockResolvedValue(types);
     }
@@ -125,7 +125,10 @@ describe("combinedSleep", () => {
             healthConnectEnabled: true
         });
 
-        setupDeviceDataV2Types([{ namespace: "HealthConnect", type: "sleep", enabled: true }]);
+        setupDeviceDataV2Types([
+            { namespace: "HealthConnect", type: "sleep" },
+            { namespace: "Oura", type: "sleep" }
+        ]);
 
         const result = await combinedSleep(startDate, endDate);
 
@@ -139,5 +142,22 @@ describe("combinedSleep", () => {
         expect(garminTotalSleepMinutesDataProvider).toHaveBeenCalled();
         expect(ouraSleepMinutesDataProvider).toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProvider).toHaveBeenCalled();
+    });
+
+    it("should return an empty object if ouraEnabled, but device data v2 type sleep not available", async () => {
+        setupDataCollectionSettings({
+            ouraEnabled: true
+        });
+
+        // Setup device data v2 types without Oura sleep
+        setupDeviceDataV2Types([
+            { namespace: "Oura", type: "other-type" },
+            { namespace: "HealthConnect", type: "sleep" }
+        ]);
+
+        const result = await combinedSleep(startDate, endDate);
+
+        expect(result).toEqual({});
+        expect(ouraSleepMinutesDataProvider).not.toHaveBeenCalled();
     });
 });

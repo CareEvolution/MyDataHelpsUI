@@ -48,7 +48,12 @@ export default async function (
             healthConnectRestingHeartRateDataProvider(startDate, endDate)
         );
     }
-    if (settings.ouraEnabled) {
+    if (
+        settings.ouraEnabled &&
+        deviceDataV2Types.some(
+            ddt => ddt.namespace === "Oura" && ddt.type === "sleep"
+        )
+    ) {
         providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
     }
     if (!providers.length) {

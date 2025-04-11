@@ -14,7 +14,7 @@ export async function getCombinedDataCollectionSettings(
     const [settings, deviceDataV2Types] = await Promise.all([
         MyDataHelps.getDataCollectionSettings(),
         useV2
-            ? MyDataHelps.getDeviceDataV2AllDataTypes(true)
+            ? MyDataHelps.getDeviceDataV2AllDataTypes(true) // Only get enabled types
             : Promise.resolve([])
     ]);
 

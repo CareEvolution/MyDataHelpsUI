@@ -32,16 +32,18 @@ export default async function (startDate: Date, endDate: Date) {
     ) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
     }
-    if (settings.ouraEnabled) {
+    if (
+        settings.ouraEnabled &&
+        deviceDataV2Types.some(
+            ddt => ddt.namespace === "Oura" && ddt.type === "sleep"
+        )
+    ) {
         providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
     }
     if (
         settings.healthConnectEnabled &&
         deviceDataV2Types.some(
-            ddt =>
-                ddt.namespace === "HealthConnect" &&
-                ddt.type === "sleep" &&
-                ddt.enabled
+            ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
         )
     ) {
         providers.push(
