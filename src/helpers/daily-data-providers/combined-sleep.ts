@@ -6,7 +6,7 @@ import MyDataHelps from "@careevolution/mydatahelps-js";
 export default function (startDate: Date, endDate: Date) {
     let providers: Promise<{ [key: string]: number }>[] = [];
 
-    return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes()]).then(([settings, deviceDataV2Types]) => {
+    return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes(true)]).then(([settings, deviceDataV2Types]) => {
         if (settings.fitbitEnabled) {
             providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
         }
@@ -15,7 +15,6 @@ export default function (startDate: Date, endDate: Date) {
         }
         if (settings.ouraEnabled && deviceDataV2Types.some(
             ddt =>
-                ddt.enabled &&
                 ddt.namespace === "Oura" &&
                 ddt.type === "sleep"
         )) {

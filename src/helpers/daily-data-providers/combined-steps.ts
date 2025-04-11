@@ -7,7 +7,7 @@ import { DailyDataQueryResult } from "../query-daily-data";
 export default function (startDate: Date, endDate: Date, includeGoogleFit?: boolean) {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
-    return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes()]).then(([settings, deviceDataV2Types]) => {
+    return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes(true)]).then(([settings, deviceDataV2Types]) => {
         if (settings.fitbitEnabled) {
             providers.push(fitbitStepsDataProvider(startDate, endDate));
         }
@@ -16,7 +16,6 @@ export default function (startDate: Date, endDate: Date, includeGoogleFit?: bool
         }
         if (settings.ouraEnabled && deviceDataV2Types.some(
             ddt =>
-                ddt.enabled &&
                 ddt.namespace === "Oura" &&
                 ddt.type === "daily-activity"
         )) {
