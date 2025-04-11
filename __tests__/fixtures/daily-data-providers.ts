@@ -277,18 +277,7 @@ export function setupCombinedFirstValueResult(
     expectedResultsToCombine: DailyDataQueryResult[],
     result: DailyDataQueryResult
 ): void {
-    jest.spyOn(dailyDataFunctions, 'combineResultsUsingFirstValue').mockImplementation(
-        (
-            actualStartDate: Date,
-            actualEndDate: Date,
-            actualResultsToCombine: DailyDataQueryResult[]
-        ): DailyDataQueryResult => {
-            if (!isEqual(actualStartDate, expectedStartDate)) return {};
-            if (!isEqual(actualEndDate, expectedEndDate)) return {};
-            if (JSON.stringify(actualResultsToCombine) !== JSON.stringify(expectedResultsToCombine)) return {};
-            return result;
-        }
-    );
+    setupCombinedResult('combineResultsUsingFirstValue', expectedStartDate, expectedEndDate, expectedResultsToCombine, result);
 }
 
 export function setupCombinedMaxValueResult(
@@ -297,7 +286,26 @@ export function setupCombinedMaxValueResult(
     expectedResultsToCombine: DailyDataQueryResult[],
     result: DailyDataQueryResult
 ): void {
-    jest.spyOn(dailyDataFunctions, 'combineResultsUsingMaxValue').mockImplementation(
+    setupCombinedResult('combineResultsUsingMaxValue', expectedStartDate, expectedEndDate, expectedResultsToCombine, result);
+}
+
+export function setupCombinedRoundedAverageValueResult(
+    expectedStartDate: Date,
+    expectedEndDate: Date,
+    expectedResultsToCombine: DailyDataQueryResult[],
+    result: DailyDataQueryResult
+): void {
+    setupCombinedResult('combineResultsUsingRoundedAverageValue', expectedStartDate, expectedEndDate, expectedResultsToCombine, result);
+}
+
+export function setupCombinedResult(
+    functionName: 'combineResultsUsingFirstValue' | 'combineResultsUsingMaxValue' | 'combineResultsUsingRoundedAverageValue',
+    expectedStartDate: Date,
+    expectedEndDate: Date,
+    expectedResultsToCombine: DailyDataQueryResult[],
+    result: DailyDataQueryResult
+): void {
+    jest.spyOn(dailyDataFunctions, functionName).mockImplementation(
         (
             actualStartDate: Date,
             actualEndDate: Date,

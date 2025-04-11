@@ -24,5 +24,8 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
         providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
     }
 
-    return providers.length ? combineResultsUsingRoundedAverageValue(startDate, endDate, await Promise.all(providers)) : {};
+    if (providers.length === 0) return {};
+    if (providers.length === 1) return providers[0];
+
+    return combineResultsUsingRoundedAverageValue(startDate, endDate, await Promise.all(providers));
 }
