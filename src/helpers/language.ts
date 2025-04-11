@@ -8,7 +8,7 @@ import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
-import canadianFrenchStrings from "./strings-fr-ca"
+import frenchCanadianStrings from "./strings-fr-ca"
 import filipinoStrings from "./strings-fil"
 import romanianStrings from "./strings-ro"
 import samoanStrings from "./strings-sm"
@@ -22,18 +22,20 @@ interface LocaleStrings {
 	[key: string]: string;
 }
 
+// Please alphabetize by language name (with en/es first) to 
+// match the UI list.
 const localeToStringsMap : Record<string, LocaleStrings> = {
 	"en": englishStrings,
 	"es": spanishStrings,
 	"nl": dutchStrings,
+	"fil": filipinoStrings,
 	"fr": frenchStrings,
-	"it": italianStrings,
+	"fr-ca": frenchCanadianStrings,
 	"de": germanStrings,
+	"it": italianStrings,
 	"pt": portugueseBrazilStrings,
 	"pt-pt": portuguesePortugalStrings,
 	"pl": polishStrings,
-	"fr-ca": canadianFrenchStrings,
-	"fil": filipinoStrings,
 	"ro": romanianStrings,
 	"sm": samoanStrings,
 	"sw": swahiliStrings,

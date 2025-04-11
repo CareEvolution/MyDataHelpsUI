@@ -519,7 +519,3 @@
 };
 
 export default strings;
-
-
-
-
