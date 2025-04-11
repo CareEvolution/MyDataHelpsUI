@@ -15,9 +15,8 @@ export default async function (
     endDate: Date,
     includeGoogleFit?: boolean
 ) {
-    const useV2 = false;
-    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
-    const { settings } = combinedSettings;
+    const combinedSettings = await getCombinedDataCollectionSettings(true);
+    const { settings, deviceDataV2Types } = combinedSettings;
 
     const providers: Promise<DailyDataQueryResult>[] = [];
 
@@ -42,7 +41,12 @@ export default async function (
     ) {
         providers.push(googleFitStepsDataProvider(startDate, endDate));
     }
-    if (settings.ouraEnabled) {
+    if (
+        settings.ouraEnabled &&
+        deviceDataV2Types.some(
+            ddt => ddt.namespace === "Oura" && ddt.type === "daily-activity"
+        )
+    ) {
         providers.push(ouraStepsDataProvider(startDate, endDate));
     }
 

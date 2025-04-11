@@ -27,7 +27,7 @@ describe("combinedRestingHeartRate", () => {
     const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
     const getDeviceDataV2AllDataTypes =
         MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
-    const queryDeviceDataV2Aggregate = 
+    const queryDeviceDataV2Aggregate =
         MyDataHelps.queryDeviceDataV2Aggregate as jest.Mock;
 
     const defaultSettings = {
@@ -129,7 +129,10 @@ describe("combinedRestingHeartRate", () => {
         setupDeviceDataV2Types([]);
         queryDeviceData.mockResolvedValue({ deviceDataPoints: [] });
         queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [] });
-        queryDeviceDataV2Aggregate.mockResolvedValue({ intervals: [], nextPageID: null });
+        queryDeviceDataV2Aggregate.mockResolvedValue({
+            intervals: [],
+            nextPageID: null
+        });
     });
 
     it("should return an empty object if no providers are enabled", async () => {
@@ -146,6 +149,7 @@ describe("combinedRestingHeartRate", () => {
             ouraEnabled: true
         });
 
+        setupDeviceDataV2Types([{ namespace: "Oura", type: "sleep" }]);
         setupDeviceDataQueries({ fitbit: true, garmin: true });
         setupDeviceDataV2Queries({ oura: true });
 
@@ -163,7 +167,7 @@ describe("combinedRestingHeartRate", () => {
             { namespace: "HealthConnect", type: "resting-heart-rate" }
         ]);
         setupDeviceDataV2Queries({ healthConnect: true });
-        
+
         queryDeviceDataV2Aggregate.mockResolvedValue({
             intervals: [
                 { date: "2023-01-01T00:00:00Z", statistics: { avg: 45 } },
@@ -185,6 +189,26 @@ describe("combinedRestingHeartRate", () => {
             expect.objectContaining({
                 namespace: "HealthConnect",
                 type: "resting-heart-rate"
+            })
+        );
+    });
+
+    it("should return an empty object if ouraEnabled, but device data v2 type sleep not available", async () => {
+        setupDataCollectionSettings({
+            ouraEnabled: true
+        });
+
+        // Set up device data types without Oura sleep
+        setupDeviceDataV2Types([
+            { namespace: "HealthConnect", type: "resting-heart-rate" }
+        ]);
+
+        const result = await combinedRestingHeartRate(startDate, endDate);
+
+        expect(result).toEqual({});
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                namespace: "Oura"
             })
         );
     });
@@ -258,7 +282,13 @@ function buildGarminDataPoint(
 ): DeviceDataPoint {
     const properties = {};
     properties[propertyValueName] = value;
-    return buildBaseDeviceDataPoint(value, startDate, "Garmin", ddpType, properties);
+    return buildBaseDeviceDataPoint(
+        value,
+        startDate,
+        "Garmin",
+        ddpType,
+        properties
+    );
 }
 
 function buildHealthConnectDataPoint(
