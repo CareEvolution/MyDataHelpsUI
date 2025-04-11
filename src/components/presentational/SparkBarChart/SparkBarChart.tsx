@@ -9,6 +9,7 @@ export interface SparkBarChartProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 	style?: React.CSSProperties
 	gap?: number;
+	variant?: "square" | "rounded";
 }
 
 export interface SparkBarChartBar {
@@ -18,23 +19,35 @@ export interface SparkBarChartBar {
 }
 
 export default function SparkBarChart(props: SparkBarChartProps) {
-	var width = (100 / props.bars.length);
 	let context = useContext(LayoutContext);
 
+	var barWidth = (100 / props.bars.length);
 	function calculateBarWidth() {
 		if (props.gap) {
-			return width - props.gap;
+			return `calc(${barWidth}% - ${props.gap}px)`;
 		}
-		return width;
+		return barWidth + "%";
 	}
 
-	return <div ref={props.innerRef} className="mdhui-spark-bar-chart" style={props.style}>
+	function calculateOffset(index: number) {
+		if (props.gap) {
+			return `calc(${barWidth * index}% + ${props.gap / 2}px)`;
+		}
+		return `${barWidth * index}%`;
+	}
+
+	let classes = ["mdhui-spark-bar-chart"];
+	if (props.variant === "rounded") {
+		classes.push("mdhui-spark-bar-chart-rounded");
+	}
+
+	return <div ref={props.innerRef} className={classes.join(" ")} style={props.style}>
 		{props.averageFillPercent !== undefined &&
 			<div className="mdhui-spark-bar-chart-average" style={{ bottom: props.averageFillPercent * 100 + "%" }}></div>
 		}
 		<div className="mdhui-spark-bar-chart-bars">
 			{props.bars.map((b, index) =>
-				<div key={index} className="mdhui-spark-bar-chart-bar" style={{ backgroundColor: resolveColor(context.colorScheme, b.color), height: (b.barFillPercent * 100) + "%", width: width + "%", left: width * index + "%", opacity: b.opacity }}>
+				<div key={index} className="mdhui-spark-bar-chart-bar" style={{ backgroundColor: resolveColor(context.colorScheme, b.color), height: (b.barFillPercent * 100) + "%", width: calculateBarWidth(), left: calculateOffset(index), opacity: b.opacity }}>
 					<ShinyOverlay />
 				</div>
 			)}

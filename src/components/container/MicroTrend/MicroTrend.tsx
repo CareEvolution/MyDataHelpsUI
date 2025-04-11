@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { getDailyDataTypeDefinition, getDayKey, language, queryRelativeActivity, RelativeActivityDataType, RelativeActivityQueryResult, resolveColor, useInitializeView } from "../../../helpers"
 import { DateRangeContext, LayoutContext, SparkBarChart, SparkBarChartBar } from "../../presentational"
 import { add, startOfDay } from "date-fns"
@@ -17,14 +17,36 @@ export default function MicroTrend(props: MicroTrendProps) {
     const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
+    const chartRef = React.useRef<HTMLDivElement>(null);
+    const [barsToDisplay, setBarsToDisplay] = useState<number | null>(null);
+
+    useEffect(() => {
+        let calculateBars = () => {
+            let chartWidth = chartRef.current?.clientWidth;
+            if (!chartWidth) { return 7 }
+            let approximateBarWidth = 24;
+            setBarsToDisplay(Math.floor(chartWidth / approximateBarWidth));
+        }
+        window.addEventListener("resize", calculateBars);
+        calculateBars();
+        return () => {
+            window.removeEventListener("resize", calculateBars)
+        }
+    }, []);
 
     function loadData() {
-        queryRelativeActivity(add(date, { days: -6 }), date, [props.dataType], !!props.previewState).then(results => {
+        if (barsToDisplay === null) { return; }
+        console.log("querying");
+        queryRelativeActivity(add(date, { days: -1 * barsToDisplay }), date, [props.dataType], !!props.previewState).then(results => {
             setResults(results[props.dataType.dailyDataType]);
         });
     }
 
-    useInitializeView(loadData, ["externalAccountSyncComplete"]);
+    useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay]);
+
+    if (!barsToDisplay) {
+        return <div ref={chartRef} />;
+    }
 
     if (!results) {
         return null;
@@ -43,7 +65,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     const formattedValue = noData ? "--" : formatter(todayValue);
 
     const bars: SparkBarChartBar[] = [];
-    for (var i = -6; i <= 0; i++) {
+    for (var i = -1 * barsToDisplay; i <= 0; i++) {
         const dayKey = getDayKey(add(date, { days: i }));
         const dayData = results[dayKey];
         const value = dayData?.value ?? 0;
@@ -69,10 +91,10 @@ export default function MicroTrend(props: MicroTrendProps) {
         <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
             {formattedValue}
         </div>
-        <div className="mdhui-micro-trend-chart">
+        <div ref={chartRef} className="mdhui-micro-trend-chart">
             {hasRecentData &&
-                <SparkBarChart style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
+                <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
             }
         </div>
-    </div >
+    </div>
 }
