@@ -8,22 +8,40 @@ import portugueseBrazilStrings from "./strings-pt"
 import italianStrings from "./strings-it"
 import polishStrings from "./strings-pl"
 import portuguesePortugalStrings from "./strings-pt-pt"
+import frenchCanadianStrings from "./strings-fr-ca"
+import filipinoStrings from "./strings-fil"
+import romanianStrings from "./strings-ro"
+import samoanStrings from "./strings-sm"
+import somaliStrings from "./strings-so"
+import swahiliStrings from "./strings-sw"
+import tagalogStrings from "./strings-tl"
+import vietnameseStrings from "./strings-vi"
 // NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 interface LocaleStrings {
 	[key: string]: string;
 }
 
+// Please alphabetize by language name (with en/es first) to 
+// match the UI list.
 const localeToStringsMap : Record<string, LocaleStrings> = {
 	"en": englishStrings,
 	"es": spanishStrings,
 	"nl": dutchStrings,
+	"fil": filipinoStrings,
 	"fr": frenchStrings,
-	"it": italianStrings,
+	"fr-ca": frenchCanadianStrings,
 	"de": germanStrings,
+	"it": italianStrings,
 	"pt": portugueseBrazilStrings,
 	"pt-pt": portuguesePortugalStrings,
-	"pl": polishStrings
+	"pl": polishStrings,
+	"ro": romanianStrings,
+	"sm": samoanStrings,
+	"sw": swahiliStrings,
+	"so": somaliStrings,
+	"tl": tagalogStrings,
+	"vi": vietnameseStrings
 };
 
 function format(resolvedString: string, args?: { [key: string]: string }) {

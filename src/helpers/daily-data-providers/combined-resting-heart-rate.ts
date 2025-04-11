@@ -1,48 +1,77 @@
 ﻿import { add } from "date-fns";
-import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from ".";
+import {
+    appleHealthRestingHeartRateDataProvider,
+    fitbitRestingHeartRateDataProvider,
+    garminRestingHeartRateDataProvider,
+    ouraRestingHeartRateDataProvider,
+    healthConnectRestingHeartRateDataProvider
+} from ".";
 import getDayKey from "../get-day-key";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
-export default function (startDate: Date, endDate: Date) {
-	let providers: Promise<{ [key: string]: number }>[] = [];
+export default async function (
+    startDate: Date,
+    endDate: Date
+): Promise<Record<string, number>> {
+    const providers: Promise<Record<string, number>>[] = [];
 
-	return Promise.all([MyDataHelps.getDataCollectionSettings(), MyDataHelps.getDeviceDataV2AllDataTypes(true)]).then(([settings, deviceDataV2Types]) => {
-		if (settings.fitbitEnabled) {
-			providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.garminEnabled) {
-			providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.ouraEnabled && deviceDataV2Types.some(
-			ddt =>
-				ddt.namespace === "Oura" &&
-				ddt.type === "sleep"
-		)) {
-			providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "RestingHeartRate")) {
-			providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
-		}
-		if (!providers.length) {
-			return {};
-		}
+    const combinedSettings = await getCombinedDataCollectionSettings(true);
+    const { settings, deviceDataV2Types } = combinedSettings;
 
-		return Promise.all(providers).then((values) => {
-			var data: { [key: string]: number } = {};
-			while (startDate < endDate) {
-				var dayKey = getDayKey(startDate);
-				var heartRates: number[] = [];
-				values.forEach((value) => {
-					if (value[dayKey] && value[dayKey] > 0) {
-						heartRates.push(value[dayKey]);
-					}
-				});
-				if (heartRates.length > 0) {
-					data[dayKey] = Math.round( heartRates.reduce((a,b) => a+b) / heartRates.length );
-				}
-				startDate = add(startDate, { days: 1 });
-			}
-			return data;
-		});
-	});
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (settings.garminEnabled) {
+        providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (
+        settings.appleHealthEnabled &&
+        settings.queryableDeviceDataTypes.some(
+            ddt =>
+                ddt.namespace === "AppleHealth" &&
+                ddt.type === "RestingHeartRate"
+        )
+    ) {
+        providers.push(
+            appleHealthRestingHeartRateDataProvider(startDate, endDate)
+        );
+    }
+    if (
+        settings.healthConnectEnabled &&
+        deviceDataV2Types.some(
+            ddt =>
+                ddt.namespace === "HealthConnect" &&
+                ddt.type === "resting-heart-rate"
+        )
+    ) {
+        providers.push(
+            healthConnectRestingHeartRateDataProvider(startDate, endDate)
+        );
+    }
+    if (settings.ouraEnabled) {
+        providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (!providers.length) {
+        return {};
+    }
+
+    const values = await Promise.all(providers);
+    const data: Record<string, number> = {};
+    let currentDate = new Date(startDate);
+    while (currentDate < endDate) {
+        const dayKey = getDayKey(currentDate);
+        const heartRates: number[] = [];
+        values.forEach(value => {
+            if (value[dayKey] && value[dayKey] > 0) {
+                heartRates.push(value[dayKey]);
+            }
+        });
+        if (heartRates.length > 0) {
+            data[dayKey] = Math.round(
+                heartRates.reduce((a, b) => a + b) / heartRates.length
+            );
+        }
+        currentDate = add(currentDate, { days: 1 });
+    }
+    return data;
 }
