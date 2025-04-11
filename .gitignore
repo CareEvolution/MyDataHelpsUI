@@ -358,3 +358,5 @@ dist/
 storybook-static/
 
 **/.DS_Store
+
+*.orig
