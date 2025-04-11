@@ -51,7 +51,8 @@ export default function MicroTrend(props: MicroTrendProps) {
         const relativePercent = dayData?.relativePercent ?? 0;
         bars.push({
             barFillPercent: relativePercent,
-            color: (value > threshold ? (props.dataType.overThresholdColor ?? props.dataType.color) : props.dataType.color) || "var(--mdhui-color-primary)"
+            color: (value > threshold ? (props.dataType.overThresholdColor ?? props.dataType.color) : props.dataType.color) || "var(--mdhui-color-primary)",
+            opacity: (i === 0 ? 1 : 0.5)
         });
     }
 
@@ -61,19 +62,17 @@ export default function MicroTrend(props: MicroTrendProps) {
     }
 
     return <div ref={props.innerRef} className="mdhui-micro-trend" key={props.dataType.dailyDataType}>
-        <div className="mdhui-micro-trend-label">
+        <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
             {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
         </div>
-        <div className="mdhui-micro-trend-info">
-            <span className="mdhui-micro-trend-value">
-                <span style={{ color: iconColor }}>{props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}</span>
-                &nbsp;<span style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }}>{formattedValue}</span>
-            </span>
-            <div className="mdhui-micro-trend-chart">
-                {hasRecentData &&
-                    <SparkBarChart style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
-                }
-            </div>
+        <div className="mdhui-micro-trend-icon">{props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}</div>
+        <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
+            {formattedValue}
         </div>
-    </div>
+        <div className="mdhui-micro-trend-chart">
+            {hasRecentData &&
+                <SparkBarChart style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
+            }
+        </div>
+    </div >
 }
