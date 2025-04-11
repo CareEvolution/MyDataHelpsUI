@@ -131,7 +131,7 @@ async function checkSourceAvailability(
                         namespace: namespace as DeviceDataV2Namespace,
                         type: t,
                         limit: 1,
-                        modifiedAfter: modifiedAfter?.toISOString()
+                        ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() })
                     };
 
                     const result =
@@ -150,7 +150,7 @@ async function checkSourceAvailability(
                     namespace: namespace as DeviceDataNamespace,
                     type: type,
                     limit: 1,
-                    modifiedAfter: modifiedAfter?.toISOString()
+                    ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() })
                 };
 
                 const result = await MyDataHelps.queryDeviceData(parameters);

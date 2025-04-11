@@ -166,6 +166,9 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
             type: "testType",
             limit: 1
         });
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
+            modifiedAfter: expect.anything()
+        }));
     });
 
     it("should handle multiple types and return true if any type has data", async () => {
@@ -222,6 +225,11 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
         expect(result).toBe(true);
         expect(queryDeviceDataV2).toHaveBeenCalledTimes(3);
         expect(queryCompleted.Sleep).toBe(true);
+        
+        // Assert that modifiedAfter is not included in any of the calls when undefined
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
+            modifiedAfter: expect.anything()
+        }));
     });
 
     it("should return false when no device data points are available", async () => {
@@ -247,6 +255,11 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
             type: "testType",
             limit: 1
         });
+        
+        // Assert that modifiedAfter is not included when undefined
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
+            modifiedAfter: expect.anything()
+        }));
     });
 
     it("should return false when query fails", async () => {
@@ -270,6 +283,11 @@ describe("simpleAvailabilityCheck with deviceDataV2", () => {
             type: "testType",
             limit: 1
         });
+        
+        // Assert that modifiedAfter is not included when undefined
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
+            modifiedAfter: expect.anything()
+        }));
     });
 
     it("should include modifiedAfter parameter when provided", async () => {
@@ -388,6 +406,9 @@ describe("combinedAvailabilityCheck", () => {
                 type: "Activity"
             })
         );
+        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
+            modifiedAfter: expect.anything()
+        }));
 
         // Verify Garmin was also queried (even though it fails)
         expect(queryDeviceData).toHaveBeenCalledWith(
