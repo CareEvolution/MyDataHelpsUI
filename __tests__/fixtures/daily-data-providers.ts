@@ -291,6 +291,26 @@ export function setupCombinedFirstValueResult(
     );
 }
 
+export function setupCombinedMaxValueResult(
+    expectedStartDate: Date,
+    expectedEndDate: Date,
+    expectedResultsToCombine: DailyDataQueryResult[],
+    result: DailyDataQueryResult
+): void {
+    jest.spyOn(dailyDataFunctions, 'combineResultsUsingMaxValue').mockImplementation(
+        (
+            actualStartDate: Date,
+            actualEndDate: Date,
+            actualResultsToCombine: DailyDataQueryResult[]
+        ): DailyDataQueryResult => {
+            if (!isEqual(actualStartDate, expectedStartDate)) return {};
+            if (!isEqual(actualEndDate, expectedEndDate)) return {};
+            if (JSON.stringify(actualResultsToCombine) !== JSON.stringify(expectedResultsToCombine)) return {};
+            return result;
+        }
+    );
+}
+
 export function getV1DateString(date: Date): string {
     const getOffsetHours = (date: Date, adjustment: number): string => {
         const offsetHours = (-date.getTimezoneOffset() / 60) + adjustment;

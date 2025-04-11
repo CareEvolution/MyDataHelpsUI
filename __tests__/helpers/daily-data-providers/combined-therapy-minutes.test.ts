@@ -107,6 +107,8 @@ describe('Daily Data Provider - Combined Therapy Minutes', () => {
         setupDailyDataProvider(googleFitTherapyMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
         setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [appleHealthResult, googleFitResult], sampleResult);
 
-        expect(await combinedTherapyMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+        const result = await combinedTherapyMinutes(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(sampleResult);
     });
 });

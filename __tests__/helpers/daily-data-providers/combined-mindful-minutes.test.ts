@@ -107,6 +107,8 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
         setupDailyDataProvider(googleFitMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
         setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [appleHealthResult, googleFitResult], sampleResult);
 
-        expect(await combinedMindfulMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+        const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(sampleResult);
     });
 });

@@ -1,104 +1,237 @@
-import combinedSteps from "../../../src/helpers/daily-data-providers/combined-steps";
-import MyDataHelps, { DataCollectionSettings, DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from "@careevolution/mydatahelps-js";
+import { describe, expect, it } from '@jest/globals';
+import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
+import combinedSteps from '../../../src/helpers/daily-data-providers/combined-steps';
+import * as dailyDataFunctions from '../../../src/helpers/daily-data-providers/daily-data';
+import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider, ouraStepsDataProvider } from '../../../src/helpers/daily-data-providers';
 
-jest.mock("@careevolution/mydatahelps-js", () => ({
+jest.mock('../../../src/helpers/daily-data-providers/fitbit-steps', () => ({
     __esModule: true,
-    default: {
-        getDataCollectionSettings: jest.fn(),
-        getDeviceDataV2AllDataTypes: jest.fn(),
-        queryDeviceData: jest.fn(),
-        queryDeviceDataV2: jest.fn()
-    }
-}
-));
+    default: jest.fn()
+}));
 
-describe("combinedSteps", () => {
-    const startDate = new Date(2023, 0, 1);
-    const endDate = new Date(2023, 0, 4);
-    const getDataCollectionSettings = MyDataHelps.getDataCollectionSettings as jest.Mock;
-    const getDeviceDataV2AllDataTypes = MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
-    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
-    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
+jest.mock('../../../src/helpers/daily-data-providers/garmin-steps', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/apple-health-steps', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/google-fit-steps', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/oura-daily-steps', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+describe('Daily Data Provider - Combined Steps', () => {
+
+    const fitbitStepsDataProviderMock = fitbitStepsDataProvider as jest.Mock;
+    const garminStepsDataProviderMock = garminStepsDataProvider as jest.Mock;
+    const appleHealthStepsDataProviderMock = appleHealthStepsDataProvider as jest.Mock;
+    const googleFitStepsDataProviderMock = googleFitStepsDataProvider as jest.Mock;
+    const ouraStepsDataProviderMock = ouraStepsDataProvider as jest.Mock;
+    const combinedMaxValueResultMock = jest.spyOn(dailyDataFunctions, 'combineResultsUsingMaxValue');
 
     beforeEach(() => {
         jest.resetAllMocks();
     });
 
-    it("should return an empty object if no providers are enabled", async () => {
-        getDataCollectionSettings.mockResolvedValue({
-            fitbitEnabled: false,
-            garminEnabled: false,
-            ouraEnabled: false,
-            queryableDeviceDataTypes: []
-        });
+    it('Should return an empty result when no providers are enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
 
-        const result = await combinedSteps(startDate, endDate);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
         expect(result).toEqual({});
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
-    it("should return the maximum steps for each day", async () => {
-        getDataCollectionSettings.mockResolvedValue({
-            fitbitEnabled: true,
-            garminEnabled: true,
-            ouraEnabled: true,
-            queryableDeviceDataTypes: []
-        });
-        getDeviceDataV2AllDataTypes.mockResolvedValue([
-            { namespace: "Oura", type: 'daily-activity', enabled: true }
-        ]);
-        queryDeviceData.mockImplementation((query: DeviceDataPointQuery) => {
-            if (query.namespace === "Fitbit") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        { value: 1000, startDate: "2023-01-01" },
-                        { value: 1301, startDate: "2023-01-02" }
-                    ]
-                });
-            } else if (query.namespace === "Garmin") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        { value: 1500, startDate: "2023-01-01", properties: { Steps: 1500 } },
-                        { value: 1101, startDate: "2023-01-02", properties: { Steps: 1101 } }
-                    ]
-                });
-            }
-        });
-        queryDeviceDataV2.mockImplementation((query: DeviceDataV2Query) => {
-            if (query.namespace === "Oura") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        buildOuraDataPoint("1200", "2023-01-02", "steps"),
-                        buildOuraDataPoint("1201", "2023-01-03", "steps"),
-                    ]
-                });
-            }
-        })
+    it('Should return an empty result when providers are enabled, but not the correct data types.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.ouraEnabled = true;
 
-        const result = await combinedSteps(startDate, endDate, true);
-        expect(result).toEqual({
-            "2023-01-01": 1500,
-            "2023-01-02": 1301,
-            "2023-01-03": 1201,
-        });
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toEqual({});
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return an empty result when GoogleFit is enabled and has the correct data type, but is not included (the default).', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'GoogleFit', type: 'Steps' }
+        );
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toEqual({});
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Fitbit result when enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.fitbitEnabled = true;
+
+        const fitbitResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(fitbitStepsDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(fitbitResult);
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Garmin result when enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.garminEnabled = true;
+
+        const garminResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(garminStepsDataProviderMock, sampleStartDate, sampleEndDate, garminResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(garminResult);
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Apple Health result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'AppleHealth', type: 'HourlySteps' }
+        );
+
+        const appleHealthResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(appleHealthStepsDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(appleHealthResult);
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Google Fit result when fully enabled and included.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'GoogleFit', type: 'Steps' }
+        );
+
+        const googleFitResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(googleFitStepsDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate, true);
+
+        expect(result).toBe(googleFitResult);
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Oura result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'Oura', type: 'daily-activity', enabled: true }
+        );
+
+        const ouraResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(ouraStepsDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(ouraResult);
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return a combined max-value result when multiple sources are fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.fitbitEnabled = true;
+        combinedSettings.settings.garminEnabled = true;
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'AppleHealth', type: 'HourlySteps' },
+            { namespace: 'GoogleFit', type: 'Steps' }
+        );
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'Oura', type: 'daily-activity', enabled: true }
+        );
+
+        const fitbitResult = createMockResult();
+        const garminResult = createMockResult();
+        const appleHealthResult = createMockResult();
+        const googleFitResult = createMockResult();
+        const ouraResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(fitbitStepsDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
+        setupDailyDataProvider(garminStepsDataProviderMock, sampleStartDate, sampleEndDate, garminResult);
+        setupDailyDataProvider(appleHealthStepsDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+        setupDailyDataProvider(googleFitStepsDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
+        setupDailyDataProvider(ouraStepsDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
+        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, googleFitResult, ouraResult], sampleResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate, true);
+
+        expect(result).toBe(sampleResult);
     });
 });
-
-function buildOuraDataPoint(value: string, startDate: string, pointType: string): DeviceDataV2Point {
-    let ddp = {
-        id: "",
-        participantID: "",
-        participantIdentifier: "",
-        identifier: "",
-        value: value,
-        units: "",
-        startDate: startDate,
-        startDateOffset: "",
-        observationDate: startDate,
-        observationDateOffset: "",
-        insertedDate: "",
-        modifiedDate: "",
-        properties: { type: pointType }
-    } as DeviceDataV2Point;
-    ddp.properties![pointType] = value;
-    return ddp;
-}
