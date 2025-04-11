@@ -2,15 +2,15 @@ import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { ouraRestingHeartRateDataProvider, ouraSleepMinutesDataProvider, ouraStepsDataProvider } from "../daily-data-providers";
 import { DailyDataTypeDefinition, DailyDataType } from "../daily-data-types";
-import { simpleAvailabilityCheckV2 } from "./availability-check";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import React from "react";
+import { simpleAvailabilityCheck } from "./availability-check";
 
 let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.OuraSteps,
         dataProvider: ouraStepsDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("Oura", ["daily-activity"]),
+        availabilityCheck: simpleAvailabilityCheck("Oura", ["daily-activity"], true),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: defaultFormatter,
@@ -20,7 +20,7 @@ let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.OuraRestingHeartRate,
         dataProvider: ouraRestingHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("Oura", ["sleep"]),
+        availabilityCheck: simpleAvailabilityCheck("Oura", ["sleep"], true),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -30,7 +30,7 @@ let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.OuraSleepMinutes,
         dataProvider: ouraSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheckV2("Oura", ["sleep"]),
+        availabilityCheck: simpleAvailabilityCheck("Oura", ["sleep"], true),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,

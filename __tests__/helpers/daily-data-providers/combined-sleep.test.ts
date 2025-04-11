@@ -1,130 +1,143 @@
-import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from "@careevolution/mydatahelps-js";
+import MyDataHelps from "@careevolution/mydatahelps-js";
+import {
+    fitbitTotalSleepMinutesDataProvider,
+    garminTotalSleepMinutesDataProvider,
+    ouraSleepMinutesDataProvider,
+    healthConnectTotalSleepMinutesDataProvider
+} from "../../../src/helpers/daily-data-providers";
 import combinedSleep from "../../../src/helpers/daily-data-providers/combined-sleep";
+
+jest.mock("../../../src/helpers/daily-data-providers", () => ({
+    fitbitTotalSleepMinutesDataProvider: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({})),
+    garminTotalSleepMinutesDataProvider: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({})),
+    ouraSleepMinutesDataProvider: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({})),
+    healthConnectTotalSleepMinutesDataProvider: jest
+        .fn()
+        .mockImplementation(() =>
+            Promise.resolve({
+                "2023-01-01": 560,
+                "2023-01-02": 480,
+                "2023-01-03": 530
+            })
+        )
+}));
 
 jest.mock("@careevolution/mydatahelps-js", () => ({
     __esModule: true,
     default: {
         getDataCollectionSettings: jest.fn(),
         queryDeviceData: jest.fn(),
-        queryDeviceDataV2: jest.fn()
+        queryDeviceDataV2: jest.fn(),
+        getDeviceDataV2AllDataTypes: jest.fn()
     }
-}
-));
+}));
 
 describe("combinedSleep", () => {
     const startDate = new Date(2023, 0, 1);
     const endDate = new Date(2023, 0, 4);
-    const getDataCollectionSettings = (MyDataHelps.getDataCollectionSettings as jest.Mock);
-    const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
-    const queryDeviceDataV2 = (MyDataHelps.queryDeviceDataV2 as jest.Mock);
+    const getDataCollectionSettings =
+        MyDataHelps.getDataCollectionSettings as jest.Mock;
+    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
+    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
+    const getDeviceDataV2AllDataTypes =
+        MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
+
+    const defaultSettings = {
+        fitbitEnabled: false,
+        garminEnabled: false,
+        ouraEnabled: false,
+        healthConnectEnabled: false,
+        queryableDeviceDataTypes: []
+    };
 
     beforeEach(() => {
         jest.resetAllMocks();
+        setupDeviceDataV2Types([]);
+        queryDeviceData.mockResolvedValue({ deviceDataPoints: [] });
+        queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [] });
+
+        (fitbitTotalSleepMinutesDataProvider as jest.Mock).mockClear();
+        (garminTotalSleepMinutesDataProvider as jest.Mock).mockClear();
+        (ouraSleepMinutesDataProvider as jest.Mock).mockClear();
+        (healthConnectTotalSleepMinutesDataProvider as jest.Mock).mockClear();
     });
 
-    it("should return an empty object if no providers are enabled", async () => {
+    function setupDataCollectionSettings(
+        options: Partial<typeof defaultSettings> = {}
+    ) {
         getDataCollectionSettings.mockResolvedValue({
-            fitbitEnabled: false,
-            garminEnabled: false,
-            ouraEnabled: false,
-            queryableDeviceDataTypes: []
+            ...defaultSettings,
+            ...options
         });
+    }
+
+    function setupDeviceDataV2Types(
+        types: Array<{ namespace: string; type: string, enabled: boolean }> = []
+    ) {
+        getDeviceDataV2AllDataTypes.mockResolvedValue(types);
+    }
+
+    function setupProviderData() {
+        (fitbitTotalSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
+            "2023-01-01": 540,
+            "2023-01-02": 412
+        });
+
+        (garminTotalSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
+            "2023-01-01": 510,
+            "2023-01-02": 533
+        });
+
+        (ouraSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
+            "2023-01-02": 433,
+            "2023-01-03": 417
+        });
+
+        (
+            healthConnectTotalSleepMinutesDataProvider as jest.Mock
+        ).mockResolvedValue({
+            "2023-01-01": 560,
+            "2023-01-02": 480,
+            "2023-01-03": 530
+        });
+    }
+
+    it("should return an empty object if no providers are enabled", async () => {
+        setupDataCollectionSettings();
 
         const result = await combinedSleep(startDate, endDate);
         expect(result).toEqual({});
     });
 
-    it("should return the maximum sleep for each day", async () => {
-        getDataCollectionSettings.mockResolvedValue({
+    it("should return the maximum sleep duration for each day from all available providers", async () => {
+        setupProviderData();
+
+        setupDataCollectionSettings({
             fitbitEnabled: true,
             garminEnabled: true,
             ouraEnabled: true,
-            queryableDeviceDataTypes: []
+            healthConnectEnabled: true
         });
-        queryDeviceData.mockImplementation((query: DeviceDataPointQuery) => {
-            if (query.namespace === "Fitbit") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        buildFitbitDataPoint("540", "2023-01-01"),
-                        buildFitbitDataPoint("412", "2023-01-02")
-                    ]
-                });
-            } else if (query.namespace === "Garmin") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        buildGarminDataPoint((510*60).toString(), "2023-01-01T12:02:00", "DurationInSeconds"),
-                        buildGarminDataPoint((533*60).toString(), "2023-01-02T13:01:02", "DurationInSeconds")
-                    ]
-                });
-            }
-        });
-        queryDeviceDataV2.mockImplementation((query: DeviceDataV2Query) => {
-            if (query.namespace === "Oura") {
-                return Promise.resolve({
-                    deviceDataPoints: [
-                        buildOuraDataPoint((433*60).toString(), "2023-01-02", "total_sleep_duration", "long_sleep"),
-                        buildOuraDataPoint((417*60).toString(), "2023-01-03", "total_sleep_duration", "long_sleep"),
-                    ]
-                });
-            }
-        })
+
+        setupDeviceDataV2Types([{ namespace: "HealthConnect", type: "sleep", enabled: true }]);
 
         const result = await combinedSleep(startDate, endDate);
+
         expect(result).toEqual({
-            "2023-01-01": 540,
-            "2023-01-02": 533,
-            "2023-01-03": 417,
+            "2023-01-01": 560, // Health Connect provides higher value
+            "2023-01-02": 533, // Garmin still has highest value
+            "2023-01-03": 530 // Health Connect provides higher value than Oura
         });
+
+        expect(fitbitTotalSleepMinutesDataProvider).toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProvider).toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProvider).toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProvider).toHaveBeenCalled();
     });
 });
-
-function buildOuraDataPoint(value: string, startDate: string, propertyValueName: string, propertyType: string): DeviceDataV2Point {
-    let ddp = {
-        id: "",
-        participantID: "",
-        participantIdentifier: "",
-        identifier: "",
-        value: value,
-        units: "",
-        startDate: startDate,
-        startDateOffset: "",
-        observationDate: startDate,
-        observationDateOffset: "",
-        insertedDate: "",
-        modifiedDate: "",
-        properties: { type: propertyType, day: startDate }
-    } as DeviceDataV2Point;
-    ddp.properties![propertyValueName] = value;
-    return ddp;
-}
-
-function buildFitbitDataPoint(value: string, startDate: string): DeviceDataPoint {
-    let ddp: DeviceDataPoint = {
-        id: "",
-        namespace: "Fitbit",
-        insertedDate: "",
-        modifiedDate: "",
-        observationDate: startDate,
-        startDate: startDate,
-        type: "",
-        value: value,
-        properties: {},
-    };
-    return ddp;
-}
-
-function buildGarminDataPoint(value: string, startDate: string, propertyValueName: string): DeviceDataPoint {
-    let ddp: DeviceDataPoint = {
-        id: "",
-        namespace: "Garmin",
-        insertedDate: "",
-        modifiedDate: "",
-        observationDate: startDate,
-        startDate: startDate,
-        type: "",
-        value: value,
-        properties: {},
-    };
-    ddp.properties![propertyValueName] = value;
-    return ddp;
-}

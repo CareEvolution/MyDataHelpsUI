@@ -7,11 +7,12 @@ import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./daily-data-types/formatters";
 import { predictableRandomNumber } from "./predictableRandomNumber";
+import { getCombinedDataCollectionSettings, CombinedDataCollectionSettings } from "./daily-data-providers/combined-data-collection-settings";
 import { combineResultsUsingFirstValue } from "./daily-data-providers/daily-data";
 
 export type DailyDataQueryResult = { [key: string]: number };
 export type DailyDataProvider = (startDate: Date, endDate: Date) => Promise<DailyDataQueryResult>;
-export type DailyDataAvailabilityCheck = (modifiedAfter?: Date) => Promise<boolean>;
+export type DailyDataAvailabilityCheck = (CombinedDataCollectionSettings: CombinedDataCollectionSettings, modifiedAfter?: Date) => Promise<boolean>;
 
 let dailyDataTypes = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
@@ -50,12 +51,21 @@ function parseDailyDataTypes(type: string) : DailyDataTypeDefinition[] {
 }
 
 export async function checkDailyDataAvailability(type: string, modifiedAfter?: Date): Promise<boolean> {
-	for (let dailyDataType of parseDailyDataTypes(type)) {
-		if (await dailyDataType.availabilityCheck(modifiedAfter)) {
-			return true;
-		}
+	const dataTypes = parseDailyDataTypes(type);
+	
+	const combinedSettings = await getCombinedDataCollectionSettings(true);
+	
+	if (dataTypes.length === 0) return false;
+	
+	try {
+		await Promise.any(dataTypes.map(dataType => 
+			dataType.availabilityCheck(combinedSettings, modifiedAfter)
+				.then(result => result ? Promise.resolve() : Promise.reject())
+		));
+		return true;
+	} catch {
+		return false;
 	}
-	return false;
 }
 
 export async function queryDailyData(type: string, startDate: Date, endDate: Date, preview?: boolean): Promise<DailyDataQueryResult> {
