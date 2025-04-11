@@ -16,7 +16,7 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     }
 
     if (providers.length === 0) return {};
-    if (providers.length === 1) return await providers[0];
-    
+    if (providers.length === 1) return providers[0];
+
     return combineResultsUsingFirstValue(startDate, endDate, await Promise.all(providers));
 }
