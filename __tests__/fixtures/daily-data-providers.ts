@@ -1,8 +1,10 @@
 import * as dailyDataFunctions from '../../src/helpers/daily-data-providers/daily-data';
 import { DailyData, DailyDataDateFunction, DailyDataV2, DailyDataValueFunction } from '../../src/helpers/daily-data-providers/daily-data';
+import * as dataCollectionSettingsFunctions from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
+import { CombinedDataCollectionSettings } from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
 import * as timeRangeFunctions from '../../src/helpers/time-range';
 import { DailyTimeRanges, TimeRange } from '../../src/helpers/time-range';
-import { DeviceDataNamespace, DeviceDataPoint, DeviceDataV2Namespace, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
+import { DataCollectionSettings, DeviceDataNamespace, DeviceDataPoint, DeviceDataV2Namespace, DeviceDataV2Point, QueryableDeviceDataType } from '@careevolution/mydatahelps-js';
 import { DailyDataQueryResult } from '../../src';
 import { add, format, formatISO, isEqual, startOfToday } from 'date-fns';
 import { parseISOWithoutOffset } from '../../src/helpers/date-helpers';
@@ -141,7 +143,7 @@ function setupResult(
 ): void {
     jest.spyOn(dailyDataFunctions, functionName).mockImplementation(
         (
-            actualDailyData: DailyData,
+            actualDailyData: DailyData | DailyDataV2,
             actualValueFn?: DailyDataValueFunction
         ): DailyDataQueryResult => {
             if (JSON.stringify(actualDailyData) !== JSON.stringify(expectedDailyData)) return {};
@@ -238,6 +240,35 @@ export function setupMinutesResult(
             return result;
         }
     );
+}
+
+export function createEmptyCombinedDataCollectionSettings(): CombinedDataCollectionSettings {
+    return {
+        settings: {
+            queryableDeviceDataTypes: [] as QueryableDeviceDataType[]
+        } as DataCollectionSettings,
+        deviceDataV2Types: []
+    };
+}
+
+export function setupCombinedDataCollectionSettings(expectedUseV2: boolean, settings: CombinedDataCollectionSettings): void {
+    jest.spyOn(dataCollectionSettingsFunctions, 'getCombinedDataCollectionSettings').mockImplementation(
+        async (actualUseV2: boolean = false): Promise<CombinedDataCollectionSettings> => {
+            return actualUseV2 === expectedUseV2 ? settings : {} as CombinedDataCollectionSettings;
+        }
+    );
+}
+
+export function createMockResult(): DailyDataQueryResult {
+    return { 'SomeDate': Math.random() * 10000 };
+}
+
+export function setupDailyDataProvider(mock: jest.Mock, expectedStartDate: Date, expectedEndDate: Date, result: DailyDataQueryResult): void {
+    mock.mockImplementation(async (actualStartDate: Date, actualEndDate: Date): Promise<DailyDataQueryResult> => {
+        if (!isEqual(actualStartDate, expectedStartDate)) return {};
+        if (!isEqual(actualEndDate, expectedEndDate)) return {};
+        return result;
+    });
 }
 
 export function setupCombinedFirstValueResult(
