@@ -20,7 +20,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
-    const chartRef = React.useRef<HTMLDivElement>(null);
+    const widthReferenceRef = React.useRef<HTMLDivElement>(null);
     const [barsToDisplay, setBarsToDisplay] = useState<number | null>(null);
     const [chartPosition, setChartPosition] = useState<"right" | "bottom">("bottom");
 
@@ -32,7 +32,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             if (!props.chartPosition || props.chartPosition !== "responsive") {
                 return "bottom";
             }
-            let chartWidth = chartRef.current?.clientWidth;
+            let chartWidth = widthReferenceRef.current?.clientWidth;
             if (!chartWidth) { return "bottom"; }
             if (chartWidth < 150) {
                 return "bottom";
@@ -41,7 +41,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         }
 
         let calculateBars = () => {
-            let chartWidth = chartRef.current?.clientWidth;
+            let chartWidth = widthReferenceRef.current?.clientWidth;
             const approximateBarWidth = 24;
             if (!chartWidth) { return 7; }
             let chartPosition = getChartPosition();
@@ -76,7 +76,8 @@ export default function MicroTrend(props: MicroTrendProps) {
     useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay]);
 
     if (!barsToDisplay) {
-        return <div ref={chartRef} />;
+        //return an empty div initially so we have a ref to calculate the size of the chart
+        return <div ref={widthReferenceRef} />;
     }
 
     if (!results) {
@@ -123,7 +124,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
                 {formattedValue}
             </div>
-            <div ref={chartRef} className="mdhui-micro-trend-chart">
+            <div ref={widthReferenceRef} className="mdhui-micro-trend-chart">
                 {hasRecentData &&
                     <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
                 }
@@ -147,7 +148,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     if (props.onClick) {
         return <div ref={props.innerRef} key={props.dataType.dailyDataType}>
             <UnstyledButton className={classes.join(" ")} onClick={props.onClick}>
-                <div ref={chartRef}>
+                <div ref={widthReferenceRef}>
                     {getInnerComponents()}
                 </div>
             </UnstyledButton>
@@ -155,7 +156,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     }
 
     return <div ref={props.innerRef} className={classes.join(" ")} key={props.dataType.dailyDataType}>
-        <div ref={chartRef}>
+        <div ref={widthReferenceRef}>
             {getInnerComponents()}
         </div>
     </div>
