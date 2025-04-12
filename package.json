@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.79.1-MicroTrendRedesign.1",
+  "version": "2.79.1-MicroTrendRedesign.2",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
