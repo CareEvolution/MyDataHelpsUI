@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { getDailyDataTypeDefinition, getDayKey, language, queryRelativeActivity, RelativeActivityDataType, RelativeActivityQueryResult, resolveColor, useInitializeView } from "../../../helpers"
-import { DateRangeContext, LayoutContext, SparkBarChart, SparkBarChartBar } from "../../presentational"
+import { DateRangeContext, LayoutContext, SparkBarChart, SparkBarChartBar, UnstyledButton } from "../../presentational"
 import { add, startOfDay } from "date-fns"
 import "./MicroTrend.css"
 
@@ -10,6 +10,7 @@ export interface MicroTrendProps {
     previewState?: "default"
     innerRef?: React.Ref<HTMLDivElement>
     hideIfNoRecentData?: boolean
+    onClick?: () => void
 }
 
 export default function MicroTrend(props: MicroTrendProps) {
@@ -36,7 +37,6 @@ export default function MicroTrend(props: MicroTrendProps) {
 
     function loadData() {
         if (barsToDisplay === null) { return; }
-        console.log("querying");
         queryRelativeActivity(add(date, { days: -1 * barsToDisplay }), date, [props.dataType], !!props.previewState).then(results => {
             setResults(results[props.dataType.dailyDataType]);
         });
@@ -74,7 +74,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         bars.push({
             barFillPercent: relativePercent,
             color: (value > threshold ? (props.dataType.overThresholdColor ?? props.dataType.color) : props.dataType.color) || "var(--mdhui-color-primary)",
-            opacity: (i === 0 ? 1 : 0.5)
+            opacity: (i === 0 ? 1 : 0.4)
         });
     }
 
@@ -83,18 +83,32 @@ export default function MicroTrend(props: MicroTrendProps) {
         iconColor = "var(--mdhui-text-color-3)";
     }
 
+    function getInnerComponents() {
+        return <>
+            <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
+                {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
+            </div>
+            <div className="mdhui-micro-trend-icon">{props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}</div>
+            <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
+                {formattedValue}
+            </div>
+            <div ref={chartRef} className="mdhui-micro-trend-chart">
+                {hasRecentData &&
+                    <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
+                }
+            </div>
+        </>
+    }
+
+    if (props.onClick) {
+        return <div ref={props.innerRef} className="mdhui-micro-trend" key={props.dataType.dailyDataType}>
+            <UnstyledButton onClick={props.onClick}>
+                {getInnerComponents()}
+            </UnstyledButton>
+        </div>
+    }
+
     return <div ref={props.innerRef} className="mdhui-micro-trend" key={props.dataType.dailyDataType}>
-        <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
-            {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
-        </div>
-        <div className="mdhui-micro-trend-icon">{props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}</div>
-        <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
-            {formattedValue}
-        </div>
-        <div ref={chartRef} className="mdhui-micro-trend-chart">
-            {hasRecentData &&
-                <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
-            }
-        </div>
+        {getInnerComponents()}
     </div>
 }

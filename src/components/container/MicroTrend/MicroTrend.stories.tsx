@@ -38,3 +38,30 @@ export const StepsWithThresholds = {
     },
     render: render
 };
+
+export const StepsNoTrend = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        previewState: "noTrend"
+    },
+    render: render
+};
+
+export const WithClickHandler = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)",
+            threshold: 7000,
+            overThresholdColor: "rgba(255, 0, 0, 1)",
+        },
+        previewState: "default",
+        onClick: () => {
+            alert("Clicked!");
+        }
+    },
+    render: render
+};
