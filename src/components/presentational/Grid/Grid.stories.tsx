@@ -6,6 +6,8 @@ import { Grid, GridProps } from "./Grid";
 import DailyDataGoal from "../../container/DailyDataGoal/DailyDataGoal";
 import { DailyDataType } from "../../../helpers";
 import MicroTrend from "../../container/MicroTrend/MicroTrend";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default {
     title: "Presentational/Grid",
@@ -108,7 +110,7 @@ export const DailyDataGoals = {
 let trendGrid: GridProps = {
     children: <>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" chartPosition="bottom" dataType={{
+            <MicroTrend previewState="default" indicator={<FontAwesomeSvgIcon icon={faChevronRight} />} chartPosition="bottom" dataType={{
                 dailyDataType: DailyDataType.Steps,
                 color: "rgba(255, 166, 102, 1)"
             }} />
@@ -152,7 +154,7 @@ let trendGrid: GridProps = {
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend chartPosition="right" previewState="default" dataType={{
+            <MicroTrend chartPosition="right" indicator={<FontAwesomeSvgIcon icon={faChevronRight} />} previewState="default" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
