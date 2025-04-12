@@ -73,7 +73,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         }
     }
 
-    useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay]);
+    useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay, props.dataType, props.previewState, date]);
 
     if (!barsToDisplay) {
         //return an empty div initially so we have a ref to calculate the size of the chart
