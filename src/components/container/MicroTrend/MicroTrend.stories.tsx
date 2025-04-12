@@ -2,6 +2,8 @@ import React from "react"
 import MicroTrend, { MicroTrendProps } from "./MicroTrend";
 import { Card, Layout } from "../../presentational";
 import { DailyDataType } from "../../../helpers/daily-data-types";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default {
     title: "Container/MicroTrend",
@@ -46,6 +48,43 @@ export const StepsNoTrend = {
             color: "rgba(255, 166, 102, 1)"
         },
         previewState: "noTrend"
+    },
+    render: render
+};
+
+export const ChartRight = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        previewState: "default",
+        chartPosition: "right"
+    },
+    render: render
+};
+
+export const ChartResponsive = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        previewState: "default",
+        chartPosition: "responsive"
+    },
+    render: render
+};
+
+export const WithIndicator = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        previewState: "default",
+        chartPosition: "right",
+        indicator: <FontAwesomeSvgIcon icon={faChevronRight} />
     },
     render: render
 };
