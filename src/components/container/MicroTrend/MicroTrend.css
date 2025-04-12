@@ -1,6 +1,9 @@
 .mdhui-micro-trend {
-    margin: var(--mdhui-padding-md);
-    padding-bottom: 16px;
+    padding: var(--mdhui-padding-md);
+    padding-bottom: 32px;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .mdhui-micro-trend .mdhui-micro-trend-info {

@@ -7,7 +7,7 @@ import "./MicroTrend.css"
 export interface MicroTrendProps {
     date?: Date
     dataType: RelativeActivityDataType
-    previewState?: "default"
+    previewState?: "default" | "noTrend"
     innerRef?: React.Ref<HTMLDivElement>
     hideIfNoRecentData?: boolean
     onClick?: () => void
@@ -37,6 +37,18 @@ export default function MicroTrend(props: MicroTrendProps) {
 
     function loadData() {
         if (barsToDisplay === null) { return; }
+        if (props.previewState === "noTrend") {
+            setResults({
+                [getDayKey(date)]: {
+                    value: 5000
+                }
+            });
+        } else {
+            queryRelativeActivity(add(date, { days: -6 }), date, [props.dataType], !!props.previewState).then(results => {
+                setResults(results[props.dataType.dailyDataType]);
+            });
+        }
+
         queryRelativeActivity(add(date, { days: -1 * barsToDisplay }), date, [props.dataType], !!props.previewState).then(results => {
             setResults(results[props.dataType.dailyDataType]);
         });
@@ -52,7 +64,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         return null;
     }
 
-    const hasRecentData = Object.values(results).some(r => r.value > 0);
+    const hasRecentData = Object.values(results).some(r => r.value > 0 && r.threshold !== undefined);
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
@@ -101,8 +113,8 @@ export default function MicroTrend(props: MicroTrendProps) {
     }
 
     if (props.onClick) {
-        return <div ref={props.innerRef} className="mdhui-micro-trend" key={props.dataType.dailyDataType}>
-            <UnstyledButton onClick={props.onClick}>
+        return <div ref={props.innerRef} key={props.dataType.dailyDataType}>
+            <UnstyledButton className="mdhui-micro-trend" onClick={props.onClick}>
                 {getInnerComponents()}
             </UnstyledButton>
         </div>
