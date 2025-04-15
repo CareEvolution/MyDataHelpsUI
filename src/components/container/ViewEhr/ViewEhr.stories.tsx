@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from '../../presentational/Card'
 import Layout from '../../presentational/Layout'
-import ViewEhr from './ViewEhr';
+import ViewEhr, { ViewEhrPreviewState } from './ViewEhr';
 import { Meta, StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import { ButtonVariant } from '../../presentational/Button/Button';
@@ -36,7 +36,7 @@ type Story = StoryObj<ViewEhrStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'some ehr connections',
+        previewState: 'connected' as ViewEhrPreviewState,
         title: '',
         buttonColor: undefined,
         buttonVariantArg: 'not set'
@@ -50,7 +50,12 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['no ehr connections', 'some ehr connections', 'fetching data']
+            options: ['not connected', 'connected', 'fetching data'],
+            mapping: {
+                'not connected': 'notConnected',
+                'connected': 'fetchComplete',
+                'fetching data': 'fetchingData'
+            }
         },
         title: {
             name: 'title'

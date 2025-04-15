@@ -7,9 +7,9 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import { ColorDefinition, useInitializeView } from '../../../helpers'
 import './ViewEhr.css'
 import { ButtonVariant } from '../../presentational/Button/Button'
-import { noop } from "../../../helpers/functions";
+import { noop } from '../../../helpers/functions';
 
-export type ViewEhrPreviewState = 'no ehr connections' | 'some ehr connections' | 'fetching data';
+export type ViewEhrPreviewState = 'notConnected' | 'fetchComplete' | 'fetchingData';
 
 export interface ViewEhrProps {
     previewState?: ViewEhrPreviewState;
@@ -31,13 +31,13 @@ export default function ViewEhr(props: ViewEhrProps) {
     const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
 
     useInitializeView(() => {
-        if (props.previewState === 'no ehr connections') {
+        if (props.previewState === 'notConnected') {
             setHasEhrConnection(false);
             setIsFetchingData(false);
             return;
         } else if (props.previewState) {
             setHasEhrConnection(true);
-            setIsFetchingData(props.previewState === 'fetching data');
+            setIsFetchingData(props.previewState === 'fetchingData');
             return;
         }
 

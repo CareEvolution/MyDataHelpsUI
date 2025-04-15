@@ -47,7 +47,7 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
             }
             {props.onViewEhr &&
                 <Card>
-                    <ViewEhr previewState={props.preview ? "fetching data" : undefined} onClick={props.onViewEhr} />
+                    <ViewEhr previewState={props.preview ? "fetchingData" : undefined} onClick={props.onViewEhr} />
                 </Card>
             }
             <Card>
