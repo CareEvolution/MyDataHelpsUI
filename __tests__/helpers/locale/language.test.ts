@@ -1,6 +1,6 @@
 import { getLanguageCodeFromIso, getCountryCodeFromIso, language, supportedLocales } from '../../../src/helpers/language';
 import { describe, it } from '@jest/globals';
-import englishStrings from "../../../src/helpers/strings-en"
+import englishStrings from "../../../locales/en.json"
 
 describe('Language Tests', () => {
     describe('getLanguageCodeFromIso', () => {
