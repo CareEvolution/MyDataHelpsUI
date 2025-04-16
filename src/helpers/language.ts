@@ -1,29 +1,48 @@
 ﻿import MyDataHelps from "@careevolution/mydatahelps-js"
-import englishStrings from "./strings-en"
-import spanishStrings from "./strings-es"
-import dutchStrings from "./strings-nl"
-import germanStrings from "./strings-de"
-import frenchStrings from "./strings-fr"
-import portugueseBrazilStrings from "./strings-pt"
-import italianStrings from "./strings-it"
-import polishStrings from "./strings-pl"
-import portuguesePortugalStrings from "./strings-pt-pt"
+import englishStrings from "../../locales/en.json"
+import spanishStrings from "../../locales/es.json"
+import germanStrings from "../../locales/de.json"
+import filipinoStrings from "../../locales/fil.json"
+import frenchStrings from "../../locales/fr.json"
+import frenchCanadianStrings from "../../locales/fr-CA.json"
+import italianStrings from "../../locales/it.json"
+import dutchStrings from "../../locales/nl.json"
+import polishStrings from "../../locales/pl.json"
+import portugueseBrazilStrings from "../../locales/pt.json"
+import portuguesePortugalStrings from "../../locales/pt-PT.json"
+import romanianStrings from "../../locales/ro.json"
+import samoanStrings from "../../locales/sm.json"
+import somaliStrings from "../../locales/so.json"
+import swahiliStrings from "../../locales/sw.json"
+import tagalogStrings from "../../locales/tl.json"
+import vietnameseStrings from "../../locales/vi.json"
+
 // NOTE! If you add a new locale, be sure to also update getDateLocale()
 
 interface LocaleStrings {
 	[key: string]: string;
 }
 
+// Please alphabetize by language name (with en/es first) to 
+// match the UI list.
 const localeToStringsMap : Record<string, LocaleStrings> = {
 	"en": englishStrings,
 	"es": spanishStrings,
 	"nl": dutchStrings,
+	"fil": filipinoStrings,
 	"fr": frenchStrings,
-	"it": italianStrings,
+	"fr-ca": frenchCanadianStrings,
 	"de": germanStrings,
+	"it": italianStrings,
 	"pt": portugueseBrazilStrings,
 	"pt-pt": portuguesePortugalStrings,
-	"pl": polishStrings
+	"pl": polishStrings,
+	"ro": romanianStrings,
+	"sm": samoanStrings,
+	"sw": swahiliStrings,
+	"so": somaliStrings,
+	"tl": tagalogStrings,
+	"vi": vietnameseStrings
 };
 
 function format(resolvedString: string, args?: { [key: string]: string }) {

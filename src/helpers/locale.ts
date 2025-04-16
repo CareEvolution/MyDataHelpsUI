@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { es, enUS, enAU, enCA, enGB, enIE, enIN, enNZ, enZA, nl, nlBE, de, deAT, fr, frCA, frCH, pt, ptBR, it, itCH, pl, Locale } from 'date-fns/locale';
+import { es, enUS, enAU, enCA, enGB, enIE, enIN, enNZ, enZA, nl, nlBE, de, deAT, fr, frCA, frCH, pt, ptBR, it, itCH, pl, ro, vi, Locale } from 'date-fns/locale';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import language, { getCountryCodeFromIso, getLanguageCodeFromIso } from "./language";
 import { toDate } from "./date-helpers";
@@ -102,6 +102,16 @@ export function getDateLocale(): Locale {
     }
 
     if (languageCode == "pl") return pl;
+    if (languageCode == "ro") return ro;
+    if (languageCode == "vi") return vi;
+    
+    // Languages without specific date-fns locales
+    // Using enUS as fallback for these languages until availible
+    if (languageCode == "fil") return enUS;
+    if (languageCode == "sm") return enUS;
+    if (languageCode == "so") return enUS;
+    if (languageCode == "sw") return enUS;
+    if (languageCode == "tl") return enUS;
 
     return enUS;
 }

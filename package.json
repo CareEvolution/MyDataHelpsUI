@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.75.0",
+  "version": "2.79.0",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -21,7 +21,8 @@
     "rollup": "npm run clean && rollup -c",
     "storybook": "set NODE_OPTIONS=--openssl-legacy-provider & storybook dev -p 6006",
     "build-storybook": "set NODE_OPTIONS=--openssl-legacy-provider & storybook build",
-    "test": "jest"
+    "test": "jest",
+    "test-storybook": "test-storybook"
   },
   "repository": {
     "type": "git",
@@ -52,13 +53,13 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-actions": "^8.3.5",
-    "@storybook/addon-essentials": "^8.3.5",
-    "@storybook/addon-interactions": "^8.3.5",
-    "@storybook/addon-jest": "^8.3.5",
+    "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
     "@storybook/addon-links": "^8.3.5",
     "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
     "@storybook/react": "^8.3.5",
-    "@storybook/react-webpack5": "^8.3.5",
+    "@storybook/react-webpack5": "^8.6.4",
+    "@storybook/test-runner": "^0.22.0",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.7",
     "@types/markdown-it": "^12.2.3",
@@ -88,6 +89,7 @@
     "@langchain/core": "^0.3.13",
     "@langchain/langgraph": "^0.2.16",
     "@langchain/openai": "^0.3.11",
+    "@storybook/test": "^8.6.4",
     "date-fns": "^4.0.0",
     "html-react-parser": "^5.0.7",
     "lodash": "^4.17.21",
@@ -101,9 +103,12 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@careevolution/mydatahelps-js": "^3.29.0",
+    "@careevolution/mydatahelps-js": "^3.31.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   },
   "files": [
     "dist"

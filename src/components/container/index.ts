@@ -10,6 +10,7 @@ export { default as ConnectDexcom, ConnectDexcomPreviewState } from "./ConnectDe
 export { default as ConnectEhr } from "./ConnectEhr"
 export { default as ConnectFitbit } from "./ConnectFitbit"
 export { default as ConnectGarmin } from "./ConnectGarmin"
+export { default as ConnectOura } from "./ConnectOura"
 export { default as DailyDataChart } from "./DailyDataChart"
 export { default as DailyDataGoal } from "./DailyDataGoal"
 export { default as DeviceDataMonthChart, DeviceDataChartLine } from "./DeviceDataMonthChart"
