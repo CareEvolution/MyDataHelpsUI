@@ -35,8 +35,8 @@ export function Grid(props: GridProps) {
         classes.push("mdhui-grid-default-margin");
     }
 
-    let style = { ...props.style };
-    let gap = (props.gap || props.gap === 0) ? props.gap : 16;
+    const style = { ...props.style };
+    const gap = (props.gap || props.gap === 0) ? props.gap : 16;
     style.gap = `${gap}px`;
     return <GridContext.Provider value={{ gap: gap }}>
         <div ref={props.innerRef} className={classes.join(" ")} style={style}>{props.children}</div>
@@ -48,10 +48,10 @@ Grid.Column = function (props: GridColumnProps) {
         return null;
     }
 
-    let widthPercent = props.span / 12 * 100;
-    let gridContext = React.useContext(GridContext);
-    let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
-    let style = { ...props.style, width: width };
+    const widthPercent = props.span / 12 * 100;
+    const gridContext = React.useContext(GridContext);
+    const width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
+    const style = { ...props.style, width: width };
 
     if (props.variant === "card") {
         return <Card innerRef={props.innerRef} className="mdhui-grid-column" style={style}>{props.children}</Card>
