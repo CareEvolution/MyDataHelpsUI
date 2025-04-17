@@ -1,30 +1,23 @@
-import { add } from "date-fns";
-import queryAllDeviceDataV2 from "../query-all-device-data-v2";
-import { DeviceDataV2Query } from "@careevolution/mydatahelps-js";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { buildTotalValueResult, DailyDataV2, queryForDailyDataV2 } from "./daily-data";
 
 export type OuraSleepType = "long_sleep" | "sleep" | "late_nap" | "deleted" | "rest";
 
-export default function (startDate: Date, endDate: Date, type: string, sleepTypeToInclude: OuraSleepType[]) {
-	const query: DeviceDataV2Query = {
-		namespace: "Oura",
-		type: "sleep",
-		observedAfter: add(startDate, { days: -1 }).toISOString(),
-		observedBefore: add(endDate, { days: 1 }).toISOString()
-	};
-	return queryAllDeviceDataV2(query).then(dataPoints => {
-		var data: { [key: string]: number } = {};
-		dataPoints.forEach((d) => {
-			if (!d.properties) { return; }
-			if (!d.properties['day']) { return; }
-			if (sleepTypeToInclude.length > 0) {
-				if (!d.properties['type'] || !sleepTypeToInclude.includes(d.properties['type'])) { return; } 
-			}	
-			if (!d.properties[type]) { return; }
-			if (parseInt(d.properties[type]) <= 0) { return; }
-			var dayKey = d.properties['day'];
-			const existingValue = data[dayKey] || 0;
-			data[dayKey] = Math.round(Number.parseFloat(d.properties[type])) + existingValue;
-		});
-		return data;
-	});
+export default async function (startDate: Date, endDate: Date, dataType: string, sleepTypesToInclude: OuraSleepType[], divideBy?: number): Promise<DailyDataQueryResult> {
+    const dailyData = await queryForDailyDataV2("Oura", "sleep", startDate, endDate, dataPoint => dataPoint.properties?.["day"]);
+
+    const filteredDailyData = Object.keys(dailyData).reduce((filteredDailyData, dayKey) => {
+        const filteredDataPoints = dailyData[dayKey].filter(dataPoint => {
+            return sleepTypesToInclude.length === 0 || sleepTypesToInclude.includes(dataPoint.properties?.["type"] as OuraSleepType);
+        });
+        if (filteredDataPoints.length > 0) {
+            filteredDailyData[dayKey] = filteredDataPoints;
+        }
+        return filteredDailyData;
+    }, {} as DailyDataV2);
+
+    return buildTotalValueResult(filteredDailyData, dataPoint => {
+        const value = parseFloat(dataPoint.properties?.[dataType] ?? "0");
+        return Math.round(divideBy ? (value / divideBy) : value);
+    });
 }

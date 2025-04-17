@@ -1,7 +1,8 @@
 import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
-import { add, differenceInSeconds, isBefore, parseISO, startOfDay } from 'date-fns';
+import { add, differenceInSeconds, endOfDay, isBefore, parseISO, startOfDay } from 'date-fns';
 import getDayKey from './get-day-key';
 import { DailyDataQueryResult } from './query-daily-data';
+import { parseISOWithoutOffset } from './date-helpers';
 
 export interface TimeRange {
     startTime: Date;
@@ -52,7 +53,7 @@ export function buildMinutesResultFromDailyTimeRanges(startDate: Date, endDate: 
     const result: DailyDataQueryResult = {};
 
     const lowerBound = startOfDay(startDate);
-    const upperBound = startOfDay(endDate);
+    const upperBound = endOfDay(endDate);
 
     for (const dayKey of Object.keys(dailyTimeRanges)) {
         const dayDate = parseISO(dayKey);
@@ -71,8 +72,8 @@ function splitSampleIntoRanges(dataPoint: DeviceDataPoint | DeviceDataV2Point, o
         return [];
     }
 
-    const startDate = parseISO(dataPoint.startDate);
-    const observationDate = parseISO(dataPoint.observationDate);
+    const startDate = parseISOWithoutOffset(dataPoint.startDate);
+    const observationDate = parseISOWithoutOffset(dataPoint.observationDate);
 
     if (!isBefore(startDate, observationDate)) {
         return [];

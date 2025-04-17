@@ -204,3 +204,7 @@ export function getShortTimeOfDayString(dateOrDateString: Date | string) {
 
 		return formatDateForLocale(date, formatOptions.hour12 ? "h a" : "p");
 }
+
+export function parseISOWithoutOffset(dateStr: string): Date {
+	return parseISO(dateStr.substring(0, 19));
+}
