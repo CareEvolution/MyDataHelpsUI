@@ -177,7 +177,7 @@ export default function (props: GlucoseChartProps) {
                     intervalType="Day"
                     intervalStart={selectedDate}
                     data={chartData as any}
-                    series={[{ dataKey: 'value', color: 'rgb(196, 41, 28)' }]}
+                    series={[{ dataKey: 'value', color: 'rgb(196, 41, 28)' }, { dataKey: 'mealValue', color: 'transparent' }]}
                     chartHasData={!!glucose && glucose.length > 0}
                     chartType="Line"
                     options={{
@@ -185,8 +185,10 @@ export default function (props: GlucoseChartProps) {
                             dot: customDot,
                             label: customDotLabel,
                             strokeWidth: 2,
-                            animationDuration: 500
-                        },
+                            animationDuration: 500,
+                            connectNulls: true,
+                            type: 'linear'
+                        } as TimeSeriesChartLineOptions,
                         containerOptions: {
                             height: props.variant == "minimal" ? 80 : 166
                         },
