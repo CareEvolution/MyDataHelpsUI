@@ -4,6 +4,7 @@ import { Reading } from './types';
 import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import { getMaxValueReadings } from './util';
+import { getCombinedDataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
 
 export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
@@ -68,8 +69,8 @@ export function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Readin
 export async function getSteps(date: Date): Promise<Reading[]> {
     let providers: Promise<Reading[]>[] = [];
 
-    let settings = await MyDataHelps.getDataCollectionSettings();
-    if (settings.fitbitEnabled) {
+    let { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings();
+    if (settings.fitbitEnabled && deviceDataV2Types.find(s => s.namespace == 'Fitbit' && s.type == 'activities-steps-intraday')) {
         providers.push(fitbitHalfHourStepsDataProvider(date));
     }
     if (settings.garminEnabled) {
