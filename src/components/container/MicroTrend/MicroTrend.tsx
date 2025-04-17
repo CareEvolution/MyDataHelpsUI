@@ -59,8 +59,10 @@ export default function MicroTrend(props: MicroTrendProps) {
     }, [props.chartPosition]);
 
     function loadData() {
+
         if (barsToDisplay === null) { return; }
         if (props.previewState === "noTrend") {
+
             setResults({
                 [getDayKey(date)]: {
                     value: 5000
@@ -73,7 +75,7 @@ export default function MicroTrend(props: MicroTrendProps) {
         }
     }
 
-    useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay, props.dataType, props.previewState, date]);
+    useInitializeView(loadData, ["externalAccountSyncComplete"], [barsToDisplay, props.dataType, props.previewState, props.date, dateRangeContext?.intervalStart]);
 
     if (!barsToDisplay) {
         //return an empty div initially so we have a ref to calculate the size of the chart
@@ -118,9 +120,9 @@ export default function MicroTrend(props: MicroTrendProps) {
     function getInnerComponents() {
         return <>
             <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
+                {props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}&nbsp;
                 {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
             </div>
-            <div className="mdhui-micro-trend-icon">{props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon}</div>
             <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
                 {formattedValue}
             </div>
