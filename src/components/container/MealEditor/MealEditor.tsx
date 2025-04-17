@@ -119,6 +119,7 @@ export default function MealEditor(props: MealEditorProps) {
         }
 
         mealToEdit!.description = mealToEdit!.description?.trim();
+        mealToEdit!.lastModified = new Date();
 
         const otherMeals = allMeals!.filter(meal => meal.id !== mealToEdit!.id);
         const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);

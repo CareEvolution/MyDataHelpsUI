@@ -1,42 +1,83 @@
 import { add } from "date-fns";
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider } from ".";
+import {
+    appleHealthSleepDataProvider,
+    fitbitTotalSleepMinutesDataProvider,
+    garminTotalSleepMinutesDataProvider,
+    ouraSleepMinutesDataProvider,
+    healthConnectTotalSleepMinutesDataProvider
+} from ".";
 import getDayKey from "../get-day-key";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 
-export default function (startDate: Date, endDate: Date) {
-    let providers: Promise<{ [key: string]: number }>[] = [];
+export default async function (startDate: Date, endDate: Date) {
+    const useV2 = true;
+    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
+    const { settings, deviceDataV2Types } = combinedSettings;
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.garminEnabled) {
-            providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
-            providers.push(appleHealthSleepDataProvider(startDate, endDate));
-        }
+    const providers: Promise<Record<string, number>>[] = [];
 
-        if (!providers.length) {
-            return {};
-        }
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.garminEnabled) {
+        providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (
+        settings.appleHealthEnabled &&
+        settings.queryableDeviceDataTypes.some(
+            ddt =>
+                ddt.namespace === "AppleHealth" &&
+                ddt.type === "SleepAnalysisInterval"
+        )
+    ) {
+        providers.push(appleHealthSleepDataProvider(startDate, endDate));
+    }
+    if (
+        settings.ouraEnabled &&
+        deviceDataV2Types.some(
+            ddt => ddt.namespace === "Oura" && ddt.type === "sleep"
+        )
+    ) {
+        providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (
+        settings.healthConnectEnabled &&
+        deviceDataV2Types.some(
+            ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep"
+        )
+    ) {
+        providers.push(
+            healthConnectTotalSleepMinutesDataProvider(startDate, endDate)
+        );
+    }
 
-        return Promise.all(providers).then((values) => {
-            var data: { [key: string]: number } = {};
-            while (startDate < endDate) {
-                var dayKey = getDayKey(startDate);
-                var sleep: number | null = null;
-                values.forEach((value) => {
-                    if (value[dayKey] && (sleep == null || sleep < value[dayKey])) {
-                        sleep = value[dayKey];
-                    }
-                });
-                if (sleep) {
-                    data[dayKey] = sleep;
-                }
-                startDate = add(startDate, { days: 1 });
+    if (!providers.length) {
+        return {};
+    }
+
+    const values = await Promise.all(providers);
+    const data: Record<string, number> = {};
+
+    let currentDate = new Date(startDate);
+    while (currentDate < endDate) {
+        const dayKey = getDayKey(currentDate);
+        let maxSleep: number | null = null;
+
+        values.forEach(value => {
+            if (
+                value[dayKey] &&
+                (maxSleep == null || maxSleep < value[dayKey])
+            ) {
+                maxSleep = value[dayKey];
             }
-            return data;
         });
-    });
+
+        if (maxSleep !== null) {
+            data[dayKey] = maxSleep;
+        }
+
+        currentDate = add(currentDate, { days: 1 });
+    }
+
+    return data;
 }

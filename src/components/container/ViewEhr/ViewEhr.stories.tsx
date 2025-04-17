@@ -1,21 +1,74 @@
-import React from "react"
-import Card from "../../presentational/Card"
-import Layout from "../../presentational/Layout"
-import ViewEhr, { ViewEhrProps } from "./ViewEhr";
+import React from 'react'
+import Card from '../../presentational/Card'
+import Layout from '../../presentational/Layout'
+import ViewEhr, { ViewEhrPreviewState } from './ViewEhr';
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
+import { ButtonVariant } from '../../presentational/Button/Button';
 
-export default {
-    title: "Container/ViewEhr",
-    component: ViewEhr,
-    parameters: {
-        layout: 'fullscreen',
-    }
+type ViewEhrStoryArgs = React.ComponentProps<typeof ViewEhr> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    buttonVariantArg: ButtonVariant | 'not set';
 };
 
-let render = (args: ViewEhrProps) => <Layout colorScheme="auto"><Card><ViewEhr {...args} /></Card></Layout>
-
-export const Default = {
-    args: {
-        previewState: "fetchingData"
+const meta: Meta<ViewEhrStoryArgs> = {
+    title: 'Container/ViewEhr',
+    component: ViewEhr,
+    parameters: {
+        layout: 'fullscreen'
     },
-    render: render
+    render: args => {
+        return <Layout colorScheme={args.colorScheme}>
+            <Card>
+                <ViewEhr
+                    {...args}
+                    buttonVariant={args.buttonVariantArg !== 'not set' ? args.buttonVariantArg : undefined}
+                    onClick={() => console.log('view ehr')}
+                />
+            </Card>
+        </Layout>;
+    }
+};
+export default meta;
+
+type Story = StoryObj<ViewEhrStoryArgs>;
+
+export const Default: Story = {
+    args: {
+        colorScheme: 'auto',
+        previewState: 'connected' as ViewEhrPreviewState,
+        title: '',
+        buttonColor: undefined,
+        buttonVariantArg: 'not set'
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['not connected', 'connected', 'fetching data'],
+            mapping: {
+                'not connected': 'notConnected',
+                'connected': 'fetchComplete',
+                'fetching data': 'fetchingData'
+            }
+        },
+        title: {
+            name: 'title'
+        },
+        buttonColor: {
+            name: 'button color',
+            control: 'color'
+        },
+        buttonVariantArg: {
+            name: 'button variant',
+            control: 'radio',
+            options: ['not set', 'default', 'subtle', 'light']
+        },
+        ...argTypesToHide(['buttonVariant', 'onClick', 'innerRef'])
+    }
 };

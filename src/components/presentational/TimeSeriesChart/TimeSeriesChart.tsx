@@ -231,6 +231,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             type="monotone"
                                             dataKey={dk}
                                             stroke={`url(#${gradientKey}${i})`}
+                                            dot={{ clipDot: false }}
                                             {...(props.options as MultiSeriesLineChartOptions)?.lineOptions}
                                         />
                                     )}
