@@ -1,5 +1,32 @@
+.mdhui-glucose-chart {
+    position: relative;
+}
+
 .mdhui-glucose-chart .mdhui-card:first-child {
     margin-top: 0;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-title {
+    font-size: .88em;
+    color: var(--mdhui-text-color-2);
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+    color: rgb(196, 41, 28);
+    margin: 16px;
+    margin-bottom: -12px;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-icon {
+    /* position: absolute;
+    right: 40px;
+    top: 16px;
+    color: #EDEEF0;
+    font-size: 38px;
+    line-height: 32px;
+    text-align: center; */
+
+    color: rgb(196, 41, 28);
 }
 
 .mdhui-glucose-chart .mdhui-action.mdhui-glucose-chart-action {
@@ -36,12 +63,12 @@
     padding: 0;
     margin-bottom: -5px;
     margin-left: -5px;
-    margin-right: -5px;
+    margin-right: -9px;
     margin-top: -32px;
 }
 
 .mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-action.mdhui-glucose-chart-action .mdhui-glucose-chart-chart .chart-container {
-    margin-right: -48px;
+    margin-right: -25px;
 }
 
 

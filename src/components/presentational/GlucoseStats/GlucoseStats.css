@@ -22,7 +22,7 @@
     font-size: 0.95em;
     font-weight: bold;
     color: var(--mdhui-text-color-0);
-    margin-bottom: 4px;
+    margin-bottom: 0px;
 }
 
 .mdhui-glucose-stat-value-not-available {

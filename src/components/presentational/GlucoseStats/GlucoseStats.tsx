@@ -41,6 +41,27 @@ export default function (props: GlucoseStatsProps) {
     }
     let totalSleepMinutes = ((sleepHours || 0) * 60) + (sleepMinutes || 0);
 
+    if (props.variant == "minimal") {
+        return <div className="mdhui-glucose-stats">
+            <div className="mdhui-glucose-stat">
+                <div className="mdhui-glucose-stat-value">
+                    {(minGlucose && maxGlucose) ? `${formatNumberForLocale(minGlucose)} - ${formatNumberForLocale(maxGlucose)} mg/dL` : undefined}
+                </div>
+                <div className="mdhui-glucose-stat-label">
+                    Range
+                </div>
+            </div>
+            <div className="mdhui-glucose-stat">
+                <div className="mdhui-glucose-stat-value">
+                    {avgGlucose ? `${formatNumberForLocale(avgGlucose)} mg/dL` : undefined}
+                </div>
+                <div className="mdhui-glucose-stat-label">
+                    Average
+                </div>
+            </div>
+        </div>;
+    }
+
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
         <SingleGlucoseStat
             loading={props.loading}
@@ -85,7 +106,7 @@ function SingleGlucoseStat(props: { loading: boolean, label: string, icon: IconD
         }
         {!props.loading && props.value &&
             <div className="mdhui-glucose-stat-value">
-                <FontAwesomeSvgIcon icon={props.icon} color={props.iconColor} /> {props.value}
+                {props.value}
             </div>
         }
         {!props.loading && !props.value &&

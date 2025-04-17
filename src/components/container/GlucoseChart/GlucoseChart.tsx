@@ -6,7 +6,7 @@ import { Action, DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator
 import { add, compareAsc, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
 import { getShortTimeOfDayString, getTimeOfDayString } from '../../../helpers/date-helpers';
 import { formatNumberForLocale } from "../../../helpers/locale";
@@ -164,75 +164,80 @@ export default function (props: GlucoseChartProps) {
     let overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale + minGlucose }));
 
     function getInnerComponents() {
-        return <><div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
-            {props.showStats && props.variant === "minimal" &&
-                <GlucoseStats
-                    loading={loading}
-                    glucoseReadings={filteredGlucose}
-                    steps={!selectedMeal ? filteredSteps : []}
-                    sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
-                    variant={props.variant}
-                />
-            }
-            <TimeSeriesChart
-                variant={props.variant == "minimal" ? 'minimal' : 'default'}
-                intervalType="Day"
-                intervalStart={selectedDate}
-                data={chartData as any}
-                series={[{ dataKey: 'value', color: '#999' }]}
-                chartHasData={!!glucose && glucose.length > 0}
-                chartType="Line"
-                options={{
-                    lineOptions: {
-                        dot: customDot,
-                        label: customDotLabel,
-                        strokeWidth: 1.5,
-                        animationDuration: 500
-                    },
-                    containerOptions: {
-                        height: props.variant == "minimal" ? 80 : 166
-                    },
-                    xAxisOptions: {
-                        domain: chartDomain,
-                        ticks: chartTicks,
-                        tickFormatter: chartTickFormatter
-                    },
-                    yAxisOptions: {
-                        domain: props.variant !== "minimal" ? [0, 240] : [minGlucose - 10, maxGlucose + 10],
-                        ticks: props.variant !== "minimal" ? [40, 80, 120, 160, 200, 240] : undefined
+        return <>
+            <div className="mdhui-glucose-chart-title"><FontAwesomeSvgIcon className="mdhui-glucose-chart-icon" icon={faDroplet} /> Blood Glucose</div>
+            
+            <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
+                {props.variant === "minimal" &&
+                    <>
+                        <GlucoseStats
+                            loading={loading}
+                            glucoseReadings={filteredGlucose}
+                            steps={!selectedMeal ? filteredSteps : []}
+                            sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
+                            variant={props.variant}
+                        />
+                    </>
+                }
+                <TimeSeriesChart
+                    variant={props.variant == "minimal" ? 'minimal' : 'default'}
+                    intervalType="Day"
+                    intervalStart={selectedDate}
+                    data={chartData as any}
+                    series={[{ dataKey: 'value', color: 'rgb(196, 41, 28)' }]}
+                    chartHasData={!!glucose && glucose.length > 0}
+                    chartType="Line"
+                    options={{
+                        lineOptions: {
+                            dot: customDot,
+                            label: customDotLabel,
+                            strokeWidth: 2,
+                            animationDuration: 500
+                        },
+                        containerOptions: {
+                            height: props.variant == "minimal" ? 80 : 166
+                        },
+                        xAxisOptions: {
+                            domain: chartDomain,
+                            ticks: chartTicks,
+                            tickFormatter: chartTickFormatter
+                        },
+                        yAxisOptions: {
+                            domain: props.variant !== "minimal" ? [0, 240] : [minGlucose - 10, maxGlucose + 10],
+                            ticks: props.variant !== "minimal" ? [40, 80, 120, 160, 200, 240] : undefined
+                        }
+                    }}
+                >
+                    {glucoseContext?.recentAverage !== undefined && props.variant !== "minimal" &&
+                        <ReferenceLine
+                            y={glucoseContext.recentAverage}
+                            stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
+                            strokeWidth={1.5}
+                            label={{
+                                value: formatNumberForLocale(glucoseContext.recentAverage),
+                                fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
+                                fontSize: 9,
+                                position: 'insideTopRight',
+                                fontWeight: 'bold'
+                            }}
+                        />
                     }
-                }}
-            >
-                {glucoseContext?.recentAverage !== undefined &&
-                    <ReferenceLine
-                        y={glucoseContext.recentAverage}
-                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
-                        strokeWidth={1.5}
-                        label={{
-                            value: formatNumberForLocale(glucoseContext.recentAverage),
-                            fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
-                            fontSize: 9,
-                            position: 'insideTopRight',
-                            fontWeight: 'bold'
-                        }}
-                    />
+                    {!selectedMeal && overlaySteps.length > 0 &&
+                        <Bar
+                            data={overlaySteps}
+                            type="monotone"
+                            dataKey="value"
+                            fill="#f5b722"
+                            opacity={0.3}
+                            radius={[2, 2, 0, 0]}
+                            // barSize={selectedMeal ? 20 : 8}
+                        />
+                    }
+                </TimeSeriesChart>
+                {props.variant !== "minimal" &&
+                    <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
                 }
-                {!selectedMeal && overlaySteps.length > 0 &&
-                    <Bar
-                        data={overlaySteps}
-                        type="monotone"
-                        dataKey="value"
-                        fill="#f5b722"
-                        opacity={0.3}
-                        radius={[2, 2, 0, 0]}
-                        barSize={selectedMeal ? 20 : 8}
-                    />
-                }
-            </TimeSeriesChart>
-            {props.variant !== "minimal" &&
-                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
-            }
-        </div>
+            </div>
             <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{language('glucose-chart-no-data')}</div>
             <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
                 <LoadingIndicator />
@@ -255,7 +260,7 @@ export default function (props: GlucoseChartProps) {
 
     return <div className={classes.join(" ")} ref={props.innerRef}>
         {props.onClick &&
-            <Action className='mdhui-glucose-chart-action' onClick={props.onClick}>
+            <Action className='mdhui-glucose-chart-action' onClick={props.onClick} indicatorPosition='topRight'>
                 {getInnerComponents()}
             </Action>
         }
