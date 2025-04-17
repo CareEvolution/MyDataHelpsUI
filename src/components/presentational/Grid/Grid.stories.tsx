@@ -109,7 +109,7 @@ export const DailyDataGoals = {
 let trendGrid: GridProps = {
     children: <>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" indicator={<FontAwesomeSvgIcon icon={faChevronRight} />} chartPosition="bottom" dataType={{
+            <MicroTrend previewState="default" chartPosition="bottom" dataType={{
                 dailyDataType: DailyDataType.Steps,
                 color: "rgba(255, 166, 102, 1)"
             }} />
@@ -121,14 +121,15 @@ let trendGrid: GridProps = {
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" chartPosition="responsive" dataType={{
+            <MicroTrend previewState="default" chartPosition="bottom" dataType={{
                 label: "Air Quality",
                 dailyDataType: DailyDataType.HomeAirQuality,
                 color: "rgb(53, 166, 160)"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" chartPosition="responsive" dataType={{
+            <MicroTrend previewState="default" chartPosition="bottom" dataType={{
+                label: "Resting HR",
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />

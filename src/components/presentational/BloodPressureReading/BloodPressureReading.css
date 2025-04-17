@@ -75,7 +75,7 @@
 
 .mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar .svg-inline--fa {
     position: absolute;
-    left: calc(50% - 12px);
+    left: calc(50% - 6px);
     top: 8px;
 }
 
