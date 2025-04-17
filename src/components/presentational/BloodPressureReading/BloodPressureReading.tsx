@@ -64,7 +64,7 @@ export default function BloodPressureReading(props: BloodPressureReadingProps) {
                 {classification === "hypertension-stage-2" && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
             <div className="mdhui-blood-pressure-reading-classification-indicator-bar hypertensive-crisis">
-                {classification === "hypertensive-crisis" && <FontAwesomeSvgIcon icon={faCaretUp} />
+                {classification === "hypertensive-crisis" && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
         </div>
     </Action>;
