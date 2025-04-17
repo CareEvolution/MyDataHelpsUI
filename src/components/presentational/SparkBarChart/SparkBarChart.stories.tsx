@@ -1,10 +1,10 @@
 ﻿import React from "react";
 import Layout from "../Layout";
-import SparkBarChart, { SparkBarChartProps } from "./SparkBarChart";
+import SparkBarChart, { SparkBarChartBar, SparkBarChartProps } from "./SparkBarChart";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof SparkBarChart> = {
-	title:  "Presentational/SparkBarChart",
+	title: "Presentational/SparkBarChart",
 	component: SparkBarChart,
 	parameters: {
 		layout: 'fullscreen'
@@ -20,38 +20,64 @@ const render = (args: SparkBarChartProps) => <Layout colorScheme="auto">
 	</div>
 </Layout>;
 
+const bars: SparkBarChartBar[] = [
+	{
+		barFillPercent: .5,
+		color: "#f5b722",
+		opacity: .5
+	},
+	{
+		barFillPercent: .1,
+		color: "#f5b722",
+		opacity: .5
+	},
+	{
+		barFillPercent: .2,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .7,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .6,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .8,
+		color: "#e35c33",
+		opacity: .5
+	},
+	{
+		barFillPercent: .9,
+		color: "#e35c33"
+	}];
+
 export const Default: Story = {
 	args: {
 		averageFillPercent: .3,
-		bars: [
-			{
-				barFillPercent: .5,
-				color: "#f5b722"
-			},
-			{
-				barFillPercent: .1,
-				color: "#f5b722"
-			},
-			{
-				barFillPercent: .2,
-				color: "#7b88c6"
-			},
-			{
-				barFillPercent: .7,
-				color: "#7b88c6"
-			},
-			{
-				barFillPercent: .6,
-				color: "#7b88c6"
-			},
-			{
-				barFillPercent: .8,
-				color: "#e35c33"
-			},
-			{
-				barFillPercent: .9,
-				color: "#e35c33"
-			}]
+		bars: bars
+	},
+	render: render
+};
+
+export const WithGap: Story = {
+	args: {
+		averageFillPercent: .3,
+		gap: 4,
+		bars: bars
+	},
+	render: render
+};
+
+export const Rounded: Story = {
+	args: {
+		averageFillPercent: .3,
+		bars: bars,
+		variant: "rounded"
 	},
 	render: render
 };

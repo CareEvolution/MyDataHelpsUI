@@ -4,9 +4,9 @@ import { queryDailyData, DailyDataQueryResult } from "./query-daily-data";
 import getDayKey from "./get-day-key";
 
 export interface RelativeActivityQueryResult {
-    relativePercent: number;
+    relativePercent?: number;
     value: number;
-    threshold: number;
+    threshold?: number;
 }
 
 export interface RelativeActivityDataType {
@@ -30,26 +30,25 @@ export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes:
 
     return Promise.allSettled(promises).then((results) => {
         dataTypes.forEach((dataType, index) => {
-            relativeActivityResults[dataType.dailyDataType] = {};
-
             if (results[index].status === "fulfilled") {
+                relativeActivityResults[dataType.dailyDataType] = {};
                 const dataTypeData = (results[index] as PromiseFulfilledResult<DailyDataQueryResult>).value;
                 let currentDate = startDate;
                 while (currentDate <= endDate) {
                     const dayKey = getDayKey(currentDate);
                     const value = dataTypeData?.[dayKey] ?? 0;
                     let threshold = (dataType.threshold === "30DayAverage" || dataType.threshold === undefined) ? calculatePrevious30DayAverage(dataTypeData, currentDate) : dataType.threshold;
+                    relativeActivityResults[dataType.dailyDataType][dayKey] = {
+                        value: value
+                    };
                     if (threshold !== undefined) {
                         let fillPercent = value / (threshold * 2);
                         if (fillPercent > 1) {
                             fillPercent = 1;
                         }
 
-                        relativeActivityResults[dataType.dailyDataType][dayKey] = {
-                            relativePercent: fillPercent,
-                            value: value,
-                            threshold: threshold
-                        }
+                        relativeActivityResults[dataType.dailyDataType][dayKey].relativePercent = fillPercent;
+                        relativeActivityResults[dataType.dailyDataType][dayKey].threshold = threshold;
                     }
                     currentDate = add(currentDate, { days: 1 });
                 }
