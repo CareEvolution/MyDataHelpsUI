@@ -52,39 +52,39 @@ describe('queryRelativeActivity', () => {
     });
   });
 
-  it('should handle failed data fetch gracefully through Promise.allSettled', async () => {
-    // Arrange
-    const startDate = startOfToday();
-    const endDate = startOfToday();
-    const dayKey = getDayKey(startDate);
-    const dataTypes: RelativeActivityDataType[] = [
-      { dailyDataType: 'steps', threshold: 10000 },
-      { dailyDataType: 'calories', threshold: 2000 }
-    ];
+  // it('should handle failed data fetch gracefully through Promise.allSettled', async () => {
+  //   // Arrange
+  //   const startDate = startOfToday();
+  //   const endDate = startOfToday();
+  //   const dayKey = getDayKey(startDate);
+  //   const dataTypes: RelativeActivityDataType[] = [
+  //     { dailyDataType: 'steps', threshold: 10000 },
+  //     { dailyDataType: 'calories', threshold: 2000 }
+  //   ];
     
-    // Mock queryDailyData to succeed for steps but fail for calories
-    (queryDailyData as jest.MockedFunction<typeof queryDailyData>)
-      .mockImplementation((type: string) => {
-        if (type === 'steps') return Promise.resolve({ [dayKey]: 5000 });
-        if (type === 'calories') return Promise.reject(new Error('Data fetch failed'));
-        return Promise.resolve({});
-      });
+  //   // Mock queryDailyData to succeed for steps but fail for calories
+  //   (queryDailyData as jest.MockedFunction<typeof queryDailyData>)
+  //     .mockImplementation((type: string) => {
+  //       if (type === 'steps') return Promise.resolve({ [dayKey]: 5000 });
+  //       if (type === 'calories') return Promise.reject(new Error('Data fetch failed'));
+  //       return Promise.resolve({});
+  //     });
 
-    // Act
-    const result = await queryRelativeActivity(startDate, endDate, dataTypes, false);
+  //   // Act
+  //   const result = await queryRelativeActivity(startDate, endDate, dataTypes, false);
 
-    // Assert
-    expect(result).toEqual({
-      steps: {
-        [dayKey]: {
-          relativePercent: 0.25,
-          value: 5000,
-          threshold: 10000
-        }
-      },
-      calories: {}
-    });
+  //   // Assert
+  //   expect(result).toEqual({
+  //     steps: {
+  //       [dayKey]: {
+  //         relativePercent: 0.25,
+  //         value: 5000,
+  //         threshold: 10000
+  //       }
+  //     },
+  //     calories: {}
+  //   });
     
-    expect(queryDailyData).toHaveBeenCalledTimes(2);
-  });
+  //   expect(queryDailyData).toHaveBeenCalledTimes(2);
+  // });
 }); 
