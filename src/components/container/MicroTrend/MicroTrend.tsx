@@ -51,11 +51,11 @@ export default function MicroTrend(props: MicroTrendProps) {
             setChartPosition(chartPosition);
             setBarsToDisplay(Math.floor(chartWidth / approximateBarWidth));
         }
-        window.addEventListener("resize", calculateBars);
+        // window.addEventListener("resize", calculateBars);
         calculateBars();
-        return () => {
-            window.removeEventListener("resize", calculateBars)
-        }
+        // return () => {
+        //     window.removeEventListener("resize", calculateBars)
+        // }
     }, [props.chartPosition]);
 
     function loadData() {

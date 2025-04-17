@@ -55,16 +55,16 @@ export default function BloodPressureReading(props: BloodPressureReadingProps) {
                 {(classification === "normal" || classification == "low") && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
             <div className="mdhui-blood-pressure-reading-classification-indicator-bar elevated">
-                {classification === "elevated" && <div className="mdhui-blood-pressure-reading-classification-pointer"></div>}
+                {classification === "elevated" && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
             <div className="mdhui-blood-pressure-reading-classification-indicator-bar hypertension-stage-1">
-                {classification === "hypertension-stage-1" && <div className="mdhui-blood-pressure-reading-classification-pointer"></div>}
+                {classification === "hypertension-stage-1" && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
             <div className="mdhui-blood-pressure-reading-classification-indicator-bar hypertension-stage-2">
-                {classification === "hypertension-stage-2" && <div className="mdhui-blood-pressure-reading-classification-pointer"></div>}
+                {classification === "hypertension-stage-2" && <FontAwesomeSvgIcon icon={faCaretUp} />}
             </div>
             <div className="mdhui-blood-pressure-reading-classification-indicator-bar hypertensive-crisis">
-                {classification === "hypertensive-crisis" && <div className="mdhui-blood-pressure-reading-classification-pointer"></div>}
+                {classification === "hypertensive-crisis" && <FontAwesomeSvgIcon icon={faCaretUp} />
             </div>
         </div>
     </Action>;
