@@ -104,3 +104,17 @@ export const WithClickHandler = {
     },
     render: render
 };
+
+
+export const LiveAirQuality = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.AirQuality,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        onClick: () => {
+            alert("Clicked!");
+        }
+    },
+    render: render
+};
