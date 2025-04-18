@@ -112,8 +112,20 @@ export const LiveAirQuality = {
             dailyDataType: DailyDataType.AirQuality,
             color: "rgba(255, 166, 102, 1)"
         },
+        hideIfNoRecentData: true,
         onClick: () => {
             alert("Clicked!");
+        }
+    },
+    render: render
+};
+
+
+export const LiveSteps = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
         }
     },
     render: render
