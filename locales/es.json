@@ -348,6 +348,8 @@
     "google-fit-share": "Toca para compartir datos de condición físic",
     "health-connect-phr-sync-prompt": "Elige los registros de salud para leer y escribir en Health Connect",
     "health-connect-phr-sync-title": "Sincronizar con Health Connect",
+    "apple-health-records-sync-prompt": "Conéctate a los registros de salud que gestionas mediante Apple Health",
+    "apple-health-records-sync-title": "Sincronizar con Apple Health",
     "health-records": "Registros de salud",
     "heart-rate-range": "Rango de Frecuencia Cardíaca",
     "heart-rate-variability": "Variabilidad de la Frecuencia Cardíaca",

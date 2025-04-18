@@ -345,9 +345,10 @@
     "glucose-stats-steps-label": "Steps",
     "glucose-view-title": "Glucose Monitoring",
     "google-fit-share": "Tap to share fitness data",
-    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Choose health records to read from and write to Health Connect",
     "health-connect-phr-sync-title": "Sync with Health Connect",
+    "apple-health-records-sync-prompt": "Connect to the health records you manage through Apple Health",
+    "apple-health-records-sync-title": "Sync with Apple Health",
     "health-records": "Health Records",
     "heart-rate-range": "Heart Rate Range",
     "heart-rate-variability": "Heart Rate Variability",

@@ -345,9 +345,10 @@
     "glucose-stats-steps-label": "Pas",
     "glucose-view-title": "Surveillance de la glycémie",
     "google-fit-share": "Appuyez pour partager les données de condition physique",
-    "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire dans Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire dans Health Connect",
     "health-connect-phr-sync-title": "Synchroniser avec Health Connect",
+    "apple-health-records-sync-prompt": "Connectez-vous aux dossiers de santé que vous gérez via Apple Santé",
+    "apple-health-records-sync-title": "Synchroniser avec Apple Santé",
     "health-records": "Dossiers de santé",
     "heart-rate-range": "Plage de fréquence cardiaque",
     "heart-rate-variability": "Variabilité de la fréquence cardiaque",
