@@ -345,9 +345,10 @@
     "glucose-stats-steps-label": "Pași",
     "glucose-view-title": "Monitorizarea glicemiei",
     "google-fit-share": "Apasă pentru a partaja date fitness",
-    "health-connect-phr-sync-prompt": "Alege înregistrările de sănătate pentru a citi din și a scrie în Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Alege înregistrările de sănătate pentru a citi din și a scrie în Health Connect",
     "health-connect-phr-sync-title": "Sincronizare cu Health Connect",
+    "apple-health-records-sync-prompt": "Conectează-te la dosarele de sănătate pe care le gestionezi prin Apple Health",
+    "apple-health-records-sync-title": "Sincronizează cu Apple Health",
     "health-records": "Înregistrări medicale",
     "heart-rate-range": "Interval ritm cardiac",
     "heart-rate-variability": "Variabilitatea ritmului cardiac",

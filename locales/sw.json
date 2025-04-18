@@ -345,9 +345,10 @@
     "glucose-stats-steps-label": "Hatua",
     "glucose-view-title": "Ufuatiliaji wa Sukari",
     "google-fit-share": "Gusa ili kushiriki data ya afya",
-    "health-connect-phr-sync-prompt": "Chagua rekodi za afya za kusoma kutoka na kuandika kwenye Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Chagua rekodi za afya za kusoma kutoka na kuandika kwenye Health Connect",
     "health-connect-phr-sync-title": "Unganisha na Health Connect",
+    "apple-health-records-sync-prompt": "Unganisha na rekodi za afya unazosimamia kupitia Apple Health",
+    "apple-health-records-sync-title": "Landa na Apple Health",
     "health-records": "Rekodi za Afya",
     "heart-rate-range": "Kiwango cha Mapigo ya Moyo",
     "heart-rate-variability": "Mabadiliko ya Mapigo ya Moyo",
