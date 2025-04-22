@@ -142,7 +142,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (provider.isSelectable && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (provider.enabled !== false && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
@@ -239,8 +239,14 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
                             }
-                            {provider.isSelectable === false && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
-                                <div className="provider-status connected-status">{provider.nonSelectabilityReason}</div>
+                            {provider.enabled === false && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
+                                <div className="provider-status connected-status">
+                                        {
+                                            provider.managingOrganization ?
+                                                language("non-selecatbility-reason-with-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider, "managingOrganization": provider.managingOrganization })
+                                                : language("non-selecatbility-reason-without-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider })
+                                        }
+                                </div>
                             }
                         </div>
                         {provider.logoUrl &&

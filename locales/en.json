@@ -427,6 +427,8 @@
     "no-data": "No Data",
     "no-data-yet": "No data yet",
     "no-notifications-received": "No notifications received",
+    "non-selecatbility-reason-with-managing-organization": "You already have a connection to {provider} through {relatedProvider} ({managingOranization}).",
+    "non-selecatbility-reason-without-managing-organization: ": "You already have a connection to {provider} through {relatedProvider}.",
     "normal-range": "Normal Range",
     "not-muted": "Not Muted",
     "notes": "Notes",
