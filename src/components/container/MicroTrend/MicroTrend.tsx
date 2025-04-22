@@ -26,7 +26,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     const [chartPosition, setChartPosition] = useState<"right" | "bottom">("bottom");
 
     useEffect(() => {
-        let calculateBars = () => {
+        const calculateBars = () => {
             function getChartPosition(): "right" | "bottom" {
                 if (props.chartPosition === "bottom" || props.chartPosition === "right") {
                     return props.chartPosition;
@@ -44,7 +44,9 @@ export default function MicroTrend(props: MicroTrendProps) {
 
             let chartWidth = widthReferenceRef.current?.clientWidth;
             const approximateBarWidth = 24;
-            if (!chartWidth) { return 7; }
+            if (!chartWidth) {
+                return;
+            }
             let chartPosition = getChartPosition();
             if (chartPosition === "right") {
                 chartWidth = chartWidth / 2;
