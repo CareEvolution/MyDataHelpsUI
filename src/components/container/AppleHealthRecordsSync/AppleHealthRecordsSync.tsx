@@ -60,8 +60,6 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         }
     }, [], [props.previewState, platform]);
 
-    console.log('showWhen: ' + props.showWhen);
-
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
     }
