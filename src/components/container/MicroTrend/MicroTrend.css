@@ -26,6 +26,9 @@
     font-weight: 600;
     z-index: 1;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mdhui-micro-trend .mdhui-micro-trend-value {

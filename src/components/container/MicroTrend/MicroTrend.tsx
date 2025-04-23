@@ -177,7 +177,7 @@ function MicroTrendContent(props: MicroTrendContentProps) {
     return <>
         <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
             {props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon} &nbsp;
-            {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
+            {props.dataType.label ?? language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
         </div>
         <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
             {!props.results && <FontAwesomeSvgIcon icon={faRefresh} spin style={{ fontSize: ".7em" }} />}
