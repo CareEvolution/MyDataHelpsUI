@@ -243,8 +243,8 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                                 <div className="provider-status connected-status">
                                         {
                                             provider.managingOrganization ?
-                                                language("non-selecatbility-reason-with-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider, "managingOrganization": provider.managingOrganization })
-                                                : language("non-selecatbility-reason-without-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider })
+                                                language("provider-disabled-reason-with-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider, "managingOrganization": provider.managingOrganization })
+                                                : language("provider-disabled-reason-without-managing-organization", undefined, { "provider": provider.name, "relatedProvider": provider.relatedProvider })
                                         }
                                 </div>
                             }
