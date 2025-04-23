@@ -76,6 +76,9 @@ export default function MicroTrend(props: MicroTrendProps) {
         } else if (props.previewState !== "loading") {
             queryRelativeActivity(add(date, { days: -1 * barsToDisplay }), date, [props.dataType], !!props.previewState).then(results => {
                 setResults(results[props.dataType.dailyDataType]);
+            }).catch(e => {
+                console.error("Error loading data", e);
+                setResults(undefined);
             });
         }
     }
