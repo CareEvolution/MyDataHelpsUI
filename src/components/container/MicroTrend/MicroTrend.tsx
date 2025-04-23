@@ -115,7 +115,9 @@ export default function MicroTrend(props: MicroTrendProps) {
                         dataType={props.dataType}
                         widthReferenceRef={widthReferenceRef}
                         showChart={showChart}
-                        hasRecentData={hasRecentData} />
+                        hasRecentData={hasRecentData}
+                        indicator={props.indicator}
+                    />
                 </div>
             </UnstyledButton>
         </div>
@@ -130,7 +132,8 @@ export default function MicroTrend(props: MicroTrendProps) {
                 dataType={props.dataType}
                 widthReferenceRef={widthReferenceRef}
                 showChart={showChart}
-                hasRecentData={hasRecentData} />
+                hasRecentData={hasRecentData}
+                indicator={props.indicator} />
         </div>
     </div>
 }
