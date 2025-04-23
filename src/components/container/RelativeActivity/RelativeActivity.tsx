@@ -93,7 +93,7 @@ export default function (props: RelativeActivityProps) {
         {props.title && <CardTitle title={props.title} />}
         {dataTypes.map(d => {
             let dataTypeResult = results![d.dailyDataType];
-            if (!dataTypeResult) {
+            if (!dataTypeResult || dataTypeResult.threshold === undefined || dataTypeResult.relativePercent === undefined) {
                 return null;
             }
             let dataTypeDefinition = getDailyDataTypeDefinition(d.dailyDataType);
