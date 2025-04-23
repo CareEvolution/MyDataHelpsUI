@@ -81,8 +81,7 @@ describe('queryRelativeActivity', () => {
           value: 5000,
           threshold: 10000
         }
-      },
-      calories: {}
+      }
     });
     
     expect(queryDailyData).toHaveBeenCalledTimes(2);
