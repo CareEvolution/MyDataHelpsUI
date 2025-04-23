@@ -17,7 +17,6 @@ export interface MicroTrendProps {
 }
 
 export default function MicroTrend(props: MicroTrendProps) {
-    const context = useContext(LayoutContext);
     const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
     const dateRangeContext = useContext(DateRangeContext);
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
@@ -47,7 +46,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             if (!chartWidth) {
                 return;
             }
-            let chartPosition = getChartPosition();
+            const chartPosition = getChartPosition();
             if (chartPosition === "right") {
                 chartWidth = chartWidth / 2;
             }
@@ -55,7 +54,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             setBarsToDisplay(Math.floor(chartWidth / approximateBarWidth));
         }
 
-        let debouncedCalculateBars = debounce(calculateBars, 1000);
+        const debouncedCalculateBars = debounce(calculateBars, 1000);
         window.addEventListener("resize", debouncedCalculateBars);
         calculateBars();
         return () => {
@@ -93,20 +92,71 @@ export default function MicroTrend(props: MicroTrendProps) {
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
+    const showChart = Object.values(results).some(r => r.value > 0 && !!r.threshold);
 
-    const showChart = Object.values(results).some(r => r.value > 0 && !!r.threshold)
+    let classes = ["mdhui-micro-trend"];
+    if (chartPosition === "right") {
+        classes.push("mdhui-micro-trend-chart-right");
+    }
+    if (props.indicator) {
+        classes.push("mdhui-micro-trend-has-indicator");
+    }
 
+    if (props.onClick) {
+        return <div ref={props.innerRef} key={props.dataType.dailyDataType}>
+            <UnstyledButton className={classes.join(" ")} onClick={props.onClick}>
+                <div ref={widthReferenceRef}>
+                    <MicroTrendContent
+                        barsToDisplay={barsToDisplay}
+                        date={date}
+                        results={results}
+                        dataType={props.dataType}
+                        widthReferenceRef={widthReferenceRef}
+                        showChart={showChart}
+                        hasRecentData={hasRecentData} />
+                </div>
+            </UnstyledButton>
+        </div>
+    }
+
+    return <div ref={props.innerRef} className={classes.join(" ")} key={props.dataType.dailyDataType}>
+        <div ref={widthReferenceRef}>
+            <MicroTrendContent
+                barsToDisplay={barsToDisplay}
+                date={date}
+                results={results}
+                dataType={props.dataType}
+                widthReferenceRef={widthReferenceRef}
+                showChart={showChart}
+                hasRecentData={hasRecentData} />
+        </div>
+    </div>
+}
+
+interface MicroTrendContentProps {
+    barsToDisplay: number
+    date: Date
+    results: { [key: string]: RelativeActivityQueryResult }
+    dataType: RelativeActivityDataType
+    widthReferenceRef?: React.Ref<HTMLDivElement>
+    showChart: boolean
+    hasRecentData: boolean
+    indicator?: React.ReactNode
+}
+
+function MicroTrendContent(props: MicroTrendContentProps) {
+    const context = useContext(LayoutContext);
     const definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
     const formatter = props.dataType.formatter ?? definition.formatter;
-    const todayKey = getDayKey(date);
-    const todayValue = results[todayKey]?.value ?? 0;
+    const todayKey = getDayKey(props.date);
+    const todayValue = props.results[todayKey]?.value ?? 0;
     const noData = todayValue === 0;
     const formattedValue = noData ? "--" : formatter(todayValue);
 
     const bars: SparkBarChartBar[] = [];
-    for (var i = -1 * barsToDisplay; i <= 0; i++) {
-        const dayKey = getDayKey(add(date, { days: i }));
-        const dayData = results[dayKey];
+    for (var i = -1 * props.barsToDisplay; i <= 0; i++) {
+        const dayKey = getDayKey(add(props.date, { days: i }));
+        const dayData = props.results[dayKey];
         const value = dayData?.value ?? 0;
         const threshold = dayData?.threshold ?? 0;
         const relativePercent = dayData?.relativePercent ?? 0;
@@ -122,49 +172,23 @@ export default function MicroTrend(props: MicroTrendProps) {
         iconColor = "var(--mdhui-text-color-3)";
     }
 
-    function getInnerComponents() {
-        return <>
-            <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
-                {props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon} &nbsp;
-                {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
-            </div>
-            <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
-                {formattedValue}
-            </div>
-            <div ref={widthReferenceRef} className="mdhui-micro-trend-chart">
-                {hasRecentData && showChart &&
-                    <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
-                }
-            </div>
-            {props.indicator &&
-                <div className="mdhui-micro-trend-indicator">
-                    {props.indicator}
-                </div>
+    return <>
+        <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
+            {props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon} &nbsp;
+            {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
+        </div>
+        <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
+            {formattedValue}
+        </div>
+        <div className="mdhui-micro-trend-chart">
+            {props.hasRecentData && props.showChart &&
+                <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
             }
-        </>
-    }
-
-    let classes = ["mdhui-micro-trend"];
-    if (chartPosition === "right") {
-        classes.push("mdhui-micro-trend-chart-right");
-    }
-    if (props.indicator) {
-        classes.push("mdhui-micro-trend-has-indicator");
-    }
-
-    if (props.onClick) {
-        return <div ref={props.innerRef} key={props.dataType.dailyDataType}>
-            <UnstyledButton className={classes.join(" ")} onClick={props.onClick}>
-                <div ref={widthReferenceRef}>
-                    {getInnerComponents()}
-                </div>
-            </UnstyledButton>
         </div>
-    }
-
-    return <div ref={props.innerRef} className={classes.join(" ")} key={props.dataType.dailyDataType}>
-        <div ref={widthReferenceRef}>
-            {getInnerComponents()}
-        </div>
-    </div>
+        {props.indicator &&
+            <div className="mdhui-micro-trend-indicator">
+                {props.indicator}
+            </div>
+        }
+    </>
 }
