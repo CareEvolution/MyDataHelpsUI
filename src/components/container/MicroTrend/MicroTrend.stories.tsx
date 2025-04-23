@@ -41,6 +41,18 @@ export const StepsWithThresholds = {
     render: render
 };
 
+export const StepsLoading = {
+    args: {
+        dataType: {
+            dailyDataType: DailyDataType.Steps,
+            color: "rgba(255, 166, 102, 1)"
+        },
+        previewState: "loading"
+    },
+    render: render
+};
+
+
 export const StepsNoTrend = {
     args: {
         dataType: {

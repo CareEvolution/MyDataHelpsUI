@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from "react"
 import { getDailyDataTypeDefinition, getDayKey, language, queryRelativeActivity, RelativeActivityDataType, RelativeActivityQueryResult, resolveColor, useInitializeView } from "../../../helpers"
-import { DateRangeContext, LayoutContext, SparkBarChart, SparkBarChartBar, UnstyledButton } from "../../presentational"
+import { DateRangeContext, LayoutContext, LoadingIndicator, SparkBarChart, SparkBarChartBar, UnstyledButton } from "../../presentational"
 import { add, startOfDay } from "date-fns"
 import "./MicroTrend.css"
 import { debounce } from "lodash"
+import { getCombinedDataCollectionSettings } from "../../../helpers/daily-data-providers/combined-data-collection-settings"
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
+import { faRefresh } from "@fortawesome/free-solid-svg-icons"
 
 export interface MicroTrendProps {
     date?: Date
     dataType: RelativeActivityDataType
-    previewState?: "default" | "noTrend"
+    previewState?: "default" | "noTrend" | "loading"
     innerRef?: React.Ref<HTMLDivElement>
     hideIfNoRecentData?: boolean
     onClick?: () => void
@@ -17,7 +20,7 @@ export interface MicroTrendProps {
 }
 
 export default function MicroTrend(props: MicroTrendProps) {
-    const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult } | undefined>(undefined);
+    const [results, setResults] = useState<{ [key: string]: RelativeActivityQueryResult }>();
     const dateRangeContext = useContext(DateRangeContext);
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
     const widthReferenceRef = React.useRef<HTMLDivElement>(null);
@@ -70,7 +73,7 @@ export default function MicroTrend(props: MicroTrendProps) {
                     value: 5000
                 }
             });
-        } else {
+        } else if (props.previewState !== "loading") {
             queryRelativeActivity(add(date, { days: -1 * barsToDisplay }), date, [props.dataType], !!props.previewState).then(results => {
                 setResults(results[props.dataType.dailyDataType]);
             });
@@ -84,17 +87,13 @@ export default function MicroTrend(props: MicroTrendProps) {
         return <div ref={widthReferenceRef} />;
     }
 
-    if (!results) {
-        return null;
-    }
-
-    const hasRecentData = Object.values(results).some(r => r.value > 0);
+    const hasRecentData = !!results && Object.values(results).some(r => r.value > 0);
     if (props.hideIfNoRecentData && !hasRecentData) {
         return null;
     }
-    const showChart = Object.values(results).some(r => r.value > 0 && !!r.threshold);
+    const showChart = !!results && Object.values(results).some(r => r.value > 0 && !!r.threshold);
 
-    let classes = ["mdhui-micro-trend"];
+    const classes = ["mdhui-micro-trend"];
     if (chartPosition === "right") {
         classes.push("mdhui-micro-trend-chart-right");
     }
@@ -136,7 +135,7 @@ export default function MicroTrend(props: MicroTrendProps) {
 interface MicroTrendContentProps {
     barsToDisplay: number
     date: Date
-    results: { [key: string]: RelativeActivityQueryResult }
+    results: { [key: string]: RelativeActivityQueryResult } | undefined
     dataType: RelativeActivityDataType
     widthReferenceRef?: React.Ref<HTMLDivElement>
     showChart: boolean
@@ -149,14 +148,14 @@ function MicroTrendContent(props: MicroTrendContentProps) {
     const definition = getDailyDataTypeDefinition(props.dataType.dailyDataType);
     const formatter = props.dataType.formatter ?? definition.formatter;
     const todayKey = getDayKey(props.date);
-    const todayValue = props.results[todayKey]?.value ?? 0;
+    const todayValue = props.results?.[todayKey]?.value ?? 0;
     const noData = todayValue === 0;
     const formattedValue = noData ? "--" : formatter(todayValue);
 
     const bars: SparkBarChartBar[] = [];
     for (var i = -1 * props.barsToDisplay; i <= 0; i++) {
         const dayKey = getDayKey(add(props.date, { days: i }));
-        const dayData = props.results[dayKey];
+        const dayData = props.results?.[dayKey];
         const value = dayData?.value ?? 0;
         const threshold = dayData?.threshold ?? 0;
         const relativePercent = dayData?.relativePercent ?? 0;
@@ -178,10 +177,11 @@ function MicroTrendContent(props: MicroTrendContentProps) {
             {language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
         </div>
         <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
-            {formattedValue}
+            {!props.results && <FontAwesomeSvgIcon icon={faRefresh} spin style={{ fontSize: ".7em" }} />}
+            {props.results && formattedValue}
         </div>
         <div className="mdhui-micro-trend-chart">
-            {props.hasRecentData && props.showChart &&
+            {props.hasRecentData && props.showChart && props.results &&
                 <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
             }
         </div>
