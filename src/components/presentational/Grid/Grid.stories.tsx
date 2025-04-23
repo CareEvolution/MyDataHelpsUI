@@ -23,7 +23,6 @@ const render = (args: GridProps) => <Layout colorScheme='auto'>
     </Card>
 </Layout>;
 
-
 let defaultProps: GridProps = {
     children: <>
         <Grid.Column span={1}>1</Grid.Column>
