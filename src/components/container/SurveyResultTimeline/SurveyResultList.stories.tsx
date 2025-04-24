@@ -1,22 +1,23 @@
 import React from "react"
-import SurveyResultTimeline, { SurveyResultTimelineProps } from "./SurveyResultTimeline";
+import SurveyResultList, { SurveyResultListProps } from "./SurveyResultList";
 import { Card, Layout } from "../../presentational";
 import { DailyDataType } from "../../../helpers/daily-data-types";
 
 export default {
-    title: "Container/SurveyResultTimeline",
-    component: SurveyResultTimeline,
+    title: "Container/SurveyResultList",
+    component: SurveyResultList,
     parameters: {
         layout: 'fullscreen',
     }
 };
 
-let render = (args: SurveyResultTimelineProps) => <Layout colorScheme="auto">
-    <SurveyResultTimeline {...args} />
+let render = (args: SurveyResultListProps) => <Layout colorScheme="auto">
+    <SurveyResultList {...args} />
 </Layout>;
 
 export const Default = {
     args: {
+        title: "Health Timeline",
         titleResultIdentifier: "title",
         previewState: "default"
     },
