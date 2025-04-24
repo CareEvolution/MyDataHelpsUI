@@ -196,9 +196,9 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
     return <div ref={props.innerRef} className="mdhui-survey-result-list">
         <div className="mdhui-survey-result-list" ref={listRef}>
-            <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
+            <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={props.allowDownload ? <UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
                 Download <FontAwesomeSvgIcon icon={faDownload} />
-            </UnstyledButton>}>
+            </UnstyledButton> : undefined}>
                 {props.title ?? <>&nbsp;</>}
             </Title>
             <div className="mdhui-survey-result-list-scroll-container">
@@ -215,12 +215,11 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                                     onClick={props.allowEdit ? () => { } : undefined}
                                     renderAs="div"
                                     indicator={
-                                        <>
+                                        props.allowDelete ?
                                             <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={(e) => {
                                                 deleteEntry(entry);
                                                 e.stopPropagation();
-                                            }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
-                                        </>
+                                            }}><FontAwesomeSvgIcon icon={faTrash} /></Button> : undefined
                                     }>
                                     {entry.title &&
                                         <div className="mdhui-survey-result-list-entry-title">
