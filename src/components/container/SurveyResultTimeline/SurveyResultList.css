@@ -1,5 +1,9 @@
-.mdhui-survey-result-timeline-entry-date {}
-
+.mdhui-layout-flex .mdhui-survey-result-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
 
 .mdhui-survey-result-list .mdhui-unstyled-button.mdhui-survey-result-list-title-accessory {
     color: var(--mdhui-color-primary);
@@ -18,4 +22,8 @@
 .mdhui-survey-result-list .mdhui-survey-result-list-entry-subtitle {
     font-size: .88em;
     color: var(--mdhui-text-color-2);
+}
+
+.mdhui-layout-flex .mdhui-survey-result-list .mdhui-survey-result-list-scroll-container {
+    overflow-y: auto;
 }

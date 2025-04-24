@@ -1,4 +1,4 @@
-import MyDataHelps, { SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { useContext, useState } from "react";
 import { useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
@@ -10,7 +10,7 @@ import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons
 import "./SurveyResultList.css"
 
 export interface SurveyResultListProps {
-    title: string;
+    title?: string;
     allowDownload?: boolean;
     surveyName?: string;
     titleResultIdentifier?: string;
@@ -20,12 +20,11 @@ export interface SurveyResultListProps {
     allowDelete?: boolean;
     previewState?: "default";
     sortOrder?: "asc" | "desc";
-    soryBy?: "date" | "title" | "subtitle" | string;
 }
 
 interface SurveyResultListEntry {
     surveyResultID?: string;
-    date: string;
+    date?: Date;
     title?: string;
     subtitle?: string;
 }
@@ -34,8 +33,8 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
     let [entries, setEntries] = useState<SurveyResultListEntry[]>();
     const dateRangeContext = useContext(DateRangeContext);
 
-    if (!props.surveyName && !props.titleResultIdentifier && !props.subtitleResultIdentifier) {
-        console.error("SurveyResultTimeline: surveyName and one of titleResultIdentifier or subtitleResultIdentifier are required");
+    if (!props.titleResultIdentifier && !props.subtitleResultIdentifier) {
+        console.error("SurveyResultTimeline: one of titleResultIdentifier or subtitleResultIdentifier are required");
         return null;
     }
 
@@ -44,12 +43,37 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             let entries: SurveyResultListEntry[] = [];
             entries.push({
                 title: "Started Rosuvastatin",
-                date: "2017-06-01",
+                date: parseISO("2017-06-01"),
             });
             entries.push({
                 title: "Achilles Tendon Rupture",
                 subtitle: "Treated in ER",
-                date: "2017-09-01",
+                date: parseISO("2017-09-01"),
+            });
+            entries.push({
+                title: "Achilles Tendon Rupture",
+                subtitle: "Treated in ER",
+                date: parseISO("2017-09-01"),
+            });
+            entries.push({
+                title: "Achilles Tendon Rupture",
+                subtitle: "Treated in ER",
+                date: parseISO("2017-09-01"),
+            });
+            entries.push({
+                title: "Achilles Tendon Rupture",
+                subtitle: "Treated in ER",
+                date: parseISO("2017-09-01"),
+            });
+            entries.push({
+                title: "Achilles Tendon Rupture",
+                subtitle: "Treated in ER",
+                date: parseISO("2017-09-01"),
+            });
+            entries.push({
+                title: "Achilles Tendon Rupture",
+                subtitle: "Treated in ER",
+                date: parseISO("2017-09-01"),
             });
             setEntries(entries);
             return;
@@ -68,8 +92,35 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         queryAllSurveyAnswers({
             surveyName: props.surveyName,
             resultIdentifier: resultIdentifiers,
-        }).then((response: SurveyAnswer[]) => {
+        }).then((answers: SurveyAnswer[]) => {
+            let entryLookup: { [key: string]: SurveyResultListEntry } = {};
+
+            answers.forEach((answer: SurveyAnswer) => {
+                let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string };
+                if (entryLookup[answer.surveyResultID as string]) {
+                    entry = entryLookup[answer.surveyResultID as string];
+                }
+                if (answer.resultIdentifier == props.titleResultIdentifier) {
+                    entry.title = answer.answers.join(", ");
+                }
+                if (answer.resultIdentifier == props.subtitleResultIdentifier) {
+                    entry.subtitle = answer.answers.join(", ");
+                }
+                if (answer.resultIdentifier == props.dateResultIdentifier && answer.answers.length > 0) {
+                    entry.date = parseISO(answer.answers[0]);
+                }
+                entryLookup[answer.surveyResultID as string] = entry;
+            });
+
             let entries: SurveyResultListEntry[] = [];
+            Object.keys(entryLookup).forEach((key) => {
+                let entry = entryLookup[key];
+                if (entry.date && (entry.title || entry.subtitle)) {
+                    entries.push(entry);
+                }
+            });
+
+            setEntries(entries);
         });
     }, []);
 
@@ -83,34 +134,35 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         </UnstyledButton>}>
             {props.title ?? <>&nbsp;</>}
         </Title>
-        {entries.map((entry, index) => {
-            let date = parseISO(entry.date);
-            let formattedDate = formatDate(date, "MMMM d, yyyy");
-            return (
-                <Card key={entry.surveyResultID} className="mdhui-survey-result-list-entry">
-                    <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
-                    <Action key={entry.surveyResultID}
-                        icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
-                        className="mdhui-survey-result-list-entry"
-                        onClick={() => { }}
-                        indicator={
-                            <>
-                                <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
-                            </>
-                        }>
-                        {entry.title &&
-                            <div className="mdhui-survey-result-list-entry-title">
-                                {entry.title}
-                            </div>
-                        }
-                        {entry.subtitle &&
-                            <div className="mdhui-survey-result-list-entry-subtitle">
-                                {entry.subtitle}
-                            </div>
-                        }
-                    </Action>
-                </Card>
-            );
-        })}
+        <div className="mdhui-survey-result-list-scroll-container">
+            {entries.map((entry, index) => {
+                let formattedDate = formatDate(entry.date!, "MMMM d, yyyy");
+                return (
+                    <Card style={{marginTop:index == 0 ? "0" : undefined}} key={entry.surveyResultID} className="mdhui-survey-result-list-entry">
+                        <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
+                        <Action key={entry.surveyResultID}
+                            icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                            className="mdhui-survey-result-list-entry"
+                            onClick={() => { }}
+                            indicator={
+                                <>
+                                    <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
+                                </>
+                            }>
+                            {entry.title &&
+                                <div className="mdhui-survey-result-list-entry-title">
+                                    {entry.title}
+                                </div>
+                            }
+                            {entry.subtitle &&
+                                <div className="mdhui-survey-result-list-entry-subtitle">
+                                    {entry.subtitle}
+                                </div>
+                            }
+                        </Action>
+                    </Card>
+                );
+            })}
+        </div>
     </div>;
 }
