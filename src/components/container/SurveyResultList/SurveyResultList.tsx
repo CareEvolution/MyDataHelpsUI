@@ -21,6 +21,7 @@ export interface SurveyResultListProps {
     allowDelete?: boolean;
     previewState?: "default";
     sortOrder?: "asc" | "desc";
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 interface SurveyResultListEntry {
@@ -192,48 +193,50 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
     let groups = entries ? groupEntries(entries) : undefined;
 
-    return <div className="mdhui-survey-result-list" ref={listRef}>
-        <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
-            Download <FontAwesomeSvgIcon icon={faDownload} />
-        </UnstyledButton>}>
-            {props.title ?? <>&nbsp;</>}
-        </Title>
-        <div className="mdhui-survey-result-list-scroll-container">
-            {!groups && <LoadingIndicator />}
-            {groups && groups.map((group, index) => {
-                let formattedDate = formatDate(group.entries[0].date!, "MMMM d, yyyy");
-                return (
-                    <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={formattedDate} className="mdhui-survey-result-list-entry">
-                        <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
-                        {group.entries.map((entry, index) =>
-                            <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
-                                icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
-                                className="mdhui-survey-result-list-entry"
-                                onClick={props.allowEdit ? () => { } : undefined}
-                                renderAs="div"
-                                indicator={
-                                    <>
-                                        <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={(e) => {
-                                            deleteEntry(entry);
-                                            e.stopPropagation();
-                                        }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
-                                    </>
-                                }>
-                                {entry.title &&
-                                    <div className="mdhui-survey-result-list-entry-title">
-                                        {entry.title}
-                                    </div>
-                                }
-                                {entry.subtitle &&
-                                    <div className="mdhui-survey-result-list-entry-subtitle">
-                                        {entry.subtitle}
-                                    </div>
-                                }
-                            </Action>
-                        )}
-                    </Card>
-                );
-            })}
+    return <div ref={props.innerRef} className="mdhui-survey-result-list">
+        <div className="mdhui-survey-result-list" ref={listRef}>
+            <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
+                Download <FontAwesomeSvgIcon icon={faDownload} />
+            </UnstyledButton>}>
+                {props.title ?? <>&nbsp;</>}
+            </Title>
+            <div className="mdhui-survey-result-list-scroll-container">
+                {!groups && <LoadingIndicator />}
+                {groups && groups.map((group, index) => {
+                    let formattedDate = formatDate(group.entries[0].date!, "MMMM d, yyyy");
+                    return (
+                        <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={formattedDate} className="mdhui-survey-result-list-entry">
+                            <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
+                            {group.entries.map((entry, index) =>
+                                <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
+                                    icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                                    className="mdhui-survey-result-list-entry"
+                                    onClick={props.allowEdit ? () => { } : undefined}
+                                    renderAs="div"
+                                    indicator={
+                                        <>
+                                            <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={(e) => {
+                                                deleteEntry(entry);
+                                                e.stopPropagation();
+                                            }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
+                                        </>
+                                    }>
+                                    {entry.title &&
+                                        <div className="mdhui-survey-result-list-entry-title">
+                                            {entry.title}
+                                        </div>
+                                    }
+                                    {entry.subtitle &&
+                                        <div className="mdhui-survey-result-list-entry-subtitle">
+                                            {entry.subtitle}
+                                        </div>
+                                    }
+                                </Action>
+                            )}
+                        </Card>
+                    );
+                })}
+            </div>
         </div>
     </div>;
 }
