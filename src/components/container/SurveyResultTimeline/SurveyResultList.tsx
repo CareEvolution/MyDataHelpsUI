@@ -186,14 +186,14 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         for (var i = 0; i < documentStyles.length; i++) {
             html += documentStyles[i].outerHTML;
         }
-        html += listRef.current!.innerHTML;
+        html += `<div class="mdhui-survey-result-list-print">${listRef.current!.innerHTML}</div>`;
         renderPdf(html, participantID!);
     }
 
     let groups = entries ? groupEntries(entries) : undefined;
 
     return <div className="mdhui-survey-result-list" ref={listRef}>
-        <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => { }} className="mdhui-survey-result-list-title-accessory">
+        <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
             Download <FontAwesomeSvgIcon icon={faDownload} />
         </UnstyledButton>}>
             {props.title ?? <>&nbsp;</>}
