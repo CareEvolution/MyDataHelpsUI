@@ -1,8 +1,7 @@
 import React from "react"
 import SurveyResultList, { SurveyResultListProps } from "./SurveyResultList";
-import { Button, Card, Layout, Section } from "../../presentational";
+import { Button, Layout, Section } from "../../presentational";
 import { css, Global } from "@emotion/react";
-import { sub } from "date-fns";
 
 export default {
     title: "Container/SurveyResultList",
@@ -38,7 +37,8 @@ export const Default = {
         dateResultIdentifier: "timeline_entry_date",
         allowDownload: true,
         allowEdit: true,
-        allowDelete: true
+        allowDelete: true,
+        allowSearch: true
     },
     render: render
 };

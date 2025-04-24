@@ -1,12 +1,12 @@
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { useContext, useRef, useState } from "react";
-import { getDayKey, useInitializeView } from "../../../helpers";
+import { getDayKey, language, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
 import React from "react";
 import { add, formatDate, parseISO } from "date-fns";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faDownload, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
 import renderPdf from "../../../helpers/renderPdf";
 import previewSurveyResultListEntries from "./previewData";
@@ -23,6 +23,7 @@ export interface SurveyResultListProps {
     allowDelete?: boolean;
     previewState?: "default";
     sortOrder?: "asc" | "desc";
+    allowSearch?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -36,6 +37,7 @@ export interface SurveyResultListEntry {
 export default function SurveyResultTimeline(props: SurveyResultListProps) {
     let [entries, setEntries] = useState<SurveyResultListEntry[]>();
     let [participantID, setParticipantID] = useState<string>();
+    let [searchString, setSearchString] = useState<string>();
     const dateRangeContext = useContext(DateRangeContext);
     const listRef = useRef<HTMLDivElement>(null);
 
@@ -123,6 +125,15 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             return 0;
         });
 
+        if (searchString) {
+            entries = entries.filter((entry) => {
+                let title = entry.title ? entry.title.toLowerCase() : "";
+                let subtitle = entry.subtitle ? entry.subtitle.toLowerCase() : "";
+                let search = searchString.toLowerCase();
+                return title.includes(search) || subtitle.includes(search);
+            });
+        }
+
         //group entries by day
         let groups: { date: Date, entries: SurveyResultListEntry[] }[] = [];
         let currentGroup: { date: Date, entries: SurveyResultListEntry[] } | null = null;
@@ -167,11 +178,29 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
     return <div ref={props.innerRef} className="mdhui-survey-result-list">
         <div className="mdhui-survey-result-list" ref={listRef}>
-            <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={props.allowDownload ? <UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
-                Download <FontAwesomeSvgIcon icon={faDownload} />
-            </UnstyledButton> : undefined}>
-                {props.title ?? <>&nbsp;</>}
-            </Title>
+            <div>
+                <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={props.allowDownload ? <UnstyledButton onClick={() => download()} className="mdhui-survey-result-list-title-accessory">
+                    Download <FontAwesomeSvgIcon icon={faDownload} />
+                </UnstyledButton> : undefined}>
+                    {props.title ?? <>&nbsp;</>}
+                </Title>
+                {props.allowSearch &&
+                    <Card className="mdhui-survey-result-list-search">
+                        <div className="mdhui-survey-result-list-search-bar">
+                            <input title={language("search")}
+                                type="text"
+                                value={searchString}
+                                onChange={(event) => setSearchString(event.target.value)}
+                                placeholder={language("search")}
+                                spellCheck="false"
+                                autoComplete="off"
+                                autoCorrect="off"
+                                autoCapitalize="off" />
+                            <FontAwesomeSvgIcon icon={faSearch} />
+                        </div>
+                    </Card>
+                }
+            </div>
             <div className="mdhui-survey-result-list-scroll-container">
                 {!groups && <LoadingIndicator />}
                 {groups && groups.map((group, index) => {
