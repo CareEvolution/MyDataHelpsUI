@@ -37,11 +37,6 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
     const dateRangeContext = useContext(DateRangeContext);
     const listRef = useRef<HTMLDivElement>(null);
 
-    if (!props.titleResultIdentifier && !props.subtitleResultIdentifier) {
-        console.error("SurveyResultTimeline: one of titleResultIdentifier or subtitleResultIdentifier are required");
-        return null;
-    }
-
     useInitializeView(async () => {
         if (props.previewState === "default") {
             let entries: SurveyResultListEntry[] = [];
@@ -80,6 +75,12 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                 date: parseISO("2017-09-01"),
             });
             setEntries(entries);
+            return;
+        }
+
+        if (!props.titleResultIdentifier && !props.subtitleResultIdentifier) {
+            console.error("SurveyResultList: titleResultIdentifier or subtitleResultIdentifier is required");
+            setEntries([]);
             return;
         }
 
