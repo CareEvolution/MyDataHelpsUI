@@ -37,7 +37,7 @@ export interface SurveyResultListEntry {
 export default function SurveyResultTimeline(props: SurveyResultListProps) {
     let [entries, setEntries] = useState<SurveyResultListEntry[]>();
     let [participantID, setParticipantID] = useState<string>();
-    let [searchString, setSearchString] = useState<string>();
+    let [searchString, setSearchString] = useState<string>("");
     const dateRangeContext = useContext(DateRangeContext);
     const listRef = useRef<HTMLDivElement>(null);
 
