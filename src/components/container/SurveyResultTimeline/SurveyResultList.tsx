@@ -96,7 +96,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             let entryLookup: { [key: string]: SurveyResultListEntry } = {};
 
             answers.forEach((answer: SurveyAnswer) => {
-                let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string };
+                let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string, date: parseISO(answer.date) };
                 if (entryLookup[answer.surveyResultID as string]) {
                     entry = entryLookup[answer.surveyResultID as string];
                 }
@@ -138,7 +138,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             {entries.map((entry, index) => {
                 let formattedDate = formatDate(entry.date!, "MMMM d, yyyy");
                 return (
-                    <Card style={{marginTop:index == 0 ? "0" : undefined}} key={entry.surveyResultID} className="mdhui-survey-result-list-entry">
+                    <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={entry.surveyResultID} className="mdhui-survey-result-list-entry">
                         <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
                         <Action key={entry.surveyResultID}
                             icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
