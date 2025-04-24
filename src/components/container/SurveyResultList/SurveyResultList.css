@@ -80,3 +80,9 @@
 .mdhui-survey-result-list-print .mdhui-survey-result-list-entry-button {
     display: none;
 }
+
+
+.mdhui-survey-result-list-print .mdhui-survey-result-list-entry {
+    padding-left: 0;
+    padding-right: 0;
+}
