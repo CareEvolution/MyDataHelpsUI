@@ -1,10 +1,10 @@
 import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { useContext, useState } from "react";
-import { useInitializeView } from "../../../helpers";
+import { getDayKey, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
 import React from "react";
-import { format, formatDate, parseISO } from "date-fns";
+import { add, format, formatDate, parseISO } from "date-fns";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
@@ -132,6 +132,38 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         return <LoadingIndicator />;
     }
 
+    // filter entries not in date range context, if there is one
+    if (dateRangeContext) {
+        let intervalEnd = dateRangeContext.intervalType === "Week" ? add(dateRangeContext.intervalStart, { days: 7 })
+            : dateRangeContext.intervalType === "Month" ? add(dateRangeContext.intervalStart, { months: 1 })
+                : dateRangeContext.intervalStart;
+        entries = entries.filter((entry) => {
+            return entry.date && entry.date >= dateRangeContext.intervalStart && entry.date < intervalEnd;
+        });
+    }
+
+    // sort entries by date
+    entries.sort((a, b) => {
+        if (a.date && b.date) {
+            return props.sortOrder == "asc" ? a.date.getTime() - b.date.getTime() : b.date.getTime() - a.date.getTime();
+        }
+        return 0;
+    });
+
+    //group entries by day
+    let groups: { date: Date, entries: SurveyResultListEntry[] }[] = [];
+    let currentGroup: { date: Date, entries: SurveyResultListEntry[] } | null = null;
+    entries.forEach((entry) => {
+        if (entry.date) {
+            let dayKey = getDayKey(entry.date);
+            if (!currentGroup || getDayKey(currentGroup.date) != dayKey) {
+                currentGroup = { date: entry.date, entries: [] };
+                groups.push(currentGroup);
+            }
+            currentGroup.entries.push(entry);
+        }
+    });
+
     return <div className="mdhui-survey-result-list">
         <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => { }} className="mdhui-survey-result-list-title-accessory">
             Download <FontAwesomeSvgIcon icon={faDownload} />
@@ -139,32 +171,34 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             {props.title ?? <>&nbsp;</>}
         </Title>
         <div className="mdhui-survey-result-list-scroll-container">
-            {entries.map((entry, index) => {
-                let formattedDate = formatDate(entry.date!, "MMMM d, yyyy");
+            {groups.map((group, index) => {
+                let formattedDate = formatDate(group.entries[0].date!, "MMMM d, yyyy");
                 return (
-                    <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={entry.surveyResultID} className="mdhui-survey-result-list-entry">
+                    <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={formattedDate} className="mdhui-survey-result-list-entry">
                         <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
-                        <Action key={entry.surveyResultID}
-                            icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
-                            className="mdhui-survey-result-list-entry"
-                            onClick={() => { }}
-                            renderAs="div"
-                            indicator={
-                                <>
-                                    <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
-                                </>
-                            }>
-                            {entry.title &&
-                                <div className="mdhui-survey-result-list-entry-title">
-                                    {entry.title}
-                                </div>
-                            }
-                            {entry.subtitle &&
-                                <div className="mdhui-survey-result-list-entry-subtitle">
-                                    {entry.subtitle}
-                                </div>
-                            }
-                        </Action>
+                        {group.entries.map((entry, index) =>
+                            <Action bottomBorder={index != (entries.length - 1)} key={entry.surveyResultID}
+                                icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                                className="mdhui-survey-result-list-entry"
+                                onClick={() => { }}
+                                renderAs="div"
+                                indicator={
+                                    <>
+                                        <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
+                                    </>
+                                }>
+                                {entry.title &&
+                                    <div className="mdhui-survey-result-list-entry-title">
+                                        {entry.title}
+                                    </div>
+                                }
+                                {entry.subtitle &&
+                                    <div className="mdhui-survey-result-list-entry-subtitle">
+                                        {entry.subtitle}
+                                    </div>
+                                }
+                            </Action>
+                        )}
                     </Card>
                 );
             })}
