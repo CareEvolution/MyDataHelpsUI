@@ -9,6 +9,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
 import renderPdf from "../../../helpers/renderPdf";
+import previewSurveyResultListEntries from "./previewData";
 
 export interface SurveyResultListProps {
     title?: string;
@@ -24,7 +25,7 @@ export interface SurveyResultListProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-interface SurveyResultListEntry {
+export interface SurveyResultListEntry {
     surveyResultID?: string;
     date?: Date;
     title?: string;
@@ -39,42 +40,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
     useInitializeView(async () => {
         if (props.previewState === "default") {
-            let entries: SurveyResultListEntry[] = [];
-            entries.push({
-                title: "Started Rosuvastatin",
-                date: parseISO("2017-06-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            entries.push({
-                title: "Achilles Tendon Rupture",
-                subtitle: "Treated in ER",
-                date: parseISO("2017-09-01"),
-            });
-            setEntries(entries);
+            setEntries(previewSurveyResultListEntries);
             return;
         }
 

@@ -35,7 +35,7 @@ export const Default = {
         title: "Health Timeline",
         titleResultIdentifier: "timeline_entry_title",
         subtitleResultIdentifier: "timeline_entry_notes",
-        dateResultIdentifier: "timeline_entry_date"
+        dateResultIdentifier: "timeline_entry_date",
     },
     render: render
 };
