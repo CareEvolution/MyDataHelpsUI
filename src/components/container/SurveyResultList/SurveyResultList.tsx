@@ -185,7 +185,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                                             <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={(e) => {
                                                 deleteEntry(entry);
                                                 e.stopPropagation();
-                                            }}><FontAwesomeSvgIcon icon={faTrash} /></Button> : undefined
+                                            }}><FontAwesomeSvgIcon icon={faTrash} /></Button> : <></>
                                     }>
                                     {entry.title &&
                                         <div className="mdhui-survey-result-list-entry-title">
