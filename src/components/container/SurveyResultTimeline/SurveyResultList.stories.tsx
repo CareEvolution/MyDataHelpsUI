@@ -2,6 +2,7 @@ import React from "react"
 import SurveyResultList, { SurveyResultListProps } from "./SurveyResultList";
 import { Button, Card, Layout, Section } from "../../presentational";
 import { css, Global } from "@emotion/react";
+import { sub } from "date-fns";
 
 export default {
     title: "Container/SurveyResultList",
@@ -32,8 +33,9 @@ let render = (args: SurveyResultListProps) => <Layout flex={true} colorScheme="a
 export const Default = {
     args: {
         title: "Health Timeline",
-        titleResultIdentifier: "title",
-        previewState: "default"
+        titleResultIdentifier: "timeline_entry_title",
+        subtitleResultIdentifier: "timeline_entry_notes",
+        dateResultIdentifier: "timeline_entry_date"
     },
     render: render
 };

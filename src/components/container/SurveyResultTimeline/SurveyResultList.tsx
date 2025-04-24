@@ -79,6 +79,13 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             return;
         }
 
+        let parameters: SurveyAnswersQuery = {
+            resultIdentifier: []
+        };
+        if (props.surveyName) {
+            parameters.surveyName = props.surveyName;
+        }
+
         let resultIdentifiers = [];
         if (props.titleResultIdentifier) {
             resultIdentifiers.push(props.titleResultIdentifier);
@@ -89,12 +96,9 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         if (props.dateResultIdentifier) {
             resultIdentifiers.push(props.dateResultIdentifier);
         }
-        queryAllSurveyAnswers({
-            surveyName: props.surveyName,
-            resultIdentifier: resultIdentifiers,
-        }).then((answers: SurveyAnswer[]) => {
+        parameters.resultIdentifier = resultIdentifiers;
+        queryAllSurveyAnswers(parameters).then((answers: SurveyAnswer[]) => {
             let entryLookup: { [key: string]: SurveyResultListEntry } = {};
-
             answers.forEach((answer: SurveyAnswer) => {
                 let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string, date: parseISO(answer.date) };
                 if (entryLookup[answer.surveyResultID as string]) {
@@ -144,6 +148,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                             icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
                             className="mdhui-survey-result-list-entry"
                             onClick={() => { }}
+                            renderAs="div"
                             indicator={
                                 <>
                                     <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
