@@ -27,3 +27,7 @@
 .mdhui-layout-flex .mdhui-survey-result-list .mdhui-survey-result-list-scroll-container {
     overflow-y: auto;
 }
+
+.mdhui-survey-result-list-print .mdhui-survey-result-list-title-accessory {
+    display: none;
+}

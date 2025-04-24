@@ -9,7 +9,7 @@ export type ButtonVariant = "default" | "subtle" | "light";
 export interface ButtonProps {
 	children?: React.ReactNode;
 	disabled?: boolean;
-	onClick: Function;
+	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	className?: string;
 	color?: ColorDefinition;
 	loading?: boolean;
@@ -49,11 +49,11 @@ export default function Button(props: ButtonProps) {
 		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
-			onClick={() => {
+			onClick={(e) => {
 				if (props.disabled || props.loading) {
 					return;
 				}
-				props.onClick();
+				props.onClick(e);
 			}}>
 			{props.loading &&
 				<>

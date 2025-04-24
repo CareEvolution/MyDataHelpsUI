@@ -1,5 +1,5 @@
 import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { getDayKey, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
@@ -8,6 +8,7 @@ import { add, format, formatDate, parseISO } from "date-fns";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
+import renderPdf from "../../../helpers/renderPdf";
 
 export interface SurveyResultListProps {
     title?: string;
@@ -31,14 +32,16 @@ interface SurveyResultListEntry {
 
 export default function SurveyResultTimeline(props: SurveyResultListProps) {
     let [entries, setEntries] = useState<SurveyResultListEntry[]>();
+    let [participantID, setParticipantID] = useState<string>();
     const dateRangeContext = useContext(DateRangeContext);
+    const listRef = useRef<HTMLDivElement>(null);
 
     if (!props.titleResultIdentifier && !props.subtitleResultIdentifier) {
         console.error("SurveyResultTimeline: one of titleResultIdentifier or subtitleResultIdentifier are required");
         return null;
     }
 
-    useInitializeView(() => {
+    useInitializeView(async () => {
         if (props.previewState === "default") {
             let entries: SurveyResultListEntry[] = [];
             entries.push({
@@ -97,94 +100,123 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             resultIdentifiers.push(props.dateResultIdentifier);
         }
         parameters.resultIdentifier = resultIdentifiers;
-        queryAllSurveyAnswers(parameters).then((answers: SurveyAnswer[]) => {
-            let entryLookup: { [key: string]: SurveyResultListEntry } = {};
-            answers.forEach((answer: SurveyAnswer) => {
-                let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string, date: parseISO(answer.date) };
-                if (entryLookup[answer.surveyResultID as string]) {
-                    entry = entryLookup[answer.surveyResultID as string];
-                }
-                if (answer.resultIdentifier == props.titleResultIdentifier) {
-                    entry.title = answer.answers.join(", ");
-                }
-                if (answer.resultIdentifier == props.subtitleResultIdentifier) {
-                    entry.subtitle = answer.answers.join(", ");
-                }
-                if (answer.resultIdentifier == props.dateResultIdentifier && answer.answers.length > 0) {
-                    entry.date = parseISO(answer.answers[0]);
-                }
-                entryLookup[answer.surveyResultID as string] = entry;
-            });
 
-            let entries: SurveyResultListEntry[] = [];
-            Object.keys(entryLookup).forEach((key) => {
-                let entry = entryLookup[key];
-                if (entry.date && (entry.title || entry.subtitle)) {
-                    entries.push(entry);
-                }
-            });
+        let participantInfo = await MyDataHelps.getParticipantInfo();
+        setParticipantID(participantInfo.participantID as string);
 
-            setEntries(entries);
+        let answers = await queryAllSurveyAnswers(parameters);
+
+        let entryLookup: { [key: string]: SurveyResultListEntry } = {};
+        answers.forEach((answer: SurveyAnswer) => {
+            let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string, date: parseISO(answer.date) };
+            if (entryLookup[answer.surveyResultID as string]) {
+                entry = entryLookup[answer.surveyResultID as string];
+            }
+            if (answer.resultIdentifier == props.titleResultIdentifier) {
+                entry.title = answer.answers.join(", ");
+            }
+            if (answer.resultIdentifier == props.subtitleResultIdentifier) {
+                entry.subtitle = answer.answers.join(", ");
+            }
+            if (answer.resultIdentifier == props.dateResultIdentifier && answer.answers.length > 0) {
+                entry.date = parseISO(answer.answers[0]);
+            }
+            entryLookup[answer.surveyResultID as string] = entry;
         });
+
+        let entries: SurveyResultListEntry[] = [];
+        Object.keys(entryLookup).forEach((key) => {
+            let entry = entryLookup[key];
+            if (entry.date && (entry.title || entry.subtitle)) {
+                entries.push(entry);
+            }
+        });
+
+        setEntries(entries);
     }, []);
 
-    if (!entries) {
-        return <LoadingIndicator />;
-    }
+    function groupEntries(entries: SurveyResultListEntry[]) {
+        // filter entries not in date range context, if there is one
+        if (dateRangeContext) {
+            let intervalEnd = dateRangeContext.intervalType === "Week" ? add(dateRangeContext.intervalStart, { days: 7 })
+                : dateRangeContext.intervalType === "Month" ? add(dateRangeContext.intervalStart, { months: 1 })
+                    : dateRangeContext.intervalStart;
+            entries = entries.filter((entry) => {
+                return entry.date && entry.date >= dateRangeContext.intervalStart && entry.date < intervalEnd;
+            });
+        }
 
-    // filter entries not in date range context, if there is one
-    if (dateRangeContext) {
-        let intervalEnd = dateRangeContext.intervalType === "Week" ? add(dateRangeContext.intervalStart, { days: 7 })
-            : dateRangeContext.intervalType === "Month" ? add(dateRangeContext.intervalStart, { months: 1 })
-                : dateRangeContext.intervalStart;
-        entries = entries.filter((entry) => {
-            return entry.date && entry.date >= dateRangeContext.intervalStart && entry.date < intervalEnd;
+        // sort entries by date
+        entries.sort((a, b) => {
+            if (a.date && b.date) {
+                return props.sortOrder == "asc" ? a.date.getTime() - b.date.getTime() : b.date.getTime() - a.date.getTime();
+            }
+            return 0;
+        });
+
+        //group entries by day
+        let groups: { date: Date, entries: SurveyResultListEntry[] }[] = [];
+        let currentGroup: { date: Date, entries: SurveyResultListEntry[] } | null = null;
+        entries.forEach((entry) => {
+            if (entry.date) {
+                let dayKey = getDayKey(entry.date);
+                if (!currentGroup || getDayKey(currentGroup.date) != dayKey) {
+                    currentGroup = { date: entry.date, entries: [] };
+                    groups.push(currentGroup);
+                }
+                currentGroup.entries.push(entry);
+            }
+        });
+        return groups;
+    };
+
+    function deleteEntry(entry: SurveyResultListEntry) {
+        if (!window.confirm("Are you sure you want to delete this entry?")) {
+            return;
+        }
+        MyDataHelps.deleteSurveyResult(entry.surveyResultID as string).then(() => {
+            setEntries(entries!.filter((e) => e.surveyResultID != entry.surveyResultID));
         });
     }
 
-    // sort entries by date
-    entries.sort((a, b) => {
-        if (a.date && b.date) {
-            return props.sortOrder == "asc" ? a.date.getTime() - b.date.getTime() : b.date.getTime() - a.date.getTime();
+    function download() {
+        //hack: get the styles from the document and add them to the report so they are included in the PDF
+        var documentStyles = document.head.getElementsByTagName("style");
+        var html = "";
+        for (var i = 0; i < documentStyles.length; i++) {
+            html += documentStyles[i].outerHTML;
         }
-        return 0;
-    });
+        html += listRef.current!.innerHTML;
+        renderPdf(html, participantID!);
+    }
 
-    //group entries by day
-    let groups: { date: Date, entries: SurveyResultListEntry[] }[] = [];
-    let currentGroup: { date: Date, entries: SurveyResultListEntry[] } | null = null;
-    entries.forEach((entry) => {
-        if (entry.date) {
-            let dayKey = getDayKey(entry.date);
-            if (!currentGroup || getDayKey(currentGroup.date) != dayKey) {
-                currentGroup = { date: entry.date, entries: [] };
-                groups.push(currentGroup);
-            }
-            currentGroup.entries.push(entry);
-        }
-    });
+    let groups = entries ? groupEntries(entries) : undefined;
 
-    return <div className="mdhui-survey-result-list">
+    return <div className="mdhui-survey-result-list" ref={listRef}>
         <Title style={{ marginTop: "0px" }} order={3} defaultMargin accessory={<UnstyledButton onClick={() => { }} className="mdhui-survey-result-list-title-accessory">
             Download <FontAwesomeSvgIcon icon={faDownload} />
         </UnstyledButton>}>
             {props.title ?? <>&nbsp;</>}
         </Title>
         <div className="mdhui-survey-result-list-scroll-container">
-            {groups.map((group, index) => {
+            {!groups && <LoadingIndicator />}
+            {groups && groups.map((group, index) => {
                 let formattedDate = formatDate(group.entries[0].date!, "MMMM d, yyyy");
                 return (
                     <Card style={{ marginTop: index == 0 ? "0" : undefined }} key={formattedDate} className="mdhui-survey-result-list-entry">
                         <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
                         {group.entries.map((entry, index) =>
-                            <Action bottomBorder={index != (entries.length - 1)} key={entry.surveyResultID}
+                            <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
                                 icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
                                 className="mdhui-survey-result-list-entry"
-                                onClick={() => { }}
+                                onClick={props.allowEdit ? () => { } : undefined}
                                 renderAs="div"
                                 indicator={
                                     <>
-                                        <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={() => { }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
+                                        <Button color="var(--mdhui-text-color-3)" className="mdhui-survey-result-list-entry-button" fullWidth={false} variant="light" onClick={(e) => {
+                                            deleteEntry(entry);
+                                            e.stopPropagation();
+                                        }}><FontAwesomeSvgIcon icon={faTrash} /></Button>
                                     </>
                                 }>
                                 {entry.title &&
