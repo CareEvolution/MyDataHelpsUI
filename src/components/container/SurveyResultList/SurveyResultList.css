@@ -31,3 +31,12 @@
 .mdhui-survey-result-list-print .mdhui-survey-result-list-title-accessory {
     display: none;
 }
+
+
+.mdhui-survey-result-list-print .mdhui-card {
+    box-shadow: none;
+}
+
+.mdhui-survey-result-list-print .mdhui-survey-result-list-entry-button {
+    display: none;
+}

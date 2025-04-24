@@ -36,6 +36,9 @@ export const Default = {
         titleResultIdentifier: "timeline_entry_title",
         subtitleResultIdentifier: "timeline_entry_notes",
         dateResultIdentifier: "timeline_entry_date",
+        allowDownload: true,
+        allowEdit: true,
+        allowDelete: true
     },
     render: render
 };

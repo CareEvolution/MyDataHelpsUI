@@ -4,12 +4,13 @@ import { getDayKey, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
 import React from "react";
-import { add, format, formatDate, parseISO } from "date-fns";
+import { add, formatDate, parseISO } from "date-fns";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCircle, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
 import renderPdf from "../../../helpers/renderPdf";
 import previewSurveyResultListEntries from "./previewData";
+import { core, global, lightColorScheme } from "../../../helpers/globalCss";
 
 export interface SurveyResultListProps {
     title?: string;
@@ -151,10 +152,14 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         //hack: get the styles from the document and add them to the report so they are included in the PDF
         var documentStyles = document.head.getElementsByTagName("style");
         var html = "";
+        html += `<style>${core.styles}</style>`;
+        html += `<style>${lightColorScheme.styles}</style>`;
+        html += `<style>${global.styles}</style>`;
         for (var i = 0; i < documentStyles.length; i++) {
             html += documentStyles[i].outerHTML;
         }
-        html += `<div class="mdhui-survey-result-list-print">${listRef.current!.innerHTML}</div>`;
+        html += `<div class="mdhui-layout" style="background-color:#FFF"><div class="mdhui-survey-result-list-print">${listRef.current!.innerHTML}</div></div>`;
+        console.log(html);
         renderPdf(html, participantID!);
     }
 
