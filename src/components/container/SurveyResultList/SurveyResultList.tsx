@@ -1,4 +1,4 @@
-import MyDataHelps, { Guid, SurveyAnswer, SurveyAnswersPage, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
 import { useContext, useRef, useState } from "react";
 import { getDayKey, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
