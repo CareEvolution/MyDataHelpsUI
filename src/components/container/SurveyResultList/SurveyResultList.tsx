@@ -1,5 +1,5 @@
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from "@careevolution/mydatahelps-js";
-import { useContext, useRef, useState } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import { getDayKey, language, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
@@ -25,6 +25,8 @@ export interface SurveyResultListProps {
     sortOrder?: "asc" | "desc";
     allowSearch?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
+    iconKeyResultIdentifier?: string;
+    iconProvider?: (iconKey: string) => ReactElement;
 }
 
 export interface SurveyResultListEntry {
@@ -32,6 +34,7 @@ export interface SurveyResultListEntry {
     date?: Date;
     title?: string;
     subtitle?: string;
+    icon?: string;
 }
 
 export default function SurveyResultTimeline(props: SurveyResultListProps) {
@@ -70,6 +73,9 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
         if (props.dateResultIdentifier) {
             resultIdentifiers.push(props.dateResultIdentifier);
         }
+        if (props.iconKeyResultIdentifier) {
+            resultIdentifiers.push(props.iconKeyResultIdentifier);
+        }
         parameters.resultIdentifier = resultIdentifiers;
 
         let participantInfo = await MyDataHelps.getParticipantInfo();
@@ -91,6 +97,9 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             }
             if (answer.resultIdentifier == props.dateResultIdentifier && answer.answers.length > 0) {
                 entry.date = parseISO(answer.answers[0]);
+            }
+            if (answer.resultIdentifier == props.iconKeyResultIdentifier && answer.answers.length > 0) {
+                entry.icon = answer.answers[0];
             }
             entryLookup[answer.surveyResultID as string] = entry;
         });
@@ -210,7 +219,11 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                             <Title order={4} style={{ marginBottom: 0, marginTop: 16, marginLeft: 16, marginRight: 16 }} className="mdhui-survey-result-timeline-entry-date">{formattedDate}</Title>
                             {group.entries.map((entry, index) =>
                                 <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
-                                    icon={<FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                                    icon={
+                                        <div className="mdhui-survey-result-list-entry-icon" style={{ width: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            {entry.icon && props.iconProvider ? props.iconProvider(entry.icon) : <FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                                        </div>
+                                    }
                                     className="mdhui-survey-result-list-entry"
                                     onClick={props.allowEdit ? () => { } : undefined}
                                     renderAs="div"

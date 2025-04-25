@@ -2,6 +2,9 @@ import React from "react"
 import SurveyResultList, { SurveyResultListProps } from "./SurveyResultList";
 import { Button, Layout, Section } from "../../presentational";
 import { css, Global } from "@emotion/react";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faAsterisk, faBandAid, faEllipsis, faHospital, faPills } from "@fortawesome/free-solid-svg-icons";
 
 export default {
     title: "Container/SurveyResultList",
@@ -38,7 +41,21 @@ export const Default = {
         allowDownload: true,
         allowEdit: true,
         allowDelete: true,
-        allowSearch: true
+        allowSearch: true,
+        iconKeyResultIdentifier: "timeline_entry_category",
+        iconProvider: (iconName: string) => {
+            console.log(iconName);
+            if (iconName === "health event") {
+                return <FontAwesomeSvgIcon icon={faHospital} />
+            }
+            if (iconName === "medication") {
+                return <FontAwesomeSvgIcon icon={faPills} />
+            }
+            if (iconName === "procedure") {
+                return <FontAwesomeSvgIcon icon={faBandAid} />
+            }
+            return <FontAwesomeSvgIcon icon={faEllipsis} />
+        }
     },
     render: render
 };
