@@ -239,7 +239,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
                             }
-                            {provider.enabled === false && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
+                            {provider.enabled === false &&
                                 <div className="provider-status connected-status">
                                         {
                                             provider.managingOrganization ?
