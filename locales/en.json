@@ -441,7 +441,7 @@
     "procedures": "Procedures",
     "procedures-title": "Procedures",
     "provider-disabled-reason-with-managing-organization": "You already have a connection to {provider} through {relatedProvider} ({managingOrganization}).",
-    "provider-disabled-reason-without-managing-organization: ": "You already have a connection to {provider} through {relatedProvider}.",
+    "provider-disabled-reason-without-managing-organization": "You already have a connection to {provider} through {relatedProvider}.",
     "received-dexcom-data": "We are receiving your Dexcom data!",
     "received-fitbit-data": "We are receiving your Fitbit data!",
     "received-garmin-data": "We are receiving your Garmin data!",
