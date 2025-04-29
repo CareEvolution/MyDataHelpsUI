@@ -142,7 +142,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (provider.enabled !== false && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (provider.enabled && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
