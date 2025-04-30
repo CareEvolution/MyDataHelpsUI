@@ -7,6 +7,8 @@ import StepTitle from "../StepTitle";
 import { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 import { ProviderSearchPreviewState } from "../../container/ProviderSearch/ProviderSearch";
 
+import './ConnectEhrStep.css';
+
 export interface ConnectEhrStepProps {
     title?: string;
     text?: string;
@@ -23,7 +25,7 @@ export interface ConnectEhrStepProps {
  */
 export default function ConnectEhrStep (props: ConnectEhrStepProps) {
     return (
-        <StepLayout>
+        <StepLayout className="mdhui-connect-ehr-step">
             <StepTitle
                 text={props.title}
                 textAlign={props.styles.titleAlignment}
