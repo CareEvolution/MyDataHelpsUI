@@ -41,7 +41,7 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['wrong platform', 'disabled', 'enabled no data', 'enabled with data']
+            options: ['wrong platform', 'disabled', 'enabled no data yet', 'enabled no data', 'enabled with data']
         },
         showWhen: {
             name: 'show when',

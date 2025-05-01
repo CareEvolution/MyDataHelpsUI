@@ -34,7 +34,7 @@
 .mdhui-action .subtitle {
     font-size: .88em;
     color: var(--mdhui-text-color-2);
-    margin-top: 4px;
+    margin-top: var(--mdhui-padding-xxs);
 }
 
 .mdhui-action .indicator {

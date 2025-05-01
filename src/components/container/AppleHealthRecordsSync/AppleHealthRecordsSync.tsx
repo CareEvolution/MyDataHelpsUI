@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Action, Button } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { language, useInitializeView } from '../../../helpers';
 import appleHealthLogo from '../../../assets/applehealth-logo.svg';
 import './AppleHealthRecordsSync.css';
 
-export type AppleHealthRecordsSyncPreviewState = 'wrong platform' | 'disabled' | 'enabled no data' | 'enabled with data';
+export type AppleHealthRecordsSyncPreviewState = 'wrong platform' | 'disabled' | 'enabled no data yet' | 'enabled no data' | 'enabled with data';
 export type AppleHealthRecordsStatus = 'enabled' | 'disabled';
 
 export interface AppleHealthRecordsSyncProps {
@@ -16,49 +16,68 @@ export interface AppleHealthRecordsSyncProps {
 }
 
 export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProps) {
+    const MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS = 6;
+
     const [platform, setPlatform] = useState<string>();
     const [status, setStatus] = useState<AppleHealthRecordsStatus>();
-    const [connected, setConnected] = useState<boolean>();
+    const [hasData, setHasData] = useState<boolean>(false);
+    const [connecting, setConnecting] = useState<boolean>(false);
     const [showHelp, setShowHelp] = useState<boolean>(false);
 
-    useInitializeView(async () => {
+    const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
+        setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
+        setStatus(previewState.startsWith('enabled') ? 'enabled' : previewState === 'disabled' ? 'disabled' : undefined);
+        setHasData(previewState === 'enabled with data');
+        setConnecting(previewState === 'enabled no data yet');
+        setShowHelp(false);
+    };
+
+    useInitializeView(() => {
         if (props.previewState) {
-            if (props.previewState === 'wrong platform') {
-                setPlatform('Web');
-                setStatus(undefined);
-                setConnected(undefined);
-            } else if (props.previewState === 'disabled') {
-                setPlatform('iOS');
-                setStatus('disabled');
-                setConnected(undefined);
-            } else if (props.previewState === 'enabled no data') {
-                setPlatform('iOS');
-                setStatus('enabled');
-                setConnected(false);
-            } else if (props.previewState === 'enabled with data') {
-                setPlatform('iOS');
-                setStatus('enabled');
-                setConnected(true);
-            }
+            applyPreviewState(props.previewState);
             return;
         }
 
         if (!platform) {
-            const deviceInfo = await MyDataHelps.getDeviceInfo();
-            setPlatform(deviceInfo.platform);
+            MyDataHelps.getDeviceInfo().then(deviceInfo => {
+                setPlatform(deviceInfo.platform);
+            });
             return;
         }
 
         if (platform === 'iOS') {
-            const settings = await MyDataHelps.getDataCollectionSettings();
-            setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
-
-            if (settings.appleHealthRecordsEnabled) {
-                const dataAvailability = await MyDataHelps.getDataAvailability();
-                setConnected(dataAvailability.appleHealthRecords);
-            }
+            MyDataHelps.getDataCollectionSettings().then(settings => {
+                setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
+            });
         }
     }, [], [props.previewState, platform]);
+
+    useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+
+        if (!props.previewState) {
+            if (status === 'enabled') {
+                const checkDataAvailability = (recheckAttempts: number = 0) => {
+                    MyDataHelps.getDataAvailability().then(dataAvailability => {
+                        setHasData(dataAvailability.appleHealthRecords);
+                        if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+                            setConnecting(false);
+                        } else if (connecting) {
+                            timeoutId = setTimeout(() => checkDataAvailability(++recheckAttempts), 5000);
+                        }
+                    });
+                };
+                checkDataAvailability();
+            } else {
+                setHasData(false);
+                setConnecting(false);
+            }
+        }
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [status]);
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
@@ -66,7 +85,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
 
     const getSubtitle = () => {
         if (status === 'enabled') {
-            return connected ? language('connected') : language('no-data');
+            return hasData ? language('connected') : connecting ? language('syncing-data') : language('no-data');
         }
         return language('apple-health-records-sync-prompt');
     };
@@ -75,7 +94,11 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         if (status === 'enabled') {
             return <Button variant='subtle' onClick={() => setShowHelp(!showHelp)}>{language('help')}</Button>;
         }
-        return <Button onClick={() => MyDataHelps.startSurvey(props.enableAppleHealthRecordsSurvey)}>{language('connect')}</Button>;
+        const onEnableHealthRecords = () => {
+            setConnecting(true);
+            MyDataHelps.startSurvey(props.enableAppleHealthRecordsSurvey);
+        };
+        return <Button onClick={onEnableHealthRecords}>{language('connect')}</Button>;
     };
 
     return <div className="mdhui-apple-health-records-sync">
