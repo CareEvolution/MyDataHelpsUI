@@ -45,6 +45,7 @@ export default function ConnectEhrStep (props: ConnectEhrStepProps) {
                 providerCategories={["Provider", "Health Plan"]}
                 onProviderConnected={props.onProviderConnected}
             />
+            <div className="mdhui-connect-ehr-step-next-button-wrapper">
             <StepNextButton
                 text={props.nextButtonText}
                 disabled={props.nextButtonDisabled}
@@ -56,6 +57,7 @@ export default function ConnectEhrStep (props: ConnectEhrStepProps) {
                 gradient={props.styles.nextButtonBackgroundGradient}
                 onClick={props.onNextButtonClick}
             />
+            </div>
         </StepLayout>
     );
 }
