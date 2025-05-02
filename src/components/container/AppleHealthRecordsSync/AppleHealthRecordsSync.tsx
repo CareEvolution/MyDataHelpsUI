@@ -68,7 +68,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
                 }
             });
         }
-    }, [], [props.previewState, platform], () => clearTimeout(dataAvailabilityRecheckTimeoutId));
+    }, ['surveyDidFinish'], [props.previewState, platform], () => clearTimeout(dataAvailabilityRecheckTimeoutId));
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
