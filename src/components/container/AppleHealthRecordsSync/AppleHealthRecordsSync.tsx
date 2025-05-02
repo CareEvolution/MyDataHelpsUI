@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Action, Button } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { language, useInitializeView } from '../../../helpers';
@@ -24,6 +24,8 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const [connecting, setConnecting] = useState<boolean>(false);
     const [showHelp, setShowHelp] = useState<boolean>(false);
 
+    let dataAvailabilityRecheckTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+
     const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
         setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
         setStatus(previewState.startsWith('enabled') ? 'enabled' : previewState === 'disabled' ? 'disabled' : undefined);
@@ -48,36 +50,25 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         if (platform === 'iOS') {
             MyDataHelps.getDataCollectionSettings().then(settings => {
                 setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
+                if (settings.appleHealthRecordsEnabled) {
+                    const checkDataAvailability = (recheckAttempts: number = 0) => {
+                        MyDataHelps.getDataAvailability().then(dataAvailability => {
+                            setHasData(dataAvailability.appleHealthRecords);
+                            if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+                                setConnecting(false);
+                            } else if (connecting) {
+                                dataAvailabilityRecheckTimeoutId = setTimeout(() => checkDataAvailability(++recheckAttempts), 5000);
+                            }
+                        });
+                    };
+                    checkDataAvailability();
+                } else {
+                    setHasData(false);
+                    setConnecting(false);
+                }
             });
         }
-    }, [], [props.previewState, platform]);
-
-    useEffect(() => {
-        let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
-
-        if (!props.previewState) {
-            if (status === 'enabled') {
-                const checkDataAvailability = (recheckAttempts: number = 0) => {
-                    MyDataHelps.getDataAvailability().then(dataAvailability => {
-                        setHasData(dataAvailability.appleHealthRecords);
-                        if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
-                            setConnecting(false);
-                        } else if (connecting) {
-                            timeoutId = setTimeout(() => checkDataAvailability(++recheckAttempts), 5000);
-                        }
-                    });
-                };
-                checkDataAvailability();
-            } else {
-                setHasData(false);
-                setConnecting(false);
-            }
-        }
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [status]);
+    }, [], [props.previewState, platform], () => clearTimeout(dataAvailabilityRecheckTimeoutId));
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
