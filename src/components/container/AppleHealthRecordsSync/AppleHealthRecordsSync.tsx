@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Action, Button } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { language, useInitializeView } from '../../../helpers';
@@ -24,7 +24,8 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const [connecting, setConnecting] = useState<boolean>(false);
     const [showHelp, setShowHelp] = useState<boolean>(false);
 
-    let dataAvailabilityRecheckTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+    const isConnecting = useRef<boolean>(false);
+    const recheckTimeoutId = useRef<ReturnType<typeof setTimeout>>();
 
     const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
         setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
@@ -39,6 +40,8 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
             applyPreviewState(props.previewState);
             return;
         }
+
+        clearTimeout(recheckTimeoutId.current);
 
         if (!platform) {
             MyDataHelps.getDeviceInfo().then(deviceInfo => {
@@ -56,8 +59,8 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
                             setHasData(dataAvailability.appleHealthRecords);
                             if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
                                 setConnecting(false);
-                            } else if (connecting) {
-                                dataAvailabilityRecheckTimeoutId = setTimeout(() => checkDataAvailability(++recheckAttempts), 5000);
+                            } else if (isConnecting.current) {
+                                recheckTimeoutId.current = setTimeout(() => checkDataAvailability(recheckAttempts + 1), 5000);
                             }
                         });
                     };
@@ -68,7 +71,11 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
                 }
             });
         }
-    }, [], [props.previewState, platform], () => clearTimeout(dataAvailabilityRecheckTimeoutId));
+    }, [], [props.previewState, platform], () => clearTimeout(recheckTimeoutId.current));
+
+    useEffect(() => {
+        isConnecting.current = connecting;
+    }, [connecting]);
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
