@@ -111,5 +111,14 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
                 </ol>
             </div>
         }
+        <div>DEBUG</div>
+        <div>
+            <div>platform: {platform}</div>
+            <div>status: {status}</div>
+            <div>hasData: {hasData}</div>
+            <div>connecting: {connecting}</div>
+            <div>showHelp: {showHelp}</div>
+            <div>recheckAttempts: {recheckAttempts}</div>
+        </div>
     </div>;
 }
