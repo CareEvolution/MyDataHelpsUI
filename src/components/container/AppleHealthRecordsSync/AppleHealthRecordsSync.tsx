@@ -23,8 +23,9 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const [hasData, setHasData] = useState<boolean>(false);
     const [connecting, setConnecting] = useState<boolean>(false);
     const [showHelp, setShowHelp] = useState<boolean>(false);
+    const [recheckAttempts, setRecheckAttempts] = useState<number>(0);
 
-    let dataAvailabilityRecheckTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+    let recheckTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
 
     const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
         setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
@@ -51,24 +52,21 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
             MyDataHelps.getDataCollectionSettings().then(settings => {
                 setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
                 if (settings.appleHealthRecordsEnabled) {
-                    const checkDataAvailability = (recheckAttempts: number = 0) => {
-                        MyDataHelps.getDataAvailability().then(dataAvailability => {
-                            setHasData(dataAvailability.appleHealthRecords);
-                            if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
-                                setConnecting(false);
-                            } else if (connecting) {
-                                dataAvailabilityRecheckTimeoutId = setTimeout(() => checkDataAvailability(++recheckAttempts), 5000);
-                            }
-                        });
-                    };
-                    checkDataAvailability();
+                    MyDataHelps.getDataAvailability().then(dataAvailability => {
+                        setHasData(dataAvailability.appleHealthRecords);
+                        if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+                            setConnecting(false);
+                        } else if (connecting) {
+                            recheckTimeoutId = setTimeout(() => setRecheckAttempts(recheckAttempts + 1), 5000);
+                        }
+                    });
                 } else {
                     setHasData(false);
                     setConnecting(false);
                 }
             });
         }
-    }, ['surveyDidFinish'], [props.previewState, platform], () => clearTimeout(dataAvailabilityRecheckTimeoutId));
+    }, ['surveyDidFinish'], [props.previewState, platform, recheckAttempts], () => clearTimeout(recheckTimeoutId));
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
