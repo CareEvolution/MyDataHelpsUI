@@ -62,7 +62,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
                     });
                 } else {
                     setHasData(false);
-                    setConnecting(false);
+                    // setConnecting(false);
                 }
             });
         }
@@ -115,9 +115,9 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         <div>
             <div>platform: {platform}</div>
             <div>status: {status}</div>
-            <div>hasData: {hasData}</div>
-            <div>connecting: {connecting}</div>
-            <div>showHelp: {showHelp}</div>
+            <div>hasData: {JSON.stringify(hasData)}</div>
+            <div>connecting: {JSON.stringify(connecting)}</div>
+            <div>showHelp: {JSON.stringify(showHelp)}</div>
             <div>recheckAttempts: {recheckAttempts}</div>
         </div>
     </div>;
