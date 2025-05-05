@@ -85,6 +85,10 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         }
         const onEnableHealthRecords = () => {
             setConnecting(true);
+            setTimeout(() => {
+                setShowHelp(true);
+                setRecheckAttempts(3);
+            }, 15000);
             MyDataHelps.startSurvey(props.enableAppleHealthRecordsSurvey);
         };
         return <Button onClick={onEnableHealthRecords}>{language('connect')}</Button>;
