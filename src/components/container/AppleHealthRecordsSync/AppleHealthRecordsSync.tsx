@@ -24,8 +24,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const [connecting, setConnecting] = useState<boolean>(false);
     const [showHelp, setShowHelp] = useState<boolean>(false);
     const [recheckAttempts, setRecheckAttempts] = useState<number>(0);
-
-    let recheckTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+    const [debug, setDebug] = useState<string>('');
 
     const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
         setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
@@ -52,21 +51,31 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
             MyDataHelps.getDataCollectionSettings().then(settings => {
                 setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
                 if (settings.appleHealthRecordsEnabled) {
+                    setDebug('health records enabled.');
                     MyDataHelps.getDataAvailability().then(dataAvailability => {
                         setHasData(dataAvailability.appleHealthRecords);
                         if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
                             setConnecting(false);
+                            setRecheckAttempts(0);
                         } else if (connecting) {
-                            recheckTimeoutId = setTimeout(() => setRecheckAttempts(recheckAttempts + 1), 5000);
+                            setDebug('setting timeout from availability check.');
+                            setTimeout(() => setRecheckAttempts(recheckAttempts + 1), 5000);
                         }
                     });
                 } else {
+                    setDebug('health records not enabled.');
                     setHasData(false);
-                    // setConnecting(false);
+                    if (recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+                        setConnecting(false);
+                        setRecheckAttempts(0);
+                    } else if (connecting) {
+                        setDebug('setting timeout from enabled check.');
+                        setTimeout(() => setRecheckAttempts(recheckAttempts + 1), 5000);
+                    }
                 }
             });
         }
-    }, ['surveyDidFinish'], [props.previewState, platform, recheckAttempts], () => clearTimeout(recheckTimeoutId));
+    }, ['surveyDidFinish'], [props.previewState, platform, recheckAttempts]);
 
     if (!status || (props.showWhen && props.showWhen !== status)) {
         return null;
@@ -85,10 +94,6 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         }
         const onEnableHealthRecords = () => {
             setConnecting(true);
-            setTimeout(() => {
-                setShowHelp(true);
-                setRecheckAttempts(3);
-            }, 15000);
             MyDataHelps.startSurvey(props.enableAppleHealthRecordsSurvey);
         };
         return <Button onClick={onEnableHealthRecords}>{language('connect')}</Button>;
@@ -123,6 +128,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
             <div>connecting: {JSON.stringify(connecting)}</div>
             <div>showHelp: {JSON.stringify(showHelp)}</div>
             <div>recheckAttempts: {recheckAttempts}</div>
+            <div>debug: {debug}</div>
         </div>
     </div>;
 }
