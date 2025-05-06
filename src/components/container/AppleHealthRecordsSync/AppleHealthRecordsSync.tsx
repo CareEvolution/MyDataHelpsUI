@@ -27,12 +27,38 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const isConnecting = useRef<boolean>(false);
     const recheckTimeoutId = useRef<ReturnType<typeof setTimeout>>();
 
-    const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState) => {
+    const applyPreviewState = (previewState: AppleHealthRecordsSyncPreviewState): void => {
         setPlatform(previewState === 'wrong platform' ? 'Web' : 'iOS');
         setStatus(previewState.startsWith('enabled') ? 'enabled' : previewState === 'disabled' ? 'disabled' : undefined);
         setHasData(previewState === 'enabled with data');
         setConnecting(previewState === 'enabled no data yet');
         setShowHelp(false);
+    };
+
+    const loadPlatform = async (): Promise<void> => {
+        const deviceInfo = await MyDataHelps.getDeviceInfo();
+        setPlatform(deviceInfo.platform);
+    };
+
+    const checkDataAvailability = async (recheckAttempts: number = 0): Promise<void> => {
+        const dataAvailability = await MyDataHelps.getDataAvailability();
+        setHasData(dataAvailability.appleHealthRecords);
+        if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+            setConnecting(false);
+        } else if (isConnecting.current) {
+            recheckTimeoutId.current = setTimeout(() => checkDataAvailability(recheckAttempts + 1), 5000);
+        }
+    };
+
+    const loadState = async (): Promise<void> => {
+        const settings = await MyDataHelps.getDataCollectionSettings();
+        setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
+        if (settings.appleHealthRecordsEnabled) {
+            checkDataAvailability();
+        } else {
+            setHasData(false);
+            setConnecting(false);
+        }
     };
 
     useInitializeView(() => {
@@ -44,32 +70,12 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         clearTimeout(recheckTimeoutId.current);
 
         if (!platform) {
-            MyDataHelps.getDeviceInfo().then(deviceInfo => {
-                setPlatform(deviceInfo.platform);
-            });
+            loadPlatform();
             return;
         }
 
         if (platform === 'iOS') {
-            MyDataHelps.getDataCollectionSettings().then(settings => {
-                setStatus(settings.appleHealthRecordsEnabled ? 'enabled' : 'disabled');
-                if (settings.appleHealthRecordsEnabled) {
-                    const checkDataAvailability = (recheckAttempts: number = 0) => {
-                        MyDataHelps.getDataAvailability().then(dataAvailability => {
-                            setHasData(dataAvailability.appleHealthRecords);
-                            if (dataAvailability.appleHealthRecords || recheckAttempts === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
-                                setConnecting(false);
-                            } else if (isConnecting.current) {
-                                recheckTimeoutId.current = setTimeout(() => checkDataAvailability(recheckAttempts + 1), 5000);
-                            }
-                        });
-                    };
-                    checkDataAvailability();
-                } else {
-                    setHasData(false);
-                    setConnecting(false);
-                }
-            });
+            loadState();
         }
     }, [], [props.previewState, platform], () => clearTimeout(recheckTimeoutId.current));
 
@@ -82,10 +88,13 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     }
 
     const getSubtitle = () => {
-        if (status === 'enabled') {
-            return hasData ? language('connected') : connecting ? language('syncing-data') : language('no-data');
+        if (status !== 'enabled') {
+            return language('apple-health-records-sync-prompt');
         }
-        return language('apple-health-records-sync-prompt');
+        if (hasData) {
+            return language('connected');
+        }
+        return connecting ? language('syncing-data') : language('no-data');
     };
 
     const getIndicator = () => {
