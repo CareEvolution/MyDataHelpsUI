@@ -102,7 +102,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     return <div className="mdhui-apple-health-records-sync">
         <Action
             title={language('apple-health-records-sync-title')}
-            titleIcon={<img src={appleHealthLogo} style={{ width: '15px', marginRight: '8px' }} alt="apple health logo" />}
+            titleIcon={<img src={appleHealthLogo} style={{ width: '15px', marginRight: '8px' }} alt={language('apple-health-logo-alt')} />}
             subtitle={getSubtitle()}
             indicator={getIndicator()}
             renderAs="div"
