@@ -150,103 +150,171 @@ export const FeaturedProviders: Story = {
 				"id": 430,
 				"name": "Medicare / CMS",
 				"category": "Health Plan",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/430/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/430/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 435,
 				"name": "Denver Health",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/435/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/435/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 567,
 				"name": "Kaiser Permanente - California - Southern",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/567/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/567/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 481,
 				"name": "Scripps Health",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/481/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/481/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 322,
 				"name": "Cleveland Clinic",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/322/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/322/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 1574,
 				"name": "United Healthcare (Medicare/Medicaid plans)",
 				"category": "Health Plan",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1574/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1574/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 214,
 				"name": "Novant Health",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/214/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/214/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 170,
 				"name": "UNC Health Care",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/170/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/170/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 9403,
 				"name": "Athenahealth",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/9403/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/9403/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 167,
 				"name": "Johns Hopkins Medicine",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/167/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/167/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 1457,
 				"name": "Aetna",
 				"category": "Health Plan",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1457/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1457/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 1175,
 				"name": "Atrium Health",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1175/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1175/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 250,
 				"name": "Providence Health & Services - Washington/Montana",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/250/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/250/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 546,
 				"name": "Duke Health",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/546/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/546/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 425,
 				"name": "UW Medicine (Washington)",
 				"category": "Provider",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/425/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/425/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 1459,
 				"name": "Cigna",
 				"category": "Health Plan",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1459/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1459/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			},
 			{
 				"id": 1456,
 				"name": "Humana",
 				"category": "Health Plan",
-				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1456/logo"
+				"logoUrl": "https://mydatahelps.org/api/v1/delegated/externalaccountproviders/1456/logo",
+				"enabled": true,
+				"managingOrganization": "",
+				"message": "",
+				"relatedProvider": ""
 			}
 		]
 	},
