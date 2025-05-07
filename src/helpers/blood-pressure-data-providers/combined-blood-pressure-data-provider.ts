@@ -1,18 +1,19 @@
 import { BloodPressureDataPoint, SurveyBloodPressureDataParameters } from '.'
 import surveyBloodPressureDataProvider from './survey-blood-pressure-data-provider'
-import deviceDataBloodPressureDataProvider from './device-blood-pressure-data-provider'
+import deviceDataBloodPressureDataProvider from './device-data-blood-pressure-data-provider'
+import deviceDataBloodPressureDataProviderV2 from './device-data-v2-blood-pressure-data-provider'
 
 export type BloodPressureDeviceDataSource = 'AppleHealth' | 'GoogleFit' | 'Omron' | 'HealthConnect';
 
 export default async function (surveyDataSource?: SurveyBloodPressureDataParameters, bloodPressureDeviceDataSources?: BloodPressureDeviceDataSource[]): Promise<BloodPressureDataPoint[]> {
-    let providers: Promise<BloodPressureDataPoint[]>[] = [];
+    const providers: Promise<BloodPressureDataPoint[]>[] = [];
 
     if (surveyDataSource) {
         providers.push(surveyBloodPressureDataProvider(surveyDataSource));
     }
 
     if (bloodPressureDeviceDataSources) {
-        bloodPressureDeviceDataSources.forEach((source) => {
+        bloodPressureDeviceDataSources.forEach(source => {
             if (source === 'AppleHealth') {
                 providers.push(deviceDataBloodPressureDataProvider(source, 'BloodPressureSystolic', 'BloodPressureDiastolic'));
             } else if (source === 'GoogleFit') {
@@ -20,16 +21,12 @@ export default async function (surveyDataSource?: SurveyBloodPressureDataParamet
             } else if (source === 'Omron') {
                 providers.push(deviceDataBloodPressureDataProvider(source, 'BloodPressureSystolic', 'BloodPressureDiastolic'));
             } else if (source === 'HealthConnect') {
-                // TODO: providers.push(deviceDataBloodPressureDataProvider(source, 'blood-pressure-systolic', 'blood-pressure-diastolic'));
+                providers.push(deviceDataBloodPressureDataProviderV2(source, 'blood-pressure-systolic', 'blood-pressure-diastolic'));
             }
         });
     }
 
-    if (!providers.length) {
-        return [];
-    }
+    if (providers.length === 0) return [];
 
-    return Promise.all(providers).then((values) => {
-        return values.reduce((acc, val) => acc.concat(val), []);
-    });
+    return (await Promise.all(providers)).reduce((allDataPoints, dataPoints) => allDataPoints.concat(dataPoints), []);
 }
