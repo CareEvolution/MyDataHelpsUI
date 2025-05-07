@@ -1,0 +1,101 @@
+.mdhui-blood-pressure-reading {
+}
+
+.mdhui-blood-pressure-reading .mdhui-blood-pressure-reading-title {
+    font-size: .88em;
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+    color: rgb(196, 41, 28);
+}
+
+.mdhui-blood-pressure-reading .mdhui-blood-pressure-reading-value-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
+}
+
+.mdhui-blood-pressure-reading .mdhui-blood-pressure-reading-value {
+    font-size: 1.2em;
+    position: relative;
+    font-weight: bold;
+    margin-top: 4px;
+    display: block;
+}
+
+.mdhui-blood-pressure-reading .mdhui-blood-pressure-reading-date {
+    font-size: 0.8em;
+    color: var(--mdhui-text-color-2);
+    margin-top: 4px;
+}
+
+.mdhui-blood-pressure-reading-classification {
+    font-size: .88em;
+    border-radius: 4px;
+    padding: 4px;
+    font-weight: bold;
+}
+
+.mdhui-blood-pressure-reading-classification.normal,
+.mdhui-blood-pressure-reading-classification.low {
+    background-color: #a6ce39;
+}
+
+.mdhui-blood-pressure-reading-classification.elevated {
+    background-color: #ffec01;
+}
+
+.mdhui-blood-pressure-reading-classification.hypertension-stage-1 {
+    background-color: #ffb601;
+}
+
+.mdhui-blood-pressure-reading-classification.hypertension-stage-2 {
+    background-color: #ba3a03;
+    color: #FFF;
+}
+
+.mdhui-blood-pressure-reading-classification.hypertensive-crisis {
+    background-color: #990612;
+    color: #FFF;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator {
+    display: flex;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar {
+    height: 8px;
+    background: #a6ce39;
+    flex-grow: 1;
+    text-align: center;
+    position: relative;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar .svg-inline--fa {
+    position: absolute;
+    left: calc(50% - 6px);
+    top: 8px;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar.normal {
+    background: #a6ce39;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar.elevated {
+    background: #ffec01;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar.hypertension-stage-1 {
+    background: #ffb601;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar.hypertension-stage-2 {
+    background: #ba3a03;
+}
+
+.mdhui-blood-pressure-reading-classification-indicator .mdhui-blood-pressure-reading-classification-indicator-bar.hypertensive-crisis {
+    background: #990612;
+}
