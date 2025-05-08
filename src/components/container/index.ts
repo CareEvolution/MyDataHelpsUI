@@ -1,6 +1,7 @@
 export { default as AIAssistant } from "./AIAssistant"
 export { default as AllergiesList } from "./AllergiesList"
 export { default as AppDownload } from "./AppDownload"
+export { default as AppleHealthRecordsSync, AppleHealthRecordsSyncPreviewState, AppleHealthRecordsStatus } from "./AppleHealthRecordsSync"
 export { default as BasicPointsForBadges } from "./BasicPointsForBadges"
 export { default as BasicBadges } from "./BasicBadges"
 export { default as BloodPressureVisualization } from "./BloodPressureVisualization"
