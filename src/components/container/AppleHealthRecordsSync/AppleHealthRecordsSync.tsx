@@ -45,7 +45,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     const checkDataAvailability = async (): Promise<void> => {
         const dataAvailability = await MyDataHelps.getDataAvailability();
         setHasData(dataAvailability.appleHealthRecords);
-        if (dataAvailability.appleHealthRecords || dataAvailabilityRecheckAttempts.current === MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
+        if (dataAvailability.appleHealthRecords || dataAvailabilityRecheckAttempts.current >= MAX_DATA_AVAILABILITY_RECHECK_ATTEMPTS) {
             setConnecting(false);
         }
     };
