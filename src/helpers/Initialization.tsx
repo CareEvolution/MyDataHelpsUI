@@ -2,7 +2,7 @@
 import { DependencyList, useEffect, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
-export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList, cleanUp?: () => void): void {
+export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
     const isInitialMount = useRef(true);
 
     useEffect(() => {
@@ -21,7 +21,6 @@ export function useInitializeView(initialize: () => void, additionalEvents?: Eve
         });
 
         return () => {
-            cleanUp?.();
             MyDataHelps.off('applicationDidBecomeVisible', debouncedInitialize);
             additionalEvents?.forEach(additionalEvent => {
                 MyDataHelps.off(additionalEvent, debouncedInitialize);
