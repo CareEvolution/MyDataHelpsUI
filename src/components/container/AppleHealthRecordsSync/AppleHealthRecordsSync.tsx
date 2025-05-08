@@ -78,7 +78,7 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
     }, [], [props.previewState, platform]);
 
     useInterval(() => {
-        dataAvailabilityRecheckAttempts.current = dataAvailabilityRecheckAttempts.current + 1;
+        dataAvailabilityRecheckAttempts.current += 1;
         checkDataAvailability();
     }, connecting ? 5000 : null);
 
