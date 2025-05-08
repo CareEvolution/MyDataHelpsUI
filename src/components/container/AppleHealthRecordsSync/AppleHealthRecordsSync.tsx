@@ -77,6 +77,10 @@ export default function AppleHealthRecordsSync(props: AppleHealthRecordsSyncProp
         }
     }, [], [props.previewState, platform]);
 
+    // This interval only executes while "connecting" is true.  When connecting
+    // gets set to false, a null delay is passed to useInterval, which cancels
+    // the interval.  The next time connecting gets set to true, the interval
+    // starts again.
     useInterval(() => {
         dataAvailabilityRecheckAttempts.current += 1;
         checkDataAvailability();
