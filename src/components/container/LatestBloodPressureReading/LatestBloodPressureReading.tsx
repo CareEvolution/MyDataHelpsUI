@@ -1,8 +1,7 @@
 import React, { ReactElement, useState } from 'react';
-import { BloodPressureDataPoint, BloodPressureDeviceDataSource, useInitializeView } from '../../../helpers';
+import { BloodPressureDataPoint, useInitializeView } from '../../../helpers';
 import { BloodPressureClassification, BloodPressureReading } from '../../presentational';
 import combinedBloodPressureDataProvider from '../../../helpers/blood-pressure-data-providers/combined-blood-pressure-data-provider';
-import { getCombinedDataCollectionSettings } from '../../../helpers/daily-data-providers/combined-data-collection-settings';
 import { compareDesc } from 'date-fns';
 import { createPreviewDataProvider } from './LastBloodPressureReading.previewData';
 
@@ -17,25 +16,9 @@ export default function LatestBloodPressureReading(props: LatestBloodPressureRea
     const [reading, setReading] = useState<BloodPressureDataPoint>();
 
     useInitializeView(() => {
-        const dataProvider = props.previewState ? createPreviewDataProvider(props.previewState) : async (): Promise<BloodPressureDataPoint[]> => {
-            const dataSources: BloodPressureDeviceDataSource[] = [];
-
-            const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
-            if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(dt => dt.namespace === 'AppleHealth' && dt.type === 'BloodPressureSystolic')) {
-                dataSources.push('AppleHealth');
-            }
-            if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(dt => dt.namespace === 'GoogleFit' && dt.type === 'blood_pressure_systolic')) {
-                dataSources.push('GoogleFit');
-            }
-            if (settings.healthConnectEnabled && deviceDataV2Types.some(dt => dt.namespace === 'HealthConnect' && dt.type === 'blood-pressure-systolic')) {
-                dataSources.push('HealthConnect');
-            }
-            if (settings.omronEnabled) {
-                dataSources.push('Omron');
-            }
-
-            return combinedBloodPressureDataProvider(undefined, dataSources);
-        };
+        const dataProvider = props.previewState
+            ? createPreviewDataProvider(props.previewState)
+            : () => combinedBloodPressureDataProvider(undefined, ['AppleHealth', 'GoogleFit', 'Omron', 'HealthConnect']);
 
         dataProvider().then(readings => {
             if (readings.length > 0) {
