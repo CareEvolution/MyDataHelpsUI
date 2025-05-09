@@ -40,12 +40,9 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
 
     const dailyData = await queryForDailyData('AppleHealth', 'HourlySteps', startDate, endDate, getStartDate);
 
-    const filteredDailyData = Object.keys(dailyData).reduce((filteredDailyData, dayKey) => {
-        if (watchDates.includes(dayKey) || ouraDates.includes(dayKey)) {
-            filteredDailyData[dayKey] = dailyData[dayKey];
-        }
-        return filteredDailyData;
-    }, {} as DailyData);
+    const filteredDailyData = Object.fromEntries(
+        Object.entries(dailyData).filter(([dayKey]) => watchDates.includes(dayKey) || ouraDates.includes(dayKey))
+    ) as DailyData;
 
     return buildTotalValueResult(filteredDailyData);
 }
