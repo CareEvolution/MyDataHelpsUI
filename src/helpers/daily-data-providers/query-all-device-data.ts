@@ -1,26 +1,19 @@
-﻿import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, } from '@careevolution/mydatahelps-js';
+﻿import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, } from '@careevolution/mydatahelps-js';
 
-export default function queryAllDeviceData(query: DeviceDataPointQuery): Promise<DeviceDataPoint[]> {
+export default async function queryAllDeviceData(query: DeviceDataPointQuery): Promise<DeviceDataPoint[]> {
     const queryParameters: DeviceDataPointQuery = { ...query };
+    const allDataPoints: DeviceDataPoint[] = [];
 
-    async function getDeviceData(): Promise<DeviceDataPoint[]> {
-        const allDataPoints: DeviceDataPoint[] = [];
-
-        try {
-            let page = await MyDataHelps.queryDeviceData(queryParameters);
+    try {
+        let page: DeviceDataPointsPage;
+        do {
+            page = await MyDataHelps.queryDeviceData(queryParameters);
             allDataPoints.push(...page.deviceDataPoints);
-
-            while (page.nextPageID) {
-                queryParameters.pageID = page.nextPageID;
-                page = await MyDataHelps.queryDeviceData(queryParameters);
-                allDataPoints.push(...page.deviceDataPoints);
-            }
-        } catch {
-            // ignore.
-        }
-
-        return allDataPoints;
+            queryParameters.pageID = page.nextPageID;
+        } while (page.nextPageID);
+    } catch {
+        // ignore.
     }
 
-    return getDeviceData();
+    return allDataPoints;
 }
