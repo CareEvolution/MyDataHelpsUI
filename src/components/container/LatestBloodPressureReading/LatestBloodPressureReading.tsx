@@ -6,7 +6,7 @@ import { compareDesc } from 'date-fns';
 import { createPreviewDataProvider } from './LastBloodPressureReading.previewData';
 
 export interface LatestBloodPressureReadingProps {
-    previewState: BloodPressureClassification
+    previewState?: BloodPressureClassification
     onClick?: () => void;
     indicator?: ReactElement;
     innerRef?: React.Ref<HTMLDivElement>;
