@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedFirstValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import combinedMindfulMinutes from '../../../src/helpers/daily-data-providers/combined-mindful-minutes';
-import * as dailyDataFunctions from '../../../src/helpers/daily-data-providers/daily-data';
+import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
 import { appleHealthMindfulMinutesDataProvider, googleFitMindfulMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
 
 jest.mock('../../../src/helpers/daily-data-providers/apple-health-mindful-minutes', () => ({
@@ -18,7 +18,7 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
 
     const appleHealthMindfulMinutesDataProviderMock = appleHealthMindfulMinutesDataProvider as jest.Mock;
     const googleFitMindfulMinutesDataProviderMock = googleFitMindfulMinutesDataProvider as jest.Mock;
-    const combinedFirstValueResultMock = jest.spyOn(dailyDataFunctions, 'combineResultsUsingFirstValue');
+    const combinedFirstValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingFirstValue');
 
     beforeEach(() => {
         jest.resetAllMocks();

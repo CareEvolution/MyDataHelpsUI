@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedRoundedAverageValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
-import * as dailyDataFunctions from '../../../src/helpers/daily-data-providers/daily-data';
+import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
 import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, healthConnectRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from '../../../src/helpers/daily-data-providers';
 import combinedRestingHeartRate from '../../../src/helpers/daily-data-providers/combined-resting-heart-rate';
 
@@ -36,7 +36,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
     const appleHealthRestingHeartRateDataProviderMock = appleHealthRestingHeartRateDataProvider as jest.Mock;
     const healthConnectRestingHeartRateDataProviderMock = healthConnectRestingHeartRateDataProvider as jest.Mock;
     const ouraRestingHeartRateDataProviderMock = ouraRestingHeartRateDataProvider as jest.Mock;
-    const combinedRoundedAverageValueResultMock = jest.spyOn(dailyDataFunctions, 'combineResultsUsingRoundedAverageValue');
+    const combinedRoundedAverageValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingRoundedAverageValue');
 
     beforeEach(() => {
         jest.resetAllMocks();

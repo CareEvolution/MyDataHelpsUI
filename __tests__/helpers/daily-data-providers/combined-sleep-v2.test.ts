@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
-import * as dailyDataFunctions from '../../../src/helpers/daily-data-providers/daily-data';
+import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
 import combinedSleepV2 from '../../../src/helpers/daily-data-providers/combined-sleep-v2';
 import { totalSleepMinutes as fitbitTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers/fitbit-sleep-v2';
 import { totalSleepMinutes as garminTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers/garmin-sleep-v2';
@@ -40,7 +40,7 @@ describe('Daily Data Provider - Combined Sleep - V2', () => {
     const appleHealthTotalSleepMinutesDataProviderMock = appleHealthTotalSleepMinutesDataProvider as jest.Mock;
     const healthConnectTotalSleepMinutesDataProviderMock = healthConnectTotalSleepMinutesDataProvider as jest.Mock;
     const ouraTotalSleepMinutesDataProviderMock = ouraTotalSleepMinutesDataProvider as jest.Mock;
-    const combinedMaxValueResultMock = jest.spyOn(dailyDataFunctions, 'combineResultsUsingMaxValue');
+    const combinedMaxValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingMaxValue');
 
     beforeEach(() => {
         jest.resetAllMocks();

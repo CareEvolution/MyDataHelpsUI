@@ -1,4 +1,5 @@
-import * as dailyDataFunctions from '../../src/helpers/daily-data-providers/daily-data';
+import * as dailyDataQueryFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-query';
+import * as dailyDataResultFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-result';
 import { DailyData, DailyDataDateFunction, DailyDataV2, DailyDataValueFunction } from '../../src/helpers/daily-data-providers/daily-data';
 import * as dataCollectionSettingsFunctions from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
 import { CombinedDataCollectionSettings } from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
@@ -59,7 +60,7 @@ export function setupDailyData(
     dateFunctionEvaluator: (dateFn: DailyDataDateFunction) => boolean,
     dailyData: DailyData
 ): void {
-    jest.spyOn(dailyDataFunctions, 'queryForDailyData').mockImplementation(
+    jest.spyOn(dailyDataQueryFunctions, 'queryForDailyData').mockImplementation(
         (
             actualNamespace: DeviceDataNamespace,
             actualType: string | string[],
@@ -85,7 +86,7 @@ export function setupDailyDataV2(
     dateFunctionEvaluator: (dateFn: DailyDataDateFunction) => boolean,
     dailyData: DailyDataV2
 ): void {
-    jest.spyOn(dailyDataFunctions, 'queryForDailyDataV2').mockImplementation(
+    jest.spyOn(dailyDataQueryFunctions, 'queryForDailyDataV2').mockImplementation(
         (
             actualNamespace: DeviceDataV2Namespace,
             actualType: string,
@@ -141,7 +142,7 @@ function setupResult(
     result: DailyDataQueryResult,
     valueFunctionEvaluator: (valueFn: DailyDataValueFunction | undefined) => boolean
 ): void {
-    jest.spyOn(dailyDataFunctions, functionName).mockImplementation(
+    jest.spyOn(dailyDataResultFunctions, functionName).mockImplementation(
         (
             actualDailyData: DailyData | DailyDataV2,
             actualValueFn?: DailyDataValueFunction
@@ -161,7 +162,7 @@ export function setupDailyDataPoints(
     expectedDateFn: DailyDataDateFunction | undefined,
     dataPoints: DeviceDataPoint[]
 ): void {
-    jest.spyOn(dailyDataFunctions, 'queryForDailyDataPoints').mockImplementation(
+    jest.spyOn(dailyDataQueryFunctions, 'queryForDailyDataPoints').mockImplementation(
         (
             actualNamespace: DeviceDataNamespace,
             actualType: string | string[],
@@ -187,7 +188,7 @@ export function setupDailyDataPointsV2(
     expectedDateFn: DailyDataDateFunction | undefined,
     dataPoints: DeviceDataV2Point[]
 ): void {
-    jest.spyOn(dailyDataFunctions, 'queryForDailyDataPointsV2').mockImplementation(
+    jest.spyOn(dailyDataQueryFunctions, 'queryForDailyDataPointsV2').mockImplementation(
         (
             actualNamespace: DeviceDataV2Namespace,
             actualType: string,
@@ -305,7 +306,7 @@ export function setupCombinedResult(
     expectedResultsToCombine: DailyDataQueryResult[],
     result: DailyDataQueryResult
 ): void {
-    jest.spyOn(dailyDataFunctions, functionName).mockImplementation(
+    jest.spyOn(dailyDataResultFunctions, functionName).mockImplementation(
         (
             actualStartDate: Date,
             actualEndDate: Date,
