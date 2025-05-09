@@ -1,4 +1,4 @@
-import { faCaretUp, faHeart, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCaretUp, faHeart } from '@fortawesome/free-solid-svg-icons';
 import React, { ReactElement } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import Action from '../Action';
@@ -34,7 +34,7 @@ export default function BloodPressureReading(props: BloodPressureReadingProps) {
     return <Action
         className="mdhui-blood-pressure-reading"
         indicatorPosition="topRight"
-        indicator={props.indicator ?? <FontAwesomeSvgIcon icon={faInfoCircle} />}
+        indicator={props.indicator}
         onClick={props.onClick}
         innerRef={props.innerRef}
     >
