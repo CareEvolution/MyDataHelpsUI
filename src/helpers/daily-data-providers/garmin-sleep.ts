@@ -1,11 +1,11 @@
 import { DailyDataQueryResult } from "../query-daily-data";
 import { buildMaxValueResult, getSleepDate, queryForDailyData } from "./daily-data";
 
-async function querySleep(property: string, startDate: Date, endDate: Date, divideBy?: number): Promise<DailyDataQueryResult> {
+async function querySleep(property: string, startDate: Date, endDate: Date, divideBy: number = 1): Promise<DailyDataQueryResult> {
     const dailyData = await queryForDailyData("Garmin", "Sleep", startDate, endDate, getSleepDate);
     return buildMaxValueResult(dailyData, dataPoint => {
         const value = parseFloat(dataPoint.properties?.[property] ?? "0");
-        return divideBy ? (value / divideBy) : value;
+        return value / divideBy;
     });
 }
 
