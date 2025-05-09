@@ -1,18 +1,15 @@
 ﻿import { DailyDataQueryResult } from "../query-daily-data";
-import { buildTotalValueResult, DailyData, getStartDate, queryForDailyData } from "./daily-data";
+import { buildTotalValueResult, getStartDate, queryForDailyData } from "./daily-data";
 
 async function queryHeartMinutes(startDate: Date, endDate: Date, zone?: string): Promise<DailyDataQueryResult> {
     const dailyData = await queryForDailyData("Fitbit", "HeartRateZone", startDate, endDate, getStartDate);
 
-    const filteredDailyData = Object.keys(dailyData).reduce((filteredDailyData, dayKey) => {
-        const filteredDataPoints = dailyData[dayKey].filter(dataPoint => {
-            return dataPoint.value !== "Out of Range" && (!zone || dataPoint.value === zone);
-        });
-        if (filteredDataPoints.length > 0) {
-            filteredDailyData[dayKey] = filteredDataPoints;
-        }
-        return filteredDailyData;
-    }, {} as DailyData);
+    const filteredDailyData = Object.fromEntries(
+        Object.entries(dailyData).map(([dayKey, dataPoints]) => [
+            dayKey,
+            dataPoints.filter(dataPoint => dataPoint.value !== "Out of Range" && (!zone || dataPoint.value === zone))
+        ]).filter(([_, filteredDataPoints]) => filteredDataPoints.length > 0)
+    );
 
     return buildTotalValueResult(filteredDailyData, dataPoint => parseInt(dataPoint.properties?.["Minutes"] ?? "0"));
 }
