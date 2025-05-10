@@ -25,7 +25,11 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: ""
+                    logoUrl: "",
+                    enabled: true,
+                    managingOrganization: "",
+                    message: "",
+                    relatedProvider: ""
                 },
                 status: "fetchingData",
                 lastRefreshDate: new Date().toISOString(),
@@ -39,7 +43,11 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: ""
+                    logoUrl: "",
+                    enabled: true,
+                    managingOrganization: "",
+                    message: "",
+                    relatedProvider: ""
                 },
                 status: "unauthorized",
                 lastRefreshDate: new Date().toISOString(),

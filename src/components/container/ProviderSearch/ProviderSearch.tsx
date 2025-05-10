@@ -142,7 +142,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (provider.enabled && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
@@ -238,6 +238,21 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
+                            }
+                            {!linkedExternalAccounts[provider.id] && provider.enabled === false &&
+                                <div className="provider-status connected-status">
+                                    {provider.managingOrganization 
+                                    ? language("provider-disabled-reason-with-managing-organization", undefined, { 
+                                        "provider": provider.name, 
+                                        "relatedProvider": provider.relatedProvider, 
+                                        "managingOrganization": provider.managingOrganization 
+                                        })
+                                    : language("provider-disabled-reason-without-managing-organization", undefined, { 
+                                        "provider": provider.name, 
+                                        "relatedProvider": provider.relatedProvider 
+                                        })
+                                    }
+                                </div>
                             }
                         </div>
                         {provider.logoUrl &&

@@ -27,7 +27,11 @@ const externalAccount: ExternalAccount = {
         "id": 37,
         "name": "Cedars-Sinai Health System",
         "category": "Provider",
-        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
+        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
+        "enabled": true,
+        "managingOrganization": "",
+        "message": "",
+        "relatedProvider": ""
     }
 };
 

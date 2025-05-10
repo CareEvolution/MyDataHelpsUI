@@ -75,4 +75,5 @@
 
 .mdhui-provider-search .search-results .provider .provider-status.connected-status {
     color: var(--mdhui-color-success);
+    cursor: default;
 }
