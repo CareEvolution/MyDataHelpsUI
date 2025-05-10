@@ -320,3 +320,41 @@ export const FeaturedProviders: Story = {
 	},
 	render: render
 }
+
+export const DisabledWithManagingOrganization: Story = {
+    args: {
+        previewState: "Default",
+        featuredProviders: [
+            {
+                "id": 1,
+                "name": "Example Provider 1",
+                "category": "Provider",
+                "logoUrl": "https://example.com/logo1.png",
+                "enabled": false,
+                "managingOrganization": "Managing Organization ABC",
+                "message": "",
+                "relatedProvider": "Provider XYZ"
+            }
+        ]
+    },
+    render: render
+}
+
+export const DisabledWithoutManagingOrganization: Story = {
+    args: {
+        previewState: "Default",
+        featuredProviders: [
+            {
+                "id": 2,
+                "name": "Example Provider 2",
+                "category": "Provider",
+                "logoUrl": "https://example.com/logo2.png",
+                "enabled": false,
+                "managingOrganization": "",
+                "message": "",
+                "relatedProvider": "Provider XYZ"
+            }
+        ]
+    },
+    render: render
+}
