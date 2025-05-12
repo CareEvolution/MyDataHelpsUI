@@ -1,57 +1,34 @@
-import { add, formatISO, parseISO } from "date-fns";
-import queryAllDeviceData from "./query-all-device-data";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { buildMaxValueResult, getSleepDate, queryForDailyData } from "./daily-data";
 
-function querySleep(property: string, startDate: Date, endDate: Date, divideBy?: number) {
-    return queryAllDeviceData({
-        namespace: "Garmin",
-        type: "Sleep",
-        observedAfter: add(startDate, { days: -1 }).toISOString(),
-        observedBefore: add(endDate, { days: 1 }).toISOString()
-    }).then(function (ddp) {
-        var data: { [key: string]: number } = {};
-        ddp.forEach((d) => {
-            if (!d.observationDate) { return; }
-            if (!d.properties) { return; }
-            if (!d.properties[property]) { return; }
-            if (parseInt(d.properties[property]) <= 0) { return; }
-
-            var dataKey = formatISO(add(parseISO(d.observationDate)!, { hours: 6 })).substr(0, 10);
-
-            let value = parseFloat(d.properties[property]);
-            if (value < 0) { return; }
-
-            if (divideBy) {
-                value = value / divideBy;
-            }
-
-            if (!data[dataKey] || data[dataKey] < value) {
-                data[dataKey] = value;
-            }
-        });
-        return data;
+async function querySleep(property: string, startDate: Date, endDate: Date, divideBy?: number): Promise<DailyDataQueryResult> {
+    const dailyData = await queryForDailyData("Garmin", "Sleep", startDate, endDate, getSleepDate);
+    return buildMaxValueResult(dailyData, dataPoint => {
+        const value = parseFloat(dataPoint.properties?.[property] ?? "0");
+        return divideBy ? (value / divideBy) : value;
     });
 }
 
-export function totalSleepMinutes(startDate: Date, endDate: Date) {
+export function totalSleepMinutes(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("DurationInSeconds", startDate, endDate, 60);
 }
 
-export function remSleepMinutes(startDate: Date, endDate: Date) {
+export function remSleepMinutes(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("RemSleepInSeconds", startDate, endDate, 60);
 }
 
-export function deepSleepMinutes(startDate: Date, endDate: Date) {
+export function deepSleepMinutes(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("DeepSleepDurationInSeconds", startDate, endDate, 60);
 }
 
-export function lightSleepMinutes(startDate: Date, endDate: Date) {
+export function lightSleepMinutes(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("LightSleepDurationInSeconds", startDate, endDate, 60);
 }
 
-export function awakeSleepMinutes(startDate: Date, endDate: Date) {
+export function awakeSleepMinutes(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("AwakeDurationInSeconds", startDate, endDate, 60);
 }
 
-export function sleepScore(startDate: Date, endDate: Date) {
+export function sleepScore(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return querySleep("OverallSleepScore.Value", startDate, endDate);
 }

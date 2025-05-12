@@ -1,18 +1,22 @@
 import { appleHealthMindfulMinutesDataProvider, googleFitMindfulMinutesDataProvider } from '.';
-import MyDataHelps from '@careevolution/mydatahelps-js';
 import { DailyDataQueryResult } from '../query-daily-data';
-import { combineResults } from './common-mindful-and-therapy';
+import { getCombinedDataCollectionSettings } from './combined-data-collection-settings';
+import { combineResultsUsingFirstValue } from './daily-data';
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
-    const settings = await MyDataHelps.getDataCollectionSettings();
-    if (settings.queryableDeviceDataTypes.find(type => type.namespace == 'AppleHealth' && type.type == 'MindfulSession')) {
+    const { settings } = await getCombinedDataCollectionSettings(false);
+
+    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'AppleHealth' && type.type === 'MindfulSession')) {
         providers.push(appleHealthMindfulMinutesDataProvider(startDate, endDate));
     }
-    if (settings.queryableDeviceDataTypes.find(type => type.namespace == 'GoogleFit' && type.type == 'ActivitySegment')) {
+    if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'GoogleFit' && type.type === 'ActivitySegment')) {
         providers.push(googleFitMindfulMinutesDataProvider(startDate, endDate));
     }
 
-    return providers.length ? combineResults(startDate, endDate, await Promise.all(providers)) : {};
+    if (providers.length === 0) return {};
+    if (providers.length === 1) return providers[0];
+
+    return combineResultsUsingFirstValue(startDate, endDate, await Promise.all(providers));
 }

@@ -1,163 +1,217 @@
-import MyDataHelps from "@careevolution/mydatahelps-js";
-import {
-    fitbitTotalSleepMinutesDataProvider,
-    garminTotalSleepMinutesDataProvider,
-    ouraSleepMinutesDataProvider,
-    healthConnectTotalSleepMinutesDataProvider
-} from "../../../src/helpers/daily-data-providers";
-import combinedSleep from "../../../src/helpers/daily-data-providers/combined-sleep";
+import { describe, expect, it } from '@jest/globals';
+import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
+import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
+import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
+import combinedSleep from '../../../src/helpers/daily-data-providers/combined-sleep';
 
-jest.mock("../../../src/helpers/daily-data-providers", () => ({
-    fitbitTotalSleepMinutesDataProvider: jest
-        .fn()
-        .mockImplementation(() => Promise.resolve({})),
-    garminTotalSleepMinutesDataProvider: jest
-        .fn()
-        .mockImplementation(() => Promise.resolve({})),
-    ouraSleepMinutesDataProvider: jest
-        .fn()
-        .mockImplementation(() => Promise.resolve({})),
-    healthConnectTotalSleepMinutesDataProvider: jest
-        .fn()
-        .mockImplementation(() =>
-            Promise.resolve({
-                "2023-01-01": 560,
-                "2023-01-02": 480,
-                "2023-01-03": 530
-            })
-        )
-}));
-
-jest.mock("@careevolution/mydatahelps-js", () => ({
+jest.mock('../../../src/helpers/daily-data-providers/fitbit-sleep', () => ({
     __esModule: true,
-    default: {
-        getDataCollectionSettings: jest.fn(),
-        queryDeviceData: jest.fn(),
-        queryDeviceDataV2: jest.fn(),
-        getDeviceDataV2AllDataTypes: jest.fn()
-    }
+    totalSleepMinutes: jest.fn()
 }));
 
-describe("combinedSleep", () => {
-    const startDate = new Date(2023, 0, 1);
-    const endDate = new Date(2023, 0, 4);
-    const getDataCollectionSettings =
-        MyDataHelps.getDataCollectionSettings as jest.Mock;
-    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
-    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
-    const getDeviceDataV2AllDataTypes =
-        MyDataHelps.getDeviceDataV2AllDataTypes as jest.Mock;
+jest.mock('../../../src/helpers/daily-data-providers/garmin-sleep', () => ({
+    __esModule: true,
+    totalSleepMinutes: jest.fn()
+}));
 
-    const defaultSettings = {
-        fitbitEnabled: false,
-        garminEnabled: false,
-        ouraEnabled: false,
-        healthConnectEnabled: false,
-        queryableDeviceDataTypes: []
-    };
+jest.mock('../../../src/helpers/daily-data-providers/apple-health-sleep', () => ({
+    __esModule: true,
+    asleepTime: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/health-connect-sleep', () => ({
+    __esModule: true,
+    totalSleepMinutes: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/oura-total-sleep', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+describe('Daily Data Provider - Combined Sleep', () => {
+
+    const fitbitTotalSleepMinutesDataProviderMock = fitbitTotalSleepMinutesDataProvider as jest.Mock;
+    const garminTotalSleepMinutesDataProviderMock = garminTotalSleepMinutesDataProvider as jest.Mock;
+    const appleHealthSleepDataProviderMock = appleHealthSleepDataProvider as jest.Mock;
+    const healthConnectTotalSleepMinutesDataProviderMock = healthConnectTotalSleepMinutesDataProvider as jest.Mock;
+    const ouraSleepMinutesDataProviderMock = ouraSleepMinutesDataProvider as jest.Mock;
+    const combinedMaxValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingMaxValue');
 
     beforeEach(() => {
         jest.resetAllMocks();
-        setupDeviceDataV2Types([]);
-        queryDeviceData.mockResolvedValue({ deviceDataPoints: [] });
-        queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [] });
-
-        (fitbitTotalSleepMinutesDataProvider as jest.Mock).mockClear();
-        (garminTotalSleepMinutesDataProvider as jest.Mock).mockClear();
-        (ouraSleepMinutesDataProvider as jest.Mock).mockClear();
-        (healthConnectTotalSleepMinutesDataProvider as jest.Mock).mockClear();
     });
 
-    function setupDataCollectionSettings(
-        options: Partial<typeof defaultSettings> = {}
-    ) {
-        getDataCollectionSettings.mockResolvedValue({
-            ...defaultSettings,
-            ...options
-        });
-    }
+    it('Should return an empty result when no providers are enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
 
-    function setupDeviceDataV2Types(
-        types: Array<{ namespace: string; type: string }> = []
-    ) {
-        getDeviceDataV2AllDataTypes.mockResolvedValue(types);
-    }
+        setupCombinedDataCollectionSettings(true, combinedSettings);
 
-    function setupProviderData() {
-        (fitbitTotalSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
-            "2023-01-01": 540,
-            "2023-01-02": 412
-        });
-
-        (garminTotalSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
-            "2023-01-01": 510,
-            "2023-01-02": 533
-        });
-
-        (ouraSleepMinutesDataProvider as jest.Mock).mockResolvedValue({
-            "2023-01-02": 433,
-            "2023-01-03": 417
-        });
-
-        (
-            healthConnectTotalSleepMinutesDataProvider as jest.Mock
-        ).mockResolvedValue({
-            "2023-01-01": 560,
-            "2023-01-02": 480,
-            "2023-01-03": 530
-        });
-    }
-
-    it("should return an empty object if no providers are enabled", async () => {
-        setupDataCollectionSettings();
-
-        const result = await combinedSleep(startDate, endDate);
-        expect(result).toEqual({});
-    });
-
-    it("should return the maximum sleep duration for each day from all available providers", async () => {
-        setupProviderData();
-
-        setupDataCollectionSettings({
-            fitbitEnabled: true,
-            garminEnabled: true,
-            ouraEnabled: true,
-            healthConnectEnabled: true
-        });
-
-        setupDeviceDataV2Types([
-            { namespace: "HealthConnect", type: "sleep" },
-            { namespace: "Oura", type: "sleep" }
-        ]);
-
-        const result = await combinedSleep(startDate, endDate);
-
-        expect(result).toEqual({
-            "2023-01-01": 560, // Health Connect provides higher value
-            "2023-01-02": 533, // Garmin still has highest value
-            "2023-01-03": 530 // Health Connect provides higher value than Oura
-        });
-
-        expect(fitbitTotalSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(garminTotalSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(ouraSleepMinutesDataProvider).toHaveBeenCalled();
-        expect(healthConnectTotalSleepMinutesDataProvider).toHaveBeenCalled();
-    });
-
-    it("should return an empty object if ouraEnabled, but device data v2 type sleep not available", async () => {
-        setupDataCollectionSettings({
-            ouraEnabled: true
-        });
-
-        // Setup device data v2 types without Oura sleep
-        setupDeviceDataV2Types([
-            { namespace: "Oura", type: "other-type" },
-            { namespace: "HealthConnect", type: "sleep" }
-        ]);
-
-        const result = await combinedSleep(startDate, endDate);
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
 
         expect(result).toEqual({});
-        expect(ouraSleepMinutesDataProvider).not.toHaveBeenCalled();
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return an empty result when providers are enabled, but not the correct data types.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.settings.ouraEnabled = true;
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toEqual({});
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Fitbit result when enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.fitbitEnabled = true;
+
+        const fitbitResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(fitbitTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(fitbitResult);
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Garmin result when enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.garminEnabled = true;
+
+        const garminResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(garminTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, garminResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(garminResult);
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Apple Health result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'AppleHealth', type: 'SleepAnalysisInterval' }
+        );
+
+        const appleHealthResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(appleHealthSleepDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(appleHealthResult);
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Health Connect result when fully enabled and included.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'HealthConnect', type: 'sleep', enabled: true }
+        );
+
+        const healthConnectResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(healthConnectTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(healthConnectResult);
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Oura result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'Oura', type: 'sleep', enabled: true }
+        );
+
+        const ouraResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(ouraSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(ouraResult);
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return a combined rounded-average-value result when multiple sources are fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.fitbitEnabled = true;
+        combinedSettings.settings.garminEnabled = true;
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.settings.queryableDeviceDataTypes.push(
+            { namespace: 'AppleHealth', type: 'SleepAnalysisInterval' }
+        );
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'HealthConnect', type: 'sleep', enabled: true },
+            { namespace: 'Oura', type: 'sleep', enabled: true }
+        );
+
+        const fitbitResult = createMockResult();
+        const garminResult = createMockResult();
+        const appleHealthResult = createMockResult();
+        const healthConnectResult = createMockResult();
+        const ouraResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(fitbitTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
+        setupDailyDataProvider(garminTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, garminResult);
+        setupDailyDataProvider(appleHealthSleepDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+        setupDailyDataProvider(healthConnectTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
+        setupDailyDataProvider(ouraSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
+        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, ouraResult], sampleResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(sampleResult);
     });
 });
