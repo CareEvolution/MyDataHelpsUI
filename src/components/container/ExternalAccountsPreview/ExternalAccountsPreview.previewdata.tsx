@@ -1,4 +1,4 @@
-import { ExternalAccount } from "@careevolution/mydatahelps-js";
+import { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 import { add } from 'date-fns';
 
 export var previewAccounts: ExternalAccount[] =
@@ -12,7 +12,7 @@ export var previewAccounts: ExternalAccount[] =
                 "name": "Cedars-Sinai Health System",
                 "category": "Provider",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-            }
+            } as ExternalAccountProvider
     }, {
         id: 2,
         lastRefreshDate: add(new Date(), {hours: -8}).toISOString(),
@@ -23,7 +23,7 @@ export var previewAccounts: ExternalAccount[] =
                 "name": "CareEvolution FHIR",
                 "category": "Provider",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo"
-            }
+            } as ExternalAccountProvider
     }, {
         id: 3,
         lastRefreshDate: add(new Date(), {hours: -2}).toISOString(),
@@ -34,7 +34,7 @@ export var previewAccounts: ExternalAccount[] =
                 "name": "CMS Sandbox",
                 "category": "Health Plan",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/17/logo"
-            }
+            } as ExternalAccountProvider
     }, {
         id: 4,
         lastRefreshDate: add(new Date(), {hours: -3}).toISOString(),
@@ -45,5 +45,5 @@ export var previewAccounts: ExternalAccount[] =
                 "name": "Fitbit Staging",
                 "category": "Device Manufacturer",
                 "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo"
-            }
+            } as ExternalAccountProvider
     }];

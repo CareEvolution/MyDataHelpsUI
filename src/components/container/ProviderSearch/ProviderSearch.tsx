@@ -86,13 +86,13 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             }).catch(function (error) {
                 console.error("Error fetching external account providers", error);
                 setSearching(false);
-            });;
+            });
         }
         else {
             const url = new URL(props.publicProviderSearchApiUrl);
             url.searchParams.append('keyword', search);
             url.searchParams.append('pageSize', String(pageSize));
-            url.searchParams.append('pageNumber', String(currentPage));
+            url.searchParams.append('pageNumber', String(currentPage + 1));
             fetch(url.toString(), {
                 method: "GET",
                 headers: { "Accept": "application/json" },

@@ -25,6 +25,8 @@
 }
 
 .mdhui-action .title {
+    display: flex;
+    align-items: center;
     font-size: 1em;
     font-weight: bold;
 }
@@ -32,6 +34,7 @@
 .mdhui-action .subtitle {
     font-size: .88em;
     color: var(--mdhui-text-color-2);
+    margin-top: var(--mdhui-padding-xxs);
 }
 
 .mdhui-action .indicator {

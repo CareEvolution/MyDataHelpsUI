@@ -6,6 +6,8 @@ import { Grid, GridProps } from "./Grid";
 import DailyDataGoal from "../../container/DailyDataGoal/DailyDataGoal";
 import { DailyDataType } from "../../../helpers";
 import MicroTrend from "../../container/MicroTrend/MicroTrend";
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default {
     title: "Presentational/Grid",
@@ -20,7 +22,6 @@ const render = (args: GridProps) => <Layout colorScheme='auto'>
         <Grid {...args} />
     </Card>
 </Layout>;
-
 
 let defaultProps: GridProps = {
     children: <>
@@ -108,51 +109,51 @@ export const DailyDataGoals = {
 let trendGrid: GridProps = {
     children: <>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend previewState="default" indicator={<FontAwesomeSvgIcon icon={faChevronRight} />} chartPosition="bottom" dataType={{
                 dailyDataType: DailyDataType.Steps,
                 color: "rgba(255, 166, 102, 1)"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend previewState="default" chartPosition="bottom" dataType={{
                 dailyDataType: DailyDataType.SleepMinutes,
                 color: "rgba(74, 144, 226, 1)"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend previewState="default" chartPosition="responsive" dataType={{
                 label: "Air Quality",
                 dailyDataType: DailyDataType.HomeAirQuality,
                 color: "rgb(53, 166, 160)"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend previewState="default" chartPosition="responsive" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend previewState="default" chartPosition="right" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
         </Grid.Column>
         {/* Preview state not specified on purpose to ensure the grid collapses correctly */}
         <Grid.Column span={6} variant="card">
-            <MicroTrend dataType={{
+            <MicroTrend chartPosition="right" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend dataType={{
+            <MicroTrend chartPosition="right" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
         </Grid.Column>
         <Grid.Column span={6} variant="card">
-            <MicroTrend previewState="default" dataType={{
+            <MicroTrend chartPosition="right" indicator={<FontAwesomeSvgIcon icon={faChevronRight} />} previewState="default" dataType={{
                 dailyDataType: DailyDataType.RestingHeartRate,
                 color: "#e35c33"
             }} />
