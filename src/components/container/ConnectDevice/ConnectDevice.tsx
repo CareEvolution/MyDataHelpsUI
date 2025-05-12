@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { faExclamationTriangle, faCheckCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
@@ -54,7 +54,7 @@ export default function (props: ConnectDeviceProps) {
 					category: "Device Manufacturer",
 					id: props.providerID,
 					logoUrl: ""
-				}
+				} as ExternalAccountProvider
 			});
 			setLoading(false);
 			return;

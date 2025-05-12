@@ -1,4 +1,4 @@
-import { DataCollectionSettings, ExternalAccount, HealthConnectStatus, ParticipantInfo } from "@careevolution/mydatahelps-js";
+import { DataCollectionSettings, ExternalAccount, ExternalAccountProvider, HealthConnectStatus, ParticipantInfo } from "@careevolution/mydatahelps-js";
 import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 
 export const previewAccounts:ExternalAccount[] = [
@@ -10,7 +10,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getFitbitProviderID(),
                 name: "Fitbit",
                 logoUrl: "",
-            },
+            } as ExternalAccountProvider,
             status: "fetchingData"
         },
         {
@@ -21,7 +21,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getGarminProviderID(),
                 name: "Garmin",
                 logoUrl: "",
-            },
+            } as ExternalAccountProvider,
             status: "unauthorized"
         },
         {
@@ -32,7 +32,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getDexcomProviderID(),
                 name: "Dexcom",
                 logoUrl: "",
-            },
+            } as ExternalAccountProvider,
             status: "fetchComplete"
         },
         {
@@ -43,7 +43,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getOmronProviderID(),
                 name: "Omron",
                 logoUrl: "",
-            },
+            } as ExternalAccountProvider,
             status: "fetchComplete"
         },
         {
@@ -54,7 +54,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getOuraProviderID(),
                 name: "Oura",
                 logoUrl: "",
-            },
+            } as ExternalAccountProvider,
             status: "fetchComplete"
         }
     ];
