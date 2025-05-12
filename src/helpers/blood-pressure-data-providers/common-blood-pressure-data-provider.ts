@@ -15,11 +15,9 @@ export function buildBloodPressureDataPoints(
         const bpDataPoint = bpDataPointCache[cacheKey] ?? { date: parseISOWithoutOffset(dataPoint.observationDate!), systolic: 0, diastolic: 0 };
         bpDataPointCache[cacheKey] = bpDataPoint;
 
-        // @ts-ignore
         if (dataPoint.type === systolicType) {
             bpDataPoint.systolic = parseInt(dataPoint.value);
-        } else if (// @ts-ignore
-            dataPoint.type === diastolicType) {
+        } else if (dataPoint.type === diastolicType) {
             bpDataPoint.diastolic = parseInt(dataPoint.value);
         }
 
