@@ -12,6 +12,10 @@ export interface LatestBloodPressureReadingProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
+/**
+ * This component will load the participant's most recent blood pressure reading from across all
+ * available device data sources and render it using a BloodPressureReading component.
+ */
 export default function LatestBloodPressureReading(props: LatestBloodPressureReadingProps) {
     const [reading, setReading] = useState<BloodPressureDataPoint>();
 

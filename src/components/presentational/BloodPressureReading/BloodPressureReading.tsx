@@ -16,6 +16,9 @@ export interface BloodPressureReadingProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
+/**
+ * This component can be used to render a single blood pressure reading.
+ */
 export default function BloodPressureReading(props: BloodPressureReadingProps) {
 
     let classification: BloodPressureClassification = 'normal';
