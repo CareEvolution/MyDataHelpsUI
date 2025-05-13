@@ -241,17 +241,22 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             }
                             {!linkedExternalAccounts[provider.id] && provider.enabled === false &&
                                 <div className="provider-status connected-status">
-                                    {provider.managingOrganization 
-                                    ? language("provider-disabled-reason-with-managing-organization", undefined, { 
-                                        "provider": provider.name, 
-                                        "relatedProvider": provider.relatedProvider, 
-                                        "managingOrganization": provider.managingOrganization 
-                                        })
-                                    : language("provider-disabled-reason-without-managing-organization", undefined, { 
-                                        "provider": provider.name, 
-                                        "relatedProvider": provider.relatedProvider 
-                                        })
-                                    }
+                                    {(() => {
+                                        const params: { provider: string; relatedProvider?: string; managingOrganization?: string } = {
+                                            "provider": provider.name
+                                        };
+                                        if (provider.relatedProvider) {
+                                            params.relatedProvider = provider.relatedProvider;
+                                        }
+                                        if (provider.managingOrganization) {
+                                            params.managingOrganization = provider.managingOrganization;
+                                        }
+                                        const key = provider.managingOrganization 
+                                            ? "provider-disabled-reason-with-managing-organization" 
+                                            : "provider-disabled-reason-without-managing-organization";
+                                        
+                                        return language(key, undefined, params);
+                                    })()}
                                 </div>
                             }
                         </div>
