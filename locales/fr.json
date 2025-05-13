@@ -239,8 +239,7 @@
     "awake-time": "Temps Éveillé",
     "back": "Retour",
     "blood-type": "Groupe sanguin",
-    "bonus": "Prime"
-,
+    "bonus": "Prime",
     "bp-crisis": "Crise",
     "bp-elevated": "Élevé",
     "bp-low": "Bas",
@@ -440,6 +439,8 @@
     "procedure": "Procédure",
     "procedures": "Procédures",
     "procedures-title": "Procédures",
+    "provider-disabled-reason-with-managing-organization": "Vous avez déjà une connexion à {provider} via {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Vous avez déjà une connexion à {provider} via {relatedProvider}.",
     "received-dexcom-data": "Nous recevons vos données Dexcom !",
     "received-fitbit-data": "Nous recevons vos données Fitbit !",
     "received-garmin-data": "Nous recevons vos données Garmin !",

@@ -345,8 +345,7 @@
     "glucose-stats-steps-label": "Tallaabooyinka",
     "glucose-view-title": "Kormeerka Sonkorowga",
     "google-fit-share": "Taabo si aad u wadaagto xogta jirdhiska",
-    "health-connect-phr-sync-prompt": "Dooro diiwaannada caafimaadka ee laga akhriyo oo loo qoro Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Dooro diiwaannada caafimaadka ee laga akhriyo oo loo qoro Health Connect",
     "health-connect-phr-sync-title": "La xidhiidh Health Connect",
     "health-records": "Diiwaannada Caafimaadka",
     "heart-rate-range": "Xadka Garaaca Wadnaha",
@@ -440,6 +439,8 @@
     "procedure": "Hawlgal",
     "procedures": "Hawlgallada",
     "procedures-title": "Hawlgallada",
+    "provider-disabled-reason-with-managing-organization": "Waxaad horey ugu leedahay xiriir {provider} adoo maraya {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Waxaad horey ugu leedahay xiriir {provider} adoo maraya {relatedProvider}.",
     "received-dexcom-data": "Waxaan helaynnaa xogtaada Dexcom!",
     "received-fitbit-data": "Waxaan helaynnaa xogtaada Fitbit!",
     "received-garmin-data": "Waxaan helaynnaa xogtaada Garmin!",
