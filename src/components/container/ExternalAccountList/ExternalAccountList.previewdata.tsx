@@ -12,10 +12,7 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Cedars-Sinai Health System",
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
-            "enabled": true,
-            "managingOrganization": "",
-            "message": "",
-            "relatedProvider": ""
+            "enabled": true
         }
     }, {
         id: 2,
@@ -27,10 +24,7 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Kaiser Permanente",
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo",
-            "enabled": true,
-            "managingOrganization": "",
-            "message": "",
-            "relatedProvider": ""
+            "enabled": true
         }
     }, {
         id: 3,
@@ -42,10 +36,7 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Medicare / CMS",
             "category": "Health Plan",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/17/logo",
-            "enabled": true,
-            "managingOrganization": "",
-            "message": "",
-            "relatedProvider": ""
+            "enabled": true
         }
     }, {
         id: 4,
@@ -57,9 +48,6 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Fitbit",
             "category": "Device Manufacturer",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo",
-            "enabled": true,
-            "managingOrganization": "",
-            "message": "",
-            "relatedProvider": ""
+            "enabled": true
         }
     }];

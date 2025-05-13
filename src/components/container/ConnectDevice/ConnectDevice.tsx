@@ -54,10 +54,7 @@ export default function (props: ConnectDeviceProps) {
 					category: "Device Manufacturer",
 					id: props.providerID,
 					logoUrl: "",
-                    enabled: true,
-                    managingOrganization: "",
-                    message: "",
-                    relatedProvider: ""
+					enabled: true
 				}
 			});
 			setLoading(false);
