@@ -29,8 +29,7 @@
     "ai-assistant-suggestion-sleep-quality-change-month": "Como mudou a qualidade do meu sono no último mês?",
     "ai-assistant-suggestion-stand-ups-yesterday": "Quantas vezes se levantou ontem?",
     "ai-assistant-suggestion-weekly-workouts-average-month": "Quantos treinos por semana fiz em média este mês?",
-    "air-quality": "Qualidade do Ar"
-,
+    "air-quality": "Qualidade do Ar",
     "air-quality-home": "Qualidade do Ar (Casa)",
     "air-quality-work": "Qualidade do Ar (Trabalho)",
     "all-notifications": "Todas as Notificações",
@@ -440,6 +439,8 @@
     "procedure": "Procedimento",
     "procedures": "Procedimentos",
     "procedures-title": "Procedimentos",
+    "provider-disabled-reason-with-managing-organization": "Já tem uma ligação a {provider} através de {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Já tem uma ligação a {provider} através de {relatedProvider}.",
     "received-dexcom-data": "Estamos a receber os seus dados do Dexcom!",
     "received-fitbit-data": "Estamos a receber os seus dados do Fitbit!",
     "received-garmin-data": "Estamos a receber os seus dados do Garmin!",

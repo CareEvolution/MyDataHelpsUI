@@ -345,8 +345,7 @@
     "glucose-stats-steps-label": "Pași",
     "glucose-view-title": "Monitorizarea glicemiei",
     "google-fit-share": "Apasă pentru a partaja date fitness",
-    "health-connect-phr-sync-prompt": "Alege înregistrările de sănătate pentru a citi din și a scrie în Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Alege înregistrările de sănătate pentru a citi din și a scrie în Health Connect",
     "health-connect-phr-sync-title": "Sincronizare cu Health Connect",
     "health-records": "Înregistrări medicale",
     "heart-rate-range": "Interval ritm cardiac",
@@ -440,6 +439,8 @@
     "procedure": "Procedură",
     "procedures": "Proceduri",
     "procedures-title": "Proceduri",
+    "provider-disabled-reason-with-managing-organization": "Ai deja o conexiune cu {provider} prin {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Ai deja o conexiune cu {provider} prin {relatedProvider}.",
     "received-dexcom-data": "Primim datele tale Dexcom!",
     "received-fitbit-data": "Primim datele tale Fitbit!",
     "received-garmin-data": "Primim datele tale Garmin!",

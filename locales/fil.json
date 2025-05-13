@@ -345,8 +345,7 @@
     "glucose-stats-steps-label": "Mga Hakbang",
     "glucose-view-title": "Pagsubaybay ng Glucose",
     "google-fit-share": "I-tap upang magbahagi ng fitness data",
-    "health-connect-phr-sync-prompt": "Pumili ng mga rekord ng kalusugan na babasahin mula sa at isusulat sa Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Pumili ng mga rekord ng kalusugan na babasahin mula sa at isusulat sa Health Connect",
     "health-connect-phr-sync-title": "Mag-sync sa Health Connect",
     "health-records": "Mga Rekord ng Kalusugan",
     "heart-rate-range": "Saklaw ng Heart Rate",
@@ -440,6 +439,8 @@
     "procedure": "Procedure",
     "procedures": "Mga Procedure",
     "procedures-title": "Mga Procedure",
+    "provider-disabled-reason-with-managing-organization": "May koneksyon ka na sa {provider} sa pamamagitan ng {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "May koneksyon ka na sa {provider} sa pamamagitan ng {relatedProvider}.",
     "received-dexcom-data": "Natatanggap na namin ang iyong Dexcom data!",
     "received-fitbit-data": "Natatanggap na namin ang iyong Fitbit data!",
     "received-garmin-data": "Natatanggap na namin ang iyong Garmin data!",

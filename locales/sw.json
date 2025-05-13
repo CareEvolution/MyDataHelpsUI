@@ -345,8 +345,7 @@
     "glucose-stats-steps-label": "Hatua",
     "glucose-view-title": "Ufuatiliaji wa Sukari",
     "google-fit-share": "Gusa ili kushiriki data ya afya",
-    "health-connect-phr-sync-prompt": "Chagua rekodi za afya za kusoma kutoka na kuandika kwenye Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Chagua rekodi za afya za kusoma kutoka na kuandika kwenye Health Connect",
     "health-connect-phr-sync-title": "Unganisha na Health Connect",
     "health-records": "Rekodi za Afya",
     "heart-rate-range": "Kiwango cha Mapigo ya Moyo",
@@ -440,6 +439,8 @@
     "procedure": "Utaratibu",
     "procedures": "Taratibu",
     "procedures-title": "Taratibu",
+    "provider-disabled-reason-with-managing-organization": "Tayari una uhusiano na {provider} kupitia {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Tayari una uhusiano na {provider} kupitia {relatedProvider}.",
     "received-dexcom-data": "Tunapokea data yako ya Dexcom!",
     "received-fitbit-data": "Tunapokea data yako ya Fitbit!",
     "received-garmin-data": "Tunapokea data yako ya Garmin!",

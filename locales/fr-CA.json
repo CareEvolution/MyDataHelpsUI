@@ -345,8 +345,7 @@
     "glucose-stats-steps-label": "Pas",
     "glucose-view-title": "Surveillance de la glycémie",
     "google-fit-share": "Appuyez pour partager les données de condition physique",
-    "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire dans Health Connect"
-,
+    "health-connect-phr-sync-prompt": "Choisissez les dossiers de santé à lire et à écrire dans Health Connect",
     "health-connect-phr-sync-title": "Synchroniser avec Health Connect",
     "health-records": "Dossiers de santé",
     "heart-rate-range": "Plage de fréquence cardiaque",
@@ -440,6 +439,8 @@
     "procedure": "Procédure",
     "procedures": "Procédures",
     "procedures-title": "Procédures",
+    "provider-disabled-reason-with-managing-organization": "Vous avez déjà une connexion à {provider} par l'intermédiaire de {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Vous avez déjà une connexion à {provider} par l'intermédiaire de {relatedProvider}.",
     "received-dexcom-data": "Nous recevons vos données Dexcom!",
     "received-fitbit-data": "Nous recevons vos données Fitbit!",
     "received-garmin-data": "Nous recevons vos données Garmin!",
