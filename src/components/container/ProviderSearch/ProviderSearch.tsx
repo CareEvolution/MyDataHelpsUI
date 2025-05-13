@@ -239,7 +239,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
                             }
-                            {!linkedExternalAccounts[provider.id] && provider.enabled === false &&
+                            {!linkedExternalAccounts[provider.id] && !provider.enabled &&
                                 <div className="provider-status connected-status">
                                     {(() => {
                                         const params: { provider: string; relatedProvider?: string; managingOrganization?: string } = {
