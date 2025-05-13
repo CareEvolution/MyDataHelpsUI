@@ -1,6 +1,7 @@
 export { default as Action } from "./Action"
 export { default as ActivityMeter } from "./ActivityMeter"
 export { default as BasicBadge } from "./BasicBadge"
+export { default as BloodPressureReading, BloodPressureClassification } from "./BloodPressureReading"
 export { default as Button } from "./Button"
 export { default as Calendar } from "./Calendar"
 export { default as CalendarDay, CalendarDayStateConfiguration } from "./CalendarDay"
