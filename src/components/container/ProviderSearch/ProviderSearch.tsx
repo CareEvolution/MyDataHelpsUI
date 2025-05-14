@@ -224,7 +224,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => {
+                    <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
                             props.onProviderSelected(provider);
                         } else {
