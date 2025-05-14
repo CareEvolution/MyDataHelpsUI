@@ -442,6 +442,8 @@
     "procedure": "Procedură",
     "procedures": "Proceduri",
     "procedures-title": "Proceduri",
+    "provider-disabled-reason-with-managing-organization": "Ai deja o conexiune cu {provider} prin {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Ai deja o conexiune cu {provider} prin {relatedProvider}.",
     "received-dexcom-data": "Primim datele tale Dexcom!",
     "received-fitbit-data": "Primim datele tale Fitbit!",
     "received-garmin-data": "Primim datele tale Garmin!",

@@ -11,7 +11,8 @@ export var previewAccounts: ExternalAccount[] =
                 "id": 37,
                 "name": "Cedars-Sinai Health System",
                 "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
+                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
+                "enabled": true
             } as ExternalAccountProvider
     }, {
         id: 2,
@@ -22,7 +23,8 @@ export var previewAccounts: ExternalAccount[] =
                 "id": 1,
                 "name": "CareEvolution FHIR",
                 "category": "Provider",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo"
+                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo",
+                "enabled": true
             } as ExternalAccountProvider
     }, {
         id: 3,
@@ -33,7 +35,8 @@ export var previewAccounts: ExternalAccount[] =
                 "id": 17,
                 "name": "CMS Sandbox",
                 "category": "Health Plan",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/17/logo"
+                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/17/logo",
+                "enabled": true
             } as ExternalAccountProvider
     }, {
         id: 4,
@@ -44,6 +47,7 @@ export var previewAccounts: ExternalAccount[] =
                 "id": 2,
                 "name": "Fitbit Staging",
                 "category": "Device Manufacturer",
-                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo"
+                "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/2/logo",
+                "enabled": true
             } as ExternalAccountProvider
     }];

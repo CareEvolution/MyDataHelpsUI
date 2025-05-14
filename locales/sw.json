@@ -442,6 +442,8 @@
     "procedure": "Utaratibu",
     "procedures": "Taratibu",
     "procedures-title": "Taratibu",
+    "provider-disabled-reason-with-managing-organization": "Tayari una uhusiano na {provider} kupitia {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Tayari una uhusiano na {provider} kupitia {relatedProvider}.",
     "received-dexcom-data": "Tunapokea data yako ya Dexcom!",
     "received-fitbit-data": "Tunapokea data yako ya Fitbit!",
     "received-garmin-data": "Tunapokea data yako ya Garmin!",

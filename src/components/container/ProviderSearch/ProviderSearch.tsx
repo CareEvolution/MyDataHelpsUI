@@ -142,7 +142,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (provider.enabled && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
@@ -224,7 +224,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => {
+                    <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
                             props.onProviderSelected(provider);
                         } else {
@@ -238,6 +238,26 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
+                            }
+                            {!linkedExternalAccounts[provider.id] && !provider.enabled &&
+                                <div className="provider-status connected-status">
+                                    {(() => {
+                                        const params: { provider: string; relatedProvider?: string; managingOrganization?: string } = {
+                                            "provider": provider.name
+                                        };
+                                        if (provider.relatedProvider) {
+                                            params.relatedProvider = provider.relatedProvider;
+                                        }
+                                        if (provider.managingOrganization) {
+                                            params.managingOrganization = provider.managingOrganization;
+                                        }
+                                        const key = provider.managingOrganization 
+                                            ? "provider-disabled-reason-with-managing-organization" 
+                                            : "provider-disabled-reason-without-managing-organization";
+                                        
+                                        return language(key, undefined, params);
+                                    })()}
+                                </div>
                             }
                         </div>
                         {provider.logoUrl &&

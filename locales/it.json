@@ -240,8 +240,7 @@
     "awake-time": "Tempo Sveglio",
     "back": "Indietro",
     "blood-type": "Gruppo Sanguigno",
-    "bonus": "Premio"
-,
+    "bonus": "Premio",
     "bp-crisis": "Crisi",
     "bp-elevated": "Elevato",
     "bp-low": "Basso",
@@ -443,6 +442,8 @@
     "procedure": "Procedura",
     "procedures": "Procedure",
     "procedures-title": "Procedure",
+    "provider-disabled-reason-with-managing-organization": "Hai già una connessione con {provider} tramite {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Hai già una connessione con {provider} tramite {relatedProvider}.",
     "received-dexcom-data": "Stiamo ricevendo i tuoi dati Dexcom!",
     "received-fitbit-data": "Stiamo ricevendo i tuoi dati Fitbit!",
     "received-garmin-data": "Stiamo ricevendo i tuoi dati Garmin!",

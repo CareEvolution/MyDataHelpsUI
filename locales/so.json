@@ -442,6 +442,8 @@
     "procedure": "Hawlgal",
     "procedures": "Hawlgallada",
     "procedures-title": "Hawlgallada",
+    "provider-disabled-reason-with-managing-organization": "Waxaad horey ugu leedahay xiriir {provider} adoo maraya {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Waxaad horey ugu leedahay xiriir {provider} adoo maraya {relatedProvider}.",
     "received-dexcom-data": "Waxaan helaynnaa xogtaada Dexcom!",
     "received-fitbit-data": "Waxaan helaynnaa xogtaada Fitbit!",
     "received-garmin-data": "Waxaan helaynnaa xogtaada Garmin!",

@@ -442,6 +442,8 @@
     "procedure": "Thủ thuật",
     "procedures": "Các thủ thuật",
     "procedures-title": "Thủ tục",
+    "provider-disabled-reason-with-managing-organization": "Bạn đã có kết nối với {provider} qua {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "Bạn đã có kết nối với {provider} qua {relatedProvider}.",
     "received-dexcom-data": "Chúng tôi đang nhận dữ liệu Dexcom của bạn!",
     "received-fitbit-data": "Chúng tôi đang nhận dữ liệu Fitbit của bạn!",
     "received-garmin-data": "Chúng tôi đang nhận dữ liệu Garmin của bạn!",

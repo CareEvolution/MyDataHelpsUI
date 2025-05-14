@@ -53,7 +53,8 @@ export default function (props: ConnectDeviceProps) {
 					name: props.providerName,
 					category: "Device Manufacturer",
 					id: props.providerID,
-					logoUrl: ""
+					logoUrl: "",
+					enabled: true
 				} as ExternalAccountProvider
 			});
 			setLoading(false);

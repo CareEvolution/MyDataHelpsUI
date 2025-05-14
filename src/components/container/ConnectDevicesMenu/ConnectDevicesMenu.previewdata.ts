@@ -10,6 +10,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getFitbitProviderID(),
                 name: "Fitbit",
                 logoUrl: "",
+                enabled: true
             } as ExternalAccountProvider,
             status: "fetchingData"
         },
@@ -21,6 +22,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getGarminProviderID(),
                 name: "Garmin",
                 logoUrl: "",
+                enabled: true
             } as ExternalAccountProvider,
             status: "unauthorized"
         },
@@ -32,6 +34,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getDexcomProviderID(),
                 name: "Dexcom",
                 logoUrl: "",
+                enabled: true
             } as ExternalAccountProvider,
             status: "fetchComplete"
         },
@@ -43,6 +46,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getOmronProviderID(),
                 name: "Omron",
                 logoUrl: "",
+                enabled: true
             } as ExternalAccountProvider,
             status: "fetchComplete"
         },
@@ -54,6 +58,7 @@ export const previewAccounts:ExternalAccount[] = [
                 id: getOuraProviderID(),
                 name: "Oura",
                 logoUrl: "",
+                enabled: true
             } as ExternalAccountProvider,
             status: "fetchComplete"
         }

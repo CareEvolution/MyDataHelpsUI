@@ -442,6 +442,8 @@
     "procedure": "Procedure",
     "procedures": "Mga Procedure",
     "procedures-title": "Mga Procedure",
+    "provider-disabled-reason-with-managing-organization": "May koneksyon ka na sa {provider} sa pamamagitan ng {relatedProvider} ({managingOrganization}).",
+    "provider-disabled-reason-without-managing-organization": "May koneksyon ka na sa {provider} sa pamamagitan ng {relatedProvider}.",
     "received-dexcom-data": "Natatanggap na namin ang iyong Dexcom data!",
     "received-fitbit-data": "Natatanggap na namin ang iyong Fitbit data!",
     "received-garmin-data": "Natatanggap na namin ang iyong Garmin data!",
