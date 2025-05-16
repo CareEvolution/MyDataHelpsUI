@@ -153,6 +153,26 @@ export const lineChartWithGaps: Story = {
     ]
 };
 
+
+export const lineChartWithGapsDynamic: Story = {
+    args: {
+        title: "Line Chart with Gaps",
+        intervalType: "Dynamic",
+        chartType: "Line",
+        chartHasData: true,
+        expectedDataInterval: { days: 1 },
+        series: [{ dataKey: 'value' }],
+        data: undefined,
+        intervalStart: new Date(),
+        tooltip: tooltip
+    },
+    loaders: [
+        async () => ({
+            randomData: await getRandomDataWithGaps(new Date(), addDays(new Date(), 24)),
+        })
+    ]
+};
+
 export const lineChartsWithGapsAndTooltipSync: Story = {
     args: {
         title: "Line Charts Tooltip Syncing",

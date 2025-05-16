@@ -25,59 +25,68 @@ export interface SurveyAnswerAreaChartSeries extends AreaChartSeries {
 
 export interface SurveyAnswerChartProps {
     title?: string
-    intervalType?: "Week" | "Month" | "6Month"
+    intervalType?: "Week" | "Month" | "6Month" | "Dynamic"
     weekStartsOn?: WeekStartsOn
     series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[],
     chartType: "Line" | "Bar" | "Area"
-    options?: MultiSeriesLineChartOptions| MultiSeriesBarChartOptions,
+    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions,
     expectedDataInterval?: Duration,
     previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
     previewState?: "default"
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
+export default function SurveyAnswerChart(props: SurveyAnswerChartProps) {
     let [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer[][] | null>(null);
-    
+
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
     let intervalType = props.intervalType || "Month";
-    let intervalStart: Date;
-    
+    let intervalStart: Date | undefined;
+
     if (dateRangeContext) {
         intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
         intervalStart = dateRangeContext.intervalStart;
     }
     else {
-        intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
+        if (intervalType !== "Dynamic") {
+            intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
+        }
     }
-    
-    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
-                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
-                        : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
-                        intervalStart;
+
+    function getIntervalEnd() {
+        if (!intervalStart) {
+            return undefined
+        }
+        return intervalType === "Week" ? add(intervalStart, { days: 7 })
+            : intervalType === "Month" ? add(intervalStart, { months: 1 })
+                : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
+                    intervalStart;
+    }
+
+    let intervalEnd = getIntervalEnd();
+
     const loadCurrentInterval = () => {
         setSurveyAnswers(null);
         if (props.previewDataProvider) {
-            props.previewDataProvider(intervalStart, intervalEnd)
-            .then((data) => {
-                setSurveyAnswers(data);
-            });
+            props.previewDataProvider(intervalStart!, intervalEnd!)
+                .then((data) => {
+                    setSurveyAnswers(data);
+                });
             return;
-        }else if(!!props.previewState){
-            getDefaultPreviewData(intervalStart, intervalEnd, props.series, props.expectedDataInterval || { days: 1 }).then((data) => {
+        } else if (!!props.previewState) {
+            getDefaultPreviewData(props.series, props.expectedDataInterval || { days: 1 }, intervalStart, intervalEnd).then((data) => {
                 setSurveyAnswers(data);
             });
             return;
         }
 
         var dataRequests = props.series.map(l => {
-            var params: SurveyAnswersQuery = {
-                after: intervalStart.toISOString(),
-                before: intervalEnd.toISOString()
-            }
-            if(l.surveyName) params.surveyName = l.surveyName;
-            if(l.resultIdentifier) params.resultIdentifier = l.resultIdentifier;
-            if(l.stepIdentifier) params.stepIdentifier = l.stepIdentifier;
+            var params: SurveyAnswersQuery = {};
+            if (intervalStart) { params.after = intervalStart.toISOString() }
+            if (intervalEnd) { params.before = intervalEnd.toISOString() }
+            if (l.surveyName) params.surveyName = l.surveyName;
+            if (l.resultIdentifier) params.resultIdentifier = l.resultIdentifier;
+            if (l.stepIdentifier) params.stepIdentifier = l.stepIdentifier;
 
             return queryAllSurveyAnswers(params);
         });
@@ -85,26 +94,26 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             setSurveyAnswers(data);
         })
     }
-    
+
     function getDataKey(line: SurveyAnswerChartSeries | SurveyAnswerAreaChartSeries) {
         return `${line.surveyName}-${line.stepIdentifier}-${line.resultIdentifier}`;
     }
-    
+
     function processPages(pages: SurveyAnswer[][]) {
         var newDailyData: { [key: string]: SurveyAnswer[] } = {};
         for (var i = 0; i < props.series.length; i++) {
             newDailyData[getDataKey(props.series[i])] = pages[i]?.sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date))) || [];
         }
-        
+
         return newDailyData;
     }
-    
+
     useInitializeView(() => {
         loadCurrentInterval();
     }, [], [props.intervalType, props.weekStartsOn, dateRangeContext]);
 
     let currentData = processPages(surveyAnswers || []);
-    
+
     var data: any[] | undefined = undefined;
     var chartHasData: boolean = false;
     if (currentData !== null) {
@@ -113,9 +122,9 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
             var dataKey = getDataKey(series);
             currentData![dataKey].forEach((answer) => {
                 var answerDate = parseISO(answer.date);
-                answerDate.setHours(0,0,0,0);
+                answerDate.setHours(0, 0, 0, 0);
                 var dataDay = data!.find((d) => d.timestamp === answerDate.getTime());
-                if(!dataDay) {
+                if (!dataDay) {
                     dataDay = {
                         timestamp: answerDate.getTime()
                     }
@@ -127,26 +136,26 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
         });
         data.sort((a, b) => a.timestamp - b.timestamp);
     }
-    
+
     const GraphToolTip = ({ active, payload }: any) => {
         function getHeaderColor(p: any, index: number) {
             function getColorFromOptions(i: number, fieldName: string) {
                 var property = props.options ? (props.options as any)[fieldName] : null;
-                if(!!property){
+                if (!!property) {
                     if (Array.isArray(property)) {
                         return property[i];
                     }
                     return property;
                 }
-        
+
                 return "var(--mdhui-color-primary)";
-            }            
+            }
 
             return p.stroke || getColorFromOptions(index, 'barColor');
         }
 
         if (active && payload && payload.length) {
-            if(payload.length === 1){
+            if (payload.length === 1) {
                 return (
                     <div className="mdhui-time-series-tooltip">
                         <div className="mdhui-single-value-tooltip-value">
@@ -162,7 +171,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                         <tbody>
                             {payload.map((p: any, index: number) =>
                                 <tr key={p.dataKey}>
-                                    <th style={{ color: getHeaderColor(p,index) }}>{p.dataKey}</th>
+                                    <th style={{ color: getHeaderColor(p, index) }}>{p.dataKey}</th>
                                     <td>{formatNumberForLocale(parseFloat(p.value), 2)}</td>
                                 </tr>
                             )}
@@ -172,14 +181,14 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                 </div>
             );
         }
-
-        return null;
+        
+        return undefined;
     };
 
     return <TimeSeriesChart
         title={props.title}
         intervalType={intervalType}
-        intervalStart={intervalStart}
+        intervalStart={intervalStart ?? "Dynamic"}
         data={data}
         expectedDataInterval={props.expectedDataInterval}
         series={props.series.map(series => {
@@ -187,7 +196,7 @@ export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
                 dataKey: series.dataKey,
                 color: series.color
             };
-            if("areaColor" in series) {
+            if ("areaColor" in series) {
                 newSeries.areaColor = series.areaColor;
             }
 

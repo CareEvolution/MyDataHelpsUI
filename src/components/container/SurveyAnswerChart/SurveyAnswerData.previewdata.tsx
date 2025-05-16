@@ -23,16 +23,16 @@ export async function generateSurveyResponse(date: Date, resultIdentifier: strin
     };
 }
 
-export const getDefaultPreviewData = async(start: Date, end: Date, series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[], dataCadence: Duration) => {
+export const getDefaultPreviewData = async (series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[], dataCadence: Duration, start?: Date, end?: Date,) => {
     const standardData: SurveyAnswer[][] = [];
     series.forEach(s => standardData.push([]));
 
-    let currentDate = new Date(start);
-    while (currentDate < end) {
-        for(let i = 0; i < series.length; ++i){
-            var v = await generateSurveyResponse(currentDate, "TestResult"+i, "TestSurvey", 10, 100);
+    let currentDate = !start ? add(new Date(), { days: -35 }) : start;
+    let endDate = !end ? add(new Date(), { days: -10 }) : end;
+    while (currentDate < endDate) {
+        for (let i = 0; i < series.length; ++i) {
+            var v = await generateSurveyResponse(currentDate, "TestResult" + i, "TestSurvey", 10, 100);
             standardData[i].push(v);
-            
         };
         currentDate = add(currentDate, dataCadence);
     }

@@ -279,6 +279,7 @@ export const dailyPainBarSurvey = {
     },
     render: render
 };
+
 export const dailyPainAreaSurvey = {
     args: {
         title: "Daily Pain Area Survey",
@@ -294,6 +295,24 @@ export const dailyPainAreaSurvey = {
         previewDataProvider: (start: Date, end: Date) => {
             return Promise.resolve(getRandomPainData(start,end));
         }
+    },
+    render: render
+}
+
+
+export const dynamicPainAreaSurvey = {
+    args: {
+        title: "Daily Pain Area Survey",
+        options: {
+            yAxisOptions: {
+                domain: [0, 'auto']
+            }
+        },
+        intervalType: "Dynamic",
+        weekStartsOn: "6DaysAgo",
+        series: [{ dataKey: "Pain Level", surveyName: "Pain Survey", stepIdentifier: "PainToday", resultIdentifier: "PainToday" }],
+        chartType: "Area",
+        previewState: "default"
     },
     render: render
 }

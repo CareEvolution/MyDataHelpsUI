@@ -19,8 +19,8 @@ export interface TimeSeriesDataPoint {
 
 export interface TimeSeriesChartProps {
     title?: string;
-    intervalType?: "Week" | "Month" | "6Month" | "Day";
-    intervalStart: Date;
+    intervalType?: "Week" | "Month" | "6Month" | "Day" | "Dynamic";
+    intervalStart: Date | "Dynamic";
     data?: TimeSeriesDataPoint[];
     expectedDataInterval?: Duration;
     series: ChartSeries[] | AreaChartSeries[];
@@ -48,6 +48,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         } else if (intervalType === "6Month") {
             let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
             let dayLabel = currentDate.getDate().toString();
+            console.log(monthLabel, dayLabel);
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 24} textAnchor="middle" fontSize="12">{dayLabel}</text>
@@ -72,6 +73,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return <>
                 <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getShortTimeOfDayString(currentDate)}</text>
             </>;
+        } else if (intervalType === "Dynamic") {
+            let monthLabel = getAbbreviatedMonthName(currentDate);
+            let dayLabel = currentDate.getDate().toString();
+            let yearLabel = currentDate.getFullYear().toString();
+            return <>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor={value > props.data![0].timestamp ? "end" : "start"} fontSize="11">{monthLabel} {dayLabel}, {yearLabel}</text>
+            </>;
         }
         return <>
             <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>
@@ -79,7 +87,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     function getXAxisTicks() {
-        const startTime = new Date(props.intervalStart);
+        if(!props.data?.length) {
+            return [];
+        }
+
+        let startTime = new Date(props.intervalStart == "Dynamic" ? props.data![0].timestamp : props.intervalStart);
         startTime.setHours(0, 0, 0, 0);
 
         if (intervalType === "Week") {
@@ -111,6 +123,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return ticks;
         } else if (intervalType === "Day") {
             return Array.from({ length: 9 }, (_, i) => addHours(startTime, i * 3).getTime());
+        } else if (intervalType === "Dynamic") {
+            return [props.data![0].timestamp, props.data![props.data!.length - 1].timestamp];
         }
     }
 
