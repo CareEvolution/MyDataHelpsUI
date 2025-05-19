@@ -8,7 +8,7 @@
 }
 
 .mdhui-glucose-stats .mdhui-loading-indicator {
-    padding: 2px;
+    padding: 0;
     text-align: left;
 }
 
@@ -22,12 +22,12 @@
     font-size: 0.95em;
     font-weight: bold;
     color: var(--mdhui-text-color-0);
-    margin-bottom: 4px;
+    margin-bottom: 1px;
 }
 
 .mdhui-glucose-stat-value-not-available {
     font-size: 0.95em;
     font-weight: bold;
     color: var(--mdhui-text-color-2);
-    margin-bottom: 4px;
+    margin-bottom: 1px;
 }
