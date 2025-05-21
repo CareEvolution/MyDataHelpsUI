@@ -26,3 +26,4 @@ export * from './query-all-files';
 export * from './image';
 export * from './news-feed';
 export * from './regex';
+export * from './document-library';
