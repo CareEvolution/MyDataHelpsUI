@@ -1,0 +1,116 @@
+body:has(.mdhui-document-library-view) {
+    background: var(--mdhui-background-color-0);
+}
+
+.mdhui-navigation-bar.mdhui-document-library-view-nav-bar {
+    background: var(--mdhui-background-color-0);
+    margin-bottom: 0;
+}
+
+.mdhui-document-library-view {
+    padding: 16px;
+    border-top: 1px solid var(--mdhui-background-color-1);
+}
+
+.mdhui-document-library-view .mdhui-document-library-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 16px;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-title {
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+.mdhui-document-library-view .mdhui-document-library-subheader {
+    padding: 2px;
+    margin: 0 0 16px;
+}
+
+.mdhui-document-library-view .mdhui-document-library-subheader .mdhui-segmented-control {
+    background-color: var(--mdhui-background-color-1);
+    border-color: var(--mdhui-background-color-1);
+}
+
+.mdhui-document-library-view .mdhui-document-library-subheader .mdhui-segmented-control .mdhui-segment {
+    background-color: var(--mdhui-background-color-1);
+    border: 1px solid var(--mdhui-background-color-1);
+    color: var(--mdhui-text-color-0);
+}
+
+.mdhui-document-library-view .mdhui-document-library-subheader .mdhui-segmented-control .mdhui-segment-selected {
+    background-color: var(--mdhui-background-color-0);
+    border: 1px solid var(--mdhui-border-color-1);
+    color: var(--mdhui-text-color-0);
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-documents-empty {
+    color: var(--mdhui-text-color-3);
+    text-align: center;
+    margin: 32px 0;
+}
+
+.mdhui-document-library-view .mdhui-action.mdhui-document-library-view-document {
+    background: var(--mdhui-background-color-1);
+    border-radius: 10px;
+    margin: 16px 0;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-contents {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail {
+    height: 48px;
+    width: 48px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail-loading {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--mdhui-background-color-0);
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail > svg {
+    color: var(--mdhui-text-color-4);
+    height: 100%;
+    width: 100%;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+.mdhui-document-library-view .mdhui-document-library-view-document-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-date-and-type {
+    font-size: 0.7em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
