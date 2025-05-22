@@ -7,24 +7,24 @@ import { addDays } from "date-fns";
 
 const meta: Meta<typeof SingleNotification> = {
 	title:  "Presentational/SingleNotification",
-	component: SingleNotification,
-	parameters: {
+    component: SingleNotification,
+    parameters: {
 		layout: 'fullscreen'
-	}
+    }
 };
 
 export default meta;
 type Story = StoryObj<typeof SingleNotification>;
 
 const render = (args: SingleNotificationProps) => <Layout>
-    <Card>
-        <SingleNotification {...args} />
-    </Card>
+        <Card>
+            <SingleNotification {...args} />
+        </Card>
 </Layout>;
 
 export const Default: Story = {
-	args: {
-		notification: {
+    args: {
+        notification: {
             "id": "4",
             "identifier": "SurveyReminder",
             "sentDate": addDays(new Date(), -1).toISOString(),
@@ -36,6 +36,13 @@ export const Default: Story = {
             recipients: [],
             contentVersion: 1
         }
-	},
-	render: render
+    },
+    render: render
+};
+
+export const NoNotifications: Story = {
+    args: {
+        notification: null
+    },
+    render: render
 };
