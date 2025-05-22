@@ -14,7 +14,8 @@ export default {
 interface GlucoseChartStoryArgs extends GlucoseChartProps {
     colorScheme: 'auto' | 'light' | 'dark';
     state: GlucoseChartPreviewState | 'live';
-    withMeals: true;
+    withMeals: boolean;
+    clickable: boolean;
 }
 
 const render = (args: GlucoseChartStoryArgs) => {
@@ -23,13 +24,21 @@ const render = (args: GlucoseChartStoryArgs) => {
             <DateRangeTitle defaultMargin />
             {!args.withMeals &&
                 <Card>
-                    <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                    <GlucoseChart
+                        {...args}
+                        previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined}
+                        onClick={args.clickable ? noop : undefined}
+                    />
                 </Card>
             }
             {args.withMeals &&
                 <MealCoordinator previewState={args.state !== 'live' ? 'with data' : undefined}>
                     <Card>
-                        <GlucoseChart {...args} previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined} />
+                        <GlucoseChart
+                            {...args}
+                            previewState={args.state !== 'live' ? args.state as GlucoseChartPreviewState : undefined}
+                            onClick={args.clickable ? noop : undefined}
+                        />
                     </Card>
                     <Card>
                         <MealLog preview={true} showMealNumbers={true} highlightSelectedMeal={true} onEditMeal={noop} />
@@ -43,16 +52,26 @@ const render = (args: GlucoseChartStoryArgs) => {
 export const Default = {
     args: {
         colorScheme: 'auto',
+        variant: 'default',
         state: 'with data',
         withMeals: true,
         showStats: true,
-        averageGlucoseLineColor: undefined
+        clickable: false,
+        glucoseLineColor: undefined,
+        averageGlucoseLineColor: undefined,
+        emptyText: '',
+        hideIfNoData: false
     },
     argTypes: {
         colorScheme: {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'minimal']
         },
         state: {
             name: 'state',
@@ -65,9 +84,26 @@ export const Default = {
         showStats: {
             name: 'show stats'
         },
+        clickable: {
+            name: 'clickable'
+        },
+        glucoseLineColor: {
+            name: 'glucose line color',
+            control: 'color'
+        },
         averageGlucoseLineColor: {
             name: 'average glucose line color',
             control: 'color'
+        },
+        emptyText: {
+            name: 'empty text',
+            control: 'text',
+            mapping: {
+                '': undefined
+            }
+        },
+        hideIfNoData: {
+            name: 'hide if no data'
         }
     },
     render: render

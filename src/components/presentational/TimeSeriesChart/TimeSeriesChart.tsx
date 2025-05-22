@@ -182,7 +182,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
                     }
-                    <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    {!props.options?.gridOptions?.hide &&
+                        <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    }
                     <YAxis
                         tickFormatter={tickFormatter}
                         axisLine={false}
