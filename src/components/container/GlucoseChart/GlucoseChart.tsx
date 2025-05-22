@@ -152,8 +152,8 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
-    const minGlucose = glucose?.length && props.variant == 'minimal' ? Math.min(...glucose.map(r => r.value)) : 0;
-    const maxGlucose = glucose?.length && props.variant == 'minimal' ? Math.max(...glucose.map(r => r.value)) : 240;
+    const minGlucose = glucose?.length && props.variant === 'minimal' ? Math.min(...glucose.map(r => r.value)) : 0;
+    const maxGlucose = glucose?.length && props.variant === 'minimal' ? Math.max(...glucose.map(r => r.value)) : 240;
 
     const filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
     const maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
