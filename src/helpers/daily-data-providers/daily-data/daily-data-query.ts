@@ -5,8 +5,7 @@ import { add, endOfDay, Interval, isWithinInterval, startOfDay } from 'date-fns'
 import queryAllDeviceDataV2 from '../../query-all-device-data-v2';
 import { DailyData, DailyDataDateFunction, DailyDataV2 } from './daily-data-type';
 import { parseISOWithoutOffset } from '../../date-helpers';
-
-const self = module.exports as typeof import('./daily-data-query');
+import * as self from './daily-data-query';
 
 export async function queryForDailyData(
     namespace: DeviceDataNamespace,
