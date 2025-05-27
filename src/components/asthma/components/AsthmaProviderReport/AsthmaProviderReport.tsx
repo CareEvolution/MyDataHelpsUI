@@ -301,11 +301,8 @@ export default function (props: AsthmaProviderReportProps) {
                         {renderRow(54, 18)}
                         {renderRow(72, 18)}
                     </div>
-                    <div style={{ fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px' }}>
-                        {language('asthma-provider-report-explanation-part1')}
-                        <a href="https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma" target="_blank">EPR-3 guidelines</a>
-                        {language('asthma-provider-report-explanation-part2')}
-                    </div>
+                    <div style={{ fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px' }}
+                     dangerouslySetInnerHTML={{ __html: language('asthma-provider-report-explanation') }} />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', width: '100%', fontSize: '17px', marginBottom: '16px' }}>
                     <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
@@ -350,13 +347,8 @@ export default function (props: AsthmaProviderReportProps) {
                 </div>
                 <div style={{ position: 'absolute', bottom: 64, left: 48, right: 48, fontSize: '17px' }}>
                     <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>{language('asthma-provider-report-about-tool')}</div>
-                    <div style={{ marginBottom: '16px' }}>
-                        {language('asthma-provider-report-about-text-part1')}
-                        <a href="https://careevolution.com/mydatahelps/" target="_blank">MyDataHelps</a>
-                        {language('asthma-provider-report-about-text-part2')}
-                        <a href="https://pubmed.ncbi.nlm.nih.gov/26252889/" target="_blank">{language('asthma-provider-report-studies')}</a>
-                        {language('asthma-provider-report-about-text-part3')}
-                    </div>
+                    <div style={{ marginBottom: '16px' }}
+                        dangerouslySetInnerHTML={{ __html: language('asthma-provider-report-about-text') }} />
                     <div style={{ marginBottom: '16px' }}>
                         {language('asthma-provider-report-feedback-part1')}
                         <a href="mailto:asthma@careevolution.com" target="_blank">asthma@careevolution.com</a>
