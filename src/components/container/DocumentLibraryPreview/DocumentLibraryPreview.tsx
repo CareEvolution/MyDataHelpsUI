@@ -7,7 +7,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 export interface DocumentLibraryPreviewProps {
-    previewState: 'loading' | LibraryDocumentsPreviewState;
+    previewState?: 'loading' | LibraryDocumentsPreviewState;
     surveySpecification: LibraryDocumentSurveySpecification;
     documentLibraryViewBaseUrl: string;
     innerRef?: React.Ref<HTMLDivElement>;
