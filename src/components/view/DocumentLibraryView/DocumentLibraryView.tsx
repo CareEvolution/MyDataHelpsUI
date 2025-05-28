@@ -134,10 +134,25 @@ interface SingleLibraryDocumentProps {
 }
 
 function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
+    const [loading, setLoading] = useState<boolean>(!!props.document.fileUrl && !props.document.fileUrl.endsWith('.pdf'));
+
     return <Action className="mdhui-document-library-view-document" onClick={props.onClick}>
         <div className="mdhui-document-library-view-document-contents">
-            <div>
-                <FontAwesomeSvgIcon icon={faFileInvoice} className="mdhui-document-library-view-document-thumbnail" />
+            <div className="mdhui-document-library-view-document-thumbnail">
+                {(!props.document.fileUrl || props.document.fileUrl.endsWith('.pdf')) &&
+                    <FontAwesomeSvgIcon icon={faFileInvoice} />
+                }
+                {props.document.fileUrl && !props.document.fileUrl.endsWith('.pdf') &&
+                    <>
+                        {loading && <LoadingIndicator className="mdhui-document-library-view-document-thumbnail-loading" />}
+                        <img
+                            src={props.document.fileUrl}
+                            style={{ display: loading ? 'none' : 'inline' }}
+                            onLoad={() => setLoading(false)}
+                            alt="document thumbnail image"
+                        />
+                    </>
+                }
             </div>
             <div className="mdhui-document-library-view-document-details">
                 <div className="mdhui-document-library-view-document-name">{props.document.name}</div>

@@ -65,10 +65,30 @@ body:has(.mdhui-document-library-view) {
 }
 
 .mdhui-document-library-view .mdhui-document-library-view-document-thumbnail {
-    color: var(--mdhui-text-color-4);
     height: 48px;
     width: 48px;
+    border-radius: 5px;
+    overflow: hidden;
 }
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail-loading {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--mdhui-background-color-0);
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail > svg {
+    color: var(--mdhui-text-color-4);
+    height: 100%;
+    width: 100%;
+}
+
+.mdhui-document-library-view .mdhui-document-library-view-document-thumbnail > img {
+    height: 100%;
+    width: 100%;
+}
+
 
 .mdhui-document-library-view .mdhui-document-library-view-document-details {
     display: flex;
