@@ -16,7 +16,7 @@ export interface DocumentDetailViewProps {
 export default function DocumentDetailView(props: DocumentDetailViewProps) {
     const [platform, setPlatform] = useState<string>();
     const [document, setDocument] = useState<LibraryDocument>();
-    const [loadingPreview, setLoadingPreview] = useState<boolean>(false);
+    const [loadingPreview, setLoadingPreview] = useState<boolean>(true);
 
     const loadPlatform = async (): Promise<void> => {
         const deviceInfo = await MyDataHelps.getDeviceInfo();
@@ -44,7 +44,9 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
         createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification).then(document => {
             if (document) {
                 setDocument(document);
-                setLoadingPreview(!!document.fileUrl && !document.fileUrl.endsWith('.pdf'));
+                if (!document.fileUrl || document.fileUrl.endsWith('.pdf')) {
+                    setLoadingPreview(false);
+                }
             } else {
                 MyDataHelps.back();
             }
