@@ -107,6 +107,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
+            ticks.push(currentTick.getTime());
 
             return ticks;
         } else if (intervalType === "Day") {
