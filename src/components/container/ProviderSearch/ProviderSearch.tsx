@@ -117,7 +117,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         let newResults: ExternalAccountProvider[] = searchResults;
         if (searchStringRef.current === "" && props.featuredProviders) {
             newResults = newResults.concat(props.featuredProviders);
-            providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
+            providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id) && a.message !== UNAVAILABLE_PROVIDER_MESSAGE);
         }
         setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
     }
@@ -225,9 +225,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                 </div>
             </div>
             <div className="search-results">
-                {searchResults && searchResults
-                    .filter(provider => provider.message !== UNAVAILABLE_PROVIDER_MESSAGE )
-                    .map((provider) =>
+                {searchResults && searchResults.map((provider) =>
                     <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
                             props.onProviderSelected(provider);
