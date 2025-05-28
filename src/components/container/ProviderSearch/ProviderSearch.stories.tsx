@@ -308,7 +308,7 @@ export const DisabledWithoutManagingOrganization: Story = {
     render: render
 }
 
-export const DisabledWithoutManagingOrganizationAndNotVisible: Story = {
+export const DisabledWithoutManagingOrganizationAndMessageIsUnavailable: Story = {
     args: {
         previewState: "Default",
         featuredProviders: [
@@ -319,9 +319,8 @@ export const DisabledWithoutManagingOrganizationAndNotVisible: Story = {
                 "logoUrl": "https://example.com/logo2.png",
                 "enabled": false,
                 "managingOrganization": "",
-                "message": "",
+                "message": "Unavailable",
                 "relatedProvider": "Provider XYZ",
-                "hidden": true
             }
         ]
     },

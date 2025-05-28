@@ -9,6 +9,8 @@ import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTri
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
+const UNAVAILABLE_PROVIDER_MESSAGE = "Unavailable";
+
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
@@ -224,7 +226,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults
-                    .filter(provider => !provider.hidden )
+                    .filter(provider => provider.message !== UNAVAILABLE_PROVIDER_MESSAGE )
                     .map((provider) =>
                     <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
