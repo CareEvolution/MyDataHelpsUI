@@ -65,14 +65,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     };
 
     const onShare = async (): Promise<void> => {
-        if (props.previewState || !platform || !document?.fileUrl) return;
-
-        if (['Android', 'iOS'].includes(platform)) {
-            // @ts-ignore
-            window.webkit.messageHandlers.OpenFile.postMessage({ url: document.fileUrl });
-        } else {
-            MyDataHelps.openExternalUrl(document.fileUrl);
-        }
+        if (props.previewState || !document?.fileUrl) return;
+        MyDataHelps.openExternalUrl(document.fileUrl);
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
