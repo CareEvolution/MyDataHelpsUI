@@ -9,6 +9,8 @@ import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTri
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
+const UNAVAILABLE_PROVIDER_MESSAGE = "Unavailable";
+
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
@@ -117,7 +119,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             newResults = newResults.concat(props.featuredProviders);
             providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
         }
-        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
+        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE));
     }
 
     const debounce = (fn: Function, ms = 300) => {
