@@ -9,7 +9,7 @@ body:has(.mdhui-document-detail-view) {
 
 .mdhui-navigation-bar.mdhui-document-detail-view-nav-bar .mdhui-document-detail-view-nav-bar-icon {
     position: absolute;
-    top: 0;
+    top: calc(0px + env(safe-area-inset-top, 0px));
     right: 8px;
     bottom: 0;
     width: 48px;
