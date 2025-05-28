@@ -34,8 +34,6 @@ body:has(.mdhui-document-detail-view) {
     border-top: 1px solid var(--mdhui-border-color-2);
     border-bottom: 1px solid var(--mdhui-border-color-2);
     padding: 16px;
-    min-height: 30vh;
-    max-height: 50vh;
 }
 
 .mdhui-document-detail-view .mdhui-document-detail-view-preview {
@@ -46,19 +44,33 @@ body:has(.mdhui-document-detail-view) {
     padding: 16px;
     flex: 1;
     box-shadow: var(--mdhui-box-shadow-0);
-    min-width: 55vw;
     max-width: 80vw;
     cursor: pointer;
 }
 
+.mdhui-document-detail-view .mdhui-document-detail-view-preview-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 40vw;
+    padding: 16px;
+}
+
 .mdhui-document-detail-view .mdhui-document-detail-view-preview img {
-    width: 100%;
+    max-height: 50vh;
+    max-width: 100%;
 }
 
 .mdhui-document-detail-view .mdhui-document-detail-view-preview-unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 40vw;
+    padding: 16px;
     font-size: 0.8em;
     color: var(--mdhui-text-color-2);
-    text-align: center;
 }
 
 .mdhui-document-detail-view .mdhui-document-detail-view-preview-label {

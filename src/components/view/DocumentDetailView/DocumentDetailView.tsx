@@ -90,7 +90,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                 <>
                     <div className="mdhui-document-detail-view-preview-container">
                         <div className="mdhui-document-detail-view-preview" onClick={onShare}>
-                            {loadingPreview && <LoadingIndicator />}
+                            {loadingPreview && <LoadingIndicator className="mdhui-document-detail-view-preview-loading" />}
                             {document.fileUrl && !document.fileUrl.endsWith('.pdf') &&
                                 <img
                                     src={document.fileUrl}

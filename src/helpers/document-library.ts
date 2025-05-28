@@ -1,7 +1,7 @@
 import { add, formatISO } from 'date-fns';
 import queryAllSurveyAnswers from './query-all-survey-answers';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { formatDateForLocale } from "./locale";
+import { formatDateForLocale } from './locale';
 
 export interface LibraryDocument {
     surveyResultId: string;
