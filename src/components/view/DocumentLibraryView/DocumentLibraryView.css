@@ -87,6 +87,7 @@ body:has(.mdhui-document-library-view) {
 .mdhui-document-library-view .mdhui-document-library-view-document-thumbnail > img {
     height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 

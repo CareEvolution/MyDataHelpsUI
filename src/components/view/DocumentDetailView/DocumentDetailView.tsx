@@ -69,7 +69,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
         if (['Android', 'iOS'].includes(platform)) {
             // @ts-ignore
-            window.webkit.messageHandlers.OpenFile.postMessage({ 'url': document.fileUrl });
+            window.webkit.messageHandlers.OpenFile.postMessage({ url: document.fileUrl });
         } else {
             MyDataHelps.openExternalUrl(document.fileUrl);
         }
