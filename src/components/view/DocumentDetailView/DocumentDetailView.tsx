@@ -1,13 +1,16 @@
-import React, { CSSProperties, lazy, useEffect, useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import './DocumentDetailView.css';
 import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Button, Layout, LoadingIndicator, NavigationBar } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faArrowUpRightFromSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { Document, Page, pdfjs } from 'react-pdf';
 
-const Document = lazy(() => import('react-pdf').then(module => ({ default: module.Document })));
-const Page = lazy(() => import('react-pdf').then(module => ({ default: module.Page })));
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.mjs',
+    import.meta.url,
+).toString();
 
 export interface DocumentDetailViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
@@ -131,25 +134,10 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 }
 
 function PdfPreview(props: { url: string | undefined, style: CSSProperties, onLoad: () => void }) {
-    const [pdfReady, setPdfReady] = useState<boolean>(false);
     const [pageHeight, setPageHeight] = useState<number>();
     const [pageWidth, setPageWidth] = useState<number>();
 
-    useEffect(() => {
-        if (!props.url) return;
-
-        import('react-pdf').then(({ pdfjs }) => {
-            if (!pdfReady) {
-                pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-                    'pdfjs-dist/build/pdf.worker.min.mjs',
-                    import.meta.url
-                ).toString();
-                setPdfReady(true);
-            }
-        });
-    }, [props.url]);
-
-    if (!pdfReady) return null;
+    if (!props.url) return null;
 
     const maxHeight = window.innerHeight * 0.5;
     const maxWidth = window.innerWidth * 0.8;
