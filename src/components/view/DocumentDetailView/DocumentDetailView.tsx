@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './DocumentDetailView.css';
-import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, isImageLibraryDocument, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Button, Layout, LoadingIndicator, NavigationBar } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
@@ -16,7 +16,7 @@ export interface DocumentDetailViewProps {
 export default function DocumentDetailView(props: DocumentDetailViewProps) {
     const [platform, setPlatform] = useState<string>();
     const [document, setDocument] = useState<LibraryDocument>();
-    const [loadingPreview, setLoadingPreview] = useState<boolean>(true);
+    const [loadingPreview, setLoadingPreview] = useState<boolean>(false);
 
     const loadPlatform = async (): Promise<void> => {
         const deviceInfo = await MyDataHelps.getDeviceInfo();
@@ -41,12 +41,10 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             return;
         }
 
-        createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification).then(document => {
+        createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification, true).then(document => {
             if (document) {
                 setDocument(document);
-                if (!document.fileUrl || document.fileUrl.endsWith('.pdf')) {
-                    setLoadingPreview(false);
-                }
+                setLoadingPreview(isImageLibraryDocument(document));
             } else {
                 MyDataHelps.back();
             }
@@ -88,7 +86,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                     <div className="mdhui-document-detail-view-preview-container">
                         <div className="mdhui-document-detail-view-preview" onClick={onShare}>
                             {loadingPreview && <LoadingIndicator className="mdhui-document-detail-view-preview-loading" />}
-                            {document.fileUrl && !document.fileUrl.endsWith('.pdf') &&
+                            {isImageLibraryDocument(document) &&
                                 <img
                                     src={document.fileUrl}
                                     style={{ display: loadingPreview ? 'none' : 'inline' }}
@@ -96,7 +94,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                                     alt="document preview image"
                                 />
                             }
-                            {(!document.fileUrl || document.fileUrl.endsWith('.pdf')) &&
+                            {!isImageLibraryDocument(document) &&
                                 <div className="mdhui-document-detail-view-preview-unavailable">Preview unavailable</div>
                             }
                         </div>

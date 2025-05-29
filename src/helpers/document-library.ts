@@ -24,14 +24,14 @@ export interface LibraryDocumentSurveySpecification {
 }
 
 export interface AllLibraryDocumentsLoader {
-    load: (surveySpecification: LibraryDocumentSurveySpecification) => Promise<LibraryDocument[]>;
+    load: (surveySpecification: LibraryDocumentSurveySpecification, populateFileKeyAndUrl: boolean) => Promise<LibraryDocument[]>;
 }
 
 export type LibraryDocumentsPreviewState = 'no documents' | 'some documents';
 
 export function createAllLibraryDocumentsLoader(previewState?: LibraryDocumentsPreviewState): AllLibraryDocumentsLoader {
     return previewState ? createPreviewAllLibraryDocumentsLoader(previewState) : {
-        load: async (surveySpecification: LibraryDocumentSurveySpecification): Promise<LibraryDocument[]> => {
+        load: async (surveySpecification, populateFileKeyAndUrl) => {
             const surveyAnswers = await queryAllSurveyAnswers({
                 surveyName: surveySpecification.surveyName,
                 resultIdentifier: [
@@ -52,7 +52,7 @@ export function createAllLibraryDocumentsLoader(previewState?: LibraryDocumentsP
 
             const documents: LibraryDocument[] = [];
             for (const surveyResultAnswers of Object.values(surveyAnswersByResultId)) {
-                const document = await createLibraryDocumentFromSurveyAnswers(surveyResultAnswers, surveySpecification);
+                const document = await createLibraryDocumentFromSurveyAnswers(surveyResultAnswers, surveySpecification, populateFileKeyAndUrl);
                 if (document) {
                     documents.push(document);
                 }
@@ -64,12 +64,12 @@ export function createAllLibraryDocumentsLoader(previewState?: LibraryDocumentsP
 }
 
 export interface SingleLibraryDocumentLoader {
-    load: (surveyResultId: string, surveySpecification: LibraryDocumentSurveySpecification) => Promise<LibraryDocument | undefined>;
+    load: (surveyResultId: string, surveySpecification: LibraryDocumentSurveySpecification, populateFileKeyAndUrl: boolean) => Promise<LibraryDocument | undefined>;
 }
 
 export function createSingleLibraryDocumentLoader(preview?: boolean): SingleLibraryDocumentLoader {
     return preview ? createPreviewSingleLibraryDocumentLoader() : {
-        load: async (surveyResultId: string, surveySpecification: LibraryDocumentSurveySpecification): Promise<LibraryDocument | undefined> => {
+        load: async (surveyResultId, surveySpecification, populateFileKeyAndUrl) => {
             const surveyAnswers = await queryAllSurveyAnswers({
                 surveyResultID: surveyResultId,
                 resultIdentifier: [
@@ -80,7 +80,7 @@ export function createSingleLibraryDocumentLoader(preview?: boolean): SingleLibr
                     surveySpecification.notesResultIdentifier
                 ]
             });
-            return createLibraryDocumentFromSurveyAnswers(surveyAnswers, surveySpecification);
+            return createLibraryDocumentFromSurveyAnswers(surveyAnswers, surveySpecification, populateFileKeyAndUrl);
         }
     };
 }
@@ -112,7 +112,15 @@ export function formatLibraryDocumentDateAndType(document: LibraryDocument): str
     return dateAndType;
 }
 
-async function createLibraryDocumentFromSurveyAnswers(surveyAnswers: SurveyAnswer[], surveySpecification: LibraryDocumentSurveySpecification): Promise<LibraryDocument | undefined> {
+export function isImageLibraryDocument(document: LibraryDocument): boolean {
+    return !!document.fileUrl && !document.fileUrl.endsWith('.pdf');
+}
+
+async function createLibraryDocumentFromSurveyAnswers(
+    surveyAnswers: SurveyAnswer[],
+    surveySpecification: LibraryDocumentSurveySpecification,
+    populateFileKeyAndUrl: boolean
+): Promise<LibraryDocument | undefined> {
     const fileAnswer = surveyAnswers.find(sa => sa.resultIdentifier === surveySpecification.fileResultIdentifier);
     const nameAnswer = surveyAnswers.find(sa => sa.resultIdentifier === surveySpecification.nameResultIdentifier);
     if (!fileAnswer || !nameAnswer) return undefined;
@@ -122,7 +130,7 @@ async function createLibraryDocumentFromSurveyAnswers(surveyAnswers: SurveyAnswe
     const notesAnswer = surveyAnswers.find(sa => sa.resultIdentifier === surveySpecification.notesResultIdentifier);
 
     const surveyResultID = fileAnswer.surveyResultID as string;
-    const { fileKey, fileUrl } = await getFileKeyAndUrl(surveyResultID);
+    const { fileKey = undefined, fileUrl = undefined } = populateFileKeyAndUrl ? await getFileKeyAndUrl(surveyResultID) : {};
 
     return {
         surveyResultId: surveyResultID,

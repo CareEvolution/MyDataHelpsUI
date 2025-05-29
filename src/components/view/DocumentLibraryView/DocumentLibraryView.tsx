@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './DocumentLibraryView.css';
-import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, isImageLibraryDocument, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedControl } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -31,7 +31,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             setDocuments(undefined);
             return;
         }
-        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification).then(documents => {
+        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification, true).then(documents => {
             setDocuments(sortDocuments(documents));
             setLoading(false);
         });
@@ -110,7 +110,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             {loading &&
                 <LoadingIndicator />
             }
-            {!loading && documents?.length === 0 &&
+            {!loading && (!documents || documents.length === 0) &&
                 <div className="mdhui-document-library-view-documents-empty">No documents uploaded.</div>
             }
             {!loading && documents && documents.length > 0 &&
@@ -134,15 +134,12 @@ interface SingleLibraryDocumentProps {
 }
 
 function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
-    const [loading, setLoading] = useState<boolean>(!!props.document.fileUrl && !props.document.fileUrl.endsWith('.pdf'));
+    const [loading, setLoading] = useState<boolean>(isImageLibraryDocument(props.document));
 
     return <Action className="mdhui-document-library-view-document" onClick={props.onClick}>
         <div className="mdhui-document-library-view-document-contents">
             <div className="mdhui-document-library-view-document-thumbnail">
-                {(!props.document.fileUrl || props.document.fileUrl.endsWith('.pdf')) &&
-                    <FontAwesomeSvgIcon icon={faFileInvoice} />
-                }
-                {props.document.fileUrl && !props.document.fileUrl.endsWith('.pdf') &&
+                {isImageLibraryDocument(props.document) &&
                     <>
                         {loading && <LoadingIndicator className="mdhui-document-library-view-document-thumbnail-loading" />}
                         <img
@@ -152,6 +149,9 @@ function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
                             alt="document thumbnail image"
                         />
                     </>
+                }
+                {!isImageLibraryDocument(props.document) &&
+                    <FontAwesomeSvgIcon icon={faFileInvoice} />
                 }
             </div>
             <div className="mdhui-document-library-view-document-details">

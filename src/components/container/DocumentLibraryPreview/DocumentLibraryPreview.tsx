@@ -26,7 +26,7 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
             setDocuments(undefined);
             return;
         }
-        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification).then(documents => {
+        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification, false).then(documents => {
             setDocuments(documents.sort(createLibraryDocumentSorter('date', 'desc')));
         });
     }, [], [props.previewState]);
