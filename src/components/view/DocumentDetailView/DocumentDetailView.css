@@ -40,7 +40,7 @@ body:has(.mdhui-document-detail-view) {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--mdhui-background-color-0);
+    background: var(--mdhui-background-color-1);
     padding: 16px;
     flex: 1;
     box-shadow: var(--mdhui-box-shadow-0);

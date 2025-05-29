@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './DocumentLibraryView.css';
-import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, isImageLibraryDocument, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedControl } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -134,23 +134,21 @@ interface SingleLibraryDocumentProps {
 }
 
 function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
-    const [loading, setLoading] = useState<boolean>(isImageLibraryDocument(props.document));
+    const [loading, setLoading] = useState<boolean>(!!props.document.fileUrl && props.document.fileType === 'image');
 
     return <Action className="mdhui-document-library-view-document" onClick={props.onClick}>
         <div className="mdhui-document-library-view-document-contents">
             <div className="mdhui-document-library-view-document-thumbnail">
-                {isImageLibraryDocument(props.document) &&
-                    <>
-                        {loading && <LoadingIndicator className="mdhui-document-library-view-document-thumbnail-loading" />}
-                        <img
-                            src={props.document.fileUrl}
-                            style={{ display: loading ? 'none' : 'inline' }}
-                            onLoad={() => setLoading(false)}
-                            alt="document thumbnail image"
-                        />
-                    </>
+                {loading && <LoadingIndicator className="mdhui-document-library-view-document-thumbnail-loading" />}
+                {props.document.fileUrl && props.document.fileType === 'image' &&
+                    <img
+                        src={props.document.fileUrl}
+                        style={{ display: loading ? 'none' : 'inline' }}
+                        onLoad={() => setLoading(false)}
+                        alt="document thumbnail image"
+                    />
                 }
-                {!isImageLibraryDocument(props.document) &&
+                {!loading && (!props.document.fileUrl || props.document.fileType === 'pdf') &&
                     <FontAwesomeSvgIcon icon={faFileInvoice} />
                 }
             </div>

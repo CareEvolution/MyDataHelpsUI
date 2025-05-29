@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { CSSProperties, lazy, useEffect, useState } from 'react';
 import './DocumentDetailView.css';
-import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, isImageLibraryDocument, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Button, Layout, LoadingIndicator, NavigationBar } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faArrowUpRightFromSquare, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faArrowUpRightFromSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
+
+const Document = lazy(() => import('react-pdf').then(module => ({ default: module.Document })));
+const Page = lazy(() => import('react-pdf').then(module => ({ default: module.Page })));
 
 export interface DocumentDetailViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
@@ -44,7 +47,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
         createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification, true).then(document => {
             if (document) {
                 setDocument(document);
-                setLoadingPreview(isImageLibraryDocument(document));
+                setLoadingPreview(!!document.fileUrl);
             } else {
                 MyDataHelps.back();
             }
@@ -86,7 +89,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                     <div className="mdhui-document-detail-view-preview-container">
                         <div className="mdhui-document-detail-view-preview" onClick={onShare}>
                             {loadingPreview && <LoadingIndicator className="mdhui-document-detail-view-preview-loading" />}
-                            {isImageLibraryDocument(document) &&
+                            {document.fileUrl && document.fileType === 'image' &&
                                 <img
                                     src={document.fileUrl}
                                     style={{ display: loadingPreview ? 'none' : 'inline' }}
@@ -94,7 +97,14 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                                     alt="document preview image"
                                 />
                             }
-                            {!isImageLibraryDocument(document) &&
+                            {document.fileUrl && document.fileType === 'pdf' &&
+                                <PdfPreview
+                                    url={document.fileUrl}
+                                    style={{ display: loadingPreview ? 'none' : 'inline' }}
+                                    onLoad={() => setLoadingPreview(false)}
+                                />
+                            }
+                            {!loadingPreview && !document.fileUrl &&
                                 <div className="mdhui-document-detail-view-preview-unavailable">Preview unavailable</div>
                             }
                         </div>
@@ -118,4 +128,53 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             }
         </div>
     </Layout>;
+}
+
+function PdfPreview(props: { url: string | undefined, style: CSSProperties, onLoad: () => void }) {
+    const [pdfReady, setPdfReady] = useState<boolean>(false);
+    const [pageHeight, setPageHeight] = useState<number>();
+    const [pageWidth, setPageWidth] = useState<number>();
+
+    useEffect(() => {
+        if (!props.url) return;
+
+        import('react-pdf').then(({ pdfjs }) => {
+            if (!pdfReady) {
+                pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+                    'pdfjs-dist/build/pdf.worker.min.mjs',
+                    import.meta.url
+                ).toString();
+                setPdfReady(true);
+            }
+        });
+    }, [props.url]);
+
+    if (!pdfReady) return null;
+
+    const maxHeight = window.innerHeight * 0.5;
+    const maxWidth = window.innerWidth * 0.8;
+
+    const heightScale = pageHeight ? Math.min(maxHeight / pageHeight, 1) : 1;
+    const widthScale = pageWidth ? Math.min(maxWidth / pageWidth, 1) : 1;
+
+    const scale = Math.min(heightScale, widthScale);
+
+    return <div style={props.style}>
+        <Document file={props.url}>
+            <Page
+                pageNumber={1}
+                scale={scale}
+                onLoadSuccess={page => {
+                    if (!pageHeight) {
+                        setPageHeight(page.height);
+                        setPageWidth(page.width);
+                    } else {
+                        setTimeout(() => props.onLoad(), 2000);
+                    }
+                }}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+            />
+        </Document>
+    </div>;
 }

@@ -6,6 +6,7 @@ import { formatDateForLocale } from './locale';
 export interface LibraryDocument {
     surveyResultId: string;
     file: string;
+    fileType: 'image' | 'pdf';
     name: string;
     type?: string;
     date?: string;
@@ -112,10 +113,6 @@ export function formatLibraryDocumentDateAndType(document: LibraryDocument): str
     return dateAndType;
 }
 
-export function isImageLibraryDocument(document: LibraryDocument): boolean {
-    return !!document.fileUrl && !document.fileUrl.endsWith('.pdf');
-}
-
 async function createLibraryDocumentFromSurveyAnswers(
     surveyAnswers: SurveyAnswer[],
     surveySpecification: LibraryDocumentSurveySpecification,
@@ -135,6 +132,7 @@ async function createLibraryDocumentFromSurveyAnswers(
     return {
         surveyResultId: surveyResultID,
         file: fileAnswer.answers[0],
+        fileType: fileAnswer.answers[0].toLowerCase().endsWith('.pdf') ? 'pdf' : 'image',
         name: nameAnswer.answers[0],
         type: typeAnswer?.answers[0],
         date: dateAnswer?.answers[0],
@@ -159,13 +157,13 @@ function createPreviewAllLibraryDocumentsLoader(previewState: LibraryDocumentsPr
     const now = new Date();
 
     if (previewState === 'some documents') {
-        libraryDocuments.push(createPreviewLibraryDocument('vr_05022025.jpg', 'Vaccination Records', 'Other', add(now, { days: -7 })));
+        libraryDocuments.push(createPreviewLibraryDocument('vr_05022025.png', 'Vaccination Records', 'Other', add(now, { days: -7 })));
         libraryDocuments.push(createPreviewLibraryDocument('ic_050322025.pdf', 'Insurance Card', 'Insurance / Benefits', add(now, { days: -2 })));
-        libraryDocuments.push(createPreviewLibraryDocument('lr_03022025.jpg', 'Lab result', undefined, add(now, { days: -5 })));
-        libraryDocuments.push(createPreviewLibraryDocument('us_01162025.jpg', 'Ultrasound', 'Test Results', add(now, { days: -3 })));
-        libraryDocuments.push(createPreviewLibraryDocument('ds_08152024.jpg', 'Discharge Summary', 'Visit Summary', undefined));
-        libraryDocuments.push(createPreviewLibraryDocument('rl_06022024.jpg', 'Referral Letter', undefined, undefined));
-        libraryDocuments.push(createPreviewLibraryDocument('mh_02232025.jpg', 'Medication Help', 'Instructions', add(now, { days: -10 })));
+        libraryDocuments.push(createPreviewLibraryDocument('lr_03022025.png', 'Lab result', undefined, add(now, { days: -5 })));
+        libraryDocuments.push(createPreviewLibraryDocument('us_01162025.png', 'Ultrasound', 'Test Results', add(now, { days: -3 })));
+        libraryDocuments.push(createPreviewLibraryDocument('ds_08152024.png', 'Discharge Summary', 'Visit Summary', undefined));
+        libraryDocuments.push(createPreviewLibraryDocument('rl_06022024.png', 'Referral Letter', undefined, undefined));
+        libraryDocuments.push(createPreviewLibraryDocument('mh_02232025.png', 'Medication Help', 'Instructions', add(now, { days: -10 })));
     }
 
     return {
@@ -175,16 +173,20 @@ function createPreviewAllLibraryDocumentsLoader(previewState: LibraryDocumentsPr
 
 function createPreviewSingleLibraryDocumentLoader(): SingleLibraryDocumentLoader {
     return {
-        load: async () => createPreviewLibraryDocument('vr_05022025.jpg', 'Vaccination Records', 'Other', add(new Date(), { days: -7 }))
+        load: async () => createPreviewLibraryDocument('vr_05022025.png', 'Vaccination Records', 'Other', add(new Date(), { days: -7 }))
     };
 }
 
 function createPreviewLibraryDocument(file: string, name: string, type?: string, date?: Date): LibraryDocument {
+    const fileType = file.toLowerCase().endsWith('.pdf') ? 'pdf' : 'image';
     return {
         file: file,
+        fileType: fileType,
         name: name,
         type: type,
         date: date ? formatISO(date, { representation: 'date' }) : undefined,
-        fileUrl: 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png'
+        fileUrl: fileType === 'image'
+            ? 'https://assets.careevolutionapps.com/MDH-UI/grilled_cheese.png'
+            : 'https://assets.careevolutionapps.com/MDH-UI/grilled_cheese.pdf'
     } as LibraryDocument
 }
