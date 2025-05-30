@@ -360,3 +360,5 @@ storybook-static/
 **/.DS_Store
 
 *.orig
+
+.storybook/public/assets/pdf.worker.min.mjs
