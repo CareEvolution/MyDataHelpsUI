@@ -7,7 +7,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faArrowUpRightFromSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { Document, Page, pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerPort = new Worker('./assets/pdf.worker.min.js', { type: 'module' });
+pdfjs.GlobalWorkerOptions.workerPort = new Worker('/assets/pdf.worker.min.js', { type: 'module' });
 
 export interface DocumentDetailViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
