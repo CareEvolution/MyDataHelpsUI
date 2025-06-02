@@ -119,7 +119,18 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             newResults = newResults.concat(props.featuredProviders);
             providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
         }
-        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE));
+        const updatedSearchResults = newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE);
+
+        // HACK: Temporarily default all provider enabled flags to true when they have not been set by the API.
+        // This should remain while the API is not setting the enabled flag.
+        // This should also remain until any hard coded featured provider lists are updated to include the enabled flag.
+        updatedSearchResults.forEach(provider => {
+            if (provider.enabled === undefined) {
+                provider.enabled = true;
+            }
+        });
+
+        setSearchResults(updatedSearchResults);
     }
 
     const debounce = (fn: Function, ms = 300) => {
