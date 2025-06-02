@@ -27,7 +27,7 @@ const RESTING_HEART_RATE_SOURCES = sources(
     ["AppleHealth", "RestingHeartRate"],
     ["Fitbit", "RestingHeartRate"],
     ["Garmin", "Daily"],
-    ["Oura", "heart-rate", true],
+    ["Oura", "sleep", true],
     ["HealthConnect", "resting-heart-rate", true]
 );
 
