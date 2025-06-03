@@ -31,11 +31,12 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     };
 
     const updateDocuments = (loadedDocuments: LibraryDocument[]): void => {
-        if (documents) {
-            const existingSurveyResultIds = documents.map(document => document.surveyResultId);
-            loadedDocuments = loadedDocuments.filter(document => !existingSurveyResultIds.includes(document.surveyResultId));
-        }
-        setDocuments(sortDocuments(loadedDocuments));
+        const existingDocumentsBySurveyResultId = (documents ?? []).reduce((existingDocumentsBySurveyResultId, document) => {
+            existingDocumentsBySurveyResultId[document.surveyResultId] = document;
+            return existingDocumentsBySurveyResultId;
+        }, {} as Record<string, LibraryDocument>);
+        const updatedDocuments = loadedDocuments.map(document => existingDocumentsBySurveyResultId[document.surveyResultId] ?? document);
+        setDocuments(sortDocuments(updatedDocuments));
     };
 
     useInitializeView(() => {
