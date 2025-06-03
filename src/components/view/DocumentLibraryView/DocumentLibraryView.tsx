@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './DocumentLibraryView.css';
 import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, language, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedControl } from '../../presentational';
@@ -24,20 +24,23 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     const [selectedSortKey, setSelectedSortKey] = useState<keyof LibraryDocument>('date');
     const [selectedSortDirection, setSelectedSortDirection] = useState<'asc' | 'desc'>('desc');
 
+    const documentsRef = useRef<LibraryDocument[]>();
+
     const sortDocuments = (documents: LibraryDocument[]): LibraryDocument[] => {
         if (selectedSortKey === 'type') return [...documents].sort(createLibraryDocumentSorter('type', selectedSortDirection));
         if (selectedSortKey === 'name') return [...documents].sort(createLibraryDocumentSorter('name', selectedSortDirection));
         return [...documents].sort(createLibraryDocumentSorter('date', selectedSortDirection));
     };
 
-    const updateDocuments = (newDocuments: LibraryDocument[]): void => {
-        if (documents) {
-            const newSurveyResultIds = newDocuments.map(document => document.surveyResultId);
-            if (documents.length === newSurveyResultIds.length && documents.every(document => newSurveyResultIds.includes(document.surveyResultId))) {
+    const updateDocuments = (documents: LibraryDocument[]): void => {
+        const existingDocuments = documentsRef.current;
+        if (existingDocuments) {
+            const newSurveyResultIds = documents.map(document => document.surveyResultId);
+            if (existingDocuments.length === newSurveyResultIds.length && existingDocuments.every(document => newSurveyResultIds.includes(document.surveyResultId))) {
                 return;
             }
         }
-        setDocuments(sortDocuments(newDocuments));
+        setDocuments(sortDocuments(documents));
     };
 
     useInitializeView(() => {
@@ -51,6 +54,10 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             setLoading(false);
         });
     }, [], [props.previewState]);
+
+    useEffect(() => {
+        documentsRef.current = documents;
+    }, [documents]);
 
     useEffect(() => {
         if (documents) {
