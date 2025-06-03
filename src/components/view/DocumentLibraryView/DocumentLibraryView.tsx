@@ -5,6 +5,7 @@ import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedContr
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
+import { PdfPreview } from '../../container';
 
 export interface DocumentLibraryViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
@@ -134,7 +135,7 @@ interface SingleLibraryDocumentProps {
 }
 
 function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
-    const [loading, setLoading] = useState<boolean>(!!props.document.fileUrl && props.document.fileType === 'image');
+    const [loading, setLoading] = useState<boolean>(!!props.document.fileUrl);
 
     return <Action className="mdhui-document-library-view-document" onClick={props.onClick}>
         <div className="mdhui-document-library-view-document-contents">
@@ -148,7 +149,16 @@ function SingleLibraryDocument(props: SingleLibraryDocumentProps) {
                         alt="document thumbnail image"
                     />
                 }
-                {!loading && (!props.document.fileUrl || props.document.fileType === 'pdf') &&
+                {props.document.fileUrl && props.document.fileType === 'pdf' &&
+                    <PdfPreview
+                        url={props.document.fileUrl}
+                        style={{ display: loading ? 'none' : 'inline' }}
+                        maxHeight={48}
+                        maxWidth={48}
+                        onLoad={() => setLoading(false)}
+                    />
+                }
+                {!loading && !props.document.fileUrl &&
                     <FontAwesomeSvgIcon icon={faFileInvoice} />
                 }
             </div>

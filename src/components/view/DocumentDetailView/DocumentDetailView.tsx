@@ -1,13 +1,11 @@
-import React, { CSSProperties, useState } from 'react';
+import React, { useState } from 'react';
 import './DocumentDetailView.css';
 import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Button, Layout, LoadingIndicator, NavigationBar } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faArrowUpRightFromSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
-import { Document, Page, pdfjs } from 'react-pdf';
-
-pdfjs.GlobalWorkerOptions.workerPort = new Worker('/assets/pdf.worker.min.js', { type: 'module' });
+import { PdfPreview } from '../../container';
 
 export interface DocumentDetailViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
@@ -101,6 +99,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                                 <PdfPreview
                                     url={document.fileUrl}
                                     style={{ display: loadingPreview ? 'none' : 'inline' }}
+                                    maxHeight={window.innerHeight * 0.5}
+                                    maxWidth={window.innerWidth * 0.8}
                                     onLoad={() => setLoadingPreview(false)}
                                 />
                             }
@@ -128,38 +128,4 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             }
         </div>
     </Layout>;
-}
-
-function PdfPreview(props: { url: string | undefined, style: CSSProperties, onLoad: () => void }) {
-    const [pageHeight, setPageHeight] = useState<number>();
-    const [pageWidth, setPageWidth] = useState<number>();
-
-    if (!props.url) return null;
-
-    const maxHeight = window.innerHeight * 0.5;
-    const maxWidth = window.innerWidth * 0.8;
-
-    const heightScale = pageHeight ? Math.min(maxHeight / pageHeight, 1) : 1;
-    const widthScale = pageWidth ? Math.min(maxWidth / pageWidth, 1) : 1;
-
-    const scale = Math.min(heightScale, widthScale);
-
-    return <div style={props.style}>
-        <Document file={props.url}>
-            <Page
-                pageNumber={1}
-                scale={scale}
-                onLoadSuccess={page => {
-                    if (!pageHeight) {
-                        setPageHeight(page.height);
-                        setPageWidth(page.width);
-                    } else {
-                        setTimeout(() => props.onLoad(), 2000);
-                    }
-                }}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-            />
-        </Document>
-    </div>;
 }
