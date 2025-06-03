@@ -30,13 +30,14 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         return [...documents].sort(createLibraryDocumentSorter('date', selectedSortDirection));
     };
 
-    const updateDocuments = (loadedDocuments: LibraryDocument[]): void => {
-        const existingDocumentsBySurveyResultId = (documents ?? []).reduce((existingDocumentsBySurveyResultId, document) => {
-            existingDocumentsBySurveyResultId[document.surveyResultId] = document;
-            return existingDocumentsBySurveyResultId;
-        }, {} as Record<string, LibraryDocument>);
-        const updatedDocuments = loadedDocuments.map(document => existingDocumentsBySurveyResultId[document.surveyResultId] ?? document);
-        setDocuments(sortDocuments(updatedDocuments));
+    const updateDocuments = (newDocuments: LibraryDocument[]): void => {
+        if (documents) {
+            const newSurveyResultIds = newDocuments.map(document => document.surveyResultId);
+            if (documents.length === newSurveyResultIds.length && documents.every(document => newSurveyResultIds.includes(document.surveyResultId))) {
+                return;
+            }
+        }
+        setDocuments(sortDocuments(newDocuments));
     };
 
     useInitializeView(() => {
