@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './DocumentDetailView.css';
 import { createSingleLibraryDocumentLoader, formatLibraryDocumentDateAndType, language, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Button, Layout, LoadingIndicator, NavigationBar } from '../../presentational';
@@ -21,6 +21,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
     const [platform, setPlatform] = useState<string>();
     const [document, setDocument] = useState<LibraryDocument>();
     const [loadingPreview, setLoadingPreview] = useState<boolean>(false);
+
+    const documentRef = useRef<LibraryDocument>();
 
     const loadPlatform = async (): Promise<void> => {
         const deviceInfo = await MyDataHelps.getDeviceInfo();
@@ -46,14 +48,18 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
         }
 
         createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification, true).then(document => {
-            if (document) {
+            if (!document) {
+                MyDataHelps.back();
+            } else if (!documentRef.current) {
                 setDocument(document);
                 setLoadingPreview(!!document.fileUrl);
-            } else {
-                MyDataHelps.back();
             }
         });
     }, [], [props.previewState, platform]);
+
+    useEffect(() => {
+        documentRef.current = document;
+    }, [document]);
 
     const onDelete = async (): Promise<void> => {
         if (props.previewState || !document) return;

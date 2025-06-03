@@ -32,6 +32,7 @@ body:has(.mdhui-document-library-view) {
 .mdhui-document-library-view .mdhui-document-library-subheader .mdhui-segmented-control {
     background-color: var(--mdhui-background-color-1);
     border-color: var(--mdhui-background-color-1);
+    min-width: 200px;
 }
 
 .mdhui-document-library-view .mdhui-document-library-subheader .mdhui-segmented-control .mdhui-segment {
@@ -56,6 +57,7 @@ body:has(.mdhui-document-library-view) {
     background: var(--mdhui-background-color-1);
     border-radius: 10px;
     margin: 16px 0;
+    min-width: 200px;
 }
 
 .mdhui-document-library-view .mdhui-document-library-view-document-contents {
@@ -67,6 +69,7 @@ body:has(.mdhui-document-library-view) {
 .mdhui-document-library-view .mdhui-document-library-view-document-thumbnail {
     height: 48px;
     width: 48px;
+    min-width: 48px;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -94,7 +97,7 @@ body:has(.mdhui-document-library-view) {
 .mdhui-document-library-view .mdhui-document-library-view-document-details {
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    min-width: 48px;
 }
 
 .mdhui-document-library-view .mdhui-document-library-view-document-name {
