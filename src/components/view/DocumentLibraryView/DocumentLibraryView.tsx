@@ -30,6 +30,14 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         return [...documents].sort(createLibraryDocumentSorter('date', selectedSortDirection));
     };
 
+    const updateDocuments = (loadedDocuments: LibraryDocument[]): void => {
+        if (documents) {
+            const existingSurveyResultIds = documents.map(document => document.surveyResultId);
+            loadedDocuments = loadedDocuments.filter(document => !existingSurveyResultIds.includes(document.surveyResultId));
+        }
+        setDocuments(sortDocuments(loadedDocuments));
+    };
+
     useInitializeView(() => {
         if (props.previewState === 'loading') {
             setLoading(true);
@@ -37,7 +45,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
             return;
         }
         createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification, true).then(documents => {
-            setDocuments(sortDocuments(documents));
+            updateDocuments(documents);
             setLoading(false);
         });
     }, [], [props.previewState]);
