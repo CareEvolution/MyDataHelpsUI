@@ -33,14 +33,14 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     };
 
     const updateDocuments = (documents: LibraryDocument[]): void => {
-        const existingDocuments = documentsRef.current;
-        if (existingDocuments) {
-            const newSurveyResultIds = documents.map(document => document.surveyResultId);
-            if (existingDocuments.length === newSurveyResultIds.length && existingDocuments.every(document => newSurveyResultIds.includes(document.surveyResultId))) {
-                return;
-            }
-        }
-        setDocuments(sortDocuments(documents));
+        const existingDocumentsBySurveyResultId = (documentsRef.current ?? []).reduce((existingDocumentsBySurveyResultId, document) => {
+            existingDocumentsBySurveyResultId[document.surveyResultId] = document;
+            return existingDocumentsBySurveyResultId;
+        }, {} as Record<string, LibraryDocument>);
+
+        const updatedDocuments = documents.map(document => existingDocumentsBySurveyResultId[document.surveyResultId] ?? document);
+
+        setDocuments(sortDocuments(updatedDocuments));
     };
 
     useInitializeView(() => {
