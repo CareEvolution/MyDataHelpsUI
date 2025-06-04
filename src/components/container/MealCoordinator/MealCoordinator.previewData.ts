@@ -44,7 +44,7 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
         ];
 
         const imageUrls: { [key: string]: string } = {};
-        imageUrls[grilledCheeseMealId] = 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png';
+        imageUrls[grilledCheeseMealId] = 'https://assets.careevolutionapps.com/MDH-UI/grilled_cheese.png';
 
         return {
             allMeals: [
