@@ -26,7 +26,7 @@ export default function PdfPreview(props: PdfPreviewProps) {
 
     const scale = Math.min(heightScale, widthScale);
 
-    return <div style={props.style} ref={props.innerRef}>
+    return <div className="mdhui-pdf-preview" style={props.style} ref={props.innerRef}>
         <Document file={props.url}>
             <Page
                 pageNumber={1}

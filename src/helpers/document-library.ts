@@ -158,10 +158,10 @@ function createPreviewAllLibraryDocumentsLoader(previewState: LibraryDocumentsPr
 
     if (previewState === 'some documents') {
         libraryDocuments.push(createPreviewLibraryDocument('vr_05022025.png', 'Vaccination Records', 'Other', add(now, { days: -7 })));
-        libraryDocuments.push(createPreviewLibraryDocument('ic_050322025.pdf', 'Insurance Card', 'Insurance / Benefits', add(now, { days: -2 })));
+        libraryDocuments.push(createPreviewLibraryDocument('ic_05032025.pdf', 'Insurance Card', 'Insurance / Benefits', add(now, { days: -2 })));
         libraryDocuments.push(createPreviewLibraryDocument('lr_03022025.png', 'Lab result', undefined, add(now, { days: -5 })));
         libraryDocuments.push(createPreviewLibraryDocument('us_01162025.png', 'Ultrasound', 'Test Results', add(now, { days: -3 })));
-        libraryDocuments.push(createPreviewLibraryDocument('ds_08152024.png', 'Discharge Summary', 'Visit Summary', undefined));
+        libraryDocuments.push(createPreviewLibraryDocument('ds_08152024.pdf', 'Discharge Summary', 'Visit Summary', undefined));
         libraryDocuments.push(createPreviewLibraryDocument('rl_06022024.png', 'Referral Letter', undefined, undefined));
         libraryDocuments.push(createPreviewLibraryDocument('mh_02232025.png', 'Medication Help', 'Instructions', add(now, { days: -10 })));
     }
