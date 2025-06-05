@@ -4,7 +4,7 @@ import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLib
 import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedControl } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
+import { faFileInvoice, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { PdfPreview } from '../../container';
 import { createPreviewDocuments, DocumentLibraryViewPreviewState } from './DocumentLibraryView.previewData';
 
@@ -22,6 +22,7 @@ export interface DocumentLibraryViewProps {
 export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [documents, setDocuments] = useState<LibraryDocument[]>();
+    const [selectedDocument, setSelectedDocument] = useState<LibraryDocument>();
     const [selectedSortKey, setSelectedSortKey] = useState<keyof LibraryDocument>('date');
     const [selectedSortDirection, setSelectedSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -30,6 +31,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     const applyPreviewState = (previewState: 'loading' | 'reloading' | DocumentLibraryViewPreviewState): void => {
         setLoading(previewState === 'loading' || previewState === 'reloading');
         setDocuments(previewState !== 'loading' ? createPreviewDocuments(previewState !== 'reloading' ? previewState : 'some documents') : undefined);
+        setSelectedDocument(undefined);
     };
 
     const sortDocuments = (documents: LibraryDocument[]): LibraryDocument[] => {
@@ -59,6 +61,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
         createAllLibraryDocumentsLoader().load(props.surveySpecification, true).then(documents => {
             updateDocuments(documents);
             setLoading(false);
+            setSelectedDocument(undefined);
         });
     }, [], [props.previewState]);
 
@@ -96,6 +99,8 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
 
     const onViewDocument = (document: LibraryDocument): void => {
         if (props.previewState) return;
+
+        setSelectedDocument(document);
 
         const separator = props.documentDetailViewBaseUrl.includes('?') ? '&' : '?';
         const params = new URLSearchParams({ ...props.surveySpecification, surveyResultId: document.surveyResultId });
@@ -143,6 +148,7 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
                         <DocumentLibraryListItem
                             key={document.surveyResultId}
                             document={document}
+                            disabled={document === selectedDocument}
                             onClick={() => onViewDocument(document)}
                         />
                     )}
@@ -154,13 +160,24 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
 
 interface DocumentLibraryListItemProps {
     document: LibraryDocument;
+    disabled: boolean;
     onClick: () => void;
 }
 
 function DocumentLibraryListItem(props: DocumentLibraryListItemProps) {
     const [loadingThumbnail, setLoadingThumbnail] = useState<boolean>(!!props.document.fileUrl);
 
-    return <Action className="mdhui-document-library-view-document" onClick={props.onClick}>
+    const classNames = ['mdhui-document-library-view-document'];
+    if (props.disabled) {
+        classNames.push('mdhui-document-library-view-document-disabled');
+    }
+
+    return <Action
+        className={classNames.join(' ')}
+        onClick={!props.disabled ? props.onClick : undefined}
+        renderAs={props.disabled ? 'div' : undefined}
+        indicator={props.disabled ? <FontAwesomeSvgIcon icon={faRefresh} spin={true} /> : undefined}
+    >
         <div className="mdhui-document-library-view-document-contents">
             <div className="mdhui-document-library-view-document-thumbnail">
                 {loadingThumbnail && <LoadingIndicator className="mdhui-document-library-view-document-thumbnail-loading" />}

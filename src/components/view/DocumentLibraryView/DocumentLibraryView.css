@@ -65,6 +65,10 @@ body:has(.mdhui-document-library-view) {
     min-width: 200px;
 }
 
+.mdhui-document-library-view .mdhui-action.mdhui-document-library-view-document-disabled {
+    opacity: 0.5;
+}
+
 .mdhui-document-library-view .mdhui-document-library-view-document-contents {
     display: flex;
     align-items: center;
