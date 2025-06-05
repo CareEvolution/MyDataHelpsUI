@@ -29,7 +29,7 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no documents', 'some documents']
+            options: ['loading', 'reloading', 'no documents', 'some documents']
         },
         ...argTypesToHide(['surveySpecification', 'documentDetailViewBaseUrl'])
     }

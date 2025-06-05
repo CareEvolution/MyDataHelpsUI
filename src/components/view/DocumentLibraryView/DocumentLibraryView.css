@@ -47,6 +47,11 @@ body:has(.mdhui-document-library-view) {
     color: var(--mdhui-text-color-0);
 }
 
+.mdhui-document-library-view .mdhui-document-library-view-reloading-indicator {
+    font-size: 0.8em;
+    padding: 0;
+}
+
 .mdhui-document-library-view .mdhui-document-library-view-documents-empty {
     color: var(--mdhui-text-color-3);
     text-align: center;

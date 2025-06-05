@@ -18,7 +18,7 @@ type Story = StoryObj<DocumentDetailViewProps>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'loaded mobile'
+        previewState: 'image loaded on mobile'
     },
     argTypes: {
         colorScheme: {
@@ -29,7 +29,7 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading web', 'loading mobile', 'loaded web', 'loaded mobile']
+            options: ['loading', 'image loaded on web', 'image loaded on mobile', 'pdf loaded on web', 'pdf loaded on mobile']
         },
         ...argTypesToHide(['surveySpecification', 'surveyResultId'])
     }

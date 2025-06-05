@@ -1,12 +1,13 @@
-import { add, formatISO } from 'date-fns';
 import queryAllSurveyAnswers from './query-all-survey-answers';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { formatDateForLocale } from './locale';
 
+export type LibraryDocumentFileType = 'image' | 'pdf';
+
 export interface LibraryDocument {
     surveyResultId: string;
     file: string;
-    fileType: 'image' | 'pdf';
+    fileType: LibraryDocumentFileType;
     name: string;
     type?: string;
     date?: string;
@@ -28,10 +29,8 @@ export interface AllLibraryDocumentsLoader {
     load: (surveySpecification: LibraryDocumentSurveySpecification, populateFileKeyAndUrl: boolean) => Promise<LibraryDocument[]>;
 }
 
-export type LibraryDocumentsPreviewState = 'no documents' | 'some documents';
-
-export function createAllLibraryDocumentsLoader(previewState?: LibraryDocumentsPreviewState): AllLibraryDocumentsLoader {
-    return previewState ? createPreviewAllLibraryDocumentsLoader(previewState) : {
+export function createAllLibraryDocumentsLoader(): AllLibraryDocumentsLoader {
+    return {
         load: async (surveySpecification, populateFileKeyAndUrl) => {
             const surveyAnswers = await queryAllSurveyAnswers({
                 surveyName: surveySpecification.surveyName,
@@ -65,12 +64,12 @@ export function createAllLibraryDocumentsLoader(previewState?: LibraryDocumentsP
 }
 
 export interface SingleLibraryDocumentLoader {
-    load: (surveyResultId: string, surveySpecification: LibraryDocumentSurveySpecification, populateFileKeyAndUrl: boolean) => Promise<LibraryDocument | undefined>;
+    load: (surveyResultId: string, surveySpecification: LibraryDocumentSurveySpecification) => Promise<LibraryDocument | undefined>;
 }
 
-export function createSingleLibraryDocumentLoader(preview?: boolean): SingleLibraryDocumentLoader {
-    return preview ? createPreviewSingleLibraryDocumentLoader() : {
-        load: async (surveyResultId, surveySpecification, populateFileKeyAndUrl) => {
+export function createSingleLibraryDocumentLoader(): SingleLibraryDocumentLoader {
+    return {
+        load: async (surveyResultId, surveySpecification) => {
             const surveyAnswers = await queryAllSurveyAnswers({
                 surveyResultID: surveyResultId,
                 resultIdentifier: [
@@ -81,7 +80,7 @@ export function createSingleLibraryDocumentLoader(preview?: boolean): SingleLibr
                     surveySpecification.notesResultIdentifier
                 ]
             });
-            return createLibraryDocumentFromSurveyAnswers(surveyAnswers, surveySpecification, populateFileKeyAndUrl);
+            return createLibraryDocumentFromSurveyAnswers(surveyAnswers, surveySpecification, true);
         }
     };
 }
@@ -150,43 +149,4 @@ async function getFileKeyAndUrl(surveyResultID: string): Promise<{ fileKey?: str
         return { fileKey: fileKey, fileUrl: fileUrl };
     }
     return {};
-}
-
-function createPreviewAllLibraryDocumentsLoader(previewState: LibraryDocumentsPreviewState): AllLibraryDocumentsLoader {
-    const libraryDocuments: LibraryDocument[] = [];
-    const now = new Date();
-
-    if (previewState === 'some documents') {
-        libraryDocuments.push(createPreviewLibraryDocument('vr_05022025.png', 'Vaccination Records', 'Other', add(now, { days: -7 })));
-        libraryDocuments.push(createPreviewLibraryDocument('ic_05032025.pdf', 'Insurance Card', 'Insurance / Benefits', add(now, { days: -2 })));
-        libraryDocuments.push(createPreviewLibraryDocument('lr_03022025.png', 'Lab result', undefined, add(now, { days: -5 })));
-        libraryDocuments.push(createPreviewLibraryDocument('us_01162025.png', 'Ultrasound', 'Test Results', add(now, { days: -3 })));
-        libraryDocuments.push(createPreviewLibraryDocument('ds_08152024.pdf', 'Discharge Summary', 'Visit Summary', undefined));
-        libraryDocuments.push(createPreviewLibraryDocument('rl_06022024.png', 'Referral Letter', undefined, undefined));
-        libraryDocuments.push(createPreviewLibraryDocument('mh_02232025.png', 'Medication Help', 'Instructions', add(now, { days: -10 })));
-    }
-
-    return {
-        load: async () => libraryDocuments
-    };
-}
-
-function createPreviewSingleLibraryDocumentLoader(): SingleLibraryDocumentLoader {
-    return {
-        load: async () => createPreviewLibraryDocument('vr_05022025.png', 'Vaccination Records', 'Other', add(new Date(), { days: -7 }))
-    };
-}
-
-function createPreviewLibraryDocument(file: string, name: string, type?: string, date?: Date): LibraryDocument {
-    const fileType = file.toLowerCase().endsWith('.pdf') ? 'pdf' : 'image';
-    return {
-        file: file,
-        fileType: fileType,
-        name: name,
-        type: type,
-        date: date ? formatISO(date, { representation: 'date' }) : undefined,
-        fileUrl: fileType === 'image'
-            ? 'https://assets.careevolutionapps.com/MDH-UI/grilled_cheese.png'
-            : 'https://assets.careevolutionapps.com/MDH-UI/grilled_cheese.pdf'
-    } as LibraryDocument
 }

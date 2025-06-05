@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import './DocumentLibraryPreview.css';
-import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatNumberForLocale, language, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatNumberForLocale, language, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Action, Button } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { createPreviewDocuments, DocumentLibraryPreviewPreviewState } from './DocumentLibraryPreview.previewData';
 
 export interface DocumentLibraryPreviewProps {
-    previewState?: 'loading' | LibraryDocumentsPreviewState;
+    previewState?: 'loading' | DocumentLibraryPreviewPreviewState;
     surveySpecification: LibraryDocumentSurveySpecification;
     documentLibraryViewBaseUrl: string;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -20,12 +21,17 @@ export interface DocumentLibraryPreviewProps {
 export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProps) {
     const [documents, setDocuments] = useState<LibraryDocument[]>();
 
+    const applyPreviewState = (previewState: 'loading' | DocumentLibraryPreviewPreviewState): void => {
+        setDocuments(previewState !== 'loading' ? createPreviewDocuments(previewState) : undefined);
+    };
+
     useInitializeView(() => {
-        if (props.previewState === 'loading') {
-            setDocuments(undefined);
+        if (props.previewState) {
+            applyPreviewState(props.previewState);
             return;
         }
-        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification, false).then(documents => {
+
+        createAllLibraryDocumentsLoader().load(props.surveySpecification, false).then(documents => {
             setDocuments(documents.sort(createLibraryDocumentSorter('date', 'desc')));
         });
     }, [], [props.previewState]);

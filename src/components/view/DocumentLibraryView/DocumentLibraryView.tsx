@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './DocumentLibraryView.css';
-import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, language, LibraryDocument, LibraryDocumentsPreviewState, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
+import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatLibraryDocumentDateAndType, language, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
 import { Action, Button, Layout, LoadingIndicator, NavigationBar, SegmentedControl } from '../../presentational';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 import { PdfPreview } from '../../container';
+import { createPreviewDocuments, DocumentLibraryViewPreviewState } from './DocumentLibraryView.previewData';
 
 export interface DocumentLibraryViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
-    previewState?: 'loading' | LibraryDocumentsPreviewState;
+    previewState?: 'loading' | 'reloading' | DocumentLibraryViewPreviewState;
     surveySpecification: LibraryDocumentSurveySpecification;
     documentDetailViewBaseUrl: string;
 }
@@ -25,6 +26,11 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     const [selectedSortDirection, setSelectedSortDirection] = useState<'asc' | 'desc'>('desc');
 
     const documentsRef = useRef<LibraryDocument[]>();
+
+    const applyPreviewState = (previewState: 'loading' | 'reloading' | DocumentLibraryViewPreviewState): void => {
+        setLoading(previewState === 'loading' || previewState === 'reloading');
+        setDocuments(previewState !== 'loading' ? createPreviewDocuments(previewState !== 'reloading' ? previewState : 'some documents') : undefined);
+    };
 
     const sortDocuments = (documents: LibraryDocument[]): LibraryDocument[] => {
         if (selectedSortKey === 'type') return [...documents].sort(createLibraryDocumentSorter('type', selectedSortDirection));
@@ -44,12 +50,13 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
     };
 
     useInitializeView(() => {
-        if (props.previewState === 'loading') {
-            setLoading(true);
-            setDocuments(undefined);
+        if (props.previewState) {
+            applyPreviewState(props.previewState);
             return;
         }
-        createAllLibraryDocumentsLoader(props.previewState).load(props.surveySpecification, true).then(documents => {
+
+        setLoading(true);
+        createAllLibraryDocumentsLoader().load(props.surveySpecification, true).then(documents => {
             updateDocuments(documents);
             setLoading(false);
         });
@@ -121,13 +128,16 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
                     selectedSegment={selectedSortKey}
                 />
             </div>
-            {loading &&
+            {loading && !documents &&
                 <LoadingIndicator />
             }
-            {!loading && (!documents || documents.length === 0) &&
+            {loading && documents &&
+                <LoadingIndicator className="mdhui-document-library-view-reloading-indicator" />
+            }
+            {documents?.length === 0 &&
                 <div className="mdhui-document-library-view-documents-empty">{language('document-library-view-empty-text')}</div>
             }
-            {!loading && documents && documents.length > 0 &&
+            {documents && documents.length > 0 &&
                 <div className="mdhui-document-library-view-documents">
                     {documents.map(document =>
                         <DocumentLibraryListItem

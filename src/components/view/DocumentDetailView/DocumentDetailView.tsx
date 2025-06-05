@@ -6,10 +6,11 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faArrowUpRightFromSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { PdfPreview } from '../../container';
+import { createPreviewDocument, DocumentDetailViewPreviewState } from './DocumentDetailView.previewData';
 
 export interface DocumentDetailViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
-    previewState?: 'loading web' | 'loading mobile' | 'loaded web' | 'loaded mobile';
+    previewState?: 'loading' | DocumentDetailViewPreviewState;
     surveySpecification: LibraryDocumentSurveySpecification;
     surveyResultId: string;
 }
@@ -24,6 +25,18 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
     const documentRef = useRef<LibraryDocument>();
 
+    const applyPreviewState = (previewState: 'loading' | DocumentDetailViewPreviewState): void => {
+        const previewPlatform = previewState.endsWith('mobile') ? 'iOS' : 'Web';
+        if (platform !== previewPlatform) {
+            setPlatform(previewPlatform);
+            return;
+        }
+
+        const previewDocument = previewState === 'loading' ? undefined : createPreviewDocument(previewState);
+        setDocument(previewDocument);
+        setLoadingPreview(previewState !== 'loading' && document?.fileUrl !== previewDocument?.fileUrl);
+    };
+
     const loadPlatform = async (): Promise<void> => {
         const deviceInfo = await MyDataHelps.getDeviceInfo();
         setPlatform(deviceInfo.platform);
@@ -31,15 +44,8 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
     useInitializeView(() => {
         if (props.previewState) {
-            const previewPlatform = props.previewState.endsWith('web') ? 'Web' : 'iOS';
-            if (platform !== previewPlatform) {
-                setPlatform(previewPlatform);
-                return;
-            }
-            if (props.previewState?.startsWith('loading')) {
-                setDocument(undefined);
-                return;
-            }
+            applyPreviewState(props.previewState);
+            return;
         }
 
         if (!platform) {
@@ -47,7 +53,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
             return;
         }
 
-        createSingleLibraryDocumentLoader(!!props.previewState).load(props.surveyResultId, props.surveySpecification, true).then(document => {
+        createSingleLibraryDocumentLoader().load(props.surveyResultId, props.surveySpecification).then(document => {
             if (!document) {
                 MyDataHelps.back();
             } else if (!documentRef.current) {
