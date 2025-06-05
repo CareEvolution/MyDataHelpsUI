@@ -77,7 +77,6 @@ export default function DocumentLibraryView(props: DocumentLibraryViewProps) {
 
     const onUploadDocument = (): void => {
         if (props.previewState) return;
-        setLoading(true);
         MyDataHelps.startSurvey(props.surveySpecification.surveyName);
     };
 
