@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "ngày",
     "asthma-provider-report-days": "ngày",
     "asthma-provider-report-disclaimer": "Nếu bạn định chia sẻ báo cáo này với nhà cung cấp dịch vụ của mình, hãy lưu ý rằng các giao tiếp qua email, tin nhắn văn bản và các kênh khác có thể không an toàn vì chúng có thể được gửi đến địa chỉ sai hoặc bị chặn.",
-    "asthma-provider-report-explanation": "Kiểm soát hen suyễn được xác định dựa trên <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">hướng dẫn EPR-3</a> và bao gồm các triệu chứng, việc sử dụng ống hít cứu trợ, giới hạn hoạt động, và thức giấc vào ban đêm.",
+    "asthma-provider-report-explanation": "Công cụ số này dành cho bệnh nhân hen suyễn cho phép người dùng tạo mục nhập hàng ngày và tự báo cáo các triệu chứng, việc sử dụng ống hít cứu trợ và tác động đến hoạt động cũng như việc thức giấc ban đêm. Hình trên sử dụng các câu trả lời do người dùng tự báo cáo để đánh giá kiểm soát hen suyễn, dựa trên <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">hướng dẫn EPR-3</a>. Một ngày được coi là không kiểm soát nếu trong tuần trước (7 ngày) có hơn 2 ngày có triệu chứng hoặc sử dụng ống hít cứu trợ, hoặc do hen suyễn có ít nhất một lần thức giấc ban đêm hoặc giới hạn hoạt động được ghi nhận.",
     "asthma-provider-report-feedback": "Để cung cấp phản hồi về báo cáo hoặc công cụ này, vui lòng gửi email cho chúng tôi: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Tạo PDF",
     "asthma-provider-report-home": "Trang chủ",

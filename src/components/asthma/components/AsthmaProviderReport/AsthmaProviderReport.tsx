@@ -340,7 +340,6 @@ export default function (props: AsthmaProviderReportProps) {
                     <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
                         <div style={{ marginBottom: '8px', fontWeight: 700 }}>{language('asthma-provider-report-aqi-over-100')}</div>
                         {renderStat(language('asthma-provider-report-home'), highHomeAqiDays > 0 ? highHomeAqiDays : language('asthma-provider-report-none'), highHomeAqiDays === 1 ? language('asthma-provider-report-day') : highHomeAqiDays > 1 ? language('asthma-provider-report-days') : '')}
-                        {renderStat(language('asthma-provider-report-work'), highWorkAqiDays > 0 ? highWorkAqiDays : language('asthma-provider-report-none'), highWorkAqiDays === 1 ? language('asthma-provider-report-day') : highWorkAqiDays > 1 ? language('asthma-provider-report-days') : '')}
                         <div style={{ fontSize: '12px', marginTop: '12px' }}>{language('asthma-provider-report-source')}</div>
                         <div style={{ fontSize: '12px', marginTop: '12px' }}>Source: airnow.gov</div>
                     </div>
@@ -349,10 +348,8 @@ export default function (props: AsthmaProviderReportProps) {
                     <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>{language('asthma-provider-report-about-tool')}</div>
                     <div style={{ marginBottom: '16px' }}
                         dangerouslySetInnerHTML={{ __html: language('asthma-provider-report-about-text') }} />
-                    <div style={{ marginBottom: '16px' }}>
-                        {language('asthma-provider-report-feedback-part1')}
-                        <a href="mailto:asthma@careevolution.com" target="_blank">asthma@careevolution.com</a>
-                    </div>
+                    <div style={{ marginBottom: '16px' }} 
+                        dangerouslySetInnerHTML={{ __html: language('asthma-provider-report-feedback') }} />
                     <div style={{ marginBottom: '16px', height: '1px', backgroundColor: '#bdbdbd' }} />
                     <div>
                         {language('asthma-provider-report-disclaimer')}

@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "day",
     "asthma-provider-report-days": "days",
     "asthma-provider-report-disclaimer": "If you plan to share this report with your provider, be aware that communications over email, text, and other channels may not be secure because they can be sent to the wrong address or intercepted.",
-    "asthma-provider-report-explanation": "Asthma control is determined based on <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">EPR-3 guidelines</a> and takes into account symptoms, rescue inhaler use, activity limitations, and nighttime awakenings.",
+    "asthma-provider-report-explanation": "This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler and impact on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">EPR-3 guidelines</a>. A day is noted as not under control if in the prior week (7 days) there are more than 2 days of symptoms or rescue inhaler use or due to asthma 1 nighttime awakening or limitation in activity was recorded.",
     "asthma-provider-report-feedback": "To provide feedback on this report or tool, please e-mail us: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Generate PDF",
     "asthma-provider-report-home": "Home",

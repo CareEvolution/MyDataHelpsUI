@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "día",
     "asthma-provider-report-days": "días",
     "asthma-provider-report-disclaimer": "Si planea compartir este informe con su proveedor, tenga en cuenta que las comunicaciones por correo electrónico, mensajes de texto y otros canales pueden no ser seguros, ya que pueden enviarse a la dirección incorrecta o ser interceptados.",
-    "asthma-provider-report-explanation": "El control del asma se determina según las <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">guías EPR-3</a> y tiene en cuenta los síntomas, el uso del inhalador de rescate, las limitaciones en las actividades y los despertares nocturnos.",
+    "asthma-provider-report-explanation": "Esta herramienta digital para el asma, dirigida a pacientes, permite al usuario registrar diariamente sus síntomas, el uso del inhalador de rescate y el impacto en la actividad y los despertares nocturnos. La figura anterior utiliza las respuestas autoinformadas para evaluar el control del asma, basándose en las <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">guías EPR-3</a>. Se considera que un día no está bajo control si, en la semana anterior (7 días), hubo más de 2 días con síntomas o uso del inhalador de rescate, o si se registró un despertar nocturno o una limitación en la actividad debido al asma.",
     "asthma-provider-report-feedback": "Para enviar comentarios sobre este informe o herramienta, por favor escríbanos a: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Generar PDF",
     "asthma-provider-report-home": "Inicio",

@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "dia",
     "asthma-provider-report-days": "dias",
     "asthma-provider-report-disclaimer": "Se tenciona partilhar este relatório com o seu médico, esteja ciente de que as comunicações por e-mail, mensagem de texto e outros canais podem não ser seguras, pois podem ser enviadas para o endereço errado ou intercetadas.",
-    "asthma-provider-report-explanation": "O controlo da asma é determinado com base nas <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">diretrizes EPR-3</a> e tem em conta os sintomas, o uso do inalador de alívio, as limitações de atividade e os despertares noturnos.",
+    "asthma-provider-report-explanation": "Esta ferramenta digital para asma, dirigida ao paciente, permite ao utilizador criar um registo diário e auto-relatar os seus sintomas, a utilização do inalador de emergência e o impacto na atividade e nos despertares noturnos. A figura acima utiliza as respostas auto-relatadas para avaliar o controlo da asma, com base nas <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">diretrizes EPR-3</a>. Um dia é considerado como não controlado se, na semana anterior (7 dias), houve mais de 2 dias com sintomas ou utilização do inalador de emergência, ou se foi registado um despertar noturno ou limitação na atividade devido à asma.",
     "asthma-provider-report-feedback": "Para fornecer feedback sobre este relatório ou ferramenta, por favor envie-nos um e-mail para: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Gerar PDF",
     "asthma-provider-report-home": "Início",

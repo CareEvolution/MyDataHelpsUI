@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "siku",
     "asthma-provider-report-days": "siku",
     "asthma-provider-report-disclaimer": "Iwapo unapanga kushiriki ripoti hii na mtoa huduma wako, fahamu kuwa mawasiliano kupitia barua pepe, ujumbe mfupi, na njia zingine yanaweza kutokuwa salama kwa sababu yanaweza kutumwa kwa anwani isiyo sahihi au kuingiliwa.",
-    "asthma-provider-report-explanation": "Udhibiti wa pumu unakokotolewa kwa kuzingatia <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">miongozo ya EPR-3</a> na unazingatia dalili, matumizi ya pumzi ya dharura, mipaka ya shughuli, na kuamka usiku.",
+    "asthma-provider-report-explanation": "Chombo hiki cha kidijitali cha pumu kinachotumiwa na mgonjwa kinamruhusu mtumiaji kuunda rekodi ya kila siku na kujiripoti dalili, matumizi ya kiraka cha kuokoa, na athari kwa shughuli na kuamka usiku. Mchoro hapo juu unatumia majibu yaliyoripotiwa binafsi kutathmini udhibiti wa pumu, kulingana na <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">miongozo ya EPR-3</a>. Siku huchukuliwa kuwa haidhibitiwi ikiwa katika wiki iliyopita (siku 7) kuna zaidi ya siku 2 za dalili au matumizi ya kiraka cha kuokoa, au kutokana na pumu mtu kuamka usiku au kutoza shughuli zake.",
     "asthma-provider-report-feedback": "Kutoa maoni kuhusu ripoti au zana hii, tafadhali tutumie barua pepe: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Tengeneza PDF",
     "asthma-provider-report-home": "Mwanzo",

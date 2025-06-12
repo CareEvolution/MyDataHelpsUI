@@ -165,7 +165,7 @@
     "asthma-provider-report-day": "dzień",
     "asthma-provider-report-days": "dni",
     "asthma-provider-report-disclaimer": "Jeśli planujesz udostępnić ten raport swojemu lekarzowi, pamiętaj, że komunikacja przez e-mail, SMS i inne kanały może nie być bezpieczna, ponieważ mogą zostać wysłane na niewłaściwy adres lub przechwycone.",
-    "asthma-provider-report-explanation": "Kontrola astmy jest określana na podstawie <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">wytycznych EPR-3</a> i uwzględnia objawy, użycie inhalatora ratunkowego, ograniczenia aktywności oraz wybudzenia nocne.",
+    "asthma-provider-report-explanation": "To cyfrowe narzędzie do monitorowania astmy, przeznaczone dla pacjentów, umożliwia codzienne wpisy i samodzielne raportowanie objawów, użycia inhalatora ratunkowego oraz wpływu na aktywność i nocne przebudzenia. Powyższy wykres wykorzystuje zgłoszone przez pacjenta odpowiedzi do oceny kontroli astmy na podstawie <a href=\"https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma\" target=\"_blank\">wytycznych EPR-3</a>. Dzień uznaje się za niekontrolowany, jeśli w ciągu ostatnich 7 dni wystąpiły objawy lub użycie inhalatora ratunkowego przez więcej niż 2 dni albo jeśli odnotowano jedno nocne przebudzenie lub ograniczenie aktywności z powodu astmy.",
     "asthma-provider-report-feedback": "Aby przekazać opinię na temat tego raportu lub narzędzia, prosimy o e-mail na adres: <a href=\"mailto:asthma@careevolution.com\" target=\"_blank\">asthma@careevolution.com</a>",
     "asthma-provider-report-generate-pdf": "Generuj PDF",
     "asthma-provider-report-home": "Strona główna",
