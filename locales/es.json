@@ -1,6 +1,7 @@
 {
     "30-day-average": "Promedio de 30 días",
     "active-calories": "Calorías Activas",
+    "active-calories-burned": "Calorías activas quemadas",
     "active-energy-burned": "Energía Activa Quemada",
     "active-time": "Tiempo Activo",
     "add": "Agregar",
@@ -511,6 +512,7 @@
     "today": "Hoy",
     "todays-log": "Registro de hoy",
     "total-calories": "Calorías Totales",
+    "total-calories-burned": "Calorías totales quemadas",
     "total-stress-time": "Tiempo Total de Estrés",
     "treatments": "Tratamientos",
     "treatments-experiencing-previous": "¿Qué tratamientos hizo?",

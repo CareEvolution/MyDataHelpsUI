@@ -1,6 +1,7 @@
 {
     "30-day-average": "Gemiddelde van 30 dagen",
     "active-calories": "Actieve Calorieën",
+    "active-calories-burned": "Actieve verbrande calorieën",
     "active-energy-burned": "Verbruikte Actieve Energie",
     "active-time": "Actieve Tijd",
     "add": "Toevoegen",
@@ -511,6 +512,7 @@
     "today": "Vandaag",
     "todays-log": "Logboek van vandaag",
     "total-calories": "Totaal Calorieën",
+    "total-calories-burned": "Totaal verbrande calorieën",
     "total-stress-time": "Totale Stress Tijd",
     "treatments": "Behandelingen",
     "treatments-experiencing-previous": "Welke behandelingen heeft u uitgevoerd?",
