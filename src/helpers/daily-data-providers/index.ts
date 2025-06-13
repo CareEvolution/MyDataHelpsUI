@@ -77,6 +77,12 @@ export { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from 
 export { lightSleepMinutes as healthConnectLightSleepMinutesDataProvider } from "./health-connect-sleep";
 export { remSleepMinutes as healthConnectRemSleepMinutesDataProvider } from "./health-connect-sleep";
 export { deepSleepMinutes as healthConnectDeepSleepMinutesDataProvider } from "./health-connect-sleep";
+export { default as healthConnectStepsDataProvider } from "./health-connect-steps";
+export { default as healthConnectDistanceDataProvider } from "./health-connect-distance";
+export { default as healthConnectMaxHeartRateDataProvider } from "./health-connect-max-heart-rate";
+export { default as healthConnectMinHeartRateDataProvider } from "./health-connect-min-heart-rate";
+export { default as healthConnectActiveCaloriesBurnedDataProvider } from "./health-connect-active-calories-burned";
+export { default as healthConnectTotalCaloriesBurnedDataProvider } from "./health-connect-total-calories-burned";
 export { default as ouraStepsDataProvider } from './oura-daily-steps'
 export { default as ouraSleepMinutesDataProvider } from './oura-total-sleep'
 export { default as ouraRestingHeartRateDataProvider } from './oura-resting-heart-rate'
