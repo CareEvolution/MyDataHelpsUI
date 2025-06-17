@@ -1,5 +1,5 @@
 import React from "react";
-import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 import { add, isAfter } from "date-fns";
 import { parseISO } from "date-fns";
 import { useEffect, useState } from "react";
@@ -24,8 +24,9 @@ let previewStateAccounts: ExternalAccount[] = [{
         "id": 37,
         "name": "Cedars-Sinai Health System",
         "category": "Provider",
-        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-    }
+        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
+        "enabled": true,
+    } as ExternalAccountProvider
 }];
 
 export default function (props: ExternalAccountsLoadingIndicatorProps) {

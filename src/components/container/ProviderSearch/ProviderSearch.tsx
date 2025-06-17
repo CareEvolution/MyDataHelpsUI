@@ -9,6 +9,8 @@ import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTri
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
+const UNAVAILABLE_PROVIDER_MESSAGE = "Unavailable";
+
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
     providerCategories?: string[];
@@ -86,13 +88,13 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             }).catch(function (error) {
                 console.error("Error fetching external account providers", error);
                 setSearching(false);
-            });;
+            });
         }
         else {
             const url = new URL(props.publicProviderSearchApiUrl);
             url.searchParams.append('keyword', search);
             url.searchParams.append('pageSize', String(pageSize));
-            url.searchParams.append('pageNumber', String(currentPage));
+            url.searchParams.append('pageNumber', String(currentPage + 1));
             fetch(url.toString(), {
                 method: "GET",
                 headers: { "Accept": "application/json" },
@@ -117,7 +119,18 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             newResults = newResults.concat(props.featuredProviders);
             providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
         }
-        setSearchResults(newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1));
+        const updatedSearchResults = newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE);
+
+        // HACK: Temporarily default all provider enabled flags to true when they have not been set by the API.
+        // This should remain while the API is not setting the enabled flag.
+        // This should also remain until any hard coded featured provider lists are updated to include the enabled flag.
+        updatedSearchResults.forEach(provider => {
+            if (provider.enabled === undefined) {
+                provider.enabled = true;
+            }
+        });
+
+        setSearchResults(updatedSearchResults);
     }
 
     const debounce = (fn: Function, ms = 300) => {
@@ -142,7 +155,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function connectToProvider(provider: ExternalAccountProvider) {
         const providerID = provider.id;
-        if (!props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
+        if (provider.enabled && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
             MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
                 .then(function () {
                     if (props.onProviderConnected) {
@@ -224,7 +237,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className="provider" onClick={() => {
+                    <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
                             props.onProviderSelected(provider);
                         } else {
@@ -238,6 +251,26 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             }
                             {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
                                 <div className="provider-status connected-status">{language("connected")}</div>
+                            }
+                            {!linkedExternalAccounts[provider.id] && !provider.enabled &&
+                                <div className="provider-status connected-status">
+                                    {(() => {
+                                        const params: { provider: string; relatedProvider?: string; managingOrganization?: string } = {
+                                            "provider": provider.name
+                                        };
+                                        if (provider.relatedProvider) {
+                                            params.relatedProvider = provider.relatedProvider;
+                                        }
+                                        if (provider.managingOrganization) {
+                                            params.managingOrganization = provider.managingOrganization;
+                                        }
+                                        const key = provider.managingOrganization 
+                                            ? "provider-disabled-reason-with-managing-organization" 
+                                            : "provider-disabled-reason-without-managing-organization";
+                                        
+                                        return language(key, undefined, params);
+                                    })()}
+                                </div>
                             }
                         </div>
                         {provider.logoUrl &&

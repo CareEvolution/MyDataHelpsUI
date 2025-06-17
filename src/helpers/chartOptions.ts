@@ -35,7 +35,12 @@ export interface TimeSeriesChartContainerOptions {
     height?: string | number;
 }
 
+export interface TimeSeriesGridOptions {
+    hide?: boolean;
+}
+
 export interface TimeSeriesChartXAxisOptions {
+    height?: number | undefined;
     domain?: [number | string, number | string];
     ticks?: (string | number)[];
     tickFormatter?: (value: any, index: number) => string;
@@ -60,6 +65,7 @@ export interface TimeSeriesChartLineOptions {
 
 export interface TimeSeriesChartOptions {
     containerOptions?: TimeSeriesChartContainerOptions;
+    gridOptions?: TimeSeriesGridOptions;
     xAxisOptions?: TimeSeriesChartXAxisOptions;
     yAxisOptions?: TimeSeriesChartYAxisOptions;
 }

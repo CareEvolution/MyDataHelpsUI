@@ -3,7 +3,7 @@ import getDayKey from '../../../src/helpers/get-day-key';
 import { DailyDataType } from '../../../src/helpers/daily-data-types';
 import { DailyDataQueryResult } from '../../../src/helpers/query-daily-data';
 import * as queryAllSurveyAnswersModule from '../../../src/helpers/query-all-survey-answers';
-import { add, endOfDay, startOfToday } from 'date-fns';
+import { add, endOfDay, formatISO, startOfToday } from 'date-fns';
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { describe, it } from '@jest/globals';
 
@@ -55,8 +55,8 @@ describe('Insight Matrix - Survey Data Type Tests', () => {
 
         it('Should query for survey answers, ignoring those that are too old.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
-                { date: add(startDate, { seconds: -1 }).toISOString(), answers: ["6"] },
-                { date: startDate.toISOString(), answers: ["5"] }
+                { date: formatISO(add(startDate, { seconds: -1 })), answers: ["6"] },
+                { date: formatISO(startDate), answers: ["5"] }
             ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
@@ -66,8 +66,8 @@ describe('Insight Matrix - Survey Data Type Tests', () => {
 
         it('Should query for survey answers, ignoring those that are too recent.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
-                { date: add(endDate, { days: 1 }).toISOString(), answers: ["8"] },
-                { date: endOfDay(endDate).toISOString(), answers: ["7"] }
+                { date: formatISO(add(endDate, { days: 1 })), answers: ["8"] },
+                { date: formatISO(endOfDay(endDate)), answers: ["7"] }
             ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
@@ -75,21 +75,22 @@ describe('Insight Matrix - Survey Data Type Tests', () => {
             verifyResult(result, endDate, 7);
         });
 
-        it('Should query for survey answers, ignoring duplicates (other answers from the same day).', async () => {
+        it('Should query for survey answers, selecting the most recent answer for each day.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
-                { date: add(startDate, { days: 2 }).toISOString(), answers: ["2"] },
-                { date: add(startDate, { days: 2, minutes: 1 }).toISOString(), answers: ["4"] }
+                { date: formatISO(add(startDate, { days: 2 })), answers: ["2"] },
+                { date: formatISO(add(startDate, { days: 2, minutes: 5 })), answers: ["4"] },
+                { date: formatISO(add(startDate, { days: 2, minutes: 2 })), answers: ["6"] }
             ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
 
-            verifyResult(result, add(startDate, { days: 2 }), 2);
+            verifyResult(result, add(startDate, { days: 2 }), 4);
         });
 
         it('Should query for survey answers, ignoring answers with non-numeric values.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
-                { date: startDate.toISOString(), answers: ["invalid"] },
-                { date: endDate.toISOString(), answers: ["6"] }
+                { date: formatISO(startDate), answers: ["invalid"] },
+                { date: formatISO(endDate), answers: ["6"] }
             ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider(surveyDataType)(startDate, endDate);
@@ -99,7 +100,7 @@ describe('Insight Matrix - Survey Data Type Tests', () => {
 
         it('Should query for survey answers, even without a result identifier.', async () => {
             queryAllSurveyAnswersMock.mockReturnValue(Promise.resolve([
-                { date: startDate.toISOString(), answers: ["10"] }
+                { date: formatISO(startDate), answers: ["10"] }
             ] as SurveyAnswer[]));
 
             const result = await getSurveyDataProvider({ ...surveyDataType, resultIdentifier: undefined })(startDate, endDate);

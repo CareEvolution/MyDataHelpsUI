@@ -1,43 +1,22 @@
-import {
-    appleHealthTherapyMinutesDataProvider,
-    googleFitTherapyMinutesDataProvider
-} from ".";
-import { DailyDataQueryResult } from "../query-daily-data";
-import { combineResults } from "./common-mindful-and-therapy";
-import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
+import { appleHealthTherapyMinutesDataProvider, googleFitTherapyMinutesDataProvider } from '.';
+import { DailyDataQueryResult } from '../query-daily-data';
+import { getCombinedDataCollectionSettings } from './combined-data-collection-settings';
+import { combineResultsUsingFirstValue } from './daily-data';
 
-export default async function (
-    startDate: Date,
-    endDate: Date
-): Promise<DailyDataQueryResult> {
-    const useV2 = false;
+export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
-    const combinedSettings = await getCombinedDataCollectionSettings(useV2);
-    const { settings } = combinedSettings;
-    if (
-        settings.appleHealthEnabled &&
-        settings.queryableDeviceDataTypes.find(
-            type =>
-                type.namespace == "AppleHealth" && type.type == "MindfulSession"
-        )
-    ) {
-        providers.push(
-            appleHealthTherapyMinutesDataProvider(startDate, endDate)
-        );
+    const { settings } = await getCombinedDataCollectionSettings(false);
+
+    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'AppleHealth' && type.type === 'MindfulSession')) {
+        providers.push(appleHealthTherapyMinutesDataProvider(startDate, endDate));
     }
-    if (
-        settings.googleFitEnabled &&
-        settings.queryableDeviceDataTypes.find(
-            type =>
-                type.namespace == "GoogleFit" &&
-                type.type == "SilverCloudSession"
-        )
-    ) {
+    if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'GoogleFit' && type.type === 'SilverCloudSession')) {
         providers.push(googleFitTherapyMinutesDataProvider(startDate, endDate));
     }
 
-    return providers.length
-        ? combineResults(startDate, endDate, await Promise.all(providers))
-        : {};
+    if (providers.length === 0) return {};
+    if (providers.length === 1) return providers[0];
+
+    return combineResultsUsingFirstValue(startDate, endDate, await Promise.all(providers));
 }

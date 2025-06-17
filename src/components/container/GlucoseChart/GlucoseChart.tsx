@@ -2,18 +2,25 @@ import React, { useContext, useState } from 'react';
 import './GlucoseChart.css';
 import { ColorDefinition, computeBestFitGlucoseValue, formatNumberForLocale, getColorFromAssortment, getGlucoseReadings, getSleepMinutes, getSteps, language, Reading, resolveColor, TimeSeriesChartLineOptions, useInitializeView } from '../../../helpers';
 import { GlucoseChartPreviewState, previewData } from './GlucoseChart.previewData';
-import { DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
+import { Action, DateRangeContext, GlucoseStats, LayoutContext, LoadingIndicator, TimeSeriesChart } from '../../presentational';
 import { add, compareAsc, isSameDay, startOfToday } from 'date-fns';
 import { Bar, ReferenceLine } from 'recharts';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
 import { getShortTimeOfDayString, getTimeOfDayString } from '../../../helpers/date-helpers';
 
+export type GlucoseChartVariant = 'default' | 'minimal';
+
 export interface GlucoseChartProps {
     previewState?: 'loading' | GlucoseChartPreviewState;
+    variant?: GlucoseChartVariant;
     showStats?: boolean;
+    glucoseLineColor?: ColorDefinition;
     averageGlucoseLineColor?: ColorDefinition;
+    emptyText?: string;
+    hideIfNoData?: boolean;
+    onClick?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -26,7 +33,7 @@ export default function (props: GlucoseChartProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [glucose, setGlucose] = useState<Reading[]>();
     const [steps, setSteps] = useState<Reading[]>();
-    const [sleepMinutes, setSleepMinutes] = useState<number | undefined>();
+    const [sleepMinutes, setSleepMinutes] = useState<number>();
 
     const selectedDate = dateRangeContext?.intervalStart ?? startOfToday();
     const meals = mealContext?.meals ?? [];
@@ -62,6 +69,10 @@ export default function (props: GlucoseChartProps) {
             setLoading(false);
         });
     }, [], [props.previewState, dateRangeContext?.intervalStart]);
+
+    if (!loading && props.hideIfNoData && glucose?.length === 0) {
+        return null;
+    }
 
     const filteredGlucose = glucose?.filter(reading => {
         if (!selectedMeal) return true;
@@ -141,45 +152,62 @@ export default function (props: GlucoseChartProps) {
         return <text x={x} y={y} dy={3} fill="#fff" fontSize={8} textAnchor="middle">{mealIndex + 1}</text>;
     };
 
+    const minGlucose = glucose?.length && props.variant === 'minimal' ? Math.min(...glucose.map(r => r.value)) : 0;
+    const maxGlucose = glucose?.length && props.variant === 'minimal' ? Math.max(...glucose.map(r => r.value)) : 240;
+
     const filteredSteps = steps?.filter(reading => reading.value > 0) ?? [];
     const maxSteps = filteredSteps.length > 0 ? Math.max(...filteredSteps.map(r => r.value)) : 0;
-    const stepsScale = maxSteps > 0 ? 240 / maxSteps : 1;
-    const overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale }));
+    const stepsScale = maxSteps > 0 ? (maxGlucose - minGlucose) / maxSteps : 1;
+    const overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale + minGlucose }));
 
-    return <div className="mdhui-glucose-chart" ref={props.innerRef}>
+    return <GlucoseChartWrapper variant={props.variant} onClick={props.onClick} innerRef={props.innerRef}>
+        <div className="mdhui-glucose-chart-title"><FontAwesomeSvgIcon icon={faDroplet} /> {language('glucose-chart-title')}</div>
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
+            {props.variant === 'minimal' && props.showStats &&
+                <GlucoseStats
+                    loading={loading}
+                    glucoseReadings={filteredGlucose}
+                    steps={!selectedMeal ? filteredSteps : []}
+                    sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
+                    variant={props.variant}
+                />
+            }
             <TimeSeriesChart
                 intervalType="Day"
                 intervalStart={selectedDate}
                 data={chartData as any}
-                series={[{ dataKey: 'value', color: '#999' }, { dataKey: 'mealValue', color: 'transparent' }]}
+                series={[{ dataKey: 'value', color: props.glucoseLineColor ?? '#999' }, { dataKey: 'mealValue', color: 'transparent' }]}
                 chartHasData={!!glucose && glucose.length > 0}
                 chartType="Line"
                 options={{
                     lineOptions: {
                         dot: customDot,
                         label: customDotLabel,
-                        strokeWidth: 1.5,
+                        strokeWidth: 2,
                         animationDuration: 500,
                         connectNulls: true,
                         type: 'linear'
                     } as TimeSeriesChartLineOptions,
                     containerOptions: {
-                        height: 166
+                        height: props.variant === 'minimal' ? 64 : 166
+                    },
+                    gridOptions: {
+                        hide: props.variant === 'minimal'
                     },
                     xAxisOptions: {
+                        height: props.variant === 'minimal' ? 0 : undefined,
                         domain: chartDomain,
                         ticks: chartTicks,
                         tickFormatter: chartTickFormatter
                     },
                     yAxisOptions: {
-                        width: 24,
-                        domain: [0, 240],
-                        ticks: [40, 80, 120, 160, 200, 240]
+                        width: props.variant === 'minimal' ? 0 : 24,
+                        domain: props.variant === 'minimal' ? [minGlucose - 10, maxGlucose + 10] : [0, 240],
+                        ticks: props.variant === 'minimal' ? undefined : [40, 80, 120, 160, 200, 240]
                     }
                 }}
             >
-                {glucoseContext?.recentAverage !== undefined &&
+                {props.variant !== 'minimal' && glucoseContext?.recentAverage !== undefined &&
                     <ReferenceLine
                         y={glucoseContext.recentAverage}
                         stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
@@ -201,17 +229,18 @@ export default function (props: GlucoseChartProps) {
                         fill="#f5b722"
                         opacity={0.3}
                         radius={[2, 2, 0, 0]}
-                        barSize={selectedMeal ? 20 : 8}
                     />
                 }
             </TimeSeriesChart>
-            <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+            {props.variant !== 'minimal' &&
+                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+            }
         </div>
-        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{language('glucose-chart-no-data')}</div>
+        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{props.emptyText ?? language('glucose-chart-no-data')}</div>
         <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
             <LoadingIndicator />
         </div>
-        {props.showStats &&
+        {props.variant !== 'minimal' && props.showStats &&
             <GlucoseStats
                 loading={loading}
                 glucoseReadings={filteredGlucose}
@@ -219,5 +248,27 @@ export default function (props: GlucoseChartProps) {
                 sleepMinutes={!selectedMeal ? sleepMinutes : undefined}
             />
         }
+    </GlucoseChartWrapper>;
+}
+
+interface GlucoseChartWrapperProps {
+    variant?: GlucoseChartVariant;
+    children?: React.ReactNode;
+    onClick?: () => void;
+    innerRef?: React.Ref<HTMLDivElement>;
+}
+
+function GlucoseChartWrapper(props: GlucoseChartWrapperProps) {
+    const classes = ['mdhui-glucose-chart'];
+    if (props.variant === 'minimal') {
+        classes.push('mdhui-glucose-chart-minimal');
+    }
+    return <div className={classes.join(' ')} ref={props.innerRef}>
+        {props.onClick &&
+            <Action className='mdhui-glucose-chart-action' onClick={props.onClick} indicatorPosition='topRight'>
+                {props.children}
+            </Action>
+        }
+        {!props.onClick && props.children}
     </div>;
 }

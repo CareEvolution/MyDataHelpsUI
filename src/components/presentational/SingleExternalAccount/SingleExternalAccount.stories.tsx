@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import SingleExternalAccount, { SingleExternalAccountProps } from "./SingleExternalAccount";
 import Layout from "../Layout"
 import { add } from "date-fns";
-import { ExternalAccount } from "@careevolution/mydatahelps-js";
+import { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 
 const meta: Meta<typeof SingleExternalAccount> = {
     title: "Presentational/SingleExternalAccount",
@@ -27,8 +27,9 @@ const externalAccount: ExternalAccount = {
         "id": 37,
         "name": "Cedars-Sinai Health System",
         "category": "Provider",
-        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo"
-    }
+        "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
+        "enabled": true
+    } as ExternalAccountProvider
 };
 
 export const FetchComplete: Story = {

@@ -1,0 +1,14 @@
+.mdhui-apple-health-records-sync .mdhui-apple-health-records-sync-help {
+    margin: 0 var(--mdhui-padding-md) var(--mdhui-padding-md);
+    padding: var(--mdhui-padding-md);
+    background: var(--mdhui-background-color-1);
+    border-radius: 10px;
+}
+
+.mdhui-apple-health-records-sync .mdhui-apple-health-records-sync-help p {
+    margin-top: 0;
+}
+
+.mdhui-apple-health-records-sync .mdhui-apple-health-records-sync-help ol {
+    margin-bottom: 0;
+}

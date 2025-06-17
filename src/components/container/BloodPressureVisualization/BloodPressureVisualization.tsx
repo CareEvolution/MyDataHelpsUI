@@ -11,6 +11,7 @@ import { WeekStartsOn, getWeekStart } from "../../../helpers/get-interval-start"
 import { useInitializeView } from "../../../helpers/Initialization";
 import { BloodPressureDataPoint, BloodPressureDeviceDataSource, SurveyBloodPressureDataParameters, bloodPressureDataProvider } from "../../../helpers/blood-pressure-data-providers";
 import { getShortestDateString } from "../../../helpers/date-helpers";
+import { getDayKey } from "../../../helpers";
 
 enum Category { "Low", "Normal", "Elevated", "Stage 1", "Stage 2", "Crisis", "Unknown" };
 export type BloodPressurePreviewState = "Default" | "NoData" | "Loading";
@@ -66,7 +67,7 @@ export default function (props: BloodPressureVisualizationProps) {
     function groupDataPointsByDate(bpDataPoints: BloodPressureDataPoint[]) {
         var bpByDate: Map<string, BloodPressureDataPoint[]> = new Map<string, BloodPressureDataPoint[]>();
         bpDataPoints.forEach((bpDataPoint) => {
-            const dateKey = bpDataPoint.date.toString();
+            const dateKey = getDayKey(bpDataPoint.date);
             var exists = bpByDate.get(dateKey);
             if (exists) {
                 exists.push(bpDataPoint);
@@ -260,7 +261,7 @@ export default function (props: BloodPressureVisualizationProps) {
         const weekData: DumbbellDataPoint[] = [];
         for (let i = start; i <= intervalEnd; i.setDate(i.getDate() + 1)) {
             var currentDate = startOfDay(i);
-            var dataForDay = bloodPressureData?.get(currentDate.toString()) ?? [];
+            var dataForDay = bloodPressureData?.get(getDayKey(currentDate)) ?? [];
             if (dataForDay.length > 0) {
                 bpDataForMetrics.push(...dataForDay);
                 weekData.push(createDumbbellsPerDay(currentDate, dataForDay));
