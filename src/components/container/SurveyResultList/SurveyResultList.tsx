@@ -4,7 +4,7 @@ import { getDayKey, language, useInitializeView } from "../../../helpers";
 import queryAllSurveyAnswers from "../../../helpers/query-all-survey-answers";
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, Title, UnstyledButton } from "../../presentational";
 import React from "react";
-import { add, formatDate, parseISO } from "date-fns";
+import { add, formatDate, max, parseISO } from "date-fns";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faCircle, faDownload, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./SurveyResultList.css"
@@ -15,26 +15,25 @@ import { core, global, lightColorScheme } from "../../../helpers/globalCss";
 export interface SurveyResultListProps {
     title?: string;
     allowDownload?: boolean;
-    surveyName?: string;
-    titleResultIdentifier?: string;
-    subtitleResultIdentifier?: string;
+    surveyNames: string[];
+    resultIdentifiers?: string[];
     dateResultIdentifier?: string;
-    allowEdit?: boolean;
+    getBody: (entry: SurveyAnswer[]) => ReactElement;
+    matchesSearchString?: (entry: SurveyAnswer[], searchString: string) => boolean;
+    iconProvider?: (entry: SurveyAnswer[]) => ReactElement;
     allowDelete?: boolean;
     previewState?: "default";
     sortOrder?: "asc" | "desc";
     allowSearch?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
-    iconKeyResultIdentifier?: string;
-    iconProvider?: (iconKey: string) => ReactElement;
 }
 
 export interface SurveyResultListEntry {
-    surveyResultID?: string;
-    date?: Date;
-    title?: string;
-    subtitle?: string;
-    icon?: string;
+    surveyResultID: string;
+    date: Date;
+    body?: ReactElement;
+    icon?: ReactElement;
+    surveyAnswers: SurveyAnswer[];
 }
 
 export default function SurveyResultTimeline(props: SurveyResultListProps) {
@@ -50,32 +49,14 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             return;
         }
 
-        if (!props.titleResultIdentifier && !props.subtitleResultIdentifier) {
-            console.error("SurveyResultList: titleResultIdentifier or subtitleResultIdentifier is required");
-            setEntries([]);
-            return;
+        let resultIdentifiers = props.resultIdentifiers;
+        if (props.dateResultIdentifier && resultIdentifiers) {
+            resultIdentifiers.push(props.dateResultIdentifier);
         }
 
         let parameters: SurveyAnswersQuery = {
-            resultIdentifier: []
+            surveyName: props.surveyNames
         };
-        if (props.surveyName) {
-            parameters.surveyName = props.surveyName;
-        }
-
-        let resultIdentifiers = [];
-        if (props.titleResultIdentifier) {
-            resultIdentifiers.push(props.titleResultIdentifier);
-        }
-        if (props.subtitleResultIdentifier) {
-            resultIdentifiers.push(props.subtitleResultIdentifier);
-        }
-        if (props.dateResultIdentifier) {
-            resultIdentifiers.push(props.dateResultIdentifier);
-        }
-        if (props.iconKeyResultIdentifier) {
-            resultIdentifiers.push(props.iconKeyResultIdentifier);
-        }
         parameters.resultIdentifier = resultIdentifiers;
 
         let participantInfo = await MyDataHelps.getParticipantInfo();
@@ -83,34 +64,34 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
         let answers = await queryAllSurveyAnswers(parameters);
 
-        let entryLookup: { [key: string]: SurveyResultListEntry } = {};
-        answers.forEach((answer: SurveyAnswer) => {
-            let entry: SurveyResultListEntry = { surveyResultID: answer.surveyResultID as string, date: parseISO(answer.date) };
-            if (entryLookup[answer.surveyResultID as string]) {
-                entry = entryLookup[answer.surveyResultID as string];
+        // group answers by surveyResultID
+        const grouped: { [key: string]: SurveyAnswer[] } = {};
+
+        for (const answer of answers) {
+            if (!grouped[answer.surveyResultID as string]) {
+                grouped[answer.surveyResultID as string] = [];
             }
-            if (answer.resultIdentifier == props.titleResultIdentifier) {
-                entry.title = answer.answers.join(", ");
-            }
-            if (answer.resultIdentifier == props.subtitleResultIdentifier) {
-                entry.subtitle = answer.answers.join(", ");
-            }
-            if (answer.resultIdentifier == props.dateResultIdentifier && answer.answers.length > 0) {
-                entry.date = parseISO(answer.answers[0]);
-            }
-            if (answer.resultIdentifier == props.iconKeyResultIdentifier && answer.answers.length > 0) {
-                entry.icon = answer.answers[0];
-            }
-            entryLookup[answer.surveyResultID as string] = entry;
-        });
+            grouped[answer.surveyResultID as string].push(answer);
+        }
 
         let entries: SurveyResultListEntry[] = [];
-        Object.keys(entryLookup).forEach((key) => {
-            let entry = entryLookup[key];
-            if (entry.date && (entry.title || entry.subtitle)) {
-                entries.push(entry);
+        for (const key in grouped) {
+            const entryAnswers = grouped[key];
+            const maxDate = max(entryAnswers.map(sa => parseISO(sa.date)));
+            let entry: SurveyResultListEntry = { surveyResultID: key, date: maxDate, surveyAnswers: entryAnswers };
+            entry.body = props.getBody(entryAnswers)
+            if (props.iconProvider) {
+                entry.icon = props.iconProvider(entryAnswers);
             }
-        });
+
+            if (props.dateResultIdentifier) {
+                const dateAnswer = entryAnswers.find(sa => sa.resultIdentifier === props.dateResultIdentifier);
+                if (dateAnswer && dateAnswer.answers.length > 0) {
+                    entry.date = parseISO(dateAnswer.answers[0]);
+                }
+            }
+            entries.push(entry);
+        }
 
         setEntries(entries);
     }, []);
@@ -134,13 +115,8 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             return 0;
         });
 
-        if (searchString) {
-            entries = entries.filter((entry) => {
-                let title = entry.title ? entry.title.toLowerCase() : "";
-                let subtitle = entry.subtitle ? entry.subtitle.toLowerCase() : "";
-                let search = searchString.toLowerCase();
-                return title.includes(search) || subtitle.includes(search);
-            });
+        if (searchString && props.matchesSearchString) {
+            entries = entries.filter((entry) => props.matchesSearchString!(entry.surveyAnswers, searchString));
         }
 
         //group entries by day
@@ -221,11 +197,10 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                                 <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
                                     icon={
                                         <div className="mdhui-survey-result-list-entry-icon" style={{ width: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                            {entry.icon && props.iconProvider ? props.iconProvider(entry.icon) : <FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
+                                            {entry.icon || <FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
                                         </div>
                                     }
                                     className="mdhui-survey-result-list-entry"
-                                    onClick={props.allowEdit ? () => { } : undefined}
                                     renderAs="div"
                                     indicator={
                                         props.allowDelete ?
@@ -234,16 +209,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                                                 e.stopPropagation();
                                             }}><FontAwesomeSvgIcon icon={faTrash} /></Button> : <></>
                                     }>
-                                    {entry.title &&
-                                        <div className="mdhui-survey-result-list-entry-title">
-                                            {entry.title}
-                                        </div>
-                                    }
-                                    {entry.subtitle &&
-                                        <div className="mdhui-survey-result-list-entry-subtitle">
-                                            {entry.subtitle}
-                                        </div>
-                                    }
+                                    {entry.body}
                                 </Action>
                             )}
                         </Card>
