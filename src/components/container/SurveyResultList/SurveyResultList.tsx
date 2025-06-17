@@ -11,6 +11,7 @@ import "./SurveyResultList.css"
 import renderPdf from "../../../helpers/renderPdf";
 import previewSurveyResultListEntries from "./previewData";
 import { core, global, lightColorScheme } from "../../../helpers/globalCss";
+import { result } from "lodash";
 
 export interface SurveyResultListProps {
     title?: string;
@@ -51,7 +52,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
 
         let resultIdentifiers = props.resultIdentifiers;
         if (props.dateResultIdentifier && resultIdentifiers) {
-            resultIdentifiers.push(props.dateResultIdentifier);
+            resultIdentifiers = [...resultIdentifiers, props.dateResultIdentifier];
         }
 
         let parameters: SurveyAnswersQuery = {
