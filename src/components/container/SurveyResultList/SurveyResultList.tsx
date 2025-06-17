@@ -20,7 +20,7 @@ export interface SurveyResultListProps {
     dateResultIdentifier?: string;
     getBody: (entry: SurveyAnswer[]) => ReactElement;
     matchesSearchString?: (entry: SurveyAnswer[], searchString: string) => boolean;
-    iconProvider?: (entry: SurveyAnswer[]) => ReactElement;
+    getIcon?: (entry: SurveyAnswer[]) => ReactElement;
     allowDelete?: boolean;
     previewState?: "default";
     sortOrder?: "asc" | "desc";
@@ -80,8 +80,8 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
             const maxDate = max(entryAnswers.map(sa => parseISO(sa.date)));
             let entry: SurveyResultListEntry = { surveyResultID: key, date: maxDate, surveyAnswers: entryAnswers };
             entry.body = props.getBody(entryAnswers)
-            if (props.iconProvider) {
-                entry.icon = props.iconProvider(entryAnswers);
+            if (props.getIcon) {
+                entry.icon = props.getIcon(entryAnswers);
             }
 
             if (props.dateResultIdentifier) {
@@ -196,7 +196,7 @@ export default function SurveyResultTimeline(props: SurveyResultListProps) {
                             {group.entries.map((entry, index) =>
                                 <Action bottomBorder={index != (group.entries.length - 1)} key={entry.surveyResultID}
                                     icon={
-                                        <div className="mdhui-survey-result-list-entry-icon" style={{ width: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                        <div className="mdhui-survey-result-list-entry-icon" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                             {entry.icon || <FontAwesomeSvgIcon icon={faCircle} color={"var(--mdhui-color-primary)"} />}
                                         </div>
                                     }
