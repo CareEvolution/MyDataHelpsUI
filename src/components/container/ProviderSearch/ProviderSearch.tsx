@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider, ExternalAccountProvidersPage } from "@careevolution/mydatahelps-js"
 import { Action, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./ProviderSearch.css"
@@ -8,6 +8,7 @@ import { previewProviders } from './ProviderSearch.previewdata';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { getFeaturedPublicProviders, getPublicProviders } from "../../../helpers/public-providers";
 
 const UNAVAILABLE_PROVIDER_MESSAGE = "Unavailable";
 
@@ -25,6 +26,10 @@ export interface ProviderSearchProps {
     publicProviderSearchApiUrl?: string;
     /** List of providers to display at the top when no search is active. */
     featuredProviders?: ExternalAccountProvider[];
+    /** The context to use when querying for featured providers.  Only used if featuredProviders is not set. */
+    featuredProvidersContext?: string;
+    /** URL for the public featured provider API. If provided, this endpoint will be used instead of MyDataHelps.getFeaturedProviders. */
+    publicFeaturedProvidersApiUrl?: string;
 }
 
 export type ProviderSearchPreviewState = "Default" | "Searching";
@@ -48,15 +53,23 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         _setSearchString(data);
     };
 
+    const featuredProvidersRef = useRef<ExternalAccountProvider[]>(props.featuredProviders ?? []);
+
     const pageSize = 100;
 
-    function initialize() {
+    async function initialize() {
         if (props.previewState) {
             if (props.previewState == "Default") {
                 updateSearchResults(previewProviders);
                 setSearching(false);
             }
             return;
+        }
+
+        if (!props.featuredProviders) {
+            featuredProvidersRef.current = props.publicFeaturedProvidersApiUrl
+                ? await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext)
+                : await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext);
         }
 
         loadExternalAccounts().then(function () {
@@ -76,50 +89,44 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
     function performSearch(search: string) {
         setSearching(true);
-        let requestID = ++currentRequestID;
+        const requestID = ++currentRequestID;
 
-        if (!props.publicProviderSearchApiUrl) {
-            MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
-                if (requestID == currentRequestID) {
-                    updateSearchResults(searchResultsResponse.externalAccountProviders);
-                    setTotalResults(searchResultsResponse.totalExternalAccountProviders);
-                    setSearching(false);
-                }
-            }).catch(function (error) {
-                console.error("Error fetching external account providers", error);
+        const providersPagePromise: Promise<ExternalAccountProvidersPage> = props.publicProviderSearchApiUrl
+            ? getPublicProviders(props.publicProviderSearchApiUrl, search, pageSize, currentPage)
+            : MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length === 1 ? props.providerCategories[0] : null, pageSize, currentPage);
+
+        providersPagePromise.then(providersPage => {
+            if (requestID == currentRequestID) {
+                updateSearchResults(providersPage.externalAccountProviders);
+                setTotalResults(providersPage.totalExternalAccountProviders);
                 setSearching(false);
-            });
-        } else {
-            const url = new URL(props.publicProviderSearchApiUrl);
-            url.searchParams.append('keyword', search);
-            url.searchParams.append('pageSize', String(pageSize));
-            url.searchParams.append('pageNumber', String(currentPage + 1));
-            fetch(url.toString(), {
-                method: "GET",
-                headers: { "Accept": "application/json" },
-            })
-                .then((response) => response.json())
-                .then(function (searchResultsResponse) {
-                    if (requestID == currentRequestID) {
-                        updateSearchResults(searchResultsResponse.Providers.map((p: any) => ({ id: p.ID, name: p.OrganizationName, logoUrl: p.LogoURL, category: p.Category } as ExternalAccountProvider)) || []);
-                        setTotalResults(searchResultsResponse.TotalCount);
-                        setSearching(false);
-                    }
+            }
+        }).catch(function (error) {
+            console.error("Error fetching external account providers", error);
+            setSearching(false);
+        });
                 })
                 .catch(function (error) {
-                    console.error("Error fetching external account providers", error);
-                    setSearching(false);
-                });
-        }
     }
 
-    function updateSearchResults(providers: ExternalAccountProvider[]) {
-        let newResults: ExternalAccountProvider[] = searchResults;
-        if (searchStringRef.current === "" && props.featuredProviders) {
-            newResults = newResults.concat(props.featuredProviders);
-            providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
+    function filterProviders(providers: ExternalAccountProvider[], providersToExclude?: ExternalAccountProvider[]): ExternalAccountProvider[] {
+        const providerIdsToExclude = providersToExclude?.map(provider => provider.id) ?? [];
+        return providers.filter(provider => {
+            if (providerIdsToExclude.includes(provider.id)) return false;
+            if (props.providerCategories && !props.providerCategories.includes(provider.category)) return false;
+            return provider.message !== UNAVAILABLE_PROVIDER_MESSAGE;
+        })
+    }
+
+    function updateSearchResults(newProviders: ExternalAccountProvider[]) {
+        const updatedSearchResults: ExternalAccountProvider[] = [];
+
+        if (searchStringRef.current === "" && searchResults.length === 0 && featuredProvidersRef.current.length > 0) {
+            updatedSearchResults.push(...filterProviders(featuredProvidersRef.current));
+        } else if (searchResults.length > 0) {
+            updatedSearchResults.push(...searchResults);
         }
-        const updatedSearchResults = newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE);
+        updatedSearchResults.push(...filterProviders(newProviders, updatedSearchResults));
 
         // HACK: Temporarily default all provider enabled flags to true when they have not been set by the API.
         // This should remain while the API is not setting the enabled flag.
