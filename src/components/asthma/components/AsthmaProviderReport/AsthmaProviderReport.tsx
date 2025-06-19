@@ -340,8 +340,8 @@ export default function (props: AsthmaProviderReportProps) {
                     <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
                         <div style={{ marginBottom: '8px', fontWeight: 700 }}>{language('asthma-provider-report-aqi-over-100')}</div>
                         {renderStat(language('asthma-provider-report-home'), highHomeAqiDays > 0 ? highHomeAqiDays : language('asthma-provider-report-none'), highHomeAqiDays === 1 ? language('asthma-provider-report-day') : highHomeAqiDays > 1 ? language('asthma-provider-report-days') : '')}
+                        {renderStat(language('asthma-provider-report-work'), highWorkAqiDays > 0 ? highWorkAqiDays : language('asthma-provider-report-none'), highWorkAqiDays === 1 ? language('asthma-provider-report-day') : highWorkAqiDays > 1 ? language('asthma-provider-report-days') : '')} 
                         <div style={{ fontSize: '12px', marginTop: '12px' }}>{language('asthma-provider-report-source')}</div>
-                        <div style={{ fontSize: '12px', marginTop: '12px' }}>Source: airnow.gov</div>
                     </div>
                 </div>
                 <div style={{ position: 'absolute', bottom: 64, left: 48, right: 48, fontSize: '17px' }}>
