@@ -1,6 +1,7 @@
 {
     "30-day-average": "Trung bình 30 ngày",
     "active-calories": "Calo hoạt động",
+    "active-calories-burned": "Lượng calo hoạt động đã đốt cháy",
     "active-energy-burned": "Năng lượng hoạt động đã đốt cháy",
     "active-time": "Thời gian hoạt động",
     "add": "Thêm",
@@ -511,6 +512,7 @@
     "today": "Hôm nay",
     "todays-log": "Nhật ký hôm nay",
     "total-calories": "Tổng calo",
+    "total-calories-burned": "Tổng lượng calo đã đốt cháy",
     "total-stress-time": "Tổng thời gian căng thẳng",
     "treatments": "Điều trị",
     "treatments-experiencing-previous": "Bạn đã thực hiện những điều trị nào?",

@@ -9,7 +9,7 @@ import {
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 
@@ -20,8 +20,8 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlyDistanceWalkingRunning"]),
         labelKey: "distance-traveled",
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
-        formatter: (value: number) => formatNumberForLocale(value / 1000, 2) + " km",
-        yAxisConverter: (value: number) => value / 1000,
+        formatter: distanceFormatter,
+        yAxisConverter: distanceYAxisConverter,
         previewDataRange: [3000, 5000]
     },
     {

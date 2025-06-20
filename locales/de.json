@@ -1,6 +1,7 @@
 {
     "30-day-average": "Durchschnitt der letzten 30 Tage",
     "active-calories": "Aktive Kalorien",
+    "active-calories-burned": "Aktiv verbrannte Kalorien",
     "active-energy-burned": "Verbrannte aktive Energie",
     "active-time": "Aktive Zeit",
     "add": "Hinzufügen",
@@ -511,6 +512,7 @@
     "today": "Heute",
     "todays-log": "Protokoll von heute",
     "total-calories": "Gesamtkalorien",
+    "total-calories-burned": "Insgesamt verbrannte Kalorien",
     "total-stress-time": "Gesamtstresszeit",
     "treatments": "Behandlungen",
     "treatments-experiencing-previous": "Welche Behandlungen haben Sie früher durchgeführt?",
