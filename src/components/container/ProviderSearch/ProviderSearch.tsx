@@ -89,8 +89,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                 console.error("Error fetching external account providers", error);
                 setSearching(false);
             });
-        }
-        else {
+        } else {
             const url = new URL(props.publicProviderSearchApiUrl);
             url.searchParams.append('keyword', search);
             url.searchParams.append('pageSize', String(pageSize));
@@ -106,7 +105,8 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                         setTotalResults(searchResultsResponse.TotalCount);
                         setSearching(false);
                     }
-                }).catch(function (error) {
+                })
+                .catch(function (error) {
                     console.error("Error fetching external account providers", error);
                     setSearching(false);
                 });
@@ -151,20 +151,6 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             return;
         }
         debouncedPerformSearch(event.target.value);
-    }
-
-    function connectToProvider(provider: ExternalAccountProvider) {
-        const providerID = provider.id;
-        if (provider.enabled && !props.previewState && !(linkedExternalAccounts[providerID] && linkedExternalAccounts[providerID].status != 'unauthorized')) {
-            MyDataHelps.connectExternalAccount(providerID, props.connectExternalAccountOptions || { openNewWindow: true })
-                .then(function () {
-                    if (props.onProviderConnected) {
-                        props.onProviderConnected(provider);
-                    }
-
-                    return loadExternalAccounts();
-                });
-        }
     }
 
     function onApplicationDidBecomeVisible() {
@@ -227,6 +213,18 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
     };
 
+    const canConnectToProvider = (provider: ExternalAccountProvider): boolean => {
+        return provider.enabled || linkedExternalAccounts[provider.id]?.status === 'unauthorized';
+    };
+
+    const connectToProvider = async (provider: ExternalAccountProvider): Promise<void> => {
+        if (props.previewState || !canConnectToProvider(provider)) return;
+
+        await MyDataHelps.connectExternalAccount(provider.id, props.connectExternalAccountOptions || { openNewWindow: true });
+        props.onProviderConnected?.(provider);
+        loadExternalAccounts();
+    };
+
     return (
         <div ref={props.innerRef} className="mdhui-provider-search">
             <div className="search-bar-wrapper">
@@ -237,7 +235,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             </div>
             <div className="search-results">
                 {searchResults && searchResults.map((provider) =>
-                    <UnstyledButton key={provider.id} className={provider.enabled ? 'provider' : 'provider disabled'} onClick={() => {
+                    <UnstyledButton key={provider.id} className={canConnectToProvider(provider) ? 'provider' : 'provider disabled'} onClick={() => {
                         if (props.onProviderSelected) {
                             props.onProviderSelected(provider);
                         } else {
@@ -264,10 +262,10 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                                         if (provider.managingOrganization) {
                                             params.managingOrganization = provider.managingOrganization;
                                         }
-                                        const key = provider.managingOrganization 
-                                            ? "provider-disabled-reason-with-managing-organization" 
+                                        const key = provider.managingOrganization
+                                            ? "provider-disabled-reason-with-managing-organization"
                                             : "provider-disabled-reason-without-managing-organization";
-                                        
+
                                         return language(key, undefined, params);
                                     })()}
                                 </div>
