@@ -82,7 +82,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
 
     const onShare = async (): Promise<void> => {
         if (props.previewState || !document?.fileUrl) return;
-        MyDataHelps.openExternalUrl(document.fileUrl);
+        MyDataHelps.openEmbeddedUrl(document.fileUrl);
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
