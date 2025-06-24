@@ -1,6 +1,7 @@
 {
     "30-day-average": "Media pe 30 de zile",
     "active-calories": "Calorii active",
+    "active-calories-burned": "Calorii active arse",
     "active-energy-burned": "Energie activă arsă",
     "active-time": "Timp activ",
     "add": "Adaugă",
@@ -511,6 +512,7 @@
     "today": "Astăzi",
     "todays-log": "Înregistrarea de azi",
     "total-calories": "Total calorii",
+    "total-calories-burned": "Total calorii arse",
     "total-stress-time": "Timp total de stres",
     "treatments": "Tratamente",
     "treatments-experiencing-previous": "Ce tratamente ai efectuat?",
