@@ -9,7 +9,7 @@ export interface CardProps {
 	children?: React.ReactNode;
 	allowOverflow?: boolean;
 	innerRef?: React.Ref<HTMLDivElement>;
-	variant?: "default" | "subtle" | "highlight";
+	variant?: "default" | "subtle" | "highlight" | "fire" | "glow" | "pulse";
 	backgroundColor?: ColorDefinition;
 	style?: React.CSSProperties;
 }
@@ -39,6 +39,14 @@ export default function (props: CardProps) {
 		<div style={{...props.style, backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>
 			{props.children}
 			{props.children && variant === "highlight" && <ShinyOverlay />}
+			{props.children && variant === "fire" && (
+				<div className="flame-particles">
+					<div className="particle particle-1"></div>
+					<div className="particle particle-2"></div>
+					<div className="particle particle-3"></div>
+					<div className="particle particle-4"></div>
+				</div>
+			)}
 		</div>
 	);
 }

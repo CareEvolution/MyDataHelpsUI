@@ -35,3 +35,243 @@
     --mdhui-text-color-3: #FFF;
     --mdhui-text-color-4: #FFF;
 }
+
+/* Fire Animation */
+@keyframes fireAnimation {
+    0% { box-shadow: 0 0 5px 2px rgba(255, 100, 0, 0.8), 0 0 10px 5px rgba(255, 50, 0, 0.6); }
+    25% { box-shadow: 0 0 8px 4px rgba(255, 120, 0, 0.8), 0 0 12px 8px rgba(255, 70, 0, 0.6); }
+    50% { box-shadow: 0 0 6px 3px rgba(255, 80, 0, 0.8), 0 0 14px 6px rgba(255, 30, 0, 0.6); }
+    75% { box-shadow: 0 0 9px 5px rgba(255, 140, 0, 0.8), 0 0 16px 9px rgba(255, 90, 0, 0.6); }
+    100% { box-shadow: 0 0 5px 2px rgba(255, 100, 0, 0.8), 0 0 10px 5px rgba(255, 50, 0, 0.6); }
+}
+
+@keyframes fireBorder {
+    0% { border-color: rgba(255, 100, 0, 0.8); }
+    25% { border-color: rgba(255, 120, 0, 0.9); }
+    50% { border-color: rgba(255, 50, 0, 1); }
+    75% { border-color: rgba(255, 140, 0, 0.9); }
+    100% { border-color: rgba(255, 100, 0, 0.8); }
+}
+
+@keyframes flameWave {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.1); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes flameFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.mdhui-card-fire {
+    position: relative;
+    border: 2px solid rgba(255, 100, 0, 0.8);
+    animation: fireAnimation 1.5s infinite, fireBorder 1.5s infinite;
+    z-index: 1;
+}
+
+.mdhui-card-fire::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    border-radius: calc(var(--mdhui-card-border-radius) + 2px);
+    pointer-events: none;
+}
+
+/* Flame elements */
+.mdhui-card-fire::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    z-index: -1;
+    border-radius: calc(var(--mdhui-card-border-radius) + 15px);
+    background: transparent;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Individual flames */
+.mdhui-card-fire .flame {
+    position: absolute;
+    background: none;
+    pointer-events: none;
+}
+
+/* Create flame elements dynamically with pseudo-elements */
+.mdhui-card-fire::before {
+    box-shadow: 
+        /* Top flames */
+        0 -15px 10px 10px rgba(255, 80, 0, 0.7),
+        0 -25px 15px 5px rgba(255, 140, 0, 0.5),
+        0 -20px 20px 10px rgba(255, 200, 0, 0.3),
+        /* Right flames */
+        15px 0 10px 10px rgba(255, 80, 0, 0.7),
+        25px 0 15px 5px rgba(255, 140, 0, 0.5),
+        20px 0 20px 10px rgba(255, 200, 0, 0.3),
+        /* Bottom flames */
+        0 15px 10px 10px rgba(255, 80, 0, 0.7),
+        0 25px 15px 5px rgba(255, 140, 0, 0.5),
+        0 20px 20px 10px rgba(255, 200, 0, 0.3),
+        /* Left flames */
+        -15px 0 10px 10px rgba(255, 80, 0, 0.7),
+        -25px 0 15px 5px rgba(255, 140, 0, 0.5),
+        -20px 0 20px 10px rgba(255, 200, 0, 0.3);
+    animation: flameWave 2s infinite ease-in-out, flameFlicker 1.5s infinite ease-in-out;
+}
+
+/* Add flame particles */
+@keyframes particleMove1 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-30px) translateX(10px) scale(0); opacity: 0; }
+}
+
+@keyframes particleMove2 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-25px) translateX(-15px) scale(0); opacity: 0; }
+}
+
+.mdhui-card-fire::after {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 80, 0, 0) 0%,
+        rgba(255, 80, 0, 0) 50%,
+        rgba(255, 80, 0, 0.2) 80%,
+        rgba(255, 80, 0, 0.4) 100%
+    );
+}
+
+/* Create flame particles */
+.mdhui-card-fire .flame-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: visible;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Particle animations */
+@keyframes particleMove1 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-30px) translateX(10px) scale(0); opacity: 0; }
+}
+
+@keyframes particleMove2 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-25px) translateX(-15px) scale(0); opacity: 0; }
+}
+
+@keyframes particleMove3 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-20px) translateX(20px) scale(0); opacity: 0; }
+}
+
+@keyframes particleMove4 {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    100% { transform: translateY(20px) translateX(-10px) scale(0); opacity: 0; }
+}
+
+/* Individual particles */
+.mdhui-card-fire .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.mdhui-card-fire .particle-1 {
+    width: 6px;
+    height: 6px;
+    top: 5%;
+    left: 20%;
+    background-color: rgba(255, 120, 0, 0.8);
+    box-shadow: 0 0 4px 2px rgba(255, 80, 0, 0.4);
+    animation: particleMove1 2s infinite;
+}
+
+.mdhui-card-fire .particle-2 {
+    width: 6px;
+    height: 6px;
+    top: 10%;
+    left: 80%;
+    background-color: rgba(255, 120, 0, 0.8);
+    box-shadow: 0 0 4px 2px rgba(255, 80, 0, 0.4);
+    animation: particleMove2 1.7s infinite;
+    animation-delay: 0.5s;
+}
+
+.mdhui-card-fire .particle-3 {
+    width: 4px;
+    height: 4px;
+    top: 90%;
+    left: 30%;
+    background-color: rgba(255, 160, 0, 0.8);
+    box-shadow: 0 0 4px 2px rgba(255, 120, 0, 0.4);
+    animation: particleMove3 1.3s infinite;
+    animation-delay: 0.2s;
+}
+
+.mdhui-card-fire .particle-4 {
+    width: 5px;
+    height: 5px;
+    top: 80%;
+    left: 70%;
+    background-color: rgba(255, 180, 0, 0.8);
+    box-shadow: 0 0 4px 2px rgba(255, 140, 0, 0.4);
+    animation: particleMove4 1.8s infinite;
+    animation-delay: 0.7s;
+}
+
+/* Glow Animation */
+@keyframes glowAnimation {
+    0% { box-shadow: 0 0 10px 5px rgba(100, 200, 255, 0.5); }
+    50% { box-shadow: 0 0 20px 10px rgba(100, 200, 255, 0.8); }
+    100% { box-shadow: 0 0 10px 5px rgba(100, 200, 255, 0.5); }
+}
+
+@keyframes glowBorder {
+    0% { border-color: rgba(100, 200, 255, 0.6); }
+    50% { border-color: rgba(100, 200, 255, 1); }
+    100% { border-color: rgba(100, 200, 255, 0.6); }
+}
+
+.mdhui-card-glow {
+    position: relative;
+    border: 2px solid rgba(100, 200, 255, 0.7);
+    animation: glowAnimation 2s infinite ease-in-out, glowBorder 2s infinite ease-in-out;
+}
+
+/* Pulse Animation */
+@keyframes pulseAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7); }
+    70% { box-shadow: 0 0 0 5px rgba(0, 123, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+@keyframes borderPulse {
+    0% { border-color: rgba(0, 123, 255, 0.4); }
+    50% { border-color: rgba(0, 123, 255, 1); }
+    100% { border-color: rgba(0, 123, 255, 0.4); }
+}
+
+.mdhui-card-pulse {
+    position: relative;
+    border: 2px solid rgba(0, 123, 255, 0.7);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    animation: pulseAnimation 1.5s infinite ease-in-out, borderPulse 2s infinite;
+}

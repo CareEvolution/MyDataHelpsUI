@@ -44,3 +44,27 @@ export const HighlightVariant = {
 	},
 	render: render
 };
+
+export const FireVariant = {
+	args: {
+		variant: "fire",
+		children: <Action onClick={() => {}} title="Urgent Action Required" subtitle="This task needs immediate attention" />
+	},
+	render: render
+};
+
+export const GlowVariant = {
+	args: {
+		variant: "glow",
+		children: <Action onClick={() => {}} title="New Feature Available" subtitle="Check out our latest feature" />
+	},
+	render: render
+};
+
+export const PulseVariant = {
+	args: {
+		variant: "pulse",
+		children: <Action onClick={() => {}} title="Reminder" subtitle="Don't forget to complete your daily tasks" />
+	},
+	render: render
+};
