@@ -105,8 +105,6 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             console.error("Error fetching external account providers", error);
             setSearching(false);
         });
-                })
-                .catch(function (error) {
     }
 
     function filterProviders(providers: ExternalAccountProvider[], providersToExclude?: ExternalAccountProvider[]): ExternalAccountProvider[] {
