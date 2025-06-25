@@ -67,9 +67,11 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         }
 
         if (!props.featuredProviders) {
-            featuredProvidersRef.current = props.publicFeaturedProvidersApiUrl
-                ? await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext)
-                : await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext);
+            featuredProvidersRef.current = (
+                props.publicFeaturedProvidersApiUrl
+                    ? await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext)
+                    : await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext)
+            ).sort((a, b) => a.name.localeCompare(b.name));
         }
 
         loadExternalAccounts().then(function () {
