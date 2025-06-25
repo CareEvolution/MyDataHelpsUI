@@ -1,0 +1,116 @@
+.mdhui-sleep-mood-chart {
+    position: relative;
+}
+
+.mdhui-sleep-mood-chart .chart-container {
+    padding: 8px 8px 16px 8px;
+    position: relative;
+}
+
+.mdhui-sleep-mood-chart .loading-indicator,
+.mdhui-sleep-mood-chart .no-data-label {
+    position: absolute;
+    left: 0;
+    top: calc(50% - 40px);
+    text-align: center;
+    width: 100%;
+    font-size: .88em;
+    color: var(--mdhui-text-color-3);
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+/* Summary badges styles */
+.mdhui-sleep-mood-chart .summary-badges {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 16px 0;
+    margin-bottom: 8px;
+}
+
+.mdhui-sleep-mood-chart .summary-badge {
+    display: flex;
+    align-items: center;
+    background-color: var(--mdhui-background-color-1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-width: 140px;
+    box-shadow: var(--mdhui-box-shadow-0);
+}
+
+.mdhui-sleep-mood-chart .badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: var(--mdhui-text-color-1);
+}
+
+/* Animation for the good sleep icon */
+.mdhui-sleep-mood-chart .good-sleep-icon {
+    color: var(--mdhui-color-success);
+    animation: pulse 2s infinite;
+}
+
+/* Animation for the poor sleep icon */
+.mdhui-sleep-mood-chart .poor-sleep-icon {
+    color: var(--mdhui-color-warning);
+    animation: pulse 2s infinite;
+    animation-delay: 1s; /* Offset animation timing */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.mdhui-sleep-mood-chart .badge-content {
+    flex: 1;
+    text-align: left;
+}
+
+.mdhui-sleep-mood-chart .badge-label {
+    font-size: 0.75rem;
+    color: var(--mdhui-text-color-2);
+    margin-bottom: 4px;
+}
+
+.mdhui-sleep-mood-chart .badge-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--mdhui-text-color-0);
+}
+
+/* Tooltip styles */
+.mdhui-sleep-mood-tooltip {
+    padding: 8px;
+    background: var(--mdhui-background-color-0);
+    border-radius: var(--mdhui-card-border-radius);
+    box-shadow: var(--mdhui-box-shadow-1);
+    animation: fadein 1s;
+    -moz-animation: fadein 1s;
+    -webkit-animation: fadein 1s;
+}
+
+.mdhui-sleep-mood-tooltip p {
+    margin: 4px 0;
+    font-size: 0.9em;
+    color: var(--mdhui-text-color-1);
+}
+
+.mdhui-sleep-mood-tooltip .mdhui-sleep-mood-tooltip-date {
+    font-size: 0.8em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-sleep-mood-tooltip .mdhui-sleep-mood-tooltip-sleep,
+.mdhui-sleep-mood-tooltip .mdhui-sleep-mood-tooltip-mood {
+    font-weight: 500;
+}
