@@ -5,7 +5,7 @@ import StepNextButton from "../StepNextButton";
 import StepText from "../StepText";
 import StepTitle from "../StepTitle";
 import { ExternalAccountProvider } from "@careevolution/mydatahelps-js";
-import { ProviderSearchPreviewState } from "../../container/ProviderSearch/ProviderSearch";
+import { ProviderSearchPreviewState } from "../../container/ProviderSearch";
 
 import './ConnectEhrStep.css';
 
