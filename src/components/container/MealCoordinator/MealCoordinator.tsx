@@ -16,6 +16,7 @@ export interface MealContext {
     imageUrls: { [key: string]: string };
     selectedMeal?: Meal;
     addMeal: (meal: Meal) => Promise<void>;
+    saveMeal: (meal: Meal) => Promise<void>;
     onMealClicked: (meal: Meal) => void;
 }
 
@@ -70,6 +71,18 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
         const updatedMeals = [...allMeals, meal].sort(timestampSortAsc);
         await saveMeals(startOfDay(meal.timestamp), updatedMeals);
 
+        setAllMeals(updatedMeals);
+        setActiveMeals([...activeMeals, meal].sort(timestampSortAsc));
+        setLoading(false);
+    };
+
+    const saveMeal = async (meal: Meal): Promise<void> => {
+        setLoading(true);
+
+        const updatedMeals = [...(allMeals.filter(m => m.id !== meal.id)), meal].sort(timestampSortAsc);
+        await saveMeals(startOfDay(meal.timestamp), updatedMeals);
+
+        setAllMeals(updatedMeals);
         setActiveMeals([...activeMeals, meal].sort(timestampSortAsc));
         setLoading(false);
     };
@@ -79,7 +92,7 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
     };
 
     return <div ref={props.innerRef}>
-        <MealContext.Provider value={{ loading, meals: activeMeals, imageUrls, selectedMeal, addMeal, onMealClicked }}>
+        <MealContext.Provider value={{ loading, meals: activeMeals, imageUrls, selectedMeal, addMeal, saveMeal, onMealClicked }}>
             {props.children}
         </MealContext.Provider>
     </div>;

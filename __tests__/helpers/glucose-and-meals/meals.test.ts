@@ -46,18 +46,67 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should return all meals for the given date in ascending timestamp order.', async () => {
-            const meal1: Meal = { id: uuid(), timestamp: add(today, { hours: 12 }), type: 'meal', description: 'Some tasty food!', created: add(today, { hours: 13 }) };
-            const meal2: Meal = { id: uuid(), timestamp: add(today, { hours: 11 }), type: 'meal', archiveTimestamp: add(today, { hours: 11, minutes: 30 }) };
-            const meal3: Meal = { id: uuid(), timestamp: add(today, { hours: 10 }), type: 'meal', hasImage: true, lastModified: add(today, { hours: 16 }) };
+            const mealWithDescription: Meal = {
+                id: uuid(),
+                timestamp: add(today, { hours: 12 }),
+                type: 'meal',
+                description: 'Some tasty food!',
+                created: add(today, { hours: 13 })
+            };
+            const archivedMeal: Meal = {
+                id: uuid(),
+                timestamp: add(today, { hours: 11 }),
+                type: 'snack',
+                archiveTimestamp: add(today, { hours: 11, minutes: 30 })
+            };
+            const mealWithImage: Meal = {
+                id: uuid(),
+                timestamp: add(today, { hours: 10 }),
+                type: 'drink',
+                hasImage: true,
+                lastModified: add(today, { hours: 16 })
+            };
+            const mealWithAnalysis: Meal = {
+                id: uuid(),
+                timestamp: add(today, { hours: 14 }),
+                type: 'meal',
+                analysis: {
+                    automatedResult: {
+                        timestamp: add(today, { hours: 14, minutes: 30 }),
+                        foodItems: [{ name: 'eggs', confidenceScore: 0.89 }, { name: 'bacon', confidenceScore: 0.95 }, { name: 'toast', confidenceScore: 0.7 }]
+                    },
+                    participantResult: {
+                        timestamp: add(today, { hours: 14, minutes: 45 }),
+                        foodItems: [{ name: 'eggs' }, { name: 'bacon' }, { name: 'toast' }, { name: 'sausage' }]
+                    }
+                },
+                created: add(today, { hours: 14, minutes: 10 }),
+                lastModified: add(today, { hours: 14, minutes: 45 })
+            };
+            const mealWithAdditionalProperties: Meal = {
+                id: uuid(),
+                timestamp: add(today, { hours: 13 }),
+                type: 'meal',
+                additionalProperties: {
+                    someProperty: 'some value',
+                    someOtherProperty: 100
+                },
+                created: add(today, { hours: 13, minutes: 5 }),
+                lastModified: add(today, { hours: 13, minutes: 5 })
+            };
 
-            setupMeals([meal1, meal2, meal3]);
+            setupMeals([mealWithDescription, archivedMeal, mealWithImage, mealWithAnalysis, mealWithAdditionalProperties]);
 
             const meals = await getMeals(today);
 
-            expect(meals.length).toBe(3);
-            expect(meals[0]).toEqual(meal3)
-            expect(meals[1]).toEqual(meal2)
-            expect(meals[2]).toEqual(meal1)
+            expect(meals.length).toBe(5);
+            expect(meals[0]).toEqual(mealWithImage);
+            expect(meals[1]).toEqual(archivedMeal);
+            expect(meals[2]).toEqual(mealWithDescription);
+            expect(meals[3]).toEqual(mealWithAdditionalProperties);
+            expect(meals[4]).toEqual(mealWithAnalysis);
+
+            console.log(JSON.stringify(mealWithAnalysis, null, 2));
         });
 
         it('Should return an empty array when there are no meals.', async () => {
