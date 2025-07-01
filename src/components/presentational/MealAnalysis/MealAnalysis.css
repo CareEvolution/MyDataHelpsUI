@@ -1,0 +1,43 @@
+.mdhui-meal-analysis {
+    padding: 16px 16px 0;
+    background: var(--mdhui-background-color-1);
+    color: var(--mdhui-text-color-2);
+    font-size: 16px;
+}
+
+.mdhui-meal-analysis-header {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.mdhui-meal-analysis-title {
+    color: var(--mdhui-color-warning);
+    font-weight: bold;
+    font-size: 0.9em;
+    flex: 1;
+}
+
+.mdhui-meal-analysis-message {
+    margin-top: 8px;
+    font-size: 0.75em;
+}
+
+.mdhui-meal-analysis-items {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 0.85em;
+    color: var(--mdhui-text-color-1);
+}
+
+.mdhui-meal-analysis-buttons {
+    margin-top: 12px;
+    display: flex;
+    justify-content: right;
+    gap: 20px;
+}
+
+.mdhui-meal-analysis-buttons .mdhui-button {
+    padding: 12px 0;
+    font-size: 0.8em;
+}

@@ -1,8 +1,6 @@
 .mdhui-meal {
-    display: grid;
-    grid-template-columns: max-content auto max-content;
-    align-items: start;
     border-bottom: 1px solid var(--mdhui-border-color-0);
+    cursor: pointer;
 }
 
 .mdhui-meal .mdhui-unstyled-button {
@@ -11,6 +9,16 @@
 
 .mdhui-meal:last-child {
     border: none;
+}
+
+.mdhui-meal .mdhui-divider {
+    margin: 0 16px;
+    width: calc(100% - 32px);
+    box-sizing: border-box;
+}
+
+.mdhui-meal-content {
+    display: flex;
 }
 
 .mdhui-meal-thumbnail {
@@ -62,6 +70,7 @@
 
 .mdhui-meal-info {
     margin: 16px 8px;
+    flex: 1;
     color: var(--mdhui-text-color-2);
 }
 
@@ -76,6 +85,11 @@
 }
 
 .mdhui-meal-description {
+    margin-top: 8px;
+    font-size: 0.75em;
+}
+
+.mdhui-meal-items {
     margin-top: 8px;
     font-size: 0.75em;
 }

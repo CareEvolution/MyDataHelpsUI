@@ -1,12 +1,14 @@
-import React, { CSSProperties, useContext, useEffect, useState } from 'react';
+import React, { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import './MealEditor.css';
 import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
-import { Button, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
+import { Button, Card, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { getFullDayAndDateString } from '../../../helpers/date-helpers';
+import { combineItemsWithAnalysisItems } from '../../../helpers/glucose-and-meals/meals';
+import MealAnalysis from '../../presentational/MealAnalysis';
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -26,18 +28,20 @@ export default function MealEditor(props: MealEditorProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [loading, setLoading] = useState<boolean>(true);
-    const [allMeals, setAllMeals] = useState<Meal[]>();
-    const [activeMeals, setActiveMeals] = useState<Meal[]>();
+    const [allMeals, setAllMeals] = useState<Meal[]>([]);
+    const [activeMeals, setActiveMeals] = useState<Meal[]>([]);
     const [mealToEdit, setMealToEdit] = useState<Meal>();
     const [imageUrl, setImageUrl] = useState<string>();
     const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [newImageFile, setNewImageFile] = useState<File>();
     const [imageUploadError, setImageUploadError] = useState<boolean>(false);
 
+    const itemsToAddInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         setLoading(true);
-        setAllMeals(undefined);
-        setActiveMeals(undefined);
+        setAllMeals([]);
+        setActiveMeals([]);
         setMealToEdit(undefined);
         setImageUrl(undefined);
         setImageLoading(true);
@@ -55,6 +59,7 @@ export default function MealEditor(props: MealEditorProps) {
             setActiveMeals(previewData.activeMeals);
             setMealToEdit(previewData.mealToEdit);
             setImageUrl(previewData.imageUrl);
+            setImageLoading(!!previewData.imageUrl);
             return;
         }
 
@@ -83,6 +88,12 @@ export default function MealEditor(props: MealEditorProps) {
         });
     }, [props.previewState]);
 
+    if (loading || !mealToEdit) {
+        return <div className="mdhui-meal-editor" ref={props.innerRef}>
+            <LoadingIndicator />
+        </div>;
+    }
+
     const onDelete = () => {
         if (props.previewState) {
             props.onDelete();
@@ -91,12 +102,12 @@ export default function MealEditor(props: MealEditorProps) {
 
         setLoading(true);
 
-        mealToEdit!.archiveTimestamp = new Date();
+        mealToEdit.archiveTimestamp = new Date();
 
-        const otherMeals = allMeals!.filter(meal => meal.id !== mealToEdit!.id);
-        const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
+        const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
+        const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
 
-        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(props.onDelete);
+        saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(props.onDelete);
     };
 
     const onSave = async () => {
@@ -110,7 +121,7 @@ export default function MealEditor(props: MealEditorProps) {
 
         if (newImageFile) {
             try {
-                await uploadMealImageFile(mealToEdit!, newImageFile);
+                await uploadMealImageFile(mealToEdit, newImageFile);
             } catch {
                 setLoading(false);
                 setImageUploadError(true);
@@ -118,33 +129,33 @@ export default function MealEditor(props: MealEditorProps) {
             }
         }
 
-        mealToEdit!.description = mealToEdit!.description?.trim();
-        mealToEdit!.lastModified = new Date();
+        mealToEdit.description = mealToEdit.description?.trim();
+        mealToEdit.lastModified = new Date();
 
-        const otherMeals = allMeals!.filter(meal => meal.id !== mealToEdit!.id);
-        const updatedMeals = [...otherMeals, mealToEdit!].sort(timestampSortAsc);
+        const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
+        const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
 
-        saveMeals(startOfDay(mealToEdit!.timestamp), updatedMeals).then(props.onSave);
+        saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(props.onSave);
     };
 
     const hasDuplicateTimestamp = () => {
-        const otherMeals = activeMeals!.filter(meal => meal.id !== mealToEdit!.id);
-        return !!otherMeals.find(meal => meal.timestamp === mealToEdit!.timestamp);
+        const otherMeals = activeMeals.filter(meal => meal.id !== mealToEdit.id);
+        return otherMeals.some(meal => meal.timestamp === mealToEdit.timestamp);
     };
 
     const onTimeChanged = (value: string) => {
         if (value) {
-            setMealToEdit({ ...mealToEdit!, timestamp: parse(value, 'HH:mm', mealToEdit!.timestamp) });
+            setMealToEdit({ ...mealToEdit, timestamp: parse(value, 'HH:mm', mealToEdit.timestamp) });
         }
     };
 
     const onDescriptionChanged = (value: string) => {
-        setMealToEdit({ ...mealToEdit!, description: value.trim() ? value : undefined });
+        setMealToEdit({ ...mealToEdit, description: value.trim() ? value : undefined });
     };
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
-            setMealToEdit({ ...mealToEdit!, hasImage: true });
+            setMealToEdit({ ...mealToEdit, hasImage: true });
             setNewImageFile(file);
             setImageUrl(URL.createObjectURL(file));
             setImageUploadError(false);
@@ -152,10 +163,44 @@ export default function MealEditor(props: MealEditorProps) {
     };
 
     const onRemoveImage = () => {
-        setMealToEdit({ ...mealToEdit!, hasImage: false });
+        setMealToEdit({ ...mealToEdit, hasImage: false });
         setNewImageFile(undefined);
         setImageUrl(undefined);
         setImageUploadError(false);
+    };
+
+    const onAddItem = (): void => {
+        if (!itemsToAddInputRef.current) return;
+
+        const itemToAdd = itemsToAddInputRef.current.value.trim();
+        if (!itemToAdd || mealToEdit.items?.some(item => item.name.toLowerCase() === itemToAdd.toLowerCase())) return;
+
+        const updatedItems = [...(mealToEdit.items ?? []), { name: itemToAdd }];
+        setMealToEdit({ ...mealToEdit, items: updatedItems });
+
+        itemsToAddInputRef.current.value = '';
+    };
+
+    const onRemoveItem = (itemToRemove: string): void => {
+        if (!mealToEdit.items || mealToEdit.items.length === 0) return;
+
+        const updatedItems = mealToEdit.items.filter(item => item.name !== itemToRemove);
+        setMealToEdit({ ...mealToEdit, items: updatedItems });
+    };
+
+    const onAddAnalysisItems = (): void => {
+        if (!mealToEdit.analysis) return;
+
+        const updatedItems = combineItemsWithAnalysisItems(mealToEdit);
+        const updatedAnalysis = { ...mealToEdit.analysis, reviewTimestamp: new Date() };
+        setMealToEdit({ ...mealToEdit, items: updatedItems, analysis: updatedAnalysis });
+    };
+
+    const onDismissAnalysis = (): void => {
+        if (!mealToEdit.analysis) return;
+
+        const updatedAnalysis = { ...mealToEdit.analysis, reviewTimestamp: new Date() };
+        setMealToEdit({ ...mealToEdit, analysis: updatedAnalysis });
     };
 
     const colorStyles = {
@@ -178,85 +223,117 @@ export default function MealEditor(props: MealEditorProps) {
     };
 
     return <div className="mdhui-meal-editor" style={colorStyles} ref={props.innerRef}>
-        {(loading || !mealToEdit) && <LoadingIndicator />}
-        {!loading && mealToEdit && <div>
-            <div className="mdhui-meal-editor-header">
-                <div className="mdhui-meal-editor-header-type">
-                    {language('edit')} {getMealTypeDisplayText(mealToEdit.type)}
-                </div>
-                <div className="mdhui-meal-editor-header-date">
-                    {getFullDayAndDateString(mealToEdit.timestamp)}
-                </div>
-                <UnstyledButton onClick={onDelete}>
-                    <div className="mdhui-meal-editor-header-delete-action">
-                        <FontAwesomeSvgIcon icon={faTrashCan} />
-                    </div>
-                </UnstyledButton>
+        <div className="mdhui-meal-editor-header">
+            <div className="mdhui-meal-editor-header-type">
+                {language('edit')} {getMealTypeDisplayText(mealToEdit.type)}
             </div>
-            <div className="mdhui-meal-editor-form">
-                <div className="mdhui-meal-editor-time">
-                    <div className="mdhui-meal-editor-time-label">{language('meal-editor-time-input-label')}:</div>
-                    <input
-                        className="mdhui-meal-editor-time-input"
-                        type="time"
-                        value={format(mealToEdit.timestamp, 'HH:mm')}
-                        onChange={event => onTimeChanged(event.target.value)}
-                        style={{ colorScheme: layoutContext.colorScheme }}
-                    />
+            <div className="mdhui-meal-editor-header-date">
+                {getFullDayAndDateString(mealToEdit.timestamp)}
+            </div>
+            <UnstyledButton onClick={onDelete}>
+                <div className="mdhui-meal-editor-header-delete-action">
+                    <FontAwesomeSvgIcon icon={faTrashCan} />
                 </div>
-                <div className="mdhui-meal-editor-description">
-                    <div className="mdhui-meal-editor-description-label">{language('meal-editor-description-input-label')}:</div>
-                    <textarea
-                        className="mdhui-meal-editor-description-input"
-                        rows={3}
-                        maxLength={250}
-                        value={mealToEdit.description}
-                        onChange={event => onDescriptionChanged(event.target.value)}
-                        style={{ colorScheme: layoutContext.colorScheme }}
-                        placeholder={language('meal-editor-description-optional')}
-                    />
+            </UnstyledButton>
+        </div>
+        <div className="mdhui-meal-editor-form">
+            <div className="mdhui-meal-editor-time">
+                <div className="mdhui-meal-editor-time-label">{language('meal-editor-time-input-label')}:</div>
+                <input
+                    className="mdhui-meal-editor-time-input"
+                    type="time"
+                    value={format(mealToEdit.timestamp, 'HH:mm')}
+                    onChange={event => onTimeChanged(event.target.value)}
+                    style={{ colorScheme: layoutContext.colorScheme }}
+                />
+            </div>
+            <div className="mdhui-meal-editor-description">
+                <div className="mdhui-meal-editor-description-label">{language('meal-editor-description-input-label')}:</div>
+                <textarea
+                    className="mdhui-meal-editor-description-input"
+                    rows={3}
+                    maxLength={250}
+                    value={mealToEdit.description}
+                    onChange={event => onDescriptionChanged(event.target.value)}
+                    style={{ colorScheme: layoutContext.colorScheme }}
+                    placeholder={language('meal-editor-description-optional')}
+                />
+            </div>
+            {props.withImageCapture && !imageUrl && renderImageSelector(
+                <div className="mdhui-button mdhui-meal-editor-image-add">
+                    <FontAwesomeSvgIcon icon={faPlus} /> {language('meal-editor-add-image')}
                 </div>
-                {props.withImageCapture && !imageUrl && renderImageSelector(
-                    <div className="mdhui-button mdhui-meal-editor-image-add">
-                        <FontAwesomeSvgIcon icon={faPlus} /> {language('meal-editor-add-image')}
-                    </div>
-                )}
-                {props.withImageCapture && imageUrl &&
-                    <div className="mdhui-meal-editor-image-manager">
-                        {imageLoading &&
-                            <div className="mdhui-meal-editor-image-loading">
-                                <LoadingIndicator />
-                            </div>
-                        }
-                        <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
-                            <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={() => setImageLoading(false)} />
-                            <div className="mdhui-meal-editor-image-actions">
-                                {renderImageSelector(
-                                    <div className="mdhui-meal-editor-image-action">
-                                        <FontAwesomeSvgIcon icon={faEdit} />
-                                    </div>
-                                )}
-                                <UnstyledButton onClick={onRemoveImage}>
-                                    <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
-                                        <FontAwesomeSvgIcon icon={faTrashCan} />
-                                    </div>
-                                </UnstyledButton>
-                            </div>
+            )}
+            {props.withImageCapture && imageUrl &&
+                <div className="mdhui-meal-editor-image-manager">
+                    {imageLoading &&
+                        <div className="mdhui-meal-editor-image-loading">
+                            <LoadingIndicator />
+                        </div>
+                    }
+                    <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
+                        <img className="mdhui-meal-editor-image" alt={language('meal-editor-image-alt')} src={imageUrl} onLoad={() => setImageLoading(false)} />
+                        <div className="mdhui-meal-editor-image-actions">
+                            {renderImageSelector(
+                                <div className="mdhui-meal-editor-image-action">
+                                    <FontAwesomeSvgIcon icon={faEdit} />
+                                </div>
+                            )}
+                            <UnstyledButton onClick={onRemoveImage}>
+                                <div className="mdhui-meal-editor-image-action mdhui-meal-editor-image-action-remove">
+                                    <FontAwesomeSvgIcon icon={faTrashCan} />
+                                </div>
+                            </UnstyledButton>
                         </div>
                     </div>
-                }
-            </div>
-            {props.children &&
-                <div className="mdhui-meal-editor-children">
-                    {props.children}
                 </div>
             }
-            {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
-            {imageUploadError && <div className="mdhui-meal-editor-error">{language('meal-editor-image-upload-error')}</div>}
-            <div className="mdhui-meal-editor-buttons">
-                <Button onClick={() => props.onCancel()} variant="light">{language('cancel')}</Button>
-                <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>{language('save')}</Button>
+        </div>
+        <div className="mdhui-meal-editor-items">
+            <div className="mdhui-meal-editor-items-header">
+                <div className="mdhui-meal-editor-items-title">{language('meal-editor-items-title')}</div>
+                <input
+                    type="text"
+                    className="mdhui-meal-editor-items-add-input"
+                    ref={itemsToAddInputRef}
+                    style={{ colorScheme: layoutContext.colorScheme }}
+                    onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                            onAddItem();
+                        }
+                    }}
+                />
+                <div className="mdhui-meal-editor-items-add-button">
+                    <Button variant="light" fullWidth={false} onClick={onAddItem}>{language('add')}</Button>
+                </div>
             </div>
-        </div>}
+            <div className="mdhui-meal-editor-item-list">
+                {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items?.map(item => {
+                    return <div key={item.name} className="mdhui-meal-editor-item">
+                        <UnstyledButton onClick={() => onRemoveItem(item.name)}>
+                            {item.name}
+                            <FontAwesomeSvgIcon className="mdhui-meal-editor-item-delete-icon" icon={faTrashCan} />
+                        </UnstyledButton>
+                    </div>;
+                })}
+                {(!mealToEdit.items || mealToEdit.items.length === 0) &&
+                    <div className="mdhui-meal-editor-item-none">{language('meal-editor-item-none')}</div>
+                }
+            </div>
+        </div>
+        <Card style={{ margin: '16px 0' }}>
+            <MealAnalysis meal={mealToEdit} onAddItems={onAddAnalysisItems} onDismiss={onDismissAnalysis} />
+        </Card>
+        {props.children &&
+            <div className="mdhui-meal-editor-children">
+                {props.children}
+            </div>
+        }
+        {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
+        {imageUploadError && <div className="mdhui-meal-editor-error">{language('meal-editor-image-upload-error')}</div>}
+        <div className="mdhui-meal-editor-buttons">
+            <Button onClick={() => props.onCancel()} variant="light">{language('cancel')}</Button>
+            <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>{language('save')}</Button>
+        </div>
     </div>
 }
