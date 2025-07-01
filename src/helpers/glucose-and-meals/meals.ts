@@ -1,25 +1,28 @@
-import MyDataHelps, { Guid, PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, parseISO, startOfDay } from 'date-fns';
-import { Meal, MealReference, MealType } from './types';
+import { Meal, MealItem, MealReference } from './types';
 import { timestampSortAsc } from './util';
 import queryAllFiles from '../query-all-files';
 import { createThumbnailIfNecessary } from '../image';
+import getDayKey from '../get-day-key';
 
-interface SerializedMeal {
-    id: string,
-    timestamp: string;
-    type: string;
-    description?: string;
-    hasImage?: boolean;
-    archiveTimestamp?: string;
-    created?: string;
-    lastModified?: string;
-}
+const parseMeals = (mealsJson: string): Meal[] => {
+    return JSON.parse(mealsJson, (key, value) => {
+        if (['timestamp', 'archiveTimestamp', 'created', 'lastModified', 'reviewTimestamp'].includes(key) && typeof value === 'string') {
+            return parseISO(value);
+        }
+        return value;
+    });
+};
 
-interface SerializedMealReference {
-    date: string;
-    id: string;
-}
+const parseMealReference = (mealReferenceJson: string): MealReference => {
+    return JSON.parse(mealReferenceJson, (key, value) => {
+        if (['date'].includes(key) && typeof value === 'string') {
+            return parseISO(value);
+        }
+        return value;
+    });
+};
 
 export async function getMeals(date: Date): Promise<Meal[]> {
     const response = await MyDataHelps.queryDeviceData({
@@ -29,10 +32,23 @@ export async function getMeals(date: Date): Promise<Meal[]> {
         observedBefore: startOfDay(add(date, { days: 1 })).toISOString()
     });
     if (response.deviceDataPoints.length > 0) {
-        const meals = (JSON.parse(response.deviceDataPoints[0].value) as SerializedMeal[]).map(toMeal);
-        return meals.sort(timestampSortAsc);
+        return parseMeals(response.deviceDataPoints[0].value).sort(timestampSortAsc);
     }
     return [];
+}
+
+export async function getMealsByDate(startDate: Date, endDate: Date): Promise<Record<string, Meal[]>> {
+    const response = await MyDataHelps.queryDeviceData({
+        namespace: 'Project',
+        type: 'Meals',
+        observedAfter: endOfDay(add(startDate, { days: -1 })).toISOString(),
+        observedBefore: startOfDay(add(endDate, { days: 1 })).toISOString()
+    });
+    return response.deviceDataPoints.reduce((mealsByDate, dataPoint) => {
+        const dayKey = getDayKey(dataPoint.observationDate!);
+        mealsByDate[dayKey] = mealsByDate[dayKey] ?? parseMeals(dataPoint.value).sort(timestampSortAsc);
+        return mealsByDate;
+    }, {} as Record<string, Meal[]>);
 }
 
 export function saveMeals(date: Date, meals: Meal[]): Promise<void> {
@@ -55,7 +71,7 @@ export async function getMealToEdit(): Promise<MealReference | undefined> {
         type: 'MealToEdit'
     });
     if (response.deviceDataPoints.length > 0) {
-        return toMealReference(JSON.parse(response.deviceDataPoints[0].value) as SerializedMealReference);
+        return parseMealReference(response.deviceDataPoints[0].value);
     }
     return undefined;
 }
@@ -76,8 +92,8 @@ export async function uploadMealImageFile(meal: Meal, file: File): Promise<void>
     return Promise.resolve();
 }
 
-export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: string }> {
-    if (meals.length === 0) return {};
+export async function getMealImageUrls(meals: Meal[]): Promise<Record<string, string>> {
+    if (meals.length === 0 || !meals.some(meal => meal.hasImage)) return {};
 
     const mealImageFiles = await queryAllFiles({ category: 'MealImage' });
 
@@ -88,7 +104,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
         return compareDesc(parseISO(a.lastModified), parseISO(b.lastModified));
     });
 
-    const result: { [key: string]: string } = {};
+    const result: Record<string, string> = {};
     await Promise.all(meals.filter(meal => meal.hasImage).map(async meal => {
         const imageFile = mealImageFiles.find(file => file.fileName.startsWith(meal.id.toString()));
         if (imageFile) {
@@ -99,22 +115,23 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
     return result;
 }
 
-function toMeal(serializedMeal: SerializedMeal): Meal {
-    return {
-        id: serializedMeal.id as Guid,
-        timestamp: parseISO(serializedMeal.timestamp),
-        type: serializedMeal.type as MealType,
-        description: serializedMeal.description,
-        hasImage: serializedMeal.hasImage,
-        archiveTimestamp: serializedMeal.archiveTimestamp ? parseISO(serializedMeal.archiveTimestamp) : undefined,
-        created: serializedMeal.created ? parseISO(serializedMeal.created) : undefined,
-        lastModified: serializedMeal.lastModified ? parseISO(serializedMeal.lastModified) : undefined
-    };
+export function combineItemsWithAnalysisItems(meal: Meal): MealItem[] | undefined {
+    if (!meal.analysis) return meal.items;
+
+    const updatedItems = [...(meal.items ?? [])];
+    for (const itemToAdd of meal.analysis.items.map(item => item.name)) {
+        if (!updatedItems.some(item => item.name.toLowerCase() === itemToAdd.toLowerCase())) {
+            updatedItems.push({ name: itemToAdd });
+        }
+    }
+
+    return updatedItems;
 }
 
-function toMealReference(serializedMealReference: SerializedMealReference): MealReference {
-    return {
-        date: parseISO(serializedMealReference.date),
-        id: serializedMealReference.id as Guid
-    };
+export function itemSortByNameAsc(item1: MealItem, item2: MealItem): number {
+    return item1.name.localeCompare(item2.name);
+}
+
+export function itemSortByConfidenceDesc(item1: MealItem, item2: MealItem): number {
+    return (item2.confidenceScore ?? 0) - (item1.confidenceScore ?? 0);
 }

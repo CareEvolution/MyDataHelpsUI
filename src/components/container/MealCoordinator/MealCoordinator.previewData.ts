@@ -24,7 +24,8 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
             {
                 id: uuid(),
                 timestamp: createDate(date, 9, 15),
-                type: 'snack'
+                type: 'snack',
+                items: [{ 'name': 'candy bar' }]
             }, {
                 id: uuid(),
                 timestamp: createDate(date, 9, 45),
@@ -34,12 +35,23 @@ export const createPreviewData = (previewState: MealCoordinatorPreviewState, dat
                 id: grilledCheeseMealId,
                 timestamp: createDate(date, 18, 10),
                 type: 'meal',
-                description: 'A grilled cheese sandwich.'
+                description: 'A grilled cheese sandwich.',
+                items: [{ 'name': 'bread' }, { 'name': 'cheddar' }],
+                analysis: {
+                    timestamp: createDate(date, 9, 50),
+                    items: [{ 'name': 'bread', 'confidenceScore': 0.95 }, { 'name': 'cheese', 'confidenceScore': 0.89 }, { 'name': 'butter', 'confidenceScore': 0.7 }]
+                }
             }, {
                 id: uuid(),
                 timestamp: createDate(date, 21, 43),
                 type: 'drink',
-                description: 'A diet coke.'
+                description: 'A diet coke.',
+                items: [{ 'name': 'diet coke' }],
+                analysis: {
+                    timestamp: createDate(date, 21, 55),
+                    items: [{ 'name': 'soft drink', 'confidenceScore': 0.89 }],
+                    reviewTimestamp: createDate(date, 22, 10)
+                }
             }
         ];
 

@@ -1,21 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './SingleMeal.css'
 import UnstyledButton from '../UnstyledButton';
-import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
+import { ColorDefinition, getMealTypeDisplayText, language, Meal, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
-import { LoadingIndicator } from '../index';
-import { getTimeOfDayString } from '../../../helpers/date-helpers';
+import { Card, LoadingIndicator } from '../../presentational';
+import { getDateAndTimeString, getTimeOfDayString } from '../../../helpers/date-helpers';
+import MealAnalysis from '../MealAnalysis';
+import { itemSortByNameAsc } from '../../../helpers/glucose-and-meals/meals';
 
 export interface SingleMealProps {
     meal: Meal;
     mealImageUrl?: string;
     number?: number;
-    color: ColorDefinition;
+    color?: ColorDefinition;
     onClick?: () => void;
     onEdit?: () => void;
-    selected: boolean;
+    onAddAnalysisItems?: () => void;
+    onReviewAnalysis?: () => void;
+    selected?: boolean;
+    displayDateWithTime?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -28,58 +33,70 @@ export default function (props: SingleMealProps) {
         setImageLoading(!!props.mealImageUrl);
     }, [props.mealImageUrl])
 
-    return <div className="mdhui-meal" ref={props.innerRef}>
-        <WrapIfNecessary onClick={props.onClick}>
-            <div className="mdhui-meal-thumbnail">
-                {!props.mealImageUrl &&
-                    <>
-                        {props.meal.type === 'meal' && <FontAwesomeSvgIcon icon={faBurger} />}
-                        {props.meal.type === 'snack' && <FontAwesomeSvgIcon icon={faCookie} />}
-                        {props.meal.type === 'drink' && <FontAwesomeSvgIcon icon={faWineBottle} />}
-                    </>
-                }
-                {props.mealImageUrl &&
-                    <>
-                        <div className="mdhui-meal-thumbnail-image" style={{ display: imageLoading ? 'none' : 'block' }}>
-                            <img alt="meal thumbnail" src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
+    return <div className={'mdhui-meal' + (props.onClick ? ' clickable' : '')} onClick={props.onClick} ref={props.innerRef}>
+        <div className="mdhui-meal-content">
+            <WrapIfNecessary onClick={props.onClick}>
+                <div className="mdhui-meal-thumbnail">
+                    {!props.mealImageUrl &&
+                        <>
+                            {props.meal.type === 'meal' && <FontAwesomeSvgIcon icon={faBurger} />}
+                            {props.meal.type === 'snack' && <FontAwesomeSvgIcon icon={faCookie} />}
+                            {props.meal.type === 'drink' && <FontAwesomeSvgIcon icon={faWineBottle} />}
+                        </>
+                    }
+                    {props.mealImageUrl &&
+                        <>
+                            <div className="mdhui-meal-thumbnail-image" style={{ display: imageLoading ? 'none' : 'block' }}>
+                                <img alt={language('meal-thumbnail-alt')} src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
+                            </div>
+                            {imageLoading &&
+                                <LoadingIndicator className="mdhui-meal-loading" />
+                            }
+                        </>
+                    }
+                    {props.number !== undefined &&
+                        <div className="mdhui-meal-number" style={{ background: resolveColor(layoutContext.colorScheme, props.color) }}>
+                            {props.number}
                         </div>
-                        {imageLoading &&
-                            <LoadingIndicator className="mdhui-meal-loading" />
-                        }
-                    </>
-                }
-                {props.number !== undefined &&
-                    <div className="mdhui-meal-number" style={{ background: resolveColor(layoutContext.colorScheme, props.color) }}>
-                        {props.number}
-                    </div>
-                }
-            </div>
-        </WrapIfNecessary>
-        <WrapIfNecessary onClick={props.onClick}>
+                    }
+                </div>
+            </WrapIfNecessary>
             <div className="mdhui-meal-info">
                 <div className="mdhui-meal-type">
                     {getMealTypeDisplayText(props.meal.type)}&nbsp;
                     {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
                 </div>
-                <div className="mdhui-meal-time">{getTimeOfDayString(props.meal.timestamp)}</div>
+                <div className="mdhui-meal-time">
+                    {props.displayDateWithTime ? getDateAndTimeString(props.meal.timestamp) : getTimeOfDayString(props.meal.timestamp)}
+                </div>
                 {props.meal.description &&
                     <div className="mdhui-meal-description">{props.meal.description}</div>
                 }
+                {props.meal.items && props.meal.items.length > 0 &&
+                    <>
+                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.sort(itemSortByNameAsc).map(item => item.name).join(', ')}</div>
+                    </>
+                }
             </div>
-        </WrapIfNecessary>
-        {props.onEdit &&
-            <UnstyledButton onClick={() => props.onEdit!()} style={{ height: '100%' }}>
-                <div className="mdhui-meal-edit-action">
-                    <FontAwesomeSvgIcon icon={faEdit} />
+            {props.onEdit &&
+                <div className="mdhui-meal-actions">
+                    <UnstyledButton onClick={props.onEdit} stopPropagation={true}>
+                        <div className="mdhui-meal-edit-action">
+                            <FontAwesomeSvgIcon icon={faEdit} />
+                        </div>
+                    </UnstyledButton>
                 </div>
-            </UnstyledButton>
-        }
+            }
+        </div>
+        <Card style={{ marginTop: '0' }}>
+            <MealAnalysis variant="worklist" meal={props.meal} onAddItems={props.onAddAnalysisItems} onReviewItems={props.onReviewAnalysis} />
+        </Card>
     </div>;
 }
 
 function WrapIfNecessary(props: { onClick: (() => void) | undefined, children: React.ReactNode }) {
     if (props.onClick) {
-        return <UnstyledButton onClick={() => props.onClick!()} style={{ height: '100%' }}>
+        return <UnstyledButton onClick={props.onClick} stopPropagation={true}>
             {props.children}
         </UnstyledButton>
     }
