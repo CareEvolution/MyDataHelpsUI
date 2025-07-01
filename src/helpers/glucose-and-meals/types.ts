@@ -22,12 +22,26 @@ export function getMealTypeDisplayText(mealType: MealType): string {
     return '';
 }
 
+export interface MealItem {
+    name: string;
+    confidenceScore?: number;
+}
+
+export interface MealAnalysis {
+    timestamp: Date;
+    items: MealItem[];
+    reviewTimestamp?: Date;
+}
+
 export interface Meal {
     id: Guid;
     timestamp: Date;
     type: MealType;
     description?: string;
     hasImage?: boolean;
+    items?: MealItem[];
+    analysis?: MealAnalysis;
+    additionalProperties?: Record<string, string | number>;
     archiveTimestamp?: Date;
     created?: Date;
     lastModified?: Date;

@@ -2,7 +2,7 @@ import { add, startOfDay } from 'date-fns';
 import { Meal } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 
-export type MealEditorPreviewState = 'without existing image' | 'with existing image';
+export type MealEditorPreviewState = 'loaded' | 'with image' | 'with automated meal analysis' | 'with image and automated meal analysis';
 
 export interface MealEditorPreviewData {
     allMeals: Meal[];
@@ -21,7 +21,12 @@ export const createPreviewData = (previewState: MealEditorPreviewState, date: Da
             id: uuid(),
             timestamp: createDate(date, 14, 33),
             type: 'snack',
-            description: 'A grilled cheese sandwich.'
+            description: 'A grilled cheese sandwich.',
+            analysis: previewState.endsWith('automated meal analysis') ? {
+                timestamp: createDate(date, 14, 45),
+                items: [{ 'name': 'bread', 'confidenceScore': 0.89 }, { 'name': 'cheese', 'confidenceScore': 0.75 }]
+            } : undefined,
+            items: !previewState.endsWith('automated meal analysis') ? [{ 'name': 'italian bread' }, { 'name': 'american cheese' }] : undefined
         }, {
             id: uuid(),
             timestamp: createDate(date, 18, 10),
@@ -42,7 +47,9 @@ export const createPreviewData = (previewState: MealEditorPreviewState, date: Da
         ],
         activeMeals: activeMeals,
         mealToEdit: activeMeals[1],
-        imageUrl: previewState === 'with existing image' ? 'https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png' : undefined
+        imageUrl: previewState.startsWith('with image')
+            ? `https://rkstudio-customer-assets.s3.us-east-1.amazonaws.com/MDH-UI/grilled_cheese.png?cacheBust=${new Date().getTime()}`
+            : undefined
     };
 };
 
