@@ -49,7 +49,7 @@ export default function (props: SurveyTaskListProps) {
 		setActiveSurveys([]);
 	};
 
-	useInitializeView(initialize, [], [props.previewState]);
+	useInitializeView(initialize, [], [props.previewState, props.sortBehavior]);
 
 	const isSurveyActive = (task: SurveyTask): boolean => {
 		return activeSurveys.includes(task.surveyName);
