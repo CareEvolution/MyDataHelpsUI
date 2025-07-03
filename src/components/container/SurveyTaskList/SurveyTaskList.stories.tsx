@@ -10,10 +10,23 @@ export default {
 	}
 };
 
-const render = (args: SurveyTaskListProps) => {
-    return <Layout colorScheme="auto">
-        <SurveyTaskList {...args} />
-    </Layout>;
+// Ease up typing for the 'flattened' sortBehavior props
+const render = (args: any) => {
+	const { 'sortBehavior.type': type, 'sortBehavior.direction': direction, 'sortBehavior.userDefinedOrder': userDefinedOrder, ...rest } = args;
+	const completeArgs: SurveyTaskListProps = {
+		...rest,
+		sortBehavior: {
+			type: type,
+			direction: direction,
+			userDefinedOrder: userDefinedOrder
+		}
+	};
+
+	return (
+		<Layout colorScheme="auto">
+			<SurveyTaskList {...completeArgs} />
+		</Layout>
+	);
 };
 
 export const Incomplete = {
@@ -21,9 +34,58 @@ export const Incomplete = {
 		limit: 3,
 		status: 'incomplete',
 		title: 'Incomplete Tasks',
-		previewState: "IncompleteTasks",
-		variant: "singleCard",
-		sequential: false
+		previewState: 'IncompleteTasks',
+		variant: 'singleCard',
+		sequential: false,
+		'sortBehavior.type': 'dueDate',
+		'sortBehavior.direction': 'ascending'
+	},
+	argTypes: {
+		sortBehavior: {
+			table: {
+				disable: true
+			}
+		},
+		'sortBehavior.type': {
+			name: 'Sort Type',
+			description: 'The property to sort the incomplete tasks by.',
+			control: {
+				type: 'select'
+			},
+			options: ['alphabetical', 'dueDate', 'insertedDate', 'userDefined', 'shuffle'],
+			table: {
+				category: 'Sort Behavior',
+			}
+		},
+		'sortBehavior.direction': {
+			name: 'Sort Direction',
+			description: 'The direction of the sort.',
+			control: {
+				type: 'radio'
+			},
+			options: ['ascending', 'descending'],
+			if: {
+				arg: 'sortBehavior.type',
+				in: ['alphabetical', 'dueDate', 'insertedDate']
+			},
+			table: {
+				category: 'Sort Behavior',
+			}
+		},
+		'sortBehavior.userDefinedOrder': {
+			name: 'User Defined Order',
+			description: 'An array of survey names in the desired order. Only applies when Sort Type is "userDefined".',
+			control: {
+				type: 'object'
+			},
+			if: {
+				arg: 'sortBehavior.type',
+				eq: 'userDefined'
+			},
+			table: {
+				category: 'Sort Behavior',
+			}
+		}
 	},
 	render: render
 }
@@ -33,14 +95,29 @@ export const Sequential = {
 		...Incomplete.args,
 		sequential: true
 	},
+	argTypes: { ...Incomplete.argTypes },
 	render: render
 }
+
+export const UserDefinedSort = {
+	name: "User-defined Sort",
+	args: {
+		...Incomplete.args,
+		'sortBehavior.type': 'userDefined',
+		'sortBehavior.userDefinedOrder': ["Rating: CheckIn", "Rating2: CheckIn"],
+		'sortBehavior.direction': undefined,
+	},
+	argTypes: { ...Incomplete.argTypes },
+	render: render,
+}
+
 
 export const Multicard = {
 	args: {
 		...Incomplete.args,
 		variant: "multiCard"
 	},
+	argTypes: { ...Incomplete.argTypes },
 	render: render
 }
 
@@ -54,7 +131,7 @@ export const CustomStyle = {
 		titleColor: "red",
 		cardBackgroundColor: "#eee",
 		cardStyle: {
-			boxShadow:"none"
+			boxShadow: "none"
 		},
 		buttonVariant: "default",
 		buttonColor: "blue",
