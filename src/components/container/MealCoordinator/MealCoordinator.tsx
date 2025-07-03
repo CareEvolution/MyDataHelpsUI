@@ -83,7 +83,7 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
         await saveMeals(startOfDay(meal.timestamp), updatedMeals);
 
         setAllMeals(updatedMeals);
-        setActiveMeals([...activeMeals, meal].sort(timestampSortAsc));
+        setActiveMeals([...activeMeals].sort(timestampSortAsc));
         setLoading(false);
     };
 
