@@ -7,7 +7,7 @@ import {
     appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -142,7 +142,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
@@ -151,7 +151,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000],
         requiresV2Api: true

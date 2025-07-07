@@ -13,7 +13,7 @@ import {
     healthConnectTotalSleepMinutesDataProvider
 } from '../daily-data-providers';
 import { DailyDataType, DailyDataTypeDefinition } from '../daily-data-types';
-import { faBed, faHeartbeat, faPersonRunning, faRoute } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faHeartbeat, faPersonRunning, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
@@ -74,7 +74,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: healthConnectStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'steps-daily', true),
         labelKey: 'steps',
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
