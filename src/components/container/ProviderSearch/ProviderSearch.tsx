@@ -47,7 +47,7 @@ let currentRequestID = 0;
 /** Supports searching for Providers, and Health Plans for the purpose of connecting to participant data
  */
 export default function ProviderSearch(props: ProviderSearchProps) {
-    const [featuredProviders, setFeaturedProviders] = useState<ExternalAccountProvider[] | undefined>(props.featuredProviders);
+    const [featuredProviders, setFeaturedProviders] = useState<ExternalAccountProvider[]>();
     const [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>();
     const [searchResults, setSearchResults] = useState<ExternalAccountProvider[]>([]);
     const [searching, setSearching] = useState(true);
@@ -61,7 +61,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
     const operatingMode = props.operatingMode ?? ((props.publicProviderSearchApiUrl || props.publicFeaturedProvidersApiUrl) ? 'unauthenticated' : 'authenticated');
 
     useEffect(() => {
-        setFeaturedProviders(props.featuredProviders);
+        setFeaturedProviders(undefined);
         setExternalAccounts(undefined);
         setSearchResults([]);
         setSearching(true);
@@ -78,7 +78,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
     const applyPreviewState = (previewState: ProviderSearchPreviewState): void => {
         const previewData = createPreviewData(previewState);
         if (!featuredProviders) {
-            setFeaturedProviders([]);
+            setFeaturedProviders(props.featuredProviders ?? []);
             return;
         }
         if (!externalAccounts) {
@@ -93,27 +93,32 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setInitialized(true);
     };
 
-    const loadFeaturedProviders = async (): Promise<void> => {
+    const getFeaturedProviders = async (): Promise<ExternalAccountProvider[]> => {
+        if (props.featuredProviders) return props.featuredProviders;
+
         try {
-            const featuredProviders = operatingMode === 'authenticated'
+            return operatingMode === 'authenticated'
                 ? await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext)
                 : await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext);
-            setFeaturedProviders(featuredProviders);
         } catch (error) {
             console.error('Error loading featured providers.', error);
-            setFeaturedProviders([]);
+            return [];
         }
     };
 
-    const loadExternalAccounts = async (): Promise<void> => {
-        setExternalAccounts(operatingMode === 'authenticated' ? await MyDataHelps.getExternalAccounts() : []);
+    const getExternalAccounts = async (): Promise<ExternalAccount[]> => {
+        try {
+            return operatingMode === 'authenticated' ? await MyDataHelps.getExternalAccounts() : [];
+        } catch (error) {
+            console.error('Error loading external accounts.', error);
+            return [];
+        }
     };
 
     const initialize = async (): Promise<void> => {
-        if (!featuredProviders) {
-            await loadFeaturedProviders();
-        }
-        await loadExternalAccounts();
+        const [featuredProviders, externalAccounts] = await Promise.all([getFeaturedProviders(), getExternalAccounts()]);
+        setFeaturedProviders(featuredProviders);
+        setExternalAccounts(externalAccounts);
         setInitialized(true);
     };
 
@@ -128,11 +133,15 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         initialize();
     }, [initialized, featuredProviders, externalAccounts]);
 
+    const reloadExternalAccounts = async (): Promise<void> => {
+        setExternalAccounts(await getExternalAccounts());
+    };
+
     useEffect(() => {
         if (props.previewState) return;
-        MyDataHelps.on('applicationDidBecomeVisible', loadExternalAccounts);
+        MyDataHelps.on('applicationDidBecomeVisible', reloadExternalAccounts);
         return () => {
-            MyDataHelps.off('applicationDidBecomeVisible', loadExternalAccounts);
+            MyDataHelps.off('applicationDidBecomeVisible', reloadExternalAccounts);
         };
     }, []);
 
@@ -215,7 +224,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
 
         await MyDataHelps.connectExternalAccount(provider.id, props.connectExternalAccountOptions ?? { openNewWindow: true });
         props.onProviderConnected?.(provider);
-        loadExternalAccounts();
+        reloadExternalAccounts();
     };
 
     const getDisabledProviderStatus = (provider: ExternalAccountProvider): string => {
