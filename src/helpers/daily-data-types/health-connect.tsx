@@ -13,7 +13,7 @@ import {
     healthConnectTotalSleepMinutesDataProvider
 } from '../daily-data-providers';
 import { DailyDataType, DailyDataTypeDefinition } from '../daily-data-types';
-import { faBed, faHeartbeat, faPersonRunning, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faFireFlameCurved, faHeartbeat, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
@@ -111,7 +111,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: healthConnectActiveCaloriesBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'active-calories-burned-daily', true),
         labelKey: 'active-calories-burned',
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1800, 2200]
     },
@@ -120,7 +120,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: healthConnectTotalCaloriesBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'total-calories-burned-daily', true),
         labelKey: 'total-calories-burned',
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1800, 2200]
     }
