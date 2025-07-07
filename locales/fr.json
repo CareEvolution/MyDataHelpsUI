@@ -1,6 +1,7 @@
 {
     "30-day-average": "Moyenne sur 30 jours",
     "active-calories": "Calories Actives",
+    "active-calories-burned": "Calories actives brûlées",
     "active-energy-burned": "Énergie Active Brûlée",
     "active-time": "Temps Actif",
     "add": "Ajouter",
@@ -511,6 +512,7 @@
     "today": "Aujourd'hui",
     "todays-log": "Journal d'aujourd'hui",
     "total-calories": "Calories Totales",
+    "total-calories-burned": "Calories totales brûlées",
     "total-stress-time": "Temps Total de Stress",
     "treatments": "Traitements",
     "treatments-experiencing-previous": "Quels traitements avez-vous effectués ?",

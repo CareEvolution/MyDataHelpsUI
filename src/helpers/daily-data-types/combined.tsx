@@ -4,7 +4,7 @@ import {
     faBed,
     faHeartbeat,
     faHourglassHalf,
-    faPersonRunning
+    faShoePrints
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import {
@@ -90,7 +90,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: combinedStepsDataProvider,
         availabilityCheck: combinedAvailabilityCheck(STEPS_SOURCES),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
@@ -103,7 +103,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
             STEPS_WITH_GOOGLE_FIT_SOURCES
         ),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },

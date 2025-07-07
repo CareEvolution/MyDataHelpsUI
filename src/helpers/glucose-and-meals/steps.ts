@@ -1,9 +1,12 @@
-import MyDataHelps, { DeviceDataPointQuery, DeviceDataV2AggregateQuery } from '@careevolution/mydatahelps-js';
+import { DeviceDataPointQuery, DeviceDataV2AggregateQuery, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
 import queryAllDeviceDataV2Aggregates from '../query-all-device-data-v2-aggregates';
 import { Reading } from './types';
-import { add, endOfDay, parseISO, startOfDay } from 'date-fns';
+import { add, endOfDay, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
+import queryAllDeviceDataV2 from '../query-all-device-data-v2';
 import { getMaxValueReadings } from './util';
+import { getCombinedDataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
+import { parseISOWithoutOffset } from '../date-helpers';
 
 export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
     const params: DeviceDataV2AggregateQuery = {
@@ -19,7 +22,7 @@ export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> 
     return queryAllDeviceDataV2Aggregates(params).then(aggregates => {
         return aggregates.map(aggregate => {
             return {
-                timestamp: add(parseISO(aggregate.date), { minutes: 15 }),
+                timestamp: add(parseISOWithoutOffset(aggregate.date), { minutes: 15 }),
                 value: aggregate.statistics['sum']
             };
         });
@@ -40,7 +43,7 @@ export function garminHalfHourStepsDataProvider(date: Date): Promise<Reading[]> 
     return queryAllDeviceDataV2Aggregates(params).then(aggregates => {
         return aggregates.map(aggregate => {
             return {
-                timestamp: add(parseISO(aggregate.date), { minutes: 15 }),
+                timestamp: add(parseISOWithoutOffset(aggregate.date), { minutes: 15 }),
                 value: aggregate.statistics['sum']
             };
         });
@@ -58,7 +61,25 @@ export function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Readin
     return queryAllDeviceData(params).then(dataPoints => {
         return dataPoints.map(dataPoint => {
             return {
-                timestamp: add(parseISO(dataPoint.observationDate!), { minutes: -15 }),
+                timestamp: add(parseISOWithoutOffset(dataPoint.observationDate!), { minutes: -15 }),
+                value: parseInt(dataPoint.value)
+            };
+        });
+    }, () => []);
+}
+
+export function healthConnectHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
+    const params: DeviceDataV2Query = {
+        namespace: 'HealthConnect',
+        type: 'steps-half-hourly',
+        observedAfter: startOfDay(date).toISOString(),
+        observedBefore: endOfDay(date).toISOString(),
+    };
+
+    return queryAllDeviceDataV2(params).then(dataPoints => {
+        return dataPoints.map(dataPoint => {
+            return {
+                timestamp: add(parseISOWithoutOffset(dataPoint.observationDate!), { minutes: -15 }),
                 value: parseInt(dataPoint.value)
             };
         });
@@ -66,17 +87,20 @@ export function appleHealthHalfHourStepsDataProvider(date: Date): Promise<Readin
 }
 
 export async function getSteps(date: Date): Promise<Reading[]> {
-    let providers: Promise<Reading[]>[] = [];
+    const providers: Promise<Reading[]>[] = [];
 
-    let settings = await MyDataHelps.getDataCollectionSettings();
+    const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
     if (settings.fitbitEnabled) {
         providers.push(fitbitHalfHourStepsDataProvider(date));
     }
     if (settings.garminEnabled) {
         providers.push(garminHalfHourStepsDataProvider(date));
     }
-    if (settings.queryableDeviceDataTypes.find(s => s.namespace == 'AppleHealth' && s.type == 'HalfHourSteps')) {
+    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === 'AppleHealth' && ddt.type === 'HalfHourSteps')) {
         providers.push(appleHealthHalfHourStepsDataProvider(date));
+    }
+    if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === 'HealthConnect' && ddt.type === 'steps-half-hourly')) {
+        providers.push(healthConnectHalfHourStepsDataProvider(date));
     }
 
     return providers.length > 0 ? await getMaxValueReadings(providers) : [];

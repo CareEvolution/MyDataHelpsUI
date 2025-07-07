@@ -40,7 +40,6 @@ export { default as fitbitWearMinutesDataProvider } from "./fitbit-wear-minutes"
 export { default as combinedMindfulMinutesDataProvider } from "./combined-mindful-minutes"
 export { default as combinedStepsDataProvider } from "./combined-steps"
 export { default as combinedSleepDataProvider } from "./combined-sleep"
-export { default as combinedSleepV2DataProvider } from "./combined-sleep-v2"
 export { default as combinedTherapyMinutesDataProvider } from "./combined-therapy-minutes"
 export { default as googleFitMindfulMinutesDataProvider } from "./google-fit-mindful-minutes"
 export { default as googleFitStepsDataProvider } from "./google-fit-steps"
@@ -77,6 +76,12 @@ export { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from 
 export { lightSleepMinutes as healthConnectLightSleepMinutesDataProvider } from "./health-connect-sleep";
 export { remSleepMinutes as healthConnectRemSleepMinutesDataProvider } from "./health-connect-sleep";
 export { deepSleepMinutes as healthConnectDeepSleepMinutesDataProvider } from "./health-connect-sleep";
+export { default as healthConnectStepsDataProvider } from "./health-connect-steps";
+export { default as healthConnectDistanceDataProvider } from "./health-connect-distance";
+export { default as healthConnectMaxHeartRateDataProvider } from "./health-connect-max-heart-rate";
+export { default as healthConnectMinHeartRateDataProvider } from "./health-connect-min-heart-rate";
+export { default as healthConnectActiveCaloriesBurnedDataProvider } from "./health-connect-active-calories-burned";
+export { default as healthConnectTotalCaloriesBurnedDataProvider } from "./health-connect-total-calories-burned";
 export { default as ouraStepsDataProvider } from './oura-daily-steps'
 export { default as ouraSleepMinutesDataProvider } from './oura-total-sleep'
 export { default as ouraRestingHeartRateDataProvider } from './oura-resting-heart-rate'
