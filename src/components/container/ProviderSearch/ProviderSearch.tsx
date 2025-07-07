@@ -109,6 +109,14 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         setExternalAccounts(operatingMode === 'authenticated' ? await MyDataHelps.getExternalAccounts() : []);
     };
 
+    const initialize = async (): Promise<void> => {
+        if (!featuredProviders) {
+            await loadFeaturedProviders();
+        }
+        await loadExternalAccounts();
+        setInitialized(true);
+    };
+
     useEffect(() => {
         if (initialized) return;
 
@@ -117,17 +125,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             return;
         }
 
-        if (!featuredProviders) {
-            loadFeaturedProviders();
-            return;
-        }
-
-        if (!externalAccounts) {
-            loadExternalAccounts();
-            return;
-        }
-
-        setInitialized(true);
+        initialize();
     }, [initialized, featuredProviders, externalAccounts]);
 
     useEffect(() => {
