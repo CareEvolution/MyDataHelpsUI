@@ -98,7 +98,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
             const featuredProviders = operatingMode === 'authenticated'
                 ? await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext)
                 : await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext);
-            setFeaturedProviders(featuredProviders.sort((a, b) => a.name.localeCompare(b.name)));
+            setFeaturedProviders(featuredProviders);
         } catch (error) {
             console.error('Error loading featured providers.', error);
             setFeaturedProviders([]);
