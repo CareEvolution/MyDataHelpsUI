@@ -333,6 +333,11 @@
     "external-accounts-title-divider": " / ",
     "external-accounts-title-health-plans": "Health Plans",
     "external-accounts-title-providers": "Providers",
+    "face-value-1": "Very unhappy face",
+    "face-value-2": "Unhappy face",
+    "face-value-3": "Neutral face",
+    "face-value-4": "Happy face",
+    "face-value-5": "Very happy face",
     "fairly-active-time": "Fairly Active Time",
     "fat-burn-heart-rate-time": "Fat Burn Time",
     "feeling-overall-previous": "How were you feeling overall?",
@@ -526,10 +531,5 @@
     "view-all": "View All",
     "walking-heart-rate-average": "Walking HR Average",
     "weekly": "Weekly",
-    "yesterday": "Yesterday",
-    "face-value-1": "Very unhappy face",
-    "face-value-2": "Unhappy face",
-    "face-value-3": "Neutral face",
-    "face-value-4": "Happy face",
-    "face-value-5": "Very happy face"
+    "yesterday": "Yesterday"
 }
