@@ -186,7 +186,7 @@ function MicroTrendContent(props: MicroTrendContentProps) {
             {!props.results && <FontAwesomeSvgIcon icon={faRefresh} spin style={{ fontSize: ".7em" }} />}
             {props.results && formattedValue}
         </div>
-        <div className="mdhui-micro-trend-chart">
+        <div className="mdhui-micro-trend-chart" aria-label={`${language("recent-trend-of")} ${props.dataType.label ?? language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}`}>
             {props.hasRecentData && props.showChart && props.results &&
                 <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
             }
