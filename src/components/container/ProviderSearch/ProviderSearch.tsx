@@ -313,7 +313,7 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                             }
                         </div>
                         {provider.logoUrl &&
-                            <div className="provider-logo" style={{ backgroundImage: 'url(\'' + provider.logoUrl + '\')' }} aria-label={`${provider.name} logo`}></div>
+                            <div className="provider-logo" style={{ backgroundImage: 'url(\'' + provider.logoUrl + '\')' }} aria-label={`${provider.name} ${language('logo')}`}></div>
                         }
                     </UnstyledButton>
                 )}
