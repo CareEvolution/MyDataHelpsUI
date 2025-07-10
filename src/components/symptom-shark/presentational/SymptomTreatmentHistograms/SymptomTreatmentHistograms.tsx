@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import "./SymptomTreatmentHistograms.css"
 import { add, startOfMonth } from 'date-fns';
 import { Histogram, TextBlock, Title, getDayKey, language } from '../../../..';
+import { ColorDefinition } from '../../../../helpers/colors';
 import { SymptomSharkVisualizationContext } from '../../container/VisualizationCoordinator/VisualizationCoordinator';
 import { DateRangeContext } from '../../../presentational/DateRangeCoordinator/DateRangeCoordinator';
 
@@ -9,6 +10,7 @@ export interface SymptomTreatmentHistogramsProps {
     intervalStart?: Date;
     onSymptomSelected(symptom: string, intervalStart: Date): void;
     innerRef?: React.Ref<HTMLDivElement>;
+    linkColor?: ColorDefinition;
 }
 
 export default function (props: SymptomTreatmentHistogramsProps) {
@@ -91,11 +93,11 @@ export default function (props: SymptomTreatmentHistogramsProps) {
         <div ref={props.innerRef} className="mdhui-ss-histograms">
             <div className="mdhui-ss-histogram">
                 <Title className="mdhui-ss-histogram-title" order={4}>{language("symptoms")}</Title>
-                <Histogram className='ss-histogram' entries={symptomHistogram} />
+                <Histogram className='ss-histogram' entries={symptomHistogram} linkColor={props.linkColor} />
             </div>
             <div className="mdhui-ss-histogram">
                 <Title className="mdhui-ss-histogram-title" order={4}>{language("treatments")}</Title>
-                <Histogram className='ss-histogram' entries={treatmentHistogram} />
+                <Histogram className='ss-histogram' entries={treatmentHistogram} linkColor={props.linkColor} />
             </div>
             <div style={{ clear: "both" }}></div>
         </div>

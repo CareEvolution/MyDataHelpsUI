@@ -1,5 +1,5 @@
 .mdhui-ss-log-entry-edit-wrapper {
-    background: var(--mdhui-background-color-0);
+    background: var(--mdhui-background-color-highest-contrast);
 }
 
 .mdhui-ss-log-entry-edit {
@@ -61,6 +61,6 @@
 
 .mdhui-ss-log-entry-edit .mdhui-ss-symptom-edit-container {
     border-radius: var(--mdhui-card-border-radius);
-    background: var(--mdhui-background-color-0);
+    background: var(--mdhui-background-color-highest-contrast);
     padding: 16px;
 }
