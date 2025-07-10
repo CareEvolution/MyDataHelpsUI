@@ -11,6 +11,9 @@
  *   node translation-manager.js update <key> <value> [locales]
  *   node translation-manager.js add-or-update <key> <value> [locales]
  *   node translation-manager.js list-locales
+ *   node translation-manager.js batch-add <json-file-path> [locales]
+ *   node translation-manager.js batch-update <json-file-path> [locales]
+ *   node translation-manager.js batch-add-or-update <json-file-path> [locales]
  * 
  * Examples:
  *   node translation-manager.js check "app-title"
@@ -18,6 +21,9 @@
  *   node translation-manager.js update "existing-key" "Updated Value" "en,es"
  *   node translation-manager.js add-or-update "any-key" "Value" "en,es"
  *   node translation-manager.js list-locales
+ *   node translation-manager.js batch-add "./translations.json" "en,es"
+ *   node translation-manager.js batch-update "./translations.json"
+ *   node translation-manager.js batch-add-or-update "./translations.json"
  */
 
 const {
@@ -25,7 +31,10 @@ const {
   addTranslation,
   updateTranslation,
   addOrUpdateTranslation,
-  getAvailableLocales
+  getAvailableLocales,
+  batchAddTranslations,
+  batchUpdateTranslations,
+  batchAddOrUpdateTranslations
 } = require('./src/helpers/translation-utils');
 
 // ANSI color codes for terminal output
@@ -63,6 +72,9 @@ ${colorize('Usage:', 'yellow')}
   node translation-manager.js update <key> <value> [locales]
   node translation-manager.js add-or-update <key> <value> [locales]
   node translation-manager.js list-locales
+  node translation-manager.js batch-add <json-file-path> [locales]
+  node translation-manager.js batch-update <json-file-path> [locales]
+  node translation-manager.js batch-add-or-update <json-file-path> [locales]
 
 ${colorize('Examples:', 'yellow')}
   node translation-manager.js check "app-title"
@@ -70,6 +82,9 @@ ${colorize('Examples:', 'yellow')}
   node translation-manager.js update "existing-key" "Updated Value" "en,es"
   node translation-manager.js add-or-update "any-key" "Value" "en,es"
   node translation-manager.js list-locales
+  node translation-manager.js batch-add "./translations.json" "en,es"
+  node translation-manager.js batch-update "./translations.json"
+  node translation-manager.js batch-add-or-update "./translations.json"
   `);
 }
 
@@ -115,6 +130,20 @@ function parseArgs() {
         locales: args[3] ? args[3].split(',') : null
       };
       
+    case 'batch-add':
+    case 'batch-update':
+    case 'batch-add-or-update':
+      if (args.length < 2) {
+        console.error(colorize('Error: Missing JSON file path argument', 'red'));
+        printUsage();
+        process.exit(1);
+      }
+      return {
+        command,
+        jsonFilePath: args[1],
+        locales: args[2] ? args[2].split(',') : null
+      };
+      
     case 'list-locales':
       return { command };
       
@@ -151,6 +180,48 @@ function printResults(results, operation) {
 /**
  * Main function
  */
+/**
+ * Read translations from a JSON file
+ * @param {string} filePath - Path to the JSON file
+ * @returns {Object} The parsed JSON content
+ */
+function readTranslationsFile(filePath) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const resolvedPath = path.resolve(process.cwd(), filePath);
+    const fileContent = fs.readFileSync(resolvedPath, 'utf8');
+    return JSON.parse(fileContent);
+  } catch (error) {
+    console.error(colorize(`Error reading JSON file: ${error.message}`, 'red'));
+    process.exit(1);
+  }
+}
+
+/**
+ * Format and print batch results
+ * @param {Object} results - The results to print
+ * @param {string} operation - The operation that was performed
+ */
+function printBatchResults(results, operation) {
+  console.log(`\n${colorize(`Results of batch ${operation}:`, 'cyan')}`);
+  
+  for (const locale in results) {
+    console.log(`\n  ${colorize(locale, 'yellow')}:`);
+    
+    const localeResults = results[locale];
+    for (const key in localeResults) {
+      const success = localeResults[key];
+      const status = success 
+        ? colorize('SUCCESS', 'green') 
+        : colorize('FAILED', 'red');
+      console.log(`    ${key}: ${status}`);
+    }
+  }
+  
+  console.log('');
+}
+
 function main() {
   const args = parseArgs();
   
@@ -197,6 +268,30 @@ function main() {
       console.log(`\n${colorize('Available locales:', 'cyan')}`);
       locales.forEach(locale => console.log(`  ${locale}`));
       console.log('');
+      break;
+    }
+    
+    case 'batch-add': {
+      console.log(`\n${colorize(`Batch adding translations from "${args.jsonFilePath}"...`, 'cyan')}`);
+      const translations = readTranslationsFile(args.jsonFilePath);
+      const results = batchAddTranslations(translations, args.locales);
+      printBatchResults(results, 'add');
+      break;
+    }
+    
+    case 'batch-update': {
+      console.log(`\n${colorize(`Batch updating translations from "${args.jsonFilePath}"...`, 'cyan')}`);
+      const translations = readTranslationsFile(args.jsonFilePath);
+      const results = batchUpdateTranslations(translations, args.locales);
+      printBatchResults(results, 'update');
+      break;
+    }
+    
+    case 'batch-add-or-update': {
+      console.log(`\n${colorize(`Batch adding or updating translations from "${args.jsonFilePath}"...`, 'cyan')}`);
+      const translations = readTranslationsFile(args.jsonFilePath);
+      const results = batchAddOrUpdateTranslations(translations, args.locales);
+      printBatchResults(results, 'add-or-update');
       break;
     }
   }

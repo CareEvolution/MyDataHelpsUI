@@ -99,6 +99,60 @@ node translation-manager.js add-or-update "any-key" "Value"
 node translation-manager.js add-or-update "any-key" "Value" "en,es,fr"
 ```
 
+#### Batch Add Multiple Translation Keys
+
+```bash
+node translation-manager.js batch-add <json-file-path> [locales]
+```
+
+- `<json-file-path>`: Path to a JSON file containing key-value pairs of translations
+- `[locales]`: Optional comma-separated list of locale codes to update (e.g., "en,es,fr")
+
+Example:
+```bash
+node translation-manager.js batch-add "./translations.json"
+node translation-manager.js batch-add "./translations.json" "en,es,fr"
+```
+
+The JSON file should have the following format:
+```json
+{
+  "key1": "Value 1",
+  "key2": "Value 2",
+  "key3": "Value 3"
+}
+```
+
+#### Batch Update Multiple Translation Keys
+
+```bash
+node translation-manager.js batch-update <json-file-path> [locales]
+```
+
+- `<json-file-path>`: Path to a JSON file containing key-value pairs of translations
+- `[locales]`: Optional comma-separated list of locale codes to update (e.g., "en,es,fr")
+
+Example:
+```bash
+node translation-manager.js batch-update "./translations.json"
+node translation-manager.js batch-update "./translations.json" "en,es,fr"
+```
+
+#### Batch Add or Update Multiple Translation Keys
+
+```bash
+node translation-manager.js batch-add-or-update <json-file-path> [locales]
+```
+
+- `<json-file-path>`: Path to a JSON file containing key-value pairs of translations
+- `[locales]`: Optional comma-separated list of locale codes to update (e.g., "en,es,fr")
+
+Example:
+```bash
+node translation-manager.js batch-add-or-update "./translations.json"
+node translation-manager.js batch-add-or-update "./translations.json" "en,es,fr"
+```
+
 ## Using the Translation Utilities Library in Code
 
 You can also use the translation utilities library directly in your code:
@@ -109,7 +163,10 @@ const {
   addTranslation,
   updateTranslation,
   addOrUpdateTranslation,
-  getAvailableLocales
+  getAvailableLocales,
+  batchAddTranslations,
+  batchUpdateTranslations,
+  batchAddOrUpdateTranslations
 } = require('./src/helpers/translation-utils');
 
 // Check if a key exists
@@ -136,6 +193,31 @@ console.log(addOrUpdateResults);
 const locales = getAvailableLocales();
 console.log(locales);
 // Output: ['en', 'es', 'fr', ...]
+
+// Batch add multiple translations
+const batchAddResults = batchAddTranslations({
+  'key1': 'Value 1',
+  'key2': 'Value 2',
+  'key3': 'Value 3'
+});
+console.log(batchAddResults);
+// Output: { en: { key1: true, key2: true, key3: true }, es: { key1: true, ... }, ... }
+
+// Batch update multiple translations
+const batchUpdateResults = batchUpdateTranslations({
+  'existing-key1': 'Updated Value 1',
+  'existing-key2': 'Updated Value 2'
+});
+console.log(batchUpdateResults);
+// Output: { en: { 'existing-key1': true, 'existing-key2': true }, es: { ... }, ... }
+
+// Batch add or update multiple translations
+const batchAddOrUpdateResults = batchAddOrUpdateTranslations({
+  'new-key': 'New Value',
+  'existing-key': 'Updated Value'
+});
+console.log(batchAddOrUpdateResults);
+// Output: { en: { 'new-key': true, 'existing-key': true }, es: { ... }, ... }
 ```
 
 ## Advanced Usage: Locale-Specific Values
@@ -184,4 +266,30 @@ When asked to update translations, I can use these utilities to help manage the 
    node translation-manager.js add-or-update "any-key" "Value"
    ```
 
+5. For multiple translations, I can create a JSON file and use batch operations:
+   ```
+   node translation-manager.js batch-add-or-update "./translations.json"
+   ```
+
 These utilities will help me manage translations more efficiently and avoid errors when working with large localization files.
+
+## Example: Creating a Batch Translation File
+
+To create a batch translation file, create a JSON file with key-value pairs:
+
+```json
+{
+  "header-title": "Welcome to Our App",
+  "login-button": "Sign In",
+  "signup-button": "Create Account",
+  "footer-copyright": "© 2025 Example Company"
+}
+```
+
+Save this as `translations.json` and then run:
+
+```bash
+node translation-manager.js batch-add-or-update "./translations.json"
+```
+
+This will add or update all the keys in all available locales in a single operation.

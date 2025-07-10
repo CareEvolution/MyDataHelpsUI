@@ -202,10 +202,208 @@ function addOrUpdateTranslation(key, value, locales) {
   return { ...addResults, ...updateResults };
 }
 
+/**
+ * Batch update multiple translations at once
+ * @param {Object} translations - An object with keys as translation keys and values as translation values
+ * @param {string[]} [locales] - Optional array of locale codes to update. If not provided, updates all available locales.
+ * @returns {Object} An object with locale codes as keys and objects with translation keys and success status as values
+ */
+function batchUpdateTranslations(translations, locales) {
+  const localesToUpdate = locales || getAvailableLocales();
+  const results = {};
+  
+  for (const locale of localesToUpdate) {
+    const localeData = readLocaleFile(locale);
+    
+    if (!localeData) {
+      results[locale] = Object.keys(translations).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {});
+      continue;
+    }
+    
+    let updated = false;
+    const keyResults = {};
+    
+    for (const key in translations) {
+      const value = translations[key];
+      
+      // Skip if the key doesn't exist
+      if (!(key in localeData)) {
+        keyResults[key] = false;
+        continue;
+      }
+      
+      // Determine the value to update
+      const valueToUpdate = typeof value === 'object' ? (value[locale] || value['en'] || key) : value;
+      
+      // Update the key-value pair
+      localeData[key] = valueToUpdate;
+      updated = true;
+      keyResults[key] = true;
+    }
+    
+    // Only write to file if at least one key was updated
+    if (updated) {
+      const writeSuccess = writeLocaleFile(locale, localeData);
+      if (!writeSuccess) {
+        // If write failed, mark all keys as failed
+        for (const key in keyResults) {
+          if (keyResults[key]) {
+            keyResults[key] = false;
+          }
+        }
+      }
+    }
+    
+    results[locale] = keyResults;
+  }
+  
+  return results;
+}
+
+/**
+ * Batch add multiple translations at once
+ * @param {Object} translations - An object with keys as translation keys and values as translation values
+ * @param {string[]} [locales] - Optional array of locale codes to update. If not provided, updates all available locales.
+ * @returns {Object} An object with locale codes as keys and objects with translation keys and success status as values
+ */
+function batchAddTranslations(translations, locales) {
+  const localesToUpdate = locales || getAvailableLocales();
+  const results = {};
+  
+  for (const locale of localesToUpdate) {
+    const localeData = readLocaleFile(locale);
+    
+    if (!localeData) {
+      results[locale] = Object.keys(translations).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {});
+      continue;
+    }
+    
+    let updated = false;
+    const keyResults = {};
+    
+    // Create a new object to maintain alphabetical order
+    const updatedData = { ...localeData };
+    
+    for (const key in translations) {
+      const value = translations[key];
+      
+      // Skip if the key already exists
+      if (key in localeData) {
+        keyResults[key] = false;
+        continue;
+      }
+      
+      // Determine the value to add
+      const valueToAdd = typeof value === 'object' ? (value[locale] || value['en'] || key) : value;
+      
+      // Add the new key-value pair
+      updatedData[key] = valueToAdd;
+      updated = true;
+      keyResults[key] = true;
+    }
+    
+    // Only write to file if at least one key was added
+    if (updated) {
+      // Sort keys alphabetically
+      const sortedData = {};
+      Object.keys(updatedData).sort().forEach(key => {
+        sortedData[key] = updatedData[key];
+      });
+      
+      const writeSuccess = writeLocaleFile(locale, sortedData);
+      if (!writeSuccess) {
+        // If write failed, mark all keys as failed
+        for (const key in keyResults) {
+          if (keyResults[key]) {
+            keyResults[key] = false;
+          }
+        }
+      }
+    }
+    
+    results[locale] = keyResults;
+  }
+  
+  return results;
+}
+
+/**
+ * Batch add or update multiple translations at once
+ * @param {Object} translations - An object with keys as translation keys and values as translation values
+ * @param {string[]} [locales] - Optional array of locale codes to update. If not provided, updates all available locales.
+ * @returns {Object} An object with locale codes as keys and objects with translation keys and success status as values
+ */
+function batchAddOrUpdateTranslations(translations, locales) {
+  const localesToUpdate = locales || getAvailableLocales();
+  const results = {};
+  
+  for (const locale of localesToUpdate) {
+    const localeData = readLocaleFile(locale);
+    
+    if (!localeData) {
+      results[locale] = Object.keys(translations).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {});
+      continue;
+    }
+    
+    let updated = false;
+    const keyResults = {};
+    
+    // Create a new object to maintain alphabetical order
+    const updatedData = { ...localeData };
+    
+    for (const key in translations) {
+      const value = translations[key];
+      
+      // Determine the value to add/update
+      const valueToSet = typeof value === 'object' ? (value[locale] || value['en'] || key) : value;
+      
+      // Add or update the key-value pair
+      updatedData[key] = valueToSet;
+      updated = true;
+      keyResults[key] = true;
+    }
+    
+    // Only write to file if at least one key was added/updated
+    if (updated) {
+      // Sort keys alphabetically
+      const sortedData = {};
+      Object.keys(updatedData).sort().forEach(key => {
+        sortedData[key] = updatedData[key];
+      });
+      
+      const writeSuccess = writeLocaleFile(locale, sortedData);
+      if (!writeSuccess) {
+        // If write failed, mark all keys as failed
+        for (const key in keyResults) {
+          if (keyResults[key]) {
+            keyResults[key] = false;
+          }
+        }
+      }
+    }
+    
+    results[locale] = keyResults;
+  }
+  
+  return results;
+}
+
 module.exports = {
   checkTranslationKey,
   addTranslation,
   updateTranslation,
   addOrUpdateTranslation,
-  getAvailableLocales
+  getAvailableLocales,
+  batchUpdateTranslations,
+  batchAddTranslations,
+  batchAddOrUpdateTranslations
 };
