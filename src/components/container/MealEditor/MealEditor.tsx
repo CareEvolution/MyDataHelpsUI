@@ -304,7 +304,7 @@ export default function MealEditor(props: MealEditorProps) {
                     }}
                 />
                 <div className="mdhui-meal-editor-items-add-button">
-                    <Button variant="light" fullWidth={false} onClick={onAddItem}>Add Item</Button>
+                    <Button variant="light" fullWidth={false} onClick={onAddItem}>Add</Button>
                 </div>
             </div>
             <div className="mdhui-meal-editor-item-list">
