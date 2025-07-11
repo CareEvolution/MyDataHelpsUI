@@ -1,6 +1,6 @@
 import React from 'react'
 import './MealAnalysis.css'
-import { Meal } from '../../../helpers';
+import { language, Meal } from '../../../helpers';
 import { Button } from '../../presentational';
 
 export interface MealAnalysisProps {
@@ -15,16 +15,16 @@ export default function MealAnalysis(props: MealAnalysisProps) {
 
     return <div className="mdhui-meal-analysis">
         <div className="mdhui-meal-analysis-header">
-            <div className="mdhui-meal-analysis-title">Automated Analysis</div>
+            <div className="mdhui-meal-analysis-title">{language('meal-analysis-title')}</div>
         </div>
-        <div className="mdhui-meal-analysis-message">The items below have been suggested by an automated analysis of the image you provided.</div>
+        <div className="mdhui-meal-analysis-message">{language('meal-analysis-message')}</div>
         <div className="mdhui-meal-analysis-items">{props.meal.analysis.items.map(item => item.name).join(', ')}</div>
         <div className="mdhui-meal-analysis-buttons">
             {props.onAddItems &&
-                <Button variant="subtle" fullWidth={false} onClick={props.onAddItems} stopPropagation={true}>Add Items</Button>
+                <Button variant="subtle" fullWidth={false} onClick={props.onAddItems} stopPropagation={true}>{language('meal-analysis-add-items')}</Button>
             }
             {props.onDismiss &&
-                <Button variant="subtle" fullWidth={false} onClick={props.onDismiss} stopPropagation={true}>Dismiss</Button>
+                <Button variant="subtle" fullWidth={false} onClick={props.onDismiss} stopPropagation={true}>{language('meal-analysis-dismiss')}</Button>
             }
         </div>
     </div>;
