@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './SingleMeal.css'
 import UnstyledButton from '../UnstyledButton';
-import { ColorDefinition, getMealTypeDisplayText, Meal, resolveColor } from '../../../helpers';
+import { ColorDefinition, getMealTypeDisplayText, language, Meal, resolveColor } from '../../../helpers';
 import { LayoutContext } from '../Layout';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortawesome/free-solid-svg-icons';
@@ -45,7 +45,7 @@ export default function (props: SingleMealProps) {
                     {props.mealImageUrl &&
                         <>
                             <div className="mdhui-meal-thumbnail-image" style={{ display: imageLoading ? 'none' : 'block' }}>
-                                <img alt="meal thumbnail" src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
+                                <img alt={language('meal-thumbnail-alt')} src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
                             </div>
                             {imageLoading &&
                                 <LoadingIndicator className="mdhui-meal-loading" />
@@ -70,7 +70,7 @@ export default function (props: SingleMealProps) {
                 }
                 {props.meal.items && props.meal.items.length > 0 &&
                     <>
-                        <div className="mdhui-meal-items">Items: {props.meal.items.map(item => item.name).join(', ')}</div>
+                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.map(item => item.name).join(', ')}</div>
                     </>
                 }
             </div>
