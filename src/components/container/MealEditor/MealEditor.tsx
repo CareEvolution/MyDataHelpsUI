@@ -272,7 +272,7 @@ export default function MealEditor(props: MealEditorProps) {
                         </div>
                     }
                     <div className="mdhui-meal-editor-image-wrapper" style={{ display: imageLoading ? 'none' : 'inline-block' }}>
-                        <img className="mdhui-meal-editor-image" alt="meal image" src={imageUrl} onLoad={() => setImageLoading(false)} />
+                        <img className="mdhui-meal-editor-image" alt={language('meal-editor-image-alt')} src={imageUrl} onLoad={() => setImageLoading(false)} />
                         <div className="mdhui-meal-editor-image-actions">
                             {renderImageSelector(
                                 <div className="mdhui-meal-editor-image-action">
@@ -291,7 +291,7 @@ export default function MealEditor(props: MealEditorProps) {
         </div>
         <div className="mdhui-meal-editor-items">
             <div className="mdhui-meal-editor-items-header">
-                <div className="mdhui-meal-editor-items-title">Items:</div>
+                <div className="mdhui-meal-editor-items-title">{language('meal-editor-items-title')}</div>
                 <input
                     type="text"
                     className="mdhui-meal-editor-items-add-input"
@@ -304,7 +304,7 @@ export default function MealEditor(props: MealEditorProps) {
                     }}
                 />
                 <div className="mdhui-meal-editor-items-add-button">
-                    <Button variant="light" fullWidth={false} onClick={onAddItem}>Add</Button>
+                    <Button variant="light" fullWidth={false} onClick={onAddItem}>{language('add')}</Button>
                 </div>
             </div>
             <div className="mdhui-meal-editor-item-list">
@@ -317,7 +317,7 @@ export default function MealEditor(props: MealEditorProps) {
                     </div>;
                 })}
                 {(!mealToEdit.items || mealToEdit.items.length === 0) &&
-                    <div className="mdhui-meal-editor-item-none">No items added.</div>
+                    <div className="mdhui-meal-editor-item-none">{language('meal-editor-item-none')}</div>
                 }
             </div>
         </div>
