@@ -1,7 +1,7 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { garminActiveCaloriesDataProvider, garminActiveMinutesDataProvider, garminAverageHeartRateDataProvider, garminAverageStressLevelDataProvider, garminAwakeMinutesDataProvider, garminDeepSleepMinutesDataProvider, garminDistanceDataProvider, garminFloorsDataProvider, garminHighStressMinutesDataProvider, garminLightSleepMinutesDataProvider, garminLowStressMinutesDataProvider, garminMaxHeartRateDataProvider, garminMaxStressLevelDataProvider, garminMediumStressMinutesDataProvider, garminMinHeartRateDataProvider, garminRemSleepMinutesDataProvider, garminRestingCaloriesDataProvider, garminRestingHeartRateDataProvider, garminSleepScoreDataProvider, garminStepsDataProvider, garminTotalCaloriesDataProvider, garminTotalSleepMinutesDataProvider, garminTotalStressMinutesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faBoltLightning, faHeartbeat, faPersonRunning, faRoute, faStairs } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faBoltLightning, faFireFlameCurved, faHeartbeat, faPersonRunning, faRoute, faShoePrints, faStairs } from "@fortawesome/free-solid-svg-icons";
 import { formatNumberForLocale } from "../locale";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
@@ -13,7 +13,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: garminStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
@@ -50,7 +50,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: garminActiveCaloriesDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         labelKey: "active-calories",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [200, 500]
     },
@@ -59,7 +59,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: garminRestingCaloriesDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         labelKey: "resting-calories",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1200, 2000]
     },
@@ -68,7 +68,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: garminTotalCaloriesDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Garmin", ["Daily"]),
         labelKey: "total-calories",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [2000, 3000]
     },

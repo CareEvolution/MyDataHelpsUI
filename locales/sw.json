@@ -1,6 +1,7 @@
 {
     "30-day-average": "Wastani wa Siku 30",
     "active-calories": "Kalori za Shughuli",
+    "active-calories-burned": "Kalori hai zilizochomwa",
     "active-energy-burned": "Nishati ya Shughuli Iliyochomwa",
     "active-time": "Muda wa Shughuli",
     "add": "Ongeza",
@@ -527,6 +528,7 @@
     "today": "Leo",
     "todays-log": "Rekodi ya Leo",
     "total-calories": "Jumla ya Kalori",
+    "total-calories-burned": "Jumla ya kalori zilizochomwa",
     "total-stress-time": "Jumla ya Muda wa Msongo",
     "treatments": "Matibabu",
     "treatments-experiencing-previous": "Ni matibabu gani ulifanya?",

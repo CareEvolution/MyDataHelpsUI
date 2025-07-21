@@ -1,6 +1,7 @@
 {
     "30-day-average": "Celceliska 30 Maalmood",
     "active-calories": "Kalooriyo Firfircoon",
+    "active-calories-burned": "Kaloreyaasha firfircoon ee gubtay",
     "active-energy-burned": "Tamarta Firfircoon ee la Gubay",
     "active-time": "Waqtiga Firfircoon",
     "add": "Ku dar",
@@ -527,6 +528,7 @@
     "today": "Maanta",
     "todays-log": "Diiwaanka Maanta",
     "total-calories": "Wadarta Kalooriyo",
+    "total-calories-burned": "Wadarta kaloreyaasha gubtay",
     "total-stress-time": "Wadarta Waqtiga Walaaca",
     "treatments": "Daaweynta",
     "treatments-experiencing-previous": "Daaweyntee ayaad samaysay?",

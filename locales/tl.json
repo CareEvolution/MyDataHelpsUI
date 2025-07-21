@@ -1,6 +1,7 @@
 {
     "30-day-average": "30 Araw na Average",
     "active-calories": "Aktibong Calories",
+    "active-calories-burned": "Nasunog na Aktibong Calorie",
     "active-energy-burned": "Nasunog na Active Energy",
     "active-time": "Aktibong Oras",
     "add": "Magdagdag",
@@ -527,6 +528,7 @@
     "today": "Ngayon",
     "todays-log": "Log Ngayon",
     "total-calories": "Kabuuang Calories",
+    "total-calories-burned": "Kabuuang Nasunog na Calorie",
     "total-stress-time": "Kabuuang Oras ng Stress",
     "treatments": "Mga Paggamot",
     "treatments-experiencing-previous": "Anong mga paggamot ang ginawa mo?",

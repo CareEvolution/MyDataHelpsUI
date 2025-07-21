@@ -1,125 +1,168 @@
-﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js"
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from '@careevolution/mydatahelps-js';
 import { Action, LoadingIndicator, UnstyledButton } from '../../presentational';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import "./ProviderSearch.css"
-import language from "../../../helpers/language"
-import { previewProviders } from './ProviderSearch.previewdata';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import './ProviderSearch.css';
+import language from '../../../helpers/language';
+import { createPreviewData, ProviderSearchPreviewState } from './ProviderSearch.previewdata';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger/OnVisibleTrigger';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { getFeaturedPublicProviders, getPublicProviders } from '../../../helpers/public-providers';
+import debounce from 'lodash/debounce';
 
-const UNAVAILABLE_PROVIDER_MESSAGE = "Unavailable";
+export type ProviderSearchOperatingMode = 'authenticated' | 'unauthenticated';
 
 export interface ProviderSearchProps {
     previewState?: ProviderSearchPreviewState;
+    /**
+     * The mode this provider search should operate in.
+     *
+     * - The 'authenticated' mode uses delegated APIs to query for providers.  It also queries for existing external accounts.
+     * - The 'unauthenticated' mode uses public APIs to query for providers.  It does not attempt to load existing external accounts.
+     *
+     * The mode defaults to `authenticated` unless specified, or when either of the provider or featured provider public API URLs are specified.
+     */
+    operatingMode?: ProviderSearchOperatingMode;
     providerCategories?: string[];
     /** Callback function triggered when a provider is selected. If this function is defined it will override the normal action taken when selecting provider.*/
     onProviderSelected?: (provider: ExternalAccountProvider) => void;
     /** Callback function triggered after a provider is connected. */
     onProviderConnected?: (provider: ExternalAccountProvider) => void;
-    innerRef?: React.Ref<HTMLDivElement>;
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
     hideRequestProviderButton?: boolean;
     /** URL for the public provider search API. If provided, this endpoint will be used instead of MyDataHelps.getExternalAccountProviders. */
     publicProviderSearchApiUrl?: string;
-    /** List of providers to display at the top when no search is active. */
+    /** List of providers to display at the top when no search is active. If populated, disables the dynamic featured provider lookup. */
     featuredProviders?: ExternalAccountProvider[];
+    /** The context to use when querying for featured providers.  Only used if featuredProviders is not set. */
+    featuredProvidersContext?: string;
+    /** URL for the public featured provider API. If provided, this endpoint will be used instead of MyDataHelps.getFeaturedProviders. */
+    publicFeaturedProvidersApiUrl?: string;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
-
-export type ProviderSearchPreviewState = "Default" | "Searching";
 
 let currentRequestID = 0;
 
 /** Supports searching for Providers, and Health Plans for the purpose of connecting to participant data
  */
 export default function ProviderSearch(props: ProviderSearchProps) {
-    const [linkedExternalAccounts, setLinkedExternalAccounts] = useState<{ [id: number]: ExternalAccount; }>({});
+    const [featuredProviders, setFeaturedProviders] = useState<ExternalAccountProvider[]>();
+    const [externalAccounts, setExternalAccounts] = useState<ExternalAccount[]>();
     const [searchResults, setSearchResults] = useState<ExternalAccountProvider[]>([]);
     const [searching, setSearching] = useState(true);
-    const [searchString, _setSearchString] = useState("");
+    const [searchString, setSearchString] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
-    const addNewProviderUrl = "https://help.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635";
+    const [initialized, setInitialized] = useState<boolean>(false);
 
-    const searchStringRef = useRef(searchString);
-    const setSearchString = (data: string) => {
-        searchStringRef.current = data;
-        _setSearchString(data);
+    const pageSize = 45;
+
+    const operatingMode = props.operatingMode ?? ((props.publicProviderSearchApiUrl || props.publicFeaturedProvidersApiUrl) ? 'unauthenticated' : 'authenticated');
+
+    useEffect(() => {
+        setFeaturedProviders(undefined);
+        setExternalAccounts(undefined);
+        setSearchResults([]);
+        setSearching(true);
+        setSearchString('');
+        setCurrentPage(0);
+        setTotalResults(0);
+        setInitialized(false);
+    }, [
+        props.previewState,
+        props.providerCategories, props.publicProviderSearchApiUrl,
+        props.featuredProviders, props.featuredProvidersContext, props.publicFeaturedProvidersApiUrl
+    ]);
+
+    const applyPreviewState = (previewState: ProviderSearchPreviewState): void => {
+        const previewData = createPreviewData(previewState);
+        if (!featuredProviders) {
+            setFeaturedProviders(props.featuredProviders ?? []);
+            return;
+        }
+        if (!externalAccounts) {
+            setExternalAccounts(previewData.externalAccounts);
+            return;
+        }
+        if (previewState !== 'Searching') {
+            updateSearchResults(previewData.searchResults);
+            setTotalResults(previewData.searchResults.length);
+            setSearching(false);
+        }
+        setInitialized(true);
     };
 
-    const pageSize = 100;
+    const getFeaturedProviders = async (): Promise<ExternalAccountProvider[]> => {
+        if (props.featuredProviders) return props.featuredProviders;
 
-    function initialize() {
+        try {
+            return operatingMode === 'authenticated'
+                ? await MyDataHelps.getFeaturedProviders(props.featuredProvidersContext)
+                : await getFeaturedPublicProviders(props.publicFeaturedProvidersApiUrl, props.featuredProvidersContext);
+        } catch (error) {
+            console.error('Error loading featured providers.', error);
+            return [];
+        }
+    };
+
+    const getExternalAccounts = async (): Promise<ExternalAccount[]> => {
+        try {
+            return operatingMode === 'authenticated' ? await MyDataHelps.getExternalAccounts() : [];
+        } catch (error) {
+            console.error('Error loading external accounts.', error);
+            return [];
+        }
+    };
+
+    const initialize = async (): Promise<void> => {
+        const [featuredProviders, externalAccounts] = await Promise.all([getFeaturedProviders(), getExternalAccounts()]);
+        setFeaturedProviders(featuredProviders);
+        setExternalAccounts(externalAccounts);
+        setInitialized(true);
+    };
+
+    useEffect(() => {
+        if (initialized) return;
+
         if (props.previewState) {
-            if (props.previewState == "Default") {
-                updateSearchResults(previewProviders);
-                setSearching(false);
-            }
+            applyPreviewState(props.previewState);
             return;
         }
 
-        loadExternalAccounts().then(function () {
-            performSearch("");
-        });
-    }
+        initialize();
+    }, [initialized, featuredProviders, externalAccounts]);
 
-    async function loadExternalAccounts() {
-        MyDataHelps.getExternalAccounts().then(function (accounts) {
-            let externalAccounts: { [id: number]: ExternalAccount; } = {};
-            for (let i = 0; i < accounts.length; i++) {
-                externalAccounts[accounts[i].provider.id] = accounts[i];
-            }
-            setLinkedExternalAccounts(externalAccounts);
-        });
-    }
+    const reloadExternalAccounts = async (): Promise<void> => {
+        setExternalAccounts(await getExternalAccounts());
+    };
 
-    function performSearch(search: string) {
-        setSearching(true);
-        let requestID = ++currentRequestID;
+    useEffect(() => {
+        if (props.previewState) return;
+        MyDataHelps.on('applicationDidBecomeVisible', reloadExternalAccounts);
+        return () => {
+            MyDataHelps.off('applicationDidBecomeVisible', reloadExternalAccounts);
+        };
+    }, []);
 
-        if (!props.publicProviderSearchApiUrl) {
-            MyDataHelps.getExternalAccountProviders(search, props.providerCategories?.length == 1 ? props.providerCategories[0] : null, pageSize, currentPage).then(function (searchResultsResponse) {
-                if (requestID == currentRequestID) {
-                    updateSearchResults(searchResultsResponse.externalAccountProviders);
-                    setTotalResults(searchResultsResponse.totalExternalAccountProviders);
-                    setSearching(false);
-                }
-            }).catch(function (error) {
-                console.error("Error fetching external account providers", error);
-                setSearching(false);
-            });
-        } else {
-            const url = new URL(props.publicProviderSearchApiUrl);
-            url.searchParams.append('keyword', search);
-            url.searchParams.append('pageSize', String(pageSize));
-            url.searchParams.append('pageNumber', String(currentPage + 1));
-            fetch(url.toString(), {
-                method: "GET",
-                headers: { "Accept": "application/json" },
-            })
-                .then((response) => response.json())
-                .then(function (searchResultsResponse) {
-                    if (requestID == currentRequestID) {
-                        updateSearchResults(searchResultsResponse.Providers.map((p: any) => ({ id: p.ID, name: p.OrganizationName, logoUrl: p.LogoURL, category: p.Category } as ExternalAccountProvider)) || []);
-                        setTotalResults(searchResultsResponse.TotalCount);
-                        setSearching(false);
-                    }
-                })
-                .catch(function (error) {
-                    console.error("Error fetching external account providers", error);
-                    setSearching(false);
-                });
+    const filterProviders = (providers: ExternalAccountProvider[], providersToExclude?: ExternalAccountProvider[]): ExternalAccountProvider[] => {
+        const providerIdsToExclude = providersToExclude?.map(provider => provider.id) ?? [];
+        return providers.filter(provider => {
+            if (providerIdsToExclude.includes(provider.id)) return false;
+            if (props.providerCategories && !props.providerCategories.includes(provider.category)) return false;
+            return provider.message !== 'Unavailable';
+        })
+    };
+
+    const updateSearchResults = (newProviders: ExternalAccountProvider[]): void => {
+        const updatedSearchResults: ExternalAccountProvider[] = [];
+
+        if (searchString === '' && searchResults.length === 0 && featuredProviders && featuredProviders.length > 0) {
+            updatedSearchResults.push(...filterProviders(featuredProviders));
+        } else if (searchResults.length > 0) {
+            updatedSearchResults.push(...searchResults);
         }
-    }
-
-    function updateSearchResults(providers: ExternalAccountProvider[]) {
-        let newResults: ExternalAccountProvider[] = searchResults;
-        if (searchStringRef.current === "" && props.featuredProviders) {
-            newResults = newResults.concat(props.featuredProviders);
-            providers = providers.filter(a => !props.featuredProviders!.find(b => b.id == a.id));
-        }
-        const updatedSearchResults = newResults.concat(providers).filter(a => props.providerCategories?.indexOf(a.category) != -1 && a.message !== UNAVAILABLE_PROVIDER_MESSAGE);
+        updatedSearchResults.push(...filterProviders(newProviders, updatedSearchResults));
 
         // HACK: Temporarily default all provider enabled flags to true when they have not been set by the API.
         // This should remain while the API is not setting the enabled flag.
@@ -131,105 +174,120 @@ export default function ProviderSearch(props: ProviderSearchProps) {
         });
 
         setSearchResults(updatedSearchResults);
-    }
-
-    const debounce = (fn: Function, ms = 300) => {
-        let timeoutId: ReturnType<typeof setTimeout>;
-        return function (this: any, ...args: any[]) {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => fn.apply(this, args), ms);
-        };
     };
 
-    const debouncedPerformSearch = useMemo(() => debounce(performSearch, 300), []);
+    const performSearch = async (): Promise<void> => {
+        setSearching(true);
+        const requestID = ++currentRequestID;
 
-    function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
+        try {
+            const searchCategory = props.providerCategories?.length === 1 ? props.providerCategories[0] : null;
+            const providersPage = operatingMode === 'authenticated'
+                ? await MyDataHelps.getExternalAccountProviders(searchString, searchCategory, pageSize, currentPage)
+                : await getPublicProviders(props.publicProviderSearchApiUrl, searchString, pageSize, currentPage)
+
+            if (requestID == currentRequestID) {
+                updateSearchResults(providersPage.externalAccountProviders);
+                setTotalResults(providersPage.totalExternalAccountProviders);
+                setSearching(false);
+            }
+        } catch (error) {
+            console.error('Error searching for providers.', error);
+            setSearching(false);
+        }
+    };
+
+    const performSearchRef = useRef(performSearch);
+    useEffect(() => {
+        performSearchRef.current = performSearch;
+    }, [performSearch]);
+    const debouncedPerformSearch = useMemo(() => debounce(() => performSearchRef.current(), 300), []);
+
+    useEffect(() => {
+        if (initialized && !props.previewState) {
+            debouncedPerformSearch();
+        }
+    }, [initialized, searchString, currentPage]);
+
+    const updateSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setSearchString(event.target.value);
-        setSearchResults([]);
         setCurrentPage(0);
-        if (props.previewState) {
-            return;
-        }
-        debouncedPerformSearch(event.target.value);
-    }
+        setSearchResults([]);
+    };
 
-    function onApplicationDidBecomeVisible() {
-        loadExternalAccounts().then(function () {
-            performSearch(searchStringRef.current);
-        });
-    }
+    const canConnectToProvider = (provider: ExternalAccountProvider): boolean => {
+        return provider.enabled || externalAccountsById[provider.id]?.status === 'unauthorized';
+    };
 
-    function canLoadNextPage() {
-        return pageSize > 0 && (currentPage + 1) * pageSize < totalResults;
-    }
+    const connectToProvider = async (provider: ExternalAccountProvider): Promise<void> => {
+        if (props.previewState || !canConnectToProvider(provider)) return;
 
-    function loadNextPage() {
-        setCurrentPage(currentPage + 1);
-    }
+        await MyDataHelps.connectExternalAccount(provider.id, props.connectExternalAccountOptions ?? { openNewWindow: true });
+        props.onProviderConnected?.(provider);
+        reloadExternalAccounts();
+    };
 
-    useEffect(() => {
-        initialize();
-        MyDataHelps.on("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
-        return () => {
-            MyDataHelps.off("applicationDidBecomeVisible", onApplicationDidBecomeVisible);
-        }
-    }, []);
+    const getDisabledProviderStatus = (provider: ExternalAccountProvider): string => {
+        const key = provider.managingOrganization
+            ? 'provider-disabled-reason-with-managing-organization'
+            : 'provider-disabled-reason-without-managing-organization';
 
-    useEffect(() => {
-        if (!searching) {
-            performSearch(searchStringRef.current)
-        }
-    }, [currentPage]);
+        const args = {
+            provider: provider.name,
+            relatedProvider: provider.relatedProvider ?? '',
+            managingOrganization: provider.managingOrganization ?? ''
+        };
 
-    const supportsRequestProviderAction = (): boolean => {
-        return !props.providerCategories
-            || props.providerCategories.length == 0
-            || props.providerCategories.includes("Provider")
-            || props.providerCategories.includes("Health Plan");
+        return language(key, undefined, args);
     };
 
     const shouldShowRequestProviderAction = (): boolean => {
-        return !searching && !props.hideRequestProviderButton && supportsRequestProviderAction();
+        if (searching || props.hideRequestProviderButton) return false;
+        return !props.providerCategories
+            || props.providerCategories.length === 0
+            || props.providerCategories.includes('Provider')
+            || props.providerCategories.includes('Health Plan');
     };
 
     const buildRequestProviderActionTitle = (): string => {
-        let titleSuffix = "";
+        let titleSuffix = '';
 
-        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes("Provider")) {
+        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes('Provider')) {
             titleSuffix += language('external-accounts-title-providers');
         }
 
-        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes("Health Plan")) {
+        if (!props.providerCategories || props.providerCategories.length == 0 || props.providerCategories.includes('Health Plan')) {
             if (titleSuffix.length > 0) {
                 titleSuffix += language('external-accounts-title-divider');
             }
             titleSuffix += language('external-accounts-title-health-plans');
         }
 
-        return `${(language("request-add"))} ${titleSuffix}`;
+        return `${(language('request-add'))} ${titleSuffix}`;
     };
 
     const requestProviderAction = (): void => {
-        MyDataHelps.openEmbeddedUrl(addNewProviderUrl);
+        MyDataHelps.openEmbeddedUrl('https://help.mydatahelps.org/hc/en-us/requests/new?ticket_form_id=34288897775635');
     };
 
-    const canConnectToProvider = (provider: ExternalAccountProvider): boolean => {
-        return provider.enabled || linkedExternalAccounts[provider.id]?.status === 'unauthorized';
+    const canLoadNextPage = (): boolean => {
+        return !searching && (currentPage + 1) * pageSize < totalResults;
     };
 
-    const connectToProvider = async (provider: ExternalAccountProvider): Promise<void> => {
-        if (props.previewState || !canConnectToProvider(provider)) return;
-
-        await MyDataHelps.connectExternalAccount(provider.id, props.connectExternalAccountOptions || { openNewWindow: true });
-        props.onProviderConnected?.(provider);
-        loadExternalAccounts();
+    const loadNextPage = (): void => {
+        setCurrentPage(currentPage + 1);
     };
+
+    const externalAccountsById = (externalAccounts ?? []).reduce((linkedExternalAccounts, externalAccount) => {
+        linkedExternalAccounts[externalAccount.provider.id] = externalAccount;
+        return linkedExternalAccounts;
+    }, {} as Record<number, ExternalAccount>);
 
     return (
         <div ref={props.innerRef} className="mdhui-provider-search">
             <div className="search-bar-wrapper">
                 <div className="search-bar">
-                    <input title={language("search")} type="text" value={searchString} onChange={(event) => updateSearch(event)} placeholder={language("search")} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
+                    <input title={language('search')} type="text" value={searchString} onChange={updateSearch} placeholder={language('search')} spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" />
                     <FontAwesomeSvgIcon icon={faSearch} />
                 </div>
             </div>
@@ -244,35 +302,18 @@ export default function ProviderSearch(props: ProviderSearchProps) {
                     }}>
                         <div className="provider-info">
                             <div className="provider-name">{provider.name}</div>
-                            {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status == 'unauthorized' &&
-                                <div className="provider-status error-status">{language("expired-reconnect")}</div>
+                            {externalAccountsById[provider.id] && externalAccountsById[provider.id].status === 'unauthorized' &&
+                                <div className="provider-status error-status">{language('expired-reconnect')}</div>
                             }
-                            {linkedExternalAccounts[provider.id] && linkedExternalAccounts[provider.id].status != 'unauthorized' &&
-                                <div className="provider-status connected-status">{language("connected")}</div>
+                            {externalAccountsById[provider.id] && externalAccountsById[provider.id].status !== 'unauthorized' &&
+                                <div className="provider-status connected-status">{language('connected')}</div>
                             }
-                            {!linkedExternalAccounts[provider.id] && !provider.enabled &&
-                                <div className="provider-status connected-status">
-                                    {(() => {
-                                        const params: { provider: string; relatedProvider?: string; managingOrganization?: string } = {
-                                            "provider": provider.name
-                                        };
-                                        if (provider.relatedProvider) {
-                                            params.relatedProvider = provider.relatedProvider;
-                                        }
-                                        if (provider.managingOrganization) {
-                                            params.managingOrganization = provider.managingOrganization;
-                                        }
-                                        const key = provider.managingOrganization
-                                            ? "provider-disabled-reason-with-managing-organization"
-                                            : "provider-disabled-reason-without-managing-organization";
-
-                                        return language(key, undefined, params);
-                                    })()}
-                                </div>
+                            {!externalAccountsById[provider.id] && !provider.enabled &&
+                                <div className="provider-status connected-status">{getDisabledProviderStatus(provider)}</div>
                             }
                         </div>
                         {provider.logoUrl &&
-                            <div className="provider-logo" style={{ backgroundImage: "url('" + provider.logoUrl + "')" }}></div>
+                            <div className="provider-logo" style={{ backgroundImage: 'url(\'' + provider.logoUrl + '\')' }}></div>
                         }
                     </UnstyledButton>
                 )}

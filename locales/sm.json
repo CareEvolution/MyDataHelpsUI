@@ -1,6 +1,7 @@
 {
     "30-day-average": "Ogatotonu o Aso e 30",
     "active-calories": "Kaloli Malosi",
+    "active-calories-burned": "Kalori galue mu",
     "active-energy-burned": "Malosi Galue na Susunuina",
     "active-time": "Taimi Malosi",
     "add": "Fa'aopoopo",
@@ -527,6 +528,7 @@
     "today": "Aso nei",
     "todays-log": "Fa'amaumauga o le Aso",
     "total-calories": "Aofai o Kaloli",
+    "total-calories-burned": "Aofaʻi kalori mu",
     "total-stress-time": "Aofai o Taimi Popole",
     "treatments": "Togafitiga",
     "treatments-experiencing-previous": "O a togafitiga sa e faia?",

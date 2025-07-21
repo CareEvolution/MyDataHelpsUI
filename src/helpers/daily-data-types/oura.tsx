@@ -1,4 +1,4 @@
-import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faHeartbeat, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { ouraRestingHeartRateDataProvider, ouraSleepMinutesDataProvider, ouraStepsDataProvider } from "../daily-data-providers";
 import { DailyDataTypeDefinition, DailyDataType } from "../daily-data-types";
@@ -12,7 +12,7 @@ let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: ouraStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Oura", ["daily-activity"], true),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000],
         requiresV2Api: true
