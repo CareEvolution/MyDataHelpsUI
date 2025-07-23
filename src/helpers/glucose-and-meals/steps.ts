@@ -90,10 +90,11 @@ export async function getSteps(date: Date): Promise<Reading[]> {
     const providers: Promise<Reading[]>[] = [];
 
     const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
-    if (settings.fitbitEnabled) {
+
+    if (settings.fitbitEnabled && deviceDataV2Types.some(ddt => ddt.namespace === 'Fitbit' && ddt.type === 'activities-steps-intraday')) {
         providers.push(fitbitHalfHourStepsDataProvider(date));
     }
-    if (settings.garminEnabled) {
+    if (settings.garminEnabled && deviceDataV2Types.some(ddt => ddt.namespace === 'Garmin' && ddt.type === 'epoch-steps')) {
         providers.push(garminHalfHourStepsDataProvider(date));
     }
     if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === 'AppleHealth' && ddt.type === 'HalfHourSteps')) {
