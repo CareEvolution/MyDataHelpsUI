@@ -24,6 +24,7 @@ customHeaders:
                 frame-src 'self'; 
                 font-src 'self'; 
                 connect-src 'self' mydatahelps.org;"
+  # Tell the browser to cache static resources https://careevolution.slab.com/posts/cache-control-headers-9jut90d5
   - pattern: "**/*.css"
     headers:
       - key: Cache-Control
