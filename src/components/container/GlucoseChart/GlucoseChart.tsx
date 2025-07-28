@@ -9,6 +9,8 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { GlucoseContext, MealContext } from '../../container';
 import { getShortTimeOfDayString, getTimeOfDayString } from '../../../helpers/date-helpers';
+import { getCombinedDataCollectionSettings } from '../../../helpers/daily-data-providers/combined-data-collection-settings';
+import { checkForGlucoseReadings } from '../../../helpers/glucose-and-meals/glucose';
 
 export type GlucoseChartVariant = 'default' | 'minimal';
 
@@ -32,6 +34,7 @@ export default function (props: GlucoseChartProps) {
 
     const [loading, setLoading] = useState<boolean>(true);
     const [glucose, setGlucose] = useState<Reading[]>();
+    const [hasAnyGlucoseReadings, setHasAnyGlucoseReadings] = useState<boolean>();
     const [steps, setSteps] = useState<Reading[]>();
     const [sleepMinutes, setSleepMinutes] = useState<number>();
 
@@ -50,8 +53,9 @@ export default function (props: GlucoseChartProps) {
         }
 
         if (props.previewState) {
-            previewData(props.previewState, selectedDate).then(({ glucose, steps, sleepMinutes }) => {
-                setGlucose(glucose)
+            previewData(props.previewState, selectedDate).then(({ glucose, hasAnyGlucoseReadings, steps, sleepMinutes }) => {
+                setGlucose(glucose);
+                setHasAnyGlucoseReadings(hasAnyGlucoseReadings);
                 setSteps(steps);
                 setSleepMinutes(sleepMinutes);
                 setLoading(false);
@@ -59,18 +63,27 @@ export default function (props: GlucoseChartProps) {
             return;
         }
 
-        const glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate);
-        const stepsLoader = getSteps(selectedDate);
-        const sleepMinutesLoader = getSleepMinutes(selectedDate);
-        Promise.all([glucoseReadingLoader, stepsLoader, sleepMinutesLoader]).then(results => {
-            setGlucose(results[0]);
-            setSteps(results[1]);
-            setSleepMinutes(results[2]);
-            setLoading(false);
+        getCombinedDataCollectionSettings(true).then(combinedDataCollectionSettings => {
+            Promise.all([
+                glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate, selectedDate, combinedDataCollectionSettings),
+                checkForGlucoseReadings(combinedDataCollectionSettings),
+                getSteps(selectedDate, combinedDataCollectionSettings),
+                getSleepMinutes(selectedDate, combinedDataCollectionSettings)
+            ]).then(([glucose, hasAnyGlucoseReadings, steps, sleepMinutes]) => {
+                setGlucose(glucose);
+                setHasAnyGlucoseReadings(hasAnyGlucoseReadings);
+                setSteps(steps);
+                setSleepMinutes(sleepMinutes);
+                setLoading(false);
+            });
         });
     }, [], [props.previewState, dateRangeContext?.intervalStart]);
 
-    if (!loading && props.hideIfNoData && glucose?.length === 0) {
+    if (loading && props.hideIfNoData) {
+        return null;
+    }
+
+    if (!loading && props.hideIfNoData && !hasAnyGlucoseReadings) {
         return null;
     }
 
@@ -161,7 +174,12 @@ export default function (props: GlucoseChartProps) {
     const overlaySteps = filteredSteps.map(r => ({ ...r, value: r.value * stepsScale + minGlucose }));
 
     return <GlucoseChartWrapper variant={props.variant} onClick={props.onClick} innerRef={props.innerRef}>
-        <div className="mdhui-glucose-chart-title"><FontAwesomeSvgIcon icon={faDroplet} /> {language('glucose-chart-title')}</div>
+        {(loading || glucose?.length || props.variant !== 'minimal') &&
+            <div className="mdhui-glucose-chart-title"><FontAwesomeSvgIcon icon={faDroplet} /> {language('glucose-chart-title')}</div>
+        }
+        {!loading && !glucose?.length && props.variant === 'minimal' &&
+            <div className="mdhui-glucose-chart-title-empty">{props.emptyText ?? language('glucose-chart-no-data')}</div>
+        }
         <div className="mdhui-glucose-chart-chart" style={{ display: !loading && glucose && glucose.length > 0 ? 'block' : 'none' }}>
             {props.variant === 'minimal' && props.showStats &&
                 <GlucoseStats
@@ -236,7 +254,7 @@ export default function (props: GlucoseChartProps) {
                 <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
             }
         </div>
-        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length ? 'block' : 'none' }}>{props.emptyText ?? language('glucose-chart-no-data')}</div>
+        <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length && props.variant !== 'minimal' ? 'block' : 'none' }}>{props.emptyText ?? language('glucose-chart-no-data')}</div>
         <div className="mdhui-glucose-chart-chart-placeholder" style={{ display: loading ? 'block' : 'none' }}>
             <LoadingIndicator />
         </div>

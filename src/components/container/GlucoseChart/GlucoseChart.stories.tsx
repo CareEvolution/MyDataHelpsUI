@@ -76,7 +76,7 @@ export const Default = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with gap in data', 'with partial data', 'with data', 'live']
+            options: ['loading', 'no data', 'no data with history', 'with gap in data', 'with partial data', 'with data', 'live']
         },
         withMeals: {
             name: 'with meals'
