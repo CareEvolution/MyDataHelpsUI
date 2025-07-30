@@ -13,6 +13,11 @@
     margin-bottom: -12px;
 }
 
+.mdhui-glucose-chart .mdhui-glucose-chart-title-empty {
+    padding: 16px;
+    color: var(--mdhui-text-color-2);
+}
+
 .mdhui-glucose-chart .mdhui-glucose-chart-chart {
     height: 150px;
     margin-bottom: 24px;
