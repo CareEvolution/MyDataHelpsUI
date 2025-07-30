@@ -64,12 +64,12 @@ export default function (props: GlucoseChartProps) {
         }
 
         getCombinedDataCollectionSettings(true).then(combinedDataCollectionSettings => {
-            Promise.all([
-                glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate, selectedDate, combinedDataCollectionSettings),
-                checkForGlucoseReadings(combinedDataCollectionSettings),
-                getSteps(selectedDate, combinedDataCollectionSettings),
-                getSleepMinutes(selectedDate, combinedDataCollectionSettings)
-            ]).then(([glucose, hasAnyGlucoseReadings, steps, sleepMinutes]) => {
+            const glucoseReadingLoader = glucoseContext?.readings ? getGlucoseReadingsFromContext() : getGlucoseReadings(selectedDate, selectedDate, combinedDataCollectionSettings);
+            const hasAnyGlucoseReadingsLoader = checkForGlucoseReadings(combinedDataCollectionSettings);
+            const stepsLoader = getSteps(selectedDate, combinedDataCollectionSettings);
+            const sleepMinutesLoader = getSleepMinutes(selectedDate, combinedDataCollectionSettings);
+
+            Promise.all([glucoseReadingLoader, hasAnyGlucoseReadingsLoader, stepsLoader, sleepMinutesLoader]).then(([glucose, hasAnyGlucoseReadings, steps, sleepMinutes]) => {
                 setGlucose(glucose);
                 setHasAnyGlucoseReadings(hasAnyGlucoseReadings);
                 setSteps(steps);
