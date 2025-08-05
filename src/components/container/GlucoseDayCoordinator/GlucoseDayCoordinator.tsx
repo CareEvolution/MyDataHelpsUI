@@ -7,6 +7,7 @@ import { GlucoseDayCoordinatorPreviewState, previewData } from './GlucoseDayCoor
 
 export interface GlucoseDayCoordinatorProps {
     previewState?: GlucoseDayCoordinatorPreviewState;
+    minimumDate?: Date;
     children?: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -53,6 +54,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
         <GlucoseContext.Provider value={{ readings: glucoseReadings, recentAverage: recentAverage }}>
             <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
                 <GlucoseDayNavigator
+                    minimumDate={props.minimumDate}
                     loadData={loadData}
                     dayRenderer={dayRenderer}
                     dependencies={[props.previewState]}
@@ -64,6 +66,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
 }
 
 interface GlucoseDayNavigatorProps {
+    minimumDate?: Date;
     loadData: (startDate: Date, endDate: Date) => Promise<void>;
     dayRenderer: (dayKey: string) => React.JSX.Element | null;
     dependencies?: DependencyList;
@@ -73,6 +76,7 @@ function GlucoseDayNavigator(props: GlucoseDayNavigatorProps) {
     const dateRangeContext = useContext(DateRangeContext)
 
     return <WeeklyDayNavigator
+        minimumDate={props.minimumDate}
         selectedDate={dateRangeContext!.intervalStart}
         loadData={props.loadData}
         dayRenderer={props.dayRenderer}
