@@ -15,12 +15,50 @@ customHeaders:
       - key: 'Access-Control-Allow-Methods'
         value: 'GET, HEAD, OPTIONS'
       - key: 'Content-Security-Policy'
-        value: "default-src 'self';
-                script-src 'self' 'unsafe-inline' ;
-                object-src 'self';
-                style-src 'self' 'unsafe-inline' ;
-                img-src 'self' data: mydatahelps.org mdhorg.ce.dev rkstudio-customer-assets.s3.amazonaws.com assets.careevolutionapps.com;
-                media-src 'self';
-                frame-src 'self';
-                font-src 'self';
+        value: "default-src 'self'; 
+                script-src 'self' 'unsafe-inline' ; 
+                object-src 'self'; 
+                style-src 'self' 'unsafe-inline' ; 
+                img-src 'self' data: mydatahelps.org mdhorg.ce.dev rkstudio-customer-assets.s3.amazonaws.com assets.careevolutionapps.com; 
+                media-src 'self'; 
+                frame-src 'self'; 
+                font-src 'self'; 
                 connect-src 'self' mydatahelps.org assets.careevolutionapps.com;"
+  # Tell the browser to cache static resources https://careevolution.slab.com/posts/cache-control-headers-9jut90d5
+  - pattern: "**/*.css"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.js"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.svg"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.png"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.gif"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.jpg"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.woff"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.woff2"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+  - pattern: "**/*.ico"
+    headers:
+      - key: Cache-Control
+        value: public, max-age=300, stale-while-revalidate=86400
+

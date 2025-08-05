@@ -33,21 +33,24 @@
 .mdhui-blood-pressure-reading-classification {
     font-size: .88em;
     border-radius: 4px;
-    padding: 4px;
+    padding: 4px 8px;
     font-weight: bold;
 }
 
 .mdhui-blood-pressure-reading-classification.normal,
 .mdhui-blood-pressure-reading-classification.low {
     background-color: #a6ce39;
+    color: #333;
 }
 
 .mdhui-blood-pressure-reading-classification.elevated {
     background-color: #ffec01;
+    color: #333;
 }
 
 .mdhui-blood-pressure-reading-classification.hypertension-stage-1 {
     background-color: #ffb601;
+    color: #333;
 }
 
 .mdhui-blood-pressure-reading-classification.hypertension-stage-2 {

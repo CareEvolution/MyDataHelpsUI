@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import Action from '../Action';
 import './BloodPressureReading.css'
-import { formatDateForLocale } from '../../../helpers';
+import { formatDateForLocale, formatNumberForLocale, language } from '../../../helpers';
 
 export type BloodPressureClassification = 'low' | 'normal' | 'elevated' | 'hypertension-stage-1' | 'hypertension-stage-2' | 'hypertensive-crisis';
 
@@ -41,13 +41,13 @@ export default function BloodPressureReading(props: BloodPressureReadingProps) {
         onClick={props.onClick}
         innerRef={props.innerRef}
     >
-        <div className="mdhui-blood-pressure-reading-title"><FontAwesomeSvgIcon icon={faHeart} /> Blood Pressure</div>
+        <div className="mdhui-blood-pressure-reading-title"><FontAwesomeSvgIcon icon={faHeart} /> {language('blood-pressure-reading-title')}</div>
         <div className="mdhui-blood-pressure-reading-value-wrapper">
             <div className="mdhui-blood-pressure-reading-value">
-                {props.systolic} / {props.diastolic} mmHg
+                {formatNumberForLocale(props.systolic)} / {formatNumberForLocale(props.diastolic)} mmHg
             </div>
             <div className={`mdhui-blood-pressure-reading-classification ${classification}`}>
-                {classification.replace(/-/g, ' ').replace(/\b\w/g, match => match.toUpperCase())}
+                {language(`blood-pressure-reading-classification-${classification}`)}
             </div>
         </div>
         <div className="mdhui-blood-pressure-reading-date">
