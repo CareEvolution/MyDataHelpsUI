@@ -44,16 +44,6 @@ export default function MealLog(props: MealLogProps) {
         mealContext.saveMeal(meal);
     };
 
-    const onDismissAnalysis = (meal: Meal) => {
-        if (props.preview || !meal.analysis) return;
-
-        const now = new Date();
-        meal.analysis.reviewTimestamp = now;
-        meal.lastModified = now;
-
-        mealContext.saveMeal(meal);
-    };
-
     return <div className="mdhui-meal-log" ref={props.innerRef}>
         <Title order={3}>{language('meal-log-title')}</Title>
         {mealContext.loading && <LoadingIndicator />}
@@ -70,7 +60,7 @@ export default function MealLog(props: MealLogProps) {
                 onClick={() => mealContext.onMealClicked(meal)}
                 onEdit={() => onEditMeal(meal)}
                 onAddAnalysisItems={() => onAddAnalysisItems(meal)}
-                onDismissAnalysis={() => onDismissAnalysis(meal)}
+                onReviewAnalysis={() => onEditMeal(meal)}
                 selected={props.highlightSelectedMeal ? mealContext.selectedMeal === meal : false}
             />;
         })}

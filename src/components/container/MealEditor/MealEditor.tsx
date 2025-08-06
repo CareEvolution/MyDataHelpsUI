@@ -7,7 +7,7 @@ import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewD
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { getFullDayAndDateString } from '../../../helpers/date-helpers';
-import { combineItemsWithAnalysisItems } from '../../../helpers/glucose-and-meals/meals';
+import { combineItemsWithAnalysisItems, itemSort } from '../../../helpers/glucose-and-meals/meals';
 import MealAnalysis from '../../presentational/MealAnalysis';
 
 export interface MealEditorProps {
@@ -130,7 +130,12 @@ export default function MealEditor(props: MealEditorProps) {
         }
 
         mealToEdit.description = mealToEdit.description?.trim();
-        mealToEdit.lastModified = new Date();
+
+        const now = new Date();
+        mealToEdit.lastModified = now;
+        if (mealToEdit.analysis && !mealToEdit.analysis.reviewTimestamp) {
+            mealToEdit.analysis.reviewTimestamp = now;
+        }
 
         const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
         const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
@@ -169,15 +174,16 @@ export default function MealEditor(props: MealEditorProps) {
         setImageUploadError(false);
     };
 
-    const onAddItem = (): void => {
-        if (!itemsToAddInputRef.current) return;
-
-        const itemToAdd = itemsToAddInputRef.current.value.trim();
+    const onAddItem = (itemToAdd: string): void => {
         if (!itemToAdd || mealToEdit.items?.some(item => item.name.toLowerCase() === itemToAdd.toLowerCase())) return;
 
         const updatedItems = [...(mealToEdit.items ?? []), { name: itemToAdd }];
         setMealToEdit({ ...mealToEdit, items: updatedItems });
+    };
 
+    const onAddNewItem = (): void => {
+        if (!itemsToAddInputRef.current) return;
+        onAddItem(itemsToAddInputRef.current.value.trim());
         itemsToAddInputRef.current.value = '';
     };
 
@@ -192,15 +198,7 @@ export default function MealEditor(props: MealEditorProps) {
         if (!mealToEdit.analysis) return;
 
         const updatedItems = combineItemsWithAnalysisItems(mealToEdit);
-        const updatedAnalysis = { ...mealToEdit.analysis, reviewTimestamp: new Date() };
-        setMealToEdit({ ...mealToEdit, items: updatedItems, analysis: updatedAnalysis });
-    };
-
-    const onDismissAnalysis = (): void => {
-        if (!mealToEdit.analysis) return;
-
-        const updatedAnalysis = { ...mealToEdit.analysis, reviewTimestamp: new Date() };
-        setMealToEdit({ ...mealToEdit, analysis: updatedAnalysis });
+        setMealToEdit({ ...mealToEdit, items: updatedItems });
     };
 
     const colorStyles = {
@@ -299,16 +297,16 @@ export default function MealEditor(props: MealEditorProps) {
                     style={{ colorScheme: layoutContext.colorScheme }}
                     onKeyDown={event => {
                         if (event.key === 'Enter') {
-                            onAddItem();
+                            onAddNewItem();
                         }
                     }}
                 />
                 <div className="mdhui-meal-editor-items-add-button">
-                    <Button variant="light" fullWidth={false} onClick={onAddItem}>{language('add')}</Button>
+                    <Button variant="light" fullWidth={false} onClick={onAddNewItem}>{language('add')}</Button>
                 </div>
             </div>
             <div className="mdhui-meal-editor-item-list">
-                {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items?.map(item => {
+                {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items.sort(itemSort).map(item => {
                     return <div key={item.name} className="mdhui-meal-editor-item">
                         <UnstyledButton onClick={() => onRemoveItem(item.name)}>
                             {item.name}
@@ -322,7 +320,7 @@ export default function MealEditor(props: MealEditorProps) {
             </div>
         </div>
         <Card style={{ margin: '16px 0' }}>
-            <MealAnalysis meal={mealToEdit} onAddItems={onAddAnalysisItems} onDismiss={onDismissAnalysis} />
+            <MealAnalysis meal={mealToEdit} onAddItem={onAddItem} onAddItems={onAddAnalysisItems} />
         </Card>
         {props.children &&
             <div className="mdhui-meal-editor-children">

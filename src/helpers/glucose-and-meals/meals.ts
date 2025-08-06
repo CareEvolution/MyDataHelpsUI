@@ -112,3 +112,7 @@ export function combineItemsWithAnalysisItems(meal: Meal): MealItem[] | undefine
 
     return updatedItems;
 }
+
+export function itemSort(item1: MealItem, item2: MealItem): number {
+    return item1.name.localeCompare(item2.name);
+}

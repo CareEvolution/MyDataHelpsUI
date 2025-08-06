@@ -179,7 +179,8 @@
 }
 
 .mdhui-meal-editor-item {
-    padding: 8px;
+    padding: 0 8px 0 12px;
+    height: 36px;
     display: flex;
     gap: 6px;
     align-items: center;
@@ -202,6 +203,8 @@
 }
 
 .mdhui-meal-editor-item-none {
+    height: 36px;
+    line-height: 36px;
     font-size: 0.85em;
     color: var(--mdhui-text-color-2);
 }

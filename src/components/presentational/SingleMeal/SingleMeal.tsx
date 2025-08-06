@@ -8,6 +8,7 @@ import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortaw
 import { Card, LoadingIndicator } from '../../presentational';
 import { getTimeOfDayString } from '../../../helpers/date-helpers';
 import MealAnalysis from '../MealAnalysis';
+import { itemSort } from '../../../helpers/glucose-and-meals/meals';
 
 export interface SingleMealProps {
     meal: Meal;
@@ -17,7 +18,7 @@ export interface SingleMealProps {
     onClick?: () => void;
     onEdit?: () => void;
     onAddAnalysisItems?: () => void;
-    onDismissAnalysis?: () => void;
+    onReviewAnalysis?: () => void;
     selected: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -70,7 +71,7 @@ export default function (props: SingleMealProps) {
                 }
                 {props.meal.items && props.meal.items.length > 0 &&
                     <>
-                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.map(item => item.name).join(', ')}</div>
+                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.sort(itemSort).map(item => item.name).join(', ')}</div>
                     </>
                 }
             </div>
@@ -83,7 +84,7 @@ export default function (props: SingleMealProps) {
             }
         </div>
         <Card style={{ marginTop: '0' }}>
-            <MealAnalysis meal={props.meal} onAddItems={props.onAddAnalysisItems} onDismiss={props.onDismissAnalysis} />
+            <MealAnalysis variant="worklist" meal={props.meal} onAddItems={props.onAddAnalysisItems} onReviewItems={props.onReviewAnalysis} />
         </Card>
     </div>;
 }

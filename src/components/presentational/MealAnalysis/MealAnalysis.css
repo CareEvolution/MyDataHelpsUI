@@ -24,10 +24,37 @@
 }
 
 .mdhui-meal-analysis-items {
-    margin-top: 8px;
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     font-weight: bold;
     font-size: 0.85em;
     color: var(--mdhui-text-color-1);
+}
+
+.mdhui-meal-analysis-item {
+    padding: 0 12px 0 8px;
+    height: 36px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    background: var(--mdhui-background-color-0);
+    color: var(--mdhui-text-color-1) !important;
+    border-radius: 6px;
+}
+
+.mdhui-meal-analysis-item .mdhui-unstyled-button {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.mdhui-meal-analysis-item-add-icon {
+    color: var(--mdhui-color-success);
+    font-size: 1em;
 }
 
 .mdhui-meal-analysis-buttons {
