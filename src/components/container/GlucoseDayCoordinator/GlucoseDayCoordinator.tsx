@@ -31,7 +31,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
 
         setGlucoseReadings(readings);
         setGlucoseRanges(computeGlucoseReadingRanges(readings));
-        setRecentAverage(computeGlucoseReadingRecentAverage(readings, add(startDate, { days: 14 })));
+        setRecentAverage(computeGlucoseReadingRecentAverage(readings, add(endDate, { days: -7 })));
     };
 
     const glucoseRangeLookup = glucoseRanges?.reduce((lookup, range) => {
