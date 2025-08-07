@@ -1,4 +1,4 @@
-import { add, endOfDay, startOfDay, startOfToday } from 'date-fns';
+import { add, endOfDay, formatISO, startOfDay, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
 import { getMealImageUrls, getMeals, getMealToEdit, Meal, MealReference, prepareMealForEditing, saveMeals, uploadMealImageFile } from '../../../src/helpers/glucose-and-meals';
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DownloadedFile, Guid, UploadedFile, UploadedFileQuery } from '@careevolution/mydatahelps-js';
@@ -39,7 +39,7 @@ describe('Meals - Helper Function Tests', () => {
             queryDeviceData.mockImplementation((queryParameters: DeviceDataPointQuery): Promise<DeviceDataPointsPage> => {
                 const dataPoints: DeviceDataPoint[] = [];
                 if (meals && JSON.stringify(queryParameters) === JSON.stringify(expectedQueryParameters)) {
-                    dataPoints.push({ value: JSON.stringify(meals) } as DeviceDataPoint);
+                    dataPoints.push({ observationDate: formatISO(today), value: JSON.stringify(meals) } as DeviceDataPoint);
                 }
                 return Promise.resolve({ deviceDataPoints: dataPoints });
             });

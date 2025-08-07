@@ -4,6 +4,7 @@ import { Meal, MealItem, MealReference } from './types';
 import { timestampSortAsc } from './util';
 import queryAllFiles from '../query-all-files';
 import { createThumbnailIfNecessary } from '../image';
+import getDayKey from '../get-day-key';
 
 const parseMeals = (mealsJson: string): Meal[] => {
     return JSON.parse(mealsJson, (key, value) => {
@@ -34,6 +35,20 @@ export async function getMeals(date: Date): Promise<Meal[]> {
         return parseMeals(response.deviceDataPoints[0].value).sort(timestampSortAsc);
     }
     return [];
+}
+
+export async function getMealsByDate(startDate: Date, endDate: Date): Promise<Record<string, Meal[]>> {
+    const response = await MyDataHelps.queryDeviceData({
+        namespace: 'Project',
+        type: 'Meals',
+        observedAfter: endOfDay(add(startDate, { days: -1 })).toISOString(),
+        observedBefore: startOfDay(add(endDate, { days: 1 })).toISOString()
+    });
+    return response.deviceDataPoints.reduce((mealsByDate, dataPoint) => {
+        const dayKey = getDayKey(dataPoint.observationDate!);
+        mealsByDate[dayKey] = mealsByDate[dayKey] ?? parseMeals(dataPoint.value).sort(timestampSortAsc);
+        return mealsByDate;
+    }, {} as Record<string, Meal[]>);
 }
 
 export function saveMeals(date: Date, meals: Meal[]): Promise<void> {
@@ -77,8 +92,8 @@ export async function uploadMealImageFile(meal: Meal, file: File): Promise<void>
     return Promise.resolve();
 }
 
-export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: string }> {
-    if (meals.length === 0) return {};
+export async function getMealImageUrls(meals: Meal[]): Promise<Record<string, string>> {
+    if (meals.length === 0 || !meals.some(meal => meal.hasImage)) return {};
 
     const mealImageFiles = await queryAllFiles({ category: 'MealImage' });
 
@@ -89,7 +104,7 @@ export async function getMealImageUrls(meals: Meal[]): Promise<{ [key: string]: 
         return compareDesc(parseISO(a.lastModified), parseISO(b.lastModified));
     });
 
-    const result: { [key: string]: string } = {};
+    const result: Record<string, string> = {};
     await Promise.all(meals.filter(meal => meal.hasImage).map(async meal => {
         const imageFile = mealImageFiles.find(file => file.fileName.startsWith(meal.id.toString()));
         if (imageFile) {
