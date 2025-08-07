@@ -2,7 +2,7 @@ import React from 'react'
 import './MealAnalysis.css'
 import { language, Meal } from '../../../helpers';
 import { Button, UnstyledButton } from '../../presentational';
-import { itemSort } from '../../../helpers/glucose-and-meals/meals';
+import { itemSortByConfidenceDesc } from '../../../helpers/glucose-and-meals/meals';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,8 +24,8 @@ export default function MealAnalysis(props: MealAnalysisProps) {
         </div>
         <div className="mdhui-meal-analysis-message">{language('meal-analysis-message')}</div>
         <div className="mdhui-meal-analysis-items">
-            {props.variant === 'worklist' && props.meal.analysis.items.sort(itemSort).map(item => item.name).join(', ')}
-            {props.variant !== 'worklist' && props.meal.analysis.items.sort(itemSort).map(item => {
+            {props.variant === 'worklist' && props.meal.analysis.items.sort(itemSortByConfidenceDesc).map(item => item.name).join(', ')}
+            {props.variant !== 'worklist' && props.meal.analysis.items.sort(itemSortByConfidenceDesc).map(item => {
                 return <UnstyledButton key={item.name} onClick={() => props.onAddItem?.(item.name)}>
                     <div className="mdhui-meal-analysis-item">
                         <FontAwesomeSvgIcon className="mdhui-meal-analysis-item-add-icon" icon={faPlus} />

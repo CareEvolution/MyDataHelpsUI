@@ -113,6 +113,10 @@ export function combineItemsWithAnalysisItems(meal: Meal): MealItem[] | undefine
     return updatedItems;
 }
 
-export function itemSort(item1: MealItem, item2: MealItem): number {
+export function itemSortByNameAsc(item1: MealItem, item2: MealItem): number {
     return item1.name.localeCompare(item2.name);
+}
+
+export function itemSortByConfidenceDesc(item1: MealItem, item2: MealItem): number {
+    return (item2.confidenceScore ?? 0) - (item1.confidenceScore ?? 0);
 }

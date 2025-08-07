@@ -7,7 +7,7 @@ import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewD
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { getFullDayAndDateString } from '../../../helpers/date-helpers';
-import { combineItemsWithAnalysisItems, itemSort } from '../../../helpers/glucose-and-meals/meals';
+import { combineItemsWithAnalysisItems, itemSortByNameAsc } from '../../../helpers/glucose-and-meals/meals';
 import MealAnalysis from '../../presentational/MealAnalysis';
 
 export interface MealEditorProps {
@@ -306,7 +306,7 @@ export default function MealEditor(props: MealEditorProps) {
                 </div>
             </div>
             <div className="mdhui-meal-editor-item-list">
-                {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items.sort(itemSort).map(item => {
+                {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items.sort(itemSortByNameAsc).map(item => {
                     return <UnstyledButton key={item.name} onClick={() => onRemoveItem(item.name)}>
                         <div className="mdhui-meal-editor-item">
                             {item.name}

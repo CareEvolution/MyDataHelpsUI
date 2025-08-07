@@ -8,7 +8,7 @@ import { faBurger, faCircleCheck, faCookie, faEdit, faWineBottle } from '@fortaw
 import { Card, LoadingIndicator } from '../../presentational';
 import { getTimeOfDayString } from '../../../helpers/date-helpers';
 import MealAnalysis from '../MealAnalysis';
-import { itemSort } from '../../../helpers/glucose-and-meals/meals';
+import { itemSortByNameAsc } from '../../../helpers/glucose-and-meals/meals';
 
 export interface SingleMealProps {
     meal: Meal;
@@ -71,7 +71,7 @@ export default function (props: SingleMealProps) {
                 }
                 {props.meal.items && props.meal.items.length > 0 &&
                     <>
-                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.sort(itemSort).map(item => item.name).join(', ')}</div>
+                        <div className="mdhui-meal-items">{language('meal-items-label')} {props.meal.items.sort(itemSortByNameAsc).map(item => item.name).join(', ')}</div>
                     </>
                 }
             </div>
