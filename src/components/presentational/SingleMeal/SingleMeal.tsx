@@ -76,11 +76,13 @@ export default function (props: SingleMealProps) {
                 }
             </div>
             {props.onEdit &&
-                <UnstyledButton onClick={props.onEdit} stopPropagation={true}>
-                    <div className="mdhui-meal-edit-action">
-                        <FontAwesomeSvgIcon icon={faEdit} />
-                    </div>
-                </UnstyledButton>
+                <div className="mdhui-meal-actions">
+                    <UnstyledButton onClick={props.onEdit} stopPropagation={true}>
+                        <div className="mdhui-meal-edit-action">
+                            <FontAwesomeSvgIcon icon={faEdit} />
+                        </div>
+                    </UnstyledButton>
+                </div>
             }
         </div>
         <Card style={{ marginTop: '0' }}>

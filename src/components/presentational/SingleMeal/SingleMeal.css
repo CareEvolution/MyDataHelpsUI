@@ -94,7 +94,11 @@
     font-size: 0.75em;
 }
 
+.mdhui-meal-actions {
+    margin-top: 8px;
+}
+
 .mdhui-meal-edit-action {
-    margin: 24px 16px 16px;
+    margin: 16px;
     color: var(--mdhui-text-color-2);
 }

@@ -307,12 +307,12 @@ export default function MealEditor(props: MealEditorProps) {
             </div>
             <div className="mdhui-meal-editor-item-list">
                 {mealToEdit.items && mealToEdit.items.length > 0 && mealToEdit.items.sort(itemSort).map(item => {
-                    return <div key={item.name} className="mdhui-meal-editor-item">
-                        <UnstyledButton onClick={() => onRemoveItem(item.name)}>
+                    return <UnstyledButton key={item.name} onClick={() => onRemoveItem(item.name)}>
+                        <div className="mdhui-meal-editor-item">
                             {item.name}
                             <FontAwesomeSvgIcon className="mdhui-meal-editor-item-delete-icon" icon={faTrashCan} />
-                        </UnstyledButton>
-                    </div>;
+                        </div>
+                    </UnstyledButton>;
                 })}
                 {(!mealToEdit.items || mealToEdit.items.length === 0) &&
                     <div className="mdhui-meal-editor-item-none">{language('meal-editor-item-none')}</div>

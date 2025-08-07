@@ -26,12 +26,12 @@ export default function MealAnalysis(props: MealAnalysisProps) {
         <div className="mdhui-meal-analysis-items">
             {props.variant === 'worklist' && props.meal.analysis.items.sort(itemSort).map(item => item.name).join(', ')}
             {props.variant !== 'worklist' && props.meal.analysis.items.sort(itemSort).map(item => {
-                return <div key={item.name} className="mdhui-meal-analysis-item">
-                    <UnstyledButton onClick={() => props.onAddItem?.(item.name)}>
+                return <UnstyledButton key={item.name} onClick={() => props.onAddItem?.(item.name)}>
+                    <div className="mdhui-meal-analysis-item">
                         <FontAwesomeSvgIcon className="mdhui-meal-analysis-item-add-icon" icon={faPlus} />
                         {item.name}
-                    </UnstyledButton>
-                </div>;
+                    </div>
+                </UnstyledButton>;
             })}
         </div>
         <div className="mdhui-meal-analysis-buttons">

@@ -190,13 +190,6 @@
     border-radius: 6px;
 }
 
-.mdhui-meal-editor-item .mdhui-unstyled-button {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    justify-content: center;
-}
-
 .mdhui-meal-editor-item-delete-icon {
     color: var(--mdhui-color-danger);
     font-size: 0.85em;

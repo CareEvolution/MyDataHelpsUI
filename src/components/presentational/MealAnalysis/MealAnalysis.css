@@ -45,13 +45,6 @@
     border-radius: 6px;
 }
 
-.mdhui-meal-analysis-item .mdhui-unstyled-button {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    justify-content: center;
-}
-
 .mdhui-meal-analysis-item-add-icon {
     color: var(--mdhui-color-success);
     font-size: 1em;
