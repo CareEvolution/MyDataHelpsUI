@@ -1,6 +1,6 @@
 ﻿import React, { ComponentProps } from 'react';
 import MealAnalysisPreview from './MealAnalysisPreview';
-import { Layout } from '../../presentational';
+import { Card, Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 
@@ -14,10 +14,13 @@ const meta: Meta<MealAnalysisPreviewStoryArgs> = {
     parameters: { layout: 'fullscreen' },
     render: args => {
         return <Layout colorScheme={args.colorScheme}>
-            <MealAnalysisPreview
-                previewState={args.previewState}
-                onEditMeal={() => console.log('edit meal')}
-            />
+            <Card>
+                <MealAnalysisPreview
+                    {...args}
+                    onReviewAll={() => console.log('review all')}
+                    onEditMeal={() => console.log('edit meal')}
+                />
+            </Card>
         </Layout>;
     }
 };
@@ -28,7 +31,8 @@ type Story = StoryObj<MealAnalysisPreviewStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'default'
+        previewState: 'default',
+        variant: undefined
     },
     argTypes: {
         colorScheme: {
@@ -41,6 +45,14 @@ export const Default: Story = {
             control: 'radio',
             options: ['default']
         },
-        ...argTypesToHide(['innerRef'])
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'compact'],
+            mapping: {
+                'default': undefined
+            }
+        },
+        ...argTypesToHide(['onReviewAll', 'onEditMeal', 'innerRef'])
     }
 };

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { getDayKey, getMealImageUrls, Meal, prepareMealForEditing, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
+import { getDayKey, getMealImageUrls, language, Meal, prepareMealForEditing, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { combineItemsWithAnalysisItems, getMealsByDate } from '../../../helpers/glucose-and-meals/meals';
 import { add, startOfDay, startOfToday } from 'date-fns';
 import SingleMeal from '../../presentational/SingleMeal';
-import { LoadingIndicator } from "../../presentational";
+import { Action, LoadingIndicator } from '../../presentational';
 import { getPreviewData } from './MealAnalysisPreview.previewData';
 
 export interface MealAnalysisPreviewProps {
     previewState?: 'default';
+    variant?: 'compact';
+    onReviewAll: () => void;
     onEditMeal: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -51,7 +53,7 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
 
     if (!mealsByDate || !mealsNeedingReview || !mealImageUrls || !mealToReview) return null;
 
-    const onEditMeal = (): void => {
+    const onReview = (): void => {
         if (props.previewState) {
             props.onEditMeal();
             return;
@@ -60,7 +62,7 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
         prepareMealForEditing(mealToReview).then(props.onEditMeal);
     };
 
-    const onAddAnalysisItems = (): void => {
+    const onAddItems = (): void => {
         if (props.previewState || !mealToReview.analysis) return;
 
         setLoading(true);
@@ -90,17 +92,26 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
         });
     };
 
-    return <div ref={props.innerRef}>
-        {loading && <LoadingIndicator />}
-        {!loading &&
-            <SingleMeal
-                meal={mealToReview}
-                mealImageUrl={mealImageUrls[mealToReview.id.toString()]}
-                onEdit={onEditMeal}
-                onAddAnalysisItems={onAddAnalysisItems}
-                onReviewAnalysis={onEditMeal}
-                displayDateWithTime
-            />
+    return <div className="mdhui-meal-analysis-preview" ref={props.innerRef}>
+        <Action
+            title={language('meal-analysis-preview-title')}
+            indicatorValue={mealsNeedingReview.length > 0 ? mealsNeedingReview.length.toString() : undefined}
+            bottomBorder={props.variant !== 'compact'}
+            onClick={props.onReviewAll}
+        />
+        {props.variant !== 'compact' &&
+            <>
+                {loading && <LoadingIndicator />}
+                {!loading &&
+                    <SingleMeal
+                        meal={mealToReview}
+                        mealImageUrl={mealImageUrls[mealToReview.id.toString()]}
+                        onAddAnalysisItems={onAddItems}
+                        onReviewAnalysis={onReview}
+                        displayDateWithTime
+                    />
+                }
+            </>
         }
     </div>;
 }

@@ -1,5 +1,8 @@
 .mdhui-meal {
     border-bottom: 1px solid var(--mdhui-border-color-0);
+}
+
+.mdhui-meal.clickable {
     cursor: pointer;
 }
 

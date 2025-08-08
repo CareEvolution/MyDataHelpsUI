@@ -33,7 +33,7 @@ export default function (props: SingleMealProps) {
         setImageLoading(!!props.mealImageUrl);
     }, [props.mealImageUrl])
 
-    return <div className="mdhui-meal" onClick={props.onClick} ref={props.innerRef}>
+    return <div className={'mdhui-meal' + (props.onClick ? ' clickable' : '')} onClick={props.onClick} ref={props.innerRef}>
         <div className="mdhui-meal-content">
             <WrapIfNecessary onClick={props.onClick}>
                 <div className="mdhui-meal-thumbnail">
