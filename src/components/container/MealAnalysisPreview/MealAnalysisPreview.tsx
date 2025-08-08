@@ -4,10 +4,12 @@ import { combineItemsWithAnalysisItems, getMealsByDate } from '../../../helpers/
 import { add, startOfDay, startOfToday } from 'date-fns';
 import SingleMeal from '../../presentational/SingleMeal';
 import { Action, LoadingIndicator } from '../../presentational';
-import { getPreviewData } from './MealAnalysisPreview.previewData';
+import { getPreviewData, MealAnalysisPreviewState } from './MealAnalysisPreview.previewData';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 
 export interface MealAnalysisPreviewProps {
-    previewState?: 'default';
+    previewState?: 'loading' | MealAnalysisPreviewState;
     variant?: 'compact';
     onReviewAll: () => void;
     onEditMeal: () => void;
@@ -23,8 +25,18 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
     const [mealImageUrls, setMealImageUrls] = useState<Record<string, string>>();
     const [mealToReview, setMealToReview] = useState<Meal>();
 
+    const resetState = (): void => {
+        setMealsByDate(undefined);
+        setMealsNeedingReview(undefined);
+        setMealImageUrls(undefined);
+        setMealToReview(undefined);
+    }
+
     const initialize = async (): Promise<void> => {
         setLoading(true);
+        resetState();
+
+        if (props.previewState === 'loading') return;
 
         const previewData = getPreviewData(props.previewState);
 
@@ -46,10 +58,10 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
             setMealToReview(undefined);
         }
 
-        setLoading(false);
+        setLoading(props.previewState === 'with meals to review - reloading');
     };
 
-    useInitializeView(initialize);
+    useInitializeView(initialize, [], [props.previewState]);
 
     if (!mealsByDate || !mealsNeedingReview || !mealImageUrls || !mealToReview) return null;
 
@@ -83,10 +95,7 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
                 setMealsNeedingReview(mealsNeedingReview.slice(1));
                 setMealToReview(nextMealNeedingReview);
             } else {
-                setMealsByDate(undefined);
-                setMealsNeedingReview(undefined);
-                setMealImageUrls(undefined);
-                setMealToReview(undefined);
+                resetState();
             }
             setLoading(false);
         });
@@ -95,7 +104,8 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
     return <div className="mdhui-meal-analysis-preview" ref={props.innerRef}>
         <Action
             title={language('meal-analysis-preview-title')}
-            indicatorValue={mealsNeedingReview.length > 0 ? mealsNeedingReview.length.toString() : undefined}
+            indicator={loading && props.variant === 'compact' ? <FontAwesomeSvgIcon icon={faRefresh} spin /> : undefined}
+            indicatorValue={!loading && mealsNeedingReview.length > 0 ? mealsNeedingReview.length.toString() : undefined}
             bottomBorder={props.variant !== 'compact'}
             onClick={props.onReviewAll}
         />

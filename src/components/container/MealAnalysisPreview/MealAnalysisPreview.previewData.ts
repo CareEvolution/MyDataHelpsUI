@@ -2,7 +2,7 @@ import { getDayKey, Meal } from '../../../helpers';
 import { add, startOfToday } from 'date-fns';
 import { v4 as uuid } from 'uuid';
 
-export type MealAnalysisPreviewState = 'default';
+export type MealAnalysisPreviewState = 'no meals to review' | 'with meals to review' | 'with meals to review - reloading';
 
 export interface MealAnalysisPreviewData {
     mealsByDate: Record<string, Meal[]>;
@@ -10,9 +10,11 @@ export interface MealAnalysisPreviewData {
 }
 
 export function getPreviewData(previewState: MealAnalysisPreviewState | undefined): MealAnalysisPreviewData | undefined {
-    const today = startOfToday();
-
-    if (previewState === 'default') {
+    if (previewState === 'no meals to review') {
+        return { mealsByDate: {}, mealImageUrls: {} };
+    }
+    if (previewState?.startsWith('with meals to review')) {
+        const today = startOfToday();
         const mealsByDate: Record<string, Meal[]> = {
             [getDayKey(add(today, { days: -2 }))]: [
                 {

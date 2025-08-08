@@ -31,7 +31,7 @@ type Story = StoryObj<MealAnalysisPreviewStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'default',
+        previewState: 'with meals to review',
         variant: undefined
     },
     argTypes: {
@@ -43,7 +43,7 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['default']
+            options: ['loading', 'no meals to review', 'with meals to review', 'with meals to review - reloading']
         },
         variant: {
             name: 'variant',
