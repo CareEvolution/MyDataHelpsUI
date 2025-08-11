@@ -1,21 +1,23 @@
 ﻿import React, { ComponentProps } from 'react';
-import MealAnalysisReview from './MealAnalysisReview';
+import MealAnalysisWorklist from './MealAnalysisWorklist';
 import { Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 
-type MealAnalysisReviewStoryArgs = ComponentProps<typeof MealAnalysisReview> & {
+type MealAnalysisWorklistStoryArgs = ComponentProps<typeof MealAnalysisWorklist> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    state: Parameters<typeof MealAnalysisWorklist>[0]['previewState'] | 'live';
 };
 
-const meta: Meta<MealAnalysisReviewStoryArgs> = {
-    title: 'Container/MealAnalysisReview',
-    component: MealAnalysisReview,
+const meta: Meta<MealAnalysisWorklistStoryArgs> = {
+    title: 'Container/MealAnalysisWorklist',
+    component: MealAnalysisWorklist,
     parameters: { layout: 'fullscreen' },
     render: args => {
         return <Layout colorScheme={args.colorScheme}>
-            <MealAnalysisReview
+            <MealAnalysisWorklist
                 {...args}
+                previewState={args.state !== 'live' ? args.state : undefined}
                 onEditMeal={() => console.log('edit meal')}
             />
         </Layout>;
@@ -23,12 +25,12 @@ const meta: Meta<MealAnalysisReviewStoryArgs> = {
 };
 export default meta;
 
-type Story = StoryObj<MealAnalysisReviewStoryArgs>;
+type Story = StoryObj<MealAnalysisWorklistStoryArgs>;
 
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'with meals to review'
+        state: 'with meals to review'
     },
     argTypes: {
         colorScheme: {
@@ -36,11 +38,11 @@ export const Default: Story = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
-        previewState: {
+        state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no meals to review', 'with meals to review']
+            options: ['loading', 'no meals to review', 'with meals to review', 'live']
         },
-        ...argTypesToHide(['onEditMeal', 'innerRef'])
+        ...argTypesToHide(['previewState', 'onEditMeal', 'innerRef'])
     }
 };

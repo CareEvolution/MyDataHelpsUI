@@ -4,15 +4,15 @@ import { getDayKey, getMealImageUrls, language, Meal, prepareMealForEditing, sav
 import { combineItemsWithAnalysisItems, getMealsByDate } from '../../../helpers/glucose-and-meals/meals';
 import { add, startOfDay, startOfToday } from 'date-fns';
 import SingleMeal from '../../presentational/SingleMeal';
-import { Card, LoadingIndicator, TextBlock, Title } from '../../presentational';
+import { Card, LoadingIndicator, TextBlock } from '../../presentational';
 
-export interface MealAnalysisReviewProps {
+export interface MealAnalysisWorklistProps {
     previewState?: 'loading' | MealAnalysisPreviewState;
     onEditMeal: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function MealAnalysisReview(props: MealAnalysisReviewProps) {
+export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
     const today = startOfToday();
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -42,44 +42,39 @@ export default function MealAnalysisReview(props: MealAnalysisReviewProps) {
     useInitializeView(initialize, [], [props.previewState]);
 
     if (loading || !mealsByDate || !mealsNeedingReview || !mealImageUrls) {
-        return <div className="mdhui-meal-analysis-review" ref={props.innerRef}>
-            <Title order={3} defaultMargin>{language('meal-analysis-review-title')}</Title>
+        return <div className="mdhui-meal-analysis-worklist" ref={props.innerRef}>
             <LoadingIndicator />
         </div>;
     }
 
-    const onReview = (mealToEdit: Meal): void => {
-        if (props.previewState) {
-            props.onEditMeal();
-            return;
-        }
+    const onReview = (mealToReview: Meal): void => {
+        if (props.previewState) return;
         setLoading(true);
-        prepareMealForEditing(mealToEdit).then(props.onEditMeal);
+        prepareMealForEditing(mealToReview).then(props.onEditMeal);
     };
 
-    const onAddItems = (mealToEdit: Meal): void => {
-        if (props.previewState || !mealToEdit.analysis) return;
+    const onAddItems = (mealToReview: Meal): void => {
+        if (props.previewState || !mealToReview.analysis) return;
 
         setLoading(true);
 
         const now = new Date();
-        mealToEdit.items = combineItemsWithAnalysisItems(mealToEdit);
-        mealToEdit.analysis.reviewTimestamp = now;
-        mealToEdit.lastModified = now;
+        mealToReview.items = combineItemsWithAnalysisItems(mealToReview);
+        mealToReview.analysis.reviewTimestamp = now;
+        mealToReview.lastModified = now;
 
-        const dayKey = getDayKey(mealToEdit.timestamp);
+        const dayKey = getDayKey(mealToReview.timestamp);
         const otherMeals = mealsByDate[dayKey].filter(meal => meal.id !== meal.id);
-        const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
+        const updatedMeals = [...otherMeals, mealToReview].sort(timestampSortAsc);
 
-        saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(() => {
+        saveMeals(startOfDay(mealToReview.timestamp), updatedMeals).then(() => {
             setMealsByDate({ ...mealsByDate, [dayKey]: updatedMeals });
-            setMealsNeedingReview(mealsNeedingReview.filter(meal => meal.id !== mealToEdit.id));
+            setMealsNeedingReview(mealsNeedingReview.filter(meal => meal.id !== mealToReview.id));
             setLoading(false);
         });
     };
 
-    return <div className="mdhui-meal-analysis-review" ref={props.innerRef}>
-        <Title order={3} defaultMargin>{language('meal-analysis-review-title')}</Title>
+    return <div className="mdhui-meal-analysis-worklist" ref={props.innerRef}>
         {mealsNeedingReview.length > 0 && mealsNeedingReview.map((meal, index) => {
             return <Card key={`meal-${index}`}>
                 <SingleMeal
@@ -100,7 +95,7 @@ export default function MealAnalysisReview(props: MealAnalysisReviewProps) {
                     lineHeight: '22px',
                     textAlign: 'center'
                 }}
-            >{language('meal-analysis-review-empty')}</TextBlock>
+            >{language('meal-analysis-worklist-empty')}</TextBlock>
         }
     </div>;
 }

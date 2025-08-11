@@ -68,10 +68,7 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
     if (!mealsByDate || !mealsNeedingReview || !mealImageUrls || !mealToReview) return null;
 
     const onReview = (): void => {
-        if (props.previewState) {
-            props.onEditMeal();
-            return;
-        }
+        if (props.previewState) return;
         setLoading(true);
         prepareMealForEditing(mealToReview).then(props.onEditMeal);
     };
