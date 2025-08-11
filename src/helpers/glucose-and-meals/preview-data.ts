@@ -1,4 +1,4 @@
-import { getDayKey, Meal } from '../../../helpers';
+import { getDayKey, Meal } from '../../helpers';
 import { add, startOfToday } from 'date-fns';
 import { v4 as uuid } from 'uuid';
 
@@ -9,7 +9,7 @@ export interface MealAnalysisPreviewData {
     mealImageUrls: Record<string, string>;
 }
 
-export function getPreviewData(previewState: MealAnalysisPreviewState | undefined): MealAnalysisPreviewData | undefined {
+export function getMealAnalysisPreviewData(previewState: MealAnalysisPreviewState | undefined): MealAnalysisPreviewData | undefined {
     if (previewState === 'no meals to review') {
         return { mealsByDate: {}, mealImageUrls: {} };
     }

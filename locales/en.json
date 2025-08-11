@@ -402,6 +402,8 @@
     "meal-analysis-message": "The items below have been suggested by an automated analysis of the image you provided.",
     "meal-analysis-preview-title": "Meal Analysis Review",
     "meal-analysis-review": "Review",
+    "meal-analysis-review-empty": "No meals to review at this time.",
+    "meal-analysis-review-title": "Meal Analysis Review",
     "meal-analysis-title": "Automated Analysis",
     "meal-editor-add-image": "Add Image",
     "meal-editor-description-input-label": "Description",

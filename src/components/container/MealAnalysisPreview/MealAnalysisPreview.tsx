@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { getMealAnalysisPreviewData, MealAnalysisPreviewState } from '../../../helpers/glucose-and-meals/preview-data';
 import { getDayKey, getMealImageUrls, language, Meal, prepareMealForEditing, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { combineItemsWithAnalysisItems, getMealsByDate } from '../../../helpers/glucose-and-meals/meals';
 import { add, startOfDay, startOfToday } from 'date-fns';
 import SingleMeal from '../../presentational/SingleMeal';
 import { Action, LoadingIndicator } from '../../presentational';
-import { getPreviewData, MealAnalysisPreviewState } from './MealAnalysisPreview.previewData';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface MealAnalysisPreviewProps {
     previewState?: 'loading' | MealAnalysisPreviewState;
@@ -34,11 +34,13 @@ export default function MealAnalysisPreview(props: MealAnalysisPreviewProps) {
 
     const initialize = async (): Promise<void> => {
         setLoading(true);
-        resetState();
 
-        if (props.previewState === 'loading') return;
+        if (props.previewState === 'loading') {
+            resetState();
+            return;
+        }
 
-        const previewData = getPreviewData(props.previewState);
+        const previewData = getMealAnalysisPreviewData(props.previewState);
 
         const mealsByDate = previewData?.mealsByDate ?? await getMealsByDate(add(today, { days: -13 }), today);
         const mealsNeedingReview = Object.values(mealsByDate).flat()
