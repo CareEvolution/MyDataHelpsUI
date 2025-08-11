@@ -16,7 +16,6 @@ const meta: Meta<MealAnalysisViewStoryArgs> = {
         return <MealAnalysisView
             {...args}
             previewState={args.state !== 'live' ? args.state : undefined}
-            onEditMeal={() => console.log('edit meal')}
         />;
     }
 };
@@ -40,6 +39,6 @@ export const Default: Story = {
             control: 'radio',
             options: ['loading', 'no meals to review', 'with meals to review', 'live']
         },
-        ...argTypesToHide(['previewState', 'onEditMeal', 'innerRef'])
+        ...argTypesToHide(['previewState', 'mealEditorUrl', 'innerRef'])
     }
 };
