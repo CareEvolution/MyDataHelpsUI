@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { describe, expect, it } from '@jest/globals';
 import { isEqual } from 'date-fns';
 import { getDateAndTimeString, parseISOWithoutOffset } from '../../src/helpers/date-helpers';
