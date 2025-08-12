@@ -73,7 +73,7 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
         mealToReview.lastModified = now;
 
         const dayKey = getDayKey(mealToReview.timestamp);
-        const otherMeals = mealsByDate[dayKey].filter(meal => meal.id !== meal.id);
+        const otherMeals = mealsByDate[dayKey].filter(meal => meal.id !== mealToReview.id);
         const updatedMeals = [...otherMeals, mealToReview].sort(timestampSortAsc);
 
         const mealDate = startOfDay(mealToReview.timestamp);
