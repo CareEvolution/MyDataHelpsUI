@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { getMealAnalysisPreviewData, MealAnalysisPreviewState } from '../../../helpers/glucose-and-meals/preview-data';
 import { getDayKey, getMealImageUrls, language, Meal, prepareMealForEditing, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { combineItemsWithAnalysisItems, getMealsByDate } from '../../../helpers/glucose-and-meals/meals';
-import { add, startOfDay, startOfToday } from 'date-fns';
+import { add, isWithinInterval, startOfDay, startOfToday } from 'date-fns';
 import SingleMeal from '../../presentational/SingleMeal';
 import { Card, LoadingIndicator, TextBlock } from '../../presentational';
+import { v4 as uuid } from 'uuid';
+import { onMealsUpdated, useMealsUpdatedEventListener } from '../../../helpers/glucose-and-meals/events';
 
 export interface MealAnalysisWorklistProps {
     previewState?: 'loading' | MealAnalysisPreviewState;
@@ -13,12 +15,14 @@ export interface MealAnalysisWorklistProps {
 }
 
 export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
-    const today = startOfToday();
-
     const [loading, setLoading] = useState<boolean>(true);
     const [mealsByDate, setMealsByDate] = useState<Record<string, Meal[]>>();
     const [mealsNeedingReview, setMealsNeedingReview] = useState<Meal[]>();
     const [mealImageUrls, setMealImageUrls] = useState<Record<string, string>>();
+    const mealsUpdatedSenderId = useRef<string>(uuid());
+
+    const startDate = add(startOfToday(), { days: -13 });
+    const endDate = startOfToday();
 
     const initialize = async (): Promise<void> => {
         setLoading(true);
@@ -27,7 +31,7 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
 
         const previewData = getMealAnalysisPreviewData(props.previewState);
 
-        const mealsByDate = previewData?.mealsByDate ?? await getMealsByDate(add(today, { days: -13 }), today);
+        const mealsByDate = previewData?.mealsByDate ?? await getMealsByDate(startDate, endDate);
         const mealsNeedingReview = Object.values(mealsByDate).flat()
             .filter(meal => meal.analysis && !meal.analysis.reviewTimestamp && !meal.archiveTimestamp)
             .sort(timestampSortAsc);
@@ -40,6 +44,11 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
     };
 
     useInitializeView(initialize, [], [props.previewState]);
+    useMealsUpdatedEventListener(detail => {
+        if (isWithinInterval(detail.date, { start: startDate, end: endDate })) {
+            initialize();
+        }
+    }, [mealsUpdatedSenderId.current]);
 
     if (loading || !mealsByDate || !mealsNeedingReview || !mealImageUrls) {
         return <div className="mdhui-meal-analysis-worklist" ref={props.innerRef}>
@@ -53,7 +62,7 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
         prepareMealForEditing(mealToReview).then(props.onEditMeal);
     };
 
-    const onAddItems = (mealToReview: Meal): void => {
+    const onAddItems = async (mealToReview: Meal): Promise<void> => {
         if (props.previewState || !mealToReview.analysis) return;
 
         setLoading(true);
@@ -67,11 +76,13 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
         const otherMeals = mealsByDate[dayKey].filter(meal => meal.id !== meal.id);
         const updatedMeals = [...otherMeals, mealToReview].sort(timestampSortAsc);
 
-        saveMeals(startOfDay(mealToReview.timestamp), updatedMeals).then(() => {
-            setMealsByDate({ ...mealsByDate, [dayKey]: updatedMeals });
-            setMealsNeedingReview(mealsNeedingReview.filter(meal => meal.id !== mealToReview.id));
-            setLoading(false);
-        });
+        const mealDate = startOfDay(mealToReview.timestamp);
+        await saveMeals(mealDate, updatedMeals);
+        onMealsUpdated(mealsUpdatedSenderId.current, mealDate);
+
+        setMealsByDate({ ...mealsByDate, [dayKey]: updatedMeals });
+        setMealsNeedingReview(mealsNeedingReview.filter(meal => meal.id !== mealToReview.id));
+        setLoading(false);
     };
 
     return <div className="mdhui-meal-analysis-worklist" ref={props.innerRef}>
