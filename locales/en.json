@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Two meals cannot have the same timestamp.",
     "meal-editor-image-alt": "meal image",
+    "meal-editor-image-type-error": "The selected image type is not supported. Please select a PNG, JPEG, JPG, GIF, BMP, or WebP image.",
     "meal-editor-image-upload-error": "An error occurred while uploading the selected image. Please try again, use a different image, or remove the image in order to save.",
     "meal-editor-item-none": "No items added.",
     "meal-editor-items-title": "Items:",

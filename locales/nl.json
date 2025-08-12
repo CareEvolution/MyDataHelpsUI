@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Optioneel",
     "meal-editor-duplicate-timestamp-error": "Twee maaltijden kunnen niet dezelfde tijd hebben.",
     "meal-editor-image-alt": "maaltijdafbeelding",
+    "meal-editor-image-type-error": "Het geselecteerde afbeeldingsformaat wordt niet ondersteund. Kies een PNG-, JPEG-, JPG-, GIF-, BMP- of WebP-afbeelding.",
     "meal-editor-image-upload-error": "Er is een fout opgetreden bij het uploaden van de geselecteerde afbeelding. Probeer het opnieuw, gebruik een andere afbeelding of verwijder de afbeelding om op te slaan.",
     "meal-editor-item-none": "Geen items toegevoegd.",
     "meal-editor-items-title": "Items:",

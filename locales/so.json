@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Ikhtiyaari",
     "meal-editor-duplicate-timestamp-error": "Laba cunto ma yeelan karaan isla waqti.",
     "meal-editor-image-alt": "sawirka cuntada",
+    "meal-editor-image-type-error": "Nooca sawirka la doortay lama taageerayo. Fadlan dooro sawir PNG, JPEG, JPG, GIF, BMP, ama WebP.",
     "meal-editor-image-upload-error": "Khalad ayaa dhacay inta lagu guda jiray soo gelinta sawirka la doortay. Fadlan isku day mar kale, isticmaal sawir kale, ama ka saar sawirka si aad u kaydsato.",
     "meal-editor-item-none": "Wax walba lama darin.",
     "meal-editor-items-title": "Walxaha:",

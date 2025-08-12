@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Hiari",
     "meal-editor-duplicate-timestamp-error": "Milo miwili hayawezi kuwa na wakati sawa.",
     "meal-editor-image-alt": "picha ya chakula",
+    "meal-editor-image-type-error": "Aina ya picha uliyoteua haitumiki. Tafadhali chagua picha ya PNG, JPEG, JPG, GIF, BMP, au WebP.",
     "meal-editor-image-upload-error": "Hitilafu imetokea wakati wa kupakia picha iliyochaguliwa. Tafadhali jaribu tena, tumia picha tofauti, au ondoa picha ili kuhifadhi.",
     "meal-editor-item-none": "Hakuna vitu vilivyoongezwa.",
     "meal-editor-items-title": "Vitu:",

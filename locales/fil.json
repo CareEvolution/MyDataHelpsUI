@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Opsyonal",
     "meal-editor-duplicate-timestamp-error": "Hindi maaaring magkaroon ng parehong timestamp ang dalawang pagkain.",
     "meal-editor-image-alt": "larawan ng pagkain",
+    "meal-editor-image-type-error": "Ang uri ng larawang pinili ay hindi suportado. Mangyaring pumili ng PNG, JPEG, JPG, GIF, BMP, o WebP na larawan.",
     "meal-editor-image-upload-error": "May naganap na error habang ina-upload ang napiling larawan. Pakisubukang muli, gumamit ng ibang larawan, o alisin ang larawan upang mai-save.",
     "meal-editor-item-none": "Walang naidagdag na mga item.",
     "meal-editor-items-title": "Mga Item:",

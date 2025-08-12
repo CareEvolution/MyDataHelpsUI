@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Optional",
     "meal-editor-duplicate-timestamp-error": "Zwei Mahlzeiten können nicht die gleiche Uhrzeit haben.",
     "meal-editor-image-alt": "Mahlzeit Bild",
+    "meal-editor-image-type-error": "Der ausgewählte Bildtyp wird nicht unterstützt. Bitte wählen Sie ein PNG-, JPEG-, JPG-, GIF-, BMP- oder WebP-Bild.",
     "meal-editor-image-upload-error": "Ein Fehler ist beim Hochladen des ausgewählten Bildes aufgetreten. Bitte versuchen Sie es erneut, verwenden Sie ein anderes Bild oder entfernen Sie das Bild, um zu speichern.",
     "meal-editor-item-none": "Keine Artikel hinzugefügt.",
     "meal-editor-items-title": "Artikel:",

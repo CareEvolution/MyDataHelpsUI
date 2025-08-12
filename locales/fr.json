@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Optionnel",
     "meal-editor-duplicate-timestamp-error": "Deux repas ne peuvent pas avoir la même heure.",
     "meal-editor-image-alt": "image du repas",
+    "meal-editor-image-type-error": "Le type d’image sélectionné n’est pas pris en charge. Veuillez sélectionner une image PNG, JPEG, JPG, GIF, BMP ou WebP.",
     "meal-editor-image-upload-error": "Une erreur s'est produite lors du téléchargement de l'image sélectionnée. Veuillez réessayer, utiliser une autre image ou supprimer l'image pour enregistrer.",
     "meal-editor-item-none": "Aucun élément ajouté.",
     "meal-editor-items-title": "Éléments :",

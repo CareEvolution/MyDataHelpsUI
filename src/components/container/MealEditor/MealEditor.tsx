@@ -34,6 +34,7 @@ export default function MealEditor(props: MealEditorProps) {
     const [imageUrl, setImageUrl] = useState<string>();
     const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [newImageFile, setNewImageFile] = useState<File>();
+    const [imageTypeError, setImageTypeError] = useState<boolean>(false);
     const [imageUploadError, setImageUploadError] = useState<boolean>(false);
 
     const itemsToAddInputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +47,7 @@ export default function MealEditor(props: MealEditorProps) {
         setImageUrl(undefined);
         setImageLoading(true);
         setNewImageFile(undefined);
+        setImageTypeError(false);
         setImageUploadError(false);
 
         if (props.previewState === 'loading') {
@@ -117,6 +119,7 @@ export default function MealEditor(props: MealEditorProps) {
         }
 
         setLoading(true);
+        setImageTypeError(false);
         setImageUploadError(false);
 
         if (newImageFile) {
@@ -160,10 +163,16 @@ export default function MealEditor(props: MealEditorProps) {
 
     const onFileChanged = (file: File | undefined) => {
         if (file) {
-            setMealToEdit({ ...mealToEdit, hasImage: true });
-            setNewImageFile(file);
-            setImageUrl(URL.createObjectURL(file));
-            setImageUploadError(false);
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+            if (allowedTypes.includes(file.type)) {
+                setMealToEdit({ ...mealToEdit, hasImage: true });
+                setNewImageFile(file);
+                setImageUrl(URL.createObjectURL(file));
+                setImageTypeError(false);
+                setImageUploadError(false);
+            } else {
+                setImageTypeError(true);
+            }
         }
     };
 
@@ -171,6 +180,7 @@ export default function MealEditor(props: MealEditorProps) {
         setMealToEdit({ ...mealToEdit, hasImage: false });
         setNewImageFile(undefined);
         setImageUrl(undefined);
+        setImageTypeError(false);
         setImageUploadError(false);
     };
 
@@ -286,6 +296,7 @@ export default function MealEditor(props: MealEditorProps) {
                     </div>
                 </div>
             }
+            {imageTypeError && <div className="mdhui-meal-editor-error">{language('meal-editor-image-type-error')}</div>}
         </div>
         <div className="mdhui-meal-editor-items">
             <div className="mdhui-meal-editor-items-header">

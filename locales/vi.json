@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Tùy chọn",
     "meal-editor-duplicate-timestamp-error": "Hai bữa ăn không thể có cùng thời gian.",
     "meal-editor-image-alt": "ảnh bữa ăn",
+    "meal-editor-image-type-error": "Loại ảnh đã chọn không được hỗ trợ. Vui lòng chọn ảnh PNG, JPEG, JPG, GIF, BMP hoặc WebP.",
     "meal-editor-image-upload-error": "Đã xảy ra lỗi khi tải lên hình ảnh đã chọn. Vui lòng thử lại, sử dụng hình ảnh khác, hoặc xóa hình ảnh để lưu.",
     "meal-editor-item-none": "Chưa thêm mục nào.",
     "meal-editor-items-title": "Mục:",

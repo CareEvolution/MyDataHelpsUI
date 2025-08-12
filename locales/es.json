@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Opcional",
     "meal-editor-duplicate-timestamp-error": "Dos comidas no pueden tener la misma hora.",
     "meal-editor-image-alt": "imagen de la comida",
+    "meal-editor-image-type-error": "El tipo de imagen seleccionado no es compatible. Por favor, selecciona una imagen PNG, JPEG, JPG, GIF, BMP o WebP.",
     "meal-editor-image-upload-error": "Ocurrió un error al subir la imagen seleccionada. Por favor, inténtelo de nuevo, use una imagen diferente o elimine la imagen para guardar.",
     "meal-editor-item-none": "No se añadieron elementos.",
     "meal-editor-items-title": "Elementos:",

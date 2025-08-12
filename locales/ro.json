@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Opțional",
     "meal-editor-duplicate-timestamp-error": "Două mese nu pot avea aceeași marcă de timp.",
     "meal-editor-image-alt": "imaginea mesei",
+    "meal-editor-image-type-error": "Tipul de imagine selectat nu este acceptat. Vă rugăm să selectați o imagine PNG, JPEG, JPG, GIF, BMP sau WebP.",
     "meal-editor-image-upload-error": "A apărut o eroare la încărcarea imaginii selectate. Te rugăm să încerci din nou, să folosești o imagine diferită sau să elimini imaginea pentru a salva.",
     "meal-editor-item-none": "Niciun articol adăugat.",
     "meal-editor-items-title": "Articole:",

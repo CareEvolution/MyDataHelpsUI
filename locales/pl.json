@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Opcjonalne",
     "meal-editor-duplicate-timestamp-error": "Dwa posiłki nie mogą mieć tej samej godziny.",
     "meal-editor-image-alt": "obraz posiłku",
+    "meal-editor-image-type-error": "Wybrany typ obrazu nie jest obsługiwany. Wybierz obraz PNG, JPEG, JPG, GIF, BMP lub WebP.",
     "meal-editor-image-upload-error": "Wystąpił błąd podczas przesyłania wybranego obrazu. Spróbuj ponownie, użyj innego obrazu lub usuń obraz, aby zapisać.",
     "meal-editor-item-none": "Nie dodano żadnych pozycji.",
     "meal-editor-items-title": "Pozycje:",

@@ -410,6 +410,7 @@
     "meal-editor-description-optional": "Filifilia",
     "meal-editor-duplicate-timestamp-error": "E le mafai e taumafa e lua ona iai le taimi tutusa.",
     "meal-editor-image-alt": "ata o le 'aiga",
+    "meal-editor-image-type-error": "E le lagolagoina le ituaiga ata na e filifilia. Fa'amolemole filifili se ata PNG, JPEG, JPG, GIF, BMP, po'o WebP.",
     "meal-editor-image-upload-error": "Na tupu se fa'afitauli a'o fa'apipi'i le ata na filifilia. Fa'amolemole toe taumafai, fa'aaoga se isi ata, pe ave'ese le ata ina ia mafai ona sefe.",
     "meal-editor-item-none": "Leai ni mea na fa'aopoopo.",
     "meal-editor-items-title": "Mea:",
