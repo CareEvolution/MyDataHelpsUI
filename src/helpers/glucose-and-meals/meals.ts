@@ -82,8 +82,8 @@ export async function uploadMealImageFile(meal: Meal, file: File): Promise<void>
         return Promise.reject();
     }
 
-    const uploadFile = await stripExifTags(file);
-    await MyDataHelps.uploadFile(uploadFile, 'MealImage', `${meal.id}.${imageFileExtension}`);
+    const fileToUpload = await stripExifTags(file);
+    await MyDataHelps.uploadFile(fileToUpload, 'MealImage', `${meal.id}.${imageFileExtension}`);
 
     const thumbnailFile = await createThumbnailIfNecessary(file);
     if (thumbnailFile) {

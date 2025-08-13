@@ -280,6 +280,10 @@ describe('Meals - Helper Function Tests', () => {
             uploadFile.mockReset();
         });
 
+        const setupExifStripping = (file: File) => {
+            jest.spyOn(image, 'stripExifTags').mockImplementation(() => Promise.resolve(file));
+        };
+
         const setupThumbnailFile = (file?: File) => {
             jest.spyOn(image, 'createThumbnailIfNecessary').mockImplementation(() => Promise.resolve(file));
         };
@@ -287,26 +291,30 @@ describe('Meals - Helper Function Tests', () => {
         it('Should upload just the image file when a thumbnail is not necessary.', async () => {
             const meal: Meal = { id: uuid() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
+            const fileToUpload = { name: 'file-to-upload.png' } as File;
 
+            setupExifStripping(fileToUpload);
             setupThumbnailFile();
 
             await uploadMealImageFile(meal, file);
 
             expect(uploadFile).toHaveBeenCalledTimes(1);
-            expect(uploadFile).toHaveBeenCalledWith(file, 'MealImage', `${meal.id}.png`);
+            expect(uploadFile).toHaveBeenCalledWith(fileToUpload, 'MealImage', `${meal.id}.png`);
         });
 
         it('Should upload the image file and a thumbnail, when necessary.', async () => {
             const meal: Meal = { id: uuid() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
+            const fileToUpload = { name: 'file-to-upload.png' } as File;
             const thumbnailFile = { name: 'thumbnail.png' } as File;
 
+            setupExifStripping(fileToUpload);
             setupThumbnailFile(thumbnailFile);
 
             await uploadMealImageFile(meal, file);
 
             expect(uploadFile).toHaveBeenCalledTimes(2);
-            expect(uploadFile).toHaveBeenNthCalledWith(1, file, 'MealImage', `${meal.id}.png`);
+            expect(uploadFile).toHaveBeenNthCalledWith(1, fileToUpload, 'MealImage', `${meal.id}.png`);
             expect(uploadFile).toHaveBeenNthCalledWith(2, thumbnailFile, 'MealImage', `${meal.id}_thumbnail.png`);
         });
     });
