@@ -3,7 +3,7 @@ import { add, compareDesc, endOfDay, parseISO, startOfDay } from 'date-fns';
 import { Meal, MealItem, MealReference } from './types';
 import { timestampSortAsc } from './util';
 import queryAllFiles from '../query-all-files';
-import { createThumbnailIfNecessary } from '../image';
+import { createThumbnailIfNecessary, stripExifTags } from '../image';
 import getDayKey from '../get-day-key';
 
 const parseMeals = (mealsJson: string): Meal[] => {
@@ -82,7 +82,8 @@ export async function uploadMealImageFile(meal: Meal, file: File): Promise<void>
         return Promise.reject();
     }
 
-    await MyDataHelps.uploadFile(file, 'MealImage', `${meal.id}.${imageFileExtension}`);
+    const uploadFile = await stripExifTags(file);
+    await MyDataHelps.uploadFile(uploadFile, 'MealImage', `${meal.id}.${imageFileExtension}`);
 
     const thumbnailFile = await createThumbnailIfNecessary(file);
     if (thumbnailFile) {
