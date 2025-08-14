@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
-import { add, addDays, addMonths, Duration, isToday, getDaysInMonth, addHours, startOfMonth } from 'date-fns'
+import { add, addDays, addHours, addMonths, Duration, getDaysInMonth, isToday, startOfDay, startOfMonth, startOfToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
-import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
+import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { getAbbreviatedMonthName, getAbbreviatedDayOfWeek, getShortTimeOfDayString } from '../../../helpers/date-helpers'
+import { getAbbreviatedDayOfWeek, getAbbreviatedMonthName, getFullDateString, getShortTimeOfDayString } from '../../../helpers/date-helpers'
 import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
@@ -19,8 +19,9 @@ export interface TimeSeriesDataPoint {
 
 export interface TimeSeriesChartProps {
     title?: string;
-    intervalType?: "Week" | "Month" | "6Month" | "Day";
-    intervalStart: Date;
+    intervalType?: "Day" | "Week" | "Month" | "6Month" | "Dynamic";
+    dynamicIntervalEndType?: "Today" | "Last Reading";
+    intervalStart?: Date;
     data?: TimeSeriesDataPoint[];
     expectedDataInterval?: Duration;
     series: ChartSeries[] | AreaChartSeries[];
@@ -40,7 +41,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     // Ensures that gradients are unique for each chart.
     let gradientKey = `gradient_${Math.random()}_`;
 
-    const DayTick = ({ x, y, payload }: any) => {
+    const DayTick = ({ x, y, payload, index, width }: any) => {
         let value = payload.value;
         let currentDate = new Date(value);
         if (intervalType === "Month") {
@@ -72,6 +73,11 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             return <>
                 <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getShortTimeOfDayString(currentDate)}</text>
             </>;
+        } else if (intervalType === "Dynamic") {
+            const adjustedX = 37 + (index === 0 ? 0 : width);
+            const textAnchor = index === 0 ? "start" : "end";
+            const tickLabel = value > 1 ? getFullDateString(currentDate) : '...';
+            return <text fill="var(--mdhui-text-color-2)" x={adjustedX} y={y + 15} textAnchor={textAnchor} fontSize="12">{tickLabel}</text>;
         }
         return <>
             <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>
@@ -79,8 +85,24 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     function getXAxisTicks() {
-        const startTime = new Date(props.intervalStart);
-        startTime.setHours(0, 0, 0, 0);
+        if (intervalType === "Dynamic") {
+            if (!props.data?.length) return [0, 1];
+
+            const firstDayWithData = startOfDay(new Date(props.data[0].timestamp));
+
+            if (props.dynamicIntervalEndType === "Last Reading") {
+                if (props.data.length === 1) {
+                    return [add(firstDayWithData, { days: -3 }).getTime(), add(firstDayWithData, { days: 3 }).getTime()];
+                } else {
+                    const lastDayWithData = startOfDay(new Date(props.data[props.data.length - 1].timestamp));
+                    return [firstDayWithData.getTime(), lastDayWithData.getTime()];
+                }
+            }
+
+            return [firstDayWithData.getTime(), startOfToday().getTime()];
+        }
+
+        const startTime = startOfDay(props.intervalStart ?? (intervalType === "Day" ? startOfToday() : getDefaultIntervalStart(intervalType, "6DaysAgo")));
 
         if (intervalType === "Week") {
             return Array.from({ length: 7 }, (_, i) => addDays(startTime, i).getTime());
