@@ -88,7 +88,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         var html = "";
         for (const styleElement of documentStyles) {
             if (styleElement.getAttribute('data-emotion') && styleElement.sheet) {
-                html += `<style>${Array.from(styleElement.sheet.cssRules).map(rule => rule.cssText).join("\n\n")}</style>`;
+                html += `<style>\n${Array.from(styleElement.sheet.cssRules).map(rule => rule.cssText).join("\n\n")}\n</style>`;
             } else {
                 html += styleElement.outerHTML;
             }
