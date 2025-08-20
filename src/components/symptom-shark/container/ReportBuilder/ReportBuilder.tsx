@@ -13,6 +13,7 @@ import { faCheckCircle, faCircle } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "./ReportBuilder.css"
 import { noop } from "../../../../helpers/functions";
+import { core, lightColorScheme, global } from "../../../../helpers/globalCss";
 
 export interface SymptomSharkReportBuilderProps {
     productLogo?: string;
@@ -88,6 +89,9 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         for (var i = 0; i < documentStyles.length; i++) {
             html += documentStyles[i].outerHTML;
         }
+        html += `<style>${core.styles.replaceAll('\n', '')}</style>`;
+        html += `<style>${lightColorScheme.styles.replaceAll('\n', '')}</style>`;
+        html += `<style>${global.styles.replaceAll('\n', '')}</style>`;
         html += report.current!.innerHTML;
 
         renderPdf(html, configuration!.participantID).then(function () {
