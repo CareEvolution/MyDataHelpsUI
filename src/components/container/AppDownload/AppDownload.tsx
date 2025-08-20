@@ -5,9 +5,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import PlatformSpecificContent from '../PlatformSpecificContent/PlatformSpecificContent';
 import { useInitializeView } from '../../../helpers/Initialization';
 import TextBlock from '../../presentational/TextBlock';
-import language from "../../../helpers/language";
+import language, { getCurrentLocale } from "../../../helpers/language";
 import { CardTitle } from '../../presentational';
-import { getCurrentLocale } from '../../../helpers/language';
 
 export interface AppDownloadProps {
 	previewProjectPlatforms?: string[]
