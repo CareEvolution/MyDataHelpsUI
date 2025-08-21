@@ -9,8 +9,10 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { ButtonVariant } from '../../presentational/Button/Button'
 import { useInitializeView } from '../../../helpers/Initialization';
 
-export interface SortBehavior {
-	type: 'alphabetical' | 'dueDate' | 'insertedDate' | 'userDefined' | 'shuffle';
+export type SurveyTaskListSortBehaviorType = 'alphabetical' | 'dueDate' | 'insertedDate' | 'userDefined' | 'shuffle';
+
+export interface SurveyTaskListSortBehavior {
+	type: SurveyTaskListSortBehaviorType;
 	direction?: SortOrder;
 	userDefinedOrder?: string[];
 }
@@ -22,7 +24,7 @@ export interface SurveyTaskListProps {
 	title?: string;
 	surveys?: string[];
 	category?: string;
-	sortBehavior?: SortBehavior;
+	sortBehavior?: SurveyTaskListSortBehavior;
 	onDetailLinkClick?: Function;
 	previewState?: SurveyTaskListListPreviewState;
 	variant?: "noCard" | "singleCard" | "multiCard";
@@ -90,12 +92,15 @@ export default function (props: SurveyTaskListProps) {
 					return a.surveyName.localeCompare(b.surveyName) * sortMultiplier;
 
 				case 'insertedDate':
+					if (a.insertedDate === b.insertedDate) return 0;
 					if (!a.insertedDate) return 1;
 					if (!b.insertedDate) return -1;
+
 					const dateA = parseISO(a.insertedDate);
 					const dateB = parseISO(b.insertedDate);
 					if (dateA > dateB) return 1 * sortMultiplier;
 					if (dateA < dateB) return -1 * sortMultiplier;
+
 					return 0;
 
 				case 'userDefined':
@@ -116,12 +121,15 @@ export default function (props: SurveyTaskListProps) {
 
 				case 'dueDate':
 				default:
-					if (!a.dueDate) { return 1; } // Pushes tasks without a due date to the end.
+					if (a.dueDate === b.dueDate) return 0;
+					if (!a.dueDate) { return 1; }
 					if (!b.dueDate) { return -1; }
+
 					const dueDateA = parseISO(a.dueDate);
 					const dueDateB = parseISO(b.dueDate);
 					if (dueDateA > dueDateB) { return 1 * sortMultiplier; }
 					if (dueDateA < dueDateB) { return -1 * sortMultiplier; }
+
 					return 0;
 			}
 		};
