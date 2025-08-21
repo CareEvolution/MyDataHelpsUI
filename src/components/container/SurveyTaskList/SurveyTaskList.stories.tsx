@@ -16,21 +16,26 @@ const render = (args: SurveyTaskListProps) => {
     </Layout>;
 };
 
+const baseIncompleteArgs = {
+	limit: 3,
+	status: 'incomplete',
+	title: 'Incomplete Tasks',
+	previewState: "IncompleteTasks",
+	sequential: false
+};
+
 export const Incomplete = {
 	args: {
-		limit: 3,
-		status: 'incomplete',
-		title: 'Incomplete Tasks',
-		previewState: "IncompleteTasks",
+		...baseIncompleteArgs,
 		variant: "singleCard",
-		sequential: false
 	},
 	render: render
 }
 
 export const Sequential = {
 	args: {
-		...Incomplete.args,
+		...baseIncompleteArgs,
+		variant: "singleCard",
 		sequential: true
 	},
 	render: render
@@ -38,7 +43,7 @@ export const Sequential = {
 
 export const Multicard = {
 	args: {
-		...Incomplete.args,
+		...baseIncompleteArgs,
 		variant: "multiCard"
 	},
 	render: render
@@ -46,10 +51,7 @@ export const Multicard = {
 
 export const CustomStyle = {
 	args: {
-		limit: 3,
-		status: 'incomplete',
-		title: 'Incomplete Tasks',
-		previewState: "IncompleteTasks",
+		...baseIncompleteArgs,
 		variant: "multiCard",
 		titleColor: "red",
 		cardBackgroundColor: "#eee",
@@ -58,7 +60,6 @@ export const CustomStyle = {
 		},
 		buttonVariant: "default",
 		buttonColor: "blue",
-		sequential: false
 	},
 	render: render
 }
