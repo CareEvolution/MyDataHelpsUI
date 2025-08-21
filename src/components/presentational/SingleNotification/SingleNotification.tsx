@@ -2,6 +2,7 @@ import React from 'react';
 import "./SingleNotification.css";
 import { Notification } from "@careevolution/mydatahelps-js";
 import { getRelativeDateString } from '../../../helpers/date-helpers';
+import { language } from "../../../helpers/language";
 
 export interface SingleNotificationProps {
 	notification: Notification | null
@@ -12,7 +13,7 @@ export default function (props: SingleNotificationProps) {
 	if (!props.notification) {
 		return (
 			<div ref={props.innerRef} className="mdhui-single-notification">
-				<div className="notification-body">No notifications received</div>
+				<div className="notification-body">{language('no-notifications-received')}</div>
 			</div>
 		)
 	}
