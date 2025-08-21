@@ -1,18 +1,45 @@
 ﻿import React from "react"
-import SurveyTaskList, { SurveyTaskListProps } from "./SurveyTaskList"
+import SurveyTaskList, { SurveyTaskListProps, SurveyTaskListSortBehaviorType } from "./SurveyTaskList"
+import { SortOrder } from "@careevolution/mydatahelps-js";
 import Layout from "../../presentational/Layout"
+import { previewIncompleteTasks } from "./SurveyTaskList.previewdata";
+import { argTypesToHide } from "../../../../.storybook/helpers";
 
 export default {
 	title: "Container/SurveyTaskList",
 	component: SurveyTaskList,
 	parameters: {
 		layout: 'fullscreen',
-	}
+	},
+	argTypes: {
+        sortBehaviorType: {
+            control: { type: 'select' },
+            options: ['alphabetical', 'dueDate', 'insertedDate', 'userDefined', 'shuffle'],
+        },
+        sortBehaviorDirection: {
+            control: { type: 'radio' },
+            options: ['ascending', 'descending'],
+        }
+    }
 };
 
-const render = (args: SurveyTaskListProps) => {
+type SurveyTaskListStoryArgs = React.ComponentProps<typeof SurveyTaskList> & {
+    sortBehaviorType: SurveyTaskListSortBehaviorType;
+	sortBehaviorDirection: SortOrder;
+	sortBehaviorUserDefinedOrder: string[];
+};
+
+const render = (args: SurveyTaskListStoryArgs) => {
+    const { sortBehaviorType, sortBehaviorDirection, sortBehaviorUserDefinedOrder, ...rest } = args;
+
+    const sortBehavior = {
+        type: sortBehaviorType,
+        direction: sortBehaviorDirection,
+        userDefinedOrder: sortBehaviorUserDefinedOrder
+    };
+
     return <Layout colorScheme="auto">
-        <SurveyTaskList {...args} />
+        <SurveyTaskList {...rest} sortBehavior={sortBehavior} />
     </Layout>;
 };
 
@@ -21,7 +48,9 @@ const baseIncompleteArgs = {
 	status: 'incomplete',
 	title: 'Incomplete Tasks',
 	previewState: "IncompleteTasks",
-	sequential: false
+	sequential: false,
+	sortBehaviorType: 'dueDate',
+    sortBehaviorDirection: 'ascending'
 };
 
 export const Incomplete = {
@@ -63,6 +92,25 @@ export const CustomStyle = {
 	},
 	render: render
 }
+
+export const UserDefinedOrder = {
+    args: {
+        ...baseIncompleteArgs,
+        variant: "singleCard",
+        title: "Sorted by User-Defined Order",
+        sortBehaviorType: 'userDefined',
+        sortBehaviorUserDefinedOrder: [
+            previewIncompleteTasks[1].surveyName,
+            previewIncompleteTasks[2].surveyName,
+            previewIncompleteTasks[0].surveyName
+        ]
+    },
+	argTypes: {
+		...argTypesToHide(['sortBehaviorDirection'])
+	},
+    render: render
+}
+
 
 export const Complete = {
 	args: {
