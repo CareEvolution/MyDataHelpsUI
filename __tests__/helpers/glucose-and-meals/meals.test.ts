@@ -1,10 +1,12 @@
-import { add, endOfDay, startOfDay, startOfToday } from 'date-fns';
 import { describe, it } from '@jest/globals';
+import { add, endOfDay, formatISO, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { getMealImageUrls, getMeals, getMealToEdit, Meal, MealReference, prepareMealForEditing, saveMeals, uploadMealImageFile } from '../../../src/helpers/glucose-and-meals';
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DownloadedFile, Guid, UploadedFile, UploadedFileQuery } from '@careevolution/mydatahelps-js';
 import { v4 as uuid } from 'uuid';
 import * as image from '../../../src/helpers/image';
 import * as queryAllFiles from '../../../src/helpers/query-all-files';
+import { getMealsByDate, itemSortByConfidenceDesc, itemSortByNameAsc } from '../../../src/helpers/glucose-and-meals/meals';
+import getDayKey from '../../../src/helpers/get-day-key';
 
 jest.mock('@careevolution/mydatahelps-js', () => {
     return {
@@ -20,6 +22,53 @@ jest.mock('@careevolution/mydatahelps-js', () => {
 
 describe('Meals - Helper Function Tests', () => {
     const today = startOfToday();
+
+    const createTestMeals = (date: Date) => {
+        const withDescription: Meal = {
+            id: uuid(),
+            timestamp: add(date, { hours: 12 }),
+            type: 'meal',
+            description: 'Some tasty food!',
+            created: add(date, { hours: 13 })
+        };
+        const archived: Meal = {
+            id: uuid(),
+            timestamp: add(date, { hours: 11 }),
+            type: 'snack',
+            archiveTimestamp: add(date, { hours: 11, minutes: 30 })
+        };
+        const withImage: Meal = {
+            id: uuid(),
+            timestamp: add(date, { hours: 10 }),
+            type: 'drink',
+            hasImage: true,
+            lastModified: add(date, { hours: 16 })
+        };
+        const withAnalysis: Meal = {
+            id: uuid(),
+            timestamp: add(date, { hours: 14 }),
+            type: 'meal',
+            hasImage: true,
+            items: [{ name: 'eggs' }, { name: 'bacon' }, { name: 'toast' }, { name: 'sausage' }],
+            analysis: {
+                timestamp: add(date, { hours: 14, minutes: 30 }),
+                items: [{ name: 'eggs', confidenceScore: 0.89 }, { name: 'bacon', confidenceScore: 0.95 }, { name: 'toast', confidenceScore: 0.7 }],
+                reviewTimestamp: add(date, { hours: 16, minutes: 22 })
+            },
+            created: add(date, { hours: 14, minutes: 10 }),
+            lastModified: add(date, { hours: 14, minutes: 45 })
+        };
+        const withItems: Meal = {
+            id: uuid(),
+            timestamp: add(date, { hours: 13 }),
+            type: 'meal',
+            items: [{ name: 'bread' }, { name: 'cheese' }],
+            created: add(date, { hours: 13, minutes: 5 }),
+            lastModified: add(date, { hours: 13, minutes: 5 })
+        };
+
+        return { withDescription, archived, withImage, withAnalysis, withItems };
+    };
 
     describe('Get Meals', () => {
         const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
@@ -46,18 +95,18 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should return all meals for the given date in ascending timestamp order.', async () => {
-            const meal1: Meal = { id: uuid(), timestamp: add(today, { hours: 12 }), type: 'meal', description: 'Some tasty food!', created: add(today, { hours: 13 }) };
-            const meal2: Meal = { id: uuid(), timestamp: add(today, { hours: 11 }), type: 'meal', archiveTimestamp: add(today, { hours: 11, minutes: 30 }) };
-            const meal3: Meal = { id: uuid(), timestamp: add(today, { hours: 10 }), type: 'meal', hasImage: true, lastModified: add(today, { hours: 16 }) };
+            const testMeals = createTestMeals(today);
 
-            setupMeals([meal1, meal2, meal3]);
+            setupMeals(Object.values(testMeals));
 
             const meals = await getMeals(today);
 
-            expect(meals.length).toBe(3);
-            expect(meals[0]).toEqual(meal3)
-            expect(meals[1]).toEqual(meal2)
-            expect(meals[2]).toEqual(meal1)
+            expect(meals.length).toBe(5);
+            expect(meals[0]).toEqual(testMeals.withImage);
+            expect(meals[1]).toEqual(testMeals.archived);
+            expect(meals[2]).toEqual(testMeals.withDescription);
+            expect(meals[3]).toEqual(testMeals.withItems);
+            expect(meals[4]).toEqual(testMeals.withAnalysis);
         });
 
         it('Should return an empty array when there are no meals.', async () => {
@@ -66,6 +115,75 @@ describe('Meals - Helper Function Tests', () => {
             const meals = await getMeals(today);
 
             expect(meals.length).toBe(0);
+        });
+    });
+
+    describe('Get Meals By Date', () => {
+        const yesterday = add(today, { days: -1 });
+
+        const queryDeviceData = (MyDataHelps.queryDeviceData as jest.Mock);
+
+        beforeEach(() => {
+            queryDeviceData.mockReset();
+        });
+
+        const setupMealsByDate = (mealsByDate?: Record<string, Meal[]>) => {
+            const expectedQueryParameters = {
+                namespace: 'Project',
+                type: 'Meals',
+                observedAfter: endOfDay(add(yesterday, { days: -1 })).toISOString(),
+                observedBefore: startOfDay(add(today, { days: 1 })).toISOString()
+            };
+
+            queryDeviceData.mockImplementation((queryParameters: DeviceDataPointQuery): Promise<DeviceDataPointsPage> => {
+                const dataPoints: DeviceDataPoint[] = [];
+                if (mealsByDate && JSON.stringify(queryParameters) === JSON.stringify(expectedQueryParameters)) {
+                    for (const [dayKey, meals] of Object.entries(mealsByDate)) {
+                        dataPoints.push({ observationDate: formatISO(parseISO(dayKey)), value: JSON.stringify(meals) } as DeviceDataPoint);
+                    }
+                }
+                return Promise.resolve({ deviceDataPoints: dataPoints });
+            });
+        };
+
+        it('Should return all meals for each date in ascending timestamp order.', async () => {
+            const yesterdayTestMeals = createTestMeals(yesterday);
+            const todayTestMeals = createTestMeals(today);
+
+            const yesterdayDayKey = getDayKey(yesterday);
+            const todayDayKey = getDayKey(today);
+            setupMealsByDate({
+                [yesterdayDayKey]: Object.values(yesterdayTestMeals),
+                [todayDayKey]: Object.values(todayTestMeals)
+            });
+
+            const mealsByDate = await getMealsByDate(yesterday, today);
+
+            expect(Object.keys(mealsByDate).length).toBe(2);
+
+            const yesterdayMeals = mealsByDate[yesterdayDayKey];
+            expect(yesterdayMeals.length).toBe(5);
+            expect(yesterdayMeals[0]).toEqual(yesterdayTestMeals.withImage);
+            expect(yesterdayMeals[1]).toEqual(yesterdayTestMeals.archived);
+            expect(yesterdayMeals[2]).toEqual(yesterdayTestMeals.withDescription);
+            expect(yesterdayMeals[3]).toEqual(yesterdayTestMeals.withItems);
+            expect(yesterdayMeals[4]).toEqual(yesterdayTestMeals.withAnalysis);
+
+            const todayMeals = mealsByDate[todayDayKey];
+            expect(todayMeals.length).toBe(5);
+            expect(todayMeals[0]).toEqual(todayTestMeals.withImage);
+            expect(todayMeals[1]).toEqual(todayTestMeals.archived);
+            expect(todayMeals[2]).toEqual(todayTestMeals.withDescription);
+            expect(todayMeals[3]).toEqual(todayTestMeals.withItems);
+            expect(todayMeals[4]).toEqual(todayTestMeals.withAnalysis);
+        });
+
+        it('Should return an empty object when there are no meals.', async () => {
+            setupMealsByDate();
+
+            const mealsByDate = await getMealsByDate(yesterday, today);
+
+            expect(Object.keys(mealsByDate).length).toBe(0);
         });
     });
 
@@ -162,6 +280,10 @@ describe('Meals - Helper Function Tests', () => {
             uploadFile.mockReset();
         });
 
+        const setupExifStripping = (file: File) => {
+            jest.spyOn(image, 'stripExifTags').mockImplementation(() => Promise.resolve(file));
+        };
+
         const setupThumbnailFile = (file?: File) => {
             jest.spyOn(image, 'createThumbnailIfNecessary').mockImplementation(() => Promise.resolve(file));
         };
@@ -169,26 +291,30 @@ describe('Meals - Helper Function Tests', () => {
         it('Should upload just the image file when a thumbnail is not necessary.', async () => {
             const meal: Meal = { id: uuid() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
+            const fileToUpload = { name: 'file-to-upload.png' } as File;
 
+            setupExifStripping(fileToUpload);
             setupThumbnailFile();
 
             await uploadMealImageFile(meal, file);
 
             expect(uploadFile).toHaveBeenCalledTimes(1);
-            expect(uploadFile).toHaveBeenCalledWith(file, 'MealImage', `${meal.id}.png`);
+            expect(uploadFile).toHaveBeenCalledWith(fileToUpload, 'MealImage', `${meal.id}.png`);
         });
 
         it('Should upload the image file and a thumbnail, when necessary.', async () => {
             const meal: Meal = { id: uuid() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
+            const fileToUpload = { name: 'file-to-upload.png' } as File;
             const thumbnailFile = { name: 'thumbnail.png' } as File;
 
+            setupExifStripping(fileToUpload);
             setupThumbnailFile(thumbnailFile);
 
             await uploadMealImageFile(meal, file);
 
             expect(uploadFile).toHaveBeenCalledTimes(2);
-            expect(uploadFile).toHaveBeenNthCalledWith(1, file, 'MealImage', `${meal.id}.png`);
+            expect(uploadFile).toHaveBeenNthCalledWith(1, fileToUpload, 'MealImage', `${meal.id}.png`);
             expect(uploadFile).toHaveBeenNthCalledWith(2, thumbnailFile, 'MealImage', `${meal.id}_thumbnail.png`);
         });
     });
@@ -266,6 +392,22 @@ describe('Meals - Helper Function Tests', () => {
             const imageUrls = await getMealImageUrls([]);
 
             expect(Object.keys(imageUrls).length).toBe(0);
+        });
+    });
+
+    describe('Item Sort By Name Asc', () => {
+        it('Should return the appropriate sort indicator.', () => {
+            expect(itemSortByNameAsc({ name: 'A' }, { name: 'A' })).toBe(0);
+            expect(itemSortByNameAsc({ name: 'A' }, { name: 'B' })).toBeLessThan(0);
+            expect(itemSortByNameAsc({ name: 'B' }, { name: 'A' })).toBeGreaterThan(0);
+        });
+    });
+
+    describe('Item Sort By Confidence Desc', () => {
+        it('Should return the appropriate sort indicator.', () => {
+            expect(itemSortByConfidenceDesc({ name: 'A', confidenceScore: 0.75 }, { name: 'B', confidenceScore: 0.75 })).toBe(0);
+            expect(itemSortByConfidenceDesc({ name: 'A', confidenceScore: 0.85 }, { name: 'B', confidenceScore: 0.75 })).toBeLessThan(0);
+            expect(itemSortByConfidenceDesc({ name: 'A', confidenceScore: 0.65 }, { name: 'B', confidenceScore: 0.75 })).toBeGreaterThan(0);
         });
     });
 });

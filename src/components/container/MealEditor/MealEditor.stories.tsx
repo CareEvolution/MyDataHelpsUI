@@ -3,7 +3,7 @@ import { Card, Layout } from '../../presentational';
 import MealEditor from './MealEditor';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import { MealEditorPreviewState } from './MealEditor.previewData';
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
 type MealEditorStoryArgs = React.ComponentProps<typeof MealEditor> & {
     colorScheme: 'auto' | 'light' | 'dark';
@@ -18,22 +18,9 @@ const meta: Meta<MealEditorStoryArgs> = {
     parameters: { layout: 'fullscreen' },
     render: args => {
         const computePreviewState = (args: MealEditorStoryArgs): 'loading' | MealEditorPreviewState | undefined => {
-            if (args.withImageCapture) {
-                if (args.stateWithImageCapture === 'loading') {
-                    return 'loading';
-                }
-                if (args.stateWithImageCapture !== 'live') {
-                    return args.stateWithImageCapture as MealEditorPreviewState;
-                }
-                return undefined;
-            }
-            if (args.stateWithoutImageCapture === 'loading') {
-                return 'loading';
-            }
-            if (args.stateWithoutImageCapture === 'loaded') {
-                return 'without existing image'
-            }
-            return undefined;
+            return args.withImageCapture
+                ? args.stateWithImageCapture !== 'live' ? args.stateWithImageCapture as 'loading' | MealEditorPreviewState : undefined
+                : args.stateWithoutImageCapture !== 'live' ? args.stateWithoutImageCapture as 'loading' | 'loaded' : undefined;
         };
 
         const createChildren = () => {
@@ -41,7 +28,8 @@ const meta: Meta<MealEditorStoryArgs> = {
                 textDecoration: 'underline',
                 textAlign: 'right',
                 color: 'var(--mdhui-color-primary)',
-                fontSize: '0.8em'
+                fontSize: '0.8em',
+                padding: '0 16px'
             };
             return <div style={childStyle}>Provide More Details</div>;
         };
@@ -70,7 +58,7 @@ export const Default: Story = {
         colorScheme: 'auto',
         withImageCapture: false,
         stateWithoutImageCapture: 'loaded',
-        stateWithImageCapture: 'without existing image',
+        stateWithImageCapture: 'loaded',
         withChildren: false
     },
     argTypes: {
@@ -85,13 +73,13 @@ export const Default: Story = {
         stateWithoutImageCapture: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'loaded', 'live'],
+            options: ['loading', 'loaded', 'with automated meal analysis', 'live'],
             if: { arg: 'withImageCapture', eq: false }
         },
         stateWithImageCapture: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'without existing image', 'with existing image', 'live'],
+            options: ['loading', 'loaded', 'with image', 'with image and automated meal analysis', 'live'],
             if: { arg: 'withImageCapture', eq: true }
         },
         withChildren: {

@@ -2,7 +2,8 @@ import React, { MouseEventHandler } from "react";
 import "./UnstyledButton.css"
 
 export interface UnstyledButtonProps {
-	onClick: MouseEventHandler;
+    onClick: MouseEventHandler;
+    stopPropagation?: boolean;
     className?: string;
     children?: React.ReactNode;
     title?: string;
@@ -17,7 +18,12 @@ export default function (props: UnstyledButtonProps) {
             ref={props.innerRef}
             title={props.title}
             className={"mdhui-unstyled-button " + (props.className || "")}
-            onClick={props.onClick}
+            onClick={event => {
+                if (props.stopPropagation) {
+                    event.stopPropagation();
+                }
+                props.onClick(event);
+            }}
             style={props.style}
             disabled={props.disabled}>
             {props.children}

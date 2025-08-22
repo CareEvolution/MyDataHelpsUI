@@ -87,6 +87,12 @@ export function getDayAndDateAndTimeString(dateOrDateString: Date | string) {
 	return formatDateForLocale(date, "PPPPp");
 }
 
+/** e.g., April 29th, 2024 at 11:00 PM - localized */
+export function getDateAndTimeString(dateOrDateString: Date | string) {
+    const date = toDate(dateOrDateString);
+    return formatDateForLocale(date, "PPPp");
+}
+
 /** e.g., Friday, April 29th, 2024 - localized */
 export function getFullDayAndDateString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);

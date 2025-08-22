@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { MouseEventHandler, useContext } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
 import "./Button.css"
 import { LayoutContext } from '../Layout';
@@ -9,7 +9,8 @@ export type ButtonVariant = "default" | "subtle" | "light";
 export interface ButtonProps {
 	children?: React.ReactNode;
 	disabled?: boolean;
-	onClick: Function;
+	onClick: MouseEventHandler;
+	stopPropagation?: boolean;
 	className?: string;
 	color?: ColorDefinition;
 	loading?: boolean;
@@ -49,11 +50,14 @@ export default function Button(props: ButtonProps) {
 		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
-			onClick={() => {
+			onClick={event => {
 				if (props.disabled || props.loading) {
 					return;
 				}
-				props.onClick();
+				if (props.stopPropagation) {
+					event.stopPropagation();
+				}
+				props.onClick(event);
 			}}>
 			{props.loading &&
 				<>
