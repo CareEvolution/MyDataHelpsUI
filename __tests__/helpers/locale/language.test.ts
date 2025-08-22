@@ -1,6 +1,17 @@
-import { getLanguageCodeFromIso, getCountryCodeFromIso, language, supportedLocales } from '../../../src/helpers/language';
+import { getLanguageCodeFromIso, getCountryCodeFromIso, language, supportedLocales, getCurrentLocale } from '../../../src/helpers/language';
 import { describe, it } from '@jest/globals';
 import englishStrings from "../../../locales/en.json"
+
+let mockMDHLanguage = "en";
+
+jest.mock('@careevolution/mydatahelps-js', () => {
+    return {
+        __esModule: true,
+        default: {
+            getCurrentLanguage:  jest.fn(() => { return mockMDHLanguage; })
+        }
+    }
+});
 
 describe('Language Tests', () => {
     describe('getLanguageCodeFromIso', () => {
@@ -33,6 +44,36 @@ describe('Language Tests', () => {
         });
     });
 
+    describe('getCurrentLocale', () => {
+        it('Should return a supported locale (using MDH language).', () => {
+            mockMDHLanguage = "PT-PT";
+            const result = getCurrentLocale();
+            expect(result).toBe("pt-pt");
+        });
+        it('Should return a base language if specific locale unsupported (using MDH language).', () => {
+            mockMDHLanguage = "PT-xx";
+            const result = getCurrentLocale();
+            expect(result).toBe("pt");
+        });
+        it('Should return English if entire language is unsupported (using MDH language).', () => {
+            mockMDHLanguage = "Xx";
+            const result = getCurrentLocale();
+            expect(result).toBe("en");
+        });        
+        it('Should return a supported locale (with override param).', () => {
+            const result = getCurrentLocale("FR-CA");
+            expect(result).toBe("fr-ca");
+        });
+        it('Should return a base language if specific locale unsupported (with override param).', () => {
+            const result = getCurrentLocale("FR-xx");
+            expect(result).toBe("fr");
+        });
+        it('Should return English if entire language is unsupported (with override param).', () => {
+            const result = getCurrentLocale("xx");
+            expect(result).toBe("en");
+        });
+    });
+    
     describe('language', () => {
         it('Should return a string from a specific supported locale.', () => {
             const result = language("settings", "PT-PT");

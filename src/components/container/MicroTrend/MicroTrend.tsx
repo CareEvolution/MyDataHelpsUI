@@ -177,16 +177,18 @@ function MicroTrendContent(props: MicroTrendContentProps) {
         iconColor = "var(--mdhui-text-color-3)";
     }
 
+    let label = props.dataType.label ?? language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!);
+
     return <>
         <div className="mdhui-micro-trend-label" style={{ color: iconColor }}>
             {props.dataType.icon ?? getDailyDataTypeDefinition(props.dataType.dailyDataType).icon} &nbsp;
-            {props.dataType.label ?? language(getDailyDataTypeDefinition(props.dataType.dailyDataType).labelKey!)}
+            {label}
         </div>
         <div style={{ color: noData ? "var(--mdhui-text-color-3)" : undefined }} className="mdhui-micro-trend-value">
             {!props.results && <FontAwesomeSvgIcon icon={faRefresh} spin style={{ fontSize: ".7em" }} />}
             {props.results && formattedValue}
         </div>
-        <div className="mdhui-micro-trend-chart">
+        <div className="mdhui-micro-trend-chart" aria-label={`${language("recent-trend-of")} ${label}`}>
             {props.hasRecentData && props.showChart && props.results &&
                 <SparkBarChart variant="rounded" gap={4} style={{ height: "100%" }} bars={bars} averageFillPercent={0.5} />
             }

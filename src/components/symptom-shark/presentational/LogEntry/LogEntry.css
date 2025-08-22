@@ -11,7 +11,7 @@
 .mdhui-ss-log-entry .mdhui-ss-section-header {
     font-size: .88em;
     font-weight: 500;
-    color: var(--mdhui-text-color-3);
+    color: var(--mdhui-text-color-2);
     margin-bottom: 4px;
 }
 
@@ -30,4 +30,8 @@
 .mdhui-ss-log-entry .mdhui-ss-notes-content {
     font-size: .88em;
     white-space: pre-wrap;
+}
+
+.mdhui-ss-log-entry .mdhui-ss-log-entry-action {
+    z-index: 1;
 }
