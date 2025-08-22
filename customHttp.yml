@@ -23,7 +23,7 @@ customHeaders:
                 media-src 'self'; 
                 frame-src 'self'; 
                 font-src 'self'; 
-                connect-src 'self' mydatahelps.org;"
+                connect-src 'self' mydatahelps.org assets.careevolutionapps.com;"
   # Tell the browser to cache static resources https://careevolution.slab.com/posts/cache-control-headers-9jut90d5
   - pattern: "**/*.css"
     headers:
