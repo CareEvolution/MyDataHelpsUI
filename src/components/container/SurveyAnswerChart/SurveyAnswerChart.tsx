@@ -1,15 +1,12 @@
-import React, { useState, useContext } from 'react'
-import { DateRangeContext } from '../../presentational/DateRangeCoordinator/DateRangeCoordinator'
-import { add, compareAsc, Duration, parseISO } from 'date-fns'
+import React, { useContext, useMemo, useState } from 'react'
+import { DateRangeContext, LayoutContext } from '../../presentational'
+import { add, compareAsc, Duration, parseISO, startOfDay, startOfToday } from 'date-fns'
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
-import { WeekStartsOn, getDefaultIntervalStart } from '../../../helpers/get-interval-start'
-import TimeSeriesChart from '../../presentational/TimeSeriesChart/TimeSeriesChart'
+import { AreaChartSeries, ChartSeries, formatNumberForLocale, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor, useInitializeView, WeekStartsOn } from '../../../helpers'
+import TimeSeriesChart, { TimeSeriesDataPoint } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
-import { useInitializeView } from '../../../helpers/Initialization'
-import { AreaChartSeries, ChartSeries, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from '../../../helpers/chartOptions'
-import { getDefaultPreviewData } from './SurveyAnswerData.previewdata'
+import { generatePreviewData, getPreviewDataFromProvider, SurveyAnswerChartPreviewState } from './SurveyAnswerChart.previewdata'
 import { getShortDateString } from '../../../helpers/date-helpers';
-import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
@@ -24,180 +21,139 @@ export interface SurveyAnswerAreaChartSeries extends AreaChartSeries {
 }
 
 export interface SurveyAnswerChartProps {
-    title?: string
-    intervalType?: "Week" | "Month" | "6Month"
-    weekStartsOn?: WeekStartsOn
-    series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[],
-    chartType: "Line" | "Bar" | "Area"
-    options?: MultiSeriesLineChartOptions| MultiSeriesBarChartOptions,
-    expectedDataInterval?: Duration,
-    previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>
-    previewState?: "default"
-    innerRef?: React.Ref<HTMLDivElement>
+    title?: string;
+    intervalType?: 'Week' | 'Month' | '6Month' | 'Dynamic';
+    dynamicIntervalEndType?: 'Today' | 'Last Reading';
+    weekStartsOn?: WeekStartsOn;
+    series: SurveyAnswerChartSeries[] | SurveyAnswerAreaChartSeries[];
+    chartType: 'Line' | 'Bar' | 'Area';
+    options?: MultiSeriesLineChartOptions | MultiSeriesBarChartOptions;
+    expectedDataInterval?: Duration;
+    previewDataProvider?: (startDate: Date, endDate: Date) => Promise<SurveyAnswer[][]>;
+    previewState?: SurveyAnswerChartPreviewState;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function SurveyAnswerChart(props:SurveyAnswerChartProps) {
-    let [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer[][] | null>(null);
-    
+export default function SurveyAnswerChart(props: SurveyAnswerChartProps) {
+    const [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer[][]>();
+
+    const layoutContext = useContext<LayoutContext>(LayoutContext);
     const dateRangeContext = useContext<DateRangeContext | null>(DateRangeContext);
-    let intervalType = props.intervalType || "Month";
-    let intervalStart: Date;
-    
-    if (dateRangeContext) {
-        intervalType = dateRangeContext.intervalType === "Day" ? "Week" : dateRangeContext.intervalType;
-        intervalStart = dateRangeContext.intervalStart;
-    }
-    else {
-        intervalStart = getDefaultIntervalStart(intervalType, props.weekStartsOn);
-    }
-    
-    let intervalEnd = intervalType === "Week" ? add(intervalStart, { days: 7 }) 
-                        : intervalType === "Month" ? add(intervalStart, { months: 1 })
-                        : intervalType === "6Month" ? add(intervalStart, { months: 6 }) :
-                        intervalStart;
-    const loadCurrentInterval = () => {
-        setSurveyAnswers(null);
-        if (props.previewDataProvider) {
-            props.previewDataProvider(intervalStart, intervalEnd)
-            .then((data) => {
-                setSurveyAnswers(data);
-            });
-            return;
-        }else if(!!props.previewState){
-            getDefaultPreviewData(intervalStart, intervalEnd, props.series, props.expectedDataInterval || { days: 1 }).then((data) => {
-                setSurveyAnswers(data);
-            });
+
+    const intervalType = useMemo((): 'Week' | 'Month' | '6Month' | 'Dynamic' => {
+        if (dateRangeContext) {
+            return dateRangeContext.intervalType === 'Day' ? 'Week' : dateRangeContext.intervalType;
+        }
+        return props.intervalType ?? 'Month';
+    }, [dateRangeContext, props.intervalType]);
+
+    const intervalStart = useMemo((): Date | undefined => {
+        if (dateRangeContext) {
+            return dateRangeContext.intervalStart;
+        }
+        if (intervalType === 'Dynamic') {
+            return undefined;
+        }
+        return getDefaultIntervalStart(intervalType, props.weekStartsOn);
+    }, [dateRangeContext, intervalType, props.weekStartsOn]);
+
+    const intervalEnd = useMemo((): Date | undefined => {
+        if (intervalType === 'Dynamic' || !intervalStart) {
+            return undefined;
+        }
+        if (intervalType === 'Week') {
+            return add(intervalStart, { days: 7 });
+        }
+        if (intervalType === 'Month') {
+            return add(intervalStart, { months: 1 });
+        }
+        return add(intervalStart, { months: 6 });
+    }, [intervalType, intervalStart]);
+
+    const initialize = async (): Promise<void> => {
+        setSurveyAnswers(undefined);
+
+        if (props.previewDataProvider || props.previewState) {
+            const previewStartDate = intervalStart ?? add(startOfToday(), { months: -6 });
+            const previewEndDate = intervalEnd ?? add(startOfToday(), { days: -14 });
+            const previewDataProvider = props.previewDataProvider
+                ? getPreviewDataFromProvider(props.previewState, previewStartDate, previewEndDate, props.previewDataProvider)
+                : generatePreviewData(props.previewState, previewStartDate, previewEndDate, props.series.length, props.expectedDataInterval ?? { days: 1 });
+            setSurveyAnswers(await previewDataProvider);
             return;
         }
 
-        var dataRequests = props.series.map(l => {
-            var params: SurveyAnswersQuery = {
-                after: intervalStart.toISOString(),
-                before: intervalEnd.toISOString()
-            }
-            if(l.surveyName) params.surveyName = l.surveyName;
-            if(l.resultIdentifier) params.resultIdentifier = l.resultIdentifier;
-            if(l.stepIdentifier) params.stepIdentifier = l.stepIdentifier;
-
+        const surveyAnswerQueries = props.series.map(series => {
+            const params: SurveyAnswersQuery = {};
+            if (intervalStart) params.after = intervalStart.toISOString();
+            if (intervalEnd) params.before = intervalEnd.toISOString();
+            if (series.surveyName) params.surveyName = series.surveyName;
+            if (series.resultIdentifier) params.resultIdentifier = series.resultIdentifier;
+            if (series.stepIdentifier) params.stepIdentifier = series.stepIdentifier;
             return queryAllSurveyAnswers(params);
         });
-        Promise.all(dataRequests).then((data) => {
-            setSurveyAnswers(data);
-        })
-    }
-    
-    function getDataKey(line: SurveyAnswerChartSeries | SurveyAnswerAreaChartSeries) {
-        return `${line.surveyName}-${line.stepIdentifier}-${line.resultIdentifier}`;
-    }
-    
-    function processPages(pages: SurveyAnswer[][]) {
-        var newDailyData: { [key: string]: SurveyAnswer[] } = {};
-        for (var i = 0; i < props.series.length; i++) {
-            newDailyData[getDataKey(props.series[i])] = pages[i]?.sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date))) || [];
-        }
-        
-        return newDailyData;
-    }
-    
-    useInitializeView(() => {
-        loadCurrentInterval();
-    }, [], [props.intervalType, props.weekStartsOn, dateRangeContext]);
+        setSurveyAnswers(await Promise.all(surveyAnswerQueries));
+    };
 
-    let currentData = processPages(surveyAnswers || []);
-    
-    var data: any[] | undefined = undefined;
-    var chartHasData: boolean = false;
-    if (currentData !== null) {
-        data = [];
-        props.series.forEach((series) => {
-            var dataKey = getDataKey(series);
-            currentData![dataKey].forEach((answer) => {
-                var answerDate = parseISO(answer.date);
-                answerDate.setHours(0,0,0,0);
-                var dataDay = data!.find((d) => d.timestamp === answerDate.getTime());
-                if(!dataDay) {
-                    dataDay = {
-                        timestamp: answerDate.getTime()
-                    }
-                    data!.push(dataDay);
-                }
-                dataDay[series.dataKey] = parseFloat(answer.answers[0]);
-                chartHasData = true;
-            });
+    useInitializeView(initialize, [], [
+        props.previewDataProvider,
+        props.previewState,
+        props.series,
+        props.expectedDataInterval,
+        intervalStart,
+        intervalEnd
+    ]);
+
+    const dataByTimestamp: Record<number, TimeSeriesDataPoint> = {};
+    props.series.forEach((series, index) => {
+        const seriesSurveyAnswers = (surveyAnswers?.[index] ?? []).sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date)))
+        seriesSurveyAnswers.forEach(answer => {
+            const timestamp = startOfDay(parseISO(answer.date)).getTime();
+            dataByTimestamp[timestamp] = dataByTimestamp[timestamp] ?? { timestamp };
+            dataByTimestamp[timestamp][series.dataKey] = parseFloat(answer.answers[0]);
         });
-        data.sort((a, b) => a.timestamp - b.timestamp);
-    }
-    
-    const GraphToolTip = ({ active, payload }: any) => {
-        function getHeaderColor(p: any, index: number) {
-            function getColorFromOptions(i: number, fieldName: string) {
-                var property = props.options ? (props.options as any)[fieldName] : null;
-                if(!!property){
-                    if (Array.isArray(property)) {
-                        return property[i];
-                    }
-                    return property;
-                }
-        
-                return "var(--mdhui-color-primary)";
-            }            
+    });
 
-            return p.stroke || getColorFromOptions(index, 'barColor');
+    const data = Object.values(dataByTimestamp).sort((a, b) => a.timestamp - b.timestamp);
+
+    const graphToolTip = ({ active, payload }: any) => {
+        if (!active || !payload || payload.length === 0) return null;
+
+        if (payload.length === 1) {
+            return <div className="mdhui-time-series-tooltip">
+                <div className="mdhui-single-value-tooltip-value">{formatNumberForLocale(parseFloat(payload[0].value), 2)}</div>
+                <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
+            </div>;
         }
 
-        if (active && payload && payload.length) {
-            if(payload.length === 1){
-                return (
-                    <div className="mdhui-time-series-tooltip">
-                        <div className="mdhui-single-value-tooltip-value">
-                            {formatNumberForLocale(parseFloat(payload[0].value), 2)}
-                        </div>
-                        <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
-                    </div>
-                );
-            }
-            return (
-                <div className="mdhui-time-series-tooltip">
-                    <table className="mdhui-multiple-value-tooltip">
-                        <tbody>
-                            {payload.map((p: any, index: number) =>
-                                <tr key={p.dataKey}>
-                                    <th style={{ color: getHeaderColor(p,index) }}>{p.dataKey}</th>
-                                    <td>{formatNumberForLocale(parseFloat(p.value), 2)}</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                    <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
-                </div>
-            );
-        }
-
-        return null;
+        return <div className="mdhui-time-series-tooltip">
+            <table className="mdhui-multiple-value-tooltip">
+                <tbody>
+                {payload.map((series: any, index: number) => {
+                    const seriesColor = resolveColor(layoutContext.colorScheme, props.series[index].color) ?? 'var(--mdhui-color-primary)';
+                    return <tr key={series.dataKey}>
+                        <th style={{ color: seriesColor }}>{series.dataKey}</th>
+                        <td>{formatNumberForLocale(parseFloat(series.value), 2)}</td>
+                    </tr>;
+                })}
+                </tbody>
+            </table>
+            <div className="mdhui-time-series-tooltip-date">{getShortDateString(new Date(payload[0].payload.timestamp))}</div>
+        </div>;
     };
 
     return <TimeSeriesChart
         title={props.title}
         intervalType={intervalType}
+        dynamicIntervalEndType={props.dynamicIntervalEndType}
         intervalStart={intervalStart}
         data={data}
         expectedDataInterval={props.expectedDataInterval}
-        series={props.series.map(series => {
-            const newSeries: any = {
-                dataKey: series.dataKey,
-                color: series.color
-            };
-            if("areaColor" in series) {
-                newSeries.areaColor = series.areaColor;
-            }
-
-            return newSeries;
-        })}
-        chartHasData={chartHasData}
-        tooltip={GraphToolTip}
+        series={props.series}
+        chartHasData={data.length > 0}
+        tooltip={graphToolTip}
         chartType={props.chartType}
         options={props.options}
         innerRef={props.innerRef}
-    />
+    />;
 }
-
