@@ -85,8 +85,12 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         //hack: get the styles from the document and add them to the report so they are included in the PDF
         var documentStyles = document.head.getElementsByTagName("style");
         var html = "";
-        for (var i = 0; i < documentStyles.length; i++) {
-            html += documentStyles[i].outerHTML;
+        for (const styleElement of documentStyles) {
+            if (styleElement.getAttribute("data-emotion") && styleElement.sheet) {
+                html += `<style>\n${Array.from(styleElement.sheet.cssRules).map(rule => rule.cssText).join("\n\n")}\n</style>`;
+            } else {
+                html += styleElement.outerHTML;
+            }
         }
         html += report.current!.innerHTML;
 

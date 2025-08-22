@@ -28,6 +28,6 @@
 }
 
 .mdhui-ss-calendar .mdhui-ss-calendar-day.future {
-    opacity: .5;
+    opacity: .7;
     cursor: default;
 }

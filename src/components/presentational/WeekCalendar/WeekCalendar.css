@@ -84,6 +84,7 @@
     font-weight: bold;
 }
 
+.mdhui-week-calendar .mdhui-week-calendar-day-disabled>*,
 .mdhui-week-calendar .mdhui-week-calendar-day-future>* {
     opacity: .4;
 }

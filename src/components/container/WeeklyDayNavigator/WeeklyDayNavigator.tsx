@@ -5,6 +5,7 @@ import { useInitializeView } from '../../../helpers';
 import getDayKey from '../../../helpers/get-day-key';
 
 export interface WeeklyDayNavigatorProps {
+    minimumDate?: Date;
     selectedDate: Date;
     loadData: (startDate: Date, endDate: Date) => Promise<void>;
     dayRenderer: (dayKey: string) => React.JSX.Element | null;
@@ -28,7 +29,13 @@ export default function (props: WeeklyDayNavigatorProps) {
         }
 
         setLoading(true);
-        props.loadData(add(weekStart, { days: -7 }), add(weekStart, { days: 14 })).then(() => {
+
+        let startDate = add(weekStart, { days: -7 });
+        if ( props.minimumDate && startDate < props.minimumDate ){
+            startDate = props.minimumDate;
+        }
+
+        props.loadData(startDate, add(weekStart, { days: 14 })).then(() => {
             setLoading(false);
         });
     }, ['externalAccountSyncComplete'], [weekStart, ...(props.dependencies ?? [])]);
@@ -44,6 +51,7 @@ export default function (props: WeeklyDayNavigatorProps) {
 
     return <WeekCalendar
         innerRef={props.innerRef}
+        minimumDate={props.minimumDate}
         startDate={weekStart}
         onStartDateChange={onStartDateChanged}
         selectedDate={props.selectedDate}

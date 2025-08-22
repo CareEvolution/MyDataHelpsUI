@@ -1,12 +1,12 @@
 import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from ".";
-import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
+import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { combineResultsUsingMaxValue } from "./daily-data";
 
-export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+export default async function (startDate: Date, endDate: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
-    const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
+    const { settings, deviceDataV2Types } = combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(true);
 
     if (settings.fitbitEnabled) {
         providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));

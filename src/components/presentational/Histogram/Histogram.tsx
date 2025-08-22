@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ShinyOverlay from '../ShinyOverlay';
 import "./Histogram.css"
+import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { LayoutContext } from '../Layout';
 
 export interface HistogramProps {
 	entries: {
@@ -11,9 +13,11 @@ export interface HistogramProps {
 	}[];
 	className?: string;
 	innerRef?: React.Ref<HTMLDivElement>;
+	linkColor?: ColorDefinition;
 }
 
 export default function Histogram(props: HistogramProps) {
+	const layoutContext = useContext(LayoutContext);
 	let maxValue = 0;
 	props.entries.forEach(function (e) {
 		if (e.value > maxValue) {
@@ -33,7 +37,7 @@ export default function Histogram(props: HistogramProps) {
 						</div>
 						<div className="mdhui-histogram-entry-value" style={{ width: (maxValue.toString().length * 8) + "px" }}>{entry.value}</div>
 					</div>
-					<div className="mdhui-histogram-entry-label">{entry.label}</div>
+					<div className="mdhui-histogram-entry-label" style={entry.onSelect && props.linkColor ? { color: resolveColor(layoutContext.colorScheme, props.linkColor) } : undefined}>{entry.label}</div>
 				</div>;
 			})}
 		</div>
