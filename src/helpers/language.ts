@@ -11,7 +11,6 @@ import polishStrings from "../../locales/pl.json"
 import portugueseBrazilStrings from "../../locales/pt.json"
 import portuguesePortugalStrings from "../../locales/pt-PT.json"
 import romanianStrings from "../../locales/ro.json"
-import samoanStrings from "../../locales/sm.json"
 import somaliStrings from "../../locales/so.json"
 import swahiliStrings from "../../locales/sw.json"
 import tagalogStrings from "../../locales/tl.json"
@@ -38,7 +37,6 @@ const localeToStringsMap : Record<string, LocaleStrings> = {
 	"pt-pt": portuguesePortugalStrings,
 	"pl": polishStrings,
 	"ro": romanianStrings,
-	"sm": samoanStrings,
 	"sw": swahiliStrings,
 	"so": somaliStrings,
 	"tl": tagalogStrings,
@@ -54,15 +52,23 @@ export function supportedLocales() {
 	return Object.keys(localeToStringsMap);
 }
 
-export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
+/** Gets the currently active locale, accounting for which ones are supported (e.g., en-UK will fall back to just en) */
+export function getCurrentLocale(specifiedLocale?: string) {
 	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
-	
-	let localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
-	if (!localeStrings) {
-		const languageCode = getLanguageCodeFromIso(currentLocale);
-		localeStrings = localeToStringsMap[languageCode] || englishStrings;
+
+	if (isLocaleSupported(currentLocale)) {
+		return currentLocale;
 	}
-	
+	const baseLocale = getLanguageCodeFromIso(currentLocale);
+	if (isLocaleSupported(baseLocale)) {
+		return baseLocale;
+	}
+	return "en";
+}
+
+export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
+	const currentLocale = getCurrentLocale(specifiedLocale);	
+	const localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
 	return format(localeStrings[key] || "", args);
 }
 
@@ -76,6 +82,10 @@ export function getLanguageCodeFromIso(locale: string): string {
 export function getCountryCodeFromIso(locale: string) : string | undefined {
 	const normalizedLocale = normalizeLocaleString(locale);
     return normalizedLocale.split("-")[1];
+}
+
+function isLocaleSupported(locale: string) {
+	return !!localeToStringsMap[normalizeLocaleString(locale)];
 }
 
 /** Normalize variations in ISO locale strings, including:

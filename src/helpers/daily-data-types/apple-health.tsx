@@ -7,9 +7,9 @@ import {
     appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faCocktail, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 
@@ -20,8 +20,8 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlyDistanceWalkingRunning"]),
         labelKey: "distance-traveled",
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
-        formatter: (value: number) => formatNumberForLocale(value / 1000, 2) + " km",
-        yAxisConverter: (value: number) => value / 1000,
+        formatter: distanceFormatter,
+        yAxisConverter: distanceYAxisConverter,
         previewDataRange: [3000, 5000]
     },
     {
@@ -142,7 +142,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
@@ -151,7 +151,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000],
         requiresV2Api: true
@@ -179,7 +179,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: appleHealthActiveEnergyBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ActiveEnergyBurned"]),
         labelKey: "active-energy-burned",
-        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
     },

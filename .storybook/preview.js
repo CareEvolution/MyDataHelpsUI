@@ -22,7 +22,6 @@ export const globalTypes = {
 				{ value: 'pt', title: 'Portuguese (Brazil)' },
 				{ value: 'pt-pt', title: 'Portuguese (Portugal)' },
 				{ value: 'ro', title: 'Romanian' },
-				{ value: 'sm', title: 'Samoan' },
 				{ value: 'so', title: 'Somali' },
 				{ value: 'sw', title: 'Swahili' },
 				{ value: 'tl', title: 'Tagalog' },

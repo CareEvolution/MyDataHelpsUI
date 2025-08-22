@@ -1,6 +1,6 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faPersonRunning, faHourglassHalf } from "@fortawesome/free-solid-svg-icons";
+import { faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./formatters";
 import { googleFitStepsDataProvider, googleFitMindfulMinutesDataProvider, googleFitTherapyMinutesDataProvider } from "../daily-data-providers";
@@ -22,7 +22,7 @@ let googleFitTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: googleFitStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("GoogleFit", ["Steps"]),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [3000, 6000]
     },

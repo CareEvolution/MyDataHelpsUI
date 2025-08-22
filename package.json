@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "2.89.1-survey-task-order.3",
+  "version": "2.95.1",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -103,7 +103,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@careevolution/mydatahelps-js": "^3.35.0",
+    "@careevolution/mydatahelps-js": "^4.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
