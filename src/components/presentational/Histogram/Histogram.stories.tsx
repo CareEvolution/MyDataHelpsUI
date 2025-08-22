@@ -1,14 +1,14 @@
 ﻿import React from 'react';
 import { Layout } from '../../presentational';
 import Histogram, { HistogramProps } from './Histogram';
+import { Meta } from '@storybook/react/*';
 
-export default {
+const meta: Meta<typeof Histogram> = {
     title: 'Presentational/Histogram',
     component: Histogram,
-    parameters: { layout: 'fullscreen' }
+    parameters: { layout: 'fullscreen' },
+    render: (args: HistogramProps) => <Layout colorScheme="auto"><Histogram {...args} /></Layout>
 };
-
-const render = (args: HistogramProps) => <Layout colorScheme="auto"><Histogram {...args} /></Layout>
 
 const sampleEntries = [
     { label: 'Category A', color: '#c4291c', value: 25 },
@@ -27,21 +27,20 @@ const sampleEntriesWithOnSelect = [
 export const Default = {
     args: {
         entries: sampleEntries
-    },
-    render: render
+    }
 };
 
 export const Selectable = {
     args: {
         entries: sampleEntriesWithOnSelect
-    },
-    render: render
+    }
 };
 
 export const WithLinkColorDefinition = {
     args: {
         entries: sampleEntriesWithOnSelect,
         linkColor: { lightMode: '#71b345', darkMode: '#a1e375' }
-    },
-    render: render
+    }
 };
+
+export default meta;

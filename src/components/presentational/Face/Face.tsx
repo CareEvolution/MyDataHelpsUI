@@ -40,23 +40,23 @@ export default function Face (props: FaceProps) {
 		if (props.faceValue == 5) { return face5; }
 	}
 	
-	const getAltText = () => props.faceValue ? language(`face-value-${props.faceValue}`) : "";
+	const altText = props.faceValue ? language(`face-value-${props.faceValue}`) : "";
 
 	if (props.onClick) {
 		return <UnstyledButton 
 			innerRef={props.innerRef} 
 			className={className} 
 			onClick={props.onClick}
-			aria-label={getAltText()}
+			aria-label={altText}
 		>
-			<img src={getFace()} style={imageStyle} alt={getAltText()} />
+			<img src={getFace()} style={imageStyle} alt={altText} />
 			<ShinyOverlay />
 		</UnstyledButton>
 	}
 
 	return (
 		<div className={className}>
-			<img src={getFace()} style={imageStyle} alt={getAltText()} />
+			<img src={getFace()} style={imageStyle} alt={altText} />
 			<ShinyOverlay />
 		</div>
 	);

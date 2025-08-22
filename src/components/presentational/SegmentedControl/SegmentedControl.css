@@ -3,6 +3,7 @@
     border: solid 1px var(--mdhui-color-primary);
     overflow: hidden;
     padding: 1px;
+    background: var(--mdhui-background-color-highest-contrast);
 }
 
 .mdhui-segmented-control .mdhui-segment {
