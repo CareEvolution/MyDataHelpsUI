@@ -9,7 +9,7 @@ export const core = css`
     --mdhui-fadein-animation: fadein 1s;
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
-    --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
+    --mdhui-modal-overlay-color: rgba(130, 130, 130, 0.5);
     
     --mdhui-padding-xxs: 4px;
     --mdhui-padding-xs: 8px;
