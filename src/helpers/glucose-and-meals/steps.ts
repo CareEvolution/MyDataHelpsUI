@@ -5,7 +5,7 @@ import { add, endOfDay, startOfDay } from 'date-fns';
 import queryAllDeviceData from '../daily-data-providers/query-all-device-data';
 import queryAllDeviceDataV2 from '../query-all-device-data-v2';
 import { getMaxValueReadings } from './util';
-import { getCombinedDataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
+import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
 import { parseISOWithoutOffset } from '../date-helpers';
 
 export function fitbitHalfHourStepsDataProvider(date: Date): Promise<Reading[]> {
@@ -86,14 +86,15 @@ export function healthConnectHalfHourStepsDataProvider(date: Date): Promise<Read
     }, () => []);
 }
 
-export async function getSteps(date: Date): Promise<Reading[]> {
+export async function getSteps(date: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<Reading[]> {
     const providers: Promise<Reading[]>[] = [];
 
-    const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
-    if (settings.fitbitEnabled) {
+    const { settings, deviceDataV2Types } = combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(true);
+
+    if (settings.fitbitEnabled && deviceDataV2Types.some(ddt => ddt.namespace === 'Fitbit' && ddt.type === 'activities-steps-intraday')) {
         providers.push(fitbitHalfHourStepsDataProvider(date));
     }
-    if (settings.garminEnabled) {
+    if (settings.garminEnabled && deviceDataV2Types.some(ddt => ddt.namespace === 'Garmin' && ddt.type === 'epoch-steps')) {
         providers.push(garminHalfHourStepsDataProvider(date));
     }
     if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === 'AppleHealth' && ddt.type === 'HalfHourSteps')) {
