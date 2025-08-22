@@ -7,6 +7,7 @@ import face4 from './face-4.svg';
 import face5 from './face-5.svg';
 import { ShinyOverlay, UnstyledButton } from '..';
 import { LayoutContext } from '../Layout/Layout';
+import language from '../../../helpers/language';
 
 export interface FaceProps {
 	faceValue?: number;
@@ -38,17 +39,24 @@ export default function Face (props: FaceProps) {
 		if (props.faceValue == 4) { return face4; }
 		if (props.faceValue == 5) { return face5; }
 	}
+	
+	const altText = props.faceValue ? language(`face-value-${props.faceValue}`) : "";
 
 	if (props.onClick) {
-		return <UnstyledButton innerRef={props.innerRef} className={className} onClick={props.onClick}>
-			<img src={getFace()} style={imageStyle} />
+		return <UnstyledButton 
+			innerRef={props.innerRef} 
+			className={className} 
+			onClick={props.onClick}
+			aria-label={altText}
+		>
+			<img src={getFace()} style={imageStyle} alt={altText} />
 			<ShinyOverlay />
 		</UnstyledButton>
 	}
 
 	return (
 		<div className={className}>
-			<img src={getFace()} style={imageStyle} />
+			<img src={getFace()} style={imageStyle} alt={altText} />
 			<ShinyOverlay />
 		</div>
 	);
