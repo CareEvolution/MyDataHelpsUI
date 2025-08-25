@@ -1,6 +1,17 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { describe, expect, it } from '@jest/globals';
 import { isEqual } from 'date-fns';
-import { parseISOWithoutOffset } from '../../src/helpers/date-helpers';
+import { getDateAndTimeString, parseISOWithoutOffset } from '../../src/helpers/date-helpers';
+
+jest.mock('@careevolution/mydatahelps-js', () => ({
+    __esModule: true,
+    default: {
+        getCurrentLanguage: jest.fn(() => 'en')
+    }
+}));
 
 describe('Date Helpers', () => {
     describe('parseISOWithoutOffset', () => {
@@ -11,6 +22,16 @@ describe('Date Helpers', () => {
 
             expect(isEqual(date1, date2)).toBe(true);
             expect(isEqual(date2, date3)).toBe(true);
+        });
+    });
+
+    describe('getDateAndTimeString', () => {
+        it('Should return a date and time string that includes the full month, day, year, and time.', () => {
+            const date = new Date(2024, 3, 29, 23);
+
+            const result = getDateAndTimeString(date);
+
+            expect(result).toBe('April 29th, 2024 at 11:00 PM');
         });
     });
 });
