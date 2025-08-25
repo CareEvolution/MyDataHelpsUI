@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './DocumentLibraryPreview.css';
 import { createAllLibraryDocumentsLoader, createLibraryDocumentSorter, formatNumberForLocale, language, LibraryDocument, LibraryDocumentSurveySpecification, useInitializeView } from '../../../helpers';
-import { Action, Button } from '../../presentational';
+import { Action, Button, LoadingIndicator } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
@@ -36,8 +36,6 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
         });
     }, [], [props.previewState]);
 
-    if (!documents) return null;
-
     const onUploadDocument = (): void => {
         if (props.previewState) return;
         MyDataHelps.startSurvey(props.surveySpecification.surveyName);
@@ -53,21 +51,21 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
     };
 
     return <div className="mdhui-document-library-preview" ref={props.innerRef}>
-        {documents.length === 0 &&
+        {(!documents || documents.length === 0) &&
             <Action
                 title={language('document-library-preview-title')}
                 subtitle={language('document-library-preview-instructions')}
                 titleIcon={<FontAwesomeSvgIcon className="mdhui-document-library-preview-title-icon" icon={faCamera} />}
                 indicator={
-                    <Button variant="default" fullWidth={false} onClick={onUploadDocument}>
+                    documents ? <Button variant="default" fullWidth={false} onClick={onUploadDocument}>
                         {language('document-library-preview-upload-button-text')}
-                    </Button>
+                    </Button> : <LoadingIndicator />
                 }
                 indicatorPosition="topRight"
                 renderAs="div"
             />
         }
-        {documents.length > 0 &&
+        {documents && documents.length > 0 &&
             <Action
                 title={language('document-library-preview-title')}
                 titleIcon={<FontAwesomeSvgIcon className="mdhui-document-library-preview-title-icon" icon={faCamera} />}
