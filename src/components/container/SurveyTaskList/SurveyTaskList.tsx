@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import "./SurveyTaskList.css"
-import MyDataHelps, { Guid, SurveyTask, SurveyTaskQueryParameters, SurveyTaskStatus } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { Guid, SortOrder, SurveyTask, SurveyTaskQueryParameters, SurveyTaskStatus } from "@careevolution/mydatahelps-js"
 import { Card, CardTitle, LayoutContext, LoadingIndicator, SingleSurveyTask } from '../../presentational'
 import { parseISO } from 'date-fns'
 import { previewCompleteTasks, previewIncompleteTasks } from './SurveyTaskList.previewdata'
@@ -9,6 +9,14 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors'
 import { ButtonVariant } from '../../presentational/Button/Button'
 import { useInitializeView } from '../../../helpers/Initialization';
 
+export type SurveyTaskListSortBehaviorType = 'alphabetical' | 'dueDate' | 'insertedDate' | 'userDefined' | 'shuffle';
+
+export interface SurveyTaskListSortBehavior {
+	type: SurveyTaskListSortBehaviorType;
+	direction?: SortOrder;
+	userDefinedOrder?: string[];
+}
+
 export interface SurveyTaskListProps {
 	status: SurveyTaskStatus;
 	limit?: number;
@@ -16,6 +24,7 @@ export interface SurveyTaskListProps {
 	title?: string;
 	surveys?: string[];
 	category?: string;
+	sortBehavior?: SurveyTaskListSortBehavior;
 	onDetailLinkClick?: Function;
 	previewState?: SurveyTaskListListPreviewState;
 	variant?: "noCard" | "singleCard" | "multiCard";
@@ -42,7 +51,7 @@ export default function (props: SurveyTaskListProps) {
 		setActiveSurveys([]);
 	};
 
-	useInitializeView(initialize, [], [props.previewState]);
+	useInitializeView(initialize, [], [props.previewState, props.sortBehavior]);
 
 	const isSurveyActive = (task: SurveyTask): boolean => {
 		return activeSurveys.includes(task.surveyName);
@@ -71,13 +80,59 @@ export default function (props: SurveyTaskListProps) {
 
 	function initialize() {
 
-		var sortIncomplete = function (a: any, b: any) {
-			if (!a.dueDate) { return 1; }
-			if (!b.dueDate) { return -1; }
-			if (parseISO(a.dueDate) > parseISO(b.dueDate)) { return 1; }
-			if (parseISO(a.dueDate) < parseISO(b.dueDate)) { return -1; }
-			return 0;
-		}
+		const sortIncomplete = function (a: SurveyTask, b: SurveyTask): number {
+			const { sortBehavior } = props;
+
+			const type = sortBehavior?.type ?? 'dueDate';
+			const direction = sortBehavior?.direction ?? 'ascending';
+			const sortMultiplier = direction === 'descending' ? -1 : 1;
+
+			switch (type) {
+				case 'alphabetical':
+					return a.surveyName.localeCompare(b.surveyName) * sortMultiplier;
+
+				case 'insertedDate':
+					if (a.insertedDate === b.insertedDate) return 0;
+					if (!a.insertedDate) return 1;
+					if (!b.insertedDate) return -1;
+
+					const dateA = parseISO(a.insertedDate);
+					const dateB = parseISO(b.insertedDate);
+					if (dateA > dateB) return 1 * sortMultiplier;
+					if (dateA < dateB) return -1 * sortMultiplier;
+
+					return 0;
+
+				case 'userDefined':
+					const userDefinedOrder = sortBehavior?.userDefinedOrder ?? [];
+					const indexA = userDefinedOrder.indexOf(a.surveyName);
+					const indexB = userDefinedOrder.indexOf(b.surveyName);
+
+					// If a survey is not in the list, it's pushed to the end.
+					if (indexA === -1 && indexB === -1) return 0;
+					if (indexA === -1) return 1;
+					if (indexB === -1) return -1;
+
+					// The direction prop doesn't apply here as the array defines the explicit order.
+					return indexA - indexB;
+
+				case 'shuffle':
+					return Math.random() - 0.5;
+
+				case 'dueDate':
+				default:
+					if (a.dueDate === b.dueDate) return 0;
+					if (!a.dueDate) { return 1; }
+					if (!b.dueDate) { return -1; }
+
+					const dueDateA = parseISO(a.dueDate);
+					const dueDateB = parseISO(b.dueDate);
+					if (dueDateA > dueDateB) { return 1 * sortMultiplier; }
+					if (dueDateA < dueDateB) { return -1 * sortMultiplier; }
+
+					return 0;
+			}
+		};
 
 		if (props.previewState == "IncompleteTasks") {
 			previewIncompleteTasks.sort(sortIncomplete);
@@ -115,12 +170,12 @@ export default function (props: SurveyTaskListProps) {
 					if (result.nextPageID) {
 						makeRequest(result.nextPageID);
 					} else {
-						//sort by due date for incomplete tasks
+						// sort by provided sort behavior
 						if (props.status == "incomplete") {
 							allTasks.sort(sortIncomplete);
 						}
 
-						//sort by completed date for complete tasks
+						// always sort by completed date
 						if (props.status == "complete") {
 							allTasks.sort((a, b) => {
 								if (!a.endDate || !b.endDate) { return 0; }
