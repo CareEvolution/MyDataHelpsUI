@@ -22,6 +22,7 @@ body:has(.mdhui-document-detail-view) {
 }
 
 .mdhui-document-detail-view {
+    background: var(--mdhui-background-color-0);
     border-top: 1px solid var(--mdhui-background-color-1);
 }
 

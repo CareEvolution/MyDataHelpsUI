@@ -9,6 +9,7 @@ body:has(.mdhui-document-library-view) {
 
 .mdhui-document-library-view {
     padding: 16px;
+    background: var(--mdhui-background-color-0);
     border-top: 1px solid var(--mdhui-background-color-1);
 }
 
