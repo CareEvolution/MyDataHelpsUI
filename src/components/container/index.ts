@@ -22,6 +22,7 @@ export { default as ExternalAccountConnectionAlert } from "./ExternalAccountConn
 export { default as ExternalAccountList } from "./ExternalAccountList"
 export { default as ExternalAccountsLoadingIndicator } from "./ExternalAccountsLoadingIndicator"
 export { default as ExternalAccountsPreview } from "./ExternalAccountsPreview"
+export { default as PetPlant } from "./PetPlant"
 export { default as FitbitDevices } from "./FitbitDevices"
 export { default as FitbitMonthCharts } from "./FitbitMonthCharts"
 export { default as GarminDevices } from "./GarminDevices"
