@@ -233,8 +233,8 @@ export default function (props: PetPlantProps) {
                         </g>
                         {/* Sill */}
                         <rect x="14" y="130" width="332" height="12" rx="6" fill="#cbd5e1" />
-                        {/* Plant group scaled by growth */}
-                        <g transform={`translate(180, 128) scale(${Math.max(0.2, growthRatio)}) translate(-180, -128)`}>
+                        {/* Plant group scaled by growth (magnified 5x) */}
+                        <g transform={`translate(180, 128) scale(${Math.max(0.2, growthRatio) * 5}) translate(-180, -128)`}>
                             {/* Pot */}
                             <rect x="160" y="120" width="40" height="22" rx="6" fill="#a16207" />
                             <rect x="156" y="116" width="48" height="8" rx="4" fill="#ca8a04" />
