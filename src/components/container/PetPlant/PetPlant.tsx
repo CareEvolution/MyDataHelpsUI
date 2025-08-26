@@ -84,7 +84,11 @@ export default function (props: PetPlantProps) {
             setAvailableWeekly(w ? 'Preview Weekly Survey' : null);
             setAvailablePotting(p ? 'Preview Monthly Survey' : null);
             setGrowthRatio(0.5);
-            setStatusText(d || w || p ? 'needs attention' : 'all caught up');
+            let msg = "";
+            if (p) msg = "Time to repot!";
+            else if (w) msg = "Time to water!";
+            else if (d) msg = "Part the clouds";
+            setStatusText(msg);
             return;
         }
         // Enrollment date
@@ -124,11 +128,11 @@ export default function (props: PetPlantProps) {
         setAvailablePotting(p);
 
         // Accessibility/status line
-        const needs: string[] = [];
-        if (d) needs.push("needs light");
-        if (w) needs.push("needs water");
-        if (p) needs.push("needs potting");
-        setStatusText(needs.length ? needs.join(", ") : "all caught up");
+        let msg = "";
+        if (p) msg = "Time to repot!";
+        else if (w) msg = "Time to water!";
+        else if (d) msg = "Part the clouds";
+        setStatusText(msg);
 
         // Compute growth ratio based on adherence
         if (enrollment && props.studyDurationDays > 0) {
@@ -240,13 +244,13 @@ export default function (props: PetPlantProps) {
                         </g>
                     </svg>
                     <div className="mdhui-pet-plant-controls">
-                        <button className="mdhui-pet-plant-btn" aria-label="Light" disabled={!availableDaily} onClick={() => onClick(availableDaily)}>
+                        <button className={"mdhui-pet-plant-btn " + (availableDaily ? "mdhui-pet-plant-btn-light" : "")} aria-label="Light" disabled={!availableDaily} onClick={() => onClick(availableDaily)}>
                             <FontAwesomeSvgIcon icon={faSun} />
                         </button>
-                        <button className="mdhui-pet-plant-btn" aria-label="Water" disabled={!availableWeekly} onClick={() => onClick(availableWeekly)}>
+                        <button className={"mdhui-pet-plant-btn " + (availableWeekly ? "mdhui-pet-plant-btn-water" : "")} aria-label="Water" disabled={!availableWeekly} onClick={() => onClick(availableWeekly)}>
                             <FontAwesomeSvgIcon icon={faDroplet} />
                         </button>
-                        <button className="mdhui-pet-plant-btn" aria-label="Pot" disabled={!availablePotting} onClick={() => onClick(availablePotting)}>
+                        <button className={"mdhui-pet-plant-btn " + (availablePotting ? "mdhui-pet-plant-btn-pot" : "")} aria-label="Pot" disabled={!availablePotting} onClick={() => onClick(availablePotting)}>
                             <FontAwesomeSvgIcon icon={faBucket} />
                         </button>
                     </div>
