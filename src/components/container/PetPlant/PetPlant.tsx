@@ -207,6 +207,7 @@ export default function (props: PetPlantProps) {
                 <div className="mdhui-pet-plant-header">
                     <Title order={3}>{props.title ?? "Pet Plant"}</Title>
                 </div>
+                <div className="mdhui-pet-plant-body">
                 {props.subtitle && (
                     <div className="mdhui-pet-plant-subtitle">{props.subtitle}</div>
                 )}
@@ -255,6 +256,7 @@ export default function (props: PetPlantProps) {
                         </button>
                     </div>
                     <div className="mdhui-pet-plant-status" aria-live="polite">{statusText}</div>
+                </div>
                 </div>
             </Card>
         </div>
