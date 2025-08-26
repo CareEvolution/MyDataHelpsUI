@@ -26,7 +26,7 @@ export const Default = {
       { surveyName: "PetPlantWeekly", frequency: "Weekly" },
       { surveyName: "PetPlantMonthly", frequency: "Monthly" }
     ],
-    previewState: ""
+    previewState: "AllComplete"
   },
   render: render
 };
