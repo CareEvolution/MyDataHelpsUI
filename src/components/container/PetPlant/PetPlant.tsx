@@ -75,6 +75,8 @@ export default function (props: PetPlantProps) {
     const weekStartsOn = props.adherenceStreakResetDay ?? 0;
 
     async function initialize(): Promise<void> {
+        // Reset active survey state on (re)initialize to ensure buttons update
+        setActiveSurvey(null);
         // Preview short-circuit
         if (props.previewState) {
             const d = props.previewState === 'LightDue' || props.previewState === 'AllDue' ? 'Daily' : undefined;
@@ -194,7 +196,7 @@ export default function (props: PetPlantProps) {
         return true;
     }
 
-    useInitializeView(() => { initialize(); }, [], [props.studyDurationDays, props.adherenceStreakResetDay, JSON.stringify(props.surveys ?? [])]);
+    useInitializeView(() => { initialize(); }, ['surveyDidFinish'], [props.studyDurationDays, props.adherenceStreakResetDay, JSON.stringify(props.surveys ?? [])]);
 
     const onClick = (surveyName: string | null) => {
         if (!surveyName || activeSurvey) return;
