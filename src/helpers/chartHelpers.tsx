@@ -50,7 +50,7 @@ export function createLineChartDefs(
         }
         stops.push(<stop offset="100%" stopColor={lineColor} />);
 
-        return stops;
+        return stops.map((s, i) => ({ ...s, key: `${dataKey}_threshold_stop_${i}` }));
     }
 
     return <defs>
