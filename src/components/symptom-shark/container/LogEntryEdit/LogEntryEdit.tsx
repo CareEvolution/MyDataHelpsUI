@@ -183,7 +183,7 @@ export default function (props: SymptomSharkLogEntryEditProps) {
 
     return (
         <div className="mdhui-ss-log-entry-edit-wrapper">
-            <NavigationBar title={dateLabel} showBackButton={true} variant="compressed" backgroundColor="var(--mdhui-background-color-0)" className="mdhui-ss-edit-nav" />
+            <NavigationBar title={dateLabel} showBackButton={true} variant="compressed" backgroundColor="var(--mdhui-background-color-highest-contrast)" className="mdhui-ss-edit-nav" />
             <div className="mdhui-ss-log-entry-edit">
                 {!logEntry &&
                     <LoadingIndicator />

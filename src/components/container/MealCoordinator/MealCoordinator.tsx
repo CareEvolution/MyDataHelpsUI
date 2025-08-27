@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 import { getMealImageUrls, getMeals, Meal, saveMeals, timestampSortAsc, useInitializeView } from '../../../helpers';
 import { DateRangeContext } from '../../presentational';
-import { startOfDay, startOfToday } from 'date-fns';
+import { isSameDay, startOfDay, startOfToday } from 'date-fns';
 import { createPreviewData, MealCoordinatorPreviewState } from './MealCoordinator.previewData';
+import { v4 as uuid } from 'uuid';
+import { onMealsUpdated, useMealsUpdatedEventListener } from '../../../helpers/glucose-and-meals/events';
 
 export interface MealCoordinatorProps {
     previewState?: 'loading' | MealCoordinatorPreviewState;
@@ -16,6 +18,7 @@ export interface MealContext {
     imageUrls: { [key: string]: string };
     selectedMeal?: Meal;
     addMeal: (meal: Meal) => Promise<void>;
+    saveMeal: (meal: Meal) => Promise<void>;
     onMealClicked: (meal: Meal) => void;
 }
 
@@ -33,8 +36,9 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
     const [activeMeals, setActiveMeals] = useState<Meal[]>([]);
     const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
     const [selectedMeal, setSelectedMeal] = useState<Meal>();
+    const mealsUpdatedSenderId = useRef<string>(uuid());
 
-    useInitializeView(() => {
+    const initialize = () => {
         setLoading(true);
         setAllMeals([]);
         setActiveMeals([]);
@@ -62,15 +66,40 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
                 setImageUrls(imageUrls);
             });
         });
-    }, [], [props.previewState, dateRangeContext?.intervalStart]);
+    };
+
+    useInitializeView(initialize, [], [props.previewState, dateRangeContext?.intervalStart]);
+    useMealsUpdatedEventListener(detail => {
+        if (isSameDay(detail.date, selectedDate)) {
+            initialize();
+        }
+    }, [mealsUpdatedSenderId.current]);
 
     const addMeal = async (meal: Meal): Promise<void> => {
         setLoading(true);
 
         const updatedMeals = [...allMeals, meal].sort(timestampSortAsc);
-        await saveMeals(startOfDay(meal.timestamp), updatedMeals);
 
+        const mealDate = startOfDay(meal.timestamp);
+        await saveMeals(mealDate, updatedMeals);
+        onMealsUpdated(mealsUpdatedSenderId.current, mealDate);
+
+        setAllMeals(updatedMeals);
         setActiveMeals([...activeMeals, meal].sort(timestampSortAsc));
+        setLoading(false);
+    };
+
+    const saveMeal = async (meal: Meal): Promise<void> => {
+        setLoading(true);
+
+        const updatedMeals = [...(allMeals.filter(m => m.id !== meal.id)), meal].sort(timestampSortAsc);
+
+        const mealDate = startOfDay(meal.timestamp);
+        await saveMeals(mealDate, updatedMeals);
+        onMealsUpdated(mealsUpdatedSenderId.current, mealDate);
+
+        setAllMeals(updatedMeals);
+        setActiveMeals([...(activeMeals.filter(m => m.id !== meal.id)), meal].sort(timestampSortAsc));
         setLoading(false);
     };
 
@@ -79,7 +108,7 @@ export default function MealCoordinator(props: MealCoordinatorProps) {
     };
 
     return <div ref={props.innerRef}>
-        <MealContext.Provider value={{ loading, meals: activeMeals, imageUrls, selectedMeal, addMeal, onMealClicked }}>
+        <MealContext.Provider value={{ loading, meals: activeMeals, imageUrls, selectedMeal, addMeal, saveMeal, onMealClicked }}>
             {props.children}
         </MealContext.Provider>
     </div>;
