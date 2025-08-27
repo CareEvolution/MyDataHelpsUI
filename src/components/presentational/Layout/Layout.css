@@ -6,6 +6,6 @@
 .mdhui-layout-flex {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     padding-top: calc(env(safe-area-inset-top, 0));
 }
