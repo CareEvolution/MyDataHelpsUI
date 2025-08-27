@@ -1,0 +1,5 @@
+.mdhui-pdf-preview .react-pdf__Page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
