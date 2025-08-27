@@ -122,7 +122,7 @@ body:has(.mdhui-document-library-view) {
 .mdhui-document-library-view .mdhui-document-library-view-document-date-and-type {
     font-size: 0.7em;
     font-weight: bold;
-    color: var(--mdhui-text-color-3);
+    color: var(--mdhui-text-color-2);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
