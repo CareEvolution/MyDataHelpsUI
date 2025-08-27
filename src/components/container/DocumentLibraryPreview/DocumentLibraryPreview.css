@@ -1,0 +1,15 @@
+.mdhui-document-library-preview .mdhui-document-library-preview-title-icon {
+    width: 15px;
+    height: 15px;
+    color: var(--mdhui-text-color-0);
+    margin-right: 8px;
+    margin-bottom: 2px;
+}
+
+.mdhui-document-library-preview .mdhui-document-library-preview-documents {
+    margin-top: 8px;
+}
+
+.mdhui-document-library-preview .mdhui-document-library-preview-document-name {
+    color: var(--mdhui-text-color-2);
+}
