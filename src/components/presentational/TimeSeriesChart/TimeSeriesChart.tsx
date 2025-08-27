@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { add, addDays, addMonths, Duration, isToday, getDaysInMonth, addHours, startOfMonth } from 'date-fns'
+import { add, addDays, addMonths, Duration, isToday, addHours, startOfMonth } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
@@ -40,10 +40,23 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     // Ensures that gradients are unique for each chart.
     let gradientKey = `gradient_${Math.random()}_`;
 
-    const DayTick = ({ x, y, payload }: any) => {
+    const DayTick = ({ x, y, payload, index }: any) => {
         let value = payload.value;
         let currentDate = new Date(value);
+
         if (intervalType === "Month") {
+            const oneDayInMillis = 24 * 60 * 60 * 1000;
+
+             // Check if this is the last tick and if it's consecutive with the previous one
+            if (index === xAxisTicks!.length - 1 && xAxisTicks!.length > 1) {
+                const lastTick = xAxisTicks![index];
+                const secondToLastTick = xAxisTicks![index - 1];
+
+                if (lastTick - secondToLastTick <= oneDayInMillis) {
+                    return <text />;
+                }
+            }
+
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
             let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
@@ -85,9 +98,31 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         if (intervalType === "Week") {
             return Array.from({ length: 7 }, (_, i) => addDays(startTime, i).getTime());
         } else if (intervalType === "Month") {
-            const monthLength = getDaysInMonth(startTime);
-            const numberOfTicks = ceil(monthLength / 2);
-            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
+            const ticks = [];
+            const startMonth = startTime.getMonth();
+            const startYear = startTime.getFullYear();
+            let daysToAdd = 0;
+
+            while (true) {
+                const nextTickDate = new Date(startTime.getTime());
+                nextTickDate.setDate(startTime.getDate() + daysToAdd);
+
+                if (nextTickDate.getMonth() !== startMonth) {
+                    break;
+                }
+
+                ticks.push(nextTickDate.getTime());
+                daysToAdd += 2;
+            }
+
+            const lastDayOfMonth = new Date(startYear, startMonth + 1, 0);
+            lastDayOfMonth.setHours(0, 0, 0, 0);
+
+            if (ticks.length === 0 || ticks[ticks.length - 1] !== lastDayOfMonth.getTime()) {
+                ticks.push(lastDayOfMonth.getTime());
+            }
+
+            return ticks;
         } else if (intervalType === "6Month") {
             const ticks: number[] = [];
             let currentTick: Date;
