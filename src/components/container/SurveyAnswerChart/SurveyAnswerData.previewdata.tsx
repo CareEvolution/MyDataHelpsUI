@@ -8,6 +8,7 @@ export async function generateSurveyResponse(date: Date, resultIdentifier: strin
     var answer = await predictableRandomNumber(getDayKey(date) + resultIdentifier);
     return {
         "id": "00000000-0000-0000-0000-000000000000",
+        "participantID": "00000000-0000-0000-0000-000000000000",
         "surveyID": "00000000-0000-0000-0000-000000000000",
         "surveyResultID": "00000000-0000-0000-0000-000000000000",
         "surveyVersion": 0,
@@ -19,7 +20,8 @@ export async function generateSurveyResponse(date: Date, resultIdentifier: strin
         "answers": [
             (answer % (rangeEnd - rangeStart) + rangeStart).toString()
         ],
-        "insertedDate": date.toISOString()
+        "insertedDate": date.toISOString(),
+        "type": "Question"
     };
 }
 
@@ -32,7 +34,7 @@ export const getDefaultPreviewData = async(start: Date, end: Date, series: Surve
         for(let i = 0; i < series.length; ++i){
             var v = await generateSurveyResponse(currentDate, "TestResult"+i, "TestSurvey", 10, 100);
             standardData[i].push(v);
-            
+
         };
         currentDate = add(currentDate, dataCadence);
     }

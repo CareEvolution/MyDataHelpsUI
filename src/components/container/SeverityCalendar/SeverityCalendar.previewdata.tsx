@@ -1,11 +1,14 @@
 import { SurveyAnswer } from "@careevolution/mydatahelps-js";
-import { addDays, addHours, endOfDay, endOfToday, startOfDay, startOfToday } from "date-fns";
+import { addDays, endOfDay, startOfDay, startOfToday } from "date-fns";
+import { v4 as uuid } from "uuid";
 
-var today = new Date();
+const today = new Date();
+const participantID = uuid();
 
 export const previewSeverityData: SurveyAnswer[] = [
     {
         id: "12345",
+        participantID: participantID,
         surveyResultID: "1",
         surveyID: "2",
         surveyVersion: 1,
@@ -15,10 +18,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severe"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123456",
+        participantID: participantID,
         surveyResultID: "1",
         surveyID: "2",
         surveyVersion: 1,
@@ -28,10 +33,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfToday().toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123452",
+        participantID: participantID,
         surveyResultID: "21",
         surveyID: "2",
         surveyVersion: 1,
@@ -41,10 +48,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severity3"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "12223456",
+        participantID: participantID,
         surveyResultID: "21",
         surveyID: "2",
         surveyVersion: 1,
@@ -54,10 +63,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -1)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123457",
+        participantID: participantID,
         surveyResultID: "2",
         surveyID: "1",
         surveyVersion: 1,
@@ -67,10 +78,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["moderate"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123458",
+        participantID: participantID,
         surveyResultID: "2",
         surveyID: "2",
         surveyVersion: 1,
@@ -80,10 +93,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -2)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1234573",
+        participantID: participantID,
         surveyResultID: "3",
         surveyID: "1",
         surveyVersion: 1,
@@ -93,10 +108,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severity2"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1234583",
+        participantID: participantID,
         surveyResultID: "3",
         surveyID: "2",
         surveyVersion: 1,
@@ -106,10 +123,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -3)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "14234573",
+        participantID: participantID,
         surveyResultID: "4",
         surveyID: "1",
         surveyVersion: 1,
@@ -119,10 +138,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["moderate"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "12345834",
+        participantID: participantID,
         surveyResultID: "4",
         surveyID: "2",
         surveyVersion: 1,
@@ -132,10 +153,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -4)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "142345736",
+        participantID: participantID,
         surveyResultID: "5",
         surveyID: "1",
         surveyVersion: 1,
@@ -145,10 +168,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["mild"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1234583466",
+        participantID: participantID,
         surveyResultID: "5",
         surveyID: "2",
         surveyVersion: 1,
@@ -158,10 +183,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -5)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1423457376",
+        participantID: participantID,
         surveyResultID: "6",
         surveyID: "1",
         surveyVersion: 1,
@@ -171,10 +198,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severity1"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1234583466",
+        participantID: participantID,
         surveyResultID: "6",
         surveyID: "2",
         surveyVersion: 1,
@@ -184,10 +213,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -6)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "12374597",
+        participantID: participantID,
         surveyResultID: "7",
         surveyID: "2",
         surveyVersion: 1,
@@ -197,10 +228,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["mild"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123874598",
+        participantID: participantID,
         surveyResultID: "8",
         surveyID: "2",
         surveyVersion: 1,
@@ -210,10 +243,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severe"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1238745998",
+        participantID: participantID,
         surveyResultID: "9",
         surveyID: "2",
         surveyVersion: 1,
@@ -223,10 +258,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["mild"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "10234583466",
+        participantID: participantID,
         surveyResultID: "10",
         surveyID: "2",
         surveyVersion: 1,
@@ -236,10 +273,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -9)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1237459710",
+        participantID: participantID,
         surveyResultID: "10",
         surveyID: "2",
         surveyVersion: 1,
@@ -249,10 +288,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["mild"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "10234583466",
+        participantID: participantID,
         surveyResultID: "11",
         surveyID: "2",
         surveyVersion: 1,
@@ -262,10 +303,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [startOfDay(addDays(today, -9)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1237459710",
+        participantID: participantID,
         surveyResultID: "11",
         surveyID: "2",
         surveyVersion: 1,
@@ -275,10 +318,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severe"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "12387459988",
+        participantID: participantID,
         surveyResultID: "12",
         surveyID: "2",
         surveyVersion: 1,
@@ -288,10 +333,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["severe"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "102345834898",
+        participantID: participantID,
         surveyResultID: "12",
         surveyID: "2",
         surveyVersion: 1,
@@ -301,10 +348,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -10)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "123745971013",
+        participantID: participantID,
         surveyResultID: "13",
         surveyID: "2",
         surveyVersion: 1,
@@ -314,10 +363,12 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityValue",
         answers: ["moderate"],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     },
     {
         id: "1023458346613",
+        participantID: participantID,
         surveyResultID: "13",
         surveyID: "2",
         surveyVersion: 1,
@@ -327,6 +378,7 @@ export const previewSeverityData: SurveyAnswer[] = [
         stepIdentifier: "1",
         resultIdentifier: "severityDate",
         answers: [endOfDay(addDays(today, -10)).toISOString()],
-        insertedDate: Date.now.toString()
+        insertedDate: Date.now.toString(),
+        type: "Question"
     }
 ];
