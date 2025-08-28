@@ -4,6 +4,7 @@ import SingleNotification, { SingleNotificationProps } from "./SingleNotificatio
 import { Meta, StoryObj } from "@storybook/react";
 import { Card } from "..";
 import { addDays } from "date-fns";
+import { v4 as uuid } from "uuid";
 
 const meta: Meta<typeof SingleNotification> = {
 	title:  "Presentational/SingleNotification",
@@ -26,6 +27,7 @@ export const Default: Story = {
 	args: {
 		notification: {
             "id": "4",
+            "participantID": uuid(),
             "identifier": "SurveyReminder",
             "sentDate": addDays(new Date(), -1).toISOString(),
             "statusCode": "Succeeded",

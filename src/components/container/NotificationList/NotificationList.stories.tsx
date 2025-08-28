@@ -35,12 +35,10 @@ const render = (args: NotificationListStoryArgs) => {
     }
 
     return <Layout colorScheme={args.colorScheme}>
-        <Card>
-            <NotificationList
-                previewState={args.state !== 'live' ? args.state : undefined}
-                {...args}
-            />
-        </Card>
+        <NotificationList
+            previewState={args.state !== 'live' ? args.state : undefined}
+            {...args}
+        />
     </Layout>;
 };
 

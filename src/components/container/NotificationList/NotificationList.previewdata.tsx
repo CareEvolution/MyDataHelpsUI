@@ -1,10 +1,14 @@
 import { Notification } from "@careevolution/mydatahelps-js";
 import { add } from 'date-fns'
+import { v4 as uuid } from 'uuid';
+
+const participantID = uuid();
 
 export var previewNotifications: Notification[] =
 	[{
 		"id": "1",
 		"identifier": "SurveyReminder",
+		"participantID" : participantID,
 		"sentDate": (new Date()).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Push",
@@ -16,6 +20,7 @@ export var previewNotifications: Notification[] =
 	}, {
 		"id": "2",
 		"identifier": "SurveyReminder",
+		"participantID" : participantID,
 		"sentDate": add(new Date(), { hours: -1 }).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Push",
@@ -28,6 +33,7 @@ export var previewNotifications: Notification[] =
 	}, {
 		"id": "4",
 		"identifier": "SurveyReminder",
+		"participantID" : participantID,
 		"sentDate": add(new Date(), { days: -1 }).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Push",
@@ -39,6 +45,7 @@ export var previewNotifications: Notification[] =
 	}, {
 		"id": "5",
 		"identifier": "SurveyReminder",
+		"participantID" : participantID,
 		"sentDate": add(new Date(), { days: -2 }).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Push",
@@ -52,6 +59,7 @@ export var previewNotifications: Notification[] =
 	{
 		"id": "6",
 		"identifier": "EmailSurveyReminder",
+		"participantID" : participantID,
 		"sentDate": add(new Date(), { days: -3 }).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Email",
@@ -65,6 +73,7 @@ export var previewNotifications: Notification[] =
 	{
 		"id": "7",
 		"identifier": "SMSSurveyReminder",
+		"participantID" : participantID,
 		"sentDate": add(new Date(), { days: -4 }).toISOString(),
 		"statusCode": "Succeeded",
 		"type": "Sms",
