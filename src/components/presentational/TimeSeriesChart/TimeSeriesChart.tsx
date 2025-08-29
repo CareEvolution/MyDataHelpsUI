@@ -290,6 +290,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             strokeWidth={2}
                                             fill={`url(#${gradientKey}${i}-fill)`}
                                             stroke={`url(#${gradientKey}${i}-stroke)`}
+                                            dot={{ clipDot: false }}
                                         />
                                     )}
                                 </>

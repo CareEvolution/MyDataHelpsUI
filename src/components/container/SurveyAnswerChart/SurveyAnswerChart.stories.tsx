@@ -42,7 +42,7 @@ export const Default: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['default', 'no data', 'with one data point', 'with two data points', 'with gap', 'live'],
+            options: ['default', 'no data', 'with one data point', 'with one data point in first series', 'with two data points', 'with two data points in first series', 'with two data points in first series with gap', 'with gap', 'live'],
             mapping: { 'live': undefined }
         },
         title: {
@@ -96,8 +96,8 @@ export const Default: Story = {
         const props: SurveyAnswerChartProps = {
             ...args,
             series: [
-                { color: '#377eb8', dataKey: 'Mood', surveyName: 'Some Survey', stepIdentifier: 'Some Step', resultIdentifier: 'Result 1' },
-                { color: '#4daf4a', dataKey: 'Activity', surveyName: 'Some Survey', stepIdentifier: 'Some Step', resultIdentifier: 'Result 2' }
+                { color: '#f6670f', areaColor: '#f3a879', dataKey: 'Mood', surveyName: 'Some Survey', stepIdentifier: 'Some Step', resultIdentifier: 'Result 1' },
+                { color: '#4daf4a', areaColor: '#9dea9b', dataKey: 'Activity', surveyName: 'Some Survey', stepIdentifier: 'Some Step', resultIdentifier: 'Result 2' }
             ],
             options: {
                 yAxisOptions: {
@@ -146,7 +146,7 @@ export const FFWEL: Story = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['default', 'no data', 'with one data point', 'with two data points', 'with gap', 'live'],
+            options: ['default', 'no data', 'with one data point', 'with one data point in first series', 'with two data points', 'with two data points in first series', 'with two data points in first series with gap', 'with gap', 'live'],
             mapping: { 'live': undefined }
         },
         chartType: {
@@ -174,9 +174,9 @@ export const FFWEL: Story = {
             intervalType: '6Month',
             weekStartsOn: '6DaysAgo',
             series: [
-                { color: '#e41a1c', dataKey: 'Creative Self', surveyName: 'FFWEL', stepIdentifier: 'CreativeSelf', resultIdentifier: 'CreativeSelf' },
-                { color: '#377eb8', dataKey: 'Coping Self', surveyName: 'FFWEL', stepIdentifier: 'CopingSelf', resultIdentifier: 'CopingSelf' },
-                { color: '#4daf4a', dataKey: 'Social Self', surveyName: 'FFWEL', stepIdentifier: 'SocialSelf', resultIdentifier: 'SocialSelf' }
+                { color: '#e41a1c', areaColor: '#ed7172', dataKey: 'Creative Self', surveyName: 'FFWEL', stepIdentifier: 'CreativeSelf', resultIdentifier: 'CreativeSelf' },
+                { color: '#377eb8', areaColor: '#7bbdf3', dataKey: 'Coping Self', surveyName: 'FFWEL', stepIdentifier: 'CopingSelf', resultIdentifier: 'CopingSelf' },
+                { color: '#4daf4a', areaColor: '#98f395', dataKey: 'Social Self', surveyName: 'FFWEL', stepIdentifier: 'SocialSelf', resultIdentifier: 'SocialSelf' }
             ],
             options: {
                 yAxisOptions: {
