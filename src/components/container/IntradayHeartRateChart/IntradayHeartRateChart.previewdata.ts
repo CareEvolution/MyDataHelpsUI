@@ -3,14 +3,14 @@ import { DeviceDataV2Aggregate } from "@careevolution/mydatahelps-js";
 import { IntradayHeartRateData } from '../../../helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers'
 const today = startOfDay(new Date());
 
-function getRandomInt(min : number, max : number) {
+function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function loadForTest(data: DeviceDataV2Aggregate[]) {
-    var testData : IntradayHeartRateData = {};
+    var testData: IntradayHeartRateData = {};
     data.forEach((data) => {
         testData[(new Date(data.date)).getTime()] = data.statistics.avg;
     });
@@ -25,17 +25,17 @@ const halfDayData = loadForTest(testData);
 
 testData = [];
 for (let i = 0; i < 288; i++) {
-    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday', participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 180) } });
 }
 const fullDayData = loadForTest(testData);
 
 testData = [];
 for (let i = 0; i < 48; i++) {
-    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday', participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 180) } });
 }
 
 for (let i = 200; i < 288; i++) {
-    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 150) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday', participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 180) } });
 }
 const missingMidDayData = loadForTest(testData);
 
