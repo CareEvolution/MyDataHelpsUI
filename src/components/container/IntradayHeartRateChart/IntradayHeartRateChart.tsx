@@ -12,6 +12,7 @@ import { getTimeOfDayString } from '../../../helpers/date-helpers';
 export type IntradayHeartRatePreviewState = "Default" | "CompleteDataWithThresholds" | "MissingMidDayDataThresholds" | "PartialDataWithThresholds" | "NoData";
 
 export interface IntradayHeartRateChartProps {
+    title?: string,
     previewState?: IntradayHeartRatePreviewState,
     dataSources: DeviceDataV2Namespace[],
     aggregationIntervalOption?: IntradayHeartRateAggregationOption,
@@ -108,6 +109,7 @@ export default function (props: IntradayHeartRateChartProps) {
 
     return <div ref={props.innerRef}>
         <TimeSeriesChart
+            title={props.title}
             intervalType='Day'
             intervalStart={intervalStart}
             data={iHrData}
