@@ -27,6 +27,7 @@ let children = <Card>
 			function generateSurveyResponse(date: Date, resultIdentifier: string, surveyName: string): SurveyAnswer {
 				return {
 					"id": "00000000-0000-0000-0000-000000000000",
+					"participantID": "00000000-0000-0000-0000-000000000000",
 					"surveyID": "00000000-0000-0000-0000-000000000000",
 					"surveyResultID": "00000000-0000-0000-0000-000000000000",
 					"surveyVersion": 0,
@@ -38,7 +39,8 @@ let children = <Card>
 					"answers": [
 						(Math.random() * 90 + 10).toString()
 					],
-					"insertedDate": date.toISOString()
+					"insertedDate": date.toISOString(),
+					"type": "Question"
 				};
 			}
 			let data = [];

@@ -19,23 +19,23 @@ function loadForTest(data: DeviceDataV2Aggregate[]) {
 
 let testData: DeviceDataV2Aggregate[] = [];
 for (let i = 0; i < 48; i++) {
-    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(80, 185) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday', participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(80, 185) } });
 }
 const halfDayData = loadForTest(testData);
 
 testData = [];
 for (let i = 0; i < 288; i++) {
-    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
 }
 const fullDayData = loadForTest(testData);
 
 testData = [];
 for (let i = 0; i < 48; i++) {
-    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(0, 200) } });
 }
 
 for (let i = 200; i < 288; i++) {
-    testData.push({ participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 150) } });
+    testData.push({ namespace: 'Fitbit', type: 'activities-heart-intraday',  participantID: "ABCDEFG", participantIdentifier: "ABCDEFG", date: addMinutes(today, (i * 5)).toISOString(), statistics: { "avg": getRandomInt(50, 150) } });
 }
 const missingMidDayData = loadForTest(testData);
 
