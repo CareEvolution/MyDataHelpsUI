@@ -113,7 +113,7 @@ export default function (props: IntradayHeartRateChartProps) {
             intervalType='Day'
             intervalStart={intervalStart}
             data={iHrData}
-            expectedDataInterval={{ minutes: 5 }}
+            expectedDataInterval={{ minutes: props.aggregationIntervalMinutes }}
             chartHasData={chartHasData}
             chartType="Line"
             series={[{ dataKey: 'value', color: props.lineColor }]}
