@@ -40,8 +40,10 @@ export default function (props: SymptomSharkLogTodayProps) {
         if (props.previewState == "withLog") {
             setConfiguration(previewConfiguration);
             setSymptomLogEntry(previewLogEntry);
+            setLoading(false);
             return;
         } else if (props.previewState == "noLog") {
+            setLoading(false);
             setConfiguration(previewConfiguration);
             return;
         }
