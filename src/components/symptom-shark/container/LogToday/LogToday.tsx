@@ -27,7 +27,6 @@ export default function (props: SymptomSharkLogTodayProps) {
     let title = "";
     if (!symptomLogEntry) {
         if (!isToday) {
-            // string does not actually include "today"
             title = language("tap-to-log-today");
         } else {
             title = language("log-todays-symptoms");
