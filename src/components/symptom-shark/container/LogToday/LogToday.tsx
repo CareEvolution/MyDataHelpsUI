@@ -24,7 +24,7 @@ export default function (props: SymptomSharkLogTodayProps) {
     var currentDate = new Date();
     currentDate = dateRangeContext?.intervalStart ? dateRangeContext?.intervalStart : startOfDay(new Date());
     const isToday = currentDate.getTime() == startOfDay(new Date()).getTime();
-    let title = language("todays-log");
+    let title = "";
     if (!symptomLogEntry) {
         if (!isToday) {
             // string does not actually include "today"
@@ -32,8 +32,8 @@ export default function (props: SymptomSharkLogTodayProps) {
         } else {
             title = language("log-todays-symptoms");
         }
-    } else if (!isToday) {
-        title = "";
+    } else if (isToday) {
+        title = language("todays-log");
     }
 
     function initialize() {
