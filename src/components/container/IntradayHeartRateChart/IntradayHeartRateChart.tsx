@@ -19,6 +19,7 @@ export interface IntradayHeartRateChartProps {
     lineColor?: ColorDefinition,
     thresholds?: ChartThreshold[],
     innerRef?: React.Ref<HTMLDivElement>
+    hideIfNoData?: boolean
 }
 
 export interface IntradayDataPoint {
@@ -81,7 +82,6 @@ export default function (props: IntradayHeartRateChartProps) {
     useInitializeView(initialize, [], [dateRangeContext?.intervalStart]);
 
     if (data) {
-
         Object.keys(data).forEach(k => {
             let key = parseInt(k);
             iHrData?.push({ timestamp: key, date: new Date(key), value: data[key] });
@@ -101,6 +101,10 @@ export default function (props: IntradayHeartRateChartProps) {
             dot: false
         }
     };
+
+    if (!chartHasData && props.hideIfNoData) {
+        return null;
+    }
 
     return <div ref={props.innerRef}>
         <TimeSeriesChart
