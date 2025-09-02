@@ -8,6 +8,14 @@
     margin-top: 16px;
 }
 
+.mdhui-ss-log-entry .mdhui-ss-log-entry-section:last-child {
+    margin-bottom: -8px;
+}
+
+.mdhui-ss-log-entry.mdhui-ss-log-entry-no-header .mdhui-ss-log-entry-section {
+    margin-top: 0;
+}
+
 .mdhui-ss-log-entry .mdhui-ss-section-header {
     font-size: .88em;
     font-weight: 500;
@@ -30,6 +38,7 @@
 .mdhui-ss-log-entry .mdhui-ss-notes-content {
     font-size: .88em;
     white-space: pre-wrap;
+    margin-bottom: 8px;
 }
 
 .mdhui-ss-log-entry .mdhui-ss-log-entry-action {
