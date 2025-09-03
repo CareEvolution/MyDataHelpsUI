@@ -6,11 +6,11 @@
     padding: 0 16px;
 }
 
-.mdhui-meal-log .mdhui-loading-indicator {
+.mdhui-meal-log .mdhui-meal-log-loading.mdhui-loading-indicator {
     padding: 16px 16px 32px;
 }
 
-.mdhui-meal-log-empty-text {
+.mdhui-meal-log .mdhui-meal-log-empty-text {
     color: var(--mdhui-text-color-3);
     padding: 16px 16px 32px;
     text-align: center;
