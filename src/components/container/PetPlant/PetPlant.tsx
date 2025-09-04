@@ -16,12 +16,12 @@ export interface PetPlantProps {
     /** Day of week for adherence streak reset: 0=Sunday ... 6=Saturday */
     adherenceStreakResetDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     /** Configured surveys and their target frequency */
-    surveys?: Array<{ surveyName: string; frequency: 'Daily' | 'Weekly' | 'Monthly' | 'Every 3 Months' | 'Every 12 Months' }>;
+    surveys?: Array<{ surveyName: string; frequency: 'Daily' | 'Weekly' | 'Monthly' | 'Every 3 Months' | 'Every 6 Months' | 'Every 12 Months' }>;
     /** Preview state to simulate availability in Storybook */
     previewState?: 'AllComplete' | 'LightDue' | 'WaterDue' | 'PotDue' | 'AllDue';
 }
 
-type Frequency = 'Daily' | 'Weekly' | 'Monthly' | 'Every 3 Months' | 'Every 12 Months';
+type Frequency = 'Daily' | 'Weekly' | 'Monthly' | 'Every 3 Months' | 'Every 6 Months' | 'Every 12 Months';
 
 function groupFrequencies(surveys: NonNullable<PetPlantProps["surveys"]>) {
     const daily = new Set<string>();
@@ -35,6 +35,7 @@ function groupFrequencies(surveys: NonNullable<PetPlantProps["surveys"]>) {
                 weekly.add(s.surveyName); break;
             case 'Monthly':
             case 'Every 3 Months':
+            case 'Every 6 Months':
             case 'Every 12 Months':
                 potting.add(s.surveyName); break;
         }
@@ -79,9 +80,12 @@ export default function (props: PetPlantProps) {
         setActiveSurvey(null);
         // Preview short-circuit
         if (props.previewState) {
-            const d = props.previewState === 'LightDue' || props.previewState === 'AllDue' ? 'Daily' : undefined;
-            const w = props.previewState === 'WaterDue' || props.previewState === 'AllDue' ? 'Weekly' : undefined;
-            const p = props.previewState === 'PotDue' || props.previewState === 'AllDue' ? 'Monthly' : undefined;
+            const hasDaily = (props.surveys ?? []).some(s => s.frequency === 'Daily');
+            const hasWeekly = (props.surveys ?? []).some(s => s.frequency === 'Weekly');
+            const hasPotting = (props.surveys ?? []).some(s => ['Monthly', 'Every 3 Months', 'Every 6 Months', 'Every 12 Months'].includes(s.frequency as any));
+            const d = (props.previewState === 'LightDue' || props.previewState === 'AllDue') && hasDaily ? 'Daily' : undefined;
+            const w = (props.previewState === 'WaterDue' || props.previewState === 'AllDue') && hasWeekly ? 'Weekly' : undefined;
+            const p = (props.previewState === 'PotDue' || props.previewState === 'AllDue') && hasPotting ? 'Monthly' : undefined;
             setAvailableDaily(d ? 'Preview Daily Survey' : null);
             setAvailableWeekly(w ? 'Preview Weekly Survey' : null);
             setAvailablePotting(p ? 'Preview Monthly Survey' : null);
@@ -247,15 +251,21 @@ export default function (props: PetPlantProps) {
                         </g>
                     </svg>
                     <div className="mdhui-pet-plant-controls">
-                        <button className={"mdhui-pet-plant-btn " + (availableDaily ? "mdhui-pet-plant-btn-light" : "")} aria-label="Light" disabled={!availableDaily} onClick={() => onClick(availableDaily)}>
-                            <FontAwesomeSvgIcon icon={faSun} />
-                        </button>
-                        <button className={"mdhui-pet-plant-btn " + (availableWeekly ? "mdhui-pet-plant-btn-water" : "")} aria-label="Water" disabled={!availableWeekly} onClick={() => onClick(availableWeekly)}>
-                            <FontAwesomeSvgIcon icon={faDroplet} />
-                        </button>
-                        <button className={"mdhui-pet-plant-btn " + (availablePotting ? "mdhui-pet-plant-btn-pot" : "")} aria-label="Pot" disabled={!availablePotting} onClick={() => onClick(availablePotting)}>
-                            <FontAwesomeSvgIcon icon={faBucket} />
-                        </button>
+                        {(props.surveys ?? []).some(s => s.frequency === 'Daily') && (
+                            <button className={"mdhui-pet-plant-btn " + (availableDaily ? "mdhui-pet-plant-btn-light" : "")} aria-label="Light" disabled={!availableDaily} onClick={() => onClick(availableDaily)}>
+                                <FontAwesomeSvgIcon icon={faSun} />
+                            </button>
+                        )}
+                        {(props.surveys ?? []).some(s => s.frequency === 'Weekly') && (
+                            <button className={"mdhui-pet-plant-btn " + (availableWeekly ? "mdhui-pet-plant-btn-water" : "")} aria-label="Water" disabled={!availableWeekly} onClick={() => onClick(availableWeekly)}>
+                                <FontAwesomeSvgIcon icon={faDroplet} />
+                            </button>
+                        )}
+                        {(props.surveys ?? []).some(s => ['Monthly', 'Every 3 Months', 'Every 6 Months', 'Every 12 Months'].includes(s.frequency as any)) && (
+                            <button className={"mdhui-pet-plant-btn " + (availablePotting ? "mdhui-pet-plant-btn-pot" : "")} aria-label="Pot" disabled={!availablePotting} onClick={() => onClick(availablePotting)}>
+                                <FontAwesomeSvgIcon icon={faBucket} />
+                            </button>
+                        )}
                     </div>
                     <div className="mdhui-pet-plant-status" aria-live="polite">{statusText}</div>
                 </div>
