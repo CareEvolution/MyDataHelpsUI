@@ -222,8 +222,7 @@ export default function MealEditor(props: MealEditorProps) {
         return <label>
             <input
                 type="file"
-                accept="image/*,capture=camera"
-                capture="environment"
+                accept="image/*"
                 style={{ display: 'none' }}
                 onChange={event => onFileChanged(event.target.files?.[0])}
             />
