@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { add, addDays, addHours, addMonths, Duration, getDaysInMonth, isToday, startOfDay, startOfMonth, startOfToday } from 'date-fns'
+import { add, addDays, addHours, addMonths, differenceInDays, Duration, getDaysInMonth, isToday, startOfDay, startOfMonth, startOfToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
@@ -45,6 +45,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         let value = payload.value;
         let currentDate = new Date(value);
         if (intervalType === "Month") {
+            if (index > 0 && differenceInDays(currentDate, new Date(xAxisTicks![index - 1])) < 2) return <text />;
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
             let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
@@ -109,7 +110,8 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         } else if (intervalType === "Month") {
             const monthLength = getDaysInMonth(startTime);
             const numberOfTicks = ceil(monthLength / 2);
-            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
+            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime())
+                .concat(monthLength % 2 === 0 ? [addDays(startTime, monthLength - 1).getTime()] : []);
         } else if (intervalType === "6Month") {
             const ticks: number[] = [];
             let currentTick: Date;

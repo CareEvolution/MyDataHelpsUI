@@ -46,7 +46,7 @@ export default function MealLog(props: MealLogProps) {
 
     return <div className="mdhui-meal-log" ref={props.innerRef}>
         <Title order={3}>{language('meal-log-title')}</Title>
-        {mealContext.loading && <LoadingIndicator />}
+        {mealContext.loading && <LoadingIndicator className="mdhui-meal-log-loading" />}
         {!mealContext.loading && mealContext.meals.length === 0 &&
             <div className="mdhui-meal-log-empty-text">{language('meal-log-no-data')}</div>
         }
