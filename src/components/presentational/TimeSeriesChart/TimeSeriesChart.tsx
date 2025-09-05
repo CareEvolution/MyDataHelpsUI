@@ -6,7 +6,7 @@ import './TimeSeriesChart.css'
 import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
 import ceil from 'lodash/ceil'
 import language from "../../../helpers/language"
-import { getAbbreviatedDayOfWeek, getAbbreviatedMonthName, getFullDateString, getShortTimeOfDayString } from '../../../helpers/date-helpers'
+import { durationToDays, getAbbreviatedDayOfWeek, getAbbreviatedMonthName, getFullDateString, getShortTimeOfDayString } from '../../../helpers/date-helpers'
 import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
@@ -92,12 +92,12 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             const firstDayWithData = startOfDay(new Date(props.data[0].timestamp));
 
             if (props.dynamicIntervalEndType === "Last Reading") {
-                if (props.data.length === 1) {
-                    return [add(firstDayWithData, { days: -3 }).getTime(), add(firstDayWithData, { days: 3 }).getTime()];
-                } else {
-                    const lastDayWithData = startOfDay(new Date(props.data[props.data.length - 1].timestamp));
-                    return [firstDayWithData.getTime(), lastDayWithData.getTime()];
+                const lastDayWithData = startOfDay(new Date(props.data[props.data.length - 1].timestamp));
+                if (props.data.length === 1 || (props.data.length === 2 && props.chartType === 'Bar')) {
+                    const buffer = props.expectedDataInterval ? durationToDays(props.expectedDataInterval) : 1;
+                    return [add(firstDayWithData, { days: -buffer }).getTime(), add(lastDayWithData, { days: buffer }).getTime()];
                 }
+                return [firstDayWithData.getTime(), lastDayWithData.getTime()];
             }
 
             return [firstDayWithData.getTime(), startOfToday().getTime()];

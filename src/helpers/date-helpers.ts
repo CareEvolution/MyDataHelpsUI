@@ -1,4 +1,4 @@
-import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow } from "date-fns";
+import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow, differenceInDays } from "date-fns";
 import language from "./language";
 import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
@@ -126,7 +126,7 @@ export function getShortestDateString(dateOrDateString: Date | string) {
 	return date.toLocaleDateString(locale, {
 		month: 'numeric',
 		day: 'numeric',
-	 });	
+	 });
 }
 
 /** e.g., November */
@@ -215,4 +215,10 @@ export function parseISOWithoutOffset(dateStr: string): Date {
     // A substring from 0 to 19 is used here to strip the offset from the ISO date string.
     // 2025-05-09T18:13:16-04:00 becomes 2025-05-09T18:13:16
 	return parseISO(dateStr.substring(0, 19));
+}
+
+export function durationToDays(duration: Duration): number {
+    const baseDate = new Date(0);
+    const adjustedDate = add(baseDate, duration);
+    return differenceInDays(adjustedDate, baseDate);
 }
