@@ -29,7 +29,9 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
             aggregateFunctions: [aggregationOption]
         };
 
-        providers.push(queryAllDeviceDataV2Aggregates(params));
+        providers.push(queryAllDeviceDataV2Aggregates(params)
+            .then((data) => { return data; })
+            .catch(() => { return []; }));
     });
 
     if (providers.length == 0) {
