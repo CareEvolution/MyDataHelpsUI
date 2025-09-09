@@ -20,11 +20,11 @@
     box-sizing: border-box;
 }
 
-.mdhui-meal-content {
+.mdhui-meal .mdhui-meal-content {
     display: flex;
 }
 
-.mdhui-meal-thumbnail {
+.mdhui-meal .mdhui-meal-thumbnail {
     position: relative;
     height: 48px;
     width: 48px;
@@ -37,17 +37,18 @@
     margin: 16px 8px 16px 16px;
 }
 
-.mdhui-meal-thumbnail-image img {
+.mdhui-meal .mdhui-meal-thumbnail-image img {
     height: 48px;
     width: 48px;
     object-fit: cover;
+    border-radius: 5px;
 }
 
-.mdhui-meal-loading.mdhui-loading-indicator {
+.mdhui-meal .mdhui-meal-loading.mdhui-loading-indicator {
     padding: 0;
 }
 
-.mdhui-meal-number {
+.mdhui-meal .mdhui-meal-number {
     position: absolute;
     top: -6px;
     left: -6px;
@@ -61,7 +62,7 @@
     border-radius: 10px;
 }
 
-.mdhui-meal-number-old {
+.mdhui-meal .mdhui-meal-number-old {
     font-size: 0.8em;
     height: 24px;
     line-height: 24px;
@@ -71,37 +72,37 @@
     margin: 24px 8px 16px 16px;
 }
 
-.mdhui-meal-info {
+.mdhui-meal .mdhui-meal-info {
     margin: 16px 8px;
     flex: 1;
     color: var(--mdhui-text-color-2);
 }
 
-.mdhui-meal-type {
+.mdhui-meal .mdhui-meal-type {
     font-size: 0.9em;
     font-weight: bold;
 }
 
-.mdhui-meal-time {
+.mdhui-meal .mdhui-meal-time {
     color: var(--mdhui-text-color-1);
     font-size: 0.9em;
 }
 
-.mdhui-meal-description {
+.mdhui-meal .mdhui-meal-description {
     margin-top: 8px;
     font-size: 0.75em;
 }
 
-.mdhui-meal-items {
+.mdhui-meal .mdhui-meal-items {
     margin-top: 8px;
     font-size: 0.75em;
 }
 
-.mdhui-meal-actions {
+.mdhui-meal .mdhui-meal-actions {
     margin-top: 8px;
 }
 
-.mdhui-meal-edit-action {
+.mdhui-meal .mdhui-meal-edit-action {
     margin: 16px;
     color: var(--mdhui-text-color-2);
 }
