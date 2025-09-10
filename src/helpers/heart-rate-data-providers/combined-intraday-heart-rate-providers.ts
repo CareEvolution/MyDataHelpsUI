@@ -30,7 +30,6 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
         };
 
         providers.push(queryAllDeviceDataV2Aggregates(params)
-            .then((data) => { return data; })
             .catch(() => { return []; }));
     });
 
