@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { add, startOfDay } from 'date-fns';
+import { add, isToday, startOfDay, startOfToday } from 'date-fns';
 import { SymptomSharkLogEntry } from '../../presentational';
 import { previewConfiguration, previewLogEntry } from './LogToday.previewData';
 import symptomSharkData, { DailyLogEntry, SymptomSharkConfiguration } from '../../helpers/symptom-shark-data';
@@ -19,23 +19,21 @@ export default function (props: SymptomSharkLogTodayProps) {
     let dateRangeContext = useContext(DateRangeContext);
     const [configuration, setConfiguration] = useState<SymptomSharkConfiguration | null>(null);
     const [symptomLogEntry, setSymptomLogEntry] = useState<DailyLogEntry | undefined>(undefined);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    var currentDate = new Date();
-    currentDate = dateRangeContext?.intervalStart ? dateRangeContext?.intervalStart : startOfDay(new Date());
-    const isToday = currentDate.getTime() == startOfDay(new Date()).getTime();
+    const currentDate = dateRangeContext?.intervalStart ? dateRangeContext.intervalStart : startOfToday();
     let title = "";
     if (!symptomLogEntry) {
-        if (!isToday) {
+        if (!isToday(currentDate)) {
             title = language("tap-to-log-today");
         } else {
             title = language("log-todays-symptoms");
         }
-    } else if (isToday) {
+    } else if (isToday(currentDate)) {
         title = language("todays-log");
     }
 
-    function initialize() {
+    function initialize(reloadConfiguration: boolean = false) {
         setLoading(true);
         if (props.previewState == "withLog") {
             setConfiguration(previewConfiguration);
@@ -48,7 +46,7 @@ export default function (props: SymptomSharkLogTodayProps) {
             return;
         }
 
-        Promise.all([symptomSharkData.getDailyLogEntries(getDayKey(add(currentDate, { days: -1 }))), !configuration ? symptomSharkData.getConfiguration() : Promise.resolve(configuration)])
+        Promise.all([symptomSharkData.getDailyLogEntries(getDayKey(add(currentDate, { days: -1 }))), (reloadConfiguration || !configuration) ? symptomSharkData.getConfiguration() : Promise.resolve(configuration)])
             .then(function ([logEntries, configuration]) {
                 setConfiguration(configuration);
                 if (logEntries[getDayKey(currentDate)]) {
@@ -60,9 +58,13 @@ export default function (props: SymptomSharkLogTodayProps) {
             });
     }
 
-    useInitializeView(() => {
+    useEffect(() => {
         initialize();
-    }, [], [dateRangeContext?.intervalStart]);
+        MyDataHelps.on("applicationDidBecomeVisible", function () { initialize(true); });
+        return () => {
+            MyDataHelps.off("applicationDidBecomeVisible", function () { initialize(true); });
+        }
+    }, [dateRangeContext?.intervalStart]);
 
     if (loading || !configuration || !configuration.symptoms.length) {
         return null;
