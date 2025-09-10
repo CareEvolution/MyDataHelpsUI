@@ -89,8 +89,8 @@ export default function MealAnalysisWorklist(props: MealAnalysisWorklistProps) {
     };
 
     return <div className="mdhui-meal-analysis-worklist" ref={props.innerRef}>
-        {mealsNeedingReview.length > 0 && mealsNeedingReview.map((meal, index) => {
-            return <Card key={`meal-${index}`}>
+        {mealsNeedingReview.length > 0 && mealsNeedingReview.map((meal) => {
+            return <Card key={`meal-${meal.id}`}>
                 <SingleMeal
                     meal={meal}
                     mealImageUrl={mealImageUrls[meal.id.toString()]}
