@@ -37,14 +37,17 @@ export default function (props: SymptomSharkLogEntryProps) {
         emptyLogEntry = true;
     }
 
-
-
     let title: string = props.title ?? getDayOfWeek(props.date);
     let highlight = props.highlight ?? isToday(props.date);
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
 
+    let classes = ["mdhui-ss-log-entry"];
+    if (!title && !subtitle) {
+        classes.push("mdhui-ss-log-entry-no-header");
+    }
+
     if (emptyLogEntry) {
-        return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
+        return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className={classes.join(" ")}>
             <ShinyOverlay />
             <Action
                 className="mdhui-ss-log-entry-action"
@@ -59,7 +62,8 @@ export default function (props: SymptomSharkLogEntryProps) {
         </Card>;
     }
 
-    return <Card innerRef={props.innerRef} className="mdhui-ss-log-entry">
+
+    return <Card innerRef={props.innerRef} className={classes.join(" ")}>
         <Action
             title={title}
             subtitle={subtitle}

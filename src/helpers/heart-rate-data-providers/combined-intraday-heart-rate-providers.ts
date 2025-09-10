@@ -4,6 +4,14 @@ import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregat
 export type IntradayHeartRateAggregationOption = "avg" | "min" | "max";
 export type IntradayHeartRateData = { [key: number]: number };
 
+function getHeartRateTypeForNamespace(namespace: DeviceDataV2Namespace): string {
+    if (namespace === "AppleHealth") return "Heart Rate";
+    if (namespace === "Fitbit") return "activities-heart-intraday";
+    if (namespace === "Garmin") return "daily-heartRate";
+    // Oura, Health Connect
+    return "heart-rate";
+}
+
 export default async function (dataSources: DeviceDataV2Namespace[], startDate: Date, endDate: Date,
     aggregationOption: IntradayHeartRateAggregationOption, aggregationIntervalMinutes: number): Promise<IntradayHeartRateData> {
 
@@ -12,7 +20,7 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
 
     dataSources.forEach(dataSource => {
         const params: DeviceDataV2AggregateQuery = {
-            type: dataSource === "Fitbit" ? "activities-heart-intraday" : "Heart Rate",
+            type: getHeartRateTypeForNamespace(dataSource),
             namespace: dataSource,
             observedAfter: startDate.toISOString(),
             observedBefore: endDate.toISOString(),
@@ -21,7 +29,8 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
             aggregateFunctions: [aggregationOption]
         };
 
-        providers.push(queryAllDeviceDataV2Aggregates(params));
+        providers.push(queryAllDeviceDataV2Aggregates(params)
+            .catch(() => { return []; }));
     });
 
     if (providers.length == 0) {

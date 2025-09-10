@@ -95,6 +95,15 @@ async function checkSourceAvailability(
                 case "Garmin":
                     enabled = settings.garminEnabled;
                     break;
+                case "Dexcom":
+                    enabled = settings.dexcomEnabled;
+                    break;
+                case "AirNowApi":
+                    enabled = settings.airQualityEnabled;
+                    break;
+                case "WeatherBit":
+                    enabled = settings.weatherEnabled;
+                    break;
                 case "Oura":
                     enabled =
                         settings.ouraEnabled &&
