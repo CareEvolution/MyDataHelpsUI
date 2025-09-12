@@ -1,7 +1,7 @@
 import UnstyledButton from '../UnstyledButton';
 import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
-import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
 import "./SingleExternalAccount.css";
 import { getRelativeDateString } from "../../../helpers/date-helpers";
@@ -12,6 +12,7 @@ export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
 	onAccountRemoved: (account: ExternalAccount) => void;
 	onReconnectAccount: (account: ExternalAccount) => void;
+	onConnectToSuccessorProvider: (provider: ExternalAccountProvider) => void;
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -42,6 +43,11 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 			<div className="external-account-header">
 				{props.externalAccount.provider.logoUrl &&
 					<img alt={props.externalAccount.provider.name} src={props.externalAccount.provider.logoUrl} className="external-account-provider-logo" />
+				}
+				{props.externalAccount.provider.successorProviderID &&
+					<p className="external-account-status" style={{ marginLeft: 'auto' }}>
+						This provider has been replaced. Please connect <a href="javascript:{}" onClick={() => props.onConnectToSuccessorProvider(props.externalAccount.provider)}>here</a> to the new provider.
+					</p>
 				}
 				{!props.externalAccount.provider.logoUrl &&
 					<div className="external-account-provider-name">{props.externalAccount.provider.name}</div>

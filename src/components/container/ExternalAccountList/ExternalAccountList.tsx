@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from '@careevolution/mydatahelps-js';
 import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
 import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
@@ -53,6 +53,21 @@ export default function (props: ExternalAccountListProps) {
             });
     }
 
+    const connectToSuccessorProvider = async (provider: ExternalAccountProvider): Promise<void> => {
+        // TODO: if (props.previewState || !canConnectToProvider(provider)) return;
+        const connectExternalAccountOptions= { openNewWindow: false, standaloneModeFinalRedirectPath: "http://localhost:6006/iframe.html?connectExternalAccount=true&messageID=1&success=%SUCCESSVALUE%" }
+        if (typeof provider.successorProviderID === "number") {
+            MyDataHelps.connectExternalAccount(provider.successorProviderID, { openNewWindow: false })
+            .then(function () {
+                loadExternalAccounts();
+            });
+        } else {
+            console.error("successorProviderID is undefined for provider:", provider);
+        }
+        //props.onProviderConnected?.(provider);
+        //reloadExternalAccounts();
+    };
+
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", initialize);
@@ -70,7 +85,9 @@ export default function (props: ExternalAccountListProps) {
                     <SingleExternalAccount
                         externalAccount={externalAccount}
                         onAccountRemoved={(account: ExternalAccount) => onAccountRemoved(account)}
-                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)} />
+                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)}
+                        onConnectToSuccessorProvider={(provider: ExternalAccountProvider) => connectToSuccessorProvider(provider)}
+                    />
                 </Card>
             )}
             {loading &&
