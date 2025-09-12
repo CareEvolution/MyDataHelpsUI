@@ -12,7 +12,8 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Cedars-Sinai Health System",
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
-            "enabled": true
+            "enabled": true,
+            "successorID": 5
         } as ExternalAccountProvider
     }, {
         id: 2,
