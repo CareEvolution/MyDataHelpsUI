@@ -15,6 +15,7 @@ export { default as appleHealthStepsWhileWearingDeviceDataProvider } from "./app
 export { default as appleHealthTherapyMinutesDataProvider } from "./apple-health-therapy-minutes"
 export { default as appleHealthWalkingHeartRateAverageDataProvider } from "./apple-health-walking-heart-rate-average"
 export { default as appleHealthActiveEnergyBurnedDataProvider } from "./apple-health-active-energy-burned"
+export { default as appleHealthExerciseTimeDataProvider } from "./apple-health-exercise-time"
 export { default as appleHealthNumberOfAlcoholicBeveragesDataProvider } from "./apple-health-number-of-alcoholic-beverages"
 export { sedentaryMinutes as fitbitSedentaryMinutesDataProvider } from "./fitbit-activity-minutes"
 export { totalActiveMinutes as fitbitTotalActiveMinutesDataProvider } from "./fitbit-activity-minutes"

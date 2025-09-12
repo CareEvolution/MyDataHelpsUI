@@ -20,6 +20,7 @@ export enum DailyDataType {
 	AppleHealthTherapyMinutes = "AppleHealthTherapyMinutes",
 	AppleHealthWalkingHeartRateAverage = "AppleHealthWalkingHeartRateAverage",
 	AppleHealthActiveEnergyBurned = "AppleHealthActiveEnergyBurned",
+	AppleHealthExerciseTime = "AppleHealthExerciseTime",
 	AppleHealthNumberOfAlcoholicBeverages = "AppleHealthNumberOfAlcoholicBeverages",
 	FitbitSedentaryMinutes = "FitbitSedentaryMinutes",
 	FitbitActiveMinutes = "FitbitActiveMinutes",

@@ -3,11 +3,11 @@ import {
     appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
-    appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
+    appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider, appleHealthExerciseTimeDataProvider,
     appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -182,6 +182,15 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
+    },
+    {
+        type: DailyDataType.AppleHealthExerciseTime,
+        dataProvider: appleHealthExerciseTimeDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ExerciseTime"]),
+        labelKey: "exercise-time",
+        icon: < FontAwesomeSvgIcon icon={faPersonWalking} />,
+        formatter: defaultFormatter,
+        previewDataRange: [0, 90]
     },
     {
         type: DailyDataType.AppleHealthNumberOfAlcoholicBeverages,
