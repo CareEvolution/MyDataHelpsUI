@@ -53,19 +53,26 @@ export default function (props: ExternalAccountListProps) {
             });
     }
 
+    const externalAccountsById = (externalAccounts ?? []).reduce((linkedExternalAccounts, externalAccount) => {
+        linkedExternalAccounts[externalAccount.provider.id] = externalAccount;
+        return linkedExternalAccounts;
+    }, {} as Record<number, ExternalAccount>);
+
+    const canConnectToProvider = async (providerId: number): Promise<boolean> => {
+        // TODO >> const provider = await MyDataHelps.getExternalAccountProvider(providerId);
+        return /*provider.enabled || */externalAccountsById[providerId]?.status === 'unauthorized';
+    };
+
     const connectToSuccessorProvider = async (provider: ExternalAccountProvider): Promise<void> => {
-        // TODO: if (props.previewState || !canConnectToProvider(provider)) return;
-        const connectExternalAccountOptions= { openNewWindow: false, standaloneModeFinalRedirectPath: "http://localhost:6006/iframe.html?connectExternalAccount=true&messageID=1&success=%SUCCESSVALUE%" }
+        // TODO: if (!canConnectToProvider(provider)) return;
         if (typeof provider.successorProviderID === "number") {
-            MyDataHelps.connectExternalAccount(provider.successorProviderID, { openNewWindow: false })
-            .then(function () {
-                loadExternalAccounts();
-            });
+            MyDataHelps.connectExternalAccount(provider.successorProviderID, props.connectExternalAccountOptions ?? { openNewWindow: true })
+                .then(function () {
+                    loadExternalAccounts();
+                });
         } else {
-            console.error("successorProviderID is undefined for provider:", provider);
+            console.error("Successor Provider is undefined for provider:", provider);
         }
-        //props.onProviderConnected?.(provider);
-        //reloadExternalAccounts();
     };
 
     useEffect(() => {
