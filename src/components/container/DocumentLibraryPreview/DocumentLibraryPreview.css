@@ -6,6 +6,10 @@
     margin-bottom: 2px;
 }
 
+.mdhui-document-library-preview .mdhui-action .mdhui-loading-indicator {
+    height: 17px;
+}
+
 .mdhui-document-library-preview .mdhui-document-library-preview-documents {
     margin-top: 8px;
 }

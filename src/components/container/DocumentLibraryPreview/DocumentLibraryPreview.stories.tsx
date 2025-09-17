@@ -29,7 +29,8 @@ type Story = StoryObj<DocumentLibraryPreviewStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'some documents'
+        previewState: 'some documents',
+        useFullLoadingIndicator: false
     },
     argTypes: {
         colorScheme: {
@@ -41,6 +42,10 @@ export const Default: Story = {
             name: 'state',
             control: 'radio',
             options: ['loading', 'no documents', 'some documents']
+        },
+        useFullLoadingIndicator: {
+           name: 'full loading indicator?',
+           control: 'boolean'
         },
         ...argTypesToHide(['surveySpecification', 'documentLibraryViewBaseUrl', 'innerRef'])
     }

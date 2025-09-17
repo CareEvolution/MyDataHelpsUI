@@ -11,6 +11,7 @@ export interface DocumentLibraryPreviewProps {
     previewState?: 'loading' | DocumentLibraryPreviewPreviewState;
     surveySpecification: LibraryDocumentSurveySpecification;
     documentLibraryViewBaseUrl: string;
+    useFullLoadingIndicator?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -51,7 +52,8 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
     };
 
     return <div className="mdhui-document-library-preview" ref={props.innerRef}>
-        {(!documents || documents.length === 0) &&
+        {!documents && props.useFullLoadingIndicator && <LoadingIndicator />}
+        {((!documents && !props.useFullLoadingIndicator) || documents?.length === 0) &&
             <Action
                 title={language('document-library-preview-title')}
                 subtitle={language('document-library-preview-instructions')}
@@ -61,7 +63,6 @@ export default function DocumentLibraryPreview(props: DocumentLibraryPreviewProp
                         {language('document-library-preview-upload-button-text')}
                     </Button> : <LoadingIndicator />
                 }
-                indicatorPosition="topRight"
                 renderAs="div"
             />
         }
