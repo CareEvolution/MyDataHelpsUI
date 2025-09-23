@@ -65,8 +65,8 @@ export default function (props: ExternalAccountListProps) {
 
     const connectToSuccessorProvider = async (provider: ExternalAccountProvider): Promise<void> => {
         // TODO: if (!canConnectToProvider(provider)) return;
-        if (typeof provider.successorProviderID === "number") {
-            MyDataHelps.connectExternalAccount(provider.successorProviderID, props.connectExternalAccountOptions ?? { openNewWindow: true })
+        if (typeof provider.providerSuccessorID === "number") {
+            MyDataHelps.connectExternalAccount(provider.providerSuccessorID, props.connectExternalAccountOptions ?? { openNewWindow: true })
                 .then(function () {
                     loadExternalAccounts();
                 });

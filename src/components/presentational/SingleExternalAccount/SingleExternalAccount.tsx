@@ -44,7 +44,7 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 				{props.externalAccount.provider.logoUrl &&
 					<img alt={props.externalAccount.provider.name} src={props.externalAccount.provider.logoUrl} className="external-account-provider-logo" />
 				}
-				{props.externalAccount.provider.successorProviderID &&
+				{props.externalAccount.provider.providerSuccessorID &&
 					<p className="external-account-status" style={{ marginLeft: 'auto' }}>
 						This provider has been replaced. Please connect <a href="javascript:{}" onClick={() => props.onConnectToSuccessorProvider(props.externalAccount.provider)}>here</a> to the new provider.
 					</p>
