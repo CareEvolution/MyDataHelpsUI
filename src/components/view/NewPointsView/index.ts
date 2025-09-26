@@ -1,1 +1,1 @@
-export { default, NewPointsViewProps, NewPointsEntry, showNewPoints } from './NewPointsView';
+export { default, NewPointsViewProps, NewPointsEntry, showNewPoints, loadNewPoints } from './NewPointsView';
