@@ -46,7 +46,7 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 				}
 				{props.externalAccount.provider.successorID &&
 					<p className="external-account-status" style={{ marginLeft: 'auto', fontWeight: 'normal' }}>
-						{language('connect-to-new-provider')} <a href="javascript:{}" onClick={() => props.onConnectToSuccessorProvider(props.externalAccount.provider)}>{language('here')}</a>.
+						{language('connect-to-new-provider')} <a href="#" onClick={(e) => { e.preventDefault(); props.onConnectToSuccessorProvider(props.externalAccount.provider); }}>{language('here')}</a>.
 					</p>
 				}
 				{!props.externalAccount.provider.logoUrl &&
