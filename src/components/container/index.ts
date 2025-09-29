@@ -25,7 +25,6 @@ export { default as ExternalAccountsLoadingIndicator } from "./ExternalAccountsL
 export { default as ExternalAccountsPreview } from "./ExternalAccountsPreview"
 export { default as FitbitDevices } from "./FitbitDevices"
 export { default as FitbitMonthCharts } from "./FitbitMonthCharts"
-export { default as GarminDevices } from "./GarminDevices"
 export { default as GarminMonthCharts } from "./GarminMonthCharts"
 export { default as GlucoseChart } from "./GlucoseChart"
 export { default as GlucoseDayCoordinator, GlucoseContext, GlucoseDayCoordinatorPreviewState } from "./GlucoseDayCoordinator"

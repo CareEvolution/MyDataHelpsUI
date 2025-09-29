@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Card, StatusBarBackground, ConnectGarmin, GarminDevices, GarminMonthCharts, LoadingIndicator } from "../.."
+import { Layout, Card, StatusBarBackground, ConnectGarmin, GarminMonthCharts, LoadingIndicator } from "../.."
 import { ConnectGarminPreviewState } from "../../container/ConnectGarmin/ConnectGarmin";
 import { ConnectedDevicesPreviewState } from '../../container/ConnectedDevices/ConnectedDevices';
 import { MonthChartsPreviewState } from '../../container/MonthCharts/MonthCharts';
@@ -31,9 +31,6 @@ export default function GarminView(props: GarminViewProps) {
 				<>
 					<Card>
 						<ConnectGarmin previewState={props.connectPreview} garminProviderID={props.garminProviderID} disabledBehavior="displayError" />
-					</Card>
-					<Card>
-						<GarminDevices previewState={props.devicesPreview} />
 					</Card>
 					<Card allowOverflow={true}>
 						<GarminMonthCharts previewState={props.chartsPreview} />
