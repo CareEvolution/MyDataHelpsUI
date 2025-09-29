@@ -4,6 +4,7 @@ import {
     DataSource
 } from "../../../src/helpers/daily-data-types/availability-check";
 import MyDataHelps, {
+    DataCollectionSettings,
     DeviceDataNamespace,
     DeviceDataPointsPage,
     DeviceDataV2Namespace,
@@ -18,7 +19,7 @@ jest.mock("@careevolution/mydatahelps-js", () => ({
     }
 }));
 
-function createBaseSettings(enabled = false) {
+function createBaseSettings(enabled = false): DataCollectionSettings {
     return {
         ouraEnabled: enabled,
         fitbitEnabled: enabled,
@@ -37,7 +38,10 @@ function createBaseSettings(enabled = false) {
     };
 }
 
-function createDataCollectionSettings(providerName = "", enabled = false) {
+type DataCollectionSettingsEnabledPropertyPrefixes<T> = T extends `${infer P}Enabled` ? P : never;
+type ProviderName = DataCollectionSettingsEnabledPropertyPrefixes<keyof DataCollectionSettings>;
+
+function createDataCollectionSettings(providerName?: ProviderName, enabled = false) {
     const settings = createBaseSettings(false);
     if (providerName) {
         settings[`${providerName}Enabled`] = enabled;
@@ -46,7 +50,7 @@ function createDataCollectionSettings(providerName = "", enabled = false) {
 }
 
 function createTestContext(
-    settings,
+    settings: DataCollectionSettings,
     deviceDataV2Types: SupportedDeviceDataV2DataType[] = []
 ) {
     return {
@@ -130,6 +134,33 @@ describe("simpleAvailabilityCheck", () => {
             type: [type],
             limit: 1,
             modifiedAfter: modifiedAfter.toISOString()
+        });
+    });
+});
+
+describe("simpleAvailabilityCheck - With Project Namespace", () => {
+    const namespace: DeviceDataNamespace = "Project";
+    const type = "anyType";
+    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should return true when device data points are available", async () => {
+        queryDeviceData.mockResolvedValue({
+            deviceDataPoints: [{}]
+        } as DeviceDataPointsPage);
+
+        const settings = createDataCollectionSettings();
+        const checkAvailability = simpleAvailabilityCheck(namespace, type);
+        const result = await checkAvailability(createTestContext(settings));
+
+        expect(result).toBe(true);
+        expect(queryDeviceData).toHaveBeenCalledWith({
+            namespace: namespace,
+            type: [type],
+            limit: 1
         });
     });
 });
