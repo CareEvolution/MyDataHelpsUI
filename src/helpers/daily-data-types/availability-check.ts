@@ -126,6 +126,9 @@ async function checkSourceAvailability(
                         );
                     isV2 = true; // HealthConnect always uses V2
                     break;
+                case "Project":
+                    enabled = true;
+                    break;
                 default:
                     return Promise.reject(new Error("Unsupported namespace"));
             }

@@ -40,7 +40,7 @@
     padding: 16px 8px;
     text-align: center;
     color: var(--mdhui-text-color-4);
-    z-index: 5000;
+    z-index: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
