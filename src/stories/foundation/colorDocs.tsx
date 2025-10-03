@@ -380,7 +380,7 @@ const ColorDocs: React.FC = () => {
       </p>
       <ul>
         <li><strong>Magic number of 40+:</strong> Meets WCAG 2.0 AA Large Text (18pt/14pt bold or larger) contrast. For example, grey-90 and indigo-50.</li>
-        <li><strong>Magic number of 50+:</strong> Meets WCAG 2.0 AA contrast or AAA Large Text contrast. For example, grey-90 and red-40. <strong>Try to shoot for AA.</strong></li>
+        <li><strong>Magic number of 50+:</strong> Meets WCAG 2.0 AA contrast or AAA Large Text contrast. For example, grey-90 and red-40. <strong className="emphasis-text">We recommend this level of contrast for most web content.</strong></li>
         <li><strong>Magic number of 70+:</strong> Meets WCAG 2.0 AAA contrast. For example, grey-10 and red-80.</li>
       </ul>
       <p>Additionally, a grade of 50 will meet the Section 508 AA contrast requirement against both pure white (#000) and pure black (#fff).</p>

@@ -39,6 +39,13 @@ table {
 td, th {
   line-height: 1.2;
 }
+.emphasis-text {
+  color: var(--wcag2-cyan-60);
+  background: var(--wcag2-cyan-4);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 600;
+}
 
 /* Data Viz Use Case tiles */
 .data-viz-use-cases {
