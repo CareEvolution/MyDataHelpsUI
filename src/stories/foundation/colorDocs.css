@@ -79,11 +79,12 @@ td, th {
   align-items: center;
   min-width: 190px;
   margin-bottom: 10px;
+  gap: 5px;
 }
 
 .colorRow h3,
 .colorRow p {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .colorHeader code {
