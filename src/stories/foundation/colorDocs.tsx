@@ -117,7 +117,7 @@ function ContrastLevelLabel({ level }: { level: string }) {
   let colorVar = '';
   let label = '';
   if (!level) {
-    colorVar = 'var(--wcag2-grey-40)';
+    colorVar = 'var(--ce-grey-40)';
     label = 'N/A';
   } else {
     label = level;
@@ -150,7 +150,7 @@ const ColorCell: React.FC<ColorCellProps & {
   highlight70?: boolean;
   onHover?: (grade: number | null) => void;
 }> = ({ hue, grade, hoveredGrade, highlight40, highlight50, highlight70, onHover }) => {
-  const color = `var(--wcag2-${hue}-${grade})`;
+  const color = `var(--ce-${hue}-${grade})`;
   const colorDivRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = React.useState(false);
   const [showIcon, setShowIcon] = React.useState(false);
@@ -311,7 +311,7 @@ const ColorRow: React.FC<ColorRowProps> = ({ hue }) => {
       <header className="colorHeader">
         <h3>{hue}</h3>
         <p>
-          <code>var(--wcag2-{hue}-##)</code>
+          <code>var(--ce-{hue}-##)</code>
         </p>
       </header>
       <div className="colors">
@@ -341,14 +341,14 @@ const GradientSection: React.FC = () => {
         <h3>Gradients</h3>
         <p>
           There are both regular and dark version of the gradients. The regular version is designed for black text on top, while the dark version is designed for white text on top.
-          <code>var(--wcag2-gradient-##)</code>
+          <code>var(--ce-gradient-##)</code>
         </p>
       </header>
       <h4 style={{ margin: '8px 0 4px' }}>Light (for dark text)</h4>
       <div className="gradientCells">
         {lightGradients.map((gradient) => (
           <div className="colorCell" key={gradient}>
-            <div className="color" style={{ background: `var(--wcag2-gradient-${gradient})` }} />
+            <div className="color" style={{ background: `var(--ce-gradient-${gradient})` }} />
             <div className='grade'>
               {gradient}
             </div>
@@ -359,7 +359,7 @@ const GradientSection: React.FC = () => {
       <div className="gradientCells">
         {darkGradients.map((gradient) => (
           <div className="colorCell" key={gradient}>
-            <div className="color" style={{ background: `var(--wcag2-gradient-${gradient})` }} />
+            <div className="color" style={{ background: `var(--ce-gradient-${gradient})` }} />
             <div className='grade'>
               {gradient}
             </div>
@@ -407,7 +407,7 @@ const ColorDocs: React.FC = () => {
         </div>
       </details>
       <h3>Usage</h3>
-      <p><code>color: var(--wcag2-[hue]-[grade])</code> Example: <code>color: var(--wcag2-blue-40)</code> </p>
+      <p><code>color: var(--ce-[hue]-[grade])</code> Example: <code>color: var(--ce-blue-40)</code> </p>
       <h4>UI Use Cases</h4>
       <ul>
         <li>The 5 lightest (1-5) and darkest (95-99) grades are typically used as background colors.</li>

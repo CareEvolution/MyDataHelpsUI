@@ -1,8 +1,8 @@
 /* Highlight color variables for border and label */
 :root {
-  --color-highlight-40: var(--wcag2-grey-30);
-  --color-highlight-50: var(--wcag2-green-40);
-  --color-highlight-70: var(--wcag2-cyan-50);
+  --color-highlight-40: var(--ce-grey-30);
+  --color-highlight-50: var(--ce-green-40);
+  --color-highlight-70: var(--ce-cyan-50);
 }
 * {
   box-sizing: border-box;
@@ -20,8 +20,8 @@ h4 {
   margin-top: 16px !important;
 }
 details {
-  background: var(--wcag2-grey-2);
-  border: 1px solid var(--wcag2-grey-10);
+  background: var(--ce-grey-2);
+  border: 1px solid var(--ce-grey-10);
   border-radius: 6px;
   margin-bottom: 16px;
 }
@@ -40,8 +40,8 @@ td, th {
   line-height: 1.2;
 }
 .emphasis-text {
-  color: var(--wcag2-cyan-60);
-  background: var(--wcag2-cyan-4);
+  color: var(--ce-cyan-60);
+  background: var(--ce-cyan-4);
   padding: 2px 4px;
   border-radius: 2px;
   font-weight: 600;
@@ -63,19 +63,19 @@ td, th {
   justify-content: center;
 }
 .data-viz-air {
-  background-color: var(--wcag2-cyan-50);
+  background-color: var(--ce-cyan-50);
   color: #fff !important;
 }
 .data-viz-sleep {
-  background-color: var(--wcag2-indigo-50);
+  background-color: var(--ce-indigo-50);
   color: #fff !important;
 }
 .data-viz-heart {
-  background-color: var(--wcag2-orange-40);
+  background-color: var(--ce-orange-40);
   color: #fff !important;
 }
 .data-viz-activity {
-  background-color: var(--wcag2-yellow-10);
+  background-color: var(--ce-yellow-10);
   color: #000 !important;
 }
 
