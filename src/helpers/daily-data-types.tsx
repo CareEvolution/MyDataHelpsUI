@@ -28,6 +28,8 @@ export enum DailyDataType {
 	FitbitVeryActiveMinutes = "FitbitVeryActiveMinutes",
 	FitbitBreathingRate = "FitbitBreathingRate",
 	FitbitCaloriesBurned = "FitbitCaloriesBurned",
+	FitbitRestingCaloriesBurned = "FitbitRestingCaloriesBurned",
+	FitbitActiveCaloriesBurned = "FitbitActiveCaloriesBurned",
 	FitbitElevatedHeartRateMinutes = "FitbitElevatedHeartRateMinutes",
 	FitbitFatBurnHeartRateMinutes = "FitbitFatBurnHeartRateMinutes",
 	FitbitCardioHeartRateMinutes = "FitbitCardioHeartRateMinutes",
@@ -70,6 +72,7 @@ export enum DailyDataType {
 	GoogleFitTherapyMinutes = "GoogleFitTherapyMinutes",
 	Steps = "Steps",
 	StepsWithGoogleFit = "StepsWithGoogleFit",
+	ActiveCaloriesBurned = "ActiveCaloriesBurned",
 	RestingHeartRate = "RestingHeartRate",
 	SleepMinutes = "SleepMinutes",
 	MindfulMinutes = "MindfulMinutes",
@@ -90,8 +93,9 @@ export enum DailyDataType {
 	HealthConnectTotalCaloriesBurned = "HealthConnectTotalCaloriesBurned",
 	OuraSteps = "OuraSteps",
 	OuraRestingHeartRate = "OuraRestingHeartRate",
-	OuraSleepMinutes = "OuraSleepMinutes"
-};
+	OuraSleepMinutes = "OuraSleepMinutes",
+	OuraActiveCaloriesBurned = "OuraActiveCaloriesBurned"
+}
 
 export interface DailyDataTypeDefinition {
 	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality" | "Oura" | "HealthConnect";
