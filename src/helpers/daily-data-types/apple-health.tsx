@@ -177,7 +177,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthActiveEnergyBurned,
         dataProvider: appleHealthActiveEnergyBurnedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ActiveEnergyBurned"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["ActiveEnergyBurned", "Active Energy Burned"]),
         labelKey: "active-energy-burned",
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
