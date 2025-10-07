@@ -1,7 +1,7 @@
-import { faBed, faHeartbeat, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { ouraRestingHeartRateDataProvider, ouraSleepMinutesDataProvider, ouraStepsDataProvider } from "../daily-data-providers";
-import { DailyDataTypeDefinition, DailyDataType } from "../daily-data-types";
+import { ouraActiveCaloriesBurnedDataProvider, ouraRestingHeartRateDataProvider, ouraSleepMinutesDataProvider, ouraStepsDataProvider } from "../daily-data-providers";
+import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import React from "react";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -37,6 +37,15 @@ let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
         yAxisConverter: sleepYAxisConverter,
         previewDataRange: [400, 540],
         requiresV2Api: true
+    },
+    {
+        type: DailyDataType.OuraActiveCaloriesBurned,
+        dataProvider: ouraActiveCaloriesBurnedDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("Oura", ["daily-activity"]),
+        labelKey: "active-calories-burned",
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
+        formatter: defaultFormatter,
+        previewDataRange: [300, 500]
     }
 ];
 ouraTypeDefinitions.forEach((def) => {

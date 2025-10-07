@@ -1,11 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { fitbitBreathingRateDataProvider, fitbitCaloriesBurnedDataProvider, fitbitCardioMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitLightSleepMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitRestingHeartRateDataProvider, fitbitSedentaryMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitWearMinutesDataProvider } from "../daily-data-providers";
+import { fitbitActiveCaloriesBurnedDataProvider, fitbitBreathingRateDataProvider, fitbitCaloriesBurnedDataProvider, fitbitCardioMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitLightSleepMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitRestingCaloriesBurnedDataProvider, fitbitRestingHeartRateDataProvider, fitbitSedentaryMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitWearMinutesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPerson, faPersonRunning, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
-import { formatNumberForLocale } from "../../helpers/locale";
+import { formatNumberForLocale } from "../locale";
 
 let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -70,6 +70,24 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1800, 2200]
+    },
+    {
+        type: DailyDataType.FitbitRestingCaloriesBurned,
+        dataProvider: fitbitRestingCaloriesBurnedDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("Fitbit", ["CaloriesBMR"]),
+        labelKey: "resting-calories-burned",
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
+        formatter: defaultFormatter,
+        previewDataRange: [1500, 1700]
+    },
+    {
+        type: DailyDataType.FitbitActiveCaloriesBurned,
+        dataProvider: fitbitActiveCaloriesBurnedDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("Fitbit", ["CaloriesBMR"]),
+        labelKey: "active-calories-burned",
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
+        formatter: defaultFormatter,
+        previewDataRange: [300, 500]
     },
     {
         type: DailyDataType.FitbitElevatedHeartRateMinutes,

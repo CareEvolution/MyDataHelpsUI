@@ -1,27 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import {
-    faBed,
-    faHeartbeat,
-    faHourglassHalf,
-    faShoePrints
-} from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import {
-    defaultFormatter,
-    heartRateFormatter,
-    minutesFormatter,
-    sleepYAxisConverter
-} from "./formatters";
-import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import {
-    combinedMindfulMinutesDataProvider,
-    combinedSleepDataProvider,
-    combinedStepsDataProvider,
-    combinedTherapyMinutesDataProvider
-} from "../daily-data-providers";
+import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
-import { formatNumberForLocale } from "../../helpers/locale";
+import { formatNumberForLocale } from "../locale";
 
 const RESTING_HEART_RATE_SOURCES = sources(
     ["AppleHealth", "RestingHeartRate"],
@@ -74,11 +58,19 @@ const THERAPY_MINUTES_SOURCES = sources(
     ["GoogleFit", "SilverCloudSession"]
 );
 
+const ACTIVE_CALORIES_BURNED_SOURCES = sources(
+    ["Fitbit", "CaloriesBMR"],
+    ["Garmin", "Daily"],
+    ["AppleHealth", "ActiveEnergyBurned"],
+    ["HealthConnect", "active-calories-burned-daily"],
+    ["Oura", "daily-activity"]
+);
+
 const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
-        dataProvider: combinedRestingHeartRate,
+        dataProvider: combinedRestingHeartRateDataProvider,
         availabilityCheck: combinedAvailabilityCheck(
             RESTING_HEART_RATE_SOURCES
         ),
@@ -140,6 +132,16 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.ActiveCaloriesBurned,
+        dataProvider: combinedActiveCaloriesBurnedDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(ACTIVE_CALORIES_BURNED_SOURCES),
+        labelKey: "active-calories-burned",
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
+        formatter: defaultFormatter,
+        previewDataRange: [300, 500]
     }
 ];
 export default combinedTypeDefinitions;
