@@ -4,6 +4,14 @@
     background: var(--mdhui-background-color-0);
 }
 
+.mdhui-single-external-account .provider-successor-connection-nudge {
+    padding: 16px;
+    padding-bottom: 0;
+    padding-top: 0;
+    float: right;
+    font-size: .88em;
+}
+
 .mdhui-single-external-account .external-account-header {
     position: relative;
     padding: 8px;

@@ -81,6 +81,7 @@ export default function (props: ExternalAccountListProps) {
                         onAccountRemoved={(account: ExternalAccount) => onAccountRemoved(account)}
                         onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)}
                         onConnectToSuccessorProvider={(provider: ExternalAccountProvider) => connectToSuccessorProvider(provider)}
+                        externalAccountProviderIds={externalAccounts.map(a => a.provider.id)}
                     />
                 </Card>
             )}
