@@ -16,8 +16,8 @@ export default async function (startDate: Date, endDate: Date, combinedDataColle
     if (dataCollectionHelper.canQueryV1('Garmin', 'Calories')) {
         providers.push(garminActiveCaloriesDataProvider(startDate, endDate));
     }
-    if (dataCollectionHelper.canQueryV1('AppleHealth', 'ActiveEnergyBurned')) {
-        providers.push(appleHealthActiveEnergyBurnedDataProvider(startDate, endDate));
+    if (dataCollectionHelper.canQueryV1('AppleHealth', 'ActiveEnergyBurned') || dataCollectionHelper.canQueryV2('AppleHealth', 'Active Energy Burned')) {
+        providers.push(appleHealthActiveEnergyBurnedDataProvider(startDate, endDate, combinedDataCollectionSettings));
     }
     if (dataCollectionHelper.canQueryV2('HealthConnect', 'active-calories-burned-daily')) {
         providers.push(healthConnectActiveCaloriesBurnedDataProvider(startDate, endDate));

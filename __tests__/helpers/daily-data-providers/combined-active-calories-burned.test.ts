@@ -184,6 +184,28 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
+    it('Should return the Apple Health result when fully enabled (v2).', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Active Energy Burned', enabled: true }
+        );
+
+        const appleHealthResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(appleHealthActiveEnergyBurnedDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+
+        const result = await combinedActiveCaloriesBurned(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(appleHealthResult);
+        expect(fitbitActiveCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
+        expect(garminActiveCaloriesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectActiveCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraActiveCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
     it('Should return the Health Connect result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.healthConnectEnabled = true;
