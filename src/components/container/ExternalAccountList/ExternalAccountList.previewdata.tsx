@@ -13,7 +13,7 @@ export var previewExternalAccounts: ExternalAccount[] =
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
             "enabled": true,
-            "successorID": 1
+            "successorID": 99
         } as ExternalAccountProvider
     }, {
         id: 2,
@@ -26,7 +26,7 @@ export var previewExternalAccounts: ExternalAccount[] =
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo",
             "enabled": true,
-            "successorID": 99
+            "successorID": 1
         } as ExternalAccountProvider
     }, {
         id: 3,
