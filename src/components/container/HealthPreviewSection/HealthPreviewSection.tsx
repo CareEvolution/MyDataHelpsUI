@@ -11,6 +11,7 @@ import procedureIcon from "../../../assets/icon-procedure.svg";
 import immunizationIcon from "../../../assets/icon-immunization.svg";
 import "./HealthPreviewSection.css"
 import getHealthPreviewSectionData from "./HealthPreviewSection.previewdata";
+import { useInitializeView } from "../../../helpers";
 
 export type HealthPreviewSectionConcept = "Medications" | "Immunizations" | "Reports" | "Allergies" | "Conditions" | "Procedures";
 
@@ -22,7 +23,12 @@ export interface HealthPreviewSectionProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: HealthPreviewSectionProps) {
+/**
+ * Display a preview of EHR data for one of the following concepts: Medications, Immunizations, Reports, Allergies, Conditions, Procedures
+ * A connection to your EHR provider is required to display the data.
+ * Supports an onClick event for customizing when clicking on the arrow indicator
+ */
+export default function HealthPreviewSection(props: HealthPreviewSectionProps) {
     const [model, setModel] = useState<any>();
 
     function loadData() {
@@ -47,15 +53,9 @@ export default function (props: HealthPreviewSectionProps) {
             });
     }
 
-    useEffect(() => {
+    useInitializeView(() => {
         loadData();
-        MyDataHelps.on("externalAccountSyncComplete", loadData);
-        MyDataHelps.on("applicationDidBecomeVisible", loadData);
-        return () => {
-            MyDataHelps.off("externalAccountSyncComplete", loadData);
-            MyDataHelps.off("applicationDidBecomeVisible", loadData);
-        }
-    }, [props.concept]);
+    }, ["externalAccountSyncComplete", "healthConnectPhrSyncComplete"], [props.concept]);
 
     function getIconUrl() {
         switch (props.concept) {
@@ -100,7 +100,7 @@ export default function (props: HealthPreviewSectionProps) {
     }
 
     return <div ref={props.innerRef}>
-        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={() => props.onClick()}>
+        <Action className="mdhui-health-preview-section" indicatorPosition={props.indicatorPosition} bottomBorder indicatorValue={model.Count} title={getTitle()} titleIcon={<img className="mdhui-health-preview-icon" src={getIconUrl()} />} onClick={props.onClick}>
             <div>
                 {model.PreviewValues.map((item: any) => <div key={item} className="mdhui-health-preview-item">{item}</div>)}
             </div>

@@ -1,33 +1,46 @@
-﻿import React from "react";
-import {ComponentMeta, ComponentStory} from "@storybook/react";
-import Histogram, {HistogramProps} from "./Histogram";
-import Layout from "../Layout";
+﻿import React from 'react';
+import { Layout } from '../../presentational';
+import Histogram, { HistogramProps } from './Histogram';
+import { Meta } from '@storybook/react/*';
 
-export default {
-    title: "Presentational/Histogram",
+const meta: Meta<typeof Histogram> = {
+    title: 'Presentational/Histogram',
     component: Histogram,
-    parameters: {
-        layout: 'fullscreen',
+    parameters: { layout: 'fullscreen' },
+    render: (args: HistogramProps) => <Layout colorScheme="auto"><Histogram {...args} /></Layout>
+};
+
+const sampleEntries = [
+    { label: 'Category A', color: '#c4291c', value: 25 },
+    { label: 'Category B', color: '#e35c33', value: 40 },
+    { label: 'Category C', color: '#5db37e', value: 15 },
+    { label: 'Category D', color: '#429bdf', value: 30 }
+];
+
+const sampleEntriesWithOnSelect = [
+    { label: 'Category A', color: '#c4291c', value: 25, onSelect: () => console.log('Selected Category A') },
+    { label: 'Category B', color: '#e35c33', value: 40, onSelect: () => console.log('Selected Category B') },
+    { label: 'Category C', color: '#5db37e', value: 15, onSelect: () => console.log('Selected Category C') },
+    { label: 'Category D', color: '#429bdf', value: 30, onSelect: () => console.log('Selected Category D') }
+];
+
+export const Default = {
+    args: {
+        entries: sampleEntries
     }
-} as ComponentMeta<typeof Histogram>;
+};
 
-const Template: ComponentStory<typeof Histogram> = (args: HistogramProps) => <Layout colorScheme="auto"><Histogram {...args} /></Layout>;
+export const Selectable = {
+    args: {
+        entries: sampleEntriesWithOnSelect
+    }
+};
 
-export const Default = Template.bind({});
-Default.args = {
-    entries: [
-        {label: "Insomnia", color: "#c4291c", value: 21},
-        {label: "Neck Pain", color: "#e35c33", value: 15},
-        {label: "Back Pain", color: "#5db37e", value: 14},
-        {label: "Headache", color: "#429bdf", value: 13},
-        {label: "Fatigue", color: "#7b88c6", value: 13},
-        {label: "Anxiety", color: "#616161", value: 13},
-        {label: "Joint Pain", color: "#d98177", value: 11},
-        {label: "Nausea", color: "#f5b722", value: 11},
-        {label: "Light Sensitivity", color: "#397d49", value: 10},
-        {label: "Abdominal Pain", color: "#4154af", value: 10},
-        {label: "IBS", color: "#8333a4", value: 7},
-        {label: "Shortness of Breath", color: "#f686ae", value: 6},
-        {label: "Brain Fog", color: "#af9fd7", value: 6}
-    ]
-}
+export const WithLinkColorDefinition = {
+    args: {
+        entries: sampleEntriesWithOnSelect,
+        linkColor: { lightMode: '#71b345', darkMode: '#a1e375' }
+    }
+};
+
+export default meta;

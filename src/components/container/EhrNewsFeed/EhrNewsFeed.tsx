@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import OnVisibleTrigger from '../../presentational/OnVisibleTrigger';
 import { getNewsFeedPage } from '../../../helpers/news-feed/data';
-import { format, parseISO } from 'date-fns';
 import { Action, Card, LoadingIndicator, Title } from '../../presentational';
 import language from '../../../helpers/language';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -10,8 +9,7 @@ import "./EhrNewsFeed.css"
 import { EhrNewsFeedEventModel, EhrNewsFeedType } from '../../../helpers/news-feed/types';
 import { previewFeed } from '../../../helpers/news-feed/previewData';
 import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { getLocaleFromIso } from '../../../helpers';
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import { getFullDateString, getTimeOfDayString, toDate } from '../../../helpers/date-helpers';
 
 export interface EhrNewsFeedProps {
     previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports"
@@ -39,15 +37,11 @@ export default function (props: EhrNewsFeedProps) {
     let [nextPageDate, setNextPageDate] = useState<string | undefined>(undefined);
     let [finished, setFinished] = useState<boolean>(false);
 
-    function dayLabel(date: string) {
-        return format(parseISO(date), 'MMMM do, yyyy');
-    }
-
     function loadMore() {
         function addEvents(events: EhrNewsFeedEventModel[]) {
             let newDayBuckets = [...dayBuckets];
             events.forEach((event) => {
-                let eventDayLabel = dayLabel(event.Date);
+                let eventDayLabel = getFullDateString(event.Date);
                 if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day == eventDayLabel) {
                     newDayBuckets[newDayBuckets.length - 1].items.push(event);
                 } else {
@@ -92,6 +86,7 @@ export default function (props: EhrNewsFeedProps) {
     function filterEvents(events: EhrNewsFeedEventModel[], filter: string) {
         return events.filter((event) => {
             let keywords = eventTypeDefinitions[event.Type].getKeywords(event);
+            if (event.Type == "Immunization" && !keywords.length) { return false; }
             if (!keywords.length) { return !filter; }
             return keywords.some((keyword) => keyword.toLowerCase().includes(filter.toLowerCase()));
         });
@@ -166,10 +161,8 @@ export default function (props: EhrNewsFeedProps) {
 
 function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event: EhrNewsFeedEventModel) => void }) {
     let definition = eventTypeDefinitions[props.event.Type];
-    let date = format(parseISO(props.event.Date), "h:mm a", { locale: getLocaleFromIso(MyDataHelps.getCurrentLanguage()) });
-    if (date === "12:00 AM") {
-        date = "";
-    }
+    let date = toDate(props.event.Date);
+    let timeString = date ? getTimeOfDayString(date) : undefined;
 
     function getTitle() {
         let titleItems = definition.getTitleItems(props.event);
@@ -191,6 +184,6 @@ function NewsFeedListItem(props: { event: EhrNewsFeedEventModel, onClick: (event
     >
         <div className="mdhui-news-feed-list-item-title">{getTitle()}</div>
         {definition.getPreview && definition.getPreview(props.event)}
-        <div className="mdhui-news-feed-list-item-date">{`${date ? date + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
+        <div className="mdhui-news-feed-list-item-date">{`${timeString ? timeString + " • " : ""}${props.event.Patient.RecordAuthority}`}</div>
     </Action>;
 }

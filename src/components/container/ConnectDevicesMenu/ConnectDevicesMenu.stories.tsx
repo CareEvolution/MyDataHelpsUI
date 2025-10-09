@@ -13,7 +13,7 @@ export const Web = {
 };
 
 export const iOS = {
-    name:"iOS",
+    name: "iOS",
     args: {
         previewState: "iOS"
     },
@@ -21,7 +21,7 @@ export const iOS = {
 };
 
 export const Android = {
-    name:"Android",
+    name: "Android",
     args: {
         previewState: "Android"
     },
@@ -31,7 +31,8 @@ export const Android = {
 export const ConnectedStates = {
     args: {
         previewState: "ConnectedStates",
-        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom"]
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Environmental", "Oura"],
+        postalCodeSurveyName: "SetPostalCode"
     },
     render: render
 };
@@ -52,6 +53,34 @@ export const MediumHeader = {
     },
     render: render
 };
+
+export const iOSEnableAppleHealthSurvey = {
+    name: "Enable Apple Health Survey",
+    args: {
+        previewState: "iOS",
+        enableAppleHealthSurveyName: "EnableAppleHealth"
+    },
+    render: render
+};
+
+export const AndroidEnableGoogleFitSurvey = {
+    name: "Enable Google Fit Survey",
+    args: {
+        previewState: "Android",
+        enableGoogleFitSurveyName: "EnableGoogleFit"
+    },
+    render: render
+};
+
+export const ConnectEnvironmental = {
+    name: "Connect Environmental Collection",
+    args: {
+        previewState: "Web",
+        postalCodeSurveyName: "SetPostalCode"
+    },
+    render: render
+};
+
 
 export const Live = {
     args: {

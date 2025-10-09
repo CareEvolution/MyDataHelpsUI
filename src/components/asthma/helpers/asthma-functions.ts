@@ -4,13 +4,13 @@ import language from '../../../helpers/language';
 import { ColorDefinition } from '../../../helpers/colors';
 
 export const dateToAsthmaLogEntryIdentifier = (date: Date): string => {
-    return formatISO(date, {representation: 'date'});
+    return formatISO(date, { representation: 'date' });
 };
 
 const computePast7Dates = (date: Date): Date[] => {
     let dates: Date[] = [];
     for (let x = 0; x < 7; x++) {
-        dates.push(add(new Date(date), {days: -x}))
+        dates.push(add(new Date(date), { days: -x }))
     }
     return dates;
 };
@@ -73,7 +73,7 @@ export const computeAsthmaControlState = (logEntries: AsthmaLogEntry[], date: Da
         };
     }
 
-    return {status: 'no-data'};
+    return { status: 'no-data' };
 };
 
 export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
@@ -151,6 +151,7 @@ export const getAsthmaTriggerTexts = (triggers: AsthmaTrigger[] | undefined): st
         if (trigger === 'Cold/viral illness') return language('asthma-trigger-cold-illness');
         if (trigger === 'Animal exposure') return language('asthma-trigger-animal-exposure');
         if (trigger === 'Seasonal allergens/pollen') return language('asthma-trigger-seasonal-allergens');
+        if (trigger === 'Exercise') return language('asthma-trigger-exercise');
         if (trigger === 'Smoke (tobacco or wood burning)') return language('asthma-trigger-smoke');
         if (trigger === 'Extreme weather changes') return language('asthma-trigger-weather-changes');
         if (trigger === 'Air pollution') return language('asthma-trigger-air-pollution');
@@ -178,6 +179,7 @@ export const getAsthmaTriggers = (triggerTexts: string[]): AsthmaTrigger[] => {
         if (triggerText === language('asthma-trigger-cold-illness')) return 'Cold/viral illness';
         if (triggerText === language('asthma-trigger-animal-exposure')) return 'Animal exposure';
         if (triggerText === language('asthma-trigger-seasonal-allergens')) return 'Seasonal allergens/pollen';
+        if (triggerText === language('asthma-trigger-exercise')) return 'Exercise';
         if (triggerText === language('asthma-trigger-smoke')) return 'Smoke (tobacco or wood burning)';
         if (triggerText === language('asthma-trigger-weather-changes')) return 'Extreme weather changes';
         if (triggerText === language('asthma-trigger-air-pollution')) return 'Air pollution';

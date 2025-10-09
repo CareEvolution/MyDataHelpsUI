@@ -32,7 +32,7 @@
     width: 120px;
     height: 20px;
     line-height: 20px;
-    left: calc(50% - 76px);
+    left: calc(50% - 68px);
     top: calc(50% - 26px);
     border: 1px solid var(--mdhui-border-color-1);
     background: var(--mdhui-background-color-0);
@@ -40,7 +40,7 @@
     padding: 16px 8px;
     text-align: center;
     color: var(--mdhui-text-color-4);
-    z-index: 5000;
+    z-index: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -1,17 +1,18 @@
 import React from 'react';
 import { Layout, NavigationBar } from '../../../presentational';
 import { AsthmaActionPlanManager } from '../../components';
+import { AsthmaActionPlanManagerPreviewState } from '../../components/AsthmaActionPlanManager/AsthmaActionPlanManager.previewData';
 
 export interface AsthmaActionPlanViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
-    previewState?: 'loading' | 'loaded without action plan' | 'loaded with action plan'
+    previewState?: AsthmaActionPlanManagerPreviewState;
     learnMoreUrl: string;
     editActionPlanSurveyName: string;
 }
 
 export default function (props: AsthmaActionPlanViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
-        <NavigationBar showCloseButton={true}/>
+        <NavigationBar showCloseButton={true} />
         <AsthmaActionPlanManager
             previewState={props.previewState}
             learnMoreUrl={props.learnMoreUrl}

@@ -8,6 +8,7 @@ import "../HealthPreviewSection/HealthPreviewSection.css"
 import language from "../../../helpers/language";
 import { importantLabs, recentLabs } from "./LabResultsSummary.previewdata";
 import { TermInformationReference } from "../TermInformation/TermInformation";
+import { useInitializeView } from "../../../helpers";
 
 export interface LabResultsSummaryProps {
     previewState?: "ImportantLabs" | "RecentLabs" | "NoData"
@@ -16,7 +17,12 @@ export interface LabResultsSummaryProps {
     innerRef?: React.Ref<HTMLDivElement>
 }
 
-export default function (props: LabResultsSummaryProps) {
+/** Displays participant EHR Lab data. A connection to an EHR provider is required to display the data.
+ * Can be configured to show Recent, or Important labs. Important labs can include sparklines. 
+ * An onClick event is supported for customizing where the user will go when drillin into the full lab report
+ * An onViewTermInfo event is supported for customizing what happens when the user clicks on a term information button
+*/
+export default function LabResultsSummary(props: LabResultsSummaryProps) {
     const [model, setModel] = useState<any>(null);
     const [noOverflow, setNoOverflow] = useState<boolean>(false);
 
@@ -46,20 +52,12 @@ export default function (props: LabResultsSummaryProps) {
             });
     }
 
-    useEffect(() => {
+    useInitializeView(() => {
         if (getScrollbarWidth() > 0) {
             setNoOverflow(true);
         }
-
         getLabResultsSummary();
-
-        MyDataHelps.on("externalAccountSyncComplete", getLabResultsSummary);
-        MyDataHelps.on("applicationDidBecomeVisible", getLabResultsSummary);
-        return () => {
-            MyDataHelps.off("externalAccountSyncComplete", getLabResultsSummary);
-            MyDataHelps.off("applicationDidBecomeVisible", getLabResultsSummary);
-        }
-    }, []);
+    }, ["externalAccountSyncComplete", "healthConnectPhrSyncComplete"], []);
 
     var getScrollbarWidth = function () {
         var div: any, width: any = (getScrollbarWidth as any).width;

@@ -1,4 +1,4 @@
-import { add, format, startOfDay } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { BloodPressureDataPoint } from "../../../helpers/blood-pressure-data-providers/survey-blood-pressure-data-provider";
 
 export var previewBloodPressureDataPoint: BloodPressureDataPoint[] =

@@ -9,13 +9,15 @@ export const core = css`
     --mdhui-fadein-animation: fadein 1s;
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
-    --mdhui-modal-overlay-color: rgba(0, 0, 0, 0.5);
+    --mdhui-modal-overlay-color: rgba(130, 130, 130, 0.5);
     
     --mdhui-padding-xxs: 4px;
     --mdhui-padding-xs: 8px;
     --mdhui-padding-sm: 12px;
     --mdhui-padding-md: 16px;
     --mdhui-padding-lg: 24px;
+
+    --mdhui-touch: 44px;
 }
 
 @media (prefers-reduced-motion) {
@@ -315,6 +317,7 @@ export const lightColorScheme = css`
     --mdhui-background-color-0: #fff;
     --mdhui-background-color-1: #f5f5f5;
     --mdhui-background-color-2: #ddd;
+    --mdhui-background-color-highest-contrast: #fff;
 
     --mdhui-border-color-0: #eee;
     --mdhui-border-color-1: #ddd;
@@ -340,6 +343,7 @@ export const darkColorScheme = css`
     --mdhui-background-color-0: #2c2c2d;
     --mdhui-background-color-1: #1c1c1d;
     --mdhui-background-color-2: #000;
+    --mdhui-background-color-highest-contrast: #000;
 
     --mdhui-border-color-0: #444446;
     --mdhui-border-color-1: #444;
@@ -368,6 +372,7 @@ a {
 
 html {
     font-size: 17px;
+    height: 100%;
 }
 
 @supports (font: -apple-system-body) {
@@ -385,4 +390,5 @@ body {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.3;
     font-size: 17px;
+    height: 100%;
 }`;

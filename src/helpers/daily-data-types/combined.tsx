@@ -1,35 +1,87 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faHeartbeat, faPersonRunning } from "@fortawesome/free-solid-svg-icons";
-import language from "../language";
+import {
+    faBed,
+    faHeartbeat,
+    faHourglassHalf,
+    faShoePrints
+} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import {
+    defaultFormatter,
+    heartRateFormatter,
+    minutesFormatter,
+    sleepYAxisConverter
+} from "./formatters";
 import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import { combinedSleepDataProvider, combinedStepsDataProvider } from "../daily-data-providers";
-import { simpleAvailabilityCheck } from "./availability-check";
+import {
+    combinedMindfulMinutesDataProvider,
+    combinedSleepDataProvider,
+    combinedStepsDataProvider,
+    combinedTherapyMinutesDataProvider
+} from "../daily-data-providers";
+import { combinedAvailabilityCheck, sources } from "./availability-check";
+import { formatNumberForLocale } from "../../helpers/locale";
 
-let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
+const RESTING_HEART_RATE_SOURCES = sources(
+    ["AppleHealth", "RestingHeartRate"],
+    ["Fitbit", "RestingHeartRate"],
+    ["Garmin", "Daily"],
+    ["Oura", "sleep", true],
+    ["HealthConnect", "resting-heart-rate", true]
+);
+
+const STEPS_SOURCES = sources(
+    ["AppleHealth", "HourlySteps"],
+    ["Fitbit", "Steps"],
+    ["Garmin", "Daily"],
+    ["HealthConnect", "steps-daily", true],
+    ["Oura", "daily-activity", true]
+);
+
+const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
+    ["AppleHealth", "HourlySteps"],
+    ["GoogleFit", "Steps"],
+    ["Fitbit", "Steps"],
+    ["Garmin", "Daily"],
+    ["HealthConnect", "steps-daily", true],
+    ["Oura", "daily-activity", true]
+);
+
+const SLEEP_MINUTES_SOURCES = sources(
+    ["AppleHealth", "SleepAnalysisInterval"],
+    [
+        "Fitbit",
+        [
+            "SleepLevelRem",
+            "SleepLevelLight",
+            "SleepLevelDeep",
+            "SleepLevelAsleep"
+        ]
+    ],
+    ["Garmin", "Sleep"],
+    ["Oura", "sleep", true],
+    ["HealthConnect", "sleep", true]
+);
+
+const MINDFUL_MINUTES_SOURCES = sources(
+    ["AppleHealth", "MindfulSession"],
+    ["GoogleFit", "ActivitySegment"]
+);
+
+const THERAPY_MINUTES_SOURCES = sources(
+    ["AppleHealth", "MindfulSession"],
+    ["GoogleFit", "SilverCloudSession"]
+);
+
+const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
         dataProvider: combinedRestingHeartRate,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["RestingHeartRate"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["RestingHeartRateInBeatsPerMinute"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            })
-        },
+        availabilityCheck: combinedAvailabilityCheck(
+            RESTING_HEART_RATE_SOURCES
+        ),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -39,25 +91,22 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.Steps,
         dataProvider: combinedStepsDataProvider,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["Steps"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["Steps"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["Steps"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            });
-        },
+        availabilityCheck: combinedAvailabilityCheck(STEPS_SOURCES),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
+        formatter: defaultFormatter,
+        previewDataRange: [4000, 8000]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.StepsWithGoogleFit,
+        dataProvider: (startDate: Date, endDate: Date) =>
+            combinedStepsDataProvider(startDate, endDate, true),
+        availabilityCheck: combinedAvailabilityCheck(
+            STEPS_WITH_GOOGLE_FIT_SOURCES
+        ),
+        labelKey: "steps",
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },
@@ -65,28 +114,32 @@ let combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataSource: "Unified",
         type: DailyDataType.SleepMinutes,
         dataProvider: combinedSleepDataProvider,
-        availabilityCheck: function (modifiedAfter?: Date) {
-            return simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"])(modifiedAfter).then(function (result) {
-                if (!result) {
-                    return simpleAvailabilityCheck("Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"])(modifiedAfter).then(function (result) {
-                        if (!result) {
-                            return simpleAvailabilityCheck("Garmin", ["Sleep"])(modifiedAfter);
-                        }
-                        else {
-                            return result;
-                        }
-                    })
-                }
-                else {
-                    return result;
-                }
-            })
-        },
+        availabilityCheck: combinedAvailabilityCheck(SLEEP_MINUTES_SOURCES),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
         yAxisConverter: sleepYAxisConverter,
         previewDataRange: [420, 540]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.MindfulMinutes,
+        dataProvider: combinedMindfulMinutesDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(MINDFUL_MINUTES_SOURCES),
+        labelKey: "mindful-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => formatNumberForLocale(value),
+        previewDataRange: [0, 120]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.TherapyMinutes,
+        dataProvider: combinedTherapyMinutesDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(THERAPY_MINUTES_SOURCES),
+        labelKey: "therapy-minutes",
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => formatNumberForLocale(value),
+        previewDataRange: [0, 120]
     }
 ];
 export default combinedTypeDefinitions;

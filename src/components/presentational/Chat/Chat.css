@@ -1,0 +1,126 @@
+.mdhui-chat {
+    background: var(--mdhui-background-color-0);
+    font-size: 0.88em;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    min-height: 150px;
+}
+
+.mdhui-chat .mdhui-chat-log {
+    overflow: hidden;
+    flex: 1 1 0%;
+}
+
+.mdhui-chat .mdhui-chat-messages-scroll-wrapper {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.mdhui-chat .mdhui-chat-messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 100%;
+    width: 100%;
+}
+
+.mdhui-chat p,
+.mdhui-chat ul {
+    margin: .25rem 0;
+    word-break: break-word;
+}
+
+.mdhui-chat input,
+.mdhui-chat button {
+    min-height: var(--mdhui-touch);
+    min-width: var(--mdhui-touch);
+    border: 0;
+}
+
+.mdhui-chat .mdhui-chat-send-button {
+    position: absolute;
+    right: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.mdhui-chat .mdhui-chat-send-button:disabled {
+    cursor: default;
+    color: var(--mdhui-text-color-3);
+}
+
+.mdhui-chat input {
+    flex: 1;
+    font-size: 1em;
+    color: var(--mdhui-text-color-1);
+    padding: var(--mdhui-padding-md) var(--mdhui-touch) var(--mdhui-padding-md) var(--mdhui-padding-md);
+    box-sizing: border-box;
+    outline-offset: -1px;
+    background: var(--mdhui-background-color-0);
+}
+
+.mdhui-chat .mdhui-chat-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid var(--mdhui-border-color-1);
+}
+
+.mdhui-chat .mdhui-chat-message,
+.mdhui-chat .mdhui-chat-message-loading {
+    padding: var(--mdhui-padding-xxs) var(--mdhui-padding-md);
+    position: relative;
+}
+
+.mdhui-chat .mdhui-chat-received-message-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.mdhui-chat .mdhui-chat-sent-message-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: var(--mdhui-padding-md);
+}
+
+.mdhui-chat .mdhui-chat-sent-message {
+    background: var(--mdhui-background-color-1);
+    max-width: 70%;
+    padding: var(--mdhui-padding-xs) var(--mdhui-padding-sm);
+    border-radius: var(--mdhui-card-border-radius);
+}
+
+.mdhui-chat .mdhui-chat-message .svg-inline--fa,
+.mdhui-chat .mdhui-chat-message-loading .svg-inline--fa {
+    color: var(--mdhui-text-color-3);
+    margin-top: .35rem;
+    margin-right: .25rem;
+}
+
+.mdhui-chat .mdhui-chat-message-loading .svg-inline--fa {
+    font-weight: 700;
+}
+
+.mdhui-chat input:focus-visible {
+    outline: 1px solid var(--mdhui-color-primary);
+}
+
+.mdhui-chat .mdhui-chat-suggestions {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--mdhui-padding-xxs);
+}
+
+.mdhui-chat .mdhui-chat-suggestion {
+    padding: var(--mdhui-padding-xs) var(--mdhui-padding-sm);
+    margin: var(--mdhui-padding-xs) var(--mdhui-padding-xxs);
+    border-radius: var(--mdhui-card-border-radius);
+    background: var(--mdhui-background-color-1);
+    cursor: pointer;
+}

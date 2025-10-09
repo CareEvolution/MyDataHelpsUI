@@ -1,55 +1,83 @@
 ﻿import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import SparkBarChart, { SparkBarChartProps } from "./SparkBarChart";
-import Layout from "../Layout"
-import { Card } from "..";
+import Layout from "../Layout";
+import SparkBarChart, { SparkBarChartBar, SparkBarChartProps } from "./SparkBarChart";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof SparkBarChart> = {
 	title: "Presentational/SparkBarChart",
 	component: SparkBarChart,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'fullscreen'
 	}
-} as ComponentMeta<typeof SparkBarChart>;
+};
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof SparkBarChart> = (args: SparkBarChartProps) =>
-	<Layout colorScheme="auto">
-		<div style={{ width: "300px" }}>
-			<SparkBarChart {...args} />
-		</div>
-	</Layout>;
+export default meta;
+type Story = StoryObj<typeof SparkBarChart>;
 
-export const Default = Template.bind({});
-Default.args = {
-	averageFillPercent: .3,
-	bars: [
-		{
-			barFillPercent: .5,
-			color: "#f5b722"
-		},
-		{
-			barFillPercent: .1,
-			color: "#f5b722"
-		},
-		{
-			barFillPercent: .2,
-			color: "#7b88c6"
-		},
-		{
-			barFillPercent: .7,
-			color: "#7b88c6"
-		},
-		{
-			barFillPercent: .6,
-			color: "#7b88c6"
-		},
-		{
-			barFillPercent: .8,
-			color: "#e35c33"
-		},
-		{
-			barFillPercent: .9,
-			color: "#e35c33"
-		}]
-}
+const render = (args: SparkBarChartProps) => <Layout colorScheme="auto">
+	<div style={{ width: "300px" }}>
+		<SparkBarChart {...args} />
+	</div>
+</Layout>;
+
+const bars: SparkBarChartBar[] = [
+	{
+		barFillPercent: .5,
+		color: "#f5b722",
+		opacity: .5
+	},
+	{
+		barFillPercent: .1,
+		color: "#f5b722",
+		opacity: .5
+	},
+	{
+		barFillPercent: .2,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .7,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .6,
+		color: "#7b88c6",
+		opacity: .5
+	},
+	{
+		barFillPercent: .8,
+		color: "#e35c33",
+		opacity: .5
+	},
+	{
+		barFillPercent: .9,
+		color: "#e35c33"
+	}];
+
+export const Default: Story = {
+	args: {
+		averageFillPercent: .3,
+		bars: bars
+	},
+	render: render
+};
+
+export const WithGap: Story = {
+	args: {
+		averageFillPercent: .3,
+		gap: 4,
+		bars: bars
+	},
+	render: render
+};
+
+export const Rounded: Story = {
+	args: {
+		averageFillPercent: .3,
+		bars: bars,
+		variant: "rounded"
+	},
+	render: render
+};

@@ -1,11 +1,16 @@
 import { SurveyTask } from "@careevolution/mydatahelps-js";
+import { add } from 'date-fns';
+import { v4 as uuid } from "uuid";
 
-import add from 'date-fns/add'
+const participantID = uuid();
+const participantIdentifier = uuid();
 
 export var previewIncompleteTasks: SurveyTask[] =
 	[
 		{
 			"id": "ecf8a7df-caa3-ec11-aaab-f47bb6835a10",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "53ad3e98-9777-ec11-aaa8-89aad5fbf200",
 			"surveyName": "Mood Survey",
 			"surveyDisplayName": "Mood Survey",
@@ -19,6 +24,8 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 		{
 			"id": "e7f8a7df-caa3-ec11-aaab-f47bb6835a10",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "53ad3e98-9777-ec11-aaa8-89aad5fbf200",
 			"surveyName": "Pregnancy (Followup)",
 			"surveyDisplayName": "Pregnancy: Followup",
@@ -32,19 +39,23 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 		{
 			"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a11",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
 			"surveyName": "Rating: CheckIn",
 			"surveyDisplayName": "Let us know how we're doing",
 			"surveyDescription": "10 minutes",
 			"status": "incomplete",
 			"hasSavedProgress": false,
-			"dueDate": null,
+			"dueDate": undefined,
 			"insertedDate": "2022-03-15T16:56:26.703Z",
 			"modifiedDate": "2022-03-15T16:56:26.703Z",
 			linkIdentifier: "1"
 		},
 		{
 			"id": "b1c9bcd2-80a4-ec11-aaab-f47bb6835a10",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "cd452353-7674-ec11-aaa8-89aad5fbf200",
 			"surveyName": "Alcohol and Tobacco",
 			"surveyDisplayName": "Alcohol and Tobacco",
@@ -58,6 +69,8 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 		{
 			"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a10",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
 			"surveyName": "SDOH: Followup",
 			"surveyDisplayName": "Social Determinants of Health: Followup",
@@ -71,6 +84,8 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 		{
 			"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a12",
+			"participantID": participantID,
+			"participantIdentifier" : participantIdentifier,
 			"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
 			"surveyName": "Rating2: CheckIn",
 			"surveyDisplayName": "Rate Later",
@@ -84,9 +99,11 @@ export var previewIncompleteTasks: SurveyTask[] =
 		},
 	];
 
-export var previewCompleteTasks:SurveyTask[] = [
+export var previewCompleteTasks: SurveyTask[] = [
 	{
 		"id": "2c9ab4d9-80a4-ec11-aaab-f47bb6835a10",
+		"participantID": participantID,
+		"participantIdentifier" : participantIdentifier,
 		"surveyID": "a7f58ba8-9777-ec11-aaa8-89aad5fbf200",
 		"surveyName": "SDOH: Followup",
 		"surveyDisplayName": "Social Determinants of Health: Followup",
@@ -101,6 +118,8 @@ export var previewCompleteTasks:SurveyTask[] = [
 	},
 	{
 		"id": "b1c9bcd2-80a4-ec11-aaab-f47bb6835a10",
+		"participantID": participantID,
+		"participantIdentifier" : participantIdentifier,
 		"surveyID": "cd452353-7674-ec11-aaa8-89aad5fbf200",
 		"surveyName": "Alcohol and Tobacco",
 		"surveyDisplayName": "Alcohol and Tobacco",
@@ -115,6 +134,8 @@ export var previewCompleteTasks:SurveyTask[] = [
 	},
 	{
 		"id": "e7f8a7df-caa3-ec11-aaab-f47bb6835a10",
+		"participantID": participantID,
+		"participantIdentifier" : participantIdentifier,
 		"surveyID": "53ad3e98-9777-ec11-aaa8-89aad5fbf200",
 		"surveyName": "Pregnancy (Followup)",
 		"surveyDisplayName": "Pregnancy: Followup",

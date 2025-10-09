@@ -1,19 +1,34 @@
 ﻿import React from "react"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import HomeView, { HomeViewProps } from "./HomeView"
+import { Meta, StoryObj } from "@storybook/react"
+import { Description } from "@storybook/blocks"
 
-export default {
-	title: "View/HomeView",
-	component: HomeView,
-	parameters: {
-		layout: 'fullscreen',
-	}
-} as ComponentMeta<typeof HomeView>;
+const meta: Meta<typeof HomeView> = {
+    title: "View/HomeView",
+    component: HomeView,
+    parameters: {
+        layout: 'fullscreen'
+    }
+};
 
-const Template: ComponentStory<typeof HomeView> = (args: HomeViewProps) => <HomeView {...args} />;
+export default meta;
+type Story = StoryObj<typeof HomeView>;
 
-export const Preview = Template.bind({});
-Preview.args = { preview: true, notificationsViewUrl: "test.html", ehrConnectApplicationUrl: "test.html" };
+const render = (args: HomeViewProps) => <HomeView {...args} />;
 
-export const Live = Template.bind({});
-Live.args = { preview: false, notificationsViewUrl:"test.html" };
+export const Default: Story = {
+    args: {
+        preview: true,
+        notificationsViewUrl: "test.html",
+        ehrConnectApplicationUrl: "test.html"
+    },
+    render: render
+};
+
+export const Live: Story = {
+    args: {
+        preview: false,
+        notificationsViewUrl: "test.html"
+    },
+    render: render
+}

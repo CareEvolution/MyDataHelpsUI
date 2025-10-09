@@ -7,6 +7,7 @@ export enum DailyDataType {
 	AppleHealthHeartRateRange = "AppleHealthHeartRateRange",
 	AppleHealthHrv = "AppleHealthHrv",
 	AppleHealthMaxHeartRate = "AppleHealthMaxHeartRate",
+	AppleHealthMindfulMinutes = "AppleHealthMindfulMinutes",
 	AppleHealthRestingHeartRate = "AppleHealthRestingHeartRate",
 	AppleHealthSleepMinutes = "AppleHealthSleepMinutes",
 	AppleHealthRemSleepMinutes = "AppleHealthSleepRemMinutes",
@@ -15,8 +16,11 @@ export enum DailyDataType {
 	AppleHealthInBedMinutes = "AppleHealthInBedMinutes",
 	AppleHealthStandMinutes = "AppleHealthStandMinutes",
 	AppleHealthSteps = "AppleHealthSteps",
+	AppleHealthStepsWhileWearingDevice = "AppleHealthStepsWhileWearingDevice",
+	AppleHealthTherapyMinutes = "AppleHealthTherapyMinutes",
 	AppleHealthWalkingHeartRateAverage = "AppleHealthWalkingHeartRateAverage",
 	AppleHealthActiveEnergyBurned = "AppleHealthActiveEnergyBurned",
+	AppleHealthNumberOfAlcoholicBeverages = "AppleHealthNumberOfAlcoholicBeverages",
 	FitbitSedentaryMinutes = "FitbitSedentaryMinutes",
 	FitbitActiveMinutes = "FitbitActiveMinutes",
 	FitbitLightlyActiveMinutes = "FitbitLightlyActiveMinutes",
@@ -61,16 +65,36 @@ export enum DailyDataType {
 	GarminRemSleepMinutes = "GarminRemSleepMinutes",
 	GarminAwakeMinutes = "GarminAwakeMinutes",
 	GarminSleepScore = "GarminSleepScore",
+	GoogleFitMindfulMinutes = "GoogleFitMindfulMinutes",
 	GoogleFitSteps = "GoogleFitSteps",
+	GoogleFitTherapyMinutes = "GoogleFitTherapyMinutes",
 	Steps = "Steps",
+	StepsWithGoogleFit = "StepsWithGoogleFit",
 	RestingHeartRate = "RestingHeartRate",
 	SleepMinutes = "SleepMinutes",
+	MindfulMinutes = "MindfulMinutes",
+	TherapyMinutes = "TherapyMinutes",
+	AirQuality = "AirQuality",
 	HomeAirQuality = "HomeAirQuality",
-	WorkAirQuality = "WorkAirQuality"
+	WorkAirQuality = "WorkAirQuality",
+	HealthConnectRestingHeartRate = "HealthConnectRestingHeartRate",
+	HealthConnectTotalSleepMinutes = "HealthConnectTotalSleepMinutes",
+	HealthConnectLightSleepMinutes = "HealthConnectLightSleepMinutes",
+	HealthConnectRemSleepMinutes = "HealthConnectRemSleepMinutes",
+	HealthConnectDeepSleepMinutes = "HealthConnectDeepSleepMinutes",
+	HealthConnectSteps = "HealthConnectSteps",
+	HealthConnectDistance = "HealthConnectDistance",
+	HealthConnectMaxHeartRate = "HealthConnectMaxHeartRate",
+	HealthConnectMinHeartRate = "HealthConnectMinHeartRate",
+	HealthConnectActiveCaloriesBurned = "HealthConnectActiveCaloriesBurned",
+	HealthConnectTotalCaloriesBurned = "HealthConnectTotalCaloriesBurned",
+	OuraSteps = "OuraSteps",
+	OuraRestingHeartRate = "OuraRestingHeartRate",
+	OuraSleepMinutes = "OuraSleepMinutes"
 };
 
 export interface DailyDataTypeDefinition {
-	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality";
+	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality" | "Oura" | "HealthConnect";
 	type: string;
 	dataProvider: DailyDataProvider;
 	availabilityCheck: DailyDataAvailabilityCheck;
@@ -79,4 +103,5 @@ export interface DailyDataTypeDefinition {
 	formatter: (value: number) => string;
 	yAxisConverter?: (value: number) => number;
 	previewDataRange: [number, number];
+	requiresV2Api?: boolean;
 }

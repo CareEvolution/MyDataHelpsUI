@@ -2,6 +2,7 @@
 export { default as appleHealthHrvDataProvider } from "./apple-health-hrv"
 export { default as appleHealthHeartRateRangeDataProvider } from "./apple-health-heart-rate-range"
 export { default as appleHealthMaxHeartRateDataProvider } from "./apple-health-max-heart-rate"
+export { default as appleHealthMindfulMinutesDataProvider } from "./apple-health-mindful-minutes"
 export { default as appleHealthRestingHeartRateDataProvider } from "./apple-health-resting-heart-rate"
 export { asleepTime as appleHealthSleepDataProvider } from "./apple-health-sleep"
 export { asleepRemTime as appleHealthSleepRemDataProvider } from "./apple-health-sleep"
@@ -10,8 +11,11 @@ export { asleepDeepTime as appleHealthSleepDeepDataProvider } from "./apple-heal
 export { inBedTime as appleHealthInBedDataProvider } from "./apple-health-sleep"
 export { default as appleHealthStandTimeDataProvider } from "./apple-health-stand-time"
 export { default as appleHealthStepsDataProvider } from "./apple-health-steps"
+export { default as appleHealthStepsWhileWearingDeviceDataProvider } from "./apple-health-steps-while-wearing-device"
+export { default as appleHealthTherapyMinutesDataProvider } from "./apple-health-therapy-minutes"
 export { default as appleHealthWalkingHeartRateAverageDataProvider } from "./apple-health-walking-heart-rate-average"
-export { default as appleHealthActiveEnergyBurned } from "./apple-health-active-energy-burned"
+export { default as appleHealthActiveEnergyBurnedDataProvider } from "./apple-health-active-energy-burned"
+export { default as appleHealthNumberOfAlcoholicBeveragesDataProvider } from "./apple-health-number-of-alcoholic-beverages"
 export { sedentaryMinutes as fitbitSedentaryMinutesDataProvider } from "./fitbit-activity-minutes"
 export { totalActiveMinutes as fitbitTotalActiveMinutesDataProvider } from "./fitbit-activity-minutes"
 export { lightlyActiveMinutes as fitbitLightlyActiveMinutesDataProvider } from "./fitbit-activity-minutes"
@@ -33,10 +37,13 @@ export { default as fitbitBreathingRateDataProvider } from "./fitbit-breathing-r
 export { default as fitbitHrvDataProvider } from "./fitbit-hrv"
 export { default as fitbitSpO2DataProvider } from "./fitbit-spo2"
 export { default as fitbitWearMinutesDataProvider } from "./fitbit-wear-minutes"
+export { default as combinedMindfulMinutesDataProvider } from "./combined-mindful-minutes"
 export { default as combinedStepsDataProvider } from "./combined-steps"
 export { default as combinedSleepDataProvider } from "./combined-sleep"
-export { default as combinedSleepV2DataProvider } from "./combined-sleep-v2"
+export { default as combinedTherapyMinutesDataProvider } from "./combined-therapy-minutes"
+export { default as googleFitMindfulMinutesDataProvider } from "./google-fit-mindful-minutes"
 export { default as googleFitStepsDataProvider } from "./google-fit-steps"
+export { default as googleFitTherapyMinutesDataProvider } from "./google-fit-therapy-minutes"
 export { default as appleHealthDistanceDataProvider } from "./apple-health-distance"
 export { default as garminStepsDataProvider } from "./garmin-steps"
 export { default as garminDistanceDataProvider } from "./garmin-distance"
@@ -61,6 +68,21 @@ export { deepSleepMinutes as garminDeepSleepMinutesDataProvider } from "./garmin
 export { lightSleepMinutes as garminLightSleepMinutesDataProvider } from "./garmin-sleep"
 export { awakeSleepMinutes as garminAwakeMinutesDataProvider } from "./garmin-sleep"
 export { sleepScore as garminSleepScoreDataProvider } from "./garmin-sleep"
+export { default as airQualityDataProvider } from './air-quality'
 export { default as homeAirQualityDataProvider } from './air-quality-home'
 export { default as workAirQualityDataProvider } from './air-quality-work'
+export { restingHeartRateProvider as healthConnectRestingHeartRateDataProvider } from "./health-connect-resting-heart-rate";
+export { totalSleepMinutes as healthConnectTotalSleepMinutesDataProvider } from "./health-connect-sleep";
+export { lightSleepMinutes as healthConnectLightSleepMinutesDataProvider } from "./health-connect-sleep";
+export { remSleepMinutes as healthConnectRemSleepMinutesDataProvider } from "./health-connect-sleep";
+export { deepSleepMinutes as healthConnectDeepSleepMinutesDataProvider } from "./health-connect-sleep";
+export { default as healthConnectStepsDataProvider } from "./health-connect-steps";
+export { default as healthConnectDistanceDataProvider } from "./health-connect-distance";
+export { default as healthConnectMaxHeartRateDataProvider } from "./health-connect-max-heart-rate";
+export { default as healthConnectMinHeartRateDataProvider } from "./health-connect-min-heart-rate";
+export { default as healthConnectActiveCaloriesBurnedDataProvider } from "./health-connect-active-calories-burned";
+export { default as healthConnectTotalCaloriesBurnedDataProvider } from "./health-connect-total-calories-burned";
+export { default as ouraStepsDataProvider } from './oura-daily-steps'
+export { default as ouraSleepMinutesDataProvider } from './oura-total-sleep'
+export { default as ouraRestingHeartRateDataProvider } from './oura-resting-heart-rate'
 export * from './shared'

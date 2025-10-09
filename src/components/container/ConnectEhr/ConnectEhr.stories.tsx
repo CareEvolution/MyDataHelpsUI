@@ -1,5 +1,4 @@
 ﻿import React from "react"
-import { ComponentMeta, ComponentStory } from "@storybook/react"
 import Card from "../../presentational/Card"
 import Layout from "../../presentational/Layout"
 import ConnectEhr, { ConnectEhrProps } from "./ConnectEhr";
@@ -79,7 +78,7 @@ export const CustomConnectedText = {
 };
 
 export const CustomConnectText = {
-    args: { previewState: "enabled", onClick: onClick, title: "Custom title", connectedText: "Connect your EHR title" },
+    args: { previewState: "enabled", onClick: onClick, title: "Custom title", notConnectedText: "Connect your EHR text" },
     render: render
 };
 

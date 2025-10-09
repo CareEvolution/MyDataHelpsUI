@@ -1,0 +1,12 @@
+.mdhui-chat .mdhui-chat-received-message.tool pre {
+    margin: 0;
+    font-size: 0.77em;
+}
+
+.mdhui-chat .mdhui-chat-received-message.tool pre .hljs {
+    border-radius: var(--mdhui-card-border-radius);
+}
+
+.mdhui-chat .image {
+    height: 350px;
+}

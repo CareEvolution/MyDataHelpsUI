@@ -37,15 +37,20 @@ export default function (props: SymptomSharkLogEntryProps) {
         emptyLogEntry = true;
     }
 
-
-
     let title: string = props.title ?? getDayOfWeek(props.date);
     let highlight = props.highlight ?? isToday(props.date);
     let subtitle = !props.title ? props.subtitle ?? getFullDateString(props.date) : undefined;
-    
+
+    let classes = ["mdhui-ss-log-entry"];
+    if (!title && !subtitle) {
+        classes.push("mdhui-ss-log-entry-no-header");
+    }
+
     if (emptyLogEntry) {
-        return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className="mdhui-ss-log-entry">
+        return <Card innerRef={props.innerRef} variant={highlight ? "highlight" : "subtle"} className={classes.join(" ")}>
+            <ShinyOverlay />
             <Action
+                className="mdhui-ss-log-entry-action"
                 title={title}
                 subtitle={subtitle}
                 onClick={() => startEditing()}
@@ -53,12 +58,12 @@ export default function (props: SymptomSharkLogEntryProps) {
                 {!!props.noDataMessage &&
                     <div className="mdhui-ss-log-entry-section">{props.noDataMessage}</div>
                 }
-                <ShinyOverlay />
             </Action>
         </Card>;
     }
 
-    return <Card innerRef={props.innerRef} className="mdhui-ss-log-entry">
+
+    return <Card innerRef={props.innerRef} className={classes.join(" ")}>
         <Action
             title={title}
             subtitle={subtitle}
@@ -74,7 +79,7 @@ export default function (props: SymptomSharkLogEntryProps) {
                 highlightedTreatments={props.highlightedTreatments} />
             {props.logEntry!.notes &&
                 <div className="mdhui-ss-log-entry-section">
-                    <div className="mdhui-ss-section-header">Notes</div>
+                    <div className="mdhui-ss-section-header">{language('notes')}</div>
                     <div className="mdhui-ss-notes-content">{props.logEntry!.notes}</div>
                 </div>
             }
@@ -159,7 +164,7 @@ function LogEntrySymptomsAndTreatments(props: LogEntrySymptomsAndTreatmentsProps
     }
 
     return <div className="mdhui-ss-log-entry-section">
-        <div className="mdhui-ss-section-header">Symptoms & Treatments</div>
+        <div className="mdhui-ss-section-header">{language('symptoms-and-treatments')}</div>
         {symptoms.filter((s) => highlightedSymptoms.indexOf(s.id) != -1).map((s) =>
             <TrackerItem noBoxShadow selected={true} color={s.color} badge={s.severity} key={s.id} text={s.name} />
         )}

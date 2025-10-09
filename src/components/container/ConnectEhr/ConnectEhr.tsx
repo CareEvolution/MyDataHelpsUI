@@ -2,12 +2,10 @@
 import { Action, Button, TextBlock, Title } from '../../presentational';
 import "./ConnectEhr.css"
 import language from '../../../helpers/language'
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle"
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation"
+import { faCheckCircle, faTriangleExclamation, faAddressCard } from "@fortawesome/free-solid-svg-icons"
 import MyDataHelps from "@careevolution/mydatahelps-js"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import ConnectEHR from "../../../assets/connect-ehr.svg";
 import { ColorDefinition } from '../../../helpers/colors';
 
@@ -31,7 +29,6 @@ export type ConnectEhrPreviewState = "notEnabled" | "enabled" | "enabledConnecte
 export default function (props: ConnectEhrProps) {
 	const [loading, setLoading] = useState(true);
 	const [ehrEnabled, setEhrEnabled] = useState(false);
-	const [projectName, setProjectName] = useState<null | string>(null);
 	const [connected, setConnected] = useState<boolean>(false);
 	const [needsAttention, setNeedsAttention] = useState<boolean>(false);
 
@@ -41,7 +38,6 @@ export default function (props: ConnectEhrProps) {
 				return;
 			}
 			setEhrEnabled(true);
-			setProjectName("PROJECT");
 			if (props.previewState == "enabledConnected") {
 				setConnected(true);
 				setNeedsAttention(false);
@@ -55,14 +51,11 @@ export default function (props: ConnectEhrProps) {
 		MyDataHelps.getDataCollectionSettings().then(function (settings) {
 			setEhrEnabled(settings.ehrEnabled);
 			if (settings.ehrEnabled) {
-				MyDataHelps.getProjectInfo().then(function (projectInfo) {
-					setProjectName(projectInfo.name);
-					MyDataHelps.getExternalAccounts().then(function (accounts) {
-						accounts = accounts.filter(a => ["Provider", "Health Plan"].indexOf(a.provider.category) != -1);
-						setConnected(accounts.length > 0);
-						setNeedsAttention(accounts.some((account) => account.status == "unauthorized" || account.status == "error"));
-						setLoading(false);
-					});
+				MyDataHelps.getExternalAccounts().then(function (accounts) {
+					accounts = accounts.filter(a => ["Provider", "Health Plan"].indexOf(a.provider.category) != -1);
+					setConnected(accounts.length > 0);
+					setNeedsAttention(accounts.some((account) => account.status == "unauthorized" || account.status == "error"));
+					setLoading(false);
 				});
 			}
 		});
@@ -109,9 +102,8 @@ export default function (props: ConnectEhrProps) {
 	let defaultTitle = language('connect-ehr-title-prefix') + language('connect-ehr-title-providers') + language('connect-ehr-title-divider') + language('connect-ehr-title-health-plans');
 	let title = props.title || defaultTitle;
 
-	const projectNameSubstitutionTarget = "@@PROJECT_NAME@@";
-	let connectedText = props.connectedText || language("connect-ehr-text-connected").replace(projectNameSubstitutionTarget, projectName || "");
-	let notConnectedText = props.notConnectedText || language("connect-ehr-text").replace(projectNameSubstitutionTarget, projectName || "");
+	let connectedText = props.connectedText ?? language("connect-ehr-text-connected");
+	let notConnectedText = props.notConnectedText ?? language("connect-ehr-text");
 	let text = (connected ? connectedText : notConnectedText);
 
 	let headerVariant = props.variant || "large";

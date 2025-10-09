@@ -52,11 +52,11 @@ let procedureGroupHandler: EventTypeDefinition = {
 let immunizationHandler: EventTypeDefinition = {
     getTitleItems: (event) => {
         let immunizationEvent = event.Event as EhrNewsFeedImmunizationModel;
-        return [immunizationEvent.MedicationName];
+        return immunizationEvent.MedicationName ? [immunizationEvent.MedicationName] : [];
     },
     getKeywords: (event) => {
         let immunization = event.Event as EhrNewsFeedImmunizationModel;
-        return [immunization.MedicationName];
+        return immunization.MedicationName ? [immunization.MedicationName] : [];
     },
     icon: immunizationIcon,
     getPreviewEvent: () => {

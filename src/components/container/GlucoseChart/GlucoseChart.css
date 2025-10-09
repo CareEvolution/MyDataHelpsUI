@@ -1,44 +1,91 @@
-.mdhui-glucose-chart .mdhui-card:first-child {
-    margin-top: 0;
+.mdhui-glucose-chart .mdhui-action.mdhui-glucose-chart-action {
+    padding: 0 16px 0 0;
 }
 
-.mdhui-glucose-chart-day {
-    text-align: center;
-    color: #aaa;
+.mdhui-glucose-chart .mdhui-glucose-chart-title {
+    font-size: .88em;
+    font-weight: 600;
+    color: rgb(196, 41, 28);
+    margin: 16px 16px -8px;
 }
 
-.mdhui-glucose-chart-chart {
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-title {
+    margin-bottom: -12px;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-title-empty {
+    padding: 16px;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-chart {
     height: 150px;
     margin-bottom: 24px;
     position: relative;
 }
 
-.mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
+.mdhui-glucose-chart .mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
+    font-size: 11px;
+    fill: var(--mdhui-text-color-1);
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart {
+    height: auto;
+    margin: 36px 0 0;
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart:has(.mdhui-glucose-stats) {
+    margin-top: 0;
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart .mdhui-glucose-stats {
+    margin-bottom: 4px;
+}
+
+.mdhui-glucose-chart .mdhui-action.mdhui-glucose-chart-action .mdhui-glucose-chart-chart {
+    pointer-events: none;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
     padding-top: 20px;
 }
 
-.mdhui-glucose-chart-chart .steps-icon {
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
+    padding: 0;
+    margin: -32px -9px -5px -5px;
+}
+
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-action.mdhui-glucose-chart-action .mdhui-glucose-chart-chart .mdhui-time-series-chart .chart-container {
+    margin-right: -25px;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-chart .steps-icon {
     position: absolute;
     left: 21px;
     top: 146px;
     font-size: 12px;
 }
 
-.mdhui-glucose-chart-chart-empty {
-    height: 182px;
+.mdhui-glucose-chart .mdhui-glucose-chart-chart-empty {
+    height: 174px;
     padding-top: 65px;
     box-sizing: border-box;
     color: #aaa;
     text-align: center;
 }
 
-.mdhui-glucose-chart-chart-placeholder {
-    height: 182px;
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart-empty {
+    height: 80px;
+    padding-top: 24px;
+}
+
+.mdhui-glucose-chart .mdhui-glucose-chart-chart-placeholder {
+    height: 174px;
     padding-top: 48px;
     box-sizing: border-box;
 }
 
-.mdhui-glucose-chart-chart .recharts-cartesian-axis-tick text {
-    font-size: 11px;
-    fill: var(--mdhui-text-color-1);
+.mdhui-glucose-chart.mdhui-glucose-chart-minimal .mdhui-glucose-chart-chart-placeholder {
+    height: 80px;
+    padding-top: 8px;
 }

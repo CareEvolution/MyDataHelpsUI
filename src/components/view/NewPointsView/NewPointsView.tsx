@@ -5,6 +5,8 @@ import MyDataHelps, { PersistableDeviceDataPoint } from '@careevolution/mydatahe
 import './NewPointsView.css';
 import language from '../../../helpers/language'
 import ProgressRing from '../../presentational/ProgressRing';
+import { ColorDefinition } from '../../../helpers';
+import { previewProps } from './NewPointsView.previewData';
 
 export interface NewPointsEntry {
     name: string;
@@ -17,11 +19,14 @@ export interface NewPointsViewProps {
     entries: NewPointsEntry[];
     pointsToNextReward?: number;
     colorScheme?: 'auto' | 'light' | 'dark';
-    primaryColor?: string;
+    primaryColor?: ColorDefinition;
     doneButtonText?: string;
 }
 
-export default function (props: NewPointsViewProps) {
+/**
+ * This view displays a summary of new points earned by the participant.
+ */
+export default function NewPointsView(props: NewPointsViewProps) {
 
     let totalBonusPoints = props.entries.reduce((sum, entry) => {
         return sum + (entry.bonusPoints || 0);
@@ -32,7 +37,7 @@ export default function (props: NewPointsViewProps) {
     }, totalBonusPoints);
 
     return (
-        <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
+        <Layout bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
             <div className="mdhui-new-points">
                 <ProgressRing animate={true}>
                     <div className="mdhui-new-points-total">
@@ -60,7 +65,7 @@ export default function (props: NewPointsViewProps) {
                                 )}
                                 {totalBonusPoints > 0 &&
                                     <div className="mdhui-new-points-entry">
-                                        <div className="mdhui-new-points-entry-name bonus">Bonus</div>
+                                        <div className="mdhui-new-points-entry-name bonus">{language('bonus')}</div>
                                         <div className="mdhui-new-points-entry-points bonus">+{totalBonusPoints}</div>
                                     </div>
                                 }
@@ -76,15 +81,28 @@ export default function (props: NewPointsViewProps) {
                 </div>
             </div>
         </Layout>
-    )
+    );
 }
 
 export function showNewPoints(props: NewPointsViewProps, url?: string): void {
-    let newPointsDataPoint: PersistableDeviceDataPoint = {
+    const newPointsDataPoint: PersistableDeviceDataPoint = {
         type: 'MDHUI-NewPoints',
         value: JSON.stringify(props)
     };
     MyDataHelps.persistDeviceData([newPointsDataPoint]).then(() => {
-        MyDataHelps.openApplication(url || 'https://viewlibrary.careevolutionapps.com/newpoints', {modal: true});
+        MyDataHelps.openApplication(url || 'https://viewbuilder.careevolutionapps.com/library-views/new-points', { modal: true });
     });
+}
+
+export async function loadNewPoints(preview?: boolean): Promise<NewPointsViewProps | undefined> {
+    if (preview) {
+        return previewProps;
+    }
+
+    const result = await MyDataHelps.queryDeviceData({ namespace: 'Project', type: 'MDHUI-NewPoints', limit: 1 });
+    if (result.deviceDataPoints.length > 0) {
+        return JSON.parse(result.deviceDataPoints[0].value) as NewPointsViewProps;
+    } else {
+        return undefined;
+    }
 }

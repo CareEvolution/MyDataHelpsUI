@@ -31,7 +31,7 @@ export default function (props: ResourceProps) {
             <div className="mdhui-resource-title">{props.title}</div>
             <div className="mdhui-resource-subtitle">{props.subTitle}</div>
             {props.buttonVariant === 'button' &&
-                <Button className="mdhui-resource-button" onClick={noop}>{props.buttonText || language('resource-default-button-text')}</Button>
+                <div className="mdhui-button mdhui-resource-button" onClick={noop}>{props.buttonText || language('resource-default-button-text')}</div>
             }
             {props.buttonVariant === 'link' &&
                 <div className="mdhui-resource-link">{props.buttonText || language('resource-default-button-text')}</div>

@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import "./Grid.css"
+import Card from '../Card';
 
 export interface GridProps {
     children?: React.ReactNode;
@@ -7,11 +8,15 @@ export interface GridProps {
     style?: React.CSSProperties;
     className?: string;
     defaultMargin?: boolean;
+    innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface GridColumnProps {
     children?: React.ReactNode;
     span: number;
+    variant?: "default" | "card";
+    innerRef?: React.Ref<HTMLDivElement>;
+    style?: React.CSSProperties;
 }
 
 export interface GridContext {
@@ -30,20 +35,27 @@ export function Grid(props: GridProps) {
         classes.push("mdhui-grid-default-margin");
     }
 
-    let style = { ...props.style };
-    if (props.gap) {
-        style.gap = props.gap + "px";
-    } else {
-        style.gap = "16px";
-    }
-    return <GridContext.Provider value={{ gap: props.gap || 16 }}>
-        <div className={classes.join(" ")} style={style}>{props.children}</div>
+    const style = { ...props.style };
+    const gap = (props.gap || props.gap === 0) ? props.gap : 16;
+    style.gap = `${gap}px`;
+    return <GridContext.Provider value={{ gap: gap }}>
+        <div ref={props.innerRef} className={classes.join(" ")} style={style}>{props.children}</div>
     </GridContext.Provider>
 }
 
 Grid.Column = function (props: GridColumnProps) {
-    let widthPercent = props.span / 12 * 100;
-    let gridContext = React.useContext(GridContext);
-    let width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
-    return <div className="mdhui-grid-column" style={{ width: width }}>{props.children}</div>
+    if (!props.children) {
+        return null;
+    }
+
+    const widthPercent = props.span / 12 * 100;
+    const gridContext = React.useContext(GridContext);
+    const width = `calc(${widthPercent}% - ${gridContext.gap}px)`;
+    const style = { ...props.style, width: width };
+
+    if (props.variant === "card") {
+        return <Card innerRef={props.innerRef} className="mdhui-grid-column" style={style}>{props.children}</Card>
+    } else {
+        return <div ref={props.innerRef} className="mdhui-grid-column" style={style}>{props.children}</div>
+    }
 }

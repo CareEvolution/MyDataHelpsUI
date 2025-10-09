@@ -11,14 +11,16 @@ export interface ExternalAccountsViewProps {
     presentation?: ViewPresentationType;
     previewState?: "default";
     colorScheme?: "auto" | "light" | "dark";
-    onBack?(): void
-    onClose?(): void
     connectExternalAccountOptions?: ConnectExternalAccountOptions;
 }
 
 export type ViewPresentationType = "Modal" | "Push";
 
-export default function (props: ExternalAccountsViewProps) {
+/**
+ * This view provides an overview of the participant's connected Providers, Health Plans, and Devices.
+ * It displays the status of each connection and offers the option to reconnect as needed.
+ */
+export default function ExternalAccountsView(props: ExternalAccountsViewProps) {
     let title = '';
     let externalAccountProviderCategories: string[] = [];
 
@@ -56,9 +58,7 @@ export default function (props: ExternalAccountsViewProps) {
             {props.presentation &&
                 <NavigationBar title={title}
                     showBackButton={props.presentation == "Push"}
-                    showCloseButton={props.presentation == "Modal"}
-                    onBack={props.onBack}
-                    onClose={props.onClose} />
+                    showCloseButton={props.presentation == "Modal"} />
             }
             {!props.presentation &&
                 <StatusBarBackground />

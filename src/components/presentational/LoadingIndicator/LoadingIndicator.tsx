@@ -1,5 +1,5 @@
 import React from 'react';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
+import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import "./LoadingIndicator.css"
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';

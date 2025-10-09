@@ -6,6 +6,13 @@ export interface Reading {
     value: number;
 }
 
+export interface ReadingRange {
+    date: Date;
+    min: number;
+    max: number;
+    average: number;
+}
+
 export type MealType = 'meal' | 'snack' | 'drink';
 
 export function getMealTypeDisplayText(mealType: MealType): string {
@@ -15,14 +22,31 @@ export function getMealTypeDisplayText(mealType: MealType): string {
     return '';
 }
 
+export interface MealItem {
+    name: string;
+    confidenceScore?: number;
+}
+
+export interface MealAnalysis {
+    timestamp: Date;
+    items: MealItem[];
+    reviewTimestamp?: Date;
+}
+
 export interface Meal {
     id: Guid;
     timestamp: Date;
     type: MealType;
+    description?: string;
+    hasImage?: boolean;
+    items?: MealItem[];
+    analysis?: MealAnalysis;
+    archiveTimestamp?: Date;
+    created?: Date;
+    lastModified?: Date;
 }
 
-export interface SerializedMeal {
-    id: string,
-    timestamp: string;
-    type: string;
+export interface MealReference {
+    date: Date;
+    id: Guid;
 }

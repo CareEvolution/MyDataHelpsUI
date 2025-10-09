@@ -1,42 +1,31 @@
-import { add } from "date-fns";
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider } from ".";
-import getDayKey from "../get-day-key";
-import MyDataHelps from "@careevolution/mydatahelps-js";
+import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from ".";
+import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
+import { DailyDataQueryResult } from "../query-daily-data";
+import { combineResultsUsingMaxValue } from "./daily-data";
 
-export default function (startDate: Date, endDate: Date) {
-    let providers: Promise<{ [key: string]: number }>[] = [];
+export default async function (startDate: Date, endDate: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<DailyDataQueryResult> {
+    const providers: Promise<DailyDataQueryResult>[] = [];
 
-    return MyDataHelps.getDataCollectionSettings().then((settings) => {
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.garminEnabled) {
-            providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
-        }
-        if (settings.queryableDeviceDataTypes.find(s => s.namespace == "AppleHealth" && s.type == "SleepAnalysisInterval")) {
-            providers.push(appleHealthSleepDataProvider(startDate, endDate));
-        }
+    const { settings, deviceDataV2Types } = combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(true);
 
-        if (!providers.length) {
-            return {};
-        }
+    if (settings.fitbitEnabled) {
+        providers.push(fitbitTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.garminEnabled) {
+        providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "SleepAnalysisInterval")) {
+        providers.push(appleHealthSleepDataProvider(startDate, endDate));
+    }
+    if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep")) {
+        providers.push(healthConnectTotalSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.ouraEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "Oura" && ddt.type === "sleep")) {
+        providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
+    }
 
-        return Promise.all(providers).then((values) => {
-            var data: { [key: string]: number } = {};
-            while (startDate < endDate) {
-                var dayKey = getDayKey(startDate);
-                var sleep: number | null = null;
-                values.forEach((value) => {
-                    if (value[dayKey] && (sleep == null || sleep < value[dayKey])) {
-                        sleep = value[dayKey];
-                    }
-                });
-                if (sleep) {
-                    data[dayKey] = sleep;
-                }
-                startDate = add(startDate, { days: 1 });
-            }
-            return data;
-        });
-    });
+    if (providers.length === 0) return {};
+    if (providers.length === 1) return providers[0];
+
+    return combineResultsUsingMaxValue(startDate, endDate, await Promise.all(providers));
 }

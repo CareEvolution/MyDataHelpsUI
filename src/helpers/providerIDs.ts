@@ -1,8 +1,4 @@
-import MyDataHelps from '@careevolution/mydatahelps-js';
-
-function isDevelopment() {
-    return MyDataHelps.baseUrl && (MyDataHelps.baseUrl.startsWith('https://mdhorg.ce.dev') || MyDataHelps.baseUrl.startsWith('https://mydatahelps.dev'));
-}
+import { isDevelopment } from "./env";
 
 export function getFitbitProviderID() {
     return isDevelopment() ? 2 : 564;
@@ -18,4 +14,8 @@ export function getDexcomProviderID() {
 
 export function getOmronProviderID() {
     return isDevelopment() ? 171 : 1466;
+}
+
+export function getOuraProviderID() {
+    return isDevelopment() ? 10414 : 45417;
 }

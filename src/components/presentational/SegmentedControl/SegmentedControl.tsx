@@ -11,9 +11,10 @@ export interface SegmentedControlProps {
 	color?: string;
 	variant?: "default" | "optionsHorizontal" | "optionsVertical";
 	innerRef?: React.Ref<HTMLDivElement>;
+	style?: React.CSSProperties;
 }
 
-export default function (props: SegmentedControlProps) {
+export default function SegmentedControl(props: SegmentedControlProps) {
 	var width = 100 / props.segments.length;
 
 	let classes = ["mdhui-segmented-control"];
@@ -28,7 +29,7 @@ export default function (props: SegmentedControlProps) {
 	}
 
 	return (
-		<div ref={props.innerRef} style={{ borderColor: props.color }} className={classes.join(" ")}>
+		<div ref={props.innerRef} style={{ ...props.style, borderColor: props.color }} className={classes.join(" ")}>
 			{props.segments.map((s) =>
 				<UnstyledButton className={"mdhui-segment " + (s.key == props.selectedSegment ? "mdhui-segment-selected" : "")}
 					key={s.key}

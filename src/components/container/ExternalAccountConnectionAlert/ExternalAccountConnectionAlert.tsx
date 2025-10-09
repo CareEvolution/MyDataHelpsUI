@@ -1,4 +1,4 @@
-import MyDataHelps, { ExternalAccount } from "@careevolution/mydatahelps-js";
+import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from "@careevolution/mydatahelps-js";
 import React, { useState } from "react";
 import language from "../../../helpers/language";
 import { Action } from "../../presentational";
@@ -25,8 +25,9 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: ""
-                },
+                    logoUrl: "",
+                    enabled: true
+                } as ExternalAccountProvider,
                 status: "fetchingData",
                 lastRefreshDate: new Date().toISOString(),
             }]);
@@ -39,8 +40,9 @@ export default function (props: ExternalAccountConnectionAlertProps) {
                     id: 1,
                     name: "Provider",
                     category: "Provider",
-                    logoUrl: ""
-                },
+                    logoUrl: "",
+                    enabled: true
+                } as ExternalAccountProvider,
                 status: "unauthorized",
                 lastRefreshDate: new Date().toISOString(),
             }]);

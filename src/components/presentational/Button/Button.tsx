@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { MouseEventHandler, useContext } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
 import "./Button.css"
 import { LayoutContext } from '../Layout';
@@ -9,7 +9,8 @@ export type ButtonVariant = "default" | "subtle" | "light";
 export interface ButtonProps {
 	children?: React.ReactNode;
 	disabled?: boolean;
-	onClick: Function;
+	onClick: MouseEventHandler;
+	stopPropagation?: boolean;
 	className?: string;
 	color?: ColorDefinition;
 	loading?: boolean;
@@ -19,12 +20,12 @@ export interface ButtonProps {
 	fullWidth?: boolean;
 }
 
-export default function (props: ButtonProps) {
+export default function Button(props: ButtonProps) {
 	let classes = ["mdhui-button"];
 	if (props.className) {
 		classes.push(props.className);
 	}
-	if(props.fullWidth ?? true){
+	if (props.fullWidth ?? true) {
 		classes.push("mdhui-button-full-width");
 	}
 	if (props.defaultMargin) {
@@ -49,11 +50,14 @@ export default function (props: ButtonProps) {
 		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
 			disabled={(props.disabled || props.loading)}
-			onClick={() => {
+			onClick={event => {
 				if (props.disabled || props.loading) {
 					return;
 				}
-				props.onClick();
+				if (props.stopPropagation) {
+					event.stopPropagation();
+				}
+				props.onClick(event);
 			}}>
 			{props.loading &&
 				<>

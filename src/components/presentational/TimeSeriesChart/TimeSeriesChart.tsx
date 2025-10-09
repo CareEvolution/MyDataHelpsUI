@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
-import { add, addDays, addMonths, format, isToday } from 'date-fns'
+import { add, addDays, addHours, addMonths, differenceInDays, Duration, getDaysInMonth, isToday, startOfDay, startOfMonth, startOfToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import './TimeSeriesChart.css'
-import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
-import getDaysInMonth from 'date-fns/getDaysInMonth'
-import { ceil } from 'lodash'
-import addHours from 'date-fns/addHours'
-import startOfMonth from 'date-fns/startOfMonth'
+import { AreaChartSeries, ChartSeries, createAreaChartDefs, createBarChartDefs, createLineChartDefs, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor } from '../../../helpers'
+import ceil from 'lodash/ceil'
+import language from "../../../helpers/language"
+import { durationToDays, getAbbreviatedDayOfWeek, getAbbreviatedMonthName, getFullDateString, getShortTimeOfDayString } from '../../../helpers/date-helpers'
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface TimeSeriesDataPoint {
     timestamp: number; // Unix Timestamp in ms since epoch
@@ -19,8 +19,9 @@ export interface TimeSeriesDataPoint {
 
 export interface TimeSeriesChartProps {
     title?: string;
-    intervalType?: "Week" | "Month" | "6Month" | "Day";
-    intervalStart: Date;
+    intervalType?: "Day" | "Week" | "Month" | "6Month" | "Dynamic";
+    dynamicIntervalEndType?: "Today" | "Last Reading";
+    intervalStart?: Date;
     data?: TimeSeriesDataPoint[];
     expectedDataInterval?: Duration;
     series: ChartSeries[] | AreaChartSeries[];
@@ -40,13 +41,14 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     // Ensures that gradients are unique for each chart.
     let gradientKey = `gradient_${Math.random()}_`;
 
-    const DayTick = ({ x, y, payload }: any) => {
+    const DayTick = ({ x, y, payload, index, width }: any) => {
         let value = payload.value;
         let currentDate = new Date(value);
         if (intervalType === "Month") {
+            if (index > 0 && differenceInDays(currentDate, new Date(xAxisTicks![index - 1])) < 2) return <text />;
             return <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{currentDate.getDate()}</text>;
         } else if (intervalType === "6Month") {
-            let monthLabel = currentDate.getDate() === 1 ? format(currentDate, "LLL") : "";
+            let monthLabel = currentDate.getDate() === 1 ? getAbbreviatedMonthName(currentDate) : "";
             let dayLabel = currentDate.getDate().toString();
             return <>
                 <text className={isToday(currentDate) ? "today" : ""} fill="var(--mdhui-text-color-2)" x={x} y={y + 10} textAnchor="middle" fontSize="11">{monthLabel}</text>
@@ -56,7 +58,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             let dayOfWeek: string = "";
             for (let i = 0; i < 7; i++) {
                 if (currentDate.getTime() === value) {
-                    dayOfWeek = format(currentDate, "EEEEEE");
+                    dayOfWeek = getAbbreviatedDayOfWeek(currentDate);
                     break;
                 }
                 currentDate = add(currentDate, { days: 1 });
@@ -70,8 +72,13 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 return <></>;
             }
             return <>
-                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{format(currentDate, "h aaa")}</text>
+                <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{getShortTimeOfDayString(currentDate)}</text>
             </>;
+        } else if (intervalType === "Dynamic") {
+            const adjustedX = 37 + (index === 0 ? 0 : width);
+            const textAnchor = index === 0 ? "start" : "end";
+            const tickLabel = value > 1 ? getFullDateString(currentDate) : '...';
+            return <text fill="var(--mdhui-text-color-2)" x={adjustedX} y={y + 15} textAnchor={textAnchor} fontSize="12">{tickLabel}</text>;
         }
         return <>
             <text fill="var(--mdhui-text-color-2)" x={x} y={y + 15} textAnchor="middle" fontSize="12">{value}</text>
@@ -79,15 +86,32 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
     }
 
     function getXAxisTicks() {
-        const startTime = new Date(props.intervalStart);
-        startTime.setHours(0, 0, 0, 0);
+        if (intervalType === "Dynamic") {
+            if (!props.data?.length) return [0, 1];
+
+            const firstDayWithData = startOfDay(new Date(props.data[0].timestamp));
+
+            if (props.dynamicIntervalEndType === "Last Reading") {
+                const lastDayWithData = startOfDay(new Date(props.data[props.data.length - 1].timestamp));
+                if (props.data.length === 1 || (props.data.length === 2 && props.chartType === 'Bar')) {
+                    const buffer = props.expectedDataInterval ? durationToDays(props.expectedDataInterval) : 1;
+                    return [add(firstDayWithData, { days: -buffer }).getTime(), add(lastDayWithData, { days: buffer }).getTime()];
+                }
+                return [firstDayWithData.getTime(), lastDayWithData.getTime()];
+            }
+
+            return [firstDayWithData.getTime(), startOfToday().getTime()];
+        }
+
+        const startTime = startOfDay(props.intervalStart ?? (intervalType === "Day" ? startOfToday() : getDefaultIntervalStart(intervalType, "6DaysAgo")));
 
         if (intervalType === "Week") {
             return Array.from({ length: 7 }, (_, i) => addDays(startTime, i).getTime());
         } else if (intervalType === "Month") {
             const monthLength = getDaysInMonth(startTime);
             const numberOfTicks = ceil(monthLength / 2);
-            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime());
+            return Array.from({ length: numberOfTicks }, (_, i) => addDays(startTime, i * 2).getTime())
+                .concat(monthLength % 2 === 0 ? [addDays(startTime, monthLength - 1).getTime()] : []);
         } else if (intervalType === "6Month") {
             const ticks: number[] = [];
             let currentTick: Date;
@@ -107,6 +131,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                 ticks.push(addDays(currentTick, 14).getTime());
                 currentTick = addMonths(currentTick, 1);
             }
+            ticks.push(currentTick.getTime());
 
             return ticks;
         } else if (intervalType === "Day") {
@@ -116,9 +141,9 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     function tickFormatter(args: any) {
         if (args >= 10000) {
-            return Number((args / 1000).toFixed(1)) + 'K';
+            return formatNumberForLocale(args / 1000, 1) + 'K'; // K is SI prefix - not localized
         } else {
-            return Number(args.toFixed(1)).toString();
+            return formatNumberForLocale(args, 1);
         }
     }
 
@@ -162,26 +187,36 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
 
     const xAxisTicks = getXAxisTicks();
 
+    if (props.data?.length === 1 && props.chartType === 'Bar') {
+        let currentPoint = new Date(props.data[0].timestamp);
+        let nextExpectedPoint = add(currentPoint, props.expectedDataInterval || { days: 1 });
+        dataToDisplay?.push({
+            timestamp: nextExpectedPoint.getTime()
+        });
+    }
+
     return <div className="mdhui-time-series-chart" ref={props.innerRef}>
         {props.title &&
             <CardTitle title={props.title}></CardTitle>
         }
         <div className="chart-container">
-            {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">No Data</div>}
+            {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">{language('no-data')}</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
             <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
                 <ComposedChart data={dataToDisplay} syncId={props.syncId}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
                     }
-                    <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    {!props.options?.gridOptions?.hide &&
+                        <CartesianGrid vertical={props.chartType !== "Bar"} strokeDasharray="2 4" />
+                    }
                     <YAxis
                         tickFormatter={tickFormatter}
                         axisLine={false}
                         interval={0}
                         tickLine={false}
                         width={32}
-                        domain={['auto', 'auto']}
+                        domain={props.chartType === 'Line' ? ['auto', 'auto'] : undefined}
                         allowDataOverflow
                         {...props.options?.yAxisOptions}
                     />
@@ -218,6 +253,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             type="monotone"
                                             dataKey={dk}
                                             stroke={`url(#${gradientKey}${i})`}
+                                            dot={{ clipDot: false }}
                                             {...(props.options as MultiSeriesLineChartOptions)?.lineOptions}
                                         />
                                     )}
@@ -256,6 +292,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
                                             strokeWidth={2}
                                             fill={`url(#${gradientKey}${i}-fill)`}
                                             stroke={`url(#${gradientKey}${i}-stroke)`}
+                                            dot={{ clipDot: false }}
                                         />
                                     )}
                                 </>

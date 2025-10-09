@@ -1,10 +1,11 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { fitbitBreathingRateDataProvider, fitbitCaloriesBurnedDataProvider, fitbitCardioMinutesDataProvider, fitbitDeepSleepMinutesDataProvider, fitbitElevatedHeartRateMinutesDataProvider, fitbitFairlyActiveMinutesDataProvider, fitbitFatBurnMinutesDataProvider, fitbitFloorsDataProvider, fitbitHrvDataProvider, fitbitLightSleepMinutesDataProvider, fitbitLightlyActiveMinutesDataProvider, fitbitPeakMinutesDataProvider, fitbitRemSleepMinutesDataProvider, fitbitRestingHeartRateDataProvider, fitbitSedentaryMinutesDataProvider, fitbitSpO2DataProvider, fitbitStepsDataProvider, fitbitTotalActiveMinutesDataProvider, fitbitTotalSleepMinutesDataProvider, fitbitVeryActiveMinutesDataProvider, fitbitWearMinutesDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faClock, faHeartbeat, faPerson, faPersonRunning, faRoute, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPerson, faPersonRunning, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
+import { formatNumberForLocale } from "../../helpers/locale";
 
 let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -66,7 +67,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: fitbitCaloriesBurnedDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Calories"]),
         labelKey: "calories-burned",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1800, 2200]
     },
@@ -179,7 +180,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["SpO2"]),
         labelKey: "spo2",
         icon: <FontAwesomeSvgIcon icon={faWind} />,
-        formatter: (value: number) => Number(value.toFixed(0)) + " %",
+        formatter: (value: number) => formatNumberForLocale(value) + " %",
         previewDataRange: [95, 100]
     },
     {
@@ -187,7 +188,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: fitbitStepsDataProvider,
         availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Steps"]),
         labelKey: "steps",
-        icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
+        icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
         previewDataRange: [4000, 8000]
     },

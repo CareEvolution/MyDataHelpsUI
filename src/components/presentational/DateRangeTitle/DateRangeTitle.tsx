@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import Title from "../Title";
-import { TitleProps } from "../Title/Title";
-import { ColorDefinition } from "../../../helpers/colors";
+import Title, { TitleProps } from "../Title/Title";
+import { ColorDefinition } from "../../../helpers";
 import { DateRangeContext } from "../DateRangeCoordinator";
 import { titleForDateRange } from "../../../helpers/date-helpers";
 import { startOfDay } from "date-fns";
+import { noop } from "../../../helpers/functions";
 
 export interface DateRangeTitleProps extends TitleProps {
     color?: ColorDefinition
@@ -19,9 +19,10 @@ export default function DateRangeTitle(props: DateRangeTitleProps) {
     if (!context) {
         context = {
             intervalStart: startOfDay(new Date()),
-            intervalType: "Day"
+            intervalType: "Day",
+            update: noop
         };
-    };
+    }
 
     return <Title defaultMargin={props.defaultMargin} order={props.order || 3} color={props.color} style={props.style} innerRef={props.innerRef}>
         {titleForDateRange(context.intervalType, context.intervalStart, "long")}

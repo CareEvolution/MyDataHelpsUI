@@ -13,6 +13,7 @@ export interface LayoutProps {
 	className?: string;
 	noGlobalStyles?: boolean;
 	colorScheme?: "light" | "dark" | "auto";
+	flex?: boolean;
 	/**
 	  * @deprecated 
 	  */
@@ -27,10 +28,13 @@ export interface LayoutContext {
 
 export const LayoutContext = createContext<LayoutContext>({ colorScheme: "light", bodyBackgroundColor: "var(--mdhui-background-color-1)" });
 
-export default function (props: LayoutProps) {
+export default function Layout(props: LayoutProps) {
 	let className = "mdhui-layout";
 	if (props.className) {
 		className += " " + props.className;
+	}
+	if (props.flex) {
+		className += " mdhui-layout-flex";
 	}
 
 	let colorScheme: "light" | "dark" = "light";
@@ -52,6 +56,8 @@ export default function (props: LayoutProps) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
 
+	let paddingBottom = props.flex ? "0" : "env(safe-area-inset-bottom)";
+
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
@@ -71,7 +77,7 @@ export default function (props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div ref={props.innerRef} className={className} style={{ backgroundColor: backgroundColor }}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}

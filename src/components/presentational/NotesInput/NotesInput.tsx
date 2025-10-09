@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { format } from 'date-fns';
 import "./NotesInput.css"
 import language from '../../../helpers/language';
+import { getTimeOfDayString } from '../../../helpers/date-helpers';
 
 export interface NotesInputProps {
 	autoTimestamp?: boolean;
@@ -30,7 +30,7 @@ export default function (props: NotesInputProps) {
 			if (props.value.length) {
 				newValue = props.value + "\n\n";
 			}
-			newValue += "-- " + format(new Date(), "h:mm a") + " --\n";
+			newValue += "-- " + getTimeOfDayString(new Date()) + " --\n";
 			props.onChange(newValue);
 			e.stopPropagation();
 			textArea.current?.focus();

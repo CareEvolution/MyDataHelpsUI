@@ -1,5 +1,4 @@
 import React from "react"
-import { isNumber } from "lodash";
 import { AreaChartSeries, ChartSeries, ChartThreshold, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions } from "./chartOptions";
 import { ColorDefinition, resolveColor } from "./colors";
 import { LayoutContext } from "../components";
@@ -51,7 +50,7 @@ export function createLineChartDefs(
         }
         stops.push(<stop offset="100%" stopColor={lineColor} />);
 
-        return stops;
+        return stops.map((s, i) => ({ ...s, key: `${dataKey}_threshold_stop_${i}` }));
     }
 
     return <defs>
@@ -79,7 +78,7 @@ export function createBarChartDefs(layoutContext: LayoutContext, gradientKey: st
             </linearGradient>
         )}
         {options?.thresholds?.map((threshold, index) =>
-            <linearGradient key={`lg_thresh_${threshold}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient key={`lg_thresh_${index}`} id={gradientKey + "_threshold" + index} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={1.0} />
                 <stop offset="100%" stopColor={colorOrDefault(threshold.overThresholdColor, "var(--mdhui-color-warning)")} stopOpacity={0.7} />
             </linearGradient>

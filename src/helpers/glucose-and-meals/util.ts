@@ -6,12 +6,12 @@ export function timestampSortAsc(a: { timestamp: Date }, b: { timestamp: Date })
 }
 
 export async function getFirstValueReadings(providers: Promise<Reading[]>[]) {
-    let readings: Reading[] = [];
+    const readings: Reading[] = [];
 
-    let results = await Promise.all(providers);
+    const results = await Promise.all(providers);
     results.forEach(result => {
         result.forEach(reading => {
-            if (!readings.find(r => isEqual(r.timestamp, reading.timestamp))) {
+            if (!readings.some(r => isEqual(r.timestamp, reading.timestamp))) {
                 readings.push(reading);
             }
         });
@@ -21,12 +21,12 @@ export async function getFirstValueReadings(providers: Promise<Reading[]>[]) {
 }
 
 export async function getMaxValueReadings(providers: Promise<Reading[]>[]) {
-    let readings: Reading[] = [];
+    const readings: Reading[] = [];
 
-    let results = await Promise.all(providers);
+    const results = await Promise.all(providers);
     results.forEach(result => {
         result.forEach(reading => {
-            let existingReading = readings.find(r => isEqual(r.timestamp, reading.timestamp));
+            const existingReading = readings.find(r => isEqual(r.timestamp, reading.timestamp));
             if (!existingReading) {
                 readings.push(reading);
             } else if (existingReading.value < reading.value) {

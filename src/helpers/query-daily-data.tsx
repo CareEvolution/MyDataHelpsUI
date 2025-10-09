@@ -1,16 +1,18 @@
 ﻿import { add } from "date-fns";
 import getDayKey from "./get-day-key";
-import { DailyDataType, DailyDataTypeDefinition } from "./daily-data-types";
+import { DailyDataTypeDefinition } from "./daily-data-types";
 import allTypeDefinitions from "./daily-data-types/all";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter } from "./daily-data-types/formatters";
 import { predictableRandomNumber } from "./predictableRandomNumber";
+import { getCombinedDataCollectionSettings, CombinedDataCollectionSettings } from "./daily-data-providers/combined-data-collection-settings";
+import { combineResultsUsingFirstValue } from "./daily-data-providers/daily-data";
 
 export type DailyDataQueryResult = { [key: string]: number };
 export type DailyDataProvider = (startDate: Date, endDate: Date) => Promise<DailyDataQueryResult>;
-export type DailyDataAvailabilityCheck = (modifiedAfter?: Date) => Promise<boolean>;
+export type DailyDataAvailabilityCheck = (CombinedDataCollectionSettings: CombinedDataCollectionSettings, modifiedAfter?: Date) => Promise<boolean>;
 
 let dailyDataTypes = new Map(
 	allTypeDefinitions.map((typeDefinition) => [typeDefinition.type, typeDefinition])
@@ -32,46 +34,63 @@ export function registerDailyDataTypeDefinition(typeDefinition: DailyDataTypeDef
 	dailyDataTypes.set(typeDefinition.type, typeDefinition);
 }
 
-export function checkDailyDataAvailability(type: string, modifiedAfter?: Date) {
-	var dailyDataType = dailyDataTypes.get(type);
-	if (!dailyDataType) { throw "Unknown data type:" + type; }
-	return dailyDataType.availabilityCheck(modifiedAfter);
+function parseDailyDataTypes(type: string) : DailyDataTypeDefinition[] {
+	const findDailyDataType = (type: string) : DailyDataTypeDefinition => {
+		const dailyDataType = dailyDataTypes.get(type);
+		if (!dailyDataType) {
+			throw new Error("Unknown data type: " + type);
+		}
+		return dailyDataType;
+	};
+
+	if ( type.startsWith( "Custom:" )){
+		return (JSON.parse(type.substring(7)) as string[]).map(findDailyDataType);
+	}
+
+	return [findDailyDataType(type)];
 }
 
-export function queryDailyData(type: string, startDate: Date, endDate: Date, preview?: boolean) {
+export async function checkDailyDataAvailability(type: string, modifiedAfter?: Date): Promise<boolean> {
+	const dataTypes = parseDailyDataTypes(type);
+	
+	const combinedSettings = await getCombinedDataCollectionSettings(true);
+	
+	if (dataTypes.length === 0) return false;
+	
+	try {
+		await Promise.any(dataTypes.map(dataType => 
+			dataType.availabilityCheck(combinedSettings, modifiedAfter)
+				.then(result => result ? Promise.resolve() : Promise.reject())
+		));
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export async function queryDailyData(type: string, startDate: Date, endDate: Date, preview?: boolean): Promise<DailyDataQueryResult> {
 	if (preview) {
-		return Promise.resolve(queryPreviewDailyData(type, startDate, endDate));
+		return await queryPreviewDailyData(type, startDate, endDate);
 	}
-	var dailyDataType = dailyDataTypes.get(type);
-	if (!dailyDataType) { throw "Unknown data type:" + type; }
-	return dailyDataType.dataProvider(startDate, endDate).then(function (data) {
-		var result: DailyDataQueryResult = {};
-		while (startDate < endDate) {
-			var dayKey = getDayKey(startDate);
-			if (data[dayKey]) {
-				result[dayKey] = data[dayKey];
-			}
-			startDate = add(startDate, { days: 1 });
-		}
-		return result;
-	});
+    const dataProviders = parseDailyDataTypes(type).map(dailyDataType => dailyDataType.dataProvider(startDate, endDate));
+    return combineResultsUsingFirstValue(startDate, endDate, await Promise.all(dataProviders));
 }
 
-export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date) {
-	var result: DailyDataQueryResult = {};
-	let range = getDailyDataTypeDefinition(type as DailyDataType).previewDataRange;
+export async function queryPreviewDailyData(type: string, startDate: Date, endDate: Date, fillPercentage?: number) {
+	const result: DailyDataQueryResult = {};
 
-	//Modulo repeatable random numbers to get a value in range.
-	while (startDate < endDate && startDate < new Date()) {
-		const dayKey = getDayKey(startDate);
-		if (startDate >= new Date()) {
-			result[dayKey] = 0;
-		} else {
-			const value: number = ((await predictableRandomNumber(dayKey + "_" + type)) % (range[1] - range[0])) + range[0];
-			result[dayKey] = value;
+	const range = getDailyDataTypeDefinition(type).previewDataRange;
+
+	// Modulo repeatable random numbers to get a value in range.
+	let currentDate = startDate;
+	while (currentDate <= endDate && currentDate < new Date()) {
+		const currentDayKey = getDayKey(currentDate);
+		if (!fillPercentage || ((await predictableRandomNumber(currentDayKey + "_" + type + "_fill") % 100) / 100) <= fillPercentage) {
+			result[currentDayKey] = ((await predictableRandomNumber(currentDayKey + "_" + type)) % (range[1] - range[0])) + range[0];
 		}
-		startDate = add(startDate, { days: 1 });
+		currentDate = add(currentDate, { days: 1 });
 	}
+
 	return result;
 }
 
@@ -79,8 +98,8 @@ export function getAllDailyDataTypes() {
 	return Array.from(dailyDataTypes.values());
 }
 
-export function getDailyDataTypeDefinition(dataType: string): DailyDataTypeDefinition {
-	return dailyDataTypes.get(dataType)!;
+export function getDailyDataTypeDefinition(type: string): DailyDataTypeDefinition {
+	return parseDailyDataTypes(type)[0];
 }
 
 allTypeDefinitions.forEach(function (typeDefinition) {

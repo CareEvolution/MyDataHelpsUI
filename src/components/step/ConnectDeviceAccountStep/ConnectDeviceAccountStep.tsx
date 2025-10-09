@@ -4,7 +4,7 @@ import StepTitle from "../StepTitle";
 import StepText from "../StepText";
 import StepNextButton from "../StepNextButton";
 import { deviceType } from "../../../helpers/deviceType";
-
+import { language } from "../../../helpers/language";
 export interface ConnectDeviceAccountStepProps {
     title?: string;
     text?: string;
@@ -14,8 +14,11 @@ export interface ConnectDeviceAccountStepProps {
     onConnect: () => void;
 }
 
-export default function (props: ConnectDeviceAccountStepProps) {
-    const nextButtonText = `Connect to ${props.deviceType}`;
+/**
+ * This survey step can be passed a function used to connect devices.
+*/
+export default function ConnectDeviceAccountStep (props: ConnectDeviceAccountStepProps) {
+    const nextButtonText = language("connect-to-device").replace("@@DEVICE@@", props.deviceType);
 
     return (
         <StepLayout>

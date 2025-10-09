@@ -9,9 +9,13 @@ export interface AllergiesViewProps {
     presentation?: "Push" | "Modal"
     previewState?: "default"
     onViewTermInfo?(termInfo: TermInformationReference): void
+    colorScheme?: "auto" | "light" | "dark"
 }
 
-export default function (props: AllergiesViewProps) {
+/**
+ * This view shows a listing of allergies pulled from the connected Providers, and Health Plans.
+ */
+export default function AllergiesView(props: AllergiesViewProps) {
     function viewTermInfo(termInfo: TermInformationReference) {
         if (props.onViewTermInfo) {
             props.onViewTermInfo(termInfo);
@@ -22,7 +26,7 @@ export default function (props: AllergiesViewProps) {
     }
 
     return (
-        <Layout>
+        <Layout colorScheme={props.colorScheme}>
             <NavigationBar
                 showBackButton={props.presentation == "Push"}
                 showCloseButton={props.presentation == "Modal"}>

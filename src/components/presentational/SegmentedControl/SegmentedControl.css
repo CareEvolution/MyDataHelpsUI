@@ -1,9 +1,9 @@
 .mdhui-segmented-control {
     border-radius: 32px;
     border: solid 1px var(--mdhui-color-primary);
-    background: var(--mdhui-background-color-0);
     overflow: hidden;
     padding: 1px;
+    background: var(--mdhui-background-color-highest-contrast);
 }
 
 .mdhui-segmented-control .mdhui-segment {
@@ -60,4 +60,8 @@
 
 .mdhui-segmented-control.mdhui-segmented-control-options-vertical .mdhui-segment:last-child {
     border: none;
+}
+
+.mdhui-segmented-control.mdhui-segmented-control-default-margin {
+    margin: 16px;
 }

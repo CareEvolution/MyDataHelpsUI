@@ -11,10 +11,7 @@
   width: calc(100% - 40px);
   box-sizing: border-box;
   text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: inline-block;
 }
 
 .mdhui-step-container .mdhui-step-next-button:disabled,

@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from 'react'
 import UnstyledButton from '../UnstyledButton';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -27,7 +27,7 @@ export interface ActionProps {
 	renderAs?: "div" | "button";
 }
 
-export default function (props: ActionProps) {
+export default function Action(props: ActionProps) {
 	var indicatorIcon = props.indicatorIcon ?? faChevronRight;
 
 	let onClick = props.onClick ?? (() => { });
@@ -68,7 +68,7 @@ export default function (props: ActionProps) {
 	if (props.bottomBorder) {
 		classes.push("mdhui-action-bottom-border");
 	}
-	if(props.className){
+	if (props.className) {
 		classes.push(props.className);
 	}
 	if (props.onClick) {

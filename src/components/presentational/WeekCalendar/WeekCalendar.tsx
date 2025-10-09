@@ -1,11 +1,13 @@
 ﻿import React, { useRef } from "react";
 import { useEffect } from "react";
-import "./WeekCalendar.css"
-import { add, format, formatISO } from 'date-fns';
+import "./WeekCalendar.css";
+import { add, formatISO } from 'date-fns';
 import { LoadingIndicator, UnstyledButton } from "..";
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
+import { getDayOfWeekLetter, getDayOfMonth } from "../../../helpers/date-helpers";
 
 export interface WeekCalendarProps {
+	minimumDate?: Date;
 	selectedDate?: Date;
 	hideDateLabel?: boolean;
 	startDate: Date;
@@ -16,16 +18,18 @@ export interface WeekCalendarProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: WeekCalendarProps) {
+export default function WeekCalendar(props: WeekCalendarProps) {
 	const element = useRef<HTMLDivElement>(null);
+
+	const canScrollBackward = !props.minimumDate || props.startDate > props.minimumDate;
 
 	useEffect(() => {
 		if (props.onStartDateChange) {
 			var scrollListener = debounce(function (ev: Event) {
-				if (element.current?.scrollLeft == 0) {
+				if (canScrollBackward && element.current?.scrollLeft == 0) {
 					props.onStartDateChange!(add(props.startDate, { weeks: -1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
-				} else if (element.current?.clientWidth && element.current?.scrollLeft == element.current.clientWidth * 2) {
+				} else if (element.current?.clientWidth && element.current?.scrollLeft == element.current.clientWidth * (canScrollBackward ? 2 : 1)) {
 					props.onStartDateChange!(add(props.startDate, { weeks: 1 }));
 					element.current?.removeEventListener("scroll", scrollListener);
 				}
@@ -35,7 +39,7 @@ export default function (props: WeekCalendarProps) {
 				element.current?.removeEventListener("scroll", scrollListener);
 			}
 		}
-	}, [props.startDate])
+	}, [props.onStartDateChange, canScrollBackward, props.startDate]);
 
 	var previousWeek: Date[] = [];
 	var currentWeek: Date[] = [];
@@ -54,24 +58,26 @@ export default function (props: WeekCalendarProps) {
 
 	useEffect(() => {
 		if (element.current) {
-			element.current.scrollLeft = window.innerWidth;
+			element.current.scrollLeft = canScrollBackward ? window.innerWidth : 0;
 		}
 	});
 
 	if (element.current) {
-		element.current.scrollLeft = window.innerWidth;
+		element.current.scrollLeft = canScrollBackward ? window.innerWidth : 0;
 	}
 
 	function getLabel(date: Date) {
 		return <div className="mdhui-week-calendar-date-label">
-			<div className="mdhui-week-calendar-day-of-week"> {format(date, "E").substr(0, 1)}</div>
-			<div className="mdhui-week-calendar-day-of-month">{format(date, "d")}</div>
+			<div className="mdhui-week-calendar-day-of-week"> {getDayOfWeekLetter(date)}</div>
+			<div className="mdhui-week-calendar-day-of-month">{getDayOfMonth(date)}</div>
 		</div>
 	}
 
 	function getDayClasses(date: Date) {
 		var classes = ["mdhui-week-calendar-day"];
-		if (date > new Date()) {
+		if (props.minimumDate && date < props.minimumDate) {
+			classes.push("mdhui-week-calendar-day-disabled");
+		} else if (date > new Date()) {
 			classes.push("mdhui-week-calendar-day-future");
 		}
 		else if (props.onDateSelected) {
@@ -84,6 +90,9 @@ export default function (props: WeekCalendarProps) {
 	}
 
 	function selectDate(date: Date) {
+		if (props.minimumDate && date < props.minimumDate) {
+			return;
+		}
 		if (date > new Date()) {
 			return;
 		}
@@ -100,14 +109,16 @@ export default function (props: WeekCalendarProps) {
 					<LoadingIndicator />
 				</div>
 			}
-			<div className="mdhui-week-calendar-week">
-				{previousWeek.map((d) =>
-					<div key={d.getTime()} className="mdhui-week-calendar-day">
-						{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), false)}
-						{!props.hideDateLabel && getLabel(d)}
-					</div>
-				)}
-			</div>
+			{canScrollBackward &&
+				<div className="mdhui-week-calendar-week">
+					{previousWeek.map((d) =>
+						<div key={d.getTime()} className="mdhui-week-calendar-day">
+							{props.dayRenderer(d.getFullYear(), d.getMonth(), d.getDate(), false)}
+							{!props.hideDateLabel && getLabel(d)}
+						</div>
+					)}
+				</div>
+			}
 			<div className="mdhui-week-calendar-week">
 				{currentWeek.map((d) =>
 					<UnstyledButton key={d.getTime()}

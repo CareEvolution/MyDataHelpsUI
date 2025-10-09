@@ -1,14 +1,10 @@
 import UnstyledButton from '../UnstyledButton';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons/faRefresh'
-import { faRepeat } from '@fortawesome/free-solid-svg-icons/faRepeat'
-import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
+import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
 import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
-import formatRelative from 'date-fns/formatRelative'
-import "./SingleExternalAccount.css"
-import parseISO from 'date-fns/parseISO'
-import { getLocaleFromIso } from '../../../helpers/locale';
+import "./SingleExternalAccount.css";
+import { getRelativeDateString } from "../../../helpers/date-helpers";
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -19,8 +15,7 @@ export interface SingleExternalAccountProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: SingleExternalAccountProps) {
-	let locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
+export default function SingleExternalAccount (props: SingleExternalAccountProps) {
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {
@@ -71,7 +66,7 @@ export default function (props: SingleExternalAccountProps) {
 				{getStatus() === "fetchComplete" &&
 					<p>
 						{language("external-account-last-updated")}&nbsp;
-						<strong>{formatRelative(parseISO(props.externalAccount.lastRefreshDate), new Date(), { locale: locale })}</strong>
+						<strong>{getRelativeDateString(props.externalAccount.lastRefreshDate, new Date())}</strong>
 					</p>
 				}
 				{getStatus() === "error" &&

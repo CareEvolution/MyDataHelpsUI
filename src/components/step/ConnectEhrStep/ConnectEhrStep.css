@@ -1,0 +1,9 @@
+.mdhui-step-container.mdhui-connect-ehr-step .mdhui-provider-search {
+    margin-bottom: 94px;
+}
+.mdhui-step-container.mdhui-connect-ehr-step .mdhui-step-next-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

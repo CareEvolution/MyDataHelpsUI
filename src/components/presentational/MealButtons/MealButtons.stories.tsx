@@ -1,38 +1,43 @@
 ﻿import React from 'react';
 import { Layout } from '../../presentational';
 import MealButtons from './MealButtons';
-import MealCoordinator, { MealCoordinatorPreviewState } from '../../container/MealCoordinator';
+import MealCoordinator from '../../container/MealCoordinator';
 import Card from '../Card';
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
 
-export default {
+type MealButtonsStoryArgs = React.ComponentProps<typeof MealButtons> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    previewState: 'loading' | 'loaded' | 'live';
+};
+
+const meta: Meta<MealButtonsStoryArgs> = {
     title: 'Presentational/MealButtons',
     component: MealButtons,
-    parameters: { layout: 'fullscreen' }
+    parameters: { layout: 'fullscreen' },
+    render: args => {
+        return <Layout colorScheme={args.colorScheme}>
+            <MealCoordinator previewState={args.previewState !== 'live' ? args.previewState === 'loading' ? 'loading' : 'with data' : undefined}>
+                <Card>
+                    <MealButtons
+                        preview={args.previewState !== 'live'}
+                        autoLaunchEditor={args.autoLaunchEditor}
+                        onEditMeal={() => console.log('edit meal')}
+                    />
+                </Card>
+            </MealCoordinator>
+        </Layout>;
+    }
 };
+export default meta;
 
-interface MealButtonsStoryArgs {
-    colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | MealCoordinatorPreviewState;
-}
+type Story = StoryObj<MealButtonsStoryArgs>;
 
-const render = (args: MealButtonsStoryArgs) => {
-    const onEditMeal = () => {
-        console.log('edit meal');
-    };
-
-    return <Layout colorScheme={args.colorScheme}>
-        <MealCoordinator previewState={args.previewState}>
-            <Card>
-                <MealButtons preview={true} onEditMeal={() => onEditMeal()} />
-            </Card>
-        </MealCoordinator>
-    </Layout>;
-};
-
-export const Default = {
+export const Default: Story = {
     args: {
         colorScheme: 'auto',
-        previewState: 'with data'
+        previewState: 'loaded',
+        autoLaunchEditor: false
     },
     argTypes: {
         colorScheme: {
@@ -43,8 +48,11 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'no data', 'with data']
-        }
-    },
-    render: render
+            options: ['loading', 'loaded', 'live']
+        },
+        autoLaunchEditor: {
+            name: 'auto-launch editor?'
+        },
+        ...argTypesToHide(['preview', 'onEditMeal', 'innerRef'])
+    }
 };

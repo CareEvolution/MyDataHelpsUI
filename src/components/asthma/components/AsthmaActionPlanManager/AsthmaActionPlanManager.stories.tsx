@@ -5,7 +5,7 @@ import AsthmaActionPlanManager, { AsthmaActionPlanManagerProps } from './AsthmaA
 export default {
     title: 'Asthma/Components/AsthmaActionPlanManager',
     component: AsthmaActionPlanManager,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface AsthmaActionPlanManagerStoryArgs extends AsthmaActionPlanManagerProps {
@@ -14,7 +14,7 @@ interface AsthmaActionPlanManagerStoryArgs extends AsthmaActionPlanManagerProps 
 
 const render = (args: AsthmaActionPlanManagerStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <AsthmaActionPlanManager {...args}/>
+        <AsthmaActionPlanManager {...args} />
     </Layout>;
 }
 
@@ -32,7 +32,7 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'loaded without action plan', 'loaded with action plan']
+            options: ['loading', 'loading (caregiver mode)', 'loaded without action plan', 'loaded without action plan (caregiver mode)', 'loaded with action plan', 'loaded with action plan (caregiver mode)']
         }
     },
     render: render

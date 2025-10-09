@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './AsthmaControlStatusHeader.css';
-import { asthmaDataService, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
+import { asthmaDataService, caregiverVariableLanguage, computeAsthmaControlState, getAsthmaAirQualityDescriptionText } from '../../helpers';
 import { AsthmaAirQuality, AsthmaBiometric, AsthmaControlState, AsthmaParticipant } from '../../model';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { language, useInitializeView } from '../../../../helpers';
+import { highlightInnerText } from "../../helpers/asthma-formatters";
 import { add } from 'date-fns';
 import { AsthmaControlStatusHeaderPreviewState, previewData } from './AsthmaControlStatusHeader.previewData';
-import language from '../../../../helpers/language';
 
 export interface AsthmaControlStatusHeaderProps {
     previewState?: 'loading' | AsthmaControlStatusHeaderPreviewState;
@@ -36,7 +36,7 @@ export default function (props: AsthmaControlStatusHeaderProps) {
 
         let now = new Date();
 
-        asthmaDataService.loadLogEntries(add(new Date(now), {days: -10})).then(logEntries => {
+        asthmaDataService.loadLogEntries(add(new Date(now), { days: -10 })).then(logEntries => {
             if (props.participant.hasPairedDevice() && props.participant.hasEstablishedBaseline()) {
                 let biometricsLoader = asthmaDataService.loadBiometricsForControlStatus();
                 let airQualityLoaders = asthmaDataService.loadAirQualitiesForControlStatus(props.participant.getHomeAirQualityZipCode(), props.participant.getWorkAirQualityZipCode());
@@ -57,59 +57,53 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         return null;
     }
 
+    const getAbnormalRangeAlertDisplay = (alertText: string): React.JSX.Element => {
+        const formattedText = highlightInnerText(alertText, 'mdhui-asthma-control-status-header-data-out-of-range');
+
+        return <div className="mdhui-asthma-control-status-header-text">
+            <p>{formattedText} {language('asthma-control-status-header-complete-daily-entry')}</p>
+        </div>;
+    }
+
     const getNoDataDisplay = (): React.JSX.Element | null => {
         if (props.participant.hasPairedDevice() && props.participant.hasEstablishedBaseline()) {
             if ((biometrics!.filter(b => b.status === 'out-of-range').length + airQualities!.filter(q => q.status === 'out-of-range').length) > 1) {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-multiple-out-of-range-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-multiple-out-of-range-p2')}</span>{language('asthma-control-status-header-multiple-out-of-range-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-multiple-out-of-range'));
             }
 
             if (biometrics!.find(b => b.type === 'daytime-resting-heart-rate' || b.type === 'nighttime-resting-heart-rate')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-heart-rate-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-abnormal-heart-rate-p2')}</span>{language('asthma-control-status-header-abnormal-heart-rate-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-abnormal-heart-rate'));
             }
 
             if (biometrics!.find(b => b.type === 'respiratory-rate')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-respiratory-rate-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-abnormal-respiratory-rate-p2')}</span>{language('asthma-control-status-header-abnormal-respiratory-rate-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-abnormal-respiratory-rate'));
             }
-
+            
             if (biometrics!.find(b => b.type === 'steps')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-steps-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-abnormal-steps-p2')}</span>{language('asthma-control-status-header-abnormal-steps-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-abnormal-steps'));
             }
 
             if (biometrics!.find(b => b.type === 'sleep-disturbances')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-sleep-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-abnormal-sleep-p2')}</span>{language('asthma-control-status-header-abnormal-sleep-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-abnormal-sleep'));
             }
 
             if (biometrics!.find(b => b.type === 'daytime-blood-oxygen-level' || b.type === 'nighttime-blood-oxygen-level')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-blood-oxygen-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{language('asthma-control-status-header-abnormal-blood-oxygen-p2')}</span>{language('asthma-control-status-header-abnormal-blood-oxygen-p3')}</p>
-                </div>;
+                return getAbnormalRangeAlertDisplay(language('asthma-control-status-header-abnormal-blood-oxygen'));
             }
 
             if (airQualities!.find(q => q.type === 'home')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-home-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'home')?.description)}</span>{language('asthma-control-status-header-abnormal-home-aqi-p2')}</p>
-                </div>;
+                const prompt = language('asthma-control-status-header-abnormal-home-aqi', undefined, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'home')?.description) || "" });
+                return getAbnormalRangeAlertDisplay(prompt);
             }
 
             if (airQualities!.find(q => q.type === 'work')?.status === 'out-of-range') {
-                return <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-abnormal-work-aqi-p1')}<span className="mdhui-asthma-control-status-header-data-out-of-range">{getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'work')?.description)}</span>{language('asthma-control-status-header-abnormal-work-aqi-p2')}</p>
-                </div>;
+                const prompt = language('asthma-control-status-header-abnormal-work-aqi', undefined, { "aqi" : getAsthmaAirQualityDescriptionText(airQualities!.find(q => q.type === 'work')?.description) || "" });
+                return getAbnormalRangeAlertDisplay(prompt);
             }
         }
 
         return <div className="mdhui-asthma-control-status-header-text">
-            <p>{language('asthma-control-status-header-no-data')}</p>
+            <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-no-data')}</p>
         </div>;
     };
 
@@ -126,18 +120,18 @@ export default function (props: AsthmaControlStatusHeaderProps) {
         {controlState!.status === 'no-data' && getNoDataDisplay()}
         {controlState!.status === 'not-determined' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{language('asthma-control-status-header-not-determined')}</p>
+                <p>{caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-determined')}</p>
             </div>
         }
         {controlState!.status === 'controlled' &&
             <div className="mdhui-asthma-control-status-header-text">
-                <p>{language('asthma-control-status-header-controlled-p1')}<span className="mdhui-asthma-control-status-header-controlled">{language('asthma-control-status-header-controlled-p2')}</span></p>
+                <p>{highlightInnerText(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-controlled'), 'mdhui-asthma-control-status-header-controlled')}</p>
             </div>
         }
         {controlState!.status === 'not-controlled' &&
             <div>
                 <div className="mdhui-asthma-control-status-header-text">
-                    <p>{language('asthma-control-status-header-not-controlled-p1')}<span className="mdhui-asthma-control-status-header-not-controlled">{language('asthma-control-status-header-not-controlled-p2')}</span></p>
+                    <p>{highlightInnerText(caregiverVariableLanguage(props.participant, 'asthma-control-status-header-not-controlled'), 'mdhui-asthma-control-status-header-not-controlled')}</p>
                 </div>
                 <div className="mdhui-asthma-control-status-header-not-controlled-stats">
                     {getStatDisplay(language('asthma-control-status-header-not-controlled-stat-symptom-days'), controlState!.symptomDaysPast7)}

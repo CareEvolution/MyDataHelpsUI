@@ -2,7 +2,7 @@ import React, { useContext, useLayoutEffect, useRef } from 'react'
 import './NavigationBar.css'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import language from '../../../helpers/language'
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon'
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
@@ -24,17 +24,27 @@ export interface NavigationBarProps {
 	navigationBarLeft?: React.ReactNode;
 	navigationBarRight?: React.ReactNode;
 	backgroundColor?: ColorDefinition;
+	onClose?: () => void;
+	onBack?: () => void;
 }
 
 export default function (props: NavigationBarProps) {
 	const navBar = useRef<HTMLDivElement>(null);
 
 	function back() {
-		MyDataHelps.back();
+		if (props.onBack) {
+			props.onBack();
+		} else {
+			MyDataHelps.back();
+		}
 	}
 
 	function close() {
-		MyDataHelps.dismiss();
+		if (props.onClose) {
+			props.onClose();
+		} else {
+			MyDataHelps.dismiss();
+		}
 	}
 
 	useLayoutEffect(() => {

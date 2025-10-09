@@ -6,9 +6,10 @@ import immunizationsIcon from "../../../assets/icon-immunization.svg";
 import reportIcon from "../../../assets/icon-report.svg";
 import labReportIcon from "../../../assets/icon-labreport.svg";
 import EhrNewsFeed, { EhrNewsFeedEventReference } from "../../container/EhrNewsFeed/EhrNewsFeed";
+import { EhrNewsFeedType } from "../../../helpers/news-feed/types";
 
 export interface EhrNewsFeedViewProps {
-    feed: "Procedures" | "Reports" | "LabReports" | "Immunizations"
+    feed: EhrNewsFeedType
     previewState?: "default"
     presentation?: "Push" | "Modal"
     colorScheme?: "auto" | "light" | "dark"
@@ -16,7 +17,11 @@ export interface EhrNewsFeedViewProps {
     onReportSelected(reportID: string): void
 }
 
-export default function (props: EhrNewsFeedViewProps) {
+/**
+ * This view can be configured to display the following news feeds:
+ * Procedures, Reports, Lab Results, and Immunizations
+ */
+export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
     let title = "";
     let icon = <></>;
     switch (props.feed) {

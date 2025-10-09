@@ -5,5 +5,6 @@ export { default as AsthmaAlertTakeoverView } from './AsthmaAlertTakeoverView';
 export { default as AsthmaDayView } from './AsthmaDayView';
 export { default as AsthmaHeartAndLungsView } from './AsthmaHeartAndLungsView';
 export { default as AsthmaLogEntryEditorView, AsthmaLogEntryEditorViewPreviewState } from './AsthmaLogEntryEditorView';
+export { default as AsthmaLogEntryInfoView } from './AsthmaLogEntryInfoView';
 export { default as AsthmaProviderReportView } from './AsthmaProviderReportView';
 export { default as AsthmaSleepView } from './AsthmaSleepView';

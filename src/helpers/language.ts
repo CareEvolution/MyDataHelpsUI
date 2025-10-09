@@ -1,46 +1,99 @@
 ﻿import MyDataHelps from "@careevolution/mydatahelps-js"
-import englishStrings from "./strings-en"
-import spanishStrings from "./strings-es"
-import dutchStrings from "./strings-nl"
-import germanStrings from "./strings-de"
-import frenchStrings from "./strings-fr"
-import portugueseStrings from "./strings-pt"
-import italianStrings from "./strings-it"
-import polishStrings from "./strings-pl"
+import englishStrings from "../../locales/en.json"
+import spanishStrings from "../../locales/es.json"
+import germanStrings from "../../locales/de.json"
+import filipinoStrings from "../../locales/fil.json"
+import frenchStrings from "../../locales/fr.json"
+import frenchCanadianStrings from "../../locales/fr-CA.json"
+import italianStrings from "../../locales/it.json"
+import dutchStrings from "../../locales/nl.json"
+import polishStrings from "../../locales/pl.json"
+import portugueseBrazilStrings from "../../locales/pt.json"
+import portuguesePortugalStrings from "../../locales/pt-PT.json"
+import romanianStrings from "../../locales/ro.json"
+import somaliStrings from "../../locales/so.json"
+import swahiliStrings from "../../locales/sw.json"
+import tagalogStrings from "../../locales/tl.json"
+import vietnameseStrings from "../../locales/vi.json"
 
-export type Language = "" | "en" | "es" | "nl" | "de" | "fr" | "pt" | "it" | "pl"
+// NOTE! If you add a new locale, be sure to also update getDateLocale()
 
-export function language(key: string, specifiedLanguage?: string): string {
-	const currentLanguage: Language = getLanguageFromIso(specifiedLanguage || MyDataHelps.getCurrentLanguage());
-
-	let resolvedString = null;
-	if (currentLanguage == "en") resolvedString = englishStrings[key];
-	if (currentLanguage == "es") resolvedString = spanishStrings[key];
-	if (currentLanguage == "nl") resolvedString = dutchStrings[key];
-	if (currentLanguage == "de") resolvedString = germanStrings[key];
-	if (currentLanguage == "fr") resolvedString = frenchStrings[key];
-	if (currentLanguage == "pt") resolvedString = portugueseStrings[key];
-	if (currentLanguage == "it") resolvedString = italianStrings[key];
-	if (currentLanguage == "pl") resolvedString = polishStrings[key];
-	if (resolvedString != null) return resolvedString;
-
-	return englishStrings[key];
+interface LocaleStrings {
+	[key: string]: string;
 }
 
-export function getLanguageFromIso(language: string): Language {
-	if (language.length < 2) return "";
+// Please alphabetize by language name (with en/es first) to 
+// match the UI list.
+const localeToStringsMap : Record<string, LocaleStrings> = {
+	"en": englishStrings,
+	"es": spanishStrings,
+	"nl": dutchStrings,
+	"fil": filipinoStrings,
+	"fr": frenchStrings,
+	"fr-ca": frenchCanadianStrings,
+	"de": germanStrings,
+	"it": italianStrings,
+	"pt": portugueseBrazilStrings,
+	"pt-pt": portuguesePortugalStrings,
+	"pl": polishStrings,
+	"ro": romanianStrings,
+	"sw": swahiliStrings,
+	"so": somaliStrings,
+	"tl": tagalogStrings,
+	"vi": vietnameseStrings
+};
 
-	var beginningOfLanguage = language.slice(0, 2);
-	if (beginningOfLanguage == "en") return "en";
-	if (beginningOfLanguage == "es") return "es";
-	if (beginningOfLanguage == "nl") return "nl";
-	if (beginningOfLanguage == "de") return "de";
-	if (beginningOfLanguage == "fr") return "fr";
-	if (beginningOfLanguage == "pt") return "pt";
-	if (beginningOfLanguage == "it") return "it";
-	if (beginningOfLanguage == "pl") return "pl";
+function format(resolvedString: string, args?: { [key: string]: string }) {
+	if (!resolvedString || !args) return resolvedString;
+	return resolvedString.replace(/\{\s*([^}\s]+)\s*}/g, (_, key) => args[key]);
+}
 
-	return "";
+export function supportedLocales() {
+	return Object.keys(localeToStringsMap);
+}
+
+/** Gets the currently active locale, accounting for which ones are supported (e.g., en-UK will fall back to just en) */
+export function getCurrentLocale(specifiedLocale?: string) {
+	const currentLocale = normalizeLocaleString(specifiedLocale || MyDataHelps.getCurrentLanguage());
+
+	if (isLocaleSupported(currentLocale)) {
+		return currentLocale;
+	}
+	const baseLocale = getLanguageCodeFromIso(currentLocale);
+	if (isLocaleSupported(baseLocale)) {
+		return baseLocale;
+	}
+	return "en";
+}
+
+export function language(key: string, specifiedLocale?: string, args?: { [key: string]: string }): string {
+	const currentLocale = getCurrentLocale(specifiedLocale);	
+	const localeStrings : LocaleStrings = localeToStringsMap[currentLocale];
+	return format(localeStrings[key] || "", args);
+}
+
+/** Gets the language code from an ISO locale string (e.g., en-US returns en. */
+export function getLanguageCodeFromIso(locale: string): string {
+	const normalizedLocale = normalizeLocaleString(locale);
+	return normalizedLocale.split("-")[0];
+}
+
+/** Gets the country code from an ISO locale string (e.g., en-US returns us). */
+export function getCountryCodeFromIso(locale: string) : string | undefined {
+	const normalizedLocale = normalizeLocaleString(locale);
+    return normalizedLocale.split("-")[1];
+}
+
+function isLocaleSupported(locale: string) {
+	return !!localeToStringsMap[normalizeLocaleString(locale)];
+}
+
+/** Normalize variations in ISO locale strings, including:
+ *    - separators (hyphens or underscores) -> all hyphens
+ *    - capitalization -> all lowercase
+ */
+function normalizeLocaleString(locale: string) {
+	return (locale || "").replace("_", "-").toLowerCase();
 }
 
 export default language;

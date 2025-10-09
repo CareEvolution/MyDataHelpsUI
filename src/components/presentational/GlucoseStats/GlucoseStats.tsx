@@ -1,12 +1,13 @@
 import React from 'react';
 import './GlucoseStats.css';
-import { language, Reading } from '../../../helpers';
+import { formatMinutesForLocale, formatNumberForLocale, language, Reading } from '../../../helpers';
 import LoadingIndicator from '../LoadingIndicator';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faBed, faDroplet, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 
 export interface GlucoseStatsProps {
+    variant?: 'default' | 'minimal';
     loading: boolean;
     glucoseReadings: Reading[];
     steps: Reading[];
@@ -37,52 +38,73 @@ export default function (props: GlucoseStatsProps) {
         sleepHours = Math.floor(props.sleepMinutes / 60);
         sleepMinutes = Math.floor(props.sleepMinutes % 60);
     }
+    let totalSleepMinutes = ((sleepHours || 0) * 60) + (sleepMinutes || 0);
 
     return <div className="mdhui-glucose-stats" ref={props.innerRef}>
         <SingleGlucoseStat
             loading={props.loading}
-            label={language('glucose-stats-range-label')}
-            icon={faDroplet}
+            label={language(props.variant === 'minimal' ? 'glucose-stats-range-label-minimal' : 'glucose-stats-range-label')}
+            icon={props.variant === 'minimal' ? undefined : faDroplet}
             iconColor="#d36540"
-            value={minGlucose ? `${minGlucose.toFixed(0)} - ${maxGlucose!.toFixed(0)} mg/dL` : undefined}
+            value={(minGlucose && maxGlucose) ? `${formatNumberForLocale(minGlucose)} - ${formatNumberForLocale(maxGlucose)} mg/dL` : undefined}
+            invert={props.variant === 'minimal'}
         />
         <SingleGlucoseStat
             loading={props.loading}
-            label={language('glucose-stats-avg-label')}
-            icon={faDroplet}
+            label={language(props.variant === 'minimal' ? 'glucose-stats-avg-label-minimal' : 'glucose-stats-avg-label')}
+            icon={props.variant === 'minimal' ? undefined : faDroplet}
             iconColor="#d36540"
-            value={avgGlucose ? `${avgGlucose.toFixed(0)} mg/dL` : undefined}
+            value={avgGlucose ? `${formatNumberForLocale(avgGlucose)} mg/dL` : undefined}
+            invert={props.variant === 'minimal'}
         />
-        <SingleGlucoseStat
-            loading={props.loading}
-            label={language('glucose-stats-steps-label')}
-            icon={faShoePrints}
-            iconColor="#f5b722"
-            value={steps ? `${steps.toLocaleString()}` : undefined}
-        />
-        <SingleGlucoseStat
-            loading={props.loading}
-            label={language('glucose-stats-sleep-label')}
-            icon={faBed}
-            iconColor="#8287bb"
-            value={(sleepHours || sleepMinutes) ? `${sleepHours}h ${sleepMinutes}m` : undefined}
-        />
+        {props.variant !== 'minimal' &&
+            <>
+                <SingleGlucoseStat
+                    loading={props.loading}
+                    label={language('glucose-stats-steps-label')}
+                    icon={faShoePrints}
+                    iconColor="#f5b722"
+                    value={steps ? `${formatNumberForLocale(steps)}` : undefined}
+                />
+                <SingleGlucoseStat
+                    loading={props.loading}
+                    label={language('glucose-stats-sleep-label')}
+                    icon={faBed}
+                    iconColor="#8287bb"
+                    value={(sleepHours || sleepMinutes) ? formatMinutesForLocale(totalSleepMinutes) : undefined}
+                />
+            </>
+        }
     </div>;
 }
 
-function SingleGlucoseStat(props: { loading: boolean, label: string, icon: IconDefinition, iconColor?: string, value?: string }) {
+interface SingleGlucoseStatProps {
+    loading: boolean;
+    label: string;
+    icon?: IconDefinition;
+    iconColor?: string;
+    value?: string;
+    invert?: boolean;
+}
+
+function SingleGlucoseStat(props: SingleGlucoseStatProps) {
     return <div className="mdhui-glucose-stat">
-        <div className="mdhui-glucose-stat-label">{props.label}</div>
+        {!props.invert &&
+            <div className="mdhui-glucose-stat-label">{props.label}</div>
+        }
         {props.loading &&
             <LoadingIndicator />
         }
         {!props.loading && props.value &&
             <div className="mdhui-glucose-stat-value">
-                <FontAwesomeSvgIcon icon={props.icon} color={props.iconColor} /> {props.value}
+                {props.icon && <FontAwesomeSvgIcon icon={props.icon} color={props.iconColor} />} {props.value}
             </div>
         }
         {!props.loading && !props.value &&
             <div className="mdhui-glucose-stat-value-not-available">--</div>
+        }
+        {props.invert &&
+            <div className="mdhui-glucose-stat-label">{props.label}</div>
         }
     </div>;
 }

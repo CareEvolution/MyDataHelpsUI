@@ -1,21 +1,22 @@
-import React from 'react'
-import "./SingleNotification.css"
-import MyDataHelps, { Notification } from "@careevolution/mydatahelps-js"
-import formatRelative from 'date-fns/formatRelative'
-import parseISO from 'date-fns/parseISO'
-import { getLocaleFromIso } from '../../../helpers/locale';
+import React from 'react';
+import "./SingleNotification.css";
+import { Notification } from "@careevolution/mydatahelps-js";
+import { getRelativeDateString } from '../../../helpers/date-helpers';
+import { language } from "../../../helpers/language";
 
 export interface SingleNotificationProps {
-	notification: Notification
+	notification: Notification | null
 	innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function (props: SingleNotificationProps) {
-	function capitalizeFirstLetter(string: string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
+	if (!props.notification) {
+		return (
+			<div ref={props.innerRef} className="mdhui-single-notification">
+				<div className="notification-body">{language('no-notifications-received')}</div>
+			</div>
+		)
 	}
-
-	const locale = getLocaleFromIso(MyDataHelps.getCurrentLanguage());
 	return (
 		<div ref={props.innerRef} className="mdhui-single-notification">
 			{props.notification.content?.title &&
@@ -28,7 +29,7 @@ export default function (props: SingleNotificationProps) {
 				<div className="notification-body">{props.notification.content.body}</div>
 			}
 			<div className="notification-date">
-				{capitalizeFirstLetter(formatRelative(parseISO(props.notification.sentDate), new Date(), { locale: locale }))}
+				{getRelativeDateString(props.notification.sentDate, new Date())}
 			</div>
 		</div>
 	)

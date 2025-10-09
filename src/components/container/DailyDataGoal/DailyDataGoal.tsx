@@ -5,7 +5,7 @@ import { ColorDefinition, getDayKey, queryDailyData, resolveColor } from '../../
 import { DateRangeContext, LayoutContext, LoadingIndicator, ShinyOverlay } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
-import { add, startOfDay } from 'date-fns';
+import { endOfDay, startOfDay } from 'date-fns';
 
 export interface DailyDataGoalProps {
     previewState?: "Default";
@@ -33,13 +33,13 @@ export default function (props: DailyDataGoalProps) {
     const date = props.date ?? dateRangeContext?.intervalStart ?? startOfDay(new Date());
 
     useInitializeView(() => {
-        const startDate = add(date, { days: -1 });
-        const endDate = add(date, { days: 2 });
+        const startDate = startOfDay(date);
+        const endDate = endOfDay(date);
 
         queryDailyData(props.dailyDataType, startDate, endDate, props.previewState === "Default").then((results) => {
             setDailyValue(results[getDayKey(date)] || 0);
         });
-    }, ["externalAccountSyncComplete"], []);
+    }, ["externalAccountSyncComplete"], [dateRangeContext?.intervalStart]);
 
     const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
     const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";

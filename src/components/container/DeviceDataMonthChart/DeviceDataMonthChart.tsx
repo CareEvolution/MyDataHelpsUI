@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import "./DeviceDataMonthChart.css"
 import MyDataHelps from "@careevolution/mydatahelps-js"
-import add from 'date-fns/add'
-import { format } from 'date-fns'
+import { add } from 'date-fns'
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import { LoadingIndicator } from '../../presentational'
 import { queryDailyData, checkDailyDataAvailability, DailyDataQueryResult } from '../../../helpers/query-daily-data'
 import getDayKey from '../../../helpers/get-day-key'
 import language from "../../../helpers/language"
+import { getShortDateString } from '../../../helpers/date-helpers';
+import { formatNumberForLocale } from "../../../helpers/locale";
 
 export interface DeviceDataMonthChartProps {
 	lines: DeviceDataChartLine[],
@@ -158,13 +159,13 @@ export default function (props: DeviceDataMonthChartProps) {
 
 			return (
 				<div className="graph-tooltip">
-					<div className="graph-date">{format(date, 'MM/dd/yyyy')}</div>
+					<div className="graph-date">{getShortDateString(date)}</div>
 					<table className="payload-values">
 						<tbody>
 							{payload.map((p: any) =>
 								<tr key={p.dataKey}>
 									<th>{labelLookup[p.dataKey]}</th>
-									<td>{parseFloat(p.value.toFixed(2))}</td>
+									<td>{formatNumberForLocale(parseFloat(p.value),2)}</td>
 								</tr>
 							)}
 						</tbody>
@@ -196,10 +197,7 @@ export default function (props: DeviceDataMonthChartProps) {
 		values = values.filter(v => !!v);
 		if (!values.length) { return null; }
 		var calculated = values.reduce((a, b) => a + b) / values.length;
-		return calculated.toLocaleString('en-US', {
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 1
-		});
+		return formatNumberForLocale(calculated, 1);
 	}
 
 	if (!hasData) {

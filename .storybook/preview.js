@@ -14,11 +14,19 @@ export const globalTypes = {
 				{ value: 'es', title: 'Spanish' },
 				{ value: 'nl', title: 'Dutch' },
 				{ value: 'de', title: 'German' },
+				{ value: 'fil', title: 'Filipino' },
 				{ value: 'fr', title: 'French' },
-				{ value: 'pt', title: 'Portugese' },
+				{ value: 'fr-ca', title: 'French (Canada)' },
 				{ value: 'it', title: 'Italian' },
 				{ value: 'pl', title: 'Polish' },
-			],
+				{ value: 'pt', title: 'Portuguese (Brazil)' },
+				{ value: 'pt-pt', title: 'Portuguese (Portugal)' },
+				{ value: 'ro', title: 'Romanian' },
+				{ value: 'so', title: 'Somali' },
+				{ value: 'sw', title: 'Swahili' },
+				{ value: 'tl', title: 'Tagalog' },
+				{ value: 'vi', title: 'Vietnamese' },
+			],			
 			showName: true,
 			dynamicTitle: true,
 		}
@@ -39,7 +47,6 @@ export const decorators = [(story, context) => {
 }];
 
 export const parameters = {
-	actions: { argTypesRegex: "^on[A-Z].*" },
 	controls: {
 		matchers: {
 			color: /(background|color)$/i,
@@ -47,3 +54,4 @@ export const parameters = {
 		},
 	},
 }
+export const tags = ["autodocs"];

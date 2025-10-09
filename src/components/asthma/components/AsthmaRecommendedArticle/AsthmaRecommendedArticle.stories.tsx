@@ -14,7 +14,7 @@ interface AsthmaRecommendedArticleStoryArgs extends AsthmaRecommendedArticleProp
 
 const render = (args: AsthmaRecommendedArticleStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
-        <AsthmaRecommendedArticle {...args} />
+        <AsthmaRecommendedArticle {...args} libraryBaseUrl="https://asthma.careevolutionapps.dev/library/" />
     </Layout>;
 };
 
@@ -35,7 +35,7 @@ export const Default = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['none', 'default']
+            options: ['none', 'default', 'live']
         },
         imageAlignment: {
             name: 'image alignment',

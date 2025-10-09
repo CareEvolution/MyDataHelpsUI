@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import "./NotesTimeline.css"
-import { format, startOfMonth } from 'date-fns';
+import { startOfMonth } from 'date-fns';
 import { DateRangeContext, TextBlock, getDayKey, language } from '../../../..';
 import { SymptomSharkVisualizationContext } from '../../container/VisualizationCoordinator/VisualizationCoordinator';
 import { getDatesForMonth } from '../../../../helpers/date-helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import LogEntryIcon from '../LogEntryIcon/LogEntryIcon';
+import { getFullDateString } from '../../../../helpers/date-helpers';
 
 export interface SymptomSharkNotesTimelineProps {
     intervalStart?: Date;
@@ -39,7 +40,7 @@ export default function (props: SymptomSharkNotesTimelineProps) {
             {daysWithNotes.map(day =>
                 <div key={day.toISOString()} className="ss-notes-timeline-day">
                     {visualizationContext!.logEntries[getDayKey(day)].icon ? <LogEntryIcon className="ss-notes-timeline-day-icon" icon={visualizationContext!.logEntries[getDayKey(day)].icon!}/> : <FontAwesomeIcon className="ss-notes-timeline-day-icon ss-notes-timeline-day-circle" icon={faCircle}/>}
-                    <div className="ss-notes-timeline-day-title">{format(day, 'MMMM d, yyyy')}</div>
+                    <div className="ss-notes-timeline-day-title">{getFullDateString(day)}</div>
                     <div className="ss-notes-timeline-note">{visualizationContext!.logEntries[getDayKey(day)].notes}</div>
                 </div>
             )}

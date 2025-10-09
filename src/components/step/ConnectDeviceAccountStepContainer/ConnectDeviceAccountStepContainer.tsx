@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
-import { getFitbitProviderID, getGarminProviderID, getOmronProviderID } from "../../../helpers/providerIDs";
+import { getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 import { deviceType } from "../../../helpers/deviceType";
 
-
-export default function () {
+/**
+ * This is a survey step component that facilitates connecting a participant's device account.
+ * This component is intended to run within a survey for participants to link their device accounts, enabling data synchronization and enhancing user engagement.
+ * It ensures that participants can easily connect their device accounts during the survey flow, providing a straightforward step in the data collection process.
+ */
+export default function ConnectDeviceAccountStepContainer () {
     const [title, setTitle] = useState<string>();
     const [text, setText] = useState<string>();
     const [styles, setStyles] = useState<any>({});
@@ -29,6 +33,8 @@ export default function () {
                 return getOmronProviderID();
             case "Garmin":
                 return getGarminProviderID();
+            case 'Oura':
+                return getOuraProviderID();
         }
     }
 

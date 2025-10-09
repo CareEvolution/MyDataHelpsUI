@@ -1,13 +1,22 @@
 .mdhui-grid {
     display: flex;
-    gap: 16px;
+    gap: var(--mdhui-padding-md);
+    flex-wrap: wrap;
 }
 
 .mdhui-grid.mdhui-grid-default-margin {
-    margin: 16px;
+    margin: var(--mdhui-padding-md);
 }
 
 .mdhui-grid .mdhui-grid-column {
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.mdhui-grid .mdhui-grid-column.mdhui-card {
+    margin: 0;
+}
+
+.mdhui-grid .mdhui-grid-column:empty {
+    display: none;
 }
