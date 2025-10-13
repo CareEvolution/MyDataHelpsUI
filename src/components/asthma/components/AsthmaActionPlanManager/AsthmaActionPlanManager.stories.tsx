@@ -16,7 +16,7 @@ const render = (args: AsthmaActionPlanManagerStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <AsthmaActionPlanManager {...args} />
     </Layout>;
-}
+};
 
 export const Default = {
     args: {

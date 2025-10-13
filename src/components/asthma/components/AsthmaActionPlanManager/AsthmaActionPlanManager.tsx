@@ -9,8 +9,16 @@ import { AsthmaActionPlanManagerPreviewState, previewData } from './AsthmaAction
 
 export interface AsthmaActionPlanManagerProps {
     previewState?: AsthmaActionPlanManagerPreviewState;
-    learnMoreUrl: string;
-    editActionPlanSurveyName: string;
+    /**
+     * @deprecated Use `onLearnMore` instead.
+     */
+    learnMoreUrl?: string;
+    onLearnMore?: () => void;
+    /**
+     * @deprecated Use `onEditActionPlan` instead.
+     */
+    editActionPlanSurveyName?: string;
+    onEditActionPlan?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -53,12 +61,16 @@ export default function (props: AsthmaActionPlanManagerProps) {
         MyDataHelps.on('surveyDidFinish', () => loadActionPlan(dataService));
         return () => {
             MyDataHelps.off('surveyDidFinish', () => loadActionPlan(dataService));
-        }
+        };
     }, [props.previewState]);
 
     const onLearnMore = (): void => {
         if (props.previewState) return;
-        MyDataHelps.openApplication(props.learnMoreUrl, { modal: true });
+        if (props.onLearnMore) {
+            props.onLearnMore();
+        } else if (props.learnMoreUrl) {
+            MyDataHelps.openApplication(props.learnMoreUrl, { modal: true });
+        }
     };
 
     const onViewActionPlan = (): void => {
@@ -75,14 +87,24 @@ export default function (props: AsthmaActionPlanManagerProps) {
 
     const onEditActionPlan = (): void => {
         if (props.previewState) return;
-        MyDataHelps.startSurvey(props.editActionPlanSurveyName);
-        setLoading(true);
+        if (props.onEditActionPlan) {
+            setLoading(true);
+            props.onEditActionPlan();
+        } else if (props.editActionPlanSurveyName) {
+            setLoading(true);
+            MyDataHelps.startSurvey(props.editActionPlanSurveyName);
+        }
     };
 
     const onUploadActionPlan = (): void => {
         if (props.previewState) return;
-        MyDataHelps.startSurvey(props.editActionPlanSurveyName);
-        setLoading(true);
+        if (props.onEditActionPlan) {
+            setLoading(true);
+            props.onEditActionPlan();
+        } else if (props.editActionPlanSurveyName) {
+            setLoading(true);
+            MyDataHelps.startSurvey(props.editActionPlanSurveyName);
+        }
     };
 
     return <div className="mdhui-asthma-action-plan-manager">

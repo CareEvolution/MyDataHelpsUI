@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AsthmaAirQualities.css';
 import { AsthmaAirQuality } from '../../model';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { formatNumberForLocale, useInitializeView } from '../../../../helpers';
 import { asthmaDataService, getAsthmaAirQualityDescriptionText, getAsthmaDataStatusColor, getAsthmaDataStatusText } from '../../helpers';
 import { LoadingIndicator, SingleDataPoint, Title, UnstyledButton } from '../../../presentational';
 import { AsthmaAirQualitiesPreviewState, previewData } from './AsthmaAirQualities.previewData';
@@ -9,12 +9,19 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import language from '../../../../helpers/language';
-import { formatNumberForLocale } from '../../../../helpers/locale';
 
 export interface AsthmaAirQualitiesProps {
     previewState?: 'loading' | AsthmaAirQualitiesPreviewState;
+    /**
+     * @deprecated Use `onEditZipCodes` instead.
+     */
     editZipCodesSurveyName?: string;
-    airQualityUrl: string;
+    onEditZipCodes?: () => void;
+    /**
+     * @deprecated Use `onViewAirQualityDetails` instead.
+     */
+    airQualityUrl?: string;
+    onViewAirQualityDetails?: () => void;
     date?: Date;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -51,9 +58,13 @@ export default function (props: AsthmaAirQualitiesProps) {
     }, [], [props.previewState]);
 
     const onSetup = (): void => {
-        if (props.previewState || !props.editZipCodesSurveyName) return;
-        MyDataHelps.startSurvey(props.editZipCodesSurveyName);
-    }
+        if (props.previewState) return;
+        if (props.onEditZipCodes) {
+            props.onEditZipCodes();
+        } else if (props.editZipCodesSurveyName) {
+            MyDataHelps.startSurvey(props.editZipCodesSurveyName);
+        }
+    };
 
     const getSetupComponent = (label: string) => {
         return <UnstyledButton onClick={() => onSetup()}>
@@ -66,10 +77,12 @@ export default function (props: AsthmaAirQualitiesProps) {
 
     const onClick = (airQuality: AsthmaAirQuality): void => {
         if (props.previewState) return;
-        if (airQuality.status === 'not-configured' && props.editZipCodesSurveyName) {
-            MyDataHelps.startSurvey(props.editZipCodesSurveyName);
-        } else {
-            MyDataHelps.openApplication(props.airQualityUrl, {modal: true});
+        if (airQuality.status === 'not-configured') {
+            onSetup();
+        } else if (props.onViewAirQualityDetails) {
+            props.onViewAirQualityDetails();
+        } else if (props.airQualityUrl) {
+            MyDataHelps.openApplication(props.airQualityUrl, { modal: true });
         }
     };
 
@@ -78,11 +91,11 @@ export default function (props: AsthmaAirQualitiesProps) {
             <Title order={2} className="mdhui-asthma-air-qualities-title">{language('asthma-air-qualities-title')}</Title>
             {props.editZipCodesSurveyName &&
                 <UnstyledButton className="mdhui-asthma-air-qualities-settings" onClick={() => onSetup()}>
-                    <FontAwesomeIcon icon={faGear}/>
+                    <FontAwesomeIcon icon={faGear} />
                 </UnstyledButton>
             }
         </div>
-        {loading && <LoadingIndicator/>}
+        {loading && <LoadingIndicator />}
         {!loading &&
             <div className="mdhui-asthma-air-qualities-data">
                 {homeAirQuality!.status === 'not-configured' && getSetupComponent(language('asthma-air-qualities-home-aqi-label'))}

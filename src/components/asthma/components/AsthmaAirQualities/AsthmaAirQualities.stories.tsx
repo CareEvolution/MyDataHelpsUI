@@ -5,7 +5,7 @@ import { Card, Layout } from '../../../presentational';
 export default {
     title: 'Asthma/Components/AsthmaAirQualities',
     component: AsthmaAirQualities,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 interface AsthmaAirQualitiesStoryArgs extends AsthmaAirQualitiesProps {
@@ -16,7 +16,7 @@ interface AsthmaAirQualitiesStoryArgs extends AsthmaAirQualitiesProps {
 const render = (args: AsthmaAirQualitiesStoryArgs) => {
     return <Layout colorScheme={args.colorScheme}>
         <Card>
-            <AsthmaAirQualities {...args} editZipCodesSurveyName={args.canEditSettings ? 'some_url' : undefined}/>
+            <AsthmaAirQualities {...args} />
         </Card>
     </Layout>;
 };
