@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "3.4.2-MoreAsthmaViews.0",
+  "version": "3.4.2-MoreAsthmaViews.1",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
