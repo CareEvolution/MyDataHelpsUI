@@ -1,3 +1,4 @@
+export { default as AsthmaActionPlanInfoView } from './AsthmaActionPlanInfoView';
 export { default as AsthmaActionPlanView } from './AsthmaActionPlanView';
 export { default as AsthmaActivityView } from './AsthmaActivityView';
 export { default as AsthmaAirQualityView } from './AsthmaAirQualityView';
