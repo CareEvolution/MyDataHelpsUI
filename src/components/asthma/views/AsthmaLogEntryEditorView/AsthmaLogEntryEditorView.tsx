@@ -42,7 +42,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
             symptoms: symptoms
         };
         if (symptoms.length > 0 && updatedLogEntry.symptomLevel === 'none') {
-            updatedLogEntry.symptomLevel = 'mild'
+            updatedLogEntry.symptomLevel = 'mild';
         }
         setLogEntry(updatedLogEntry);
     };
@@ -76,7 +76,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
     const onCancel = (): void => {
         if (props.previewState) return;
         MyDataHelps.dismiss();
-    }
+    };
 
     const onSave = (): void => {
         if (loading || props.previewState) return;
