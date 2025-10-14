@@ -12,21 +12,23 @@ export default function (props: AsthmaActionPlanInfoViewProps) {
     const onViewArticle = () => {
         const languageCode = getLanguageCodeFromIso(MyDataHelps.getCurrentLanguage());
         const url = new URL(`atedu_50${languageCode === 'es' ? '_es' : ''}.html`, props.libraryBaseUrl).href;
-        console.log(url);
         MyDataHelps.openEmbeddedUrl(url);
     };
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true} />
-        <div>
-            <Title style={{ padding: '0 16px' }} order={2}>{language('asthma-action-plan-info-view-title')}</Title>
-            <p style={{ padding: '0 16px', marginTop: '8px' }}>{language('asthma-action-plan-info-view-info')}</p>
-            <Resource
-                title={language('asthma-action-plan-info-view-title')}
-                subTitle={language('asthma-action-plan-info-view-subtitle')}
-                onClick={() => onViewArticle()}
-                imageUrl={new URL('images/article_category_medicalteam.svg', props.libraryBaseUrl).href}
-            />
+        <Title defaultMargin order={2}>{language('asthma-action-plan-info-view-title')}</Title>
+        <div style={{ padding: '0 16px' }}>
+            <p>{language('asthma-action-plan-info-view-info')}</p>
         </div>
+        <Resource
+            title={language('asthma-action-plan-info-view-title')}
+            subTitle={language('asthma-action-plan-info-view-subtitle')}
+            imageAlignment="left"
+            buttonVariant="link"
+            buttonText={language('asthma-action-plan-info-view-button-text')}
+            onClick={() => onViewArticle()}
+            imageUrl={new URL('images/article_category_medicalteam.svg', props.libraryBaseUrl).href}
+        />
     </Layout>;
 }

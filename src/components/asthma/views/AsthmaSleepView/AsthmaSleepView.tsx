@@ -35,9 +35,8 @@ export default function (props: AsthmaSleepViewProps) {
     });
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
-        <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1}>{language('asthma-sleep-view-title')}</Title>
-        </NavigationBar>
+        <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)" />
+        <Title defaultMargin order={1}>{language('asthma-sleep-view-title')}</Title>
         <RecentDailyDataBarChart
             previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
             previewDataProvider={previewDataProvider}
@@ -47,7 +46,7 @@ export default function (props: AsthmaSleepViewProps) {
             emptyDomain={[0, 16]}
         />
         {props.alert === 'SleepDisturbances' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-sleep-view-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-sleep-view-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
     </Layout>;
 }

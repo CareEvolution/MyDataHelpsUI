@@ -9,9 +9,8 @@ export interface AsthmaProviderReportViewProps {
 
 export default function (props: AsthmaProviderReportViewProps) {
     return <Layout colorScheme="light">
-        <NavigationBar variant="compressed" showCloseButton={true}>
-            <Title order={1}>Provider Report</Title>
-        </NavigationBar>
+        <NavigationBar variant="compressed" showCloseButton={true} />
+        <Title defaultMargin order={1}>Provider Report</Title>
         <AsthmaProviderReport
             previewState={props.previewState}
             logEntrySurveyName={props.logEntrySurveyName}

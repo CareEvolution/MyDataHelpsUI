@@ -26,10 +26,10 @@ export default function (props: AsthmaLogEntryDetailsProps) {
     const [logEntry, setLogEntry] = useState<AsthmaLogEntry>();
 
     let today = startOfToday();
-    let yesterday = add(new Date(today), {days: -1});
+    let yesterday = add(new Date(today), { days: -1 });
 
-    let dayBefore = add(new Date(props.date), {days: -1});
-    let dayAfter = add(new Date(props.date), {days: 1});
+    let dayBefore = add(new Date(props.date), { days: -1 });
+    let dayAfter = add(new Date(props.date), { days: 1 });
 
     useInitializeView(() => {
         setLoading(true);
@@ -55,7 +55,7 @@ export default function (props: AsthmaLogEntryDetailsProps) {
 
         setLoading(true);
         if (logEntry) {
-            MyDataHelps.openApplication(props.editLogEntryUrl + '?date=' + formatISO(props.date, {representation: 'date'}), {modal: true});
+            MyDataHelps.openApplication(props.editLogEntryUrl + '?date=' + formatISO(props.date, { representation: 'date' }), { modal: true });
         } else if (isSameDay(props.date, today)) {
             MyDataHelps.startSurvey(props.logTodayEntrySurveyName);
         } else if (isSameDay(props.date, yesterday)) {
@@ -65,7 +65,7 @@ export default function (props: AsthmaLogEntryDetailsProps) {
 
     const onInfoClicked = (): void => {
         if (loading || props.previewState) return;
-        MyDataHelps.openApplication(props.infoUrl, {modal: true});
+        MyDataHelps.openApplication(props.infoUrl, { modal: true });
     };
 
     const canStillEditLogEntry = (): boolean => {
@@ -84,7 +84,7 @@ export default function (props: AsthmaLogEntryDetailsProps) {
 
     return <div className="mdhui-asthma-log-entry-details" ref={props.innerRef}>
         {loading &&
-            <LoadingIndicator/>
+            <LoadingIndicator />
         }
         {!loading &&
             <div>
@@ -98,13 +98,13 @@ export default function (props: AsthmaLogEntryDetailsProps) {
                             }
                         </UnstyledButton>
                         : <UnstyledButton className="mdhui-asthma-log-entry-details-header-info-button" onClick={() => onInfoClicked()}>
-                            <FontAwesomeIcon icon={faCircleInfo}/>
+                            <FontAwesomeIcon icon={faCircleInfo} />
                         </UnstyledButton>
                     }
                 </div>
-                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-symptoms" label={language('asthma-log-entry-details-symptoms-label')} data={getAsthmaSymptomTexts(logEntry?.symptoms)}/>
-                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-impacts" label={language('asthma-log-entry-details-impacts-label')} data={getAsthmaImpactTexts(logEntry?.impacts)}/>
-                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-triggers" label={language('asthma-log-entry-details-triggers-label')} data={getAsthmaTriggerTexts(logEntry?.triggers)}/>
+                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-symptoms" label={language('asthma-log-entry-details-symptoms-label')} data={getAsthmaSymptomTexts(logEntry?.symptoms)} />
+                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-impacts" label={language('asthma-log-entry-details-impacts-label')} data={getAsthmaImpactTexts(logEntry?.impacts)} />
+                <LogEntryComponent className="mdhui-asthma-log-entry-details-component-triggers" label={language('asthma-log-entry-details-triggers-label')} data={getAsthmaTriggerTexts(logEntry?.triggers)} />
             </div>
         }
 
@@ -114,14 +114,14 @@ export default function (props: AsthmaLogEntryDetailsProps) {
 function LogEntryComponent(props: { className: string, label: string, data: string[] }) {
     return <div className={['mdhui-asthma-log-entry-details-component', props.className].join(' ')}>
         <div className="mdhui-asthma-log-entry-details-component-header">
-            <div className="mdhui-asthma-log-entry-details-component-header-icon"/>
+            <div className="mdhui-asthma-log-entry-details-component-header-icon" />
             <div className="mdhui-asthma-log-entry-details-component-header-label">{props.label}</div>
         </div>
         {props.data.length === 0 &&
             <div className="mdhui-asthma-log-entry-details-component-no-data">{language('asthma-log-entry-details-component-no-data', undefined, { dataType: props.label.toLowerCase() })}</div>
         }
         {props.data.length > 0 && props.data.map(data => {
-            return <div className="mdhui-asthma-log-entry-details-component-data">{data}</div>;
+            return <div key={data} className="mdhui-asthma-log-entry-details-component-data">{data}</div>;
         })}
     </div>;
 }
