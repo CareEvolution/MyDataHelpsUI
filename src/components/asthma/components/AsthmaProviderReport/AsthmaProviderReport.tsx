@@ -184,9 +184,9 @@ export default function (props: AsthmaProviderReportProps) {
             dayWrapperStyle.strokeDasharray = 4;
         }
 
-        return <div style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
+        return <div key={day} style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
             <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? getAbbreviatedMonthName(date).toLocaleUpperCase() : ''}</div>
-            <svg viewBox="0 0 40px 40px" style={{height: '40px', width: '40px'}}>
+            <svg viewBox="0 0 40 40" style={{height: '40px', width: '40px'}}>
                 <circle cx="20" cy="20" r="18" style={dayWrapperStyle}/>
                 <foreignObject x="0" y="0" height="40px" width="40px">
                     <div style={dayStyle}>{date.getDate()}</div>
@@ -373,7 +373,7 @@ export default function (props: AsthmaProviderReportProps) {
                     Page 1 of 1
                 </div>
             </div>
-            <div style={{textAlign: 'center', margin: '64px 0', transform: 'scale(' + (1 / scale) + ')', transformOrigin: 'top'}}>
+            <div style={{textAlign: 'center', padding: '32px 0', transform: 'scale(' + (1 / scale) + ')', transformOrigin: 'top'}}>
                 {generatingPdf && <LoadingIndicator/>}
                 {!generatingPdf &&
                     <button className="mdhui-button" onClick={() => onGeneratePdf()}>
