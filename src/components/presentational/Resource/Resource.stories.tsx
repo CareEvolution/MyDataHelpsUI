@@ -1,29 +1,26 @@
 ﻿import React from 'react';
-import resourceImage from '../../../assets/resource-image.png'
+import resourceImage from '../../../assets/resource-image.png';
 import Resource, { ResourceProps } from './Resource';
 import Layout from '../Layout';
-
-export default {
-    title: 'Presentational/Resource',
-    component: Resource,
-    parameters: { layout: 'fullscreen' }
-};
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
 
 interface ResourceStoryArgs extends ResourceProps {
     colorScheme: 'auto' | 'light' | 'dark';
 }
 
-const onClick = () => {
-    console.log('resource clicked');
-};
+export default {
+    title: 'Presentational/Resource',
+    component: Resource,
+    parameters: { layout: 'fullscreen' },
+    render: (args: ResourceStoryArgs) => {
+        return <Layout colorScheme={args.colorScheme}>
+            <Resource {...args} onClick={() => console.log('resource clicked')} />
+        </Layout>;
+    }
+} as Meta<ResourceStoryArgs>;
 
-const render = (args: ResourceStoryArgs) => {
-    return <Layout colorScheme={args.colorScheme}>
-        <Resource {...args} onClick={() => onClick()} />
-    </Layout>;
-};
-
-export const Default = {
+export const Default: StoryObj<ResourceStoryArgs> = {
     args: {
         colorScheme: 'auto',
         title: 'Resource Title',
@@ -57,7 +54,7 @@ export const Default = {
         },
         buttonText: {
             name: 'button text override'
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['onClick', 'innerRef'])
+    }
 };

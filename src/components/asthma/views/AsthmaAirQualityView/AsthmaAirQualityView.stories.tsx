@@ -1,26 +1,27 @@
 import React from 'react';
 import AsthmaAirQualityView, { AsthmaAirQualityViewProps } from './AsthmaAirQualityView';
-
-export default {
-    title: 'Asthma/Views/AsthmaAirQualityView',
-    component: AsthmaAirQualityView,
-    parameters: {layout: 'fullscreen'}
-};
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 interface AsthmaAirQualityViewStoryArgs extends AsthmaAirQualityViewProps {
     withAlert: boolean;
     alertType: 'HomeAirQuality' | 'WorkAirQuality';
 }
 
-const render = (args: AsthmaAirQualityViewStoryArgs) => {
-    return <AsthmaAirQualityView
-        {...args}
-        previewState="default"
-        alert={args.withAlert ? args.alertType : undefined}
-    />;
-};
+export default {
+    title: 'Asthma/Views/AsthmaAirQualityView',
+    component: AsthmaAirQualityView,
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaAirQualityViewStoryArgs) => {
+        return <AsthmaAirQualityView
+            {...args}
+            previewState="default"
+            alert={args.withAlert ? args.alertType : undefined}
+        />;
+    }
+} as Meta<AsthmaAirQualityViewStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<AsthmaAirQualityViewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         withAlert: false,
@@ -39,9 +40,9 @@ export const Default = {
             name: 'alert type',
             control: 'radio',
             options: ['HomeAirQuality', 'WorkAirQuality'],
-            if: {arg: 'withAlert', eq: true}
-        }
-    },
-    render: render
+            if: { arg: 'withAlert', eq: true }
+        },
+        ...argTypesToHide(['previewState', 'alert', 'logEntrySurveyName'])
+    }
 };
 

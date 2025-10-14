@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties, Ref } from 'react';
 import './ResourceList.css';
 import { Resource, ResourceButtonVariant, ResourceImageAlignment } from '../../presentational';
 import language from '../../../helpers/language';
@@ -19,13 +19,14 @@ export interface ResourceListProps {
     imageAlignment?: ResourceImageAlignment;
     buttonVariant?: ResourceButtonVariant;
     buttonText?: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+    style?: CSSProperties;
+    innerRef?: Ref<HTMLDivElement>;
 }
 
-export default function (props: ResourceListProps) {
+export default function ResourceList(props: ResourceListProps) {
     let resources = props.previewState ? previewData[props.previewState].resources : props.resources;
 
-    return <div className="mdhui-resource-list" ref={props.innerRef}>
+    return <div className="mdhui-resource-list" style={props.style} ref={props.innerRef}>
         <>
             {resources.length > 0 && resources.map((resource, index) => {
                 return <Resource

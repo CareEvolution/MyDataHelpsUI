@@ -1,25 +1,26 @@
 import React from 'react';
 import AsthmaSleepView, { AsthmaSleepViewProps } from './AsthmaSleepView';
-
-export default {
-    title: 'Asthma/Views/AsthmaSleepView',
-    component: AsthmaSleepView,
-    parameters: {layout: 'fullscreen'}
-};
+import { argTypesToHide } from '../../../../../.storybook/helpers';
+import { Meta, StoryObj } from '@storybook/react';
 
 interface AsthmaSleepViewStoryArgs extends AsthmaSleepViewProps {
     withAlert: boolean;
 }
 
-const render = (args: AsthmaSleepViewStoryArgs) => {
-    return <AsthmaSleepView
-        {...args}
-        previewState="default"
-        alert={args.withAlert ? 'SleepDisturbances' : undefined}
-    />;
-};
+export default {
+    title: 'Asthma/Views/AsthmaSleepView',
+    component: AsthmaSleepView,
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaSleepViewStoryArgs) => {
+        return <AsthmaSleepView
+            {...args}
+            previewState="default"
+            alert={args.withAlert ? 'SleepDisturbances' : undefined}
+        />;
+    }
+} as Meta<AsthmaSleepViewStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<AsthmaSleepViewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         withAlert: false
@@ -32,8 +33,8 @@ export const Default = {
         },
         withAlert: {
             name: 'with alert'
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['previewState', 'alert', 'logEntrySurveyName'])
+    }
 };
 

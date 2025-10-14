@@ -1,24 +1,25 @@
 import React from 'react';
 import ResourceList, { ResourceListProps } from './ResourceList';
 import { Layout } from '../../presentational';
-
-export default {
-    title: 'Presentational/ResourceList',
-    component: ResourceList,
-    parameters: {layout: 'fullscreen'}
-};
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
 
 interface ResourceListStoryArgs extends ResourceListProps {
     colorScheme: 'auto' | 'light' | 'dark';
 }
 
-const render = (args: ResourceListStoryArgs) => {
-    return <Layout colorScheme={args.colorScheme}>
-        <ResourceList {...args} />
-    </Layout>;
-};
+export default {
+    title: 'Presentational/ResourceList',
+    component: ResourceList,
+    parameters: { layout: 'fullscreen' },
+    render: (args: ResourceListStoryArgs) => {
+        return <Layout colorScheme={args.colorScheme}>
+            <ResourceList {...args} />
+        </Layout>;
+    }
+} as Meta<ResourceListStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<ResourceListStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'some resources',
@@ -40,13 +41,13 @@ export const Default = {
         },
         emptyText: {
             name: 'empty text override',
-            if: {arg: 'previewState', eq: 'no resources'}
+            if: { arg: 'previewState', eq: 'no resources' }
         },
         imageAlignment: {
             name: 'image alignment',
             control: 'radio',
             options: ['left', 'center', 'right'],
-            if: {arg: 'previewState', eq: 'some resources'}
+            if: { arg: 'previewState', eq: 'some resources' }
         },
         buttonVariant: {
             name: 'button variant',
@@ -55,8 +56,8 @@ export const Default = {
         },
         buttonText: {
             name: 'button text override',
-            if: {arg: 'buttonVariant', neq: undefined}
-        }
-    },
-    render: render
+            if: { arg: 'buttonVariant', neq: undefined }
+        },
+        ...argTypesToHide(['resources', 'onViewResource', 'style', 'innerRef'])
+    }
 };

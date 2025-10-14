@@ -1,15 +1,16 @@
 import React from 'react';
 import AsthmaLogEntryEditorView, { AsthmaLogEntryEditorViewProps } from './AsthmaLogEntryEditorView';
+import { Meta } from '@storybook/react';
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 export default {
     title: 'Asthma/Views/AsthmaLogEntryEditorView',
     component: AsthmaLogEntryEditorView,
-    parameters: {layout: 'fullscreen'}
-};
-
-const render = (args: AsthmaLogEntryEditorViewProps) => {
-    return <AsthmaLogEntryEditorView {...args} date={new Date()}/>;
-};
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaLogEntryEditorViewProps) => {
+        return <AsthmaLogEntryEditorView {...args} date={new Date()} />;
+    }
+} as Meta<AsthmaLogEntryEditorViewProps>;
 
 export const Default = {
     args: {
@@ -26,7 +27,7 @@ export const Default = {
             name: 'state',
             control: 'radio',
             options: ['loading', 'no symptoms', 'mild symptoms', 'moderate symptoms', 'severe symptoms']
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['date'])
+    }
 };

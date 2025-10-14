@@ -15,8 +15,8 @@ export interface AsthmaLogEntryEditorViewProps {
     date: Date;
 }
 
-export default function (props: AsthmaLogEntryEditorViewProps) {
-    let yesterday = add(startOfToday(), { days: -1 });
+export default function AsthmaLogEntryEditorView(props: AsthmaLogEntryEditorViewProps) {
+    const yesterday = add(startOfToday(), { days: -1 });
     if (isBefore(props.date, yesterday)) {
         MyDataHelps.dismiss();
         return null;
@@ -26,7 +26,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
     const [logEntry, setLogEntry] = useState<AsthmaLogEntry>();
 
     const updateSymptomLevel = (symptomLevel: AsthmaSymptomLevel): void => {
-        let updatedLogEntry: AsthmaLogEntry = {
+        const updatedLogEntry: AsthmaLogEntry = {
             ...logEntry!,
             symptomLevel: symptomLevel
         };
@@ -37,12 +37,12 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
     };
 
     const updateSymptoms = (symptoms: AsthmaSymptom[]): void => {
-        let updatedLogEntry: AsthmaLogEntry = {
+        const updatedLogEntry: AsthmaLogEntry = {
             ...logEntry!,
             symptoms: symptoms
         };
         if (symptoms.length > 0 && updatedLogEntry.symptomLevel === 'none') {
-            updatedLogEntry.symptomLevel = 'mild'
+            updatedLogEntry.symptomLevel = 'mild';
         }
         setLogEntry(updatedLogEntry);
     };
@@ -59,11 +59,11 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
             return;
         }
 
-        let dayBefore = add(new Date(props.date), { days: -1 });
-        let dayAfter = add(new Date(props.date), { days: 1 });
+        const dayBefore = add(new Date(props.date), { days: -1 });
+        const dayAfter = add(new Date(props.date), { days: 1 });
         asthmaDataService.loadLogEntries(dayBefore, dayAfter).then(logEntries => {
-            let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(props.date);
-            let logEntry = logEntries.find(e => e.identifier === logEntryIdentifier);
+            const logEntryIdentifier = dateToAsthmaLogEntryIdentifier(props.date);
+            const logEntry = logEntries.find(e => e.identifier === logEntryIdentifier);
             if (logEntry) {
                 setLogEntry(logEntry);
             } else {
@@ -76,7 +76,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
     const onCancel = (): void => {
         if (props.previewState) return;
         MyDataHelps.dismiss();
-    }
+    };
 
     const onSave = (): void => {
         if (loading || props.previewState) return;
@@ -107,8 +107,8 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
         });
     };
 
-    const cancelButton = <UnstyledButton className="button" style={{ left: '16px' }} onClick={() => onCancel()}>Cancel</UnstyledButton>;
-    const saveButton = <UnstyledButton className="button" style={{ color: '#fff', background: '#369cff', right: '16px', padding: '0 16px' }} onClick={() => onSave()}>Save</UnstyledButton>;
+    const cancelButton = <UnstyledButton className="button" style={{ left: '16px' }} onClick={onCancel}>Cancel</UnstyledButton>;
+    const saveButton = <UnstyledButton className="button" style={{ color: '#fff', background: '#369cff', right: '16px', padding: '0 16px' }} onClick={onSave}>Save</UnstyledButton>;
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar
@@ -147,9 +147,9 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                             language('asthma-symptom-chest-tightness')
                         ]}
                         selectedValues={getAsthmaSymptomTexts(logEntry.symptoms)}
-                        variant='checkboxes'
+                        variant="checkboxes"
                         multiSelect={true}
-                        onChange={selectedValues => onSymptomsChanged(selectedValues)}
+                        onChange={onSymptomsChanged}
                     />
                 </Card>
                 <Card backgroundColor="var(--mdhui-background-color-1)">
@@ -162,9 +162,9 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                             language('asthma-impact-using-rescue-inhaler')
                         ]}
                         selectedValues={getAsthmaImpactTexts(logEntry.impacts)}
-                        variant='checkboxes'
+                        variant="checkboxes"
                         multiSelect={true}
-                        onChange={selectedValues => onImpactsChanged(selectedValues)}
+                        onChange={onImpactsChanged}
                     />
                 </Card>
                 <Card backgroundColor="var(--mdhui-background-color-1)">
@@ -196,9 +196,9 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
                             language('asthma-trigger-incense-or-candle')
                         ]}
                         selectedValues={getAsthmaTriggerTexts(logEntry.triggers)}
-                        variant='checkboxes'
+                        variant="checkboxes"
                         multiSelect={true}
-                        onChange={selectedValues => onTriggersChanged(selectedValues)}
+                        onChange={onTriggersChanged}
                     />
                 </Card>
             </div>

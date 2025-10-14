@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import React, { CSSProperties, Ref, useEffect, useRef, useState } from 'react';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier } from '../../helpers';
 import { AsthmaProviderReportPreviewState, previewData } from './AsthmaProviderReport.previewData';
 import { add, formatISO, parseISO, startOfToday } from 'date-fns';
@@ -7,16 +7,16 @@ import MyDataHelps, { DeviceDataPoint, DeviceInfo, SurveyAnswer } from '@careevo
 import { LoadingIndicator } from '../../../presentational';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
-import { getFullDateString, getAbbreviatedMonthName } from "../../../../helpers/date-helpers";
+import { getAbbreviatedMonthName, getFullDateString } from '../../../../helpers/date-helpers';
 import { language } from '../../../../helpers/language';
 
 export interface AsthmaProviderReportProps {
     previewState?: AsthmaProviderReportPreviewState;
     logEntrySurveyName: string;
-    innerRef?: React.Ref<HTMLDivElement>;
+    innerRef?: Ref<HTMLDivElement>;
 }
 
-export default function (props: AsthmaProviderReportProps) {
+export default function AsthmaProviderReport(props: AsthmaProviderReportProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [participant, setParticipant] = useState<AsthmaParticipant>();
     const [logEntries, setLogEntries] = useState<AsthmaLogEntry[]>([]);
@@ -27,7 +27,7 @@ export default function (props: AsthmaProviderReportProps) {
     const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>();
 
     let today = startOfToday();
-    let startDate = add(today, {days: -89});
+    let startDate = add(today, { days: -89 });
 
     useEffect(() => {
         setLoading(true);
@@ -49,7 +49,7 @@ export default function (props: AsthmaProviderReportProps) {
     }, [props.previewState]);
 
     if (loading) {
-        return <LoadingIndicator innerRef={props.innerRef}/>;
+        return <LoadingIndicator innerRef={props.innerRef} />;
     }
 
     let nameToDisplay = participant!.getFirstName();
@@ -80,7 +80,7 @@ export default function (props: AsthmaProviderReportProps) {
     let airPollutionDays = 0;
 
     logEntries.forEach(logEntry => {
-        controlStateLookup[logEntry.identifier] = computeAsthmaControlState(logEntries, parseISO(logEntry.identifier))
+        controlStateLookup[logEntry.identifier] = computeAsthmaControlState(logEntries, parseISO(logEntry.identifier));
         if (logEntry.symptomLevel === 'none') {
             noSymptomDays++;
         } else if (logEntry.symptomLevel === 'mild') {
@@ -149,13 +149,13 @@ export default function (props: AsthmaProviderReportProps) {
     });
 
     let highHomeAqiDataPoints = airQualityDataPoints.filter(dp => dp.type === 'HomeAirQuality' && parseFloat(dp.value) > 100);
-    let highHomeAqiDays = new Set(highHomeAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), {representation: 'date'}))).size;
+    let highHomeAqiDays = new Set(highHomeAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), { representation: 'date' }))).size;
 
     let highWorkAqiDataPoints = airQualityDataPoints.filter(dp => dp.type === 'WorkAirQuality' && parseFloat(dp.value) > 100);
-    let highWorkAqiDays = new Set(highWorkAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), {representation: 'date'}))).size;
+    let highWorkAqiDays = new Set(highWorkAqiDataPoints.map(dp => formatISO(parseISO(dp.observationDate!), { representation: 'date' }))).size;
 
     const renderDay = (day: number, labelDay: boolean) => {
-        let date = add(startDate, {days: day});
+        let date = add(startDate, { days: day });
         let logEntryIdentifier = dateToAsthmaLogEntryIdentifier(date);
         let logEntryControlState = controlStateLookup[logEntryIdentifier];
 
@@ -184,10 +184,10 @@ export default function (props: AsthmaProviderReportProps) {
             dayWrapperStyle.strokeDasharray = 4;
         }
 
-        return <div style={{textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: "5%"}}>
-            <div style={{width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto'}}>{labelDay || date.getDate() === 1 ? getAbbreviatedMonthName(date).toLocaleUpperCase() : ''}</div>
-            <svg viewBox="0 0 40px 40px" style={{height: '40px', width: '40px'}}>
-                <circle cx="20" cy="20" r="18" style={dayWrapperStyle}/>
+        return <div key={day} style={{ textAlign: 'center', padding: '1px', flexGrow: 1, flexBasis: '5%' }}>
+            <div style={{ width: '38px', minHeight: '22px', fontSize: '16px', margin: '2px auto' }}>{labelDay || date.getDate() === 1 ? getAbbreviatedMonthName(date).toLocaleUpperCase() : ''}</div>
+            <svg viewBox="0 0 40 40" style={{ height: '40px', width: '40px' }}>
+                <circle cx="20" cy="20" r="18" style={dayWrapperStyle} />
                 <foreignObject x="0" y="0" height="40px" width="40px">
                     <div style={dayStyle}>{date.getDate()}</div>
                 </foreignObject>
@@ -196,25 +196,25 @@ export default function (props: AsthmaProviderReportProps) {
     };
 
     const renderRow = (start: number, dayCount: number, labelFirstDay?: boolean) => {
-        let days = Array.from({length: dayCount}, (_, i) => i + start);
-        return <div style={{display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly', margin: '4px 0'}}>
+        let days = Array.from({ length: dayCount }, (_, i) => i + start);
+        return <div style={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-evenly', margin: '4px 0' }}>
             {days.map(day => renderDay(day, !!labelFirstDay && start == day))}
         </div>;
     };
 
     const renderStat = (label: string, value: number | string, units: string) => {
-        return <div style={{display: 'flex', flexDirection: 'row', margin: '2px 0'}}>
-            <div style={{flexGrow: 1, marginRight: '4px', fontWeight: 500}}>{label}</div>
-            <div style={{flexShrink: 0}}>{value} {units}</div>
+        return <div style={{ display: 'flex', flexDirection: 'row', margin: '2px 0' }}>
+            <div style={{ flexGrow: 1, marginRight: '4px', fontWeight: 500 }}>{label}</div>
+            <div style={{ flexShrink: 0 }}>{value} {units}</div>
         </div>;
     };
 
     const openPdf = (deviceInfo: DeviceInfo) => {
-        let fileName = `AsthmaTool-ProviderReport-${formatISO(new Date(), {representation: 'date'})}`;
-        let pdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf&fileName=" + encodeURIComponent(fileName);
+        let fileName = `AsthmaTool-ProviderReport-${formatISO(new Date(), { representation: 'date' })}`;
+        let pdfUrl = MyDataHelps.baseUrl + 'WebVisualization/WebVisualizationPDF?patientID=' + participant!.getId() + '&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf&fileName=' + encodeURIComponent(fileName);
         if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
             // @ts-ignore
-            window.webkit.messageHandlers.OpenFile.postMessage({'url': pdfUrl});
+            window.webkit.messageHandlers.OpenFile.postMessage({ 'url': pdfUrl });
         } else {
             MyDataHelps.openExternalUrl(pdfUrl);
         }
@@ -232,8 +232,8 @@ export default function (props: AsthmaProviderReportProps) {
             let reportHtml = '<head><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>';
             reportHtml += reportRef.current!.outerHTML;
 
-            MyDataHelps.persistDeviceData([{type: 'ReportHtml', value: reportHtml}]).then(() => {
-                MyDataHelps.getDeviceInfo().then(function (deviceInfo) {
+            MyDataHelps.persistDeviceData([{ type: 'ReportHtml', value: reportHtml }]).then(() => {
+                MyDataHelps.getDeviceInfo().then(function(deviceInfo) {
                     setDeviceInfo(deviceInfo);
                     openPdf(deviceInfo);
                 });
@@ -247,137 +247,137 @@ export default function (props: AsthmaProviderReportProps) {
     let documentHeight = 1575; // Would be 1584, but avoiding running up to the bleeding edge, which results in a blank second page.
     let scale = (window.innerWidth - 32) / documentWidth;
 
-    return <div style={{display: 'flex', justifyContent: 'center'}}>
-        <div style={{position: 'absolute', width: documentWidth, height: documentHeight, transform: 'scale(' + scale + ')', transformOrigin: 'top'}}>
-            <div style={{position: 'relative', padding: '32px 48px', width: documentWidth, height: documentHeight, boxSizing: 'border-box', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif'}} ref={reportRef}>
-                <div style={{fontSize: '32px', fontWeight: 600}}>{nameToDisplay} - Asthma Tool - Provider Report</div>
-                <div style={{fontSize: '24px', color: '#3b3b3b', marginBottom: '16px'}}>{getFullDateString(startDate)} - {getFullDateString(today)} (90 {language('days')})</div>
-                <div style={{border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px'}}>
-                    <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box'}}>
-                        <div style={{flexGrow: 1}}>
-                            <div style={{fontSize: '18px', fontWeight: 700}}>Asthma Control</div>
-                            <div style={{fontSize: '16px', color: '#3b3b3b', marginBottom: '16px'}}>Patient reported</div>
-                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                                <div style={{marginRight: '24px'}}>
-                                    <div style={{fontSize: '24px', fontWeight: 700}}>{logEntries.length} out of 90</div>
+    return <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', width: documentWidth, height: documentHeight, transform: 'scale(' + scale + ')', transformOrigin: 'top' }}>
+            <div style={{ position: 'relative', padding: '32px 48px', width: documentWidth, height: documentHeight, boxSizing: 'border-box', backgroundColor: '#fff', fontFamily: 'Inter, sans-serif' }} ref={reportRef}>
+                <div style={{ fontSize: '32px', fontWeight: 600 }}>{nameToDisplay} - Asthma Tool - Provider Report</div>
+                <div style={{ fontSize: '24px', color: '#3b3b3b', marginBottom: '16px' }}>{getFullDateString(startDate)} - {getFullDateString(today)} (90 {language('days')})</div>
+                <div style={{ border: '1px solid #dbdbdb', borderRadius: '10px', overflow: 'hidden', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderBottom: '1px solid #dbdbdb', boxSizing: 'border-box' }}>
+                        <div style={{ flexGrow: 1 }}>
+                            <div style={{ fontSize: '18px', fontWeight: 700 }}>Asthma Control</div>
+                            <div style={{ fontSize: '16px', color: '#3b3b3b', marginBottom: '16px' }}>Patient reported</div>
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div style={{ marginRight: '24px' }}>
+                                    <div style={{ fontSize: '24px', fontWeight: 700 }}>{logEntries.length} out of 90</div>
                                     <div>Daily entries logged</div>
                                 </div>
-                                <div style={{marginRight: '24px'}}>
-                                    <div style={{fontSize: '24px', fontWeight: 700, color: '#F86A5C'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'not-controlled').length} days</div>
+                                <div style={{ marginRight: '24px' }}>
+                                    <div style={{ fontSize: '24px', fontWeight: 700, color: '#F86A5C' }}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'not-controlled').length} days</div>
                                     <div>Not under control</div>
                                 </div>
                                 <div>
-                                    <div style={{fontSize: '24px', fontWeight: 700, color: '#35A6A0'}}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'controlled').length} days</div>
+                                    <div style={{ fontSize: '24px', fontWeight: 700, color: '#35A6A0' }}>{logEntries.filter(logEntry => controlStateLookup[logEntry.identifier].status === 'controlled').length} days</div>
                                     <div>Under control</div>
                                 </div>
                             </div>
                         </div>
-                        <div style={{fontSize: '14px', fontWeight: 500, paddingTop: '8px'}}>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
-                                    <circle cx="10" cy="10" r="8" style={{fill: '#fff', stroke: '#35A6A0', strokeWidth: 2}}/>
+                        <div style={{ fontSize: '14px', fontWeight: 500, paddingTop: '8px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '8px' }}>
+                                <svg viewBox="0 0 20 20" style={{ height: '20px', width: '20px' }}>
+                                    <circle cx="10" cy="10" r="8" style={{ fill: '#fff', stroke: '#35A6A0', strokeWidth: 2 }} />
                                 </svg>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Under control</div>
+                                <div style={{ flexGrow: 1, padding: '2px 8px' }}>Under control</div>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
-                                    <circle cx="10" cy="10" r="8" style={{fill: '#F86A5C', stroke: '#F86A5C', strokeWidth: 2}}/>
+                            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '8px' }}>
+                                <svg viewBox="0 0 20 20" style={{ height: '20px', width: '20px' }}>
+                                    <circle cx="10" cy="10" r="8" style={{ fill: '#F86A5C', stroke: '#F86A5C', strokeWidth: 2 }} />
                                 </svg>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not under control</div>
+                                <div style={{ flexGrow: 1, padding: '2px 8px' }}>Not under control</div>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', marginBottom: '8px'}}>
-                                <svg viewBox="0 0 20 20" style={{height: '20px', width: '20px'}}>
-                                    <circle cx="10" cy="10" r="8" style={{fill: '#fff', stroke: '#000', strokeWidth: 2, strokeDasharray: 3}}/>
+                            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '8px' }}>
+                                <svg viewBox="0 0 20 20" style={{ height: '20px', width: '20px' }}>
+                                    <circle cx="10" cy="10" r="8" style={{ fill: '#fff', stroke: '#000', strokeWidth: 2, strokeDasharray: 3 }} />
                                 </svg>
-                                <div style={{flexGrow: 1, padding: '2px 8px'}}>Not enough information</div>
+                                <div style={{ flexGrow: 1, padding: '2px 8px' }}>Not enough information</div>
                             </div>
                         </div>
                     </div>
-                    <div style={{padding: '12px 16px'}}>
+                    <div style={{ padding: '12px 16px' }}>
                         {renderRow(0, 18, true)}
                         {renderRow(18, 18)}
                         {renderRow(36, 18)}
                         {renderRow(54, 18)}
                         {renderRow(72, 18)}
                     </div>
-                    <div style={{fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px'}}>
+                    <div style={{ fontSize: '14px', color: '#3b3b3b', backgroundColor: '#f2f2f2', padding: '16px' }}>
                         This patient-facing digital asthma tool allows the user to create a daily entry and self-report their symptoms, use of rescue inhaler and impact
                         on activity and nighttime awakenings. The figure above use the self-reported answers to assess asthma control, based on the <a href="https://www.nhlbi.nih.gov/health-topics/guidelines-for-diagnosis-management-of-asthma" target="_blank">EPR-3 guidelines</a>. A
                         day is noted as not under control if in the prior week (7 days) there are more than 2 days of symptoms or rescue inhaler use or due to asthma 1
                         nighttime awakening or limitation in activity was recorded.
                     </div>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '17px', marginBottom: '16px'}}>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Components of control</div>
+                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', fontSize: '17px', marginBottom: '16px' }}>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Components of control</div>
                         {renderStat('Symptoms reported', symptomDays, symptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Rescue inhaler use', inhalerUseDays, inhalerUseDays === 1 ? 'day' : 'days')}
                         {renderStat('Normal activities affected', limitedActivityDays, limitedActivityDays === 1 ? 'day' : 'days')}
                         {renderStat('Nighttime awakenings', nighttimeAwakeningDays, nighttimeAwakeningDays === 1 ? 'day' : 'days')}
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Symptom severity</div>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Symptom severity</div>
                         {renderStat('None', noSymptomDays, noSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Mild', mildSymptomDays, mildSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Moderate', moderateSymptomDays, moderateSymptomDays === 1 ? 'day' : 'days')}
                         {renderStat('Severe', severeSymptomDays, severeSymptomDays === 1 ? 'day' : 'days')}
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Common symptoms</div>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Common symptoms</div>
                         {renderStat('Coughing', coughingDays, coughingDays === 1 ? 'day' : 'days')}
                         {renderStat('Wheezing', wheezingDays, wheezingDays === 1 ? 'day' : 'days')}
                     </div>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '24px'}}>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Top 4 triggers</div>
+                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', fontSize: '16px', marginBottom: '24px' }}>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Top 4 triggers</div>
                         {renderStat('Animal exposure', animalExposureDays, animalExposureDays === 1 ? 'report' : 'reports')}
                         {renderStat('Seasonal allergens/pollen', allergenDays, allergenDays === 1 ? 'report' : 'reports')}
                         {renderStat('Smoke', smokeDays, smokeDays === 1 ? 'report' : 'reports')}
                         {renderStat('Air pollution', airPollutionDays, airPollutionDays === 1 ? 'report' : 'reports')}
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Medications</div>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px', margin: '0 16px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Medications</div>
                         {renderStat('Missed doses', missedDosesDays, missedDosesDays === 1 ? 'report' : 'reports')}
                         {barrierDays === 0 && renderStat('Reported barriers to adherence', 0, 'reports')}
                         {barrierDays >= 1 && renderStat('Reported barriers to adherence*', barrierDays, barrierDays === 1 ? 'report' : 'reports')}
                         {barrierDays >= 1 &&
-                            <div style={{fontSize: '12px', marginTop: '12px'}}>*{barrierAnswers.join('; ')}</div>
+                            <div style={{ fontSize: '12px', marginTop: '12px' }}>*{barrierAnswers.join('; ')}</div>
                         }
                     </div>
-                    <div style={{flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px'}}>
-                        <div style={{marginBottom: '8px', fontWeight: 700}}>Days with AQI over 100</div>
+                    <div style={{ flexGrow: 1, flexBasis: '30%', backgroundColor: '#f2f2f2', border: '1px solid #dbdbdb', borderRadius: '10px', padding: '12px' }}>
+                        <div style={{ marginBottom: '8px', fontWeight: 700 }}>Days with AQI over 100</div>
                         {renderStat('Home', highHomeAqiDays > 0 ? highHomeAqiDays : 'None', highHomeAqiDays === 1 ? 'day' : highHomeAqiDays > 1 ? 'days' : '')}
                         {renderStat('Work', highWorkAqiDays > 0 ? highWorkAqiDays : 'None', highWorkAqiDays === 1 ? 'day' : highWorkAqiDays > 1 ? 'days' : '')}
-                        <div style={{fontSize: '12px', marginTop: '12px'}}>Source: airnow.gov</div>
+                        <div style={{ fontSize: '12px', marginTop: '12px' }}>Source: airnow.gov</div>
                     </div>
                 </div>
-                <div style={{position: 'absolute', bottom: 64, left: 48, right: 48, fontSize: '17px'}}>
-                    <div style={{fontSize: '16px', fontWeight: 700, marginBottom: '16px'}}>For Providers - About this tool & report:</div>
-                    <div style={{marginBottom: '16px'}}>
+                <div style={{ position: 'absolute', bottom: 64, left: 48, right: 48, fontSize: '17px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px' }}>For Providers - About this tool & report:</div>
+                    <div style={{ marginBottom: '16px' }}>
                         This report was generated from what is logged in the Asthma Tool, powered by <a href="https://careevolution.com/mydatahelps/" target="_blank">MyDataHelps</a>.
                         The Asthma Tool enables patients to track daily their symptoms and triggers, provides clear summaries or what they log and surfaces relevant
                         educational content and resource links. it summarizes the user's symptom logs. This digital tool design was based on promoting self-regulation,
                         which <a href="https://pubmed.ncbi.nlm.nih.gov/26252889/" target="_blank">studies</a> demonstrate can improve conditions such as asthma. The Asthma Tool does
                         not recommend any changes in management or provide diagnosis.
                     </div>
-                    <div style={{marginBottom: '16px'}}>
+                    <div style={{ marginBottom: '16px' }}>
                         To provide feedback on this report or tool, please e-mail us: <a href="mailto:asthma@careevolution.com" target="_blank">asthma@careevolution.com</a>
                     </div>
-                    <div style={{marginBottom: '16px', height: '1px', backgroundColor: '#bdbdbd'}}/>
+                    <div style={{ marginBottom: '16px', height: '1px', backgroundColor: '#bdbdbd' }} />
                     <div>
                         If you plan to share this report with your provider, be aware that communications over email, text, and other channels may not be secure because they can be sent to the wrong address or intercepted.
                     </div>
                 </div>
-                <div style={{position: 'absolute', bottom: 32, right: 48, fontSize: '16px', fontWeight: 500, textAlign: 'right'}}>
+                <div style={{ position: 'absolute', bottom: 32, right: 48, fontSize: '16px', fontWeight: 500, textAlign: 'right' }}>
                     Page 1 of 1
                 </div>
             </div>
-            <div style={{textAlign: 'center', margin: '64px 0', transform: 'scale(' + (1 / scale) + ')', transformOrigin: 'top'}}>
-                {generatingPdf && <LoadingIndicator/>}
+            <div style={{ textAlign: 'center', padding: '32px 0', transform: 'scale(' + (1 / scale) + ')', transformOrigin: 'top' }}>
+                {generatingPdf && <LoadingIndicator />}
                 {!generatingPdf &&
                     <button className="mdhui-button" onClick={() => onGeneratePdf()}>
-                        <div>Generate PDF <FontAwesomeIcon icon={faFilePdf}/></div>
+                        <div>Generate PDF <FontAwesomeIcon icon={faFilePdf} /></div>
                     </button>
                 }
             </div>

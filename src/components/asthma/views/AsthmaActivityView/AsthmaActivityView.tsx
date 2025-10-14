@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider } from '../../../../helpers/query-daily-data';
+import { DailyDataProvider, useInitializeView } from '../../../../helpers';
 import { AsthmaAlertTakeoverNotice } from '../../components';
-import { useInitializeView } from '../../../../helpers/Initialization';
 import { AsthmaDailyDataType, asthmaDataService, isStepsWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
@@ -15,7 +14,7 @@ export interface AsthmaActivityViewProps {
     logEntrySurveyName: string;
 }
 
-export default function (props: AsthmaActivityViewProps) {
+export default function AsthmaActivityView(props: AsthmaActivityViewProps) {
     const [baseline, setBaseline] = useState<number>();
 
     let previewDataProvider: DailyDataProvider | undefined;
@@ -36,7 +35,7 @@ export default function (props: AsthmaActivityViewProps) {
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1}>{language('asthma-activity-view-title')}</Title>
+            <Title style={{ textAlign: 'left' }} order={1}>{language('asthma-activity-view-title')}</Title>
         </NavigationBar>
         <RecentDailyDataBarChart
             previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
@@ -47,7 +46,7 @@ export default function (props: AsthmaActivityViewProps) {
             emptyDomain={[0, 10000]}
         />
         {props.alert === 'Steps' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-activity-view-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-activity-view-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
     </Layout>;
 }

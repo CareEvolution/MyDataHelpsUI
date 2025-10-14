@@ -1,17 +1,18 @@
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import AsthmaDayView, { AsthmaDayViewProps } from './AsthmaDayView';
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 export default {
     title: 'Asthma/Views/AsthmaDayView',
     component: AsthmaDayView,
-    parameters: { layout: 'fullscreen' }
-};
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaDayViewProps) => {
+        return <AsthmaDayView {...args} date={new Date()} />;
+    }
+} as Meta<AsthmaDayViewProps>;
 
-const render = (args: AsthmaDayViewProps) => {
-    return <AsthmaDayView {...args} date={new Date()} />;
-};
-
-export const Default = {
+export const Default: StoryObj<AsthmaDayViewProps> = {
     args: {
         colorScheme: 'auto',
         previewState: 'default'
@@ -26,8 +27,11 @@ export const Default = {
             name: 'state',
             control: 'radio',
             options: ['loading', 'default', 'as caregiver']
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide([
+            'date', 'logTodayEntrySurveyName', 'logYesterdayEntrySurveyName', 'editLogEntryUrl', 'logEntryInfoUrl',
+            'heartAndLungsUrl', 'activityUrl', 'sleepUrl', 'airQualityUrl'
+        ])
+    }
 };
 

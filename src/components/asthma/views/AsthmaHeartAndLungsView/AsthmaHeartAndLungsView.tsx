@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Layout, NavigationBar, Title } from '../../../presentational';
-import { DailyDataProvider } from '../../../../helpers/query-daily-data';
+import { DailyDataProvider, formatNumberForLocale, useInitializeView } from '../../../../helpers';
 import { AsthmaAlertTakeoverNotice } from '../../components';
-import { useInitializeView } from '../../../../helpers/Initialization';
 import { AsthmaDailyDataType, asthmaDataService, isBloodOxygenLevelWithinRange, isDaytimeRestingHeartRateWithinRange, isNighttimeRestingHeartRateWithinRange, isRespiratoryRateWithinRange } from '../../helpers';
 import language from '../../../../helpers/language';
 import { randomDataProvider } from '../../../../helpers/daily-data-providers';
 import { RecentDailyDataBarChart } from '../../../container';
-import { formatNumberForLocale } from "../../../../helpers/locale";
 
 export interface AsthmaHeartAndLungsViewProps {
     colorScheme?: 'light' | 'dark' | 'auto';
@@ -16,7 +14,7 @@ export interface AsthmaHeartAndLungsViewProps {
     logEntrySurveyName: string;
 }
 
-export default function (props: AsthmaHeartAndLungsViewProps) {
+export default function AsthmaHeartAndLungsView(props: AsthmaHeartAndLungsViewProps) {
     const [dhrBaseline, setDhrBaseline] = useState<number>();
     const [nhrBaseline, setNhrBaseline] = useState<number>();
     const [rrBaseline, setRrBaseline] = useState<number>();
@@ -54,7 +52,7 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1}>{language('asthma-heart-and-lungs-view-title')}</Title>
+            <Title style={{ textAlign: 'left' }} order={1}>{language('asthma-heart-and-lungs-view-title')}</Title>
         </NavigationBar>
         {(!props.alert || props.alert === 'DaytimeRestingHeartRate') &&
             <RecentDailyDataBarChart
@@ -115,19 +113,19 @@ export default function (props: AsthmaHeartAndLungsViewProps) {
             />
         }
         {props.alert === 'DaytimeRestingHeartRate' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-dhr-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-dhr-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'NighttimeRestingHeartRate' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-nhr-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-nhr-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'RespiratoryRate' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-rr-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-rr-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'DaytimeBloodOxygenLevel' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-dbol-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-dbol-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
         {props.alert === 'NighttimeBloodOxygenLevel' &&
-            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-nbol-alert-message')} logEntrySurveyName={props.logEntrySurveyName}/>
+            <AsthmaAlertTakeoverNotice previewState={props.previewState ? 'loaded' : undefined} message={language('asthma-heart-and-lungs-view-nbol-alert-message')} logEntrySurveyName={props.logEntrySurveyName} />
         }
     </Layout>;
 }

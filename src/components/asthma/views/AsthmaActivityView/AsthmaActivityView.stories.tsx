@@ -1,25 +1,26 @@
 import React from 'react';
 import AsthmaActivityView, { AsthmaActivityViewProps } from './AsthmaActivityView';
-
-export default {
-    title: 'Asthma/Views/AsthmaActivityView',
-    component: AsthmaActivityView,
-    parameters: {layout: 'fullscreen'}
-};
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 interface AsthmaActivityViewStoryArgs extends AsthmaActivityViewProps {
     withAlert: boolean;
 }
 
-const render = (args: AsthmaActivityViewStoryArgs) => {
-    return <AsthmaActivityView
-        {...args}
-        previewState='default'
-        alert={args.withAlert ? 'Steps' : undefined}
-    />;
-};
+export default {
+    title: 'Asthma/Views/AsthmaActivityView',
+    component: AsthmaActivityView,
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaActivityViewStoryArgs) => {
+        return <AsthmaActivityView
+            {...args}
+            previewState="default"
+            alert={args.withAlert ? 'Steps' : undefined}
+        />;
+    }
+} as Meta<AsthmaActivityViewStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<AsthmaActivityViewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         withAlert: false
@@ -32,8 +33,8 @@ export const Default = {
         },
         withAlert: {
             name: 'with alert'
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['previewState', 'alert', 'logEntrySurveyName'])
+    }
 };
 

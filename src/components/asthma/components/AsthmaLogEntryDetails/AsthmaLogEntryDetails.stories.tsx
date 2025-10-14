@@ -1,28 +1,29 @@
 import React from 'react';
 import AsthmaLogEntryDetails, { AsthmaLogEntryDetailsProps } from './AsthmaLogEntryDetails';
 import { Card, Layout } from '../../../presentational';
-import { add } from 'date-fns';
-
-export default {
-    title: 'Asthma/Components/AsthmaLogEntryDetails',
-    component: AsthmaLogEntryDetails,
-    parameters: {layout: 'fullscreen'}
-};
+import { add, startOfToday } from 'date-fns';
+import { Meta, StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 interface AsthmaLogEntryDetailsStoryArgs extends AsthmaLogEntryDetailsProps {
     colorScheme: 'auto' | 'light' | 'dark';
     daysInPast: number;
 }
 
-const render = (args: AsthmaLogEntryDetailsStoryArgs) => {
-    return <Layout colorScheme={args.colorScheme}>
-        <Card>
-            <AsthmaLogEntryDetails {...args} date={add(new Date(), {days: args.daysInPast * -1})}/>
-        </Card>
-    </Layout>;
-};
+export default {
+    title: 'Asthma/Components/AsthmaLogEntryDetails',
+    component: AsthmaLogEntryDetails,
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaLogEntryDetailsStoryArgs) => {
+        return <Layout colorScheme={args.colorScheme}>
+            <Card>
+                <AsthmaLogEntryDetails {...args} date={add(startOfToday(), { days: args.daysInPast * -1 })} />
+            </Card>
+        </Layout>;
+    }
+} as Meta<AsthmaLogEntryDetailsStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<AsthmaLogEntryDetailsStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'not logged',
@@ -43,7 +44,7 @@ export const Default = {
             name: 'days in past',
             control: 'radio',
             options: [0, 1, 2]
-        }
-    },
-    render: render
+        },
+        ...argTypesToHide(['date', 'logTodayEntrySurveyName', 'logYesterdayEntrySurveyName', 'editLogEntryUrl', 'infoUrl', 'innerRef'])
+    }
 };

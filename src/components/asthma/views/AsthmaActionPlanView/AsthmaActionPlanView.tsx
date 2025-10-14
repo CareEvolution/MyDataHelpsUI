@@ -10,7 +10,7 @@ export interface AsthmaActionPlanViewProps {
     editActionPlanSurveyName: string;
 }
 
-export default function (props: AsthmaActionPlanViewProps) {
+export default function AsthmaActionPlanView(props: AsthmaActionPlanViewProps) {
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar showCloseButton={true} />
         <AsthmaActionPlanManager

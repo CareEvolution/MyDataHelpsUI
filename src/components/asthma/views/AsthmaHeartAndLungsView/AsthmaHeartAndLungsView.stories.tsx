@@ -1,26 +1,27 @@
+import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import AsthmaHeartAndLungsView, { AsthmaHeartAndLungsViewProps } from './AsthmaHeartAndLungsView';
-
-export default {
-    title: 'Asthma/Views/AsthmaHeartAndLungsView',
-    component: AsthmaHeartAndLungsView,
-    parameters: {layout: 'fullscreen'}
-};
+import { argTypesToHide } from '../../../../../.storybook/helpers';
 
 interface AsthmaHeartAndLungsViewStoryArgs extends AsthmaHeartAndLungsViewProps {
     withAlert: boolean;
     alertType: 'DaytimeRestingHeartRate' | 'NighttimeRestingHeartRate' | 'RespiratoryRate' | 'DaytimeBloodOxygenLevel' | 'NighttimeBloodOxygenLevel';
 }
 
-const render = (args: AsthmaHeartAndLungsViewStoryArgs) => {
-    return <AsthmaHeartAndLungsView
-        {...args}
-        previewState="default"
-        alert={args.withAlert ? args.alertType : undefined}
-    />;
-};
+export default {
+    title: 'Asthma/Views/AsthmaHeartAndLungsView',
+    component: AsthmaHeartAndLungsView,
+    parameters: { layout: 'fullscreen' },
+    render: (args: AsthmaHeartAndLungsViewStoryArgs) => {
+        return <AsthmaHeartAndLungsView
+            {...args}
+            previewState="default"
+            alert={args.withAlert ? args.alertType : undefined}
+        />;
+    }
+} as Meta<AsthmaHeartAndLungsViewStoryArgs>;
 
-export const Default = {
+export const Default: StoryObj<AsthmaHeartAndLungsViewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         withAlert: false,
@@ -39,9 +40,9 @@ export const Default = {
             name: 'alert type',
             control: 'radio',
             options: ['DaytimeRestingHeartRate', 'NighttimeRestingHeartRate', 'RespiratoryRate', 'DaytimeBloodOxygenLevel', 'NighttimeBloodOxygenLevel'],
-            if: {arg: 'withAlert', eq: true}
-        }
-    },
-    render: render
+            if: { arg: 'withAlert', eq: true }
+        },
+        ...argTypesToHide(['previewState', 'alert', 'logEntrySurveyName'])
+    }
 };
 
