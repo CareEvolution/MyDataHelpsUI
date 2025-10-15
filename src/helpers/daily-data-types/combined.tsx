@@ -1,6 +1,6 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faBrain, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
@@ -108,7 +108,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: combinedMindfulMinutesDataProvider,
         availabilityCheck: combinedAvailabilityCheck(MINDFUL_MINUTES_SOURCES),
         labelKey: "mindful-minutes",
-        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        icon: <FontAwesomeSvgIcon icon={faBrain} />,
         formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
     },

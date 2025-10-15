@@ -198,6 +198,11 @@ describe('Locale Tests', () => {
             const result = formatMinutesForLocale(45);
             expect(result).toBe("45m");
         });
+        it('Should format hours only.', () => {
+            mockMDHLanguage = "en-US";
+            const result = formatMinutesForLocale(119.9);
+            expect(result).toBe("2h");
+        });
         it('Should format hours/minutes.', () => {            
             mockMDHLanguage = "en-US";
             const result = formatMinutesForLocale(94);

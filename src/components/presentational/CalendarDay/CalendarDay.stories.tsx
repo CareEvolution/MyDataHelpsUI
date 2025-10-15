@@ -1,306 +1,275 @@
 import React, { useContext } from 'react';
-import CalendarDay, { CalendarDayProps, CalendarDayStateConfiguration } from './CalendarDay';
+import CalendarDay, { CalendarDayState, CalendarDayStates } from './CalendarDay';
 import { Calendar, Card, DateRangeContext, DateRangeCoordinator, Layout } from '../../presentational';
-import { add, formatISO, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
+import { add, formatISO, isBefore, isSameDay, parseISO, startOfToday } from 'date-fns';
+import { StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
+import { fnvPredictableRandomNumber, getDayKey } from '../../../helpers';
 
 export default {
     title: 'Presentational/CalendarDay',
     component: CalendarDay,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
-const render = (args: CalendarDayProps) => <Layout colorScheme="auto">
-    <div style={{width: '60px', margin: '20px auto 0'}}>
-        <CalendarDay {...args} />
-    </div>
-</Layout>;
+type CalendarDayStoryArgs = React.ComponentProps<typeof CalendarDay> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    state: 'no-data' | 'today' | 'future' | 'single-state' | 'multi-state';
+    streakLeft: boolean;
+    streakRight: boolean;
+    customStreakColor: boolean;
+    alwaysRenderAsMultiState: boolean;
+    withNote: boolean;
+    customNoteColor: boolean;
+    customDisplayValue: boolean;
+};
 
-const testDate = parseISO('2023-11-29T21:41:43.678Z');
-const now = new Date();
-const tomorrow = startOfDay(add(new Date(now), {days: 1}));
-
-const commonProps = {
-    year: testDate.getFullYear(),
-    month: testDate.getMonth(),
-    day: testDate.getDate(),
-    stateConfiguration: {
-        'state1': {
-            style: {
-                background: '#35A6A0'
+export const Default: StoryObj<CalendarDayStoryArgs> = {
+    args: {
+        colorScheme: 'auto',
+        state: 'no-data',
+        alwaysRenderAsMultiState: false,
+        multiStateStartAngle: 240,
+        streakLeft: false,
+        streakRight: false,
+        customStreakColor: false,
+        withNote: false,
+        customNoteColor: false,
+        customDisplayValue: false
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        state: {
+            name: 'state',
+            control: 'radio',
+            options: ['no-data', 'today', 'future', 'single-state', 'multi-state']
+        },
+        alwaysRenderAsMultiState: {
+            name: 'always render as multi-state',
+            control: 'boolean'
+        },
+        multiStateStartAngle: {
+            name: 'multi-state start angle',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 360,
+                step: 1
             }
         },
-        'state2': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true
+        streakLeft: {
+            name: 'streak left',
+            control: 'boolean'
         },
-        'state3': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
-        }
+        streakRight: {
+            name: 'streak right',
+            control: 'boolean'
+        },
+        customStreakColor: {
+            name: 'custom streak color',
+            control: 'boolean'
+        },
+        withNote: {
+            name: 'with note',
+            control: 'boolean'
+        },
+        customNoteColor: {
+            name: 'custom note color',
+            control: 'boolean'
+        },
+        customDisplayValue: {
+            name: 'custom display value',
+            control: 'boolean'
+        },
+        ...argTypesToHide(['year', 'month', 'day', 'stateConfiguration', 'computeStateForDay', 'computeStatesForDay', 'onClick', 'innerRef'])
     },
-    onClick: () => {
-        console.log("day clicked.");
+    render: (args: CalendarDayStoryArgs) => {
+        const testDate = parseISO('2023-11-29T21:41:43.678Z');
+
+        let year = testDate.getFullYear();
+        let month = testDate.getMonth();
+        let day = testDate.getDate();
+
+        if (args.state === 'today') {
+            const today = startOfToday();
+            year = today.getFullYear();
+            month = today.getMonth();
+            day = today.getDate();
+        } else if (args.state === 'future') {
+            const tomorrow = add(startOfToday(), { days: 1 });
+            year = tomorrow.getFullYear();
+            month = tomorrow.getMonth();
+            day = tomorrow.getDate();
+        }
+
+        return <Layout colorScheme={args.colorScheme}>
+            <div style={{ width: '60px', margin: '20px auto 0' }}>
+                <CalendarDay
+                    {...args}
+                    year={year}
+                    month={month}
+                    day={day}
+                    computeStatesForDay={(date: Date) => {
+                        let states: CalendarDayStates = [];
+                        if (args.state === 'single-state') {
+                            states.push({ backgroundColor: '#3c973c', streakColor: args.customStreakColor ? '#3c973c66' : undefined, combineWhenSolo: args.alwaysRenderAsMultiState });
+                        } else if (args.state === 'multi-state') {
+                            states.push({ backgroundColor: '#3c973c', streakColor: args.customStreakColor ? '#3c973c' : undefined });
+                            states.push({ backgroundColor: '#664cda', streakColor: args.customStreakColor ? '#664cda' : undefined });
+                            states.push({ backgroundColor: '#0877b8', streakColor: args.customStreakColor ? '#0877b8' : undefined });
+                        }
+                        states.forEach(state => state.combineWhenSolo = args.alwaysRenderAsMultiState);
+
+                        const streakLeft = args.streakLeft && (isSameDay(testDate, date) || isSameDay(add(testDate, { days: -1 }), date));
+                        const streakRight = args.streakRight && (isSameDay(testDate, date) || isSameDay(add(testDate, { days: 1 }), date));
+                        if (streakLeft || streakRight) {
+                            states.forEach(state => state.streakIdentifier = 'streakId');
+                        }
+
+                        if (args.withNote) {
+                            states.note = 'note';
+                            if (args.customNoteColor) {
+                                states.noteBackgroundColor = { lightMode: '#fff', darkMode: '#000' };
+                                states.noteBorderColor = '#888';
+                                states.noteTextColor = { lightMode: '#000', darkMode: '#fff' };
+                            }
+                        }
+
+                        if (args.customDisplayValue) {
+                            states.displayValue = '🙂';
+                        }
+
+                        return states;
+                    }}
+                    onClick={() => console.log('day clicked.')} />
+            </div>
+        </Layout>;
     }
 };
 
-export const NoDay = {
-    args: {
-        ...commonProps,
-        day: undefined
-    },
-    render: render
+type InCalendarCalendarDayStoryArgs = React.ComponentProps<typeof CalendarDay> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    withData: boolean;
+    multiState: boolean;
+    withNote: boolean;
+    withClickHandler: boolean;
 };
 
-export const Default = {
+export const InCalendar: StoryObj<InCalendarCalendarDayStoryArgs> = {
     args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state0';
-        }
+        colorScheme: 'auto',
+        withData: false,
+        multiState: false,
+        withNote: false,
+        withClickHandler: false
     },
-    render: render
-};
-
-export const Today = {
-    args: {
-        ...commonProps,
-        year: now.getFullYear(),
-        month: now.getMonth(),
-        day: now.getDate(),
-        computeStateForDay: (date: Date): string => {
-            return 'today';
-        }
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        withData: {
+            name: 'with data',
+            control: 'boolean'
+        },
+        multiState: {
+            name: 'multi-state',
+            control: 'boolean'
+        },
+        withNote: {
+            name: 'with note',
+            control: 'boolean'
+        },
+        withClickHandler: {
+            name: 'with click handler',
+            control: 'boolean'
+        },
+        ...argTypesToHide(['year', 'month', 'day', 'stateConfiguration', 'computeStateForDay', 'computeStatesForDay', 'onClick', 'multiStateStartAngle', 'innerRef'])
     },
-    render: render
-};
-
-export const Future = {
-    args: {
-        ...commonProps,
-        year: tomorrow.getFullYear(),
-        month: tomorrow.getMonth(),
-        day: tomorrow.getDate(),
-        computeStateForDay: (date: Date): string => {
-            return 'future';
-        }
-    },
-    render: render
-};
-
-export const StreakLeftNotSupported = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state1";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakLeftDefaultColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state2";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakLeftCustomColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state3";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakRightNotSupported = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state1";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakRightDefaultColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state2";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakRightCustomColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state3";
-            }
-            return 'state0';
-        }
-    },
-    render: render
-};
-
-export const StreakBothNotSupported = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state1';
-        }
-    },
-    render: render
-};
-
-export const StreakBothDefaultColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state2';
-        }
-    },
-    render: render
-};
-
-export const StreakBothCustomColor = {
-    args: {
-        ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state3';
-        }
-    },
-    render: render
-};
-
-export const InCalendarNoData = {
-    render: () => {
-        return <Layout colorScheme="auto">
+    render: (args: InCalendarCalendarDayStoryArgs) => {
+        return <Layout colorScheme={args.colorScheme}>
             <Card>
                 <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar/>
+                    <CalendarDayInCalendar {...args} />
                 </DateRangeCoordinator>
             </Card>
         </Layout>;
     }
 };
 
-export const InCalendarNoDataWithClickHandler = {
-    render: () => {
-        return <Layout colorScheme="auto">
-            <Card>
-                <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withClickHandler={true}/>
-                </DateRangeCoordinator>
-            </Card>
-        </Layout>;
-    }
-};
+function CalendarDayInCalendar(props: InCalendarCalendarDayStoryArgs) {
+    const dateRangeContext = useContext(DateRangeContext)!;
 
-export const InCalendarWithData = {
-    render: () => {
-        return <Layout colorScheme="auto">
-            <Card>
-                <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withData={true}/>
-                </DateRangeCoordinator>
-            </Card>
-        </Layout>;
-    }
-};
+    const computeStatesForDay = (date: Date): CalendarDayState[] => {
+        const states: CalendarDayStates = [];
 
-export const InCalendarWithDataWithClickHandler = {
-    render: () => {
-        return <Layout colorScheme="auto">
-            <Card>
-                <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withData={true} withClickHandler={true}/>
-                </DateRangeCoordinator>
-            </Card>
-        </Layout>;
-    }
-};
-
-function CalendarDayInCalendar(props: { withData?: boolean, withClickHandler?: boolean }) {
-    let dateRangeContext = useContext(DateRangeContext);
-
-    const stateConfiguration: CalendarDayStateConfiguration = {
-        'state1': {
-            style: {
-                background: '#F86A5C',
-                color: '#000'
-            },
-            streak: true,
-            streakColor: 'rgba(248,106,92,0.4)'
-        },
-        'state2': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
-        },
-        'state3': {
-            style: {
-                background: '#6f35a6',
-                color: '#fff'
-            },
-            streak: true
-        },
-        'state4': {
-            style: {
-                background: '#f3fa3a'
-            }
-        }
-    };
-
-    const computeStateForDay = (date: Date): string => {
         if (props.withData && isBefore(date, new Date())) {
+            const state1: CalendarDayState = {
+                backgroundColor: '#F86A5C',
+                textColor: '#000',
+                streakIdentifier: 'state1',
+                streakColor: '#F86A5C66',
+                combineWhenSolo: props.multiState
+            };
+            const state2: CalendarDayState = {
+                backgroundColor: '#35A6A0',
+                streakIdentifier: 'state2',
+                streakColor: '#35A6A066',
+                combineWhenSolo: props.multiState
+            };
+            const state3: CalendarDayState = {
+                backgroundColor: '#6f35a6',
+                textColor: '#fff',
+                streakColor: '#9466c1',
+                streakIdentifier: 'state3',
+                combineWhenSolo: props.multiState
+            };
+            const state4: CalendarDayState = {
+                backgroundColor: '#f3fa3a',
+                textColor: '#000',
+                combineWhenSolo: props.multiState
+            };
+
             if ((date.getDate() >= 5 && date.getDate() <= 13) || date.getDate() === 17) {
-                return 'state1';
+                states.push(state1);
+                if (props.multiState && fnvPredictableRandomNumber(getDayKey(date)) % 3 === 0) {
+                    states.push(state2);
+                }
             }
             if ((date.getDate() >= 2 && date.getDate() <= 4) || (date.getDate() >= 19 && date.getDate() <= 22) || date.getDate() === 16) {
-                return 'state2';
+                states.push(state2);
+                if (props.multiState && fnvPredictableRandomNumber(getDayKey(date)) % 3 === 0) {
+                    states.push(state1);
+                }
             }
             if (date.getDate() >= 24 && date.getDate() <= 25) {
-                return 'state3';
+                states.push(state3);
+                if (props.multiState && fnvPredictableRandomNumber(getDayKey(date)) % 3 === 0) {
+                    states.push(state4);
+                }
             }
             if (date.getDate() >= 26 && date.getDate() <= 27) {
-                return 'state4';
+                states.push(state4);
+                if (props.multiState && fnvPredictableRandomNumber(getDayKey(date)) % 3 === 0) {
+                    states.push(state3);
+                }
+            }
+
+            if (props.withNote && fnvPredictableRandomNumber(getDayKey(date)) % 3 === 0) {
+                states.note = 'note';
             }
         }
-        return 'state5';
+
+        return states;
     };
 
     const onDayClicked = (date: Date): void => {
-        console.log('day clicked: ' + formatISO(date, {representation: 'date'}));
+        console.log('day clicked: ' + formatISO(date, { representation: 'date' }));
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
@@ -308,13 +277,12 @@ function CalendarDayInCalendar(props: { withData?: boolean, withClickHandler?: b
             year={year}
             month={month}
             day={day}
-            stateConfiguration={stateConfiguration}
-            computeStateForDay={computeStateForDay}
+            computeStatesForDay={computeStatesForDay}
             onClick={props.withClickHandler ? onDayClicked : undefined}
         />;
     };
 
-    let intervalStart = dateRangeContext!.intervalStart;
+    const intervalStart = dateRangeContext.intervalStart;
 
-    return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>;
+    return <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
 }

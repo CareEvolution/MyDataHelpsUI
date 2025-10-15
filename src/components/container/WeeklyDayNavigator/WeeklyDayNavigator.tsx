@@ -41,7 +41,7 @@ export default function (props: WeeklyDayNavigatorProps) {
     }, ['externalAccountSyncComplete'], [weekStart, ...(props.dependencies ?? [])]);
 
     const onDateSelected = (date: Date) => {
-        dateRangeContext?.update({ intervalStart: date });
+        dateRangeContext?.update(date);
     };
 
     const onStartDateChanged = (startDate: Date) => {
