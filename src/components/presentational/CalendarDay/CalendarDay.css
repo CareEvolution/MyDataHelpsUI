@@ -5,21 +5,8 @@
 .mdhui-calendar-day {
     display: inline-block;
     width: 100%;
-    height: 22px;
+    height: 21px;
     margin-top: 5px;
-    --mdhui-calendar-day-streak-color: #ddd;
-}
-
-.mdhui-calendar-day-streak-left {
-    background: linear-gradient(90deg, var(--mdhui-calendar-day-streak-color) 50%, transparent 50%);
-}
-
-.mdhui-calendar-day-streak-right {
-    background: linear-gradient(90deg, transparent 50%, var(--mdhui-calendar-day-streak-color) 50%);
-}
-
-.mdhui-calendar-day-streak-both {
-    background-color: var(--mdhui-calendar-day-streak-color);
 }
 
 .mdhui-calendar-day .mdhui-unstyled-button {
@@ -52,4 +39,30 @@
     color: var(--mdhui-text-color-4);
     border: 2px solid var(--mdhui-border-color-2);
     margin-top: -12px;
+}
+
+.mdhui-calendar-day-note-wrapper {
+    position: absolute;
+    bottom: -12px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mdhui-border-color-2);
+    border: 1px solid var(--mdhui-border-color-2);
+    border-radius: 8px;
+    color: var(--mdhui-text-color-0);
+    height: 16px;
+    min-width: 16px;
+    max-width: 40px;
+    padding: 0 4px;
+    font-size: 0.62em;
+    box-sizing: border-box;
+}
+
+.mdhui-calendar-day-note {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
