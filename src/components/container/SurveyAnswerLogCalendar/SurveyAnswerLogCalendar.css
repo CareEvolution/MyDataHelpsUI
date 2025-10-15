@@ -1,0 +1,46 @@
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mdhui-background-color-0);
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator.mdhui-loading-indicator {
+    font-size: 1.5em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend {
+    padding: 0 16px 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-color {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-label {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-2);
+    font-weight: bold;
+}
