@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { getMonthStart, getWeekStart, WeekStartsOn } from "../../../helpers";
 import { startOfDay } from "date-fns";
@@ -24,9 +24,14 @@ export interface DateRangeContext {
     update: (updates: DateRangeContextUpdates) => void;
 }
 
+export interface DateRangeContextUpdater {
+    update: (updates: DateRangeContextUpdates) => void;
+}
+
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
-export default function (props: DateRangeCoordinatorProps) {
+const DateRangeCoordinator = forwardRef<DateRangeContextUpdater | undefined, DateRangeCoordinatorProps>((props: DateRangeCoordinatorProps, ref: ForwardedRef<DateRangeContextUpdater | undefined>) => {
+
     let initialIntervalStart = props.initialIntervalStart || getMonthStart();
     if (props.intervalType === "Week") {
         initialIntervalStart = getWeekStart(props.weekStartsOn);
@@ -42,15 +47,15 @@ export default function (props: DateRangeCoordinatorProps) {
 
     currentContextRef.current = currentContext;
 
+    const update = (updates: DateRangeContextUpdates) => {
+        setCurrentContext({ ...currentContextRef.current!, ...updates } as DateRangeContext);
+    };
+
     useEffect(() => {
-        setCurrentContext({
-            intervalType: props.intervalType,
-            intervalStart: initialIntervalStart,
-            update: (updates: DateRangeContextUpdates) => {
-                setCurrentContext({ ...currentContextRef.current!, ...updates } as DateRangeContext);
-            }
-        });
+        setCurrentContext({ intervalType: props.intervalType, intervalStart: initialIntervalStart, update });
     }, [props.intervalType, props.weekStartsOn]);
+
+    useImperativeHandle(ref, () => ({ update }));
 
     if (!currentContext) return null;
 
@@ -66,5 +71,7 @@ export default function (props: DateRangeCoordinatorProps) {
         }
         {props.children}
     </DateRangeContext.Provider>
-    </div>
-}
+    </div>;
+});
+
+export default DateRangeCoordinator;
