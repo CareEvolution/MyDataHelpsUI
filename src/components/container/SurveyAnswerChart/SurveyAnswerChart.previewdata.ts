@@ -1,6 +1,6 @@
 import { add, Duration, min, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { getDayKey, predictableRandomNumber } from '../../../helpers';
+import { generateSurveyAnswers } from '../../../helpers/survey-answer';
 
 export type SurveyAnswerChartPreviewState = 'default' | 'no data' | 'with one data point' | 'with one data point in first series' | 'with two data points' | 'with two data points in first series' | 'with two data points in first series with gap' | 'with gap';
 
@@ -45,22 +45,4 @@ export async function getPreviewDataFromProvider(previewState: SurveyAnswerChart
     }
 
     return surveyAnswers;
-}
-
-export async function generateSurveyAnswers(startDate: Date, endDate: Date, resultIdentifiers: string[], minValue: number, maxValue: number, dataCadence: Duration): Promise<SurveyAnswer[][]> {
-    const data = Array.from({ length: resultIdentifiers.length }, (): SurveyAnswer[] => []);
-
-    let currentDate = startDate;
-    while (currentDate < endDate) {
-        for (let i = 0; i < data.length; i++) {
-            const answer = await predictableRandomNumber(getDayKey(currentDate) + resultIdentifiers[i]);
-            data[i].push({
-                date: currentDate.toISOString(),
-                answers: [(answer % (maxValue - minValue) + minValue).toString()]
-            } as SurveyAnswer);
-        }
-        currentDate = add(currentDate, dataCadence);
-    }
-
-    return data;
 }
