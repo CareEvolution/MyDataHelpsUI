@@ -1,0 +1,16 @@
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mdhui-background-color-0)
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator {
+    font-size: 2em;
+}
