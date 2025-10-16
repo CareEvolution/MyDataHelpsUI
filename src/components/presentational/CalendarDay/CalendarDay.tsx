@@ -1,11 +1,12 @@
 import React, { CSSProperties, useContext } from 'react';
 import './CalendarDay.css';
 import { LayoutContext } from '../Layout';
-import { ColorDefinition, resolveColor } from '../../../helpers/colors';
+import { ColorDefinition, resolveColor } from '../../../helpers';
 import { add, isAfter, isSameDay } from 'date-fns';
 import UnstyledButton from '../UnstyledButton';
 
-export type CalendarDayStateConfiguration = Record<string, { style?: CSSProperties, streak?: boolean, streakColor?: ColorDefinition }>;
+export type CalendarDayState = { style?: CSSProperties, streak?: boolean, streakColor?: ColorDefinition };
+export type CalendarDayStateConfiguration = Record<string, CalendarDayState>;
 
 export interface CalendarDayProps {
     year: number;
@@ -21,7 +22,7 @@ export default function (props: CalendarDayProps) {
     let layoutContext = useContext(LayoutContext);
 
     if (!props.day) {
-        return <div ref={props.innerRef}/>;
+        return <div ref={props.innerRef} />;
     }
 
     const getLastDayOfMonth = (date: Date): number => {
@@ -42,9 +43,9 @@ export default function (props: CalendarDayProps) {
 
     let date = new Date(props.year, props.month, props.day);
 
-    let previousDayState = props.computeStateForDay(add(new Date(date), {days: -1}));
+    let previousDayState = props.computeStateForDay(add(new Date(date), { days: -1 }));
     let currentDayState = props.computeStateForDay(date);
-    let nextDayState = props.computeStateForDay(add(new Date(date), {days: 1}));
+    let nextDayState = props.computeStateForDay(add(new Date(date), { days: 1 }));
 
     let currentDayStateConfiguration = props.stateConfiguration[currentDayState];
 
@@ -66,7 +67,7 @@ export default function (props: CalendarDayProps) {
             dayClasses.push('mdhui-calendar-day-streak-right');
         }
         if (currentDayStateConfiguration?.streakColor) {
-            dayStyle = {'--mdhui-calendar-day-streak-color': resolveColor(layoutContext.colorScheme, currentDayStateConfiguration?.streakColor)} as CSSProperties
+            dayStyle = { '--mdhui-calendar-day-streak-color': resolveColor(layoutContext.colorScheme, currentDayStateConfiguration?.streakColor) } as CSSProperties;
         }
     }
 
