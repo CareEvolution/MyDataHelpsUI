@@ -31,7 +31,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
             ? (startDate: Date) => generatePreviewData(props.stateConfiguration, props.resultIdentifiers, startDate)
             : (startDate: Date) => queryAllSurveyAnswers({ surveyName: props.surveyName, after: startDate.toISOString() } as SurveyAnswersQuery);
 
-        const startDate = add(startOfMonth(intervalStart), { days: -7 });
+        const startDate = add(startOfMonth(intervalStart), { days: -1 });
 
         loadSurveyAnswers(startDate).then(surveyAnswers => {
             setSurveyAnswersByDate(surveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
