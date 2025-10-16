@@ -6,6 +6,9 @@ import SurveyAnswerCalendar from './SurveyAnswerCalendar';
 
 type SurveyAnswerCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    customizeToday: boolean;
+    customizeFuture: boolean;
+    customizeNoData: boolean;
 };
 
 export default {
@@ -15,10 +18,24 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerCalendarStoryArgs) => {
+        const stateConfiguration = { ...args.stateConfiguration };
+        if (args.customizeToday) {
+            stateConfiguration['today'] = { style: { background: 'aquamarine', color: 'black' } };
+        }
+        if (args.customizeFuture) {
+            stateConfiguration['future'] = { style: { background: 'cornflowerblue', color: 'black' } };
+        }
+        if (args.customizeNoData) {
+            stateConfiguration['no-data'] = { style: { background: 'pink', color: 'black' } };
+        }
+
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <Card>
-                    <SurveyAnswerCalendar {...args} />
+                    <SurveyAnswerCalendar
+                        {...args}
+                        stateConfiguration={stateConfiguration}
+                    />
                 </Card>
             </DateRangeCoordinator>
         </Layout>;
@@ -52,13 +69,28 @@ export const Default: StoryObj<SurveyAnswerCalendarStoryArgs> = {
                     color: '#251c00'
                 }
             }
-        }
+        },
+        customizeToday: false,
+        customizeFuture: false,
+        customizeNoData: false
     },
     argTypes: {
         colorScheme: {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        stateConfiguration: {
+            name: 'state configuration'
+        },
+        customizeToday: {
+            name: 'customize today?'
+        },
+        customizeFuture: {
+            name: 'customize future?'
+        },
+        customizeNoData: {
+            name: 'customize no-data?'
         },
         ...argTypesToHide(['previewState', 'surveyName', 'resultIdentifiers', 'computeState', 'eventPrefix', 'intervalStart', 'innerRef'])
     }
