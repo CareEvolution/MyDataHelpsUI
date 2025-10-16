@@ -1,6 +1,6 @@
 import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
-import { add, formatISO, isAfter, isSameDay, startOfMonth } from 'date-fns';
+import { add, formatISO, isAfter, startOfMonth } from 'date-fns';
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
@@ -46,44 +46,19 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     }, [], [props.previewState, props.resultIdentifiers, props.stateConfiguration, intervalStart]);
 
     const stateConfiguration: CalendarDayStateConfiguration = {
-        'today': {
-            style: {
-                background: 'var(--mdhui-background-color-0)',
-                border: '3px solid var(--mdhui-text-color-0)',
-                color: 'var(--mdhui-text-color-0)'
-            }
-        },
         'future': {
             style: {
-                background: 'var(--mdhui-background-color-0)',
-                border: '3px solid var(--mdhui-background-color-0)',
-                color: 'var(--mdhui-text-color-3)',
-                fontWeight: 600,
                 cursor: 'default'
-            }
-        },
-        'no-data': {
-            style: {
-                background: 'var(--mdhui-background-color-0)',
-                border: '3px solid var(--mdhui-background-color-0)',
-                color: 'var(--mdhui-text-color-0)',
-                fontWeight: 600
             }
         },
         ...props.stateConfiguration
     };
 
-    const computeStateForDay = (date: Date): string => {
+    const computeStateForDay = (date: Date): string | undefined => {
         const surveyAnswersForDay = surveyAnswersByDate[getDayKey(date)];
-
-        const state = props.previewState
+        return props.previewState
             ? computePreviewState(props.stateConfiguration, surveyAnswersForDay)
             : props.computeState?.(date, surveyAnswersForDay);
-
-        if (state) return state;
-        if (isSameDay(date, new Date())) return 'today';
-        if (isAfter(date, new Date())) return 'future';
-        return 'no-data';
     };
 
     const onDayClicked = (date: Date): void => {

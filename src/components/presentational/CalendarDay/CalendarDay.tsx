@@ -13,7 +13,7 @@ export interface CalendarDayProps {
     month: number;
     day?: number;
     stateConfiguration: CalendarDayStateConfiguration;
-    computeStateForDay: (date: Date) => string;
+    computeStateForDay: (date: Date) => string | undefined;
     onClick?: (date: Date) => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -47,7 +47,7 @@ export default function (props: CalendarDayProps) {
     let currentDayState = props.computeStateForDay(date);
     let nextDayState = props.computeStateForDay(add(new Date(date), { days: 1 }));
 
-    let currentDayStateConfiguration = props.stateConfiguration[currentDayState];
+    let currentDayStateConfiguration = currentDayState ? props.stateConfiguration[currentDayState] : undefined;
 
     let dayClasses: string[] = ['mdhui-calendar-day'];
     let dayStyle: CSSProperties | undefined;
