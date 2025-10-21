@@ -19,7 +19,7 @@ export interface SurveyAnswerCalendarProps {
 
 export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     const dateRangeContext = useContext(DateRangeContext);
-    const [surveyAnswersByDate, setSurveyAnswersByDate] = useState<Record<string, SurveyAnswer[]>>({});
+    const [surveyAnswersByDate, setSurveyAnswersByDate] = useState<Partial<Record<string, SurveyAnswer[]>>>({});
 
     const intervalStart = useMemo<Date>(
         () => startOfMonth(dateRangeContext?.intervalStart ?? props.intervalStart ?? new Date()),
