@@ -55,7 +55,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string | undefined => {
-        const surveyAnswersForDay = surveyAnswersByDate[getDayKey(date)];
+        const surveyAnswersForDay = surveyAnswersByDate[getDayKey(date)] ?? [];
 
         const state = props.previewState
             ? computePreviewState(props.stateConfiguration, surveyAnswersForDay)
