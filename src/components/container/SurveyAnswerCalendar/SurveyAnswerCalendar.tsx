@@ -1,6 +1,6 @@
 import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
-import { add, formatISO, isAfter, isSameDay, startOfMonth } from 'date-fns';
+import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
@@ -36,9 +36,12 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
         loadSurveyAnswers(startDate).then(surveyAnswers => {
             setSurveyAnswersByDate(surveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
                 if (!props.resultIdentifiers || props.resultIdentifiers.includes(surveyAnswer.resultIdentifier)) {
-                    const dayKey = getDayKey(surveyAnswer.date);
-                    surveyAnswersByDate[dayKey] ??= [];
-                    surveyAnswersByDate[dayKey].push(surveyAnswer);
+                    // @ts-ignore
+                    const dayKey = surveyAnswer.event?.slice(-10);
+                    if (dayKey) {
+                        surveyAnswersByDate[dayKey] ??= [];
+                        surveyAnswersByDate[dayKey].push(surveyAnswer);
+                    }
                 }
                 return surveyAnswersByDate;
             }, {} as Record<string, SurveyAnswer[]>));
@@ -69,7 +72,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        MyDataHelps.startSurvey(props.surveyName, { event: (props.eventPrefix ?? '') + formatISO(date, { representation: 'date' }) });
+        MyDataHelps.startSurvey(props.surveyName, { event: (props.eventPrefix ?? '') + getDayKey(date) });
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
