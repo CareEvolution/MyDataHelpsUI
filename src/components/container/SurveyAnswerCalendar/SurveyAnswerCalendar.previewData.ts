@@ -1,5 +1,6 @@
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { startOfToday } from 'date-fns';
+import { getDayKey } from '../../../helpers';
 import { generateSurveyAnswers } from '../../../helpers/survey-answer';
 import { CalendarDayStateConfiguration } from '../../presentational';
 
@@ -11,7 +12,10 @@ export async function generatePreviewData(stateConfiguration: CalendarDayStateCo
     const endDate = startOfToday();
     const maxValue = Math.ceil(Object.keys(stateConfiguration).filter(excludeReservedKeys).length * 4 / 3);
 
-    return (await generateSurveyAnswers(startDate, endDate, resultIdentifiers ?? ['any_result_identifier'], 0, maxValue, { days: 1 })).flat();
+    const surveyAnswers = (await generateSurveyAnswers(startDate, endDate, resultIdentifiers ?? ['any_result_identifier'], 0, maxValue, { days: 1 })).flat();
+    // @ts-ignore
+    surveyAnswers.forEach(surveyAnswer => surveyAnswer.event = getDayKey(surveyAnswer.date));
+    return surveyAnswers;
 }
 
 export function computePreviewState(stateConfiguration: CalendarDayStateConfiguration | undefined, surveyAnswers: SurveyAnswer[]): string | undefined {
