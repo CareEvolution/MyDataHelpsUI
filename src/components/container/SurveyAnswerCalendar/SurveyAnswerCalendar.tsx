@@ -1,7 +1,7 @@
 import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
 import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
-import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
 import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
 import { computePreviewState, generatePreviewData } from './SurveyAnswerCalendar.previewData';
@@ -12,8 +12,6 @@ export interface SurveyAnswerCalendarProps {
     resultIdentifiers?: string[];
     stateConfiguration?: CalendarDayStateConfiguration;
     computeState?: (date: Date, surveyAnswers: SurveyAnswer[]) => string | undefined;
-    eventPrefix?: string;
-    intervalStart?: Date;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -22,27 +20,27 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     const [surveyAnswersByDate, setSurveyAnswersByDate] = useState<Partial<Record<string, SurveyAnswer[]>>>({});
 
     const intervalStart = useMemo<Date>(
-        () => startOfMonth(dateRangeContext?.intervalStart ?? props.intervalStart ?? new Date()),
-        [dateRangeContext?.intervalStart, props.intervalStart, getDayKey(new Date())]
+        () => startOfMonth(dateRangeContext?.intervalStart ?? new Date()),
+        [dateRangeContext?.intervalStart, getDayKey(new Date())]
     );
 
     useInitializeView(() => {
         const loadSurveyAnswers = props.previewState
             ? (startDate: Date) => generatePreviewData(props.stateConfiguration, props.resultIdentifiers, startDate)
-            : (startDate: Date) => queryAllSurveyAnswers({ surveyName: props.surveyName, after: startDate.toISOString() } as SurveyAnswersQuery);
+            : (startDate: Date) => queryAllSurveyAnswers({
+                surveyName: props.surveyName,
+                ...(props.resultIdentifiers && { resultIdentifier: props.resultIdentifiers }),
+                after: startDate.toISOString()
+            });
 
         const startDate = add(startOfMonth(intervalStart), { days: -1 });
 
         loadSurveyAnswers(startDate).then(surveyAnswers => {
             setSurveyAnswersByDate(surveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
-                if (!props.resultIdentifiers || props.resultIdentifiers.includes(surveyAnswer.resultIdentifier)) {
-                    // @ts-ignore
-                    const dayKey = surveyAnswer.event?.slice(-10);
-                    if (dayKey) {
-                        surveyAnswersByDate[dayKey] ??= [];
-                        surveyAnswersByDate[dayKey].push(surveyAnswer);
-                    }
-                }
+                // @ts-ignore
+                const dayKey = surveyAnswer.event ?? getDayKey(surveyAnswer.date);
+                surveyAnswersByDate[dayKey] ??= [];
+                surveyAnswersByDate[dayKey].push(surveyAnswer);
                 return surveyAnswersByDate;
             }, {} as Record<string, SurveyAnswer[]>));
         });
@@ -72,7 +70,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        MyDataHelps.startSurvey(props.surveyName, { event: (props.eventPrefix ?? '') + getDayKey(date) });
+        MyDataHelps.startSurvey(props.surveyName, { event: getDayKey(date) });
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
