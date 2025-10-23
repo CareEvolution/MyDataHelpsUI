@@ -2,28 +2,28 @@ import React from 'react';
 import { DateRangeCoordinator, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyAnswerCalendarPreview from './SurveyAnswerCalendarPreview';
+import SurveyAnswerLogPreview from './SurveyAnswerLogPreview';
 
-type SurveyAnswerCalendarPreviewStoryArgs = React.ComponentProps<typeof SurveyAnswerCalendarPreview> & {
+type SurveyAnswerLogPreviewStoryArgs = React.ComponentProps<typeof SurveyAnswerLogPreview> & {
     colorScheme: 'auto' | 'light' | 'dark';
 };
 
 export default {
-    title: 'Container/SurveyAnswerCalendarPreview',
-    component: SurveyAnswerCalendarPreview,
+    title: 'Container/SurveyAnswerLogPreview',
+    component: SurveyAnswerLogPreview,
     parameters: {
         layout: 'fullscreen'
     },
-    render: (args: SurveyAnswerCalendarPreviewStoryArgs) => {
+    render: (args: SurveyAnswerLogPreviewStoryArgs) => {
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Day">
-                <SurveyAnswerCalendarPreview {...args} />
+                <SurveyAnswerLogPreview {...args} />
             </DateRangeCoordinator>
         </Layout>;
     }
 };
 
-export const Default: StoryObj<SurveyAnswerCalendarPreviewStoryArgs> = {
+export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'without log'
@@ -39,6 +39,6 @@ export const Default: StoryObj<SurveyAnswerCalendarPreviewStoryArgs> = {
             control: 'radio',
             options: ['without log', 'with log']
         },
-        ...argTypesToHide(['innerRef'])
+        ...argTypesToHide(['surveyName', 'filter', 'formatter', 'innerRef'])
     }
 };

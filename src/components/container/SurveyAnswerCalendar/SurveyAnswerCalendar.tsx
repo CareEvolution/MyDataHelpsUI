@@ -4,7 +4,7 @@ import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
 import { computePreviewState, generatePreviewLogEntries } from './SurveyAnswerCalendar.previewData';
-import { enterLogEntry, loadLogEntries, SurveyAnswerLogEntry } from '../../../helpers/survey-answer';
+import { enterSurveyAnswerLog, loadLogEntries, SurveyAnswerLog } from '../../../helpers/survey-answer';
 
 export interface SurveyAnswerCalendarProps {
     previewState?: 'default';
@@ -16,7 +16,7 @@ export interface SurveyAnswerCalendarProps {
 
 export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     const dateRangeContext = useContext(DateRangeContext);
-    const [logEntries, setLogEntries] = useState<Partial<Record<string, SurveyAnswerLogEntry>>>({});
+    const [logEntries, setLogEntries] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
 
     const intervalStart = useMemo<Date>(
         () => startOfMonth(dateRangeContext?.intervalStart ?? new Date()),
@@ -59,7 +59,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        enterLogEntry(props.surveyName, date, logEntries[getDayKey(date)]);
+        enterSurveyAnswerLog(props.surveyName, date, logEntries[getDayKey(date)]);
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
