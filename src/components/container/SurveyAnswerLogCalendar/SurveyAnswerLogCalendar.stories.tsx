@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, DateRangeCoordinator, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyAnswerCalendar from './SurveyAnswerCalendar';
+import SurveyAnswerLogCalendar from './SurveyAnswerLogCalendar';
 
-type SurveyAnswerCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerCalendar> & {
+type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
     customizeToday: boolean;
     customizeFuture: boolean;
@@ -12,12 +12,12 @@ type SurveyAnswerCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerCal
 };
 
 export default {
-    title: 'Container/SurveyAnswerCalendar',
-    component: SurveyAnswerCalendar,
+    title: 'Container/SurveyAnswerLogCalendar',
+    component: SurveyAnswerLogCalendar,
     parameters: {
         layout: 'fullscreen'
     },
-    render: (args: SurveyAnswerCalendarStoryArgs) => {
+    render: (args: SurveyAnswerLogCalendarStoryArgs) => {
         const stateConfiguration = { ...args.stateConfiguration };
         if (args.customizeToday) {
             stateConfiguration['today'] = { style: { background: 'aquamarine', color: 'black' } };
@@ -32,7 +32,7 @@ export default {
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <Card>
-                    <SurveyAnswerCalendar
+                    <SurveyAnswerLogCalendar
                         {...args}
                         stateConfiguration={stateConfiguration}
                     />
@@ -42,7 +42,7 @@ export default {
     }
 };
 
-export const Default: StoryObj<SurveyAnswerCalendarStoryArgs> = {
+export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'default',

@@ -3,10 +3,10 @@ import React, { useContext, useMemo, useState } from 'react';
 import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
-import { computePreviewState, generatePreviewLogEntries } from './SurveyAnswerCalendar.previewData';
-import { enterSurveyAnswerLog, loadLogEntries, SurveyAnswerLog } from '../../../helpers/survey-answer';
+import { computePreviewState, generateSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
+import { enterSurveyAnswerLog, loadSurveyAnswerLogs, SurveyAnswerLog } from '../../../helpers/survey-answer';
 
-export interface SurveyAnswerCalendarProps {
+export interface SurveyAnswerLogCalendarProps {
     previewState?: 'default';
     surveyName: string;
     stateConfiguration?: CalendarDayStateConfiguration;
@@ -14,9 +14,9 @@ export interface SurveyAnswerCalendarProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
+export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarProps) {
     const dateRangeContext = useContext(DateRangeContext);
-    const [logEntries, setLogEntries] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
+    const [surveyAnswerLogs, setSurveyAnswerLogs] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
 
     const intervalStart = useMemo<Date>(
         () => startOfMonth(dateRangeContext?.intervalStart ?? new Date()),
@@ -27,12 +27,11 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
         const startDate = add(startOfMonth(intervalStart), { days: -1 });
         const endDate = add(startDate, { months: 1, days: 1 });
 
-        if (props.previewState) {
-            generatePreviewLogEntries(props.stateConfiguration, startDate, endDate).then(setLogEntries);
-            return;
-        }
+        const load = props.previewState
+            ? () => generateSurveyAnswerLogs(props.stateConfiguration, startDate, endDate)
+            : () => loadSurveyAnswerLogs(props.surveyName, startDate, endDate);
 
-        loadLogEntries(props.surveyName, startDate, endDate).then(setLogEntries);
+        load().then(setSurveyAnswerLogs);
     }, [], [props.previewState, props.surveyName, props.stateConfiguration, intervalStart]);
 
     const stateConfiguration: CalendarDayStateConfiguration = {
@@ -45,7 +44,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string | undefined => {
-        const surveyAnswers = logEntries[getDayKey(date)]?.surveyAnswers ?? [];
+        const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
 
         const state = props.previewState
             ? computePreviewState(props.stateConfiguration, surveyAnswers)
@@ -59,7 +58,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        enterSurveyAnswerLog(props.surveyName, date, logEntries[getDayKey(date)]);
+        enterSurveyAnswerLog(props.surveyName, date, surveyAnswerLogs[getDayKey(date)]);
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {

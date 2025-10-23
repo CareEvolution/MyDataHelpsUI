@@ -9,12 +9,12 @@ export interface SurveyAnswerLog {
     event?: string;
 }
 
-export function enterSurveyAnswerLog(surveyName: string, date: Date, priorLogEntry?: SurveyAnswerLog) {
-    if (priorLogEntry) {
-        if (priorLogEntry.event) {
-            MyDataHelps.startSurvey(surveyName, { event: priorLogEntry.event });
+export function enterSurveyAnswerLog(surveyName: string, date: Date, priorSurveyAnswerLog?: SurveyAnswerLog) {
+    if (priorSurveyAnswerLog) {
+        if (priorSurveyAnswerLog.event) {
+            MyDataHelps.startSurvey(surveyName, { event: priorSurveyAnswerLog.event });
         } else {
-            MyDataHelps.startSurvey(surveyName, { editResultID: priorLogEntry.resultId });
+            MyDataHelps.startSurvey(surveyName, { editResultID: priorSurveyAnswerLog.resultId });
         }
     } else {
         MyDataHelps.startSurvey(surveyName, { event: getDayKey(date) });
@@ -22,11 +22,11 @@ export function enterSurveyAnswerLog(surveyName: string, date: Date, priorLogEnt
 }
 
 export async function loadSurveyAnswerLog(surveyName: string, date: Date): Promise<SurveyAnswerLog | undefined> {
-    const logEntries = await loadLogEntries(surveyName, add(date, { days: -1 }), add(date, { days: 2 }));
-    return logEntries[getDayKey(date)];
+    const surveyAnswerLogs = await loadSurveyAnswerLogs(surveyName, add(date, { days: -1 }), add(date, { days: 2 }));
+    return surveyAnswerLogs[getDayKey(date)];
 }
 
-export async function loadLogEntries(surveyName: string, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
+export async function loadSurveyAnswerLogs(surveyName: string, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
     const allSurveyAnswers = (await queryAllSurveyAnswers({
         surveyName: surveyName,
         after: startDate.toISOString(),
@@ -44,16 +44,16 @@ export async function loadLogEntries(surveyName: string, startDate: Date, endDat
     const latestResultIds = Object.values(latestResultIdsByDate);
     const latestSurveyAnswers = allSurveyAnswers.filter(surveyAnswer => latestResultIds.includes(surveyAnswer.surveyResultID.toString()));
 
-    return latestSurveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
+    return latestSurveyAnswers.reduce((surveyAnswerLogs, surveyAnswer) => {
         const dayKey = getSurveyAnswerDayKey(surveyAnswer);
-        surveyAnswersByDate[dayKey] ??= {
+        surveyAnswerLogs[dayKey] ??= {
             resultId: surveyAnswer.surveyResultID.toString(),
             surveyAnswers: [],
             // @ts-ignore
             event: surveyAnswer.event
         };
-        surveyAnswersByDate[dayKey].surveyAnswers.push(surveyAnswer);
-        return surveyAnswersByDate;
+        surveyAnswerLogs[dayKey].surveyAnswers.push(surveyAnswer);
+        return surveyAnswerLogs;
     }, {} as Record<string, SurveyAnswerLog>);
 }
 

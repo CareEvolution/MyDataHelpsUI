@@ -5,7 +5,7 @@ import { generateSurveyAnswers, SurveyAnswerLog } from '../../../helpers/survey-
 import { CalendarDayStateConfiguration } from '../../presentational';
 import { v4 as uuid } from 'uuid';
 
-export async function generatePreviewLogEntries(stateConfiguration: CalendarDayStateConfiguration | undefined, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
+export async function generateSurveyAnswerLogs(stateConfiguration: CalendarDayStateConfiguration | undefined, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
     if (!stateConfiguration) {
         return {};
     }
