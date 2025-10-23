@@ -92,6 +92,6 @@ export const Default: StoryObj<SurveyAnswerCalendarStoryArgs> = {
         customizeNoData: {
             name: 'customize no-data?'
         },
-        ...argTypesToHide(['previewState', 'surveyName', 'resultIdentifiers', 'computeState', 'eventPrefix', 'intervalStart', 'innerRef'])
+        ...argTypesToHide(['previewState', 'surveyName', 'computeState', 'innerRef'])
     }
 };

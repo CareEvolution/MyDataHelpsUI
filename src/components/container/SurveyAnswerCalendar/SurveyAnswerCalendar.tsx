@@ -1,15 +1,14 @@
 import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
 import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
-import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { getDayKey, useInitializeView } from '../../../helpers';
-import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers';
-import { computePreviewState, generatePreviewData } from './SurveyAnswerCalendar.previewData';
+import { computePreviewState, generatePreviewLogEntries } from './SurveyAnswerCalendar.previewData';
+import { enterLogEntry, loadLogEntries, SurveyAnswerLogEntry } from '../../../helpers/survey-answer';
 
 export interface SurveyAnswerCalendarProps {
     previewState?: 'default';
     surveyName: string;
-    resultIdentifiers?: string[];
     stateConfiguration?: CalendarDayStateConfiguration;
     computeState?: (date: Date, surveyAnswers: SurveyAnswer[]) => string | undefined;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -17,7 +16,7 @@ export interface SurveyAnswerCalendarProps {
 
 export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     const dateRangeContext = useContext(DateRangeContext);
-    const [surveyAnswersByDate, setSurveyAnswersByDate] = useState<Partial<Record<string, SurveyAnswer[]>>>({});
+    const [logEntries, setLogEntries] = useState<Partial<Record<string, SurveyAnswerLogEntry>>>({});
 
     const intervalStart = useMemo<Date>(
         () => startOfMonth(dateRangeContext?.intervalStart ?? new Date()),
@@ -25,26 +24,16 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     );
 
     useInitializeView(() => {
-        const loadSurveyAnswers = props.previewState
-            ? (startDate: Date) => generatePreviewData(props.stateConfiguration, props.resultIdentifiers, startDate)
-            : (startDate: Date) => queryAllSurveyAnswers({
-                surveyName: props.surveyName,
-                ...(props.resultIdentifiers && { resultIdentifier: props.resultIdentifiers }),
-                after: startDate.toISOString()
-            });
-
         const startDate = add(startOfMonth(intervalStart), { days: -1 });
+        const endDate = add(startDate, { months: 1, days: 1 });
 
-        loadSurveyAnswers(startDate).then(surveyAnswers => {
-            setSurveyAnswersByDate(surveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
-                // @ts-ignore
-                const dayKey = surveyAnswer.event ?? getDayKey(surveyAnswer.date);
-                surveyAnswersByDate[dayKey] ??= [];
-                surveyAnswersByDate[dayKey].push(surveyAnswer);
-                return surveyAnswersByDate;
-            }, {} as Record<string, SurveyAnswer[]>));
-        });
-    }, [], [props.previewState, props.resultIdentifiers, props.stateConfiguration, intervalStart]);
+        if (props.previewState) {
+            generatePreviewLogEntries(props.stateConfiguration, startDate, endDate).then(setLogEntries);
+            return;
+        }
+
+        loadLogEntries(props.surveyName, startDate, endDate).then(setLogEntries);
+    }, [], [props.previewState, props.surveyName, props.stateConfiguration, intervalStart]);
 
     const stateConfiguration: CalendarDayStateConfiguration = {
         'future': {
@@ -56,11 +45,11 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
     };
 
     const computeStateForDay = (date: Date): string | undefined => {
-        const surveyAnswersForDay = surveyAnswersByDate[getDayKey(date)] ?? [];
+        const surveyAnswers = logEntries[getDayKey(date)]?.surveyAnswers ?? [];
 
         const state = props.previewState
-            ? computePreviewState(props.stateConfiguration, surveyAnswersForDay)
-            : props.computeState?.(date, surveyAnswersForDay);
+            ? computePreviewState(props.stateConfiguration, surveyAnswers)
+            : props.computeState?.(date, surveyAnswers);
 
         if (state) return state;
         if (isSameDay(date, new Date())) return 'today';
@@ -70,7 +59,7 @@ export default function SurveyAnswerCalendar(props: SurveyAnswerCalendarProps) {
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        MyDataHelps.startSurvey(props.surveyName, { event: getDayKey(date) });
+        enterLogEntry(props.surveyName, date, logEntries[getDayKey(date)]);
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {

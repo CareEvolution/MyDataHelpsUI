@@ -10,6 +10,7 @@ export async function generateSurveyAnswers(startDate: Date, endDate: Date, resu
         for (let i = 0; i < data.length; i++) {
             const answer = await predictableRandomNumber(getDayKey(currentDate) + resultIdentifiers[i]);
             data[i].push({
+                resultIdentifier: resultIdentifiers[i],
                 date: formatISO(add(currentDate, { hours: 12 })),
                 answers: [(answer % (maxValue - minValue) + minValue).toString()]
             } as SurveyAnswer);

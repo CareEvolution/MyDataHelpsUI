@@ -1,1 +1,2 @@
-export { generateSurveyAnswers } from './sample-data';
+export * from './sample-data';
+export * from './log-entry';

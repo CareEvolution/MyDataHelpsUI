@@ -1,21 +1,24 @@
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { startOfToday } from 'date-fns';
+import { min, startOfToday } from 'date-fns';
 import { getDayKey } from '../../../helpers';
-import { generateSurveyAnswers } from '../../../helpers/survey-answer';
+import { generateSurveyAnswers, SurveyAnswerLogEntry } from '../../../helpers/survey-answer';
 import { CalendarDayStateConfiguration } from '../../presentational';
+import { v4 as uuid } from 'uuid';
 
-export async function generatePreviewData(stateConfiguration: CalendarDayStateConfiguration | undefined, resultIdentifiers: string[] | undefined, startDate: Date): Promise<SurveyAnswer[]> {
+export async function generatePreviewLogEntries(stateConfiguration: CalendarDayStateConfiguration | undefined, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLogEntry>>> {
     if (!stateConfiguration) {
-        return [];
+        return {};
     }
 
-    const endDate = startOfToday();
     const maxValue = Math.ceil(Object.keys(stateConfiguration).filter(excludeReservedKeys).length * 4 / 3);
+    const surveyAnswers = (await generateSurveyAnswers(startDate, min([endDate, startOfToday()]), ['activity'], 0, maxValue, { days: 1 })).flat();
 
-    const surveyAnswers = (await generateSurveyAnswers(startDate, endDate, resultIdentifiers ?? ['any_result_identifier'], 0, maxValue, { days: 1 })).flat();
-    // @ts-ignore
-    surveyAnswers.forEach(surveyAnswer => surveyAnswer.event = getDayKey(surveyAnswer.date));
-    return surveyAnswers;
+    return surveyAnswers.reduce((logEntries, surveyAnswer) => {
+        const dayKey = getDayKey(surveyAnswer.date);
+        logEntries[dayKey] ??= { resultId: uuid(), surveyAnswers: [] };
+        logEntries[dayKey].surveyAnswers.push(surveyAnswer);
+        return logEntries;
+    }, {} as Record<string, SurveyAnswerLogEntry>);
 }
 
 export function computePreviewState(stateConfiguration: CalendarDayStateConfiguration | undefined, surveyAnswers: SurveyAnswer[]): string | undefined {
