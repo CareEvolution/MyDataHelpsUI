@@ -18,18 +18,20 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
         <Title order={3} accessory={<Button fullWidth={false} onClick={props.onEnterLog}>Edit</Button>}>Log Entry</Title>
-        {sortedFormattedSurveyAnswers.map((formattedSurveyAnswer, index) => {
-            return <LogSummaryResult key={index} {...formattedSurveyAnswer} />;
-        })}
+        <div className="mdhui-sa-log-summary-results">
+            {sortedFormattedSurveyAnswers.map((formattedSurveyAnswer, index) => {
+                return <LogSummaryResult key={index} {...formattedSurveyAnswer} />;
+            })}
+        </div>
     </div>;
 }
 
 function LogSummaryResult(formattedSurveyAnswer: FormattedSurveyAnswer) {
     return <div className="mdhui-sa-log-summary-result">
-        <div>{formattedSurveyAnswer.displayName}</div>
-        <div>-</div>
-        <div>{formattedSurveyAnswer.displayValue}</div>
+        <div className="mdhui-sa-log-summary-result-label">{formattedSurveyAnswer.displayName}:</div>
+        <div className="mdhui-sa-log-summary-result-value">{formattedSurveyAnswer.displayValue}</div>
     </div>;
+
 }
 
 
