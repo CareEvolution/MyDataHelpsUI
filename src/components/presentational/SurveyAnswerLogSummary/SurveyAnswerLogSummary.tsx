@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { CSSProperties, ReactNode, useContext, useState } from 'react';
 import { Button, LayoutContext, Title } from '../index';
 import { SurveyAnswerLog } from '../../../helpers/survey-answer';
 import './SurveyAnswerLogSummary.css';
@@ -13,6 +13,7 @@ export interface SurveyAnswerRenderingConfiguration {
     iconColor: ColorDefinition;
     label: string;
     evaluate: (answers: string[]) => boolean;
+    achievedStyling?: CSSProperties;
     formatDisplayValue?: (answers: string[]) => ReactNode;
 }
 
@@ -56,8 +57,8 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
                         const iconColor = resolveColor(layoutContext.colorScheme, achieved ? renderingConfiguration.iconColor : defaultIconColor);
                         return <div
                             key={index}
-                            className={['mdhui-sa-log-summary-badge', ...(achieved ? ['mdhui-sa-log-summary-badge-achieved'] : [])].join(' ')}
-                            style={{ background: iconColor, borderColor: iconColor }}
+                            className="mdhui-sa-log-summary-badge"
+                            style={{ background: iconColor, borderColor: iconColor, ...(achieved && renderingConfiguration.achievedStyling) }}
                             onClick={() => setSelectedBadge(selectedBadge !== renderingConfiguration ? renderingConfiguration : undefined)}
                         >
                             <FontAwesomeSvgIcon icon={renderingConfiguration.icon} style={{ color: 'var(--mdhui-background-color-0)' }} />

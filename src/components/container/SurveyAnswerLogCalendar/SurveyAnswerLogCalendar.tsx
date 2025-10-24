@@ -72,7 +72,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         />;
     };
 
-    return <div ref={props.innerRef} className="mdhui-survey-answer-calendar">
+    return <div ref={props.innerRef} className="mdhui-sa-log-calendar">
         <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
     </div>;
 }

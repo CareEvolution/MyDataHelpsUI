@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { Card, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
@@ -11,6 +11,7 @@ import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-
 type SurveyAnswerLogSummaryStoryArgs = React.ComponentProps<typeof SurveyAnswerLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
     showAnswers: boolean;
+    customAchievedStyling: boolean;
 };
 
 export default {
@@ -20,6 +21,11 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerLogSummaryStoryArgs) => {
+        const achievedStyling: CSSProperties | undefined = args.customAchievedStyling ? {
+            boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+        } : undefined;
+
         args.answerRenderingConfigurations = args.showAnswers ? [
             {
                 resultIdentifier: 'activity',
@@ -27,6 +33,7 @@ export default {
                 iconColor: '#3c973c',
                 label: 'Activity',
                 evaluate: answers => answers[0] !== '0',
+                achievedStyling: achievedStyling,
                 formatDisplayValue: answers => `An activity level of ${answers[0]} was recorded on this day.`
             },
             {
@@ -35,6 +42,7 @@ export default {
                 iconColor: '#664cda',
                 label: 'Sleep',
                 evaluate: answers => answers[0] !== '0',
+                achievedStyling: achievedStyling,
                 formatDisplayValue: answers => `A sleep level of ${answers[0]} was recorded on this day.`
             },
             {
@@ -43,6 +51,7 @@ export default {
                 iconColor: '#976d1e',
                 label: 'Swimming',
                 evaluate: answers => answers[0] !== '0',
+                achievedStyling: achievedStyling,
                 formatDisplayValue: answers => `A swimming level of ${answers[0]} was recorded on this day.`
             },
             {
@@ -51,6 +60,7 @@ export default {
                 iconColor: '#0877b8',
                 label: 'Cycling',
                 evaluate: answers => answers[0] !== '0',
+                achievedStyling: achievedStyling,
                 formatDisplayValue: answers => `A cycling level of ${answers[0]} was recorded on this day.`
             }
         ] : undefined;
@@ -76,7 +86,8 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             ]
         },
         onEdit: noop,
-        showAnswers: true
+        showAnswers: true,
+        customAchievedStyling: false
     },
     argTypes: {
         colorScheme: {
@@ -87,6 +98,11 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         showAnswers: {
             name: 'render answers',
             control: 'boolean'
+        },
+        customAchievedStyling: {
+            name: 'custom achieved styling',
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         ...argTypesToHide(['log', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
     }

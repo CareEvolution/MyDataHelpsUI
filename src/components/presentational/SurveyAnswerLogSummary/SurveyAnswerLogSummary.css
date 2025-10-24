@@ -28,11 +28,6 @@
     font-size: 1.5em;
 }
 
-.mdhui-sa-log-summary .mdhui-sa-log-summary-badge-achieved {
-    box-shadow: inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
 .mdhui-sa-log-summary .mdhui-sa-log-summary-badge-details {
     margin-top: 16px;
 }
