@@ -39,6 +39,6 @@ export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
             control: 'radio',
             options: ['without log', 'with log']
         },
-        ...argTypesToHide(['surveyName', 'filter', 'formatter', 'innerRef'])
+        ...argTypesToHide(['surveyName', 'answerRenderingConfigurations', 'innerRef'])
     }
 };

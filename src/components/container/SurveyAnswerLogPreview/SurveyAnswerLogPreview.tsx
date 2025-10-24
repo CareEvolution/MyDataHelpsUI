@@ -2,15 +2,15 @@ import React, { useContext, useMemo, useState } from 'react';
 import { Action, Card, DateRangeContext, SurveyAnswerLogSummary } from '../../presentational';
 import { startOfDay } from 'date-fns';
 import { getDayKey, useInitializeView } from '../../../helpers';
-import { enterSurveyAnswerLog, loadSurveyAnswerLog, SurveyAnswerFilter, SurveyAnswerFormatter, SurveyAnswerLog } from '../../../helpers/survey-answer';
+import { enterSurveyAnswerLog, loadSurveyAnswerLog, SurveyAnswerLog } from '../../../helpers/survey-answer';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { createPreviewSurveyAnswerFilter, createPreviewSurveyAnswerFormatter, generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
+import { createPreviewAnswerRenderingConfigurations, generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
+import { SurveyAnswerRenderingConfiguration } from '../../presentational/SurveyAnswerLogSummary/SurveyAnswerLogSummary';
 
 export interface SurveyAnswerLogPreviewProps {
     previewState?: SurveyAnswerLogPreviewPreviewState;
     surveyName: string;
-    filter?: SurveyAnswerFilter;
-    formatter?: SurveyAnswerFormatter;
+    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -58,10 +58,9 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         {surveyAnswerLog &&
             <Card>
                 <SurveyAnswerLogSummary
-                    surveyAnswerLog={surveyAnswerLog}
-                    onEnterLog={onEnterLog}
-                    filter={props.previewState ? createPreviewSurveyAnswerFilter() : props.filter}
-                    formatter={props.previewState ? createPreviewSurveyAnswerFormatter() : props.formatter}
+                    log={surveyAnswerLog}
+                    onEdit={onEnterLog}
+                    answerRenderingConfigurations={props.previewState ? createPreviewAnswerRenderingConfigurations() : props.answerRenderingConfigurations}
                 />
             </Card>
         }

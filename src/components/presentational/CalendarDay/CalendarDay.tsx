@@ -6,7 +6,7 @@ import { add, isAfter, isSameDay } from 'date-fns';
 import UnstyledButton from '../UnstyledButton';
 
 export type CalendarDayState = { style?: CSSProperties, streak?: boolean, streakColor?: ColorDefinition };
-export type CalendarDayStateConfiguration = Record<string, CalendarDayState>;
+export type CalendarDayStateConfiguration = Partial<Record<string, CalendarDayState>>;
 
 export interface CalendarDayProps {
     year: number;

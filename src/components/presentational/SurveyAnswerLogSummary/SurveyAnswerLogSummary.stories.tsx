@@ -5,13 +5,12 @@ import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyAnswerLogSummary from './SurveyAnswerLogSummary';
 import { v4 as uuid } from 'uuid';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { alwaysTrueSurveyAnswerFilter, asIsSurveyAnswerFormatter } from '../../../helpers/survey-answer';
 import { noop } from '../../../helpers/functions';
+import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
 type SurveyAnswerLogSummaryStoryArgs = React.ComponentProps<typeof SurveyAnswerLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    filterAnswers: boolean;
-    formatAnswers: boolean;
+    showAnswers: boolean;
 };
 
 export default {
@@ -21,23 +20,44 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerLogSummaryStoryArgs) => {
+        args.answerRenderingConfigurations = args.showAnswers ? [
+            {
+                resultIdentifier: 'activity',
+                icon: faWalking,
+                iconColor: '#3c973c',
+                label: 'Activity',
+                evaluate: answers => answers[0] !== '0',
+                formatDisplayValue: answers => `An activity level of ${answers[0]} was recorded on this day.`
+            },
+            {
+                resultIdentifier: 'sleep',
+                icon: faBed,
+                iconColor: '#664cda',
+                label: 'Sleep',
+                evaluate: answers => answers[0] !== '0',
+                formatDisplayValue: answers => `A sleep level of ${answers[0]} was recorded on this day.`
+            },
+            {
+                resultIdentifier: 'swimming',
+                icon: faSwimmer,
+                iconColor: '#976d1e',
+                label: 'Swimming',
+                evaluate: answers => answers[0] !== '0',
+                formatDisplayValue: answers => `A swimming level of ${answers[0]} was recorded on this day.`
+            },
+            {
+                resultIdentifier: 'cycling',
+                icon: faBicycle,
+                iconColor: '#0877b8',
+                label: 'Cycling',
+                evaluate: answers => answers[0] !== '0',
+                formatDisplayValue: answers => `A cycling level of ${answers[0]} was recorded on this day.`
+            }
+        ] : undefined;
+
         return <Layout colorScheme={args.colorScheme}>
             <Card>
-                <SurveyAnswerLogSummary
-                    {...args}
-                    filter={args.filterAnswers
-                        ? surveyAnswer => surveyAnswer.resultIdentifier !== 'filterable'
-                        : alwaysTrueSurveyAnswerFilter
-                    }
-                    formatter={args.formatAnswers
-                        ? surveyAnswer => {
-                            const displayName = surveyAnswer.resultIdentifier.charAt(0).toUpperCase() + surveyAnswer.resultIdentifier.slice(1);
-                            const displayValue = surveyAnswer.answers[0] === '1' ? 'Yes' : 'No';
-                            return { sortIndex: 0, displayName, displayValue };
-                        }
-                        : asIsSurveyAnswerFormatter
-                    }
-                />
+                <SurveyAnswerLogSummary {...args} />
             </Card>
         </Layout>;
     }
@@ -46,17 +66,17 @@ export default {
 export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        surveyAnswerLog: {
+        log: {
             resultId: uuid(),
             surveyAnswers: [
-                { resultIdentifier: 'activity', answers: ['1'] } as SurveyAnswer,
-                { resultIdentifier: 'filterable', answers: ['0'] } as SurveyAnswer,
+                { resultIdentifier: 'activity', answers: ['5'] } as SurveyAnswer,
+                { resultIdentifier: 'hidden', answers: ['1'] } as SurveyAnswer,
+                { resultIdentifier: 'swimming', answers: ['3'] } as SurveyAnswer,
                 { resultIdentifier: 'sleep', answers: ['0'] } as SurveyAnswer
             ]
         },
-        filterAnswers: true,
-        formatAnswers: true,
-        onEnterLog: noop
+        onEdit: noop,
+        showAnswers: true
     },
     argTypes: {
         colorScheme: {
@@ -64,14 +84,10 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
-        filterAnswers: {
-            name: 'filter answers',
+        showAnswers: {
+            name: 'render answers',
             control: 'boolean'
         },
-        formatAnswers: {
-            name: 'format answers',
-            control: 'boolean'
-        },
-        ...argTypesToHide(['surveyAnswerLog', 'onEnterLog', 'filter', 'formatter', 'innerRef'])
+        ...argTypesToHide(['log', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
     }
 };
