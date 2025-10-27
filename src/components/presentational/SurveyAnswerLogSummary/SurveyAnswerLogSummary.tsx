@@ -45,10 +45,10 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
         <Title order={3} accessory={<Button fullWidth={false} onClick={props.onEdit}>Edit</Button>}>Log Entry</Title>
-        {!props.answerRenderingConfigurations &&
+        {(!props.answerRenderingConfigurations || props.answerRenderingConfigurations.length === 0) &&
             <div className="mdhui-sa-log-summary-entered">A log has been submitted.</div>
         }
-        {props.answerRenderingConfigurations?.length &&
+        {props.answerRenderingConfigurations && props.answerRenderingConfigurations.length > 0 &&
             <>
                 <div className="mdhui-sa-log-summary-badges">
                     {props.answerRenderingConfigurations.map((answerRenderingConfiguration, index) => {
