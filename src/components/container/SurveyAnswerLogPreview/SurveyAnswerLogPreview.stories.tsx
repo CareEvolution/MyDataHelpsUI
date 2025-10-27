@@ -3,6 +3,7 @@ import { DateRangeCoordinator, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyAnswerLogPreview from './SurveyAnswerLogPreview';
+import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
 type SurveyAnswerLogPreviewStoryArgs = React.ComponentProps<typeof SurveyAnswerLogPreview> & {
     colorScheme: 'auto' | 'light' | 'dark';
@@ -26,7 +27,39 @@ export default {
 export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        previewState: 'without log'
+        previewState: 'without log',
+        answerRenderingConfigurations: [
+            {
+                resultIdentifier: 'activity',
+                icon: faWalking,
+                iconColor: '#3c973c',
+                label: 'Activity',
+                formatDisplayValue: () => 'custom display value'
+            },
+            {
+                resultIdentifier: 'sleep',
+                icon: faBed,
+                iconColor: '#664cda',
+                label: 'Sleep',
+                shouldHighlight: answer => answer.answers[0] !== '0'
+            },
+            {
+                resultIdentifier: 'swimming',
+                icon: faSwimmer,
+                iconColor: '#976d1e',
+                label: 'Swimming',
+                shouldHighlight: answer => answer.answers[0] !== '0',
+                formatDisplayValue: () => 'custom display value'
+            },
+            {
+                resultIdentifier: 'cycling',
+                icon: faBicycle,
+                iconColor: '#0877b8',
+                label: 'Cycling',
+                shouldHighlight: answer => answer.answers[0] !== '0',
+                formatDisplayValue: () => 'custom display value'
+            }
+        ]
     },
     argTypes: {
         colorScheme: {

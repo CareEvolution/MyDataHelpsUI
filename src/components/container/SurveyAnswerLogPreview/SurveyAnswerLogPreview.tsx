@@ -27,7 +27,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         setLoading(true);
 
         const load = props.previewState
-            ? () => generateSurveyAnswerLog(props.previewState!, currentDate)
+            ? () => generateSurveyAnswerLog(props.previewState!, props.answerRenderingConfigurations, currentDate)
             : () => loadSurveyAnswerLog(props.surveyName, currentDate);
 
         load().then(surveyAnswerLog => {
@@ -58,7 +58,9 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                 <SurveyAnswerLogSummary
                     log={surveyAnswerLog}
                     onEdit={onEnterLog}
-                    answerRenderingConfigurations={props.previewState ? createPreviewAnswerRenderingConfigurations() : props.answerRenderingConfigurations}
+                    answerRenderingConfigurations={props.previewState
+                        ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
+                        : props.answerRenderingConfigurations}
                 />
             </Card>
         }
