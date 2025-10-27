@@ -1,43 +1,31 @@
-import React, { CSSProperties, ReactNode, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, LayoutContext, Title } from '../index';
-import { SurveyAnswerLog } from '../../../helpers/survey-answer';
+import { resolveColor, SurveyAnswerLog, SurveyAnswerLogRenderingConfiguration } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { ColorDefinition, resolveColor } from '../../../helpers';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-
-export interface SurveyAnswerRenderingConfiguration {
-    resultIdentifier: string;
-    icon: IconDefinition;
-    iconColor: ColorDefinition;
-    label: string;
-    evaluate: (answers: string[]) => boolean;
-    achievedStyling?: CSSProperties;
-    formatDisplayValue?: (answers: string[]) => ReactNode;
-}
 
 export interface SurveyAnswerLogSummaryProps {
     log: SurveyAnswerLog;
     onEdit: () => void;
-    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
+    answerRenderingConfigurations?: SurveyAnswerLogRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerRenderingConfiguration>();
+    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerLogRenderingConfiguration>();
 
     const surveyAnswersByResultIdentifier = props.log.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
         surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
         return surveyAnswersByResultIdentifier;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
-    const getDisplayValue = (renderingConfiguration: SurveyAnswerRenderingConfiguration) => {
+    const getDisplayValue = (renderingConfiguration: SurveyAnswerLogRenderingConfiguration) => {
         const surveyAnswer = surveyAnswersByResultIdentifier[renderingConfiguration.resultIdentifier];
         if (surveyAnswer) {
-            return renderingConfiguration.formatDisplayValue ? renderingConfiguration.formatDisplayValue(surveyAnswer.answers) : surveyAnswer.answers.join(', ');
+            return renderingConfiguration.formatDisplayValue ? renderingConfiguration.formatDisplayValue(surveyAnswer) : surveyAnswer.answers.join(', ');
         }
         return `No value was recorded for ${renderingConfiguration.label} on this day.`;
     };
@@ -52,13 +40,13 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
                 <div className="mdhui-sa-log-summary-badges">
                     {props.answerRenderingConfigurations.map((renderingConfiguration, index) => {
                         const surveyAnswer = surveyAnswersByResultIdentifier[renderingConfiguration.resultIdentifier];
-                        const achieved = surveyAnswer && renderingConfiguration.evaluate(surveyAnswer.answers);
+                        const hasMetCriteria = surveyAnswer && renderingConfiguration.hasMetCriteria(surveyAnswer);
                         const defaultIconColor = { lightMode: 'var(--mdhui-background-color-2)', darkMode: 'var(--mdhui-background-color-1)' };
-                        const iconColor = resolveColor(layoutContext.colorScheme, achieved ? renderingConfiguration.iconColor : defaultIconColor);
+                        const iconColor = resolveColor(layoutContext.colorScheme, hasMetCriteria ? renderingConfiguration.iconColor : defaultIconColor);
                         return <div
                             key={index}
                             className="mdhui-sa-log-summary-badge"
-                            style={{ background: iconColor, borderColor: iconColor, ...(achieved && renderingConfiguration.achievedStyling) }}
+                            style={{ background: iconColor, borderColor: iconColor, ...(hasMetCriteria && renderingConfiguration.hasMetCriteriaStyling) }}
                             onClick={() => setSelectedBadge(selectedBadge !== renderingConfiguration ? renderingConfiguration : undefined)}
                         >
                             <FontAwesomeSvgIcon icon={renderingConfiguration.icon} style={{ color: 'var(--mdhui-background-color-0)' }} />

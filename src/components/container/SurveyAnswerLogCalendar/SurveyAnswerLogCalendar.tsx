@@ -2,9 +2,8 @@ import { Calendar, CalendarDay, CalendarDayStateConfiguration, DateRangeContext 
 import React, { useContext, useMemo, useState } from 'react';
 import { add, isAfter, isSameDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { getDayKey, useInitializeView } from '../../../helpers';
+import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, SurveyAnswerLog, useInitializeView } from '../../../helpers';
 import { computePreviewState, generateSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
-import { enterSurveyAnswerLog, loadSurveyAnswerLogs, SurveyAnswerLog } from '../../../helpers/survey-answer';
 
 export interface SurveyAnswerLogCalendarProps {
     previewState?: 'default';

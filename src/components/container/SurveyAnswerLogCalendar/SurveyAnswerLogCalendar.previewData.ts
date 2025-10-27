@@ -1,7 +1,6 @@
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { min, startOfToday } from 'date-fns';
-import { getDayKey } from '../../../helpers';
-import { generateSurveyAnswers, SurveyAnswerLog } from '../../../helpers/survey-answer';
+import { generateSurveyAnswers, getDayKey, SurveyAnswerLog } from '../../../helpers';
 import { CalendarDayStateConfiguration } from '../../presentational';
 import { v4 as uuid } from 'uuid';
 
