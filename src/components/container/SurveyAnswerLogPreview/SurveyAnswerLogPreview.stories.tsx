@@ -59,7 +59,9 @@ export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
                 shouldHighlight: answer => answer.answers[0] !== '0',
                 formatDisplayValue: () => 'custom display value'
             }
-        ]
+        ],
+        alwaysShowAnswerDetails: true,
+        showAnswerDetailsOnLoad: true
     },
     argTypes: {
         colorScheme: {
@@ -71,6 +73,14 @@ export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
             name: 'state',
             control: 'radio',
             options: ['without log', 'with log']
+        },
+        alwaysShowAnswerDetails: {
+            name: 'always show answer details',
+            control: 'boolean'
+        },
+        showAnswerDetailsOnLoad: {
+            name: 'show answer details on load',
+            control: 'boolean'
         },
         ...argTypesToHide(['surveyName', 'answerRenderingConfigurations', 'innerRef'])
     }

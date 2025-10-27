@@ -9,6 +9,8 @@ export interface SurveyAnswerLogPreviewProps {
     previewState?: SurveyAnswerLogPreviewPreviewState;
     surveyName: string;
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
+    alwaysShowAnswerDetails?: boolean;
+    showAnswerDetailsOnLoad?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -61,6 +63,8 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     answerRenderingConfigurations={props.previewState
                         ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
                         : props.answerRenderingConfigurations}
+                    alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
+                    showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
                 />
             </Card>
         }
