@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Button, LayoutContext, Title } from '../index';
-import { resolveColor, SurveyAnswerLog, SurveyAnswerLogRenderingConfiguration } from '../../../helpers';
+import { resolveColor, SurveyAnswerLog, SurveyAnswerLogAnswerRenderingConfiguration } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
@@ -8,26 +8,26 @@ import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 export interface SurveyAnswerLogSummaryProps {
     log: SurveyAnswerLog;
     onEdit: () => void;
-    answerRenderingConfigurations?: SurveyAnswerLogRenderingConfiguration[];
+    answerRenderingConfigurations?: SurveyAnswerLogAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerLogRenderingConfiguration>();
+    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerLogAnswerRenderingConfiguration>();
 
     const surveyAnswersByResultIdentifier = props.log.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
         surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
         return surveyAnswersByResultIdentifier;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
-    const getDisplayValue = (renderingConfiguration: SurveyAnswerLogRenderingConfiguration) => {
-        const surveyAnswer = surveyAnswersByResultIdentifier[renderingConfiguration.resultIdentifier];
+    const getDisplayValue = (answerRenderingConfiguration: SurveyAnswerLogAnswerRenderingConfiguration) => {
+        const surveyAnswer = surveyAnswersByResultIdentifier[answerRenderingConfiguration.resultIdentifier];
         if (surveyAnswer) {
-            return renderingConfiguration.formatDisplayValue ? renderingConfiguration.formatDisplayValue(surveyAnswer) : surveyAnswer.answers.join(', ');
+            return answerRenderingConfiguration.formatDisplayValue ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer) : surveyAnswer.answers.join(', ');
         }
-        return `No value was recorded for ${renderingConfiguration.label} on this day.`;
+        return `No value was recorded for ${answerRenderingConfiguration.label} on this day.`;
     };
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>

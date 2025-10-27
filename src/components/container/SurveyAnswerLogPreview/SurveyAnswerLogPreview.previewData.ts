@@ -1,5 +1,5 @@
 import { add } from 'date-fns';
-import { generateSurveyAnswers, getDayKey, predictableRandomNumber, SurveyAnswerLog, SurveyAnswerLogRenderingConfiguration } from '../../../helpers';
+import { generateSurveyAnswers, getDayKey, predictableRandomNumber, SurveyAnswerLog, SurveyAnswerLogAnswerRenderingConfiguration } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,7 +16,7 @@ export async function generateSurveyAnswerLog(previewState: SurveyAnswerLogPrevi
     return { resultId: uuid(), surveyAnswers: surveyAnswers };
 }
 
-export function createPreviewRenderingConfigurations(): SurveyAnswerLogRenderingConfiguration[] {
+export function createPreviewAnswerRenderingConfigurations(): SurveyAnswerLogAnswerRenderingConfiguration[] {
     return [
         {
             resultIdentifier: 'activity',

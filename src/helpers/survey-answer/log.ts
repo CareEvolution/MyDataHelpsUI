@@ -11,7 +11,7 @@ export interface SurveyAnswerLog {
     event?: string;
 }
 
-export interface SurveyAnswerLogRenderingConfiguration {
+export interface SurveyAnswerLogAnswerRenderingConfiguration {
     resultIdentifier: string;
     icon: IconDefinition;
     iconColor: ColorDefinition;
