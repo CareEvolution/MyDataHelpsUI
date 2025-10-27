@@ -23,6 +23,8 @@ export function createPreviewAnswerRenderingConfigurations(answerRenderingConfig
     return answerRenderingConfigurations?.map(answerRenderingConfiguration => ({
         ...answerRenderingConfiguration,
         shouldHighlight: answerRenderingConfiguration.shouldHighlight ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
-        formatDisplayValue: answerRenderingConfiguration.formatDisplayValue ? () => <i>Expression formatted value will appear here.</i> : undefined
+        formatDisplayValue: answerRenderingConfiguration.formatDisplayValue
+            ? () => <i>Expression formatted value will appear here.</i>
+            : () => <i>Raw value will appear here.</i>
     })) ?? [];
 }
