@@ -96,6 +96,8 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         },
         onEdit: noop,
         showAnswers: true,
+        alwaysShowAnswerDetails: true,
+        showAnswerDetailsOnLoad: true,
         customIcons: true,
         customIconColors: true,
         customLabels: true,
@@ -113,25 +115,40 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             name: 'render answers',
             control: 'boolean'
         },
+        alwaysShowAnswerDetails: {
+            name: 'always show answer details',
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
+        },
+        showAnswerDetailsOnLoad: {
+            name: 'show answer details on load',
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
+        },
         customIcons: {
             name: 'custom icons',
-            control: 'boolean'
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         customIconColors: {
             name: 'custom icon colors',
-            control: 'boolean'
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         customLabels: {
             name: 'custom labels',
-            control: 'boolean'
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         customDisplayValues: {
             name: 'custom display values',
-            control: 'boolean'
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         customHighlightEvaluation: {
             name: 'custom highlight evaluation',
-            control: 'boolean'
+            control: 'boolean',
+            if: { arg: 'showAnswers', eq: true }
         },
         customHighlightStyling: {
             name: 'custom highlight styling',

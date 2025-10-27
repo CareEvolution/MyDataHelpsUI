@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { Button, LayoutContext, Title, UnstyledButton } from '../index';
 import { resolveColor, SurveyAnswerLog, SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
@@ -10,6 +10,8 @@ export interface SurveyAnswerLogSummaryProps {
     log: SurveyAnswerLog;
     onEdit: () => void;
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
+    alwaysShowAnswerDetails?: boolean;
+    showAnswerDetailsOnLoad?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -17,6 +19,12 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     const layoutContext = useContext(LayoutContext);
 
     const [selectedResultIdentifier, setSelectedResultIdentifier] = useState<string>();
+
+    useEffect(() => {
+        if ((props.alwaysShowAnswerDetails || props.showAnswerDetailsOnLoad) && props.answerRenderingConfigurations?.length) {
+            setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
+        }
+    }, []);
 
     const answerRenderingConfigurationsByResultIdentifier = props.answerRenderingConfigurations?.reduce((answerRenderingConfigurationsByResultIdentifier, answerRenderingConfiguration) => {
         answerRenderingConfigurationsByResultIdentifier[answerRenderingConfiguration.resultIdentifier] = answerRenderingConfiguration;
@@ -27,6 +35,14 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
         surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
         return surveyAnswersByResultIdentifier;
     }, {} as Partial<Record<string, SurveyAnswer>>);
+
+    const onBadgeClicked = (resultIdentifier: string): void => {
+        if (selectedResultIdentifier !== resultIdentifier) {
+            setSelectedResultIdentifier(resultIdentifier);
+        } else if (!props.alwaysShowAnswerDetails) {
+            setSelectedResultIdentifier(undefined);
+        }
+    };
 
     const getDisplayLabel = (resultIdentifier: string): string => {
         return answerRenderingConfigurationsByResultIdentifier[resultIdentifier].label ?? resultIdentifier;
@@ -58,9 +74,9 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
                         const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (answerRenderingConfiguration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
                         return <UnstyledButton
                             key={index}
-                            className="mdhui-sa-log-summary-badge"
+                            className={['mdhui-sa-log-summary-badge', ...(selectedResultIdentifier === answerRenderingConfiguration.resultIdentifier ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
                             style={{ background: iconColor, borderColor: iconColor, ...(shouldHighlight && answerRenderingConfiguration.customHighlightStyling) }}
-                            onClick={() => setSelectedResultIdentifier(selectedResultIdentifier !== answerRenderingConfiguration.resultIdentifier ? answerRenderingConfiguration.resultIdentifier : undefined)}
+                            onClick={() => onBadgeClicked(answerRenderingConfiguration.resultIdentifier)}
                         >
                             {answerRenderingConfiguration.icon &&
                                 <FontAwesomeSvgIcon icon={answerRenderingConfiguration.icon ?? faRing} style={{ color: 'var(--mdhui-background-color-0)' }} />
