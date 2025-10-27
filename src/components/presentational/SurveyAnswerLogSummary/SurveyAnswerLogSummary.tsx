@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Button, LayoutContext, Title } from '../index';
-import { resolveColor, SurveyAnswerLog, SurveyAnswerLogAnswerRenderingConfiguration } from '../../../helpers';
+import { resolveColor, SurveyAnswerLog, SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
@@ -8,21 +8,21 @@ import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 export interface SurveyAnswerLogSummaryProps {
     log: SurveyAnswerLog;
     onEdit: () => void;
-    answerRenderingConfigurations?: SurveyAnswerLogAnswerRenderingConfiguration[];
+    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerLogAnswerRenderingConfiguration>();
+    const [selectedBadge, setSelectedBadge] = useState<SurveyAnswerRenderingConfiguration>();
 
     const surveyAnswersByResultIdentifier = props.log.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
         surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
         return surveyAnswersByResultIdentifier;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
-    const getDisplayValue = (answerRenderingConfiguration: SurveyAnswerLogAnswerRenderingConfiguration) => {
+    const getDisplayValue = (answerRenderingConfiguration: SurveyAnswerRenderingConfiguration) => {
         const surveyAnswer = surveyAnswersByResultIdentifier[answerRenderingConfiguration.resultIdentifier];
         if (surveyAnswer) {
             return answerRenderingConfiguration.formatDisplayValue ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer) : surveyAnswer.answers.join(', ');

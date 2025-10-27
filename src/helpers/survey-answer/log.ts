@@ -1,24 +1,12 @@
-import { ColorDefinition, getDayKey } from '../index';
+import { getDayKey } from '../index';
 import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
 import { add } from 'date-fns';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { CSSProperties, ReactNode } from 'react';
 
 export interface SurveyAnswerLog {
     resultId: string;
     surveyAnswers: SurveyAnswer[];
     event?: string;
-}
-
-export interface SurveyAnswerLogAnswerRenderingConfiguration {
-    resultIdentifier: string;
-    icon: IconDefinition;
-    iconColor: ColorDefinition;
-    label: string;
-    hasMetCriteria: (answer: SurveyAnswer) => boolean;
-    hasMetCriteriaStyling?: CSSProperties;
-    formatDisplayValue?: (answer: SurveyAnswer) => ReactNode;
 }
 
 export function enterSurveyAnswerLog(surveyName: string, date: Date, priorSurveyAnswerLog?: SurveyAnswerLog) {

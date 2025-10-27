@@ -1,14 +1,14 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { Action, Card, DateRangeContext, SurveyAnswerLogSummary } from '../../presentational';
 import { startOfDay } from 'date-fns';
-import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerLogAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
+import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { createPreviewAnswerRenderingConfigurations, generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
 
 export interface SurveyAnswerLogPreviewProps {
     previewState?: SurveyAnswerLogPreviewPreviewState;
     surveyName: string;
-    answerRenderingConfigurations?: SurveyAnswerLogAnswerRenderingConfiguration[];
+    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
