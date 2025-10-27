@@ -1,1 +1,1 @@
-export { default, SurveyAnswerRenderingConfiguration } from './SurveyAnswerLogSummary';
+export { default } from './SurveyAnswerLogSummary';
