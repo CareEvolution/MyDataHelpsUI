@@ -5,10 +5,10 @@ import { CSSProperties, ReactNode } from 'react';
 
 export interface SurveyAnswerRenderingConfiguration {
     resultIdentifier: string;
-    icon: IconDefinition;
-    iconColor: ColorDefinition;
-    label: string;
-    hasMetCriteria: (answer: SurveyAnswer) => boolean;
-    hasMetCriteriaStyling?: CSSProperties;
+    icon?: IconDefinition;
+    iconColor?: ColorDefinition;
+    label?: string;
+    shouldHighlight?: (answer: SurveyAnswer) => boolean;
+    customHighlightStyling?: CSSProperties;
     formatDisplayValue?: (answer: SurveyAnswer) => ReactNode;
 }

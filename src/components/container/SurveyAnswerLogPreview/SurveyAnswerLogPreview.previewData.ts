@@ -23,7 +23,7 @@ export function createPreviewAnswerRenderingConfigurations(): SurveyAnswerRender
             icon: faWalking,
             iconColor: '#3c973c',
             label: 'Activity',
-            hasMetCriteria: answer => answer.answers[0] !== '0',
+            shouldHighlight: answer => answer.answers[0] !== '0',
             formatDisplayValue: answer => `An activity level of ${answer.answers[0]} was recorded on this day.`
         },
         {
@@ -31,7 +31,7 @@ export function createPreviewAnswerRenderingConfigurations(): SurveyAnswerRender
             icon: faBed,
             iconColor: '#664cda',
             label: 'Sleep',
-            hasMetCriteria: answer => answer.answers[0] !== '0',
+            shouldHighlight: answer => answer.answers[0] !== '0',
             formatDisplayValue: answer => `A sleep level of ${answer.answers[0]} was recorded on this day.`
         },
         {
@@ -39,7 +39,7 @@ export function createPreviewAnswerRenderingConfigurations(): SurveyAnswerRender
             icon: faSwimmer,
             iconColor: '#976d1e',
             label: 'Swimming',
-            hasMetCriteria: answer => answer.answers[0] !== '0',
+            shouldHighlight: answer => answer.answers[0] !== '0',
             formatDisplayValue: answer => `A swimming level of ${answer.answers[0]} was recorded on this day.`
         },
         {
@@ -47,7 +47,7 @@ export function createPreviewAnswerRenderingConfigurations(): SurveyAnswerRender
             icon: faBicycle,
             iconColor: '#0877b8',
             label: 'Cycling',
-            hasMetCriteria: answer => answer.answers[0] !== '0',
+            shouldHighlight: answer => answer.answers[0] !== '0',
             formatDisplayValue: answer => `A cycling level of ${answer.answers[0]} was recorded on this day.`
         }
     ];

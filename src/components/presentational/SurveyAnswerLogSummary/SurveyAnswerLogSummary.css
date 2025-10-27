@@ -26,6 +26,12 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
+    cursor: pointer;
+}
+
+.mdhui-sa-log-summary .mdhui-sa-log-summary-badge-label {
+    color: var(--mdhui-text-color-3);
+    line-height: 48px;
 }
 
 .mdhui-sa-log-summary .mdhui-sa-log-summary-badge-details {

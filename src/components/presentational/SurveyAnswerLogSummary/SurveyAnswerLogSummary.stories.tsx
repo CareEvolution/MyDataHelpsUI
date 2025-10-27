@@ -7,11 +7,17 @@ import { v4 as uuid } from 'uuid';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { noop } from '../../../helpers/functions';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { SurveyAnswerRenderingConfiguration } from '../../../helpers';
 
 type SurveyAnswerLogSummaryStoryArgs = React.ComponentProps<typeof SurveyAnswerLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
     showAnswers: boolean;
-    customHasMetCriteriaStyling: boolean;
+    customIcons: boolean;
+    customIconColors: boolean;
+    customLabels: boolean;
+    customHighlightEvaluation: boolean;
+    customHighlightStyling: boolean;
+    customDisplayValues: boolean;
 };
 
 export default {
@@ -21,53 +27,56 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerLogSummaryStoryArgs) => {
-        const hasMetCriteriaStyling: CSSProperties | undefined = args.customHasMetCriteriaStyling ? {
+        const customHighlightStyling: CSSProperties | undefined = args.customHighlightStyling ? {
             boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
             transition: 'transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        args.answerRenderingConfigurations = args.showAnswers ? [
+        const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showAnswers ? [
             {
                 resultIdentifier: 'activity',
-                icon: faWalking,
-                iconColor: '#3c973c',
-                label: 'Activity',
-                hasMetCriteria: answer => answer.answers[0] !== '0',
-                hasMetCriteriaStyling: hasMetCriteriaStyling,
-                formatDisplayValue: answer => `An activity level of ${answer.answers[0]} was recorded on this day.`
+                icon: args.customIcons ? faWalking : undefined,
+                iconColor: args.customIconColors ? '#3c973c' : undefined,
+                label: args.customLabels ? 'Activity' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
+                formatDisplayValue: args.customDisplayValues ? answer => `An activity level of ${answer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'sleep',
-                icon: faBed,
-                iconColor: '#664cda',
-                label: 'Sleep',
-                hasMetCriteria: answer => answer.answers[0] !== '0',
-                hasMetCriteriaStyling: hasMetCriteriaStyling,
-                formatDisplayValue: answer => `A sleep level of ${answer.answers[0]} was recorded on this day.`
+                icon: args.customIcons ? faBed : undefined,
+                iconColor: args.customIconColors ? '#664cda' : undefined,
+                label: args.customLabels ? 'Sleep' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
+                formatDisplayValue: args.customDisplayValues ? answer => `A sleep level of ${answer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'swimming',
-                icon: faSwimmer,
-                iconColor: '#976d1e',
-                label: 'Swimming',
-                hasMetCriteria: answer => answer.answers[0] !== '0',
-                hasMetCriteriaStyling: hasMetCriteriaStyling,
-                formatDisplayValue: answer => `A swimming level of ${answer.answers[0]} was recorded on this day.`
+                icon: args.customIcons ? faSwimmer : undefined,
+                iconColor: args.customIconColors ? '#976d1e' : undefined,
+                label: args.customLabels ? 'Swimming' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
+                formatDisplayValue: args.customDisplayValues ? answer => `A swimming level of ${answer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'cycling',
-                icon: faBicycle,
-                iconColor: '#0877b8',
-                label: 'Cycling',
-                hasMetCriteria: answer => answer.answers[0] !== '0',
-                hasMetCriteriaStyling: hasMetCriteriaStyling,
-                formatDisplayValue: answer => `A cycling level of ${answer.answers[0]} was recorded on this day.`
+                icon: args.customIcons ? faBicycle : undefined,
+                iconColor: args.customIconColors ? '#0877b8' : undefined,
+                label: args.customLabels ? 'Cycling' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
+                formatDisplayValue: args.customDisplayValues ? answer => `A cycling level of ${answer.answers[0]} was recorded on this day.` : undefined
             }
         ] : undefined;
 
         return <Layout colorScheme={args.colorScheme}>
             <Card>
-                <SurveyAnswerLogSummary {...args} />
+                <SurveyAnswerLogSummary
+                    {...args}
+                    answerRenderingConfigurations={answerRenderingConfigurations}
+                />
             </Card>
         </Layout>;
     }
@@ -87,7 +96,12 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         },
         onEdit: noop,
         showAnswers: true,
-        customHasMetCriteriaStyling: false
+        customIcons: true,
+        customIconColors: true,
+        customLabels: true,
+        customDisplayValues: true,
+        customHighlightEvaluation: true,
+        customHighlightStyling: true
     },
     argTypes: {
         colorScheme: {
@@ -99,8 +113,28 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             name: 'render answers',
             control: 'boolean'
         },
-        customHasMetCriteriaStyling: {
-            name: 'custom met criteria styling',
+        customIcons: {
+            name: 'custom icons',
+            control: 'boolean'
+        },
+        customIconColors: {
+            name: 'custom icon colors',
+            control: 'boolean'
+        },
+        customLabels: {
+            name: 'custom labels',
+            control: 'boolean'
+        },
+        customDisplayValues: {
+            name: 'custom display values',
+            control: 'boolean'
+        },
+        customHighlightEvaluation: {
+            name: 'custom highlight evaluation',
+            control: 'boolean'
+        },
+        customHighlightStyling: {
+            name: 'custom highlight styling',
             control: 'boolean',
             if: { arg: 'showAnswers', eq: true }
         },

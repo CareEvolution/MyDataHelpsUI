@@ -43,7 +43,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         enterSurveyAnswerLog(props.surveyName, currentDate);
     };
 
-    return <div className="mdhui-sa-cal-preview" ref={props.innerRef}>
+    return <div className="mdhui-sa-log-preview" ref={props.innerRef}>
         {!surveyAnswerLog &&
             <Card variant="highlight">
                 <Action
