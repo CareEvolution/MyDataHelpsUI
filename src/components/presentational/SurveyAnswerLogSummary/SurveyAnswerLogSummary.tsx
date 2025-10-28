@@ -21,10 +21,11 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     const [selectedResultIdentifier, setSelectedResultIdentifier] = useState<string>();
 
     useEffect(() => {
-        if ((props.alwaysShowAnswerDetails || props.showAnswerDetailsOnLoad) && props.answerRenderingConfigurations?.length) {
-            setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
-        }
-    }, []);
+        if (selectedResultIdentifier) return;
+        if (!props.answerRenderingConfigurations?.length) return;
+        if (!props.alwaysShowAnswerDetails && !props.showAnswerDetailsOnLoad) return;
+        setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
+    }, [props.alwaysShowAnswerDetails, props.showAnswerDetailsOnLoad, props.answerRenderingConfigurations?.length]);
 
     const answerRenderingConfigurationsByResultIdentifier = props.answerRenderingConfigurations?.reduce((answerRenderingConfigurationsByResultIdentifier, answerRenderingConfiguration) => {
         answerRenderingConfigurationsByResultIdentifier[answerRenderingConfiguration.resultIdentifier] = answerRenderingConfiguration;
