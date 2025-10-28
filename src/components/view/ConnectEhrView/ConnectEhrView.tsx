@@ -1,11 +1,12 @@
 import React from 'react'
 import { Card, Layout, NavigationBar, StatusBarBackground } from "../.."
 import language from '../../../helpers/language'
-import { HealthConnectPhrSync, ProviderSearch, ViewEhr } from '../../container'
+import { AppleHealthRecordsSync,HealthConnectPhrSync, ProviderSearch, ViewEhr } from '../../container'
 import { TextBlock } from '../../presentational'
 import ExternalAccountsPreview from "../../container/ExternalAccountsPreview";
 
 export interface ConnectEhrViewProps {
+    enableAppleHealthRecordsSurvey?: string,
     externalAccountsApplicationUrl?: string,
     onViewEhr?: () => void,
     excludeProviders?: boolean,
@@ -50,8 +51,13 @@ export default function ConnectEhrView(props: ConnectEhrViewProps) {
                     <ViewEhr previewState={props.preview ? "fetchingData" : undefined} onClick={props.onViewEhr} />
                 </Card>
             }
+            {props.enableAppleHealthRecordsSurvey &&
+                <Card>
+                    <AppleHealthRecordsSync previewState={props.preview ? "disabled" : undefined} enableAppleHealthRecordsSurvey={props.enableAppleHealthRecordsSurvey} />
+                </Card>
+            }
             <Card>
-                <HealthConnectPhrSync />
+                <HealthConnectPhrSync previewState={props.preview ? "noPermissionsEnabled" : undefined} />
             </Card>
             {props.externalAccountsApplicationUrl &&
                 <Card>
