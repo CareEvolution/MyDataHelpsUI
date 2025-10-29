@@ -48,7 +48,6 @@ export async function loadSurveyAnswerLogs(surveyName: string, startDate: Date):
         surveyAnswerLogs[dayKey] ??= {
             resultId: surveyAnswer.surveyResultID.toString(),
             surveyAnswers: [],
-            // @ts-ignore
             event: surveyAnswer.event
         };
         surveyAnswerLogs[dayKey].surveyAnswers.push(surveyAnswer);
@@ -57,6 +56,5 @@ export async function loadSurveyAnswerLogs(surveyName: string, startDate: Date):
 }
 
 export function getSurveyAnswerDayKey(surveyAnswer: SurveyAnswer): string {
-    // @ts-ignore
     return surveyAnswer.event ?? getDayKey(surveyAnswer.date);
 }
