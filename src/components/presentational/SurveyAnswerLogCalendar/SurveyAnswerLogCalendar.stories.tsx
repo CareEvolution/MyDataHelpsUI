@@ -1,18 +1,20 @@
 import React from 'react';
-import { Card, DateRangeCoordinator, Layout } from '../../presentational';
+import { Card, DateRangeCoordinator, Layout } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyAnswerLogCalendar from './SurveyAnswerLogCalendar';
+import { SurveyAnswerLogCoordinator } from '../../container';
 
 type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    state: 'loading' | 'default';
     customizeToday: boolean;
     customizeFuture: boolean;
     customizeNoData: boolean;
 };
 
 export default {
-    title: 'Container/SurveyAnswerLogCalendar',
+    title: 'Presentational/SurveyAnswerLogCalendar',
     component: SurveyAnswerLogCalendar,
     parameters: {
         layout: 'fullscreen'
@@ -30,14 +32,17 @@ export default {
         }
 
         return <Layout colorScheme={args.colorScheme}>
-            <DateRangeCoordinator intervalType="Month">
-                <Card>
-                    <SurveyAnswerLogCalendar
-                        {...args}
-                        stateConfiguration={stateConfiguration}
-                    />
-                </Card>
-            </DateRangeCoordinator>
+            <SurveyAnswerLogCoordinator previewState={args.state === 'loading' ? 'loading' : 'with data'} surveyName="Some Survey">
+                <DateRangeCoordinator intervalType="Month">
+                    <Card>
+                        <SurveyAnswerLogCalendar
+                            {...args}
+                            previewState={args.state ? 'default' : undefined}
+                            stateConfiguration={stateConfiguration}
+                        />
+                    </Card>
+                </DateRangeCoordinator>
+            </SurveyAnswerLogCoordinator>
         </Layout>;
     }
 };
@@ -45,7 +50,7 @@ export default {
 export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        previewState: 'default',
+        state: 'default',
         stateConfiguration: {
             'purple-state': {
                 style: {
@@ -79,6 +84,11 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        state: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'default']
         },
         stateConfiguration: {
             name: 'state configuration'

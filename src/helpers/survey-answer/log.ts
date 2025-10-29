@@ -1,7 +1,6 @@
-import { getDayKey } from "../index";
-import MyDataHelps, { SurveyAnswer } from "@careevolution/mydatahelps-js";
-import queryAllSurveyAnswers from "../query-all-survey-answers";
-import { add } from "date-fns";
+import { getDayKey } from '../index';
+import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import queryAllSurveyAnswers from '../query-all-survey-answers';
 
 export interface SurveyAnswerLog {
     resultId: string;
@@ -22,21 +21,16 @@ export function enterSurveyAnswerLog(surveyName: string, date: Date, priorSurvey
 }
 
 export async function loadSurveyAnswerLog(surveyName: string, date: Date): Promise<SurveyAnswerLog | undefined> {
-    const surveyAnswerLogs = await loadSurveyAnswerLogs(surveyName, add(date, { days: -1 }));
+    const surveyAnswerLogs = await loadSurveyAnswerLogs(surveyName);
     return surveyAnswerLogs[getDayKey(date)];
 }
 
-export async function loadSurveyAnswerLogs(surveyName: string, startDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
-    const allSurveyAnswers = (await queryAllSurveyAnswers({
-        surveyName: surveyName,
-        after: startDate.toISOString()
-    })).sort((a, b) => b.date.localeCompare(a.date));
+export async function loadSurveyAnswerLogs(surveyName: string): Promise<Partial<Record<string, SurveyAnswerLog>>> {
+    const allSurveyAnswers = (await queryAllSurveyAnswers({ surveyName: surveyName })).sort((a, b) => b.date.localeCompare(a.date));
 
     const latestResultIdsByDate = allSurveyAnswers.reduce((latestResultIdsByDate, surveyAnswer) => {
         const dayKey = getSurveyAnswerDayKey(surveyAnswer);
-        if (!latestResultIdsByDate[dayKey]) {
-            latestResultIdsByDate[dayKey] = surveyAnswer.surveyResultID.toString();
-        }
+        latestResultIdsByDate[dayKey] ??= surveyAnswer.surveyResultID.toString();
         return latestResultIdsByDate;
     }, {} as Record<string, string>);
 
