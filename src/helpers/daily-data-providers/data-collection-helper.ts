@@ -21,6 +21,16 @@ export interface CanQueryResult {
     v2: CanQueryApiResult;
 }
 
+/**
+ * Used to determine if either API (V1 or V2) supports the requested namespace and types, and if so, which types each supports. This allows
+ * us to have data providers that can leverage either or both APIs to load data. It also means we can have more targeted data availability
+ * checking because only enabled types are included in such queries.
+ *
+ * @param combinedDataCollectionSettings - The combined data collection settings used to determine the above.
+ * @param namespace - The V1 or V2 namespace to check.
+ * @param types - The V1 or V2 data types to check.
+ * @param strict - If true, all types must be available from an API for it to be enabled.  If false, only one type must be available.
+ */
 export function canQuery(combinedDataCollectionSettings: CombinedDataCollectionSettings, namespace: DeviceDataNamespace | DeviceDataV2Namespace, types: string[], strict: boolean): CanQueryResult {
     const result: CanQueryResult = { v1: { enabled: false }, v2: { enabled: false } };
 
