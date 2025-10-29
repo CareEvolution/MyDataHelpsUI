@@ -1,42 +1,26 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import {
-    faBed,
-    faHeartbeat,
-    faHourglassHalf,
-    faShoePrints
-} from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import {
-    defaultFormatter,
-    heartRateFormatter,
-    minutesFormatter,
-    sleepYAxisConverter
-} from "./formatters";
-import combinedRestingHeartRate from "../daily-data-providers/combined-resting-heart-rate";
-import {
-    combinedMindfulMinutesDataProvider,
-    combinedSleepDataProvider,
-    combinedStepsDataProvider,
-    combinedTherapyMinutesDataProvider
-} from "../daily-data-providers";
+import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
-import { formatNumberForLocale } from "../../helpers/locale";
+import { formatNumberForLocale } from "../locale";
 
 const RESTING_HEART_RATE_SOURCES = sources(
     ["AppleHealth", "RestingHeartRate"],
     ["Fitbit", "RestingHeartRate"],
     ["Garmin", "Daily"],
-    ["Oura", "sleep", true],
-    ["HealthConnect", "resting-heart-rate", true]
+    ["Oura", "sleep"],
+    ["HealthConnect", "resting-heart-rate"]
 );
 
 const STEPS_SOURCES = sources(
     ["AppleHealth", "HourlySteps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
-    ["HealthConnect", "steps-daily", true],
-    ["Oura", "daily-activity", true]
+    ["HealthConnect", "steps-daily"],
+    ["Oura", "daily-activity"]
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
@@ -44,24 +28,16 @@ const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
     ["GoogleFit", "Steps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
-    ["HealthConnect", "steps-daily", true],
-    ["Oura", "daily-activity", true]
+    ["HealthConnect", "steps-daily"],
+    ["Oura", "daily-activity"]
 );
 
 const SLEEP_MINUTES_SOURCES = sources(
     ["AppleHealth", "SleepAnalysisInterval"],
-    [
-        "Fitbit",
-        [
-            "SleepLevelRem",
-            "SleepLevelLight",
-            "SleepLevelDeep",
-            "SleepLevelAsleep"
-        ]
-    ],
+    ["Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]],
     ["Garmin", "Sleep"],
-    ["Oura", "sleep", true],
-    ["HealthConnect", "sleep", true]
+    ["Oura", "sleep"],
+    ["HealthConnect", "sleep"]
 );
 
 const MINDFUL_MINUTES_SOURCES = sources(
@@ -74,14 +50,21 @@ const THERAPY_MINUTES_SOURCES = sources(
     ["GoogleFit", "SilverCloudSession"]
 );
 
+const ACTIVE_CALORIES_BURNED_SOURCES = sources(
+    ["Fitbit", ["Calories", "CaloriesBMR"], { strict: true }],
+    ["Garmin", "Daily"],
+    ["AppleHealth", "ActiveEnergyBurned"],
+    ["AppleHealth", "Active Energy Burned"],
+    ["HealthConnect", "active-calories-burned-daily"],
+    ["Oura", "daily-activity"]
+);
+
 const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         dataSource: "Unified",
         type: DailyDataType.RestingHeartRate,
-        dataProvider: combinedRestingHeartRate,
-        availabilityCheck: combinedAvailabilityCheck(
-            RESTING_HEART_RATE_SOURCES
-        ),
+        dataProvider: combinedRestingHeartRateDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(RESTING_HEART_RATE_SOURCES),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -102,9 +85,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         type: DailyDataType.StepsWithGoogleFit,
         dataProvider: (startDate: Date, endDate: Date) =>
             combinedStepsDataProvider(startDate, endDate, true),
-        availabilityCheck: combinedAvailabilityCheck(
-            STEPS_WITH_GOOGLE_FIT_SOURCES
-        ),
+        availabilityCheck: combinedAvailabilityCheck(STEPS_WITH_GOOGLE_FIT_SOURCES),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -140,6 +121,16 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.ActiveCaloriesBurned,
+        dataProvider: combinedActiveCaloriesBurnedDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(ACTIVE_CALORIES_BURNED_SOURCES),
+        labelKey: "active-calories-burned",
+        icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
+        formatter: defaultFormatter,
+        previewDataRange: [300, 500]
     }
 ];
 export default combinedTypeDefinitions;

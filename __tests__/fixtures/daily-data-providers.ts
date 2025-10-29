@@ -31,7 +31,7 @@ export const sampleResult: DailyDataQueryResult = {
 };
 
 export const sampleTimeRanges: DailyTimeRanges = {
-    'SomeDate': [{} as TimeRange],
+    'SomeDate': [{} as TimeRange]
 };
 
 export const startDateFunctionEvaluator = (dateFn: DailyDataDateFunction): boolean => {
@@ -217,7 +217,7 @@ export function setupDailyTimeRanges(
             actualOffsetHours?: number
         ): DailyTimeRanges => {
             if (JSON.stringify(actualDataPoints) !== JSON.stringify(expectedDataPoints)) return {};
-            if (actualOffsetHours !== expectedOffset) return {}
+            if (actualOffsetHours !== expectedOffset) return {};
             return timeRanges;
         }
     );
@@ -252,10 +252,11 @@ export function createEmptyCombinedDataCollectionSettings(): CombinedDataCollect
     };
 }
 
-export function setupCombinedDataCollectionSettings(expectedUseV2: boolean, settings: CombinedDataCollectionSettings): void {
+export function setupCombinedDataCollectionSettings(expectedUseV2: boolean, combinedDataCollectionSettings: CombinedDataCollectionSettings): void {
     jest.spyOn(dataCollectionSettingsFunctions, 'getCombinedDataCollectionSettings').mockImplementation(
         async (actualUseV2: boolean = false): Promise<CombinedDataCollectionSettings> => {
-            return actualUseV2 === expectedUseV2 ? settings : {} as CombinedDataCollectionSettings;
+            if (actualUseV2 !== expectedUseV2) throw Error('Incorrect useV2 value.');
+            return combinedDataCollectionSettings;
         }
     );
 }
@@ -327,7 +328,7 @@ export function getV1DateString(date: Date): string {
         return offsetHours < 0 ? `-${offsetHoursString}` : `+${offsetHoursString}`;
     };
     // The offset manipulation here is to show that offsets are ignored when parsing dates from V1 data points.
-    return format(date, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(date, 3)}:00'`)
+    return format(date, `yyyy-MM-dd'T'HH:mm:ss'${getOffsetHours(date, 3)}:00'`);
 }
 
 export function getV2DateString(date: Date): string {
