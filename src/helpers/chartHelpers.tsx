@@ -5,12 +5,12 @@ import { LayoutContext } from "../components";
 import { TimeSeriesDataPoint } from '../components/presentational/TimeSeriesChart/TimeSeriesChart';
 
 export function createLineChartDefs(
-    layoutContext: LayoutContext, 
-    gradientKey: string, 
-    series: ChartSeries[], 
+    layoutContext: LayoutContext,
+    gradientKey: string,
+    series: ChartSeries[],
     options: MultiSeriesLineChartOptions | undefined,
     dataKeys: string[],
-    data: TimeSeriesDataPoint[] ) {
+    data: TimeSeriesDataPoint[]) {
 
     const colorOrDefault = (colorDefinition: ColorDefinition | undefined, defaultColor: string) => {
         return resolveColor(layoutContext.colorScheme, colorDefinition) ?? defaultColor;
@@ -34,7 +34,7 @@ export function createLineChartDefs(
             min: (dataPoint[dataKey] < result.min) ? dataPoint[dataKey] : result.min,
             max: (dataPoint[dataKey] > result.max) ? dataPoint[dataKey] : result.max,
         }), { min: data[0][dataKey], max: data[0][dataKey] });
-        
+
         if (thresholds.length && lineRange.min >= thresholds[0].value) {
             lineColor = colorOrDefault(thresholds[0].overThresholdColor, defaultLineColor);
         }
@@ -57,7 +57,7 @@ export function createLineChartDefs(
         {series.map((s, i) => {
             let lineColor = colorOrDefault(s.color, "var(--mdhui-color-primary");
 
-            return <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
+            return <linearGradient gradientUnits="userSpaceOnUse" id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
                 {createStopsFromThresholds(lineColor, options?.thresholds, dataKeys[i])}
             </linearGradient>;
         })}
