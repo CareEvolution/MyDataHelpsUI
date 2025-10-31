@@ -19,54 +19,44 @@ export interface SurveyAnswerLogSummaryProps {
 export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const [selectedResultIdentifier, setSelectedResultIdentifier] = useState<string>();
+    const [selectedConfiguration, setSelectedConfiguration] = useState<SurveyAnswerRenderingConfiguration>();
 
     useEffect(() => {
-        if (selectedResultIdentifier && !props.answerRenderingConfigurations?.some(configuration => configuration.resultIdentifier === selectedResultIdentifier)) {
-            setSelectedResultIdentifier(undefined);
+        if (selectedConfiguration) {
+            setSelectedConfiguration(props.answerRenderingConfigurations?.find(configuration => configuration.resultIdentifier === selectedConfiguration.resultIdentifier));
         }
     }, [props.answerRenderingConfigurations]);
 
     useEffect(() => {
-        if (selectedResultIdentifier) return;
+        if (selectedConfiguration) return;
         if (!props.answerRenderingConfigurations?.length) return;
         if (!props.alwaysShowAnswerDetails && !props.showAnswerDetailsOnLoad) return;
-        setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
-    }, [props.alwaysShowAnswerDetails, props.showAnswerDetailsOnLoad, props.answerRenderingConfigurations?.length]);
-
-    const answerRenderingConfigurationLookup = props.answerRenderingConfigurations?.reduce((lookup, configuration) => {
-        lookup[configuration.resultIdentifier] = configuration;
-        return lookup;
-    }, {} as Record<string, SurveyAnswerRenderingConfiguration>) ?? {};
+        setSelectedConfiguration(props.answerRenderingConfigurations[0]);
+    }, [props.answerRenderingConfigurations?.length, props.alwaysShowAnswerDetails, props.showAnswerDetailsOnLoad]);
 
     const surveyAnswerLookup = props.surveyAnswerLog.surveyAnswers.reduce((lookup, surveyAnswer) => {
         lookup[surveyAnswer.resultIdentifier] = surveyAnswer;
         return lookup;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
-    const onBadgeClicked = (resultIdentifier: string): void => {
-        if (selectedResultIdentifier !== resultIdentifier) {
-            setSelectedResultIdentifier(resultIdentifier);
+    const onBadgeClicked = (configuration: SurveyAnswerRenderingConfiguration): void => {
+        if (selectedConfiguration !== configuration) {
+            setSelectedConfiguration(configuration);
         } else if (!props.alwaysShowAnswerDetails) {
-            setSelectedResultIdentifier(undefined);
+            setSelectedConfiguration(undefined);
         }
     };
 
-    const getDisplayLabel = (resultIdentifier: string): string => {
-        return answerRenderingConfigurationLookup[resultIdentifier].label ?? resultIdentifier;
+    const getDisplayLabel = (configuration: SurveyAnswerRenderingConfiguration): string => {
+        return configuration.label ?? configuration.resultIdentifier;
     };
 
-    const getDisplayValue = (resultIdentifier: string): ReactNode => {
-        const answerRenderingConfiguration = answerRenderingConfigurationLookup[resultIdentifier];
-
-        const surveyAnswer = surveyAnswerLookup[resultIdentifier];
+    const getDisplayValue = (configuration: SurveyAnswerRenderingConfiguration): ReactNode => {
+        const surveyAnswer = surveyAnswerLookup[configuration.resultIdentifier];
         if (surveyAnswer) {
-            return answerRenderingConfiguration.formatDisplayValue
-                ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer)
-                : surveyAnswer.answers.join(', ');
+            return configuration.formatDisplayValue?.(surveyAnswer) ?? surveyAnswer.answers.join(', ');
         }
-
-        return `No value was recorded for ${answerRenderingConfiguration.label} on this day.`;
+        return `No value was recorded for ${getDisplayLabel(configuration)} on this day.`;
     };
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
@@ -86,25 +76,25 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
                         const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (configuration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
                         return <UnstyledButton
                             key={index}
-                            className={['mdhui-sa-log-summary-badge', ...(selectedResultIdentifier === configuration.resultIdentifier ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
+                            className={['mdhui-sa-log-summary-badge', ...(selectedConfiguration === configuration ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
                             style={{ background: iconColor, borderColor: iconColor, ...(shouldHighlight && configuration.customHighlightStyling) }}
-                            onClick={() => onBadgeClicked(configuration.resultIdentifier)}
+                            onClick={() => onBadgeClicked(configuration)}
                         >
                             {configuration.icon &&
                                 <FontAwesomeSvgIcon icon={configuration.icon ?? faRing} style={{ color: 'var(--mdhui-background-color-0)' }} />
                             }
                             {!configuration.icon &&
                                 <div className="mdhui-sa-log-summary-badge-label" style={{ color: shouldHighlight ? 'var(--mdhui-text-color-1)' : 'var(--mdhui-text-color-3)' }}>
-                                    {getDisplayLabel(configuration.resultIdentifier).substring(0, 1).toUpperCase()}
+                                    {getDisplayLabel(configuration).substring(0, 1).toUpperCase()}
                                 </div>
                             }
                         </UnstyledButton>;
                     })}
                 </div>
-                {selectedResultIdentifier &&
+                {selectedConfiguration &&
                     <div className="mdhui-sa-log-summary-badge-details">
-                        <div className="mdhui-sa-log-summary-badge-details-label">{getDisplayLabel(selectedResultIdentifier)}</div>
-                        <div className="mdhui-sa-log-summary-badge-details-value">{getDisplayValue(selectedResultIdentifier)}</div>
+                        <div className="mdhui-sa-log-summary-badge-details-label">{getDisplayLabel(selectedConfiguration)}</div>
+                        <div className="mdhui-sa-log-summary-badge-details-value">{getDisplayValue(selectedConfiguration)}</div>
                     </div>
                 }
             </>
