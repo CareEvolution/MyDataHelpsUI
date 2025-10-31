@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { Action, Card, DateRangeContext, SurveyAnswerLogSummary } from '../../presentational';
-import { startOfDay } from 'date-fns';
+import { isSameDay, startOfDay } from 'date-fns';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { createPreviewAnswerRenderingConfigurations, generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
@@ -58,11 +58,13 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         {surveyAnswerLog &&
             <Card>
                 <SurveyAnswerLogSummary
-                    log={surveyAnswerLog}
+                    title={isSameDay(surveyAnswerLog.date, new Date()) ? 'Today\'s Log' : undefined}
+                    surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEnterLog(surveyAnswerLog)}
                     answerRenderingConfigurations={props.previewState
                         ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
-                        : props.answerRenderingConfigurations}
+                        : props.answerRenderingConfigurations
+                    }
                     alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
                     showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
                 />

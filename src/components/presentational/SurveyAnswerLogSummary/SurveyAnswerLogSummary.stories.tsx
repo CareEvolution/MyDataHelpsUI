@@ -12,6 +12,7 @@ import { startOfToday } from 'date-fns';
 
 type SurveyAnswerLogSummaryStoryArgs = React.ComponentProps<typeof SurveyAnswerLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    customTitle: boolean;
     showAnswers: boolean;
     customIcons: boolean;
     customIconColors: boolean;
@@ -30,7 +31,7 @@ export default {
     render: (args: SurveyAnswerLogSummaryStoryArgs) => {
         const customHighlightStyling: CSSProperties | undefined = args.customHighlightStyling ? {
             boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
         const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showAnswers ? [
@@ -76,6 +77,7 @@ export default {
             <Card>
                 <SurveyAnswerLogSummary
                     {...args}
+                    title={args.customTitle ? 'Custom Title' : undefined}
                     answerRenderingConfigurations={answerRenderingConfigurations}
                 />
             </Card>
@@ -86,7 +88,8 @@ export default {
 export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        log: {
+        customTitle: false,
+        surveyAnswerLog: {
             resultId: uuid(),
             date: startOfToday(),
             surveyAnswers: [
@@ -113,8 +116,12 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
+        customTitle: {
+            name: 'custom title',
+            control: 'boolean'
+        },
         showAnswers: {
-            name: 'render answers',
+            name: 'show answers',
             control: 'boolean'
         },
         alwaysShowAnswerDetails: {
@@ -157,6 +164,6 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             control: 'boolean',
             if: { arg: 'showAnswers', eq: true }
         },
-        ...argTypesToHide(['log', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['title', 'log', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
     }
 };

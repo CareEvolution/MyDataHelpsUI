@@ -4,10 +4,10 @@ import { add, isAfter, isSameDay, startOfDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import './SurveyAnswerLogCalendar.css';
-import { computePreviewState, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
+import { computePreviewState, createPreviewAnswerRenderingConfigurations, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
 
 export interface SurveyAnswerLogCalendarProps {
-    previewState?: 'loading' | 'default';
+    previewState?: 'loading' | 'reloading' | 'default';
     surveyName: string;
     stateConfiguration?: CalendarDayStateConfiguration;
     computeState?: (date: Date, surveyAnswers: SurveyAnswer[]) => string | undefined;
@@ -21,11 +21,14 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     const [loading, setLoading] = useState<boolean>(true);
     const [surveyAnswerLogs, setSurveyAnswerLogs] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
 
-    const applyPreviewState = (previewState: 'loading' | 'default') => {
+    const applyPreviewState = (previewState: 'loading' | 'reloading' | 'default') => {
+        setSurveyAnswerLogs({});
         if (previewState === 'loading') return;
         generatePreviewSurveyAnswerLogs(props.answerRenderingConfigurations, startOfDay(add(new Date(), { months: -3 }))).then(surveyAnswerLogs => {
             setSurveyAnswerLogs(surveyAnswerLogs);
-            setLoading(false);
+            if (previewState !== 'reloading') {
+                setLoading(false);
+            }
         });
     };
 
@@ -102,20 +105,26 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
 
     return <div ref={props.innerRef} className="mdhui-sa-log-calendar">
         <Card>
+            <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
             {loading &&
-                <div className="mdhui-sa-log-calendar-loading-indicator-wrapper">
+                <div className="mdhui-sa-log-calendar-loading-indicator-overlay">
                     <LoadingIndicator className="mdhui-sa-log-calendar-loading-indicator" />
                 </div>
             }
-            <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
         </Card>
-        {!loading && props.answerRenderingConfigurations && currentSurveyAnswerLogs.map((surveyAnswerLog, index) => {
+        {props.answerRenderingConfigurations && currentSurveyAnswerLogs.map((surveyAnswerLog, index) => {
             return <Card key={index}>
                 <SurveyAnswerLogSummary
-                    log={surveyAnswerLog}
+                    surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEnterLog(surveyAnswerLog)}
-                    answerRenderingConfigurations={props.answerRenderingConfigurations}
+                    answerRenderingConfigurations={props.previewState
+                        ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
+                        : props.answerRenderingConfigurations
+                    }
                 />
+                {loading &&
+                    <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />
+                }
             </Card>;
         })}
     </div>;

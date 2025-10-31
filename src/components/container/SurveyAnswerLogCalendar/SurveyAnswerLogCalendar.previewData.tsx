@@ -3,6 +3,7 @@ import { fnvPredictableRandomNumber, generateSurveyAnswers, getDayKey, SurveyAns
 import { v4 as uuid } from 'uuid';
 import { CalendarDayStateConfiguration } from '../../presentational';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import React from 'react';
 
 export async function generatePreviewSurveyAnswerLogs(answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined, startDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
     const resultIdentifiers = answerRenderingConfigurations?.map(answerRenderingConfiguration => answerRenderingConfiguration.resultIdentifier)
@@ -31,5 +32,15 @@ export function computePreviewState(stateConfiguration: CalendarDayStateConfigur
         return states[fnvPredictableRandomNumber(getDayKey(date)) % states.length];
     }
     return undefined;
+}
+
+export function createPreviewAnswerRenderingConfigurations(answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined): SurveyAnswerRenderingConfiguration[] {
+    return answerRenderingConfigurations?.map(answerRenderingConfiguration => ({
+        ...answerRenderingConfiguration,
+        shouldHighlight: answerRenderingConfiguration.shouldHighlight ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
+        formatDisplayValue: answerRenderingConfiguration.formatDisplayValue
+            ? () => <i>Expression formatted value will appear here.</i>
+            : () => <i>Raw value will appear here.</i>
+    })) ?? [];
 }
 

@@ -1,13 +1,14 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
-import { Button, LayoutContext, Title, UnstyledButton } from '../index';
+import { LayoutContext, Title, UnstyledButton } from '../index';
 import { formatDateForLocale, resolveColor, SurveyAnswerLog, SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { faRing } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faRing } from '@fortawesome/free-solid-svg-icons';
 
 export interface SurveyAnswerLogSummaryProps {
-    log: SurveyAnswerLog;
+    title?: string;
+    surveyAnswerLog: SurveyAnswerLog;
     onEdit: () => void;
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     alwaysShowAnswerDetails?: boolean;
@@ -32,7 +33,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
         return answerRenderingConfigurationsByResultIdentifier;
     }, {} as Record<string, SurveyAnswerRenderingConfiguration>) ?? {};
 
-    const surveyAnswersByResultIdentifier = props.log.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
+    const surveyAnswersByResultIdentifier = props.surveyAnswerLog.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
         surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
         return surveyAnswersByResultIdentifier;
     }, {} as Partial<Record<string, SurveyAnswer>>);
@@ -54,15 +55,17 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
 
         const surveyAnswer = surveyAnswersByResultIdentifier[resultIdentifier];
         if (surveyAnswer) {
-            return answerRenderingConfiguration.formatDisplayValue ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer) : surveyAnswer.answers.join(', ');
+            return answerRenderingConfiguration.formatDisplayValue
+                ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer)
+                : surveyAnswer.answers.join(', ');
         }
 
         return `No value was recorded for ${answerRenderingConfiguration.label} on this day.`;
     };
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
-        <Title order={3} accessory={<Button fullWidth={false} onClick={props.onEdit}>Edit</Button>}>
-            {formatDateForLocale(props.log.date, 'PPP')}
+        <Title order={4} accessory={<UnstyledButton onClick={props.onEdit}><FontAwesomeSvgIcon icon={faEdit} /></UnstyledButton>}>
+            {props.title ?? formatDateForLocale(props.surveyAnswerLog.date, 'PPP')}
         </Title>
         {(!props.answerRenderingConfigurations || props.answerRenderingConfigurations.length === 0) &&
             <div className="mdhui-sa-log-summary-entered">A log has been submitted.</div>

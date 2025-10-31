@@ -6,6 +6,11 @@ import SurveyAnswerLogCalendar from './SurveyAnswerLogCalendar';
 import { SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
+const customHighlightStyling: CSSProperties = {
+    boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
+    transition: 'border-radius: 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease'
+};
+
 type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
     state: 'loading' | 'default';
@@ -16,11 +21,6 @@ type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswer
     showLogs: boolean;
 };
 
-const customHighlightStyling: CSSProperties = {
-    boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-};
-
 export default {
     title: 'Container/SurveyAnswerLogCalendar',
     component: SurveyAnswerLogCalendar,
@@ -29,41 +29,49 @@ export default {
     },
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
         const stateConfiguration: CalendarDayStateConfiguration = args.includeStates ? {
-            'purple-state': {
+            'red-state': {
                 style: {
-                    background: '#671e93',
+                    background: '#664cda',
+                    border: '2px solid #664cda',
+                    marginTop: '-12px',
                     color: '#f4d6ff',
                     ...customHighlightStyling
                 },
                 streak: true,
-                streakColor: '#f4d6ff'
+                streakColor: '#edc4ff'
             },
             'green-state': {
                 style: {
-                    background: '#00675b',
+                    background: '#3c973c',
+                    border: '2px solid #3c973c',
+                    marginTop: '-12px',
                     color: '#bdead7',
                     ...customHighlightStyling
                 },
                 streak: true,
                 streakColor: '#bdead7'
             },
-            'yellow-state': {
+            'blue-state': {
                 style: {
-                    background: '#f6c400',
-                    color: '#251c00',
+                    background: '#0877b8',
+                    border: '2px solid #0877b8',
+                    marginTop: '-12px',
+                    color: '#abe0ff',
                     ...customHighlightStyling
-                }
+                },
+                streak: true,
+                streakColor: '#67c0f4'
             }
         } : {};
 
         if (args.customizeToday) {
-            stateConfiguration['today'] = { style: { background: 'aquamarine', color: 'black' } };
+            stateConfiguration['today'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
         }
         if (args.customizeFuture) {
-            stateConfiguration['future'] = { style: { background: 'cornflowerblue', color: 'black' } };
+            stateConfiguration['future'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
         }
         if (args.customizeNoData) {
-            stateConfiguration['no-data'] = { style: { background: 'pink', color: 'black' } };
+            stateConfiguration['no-data'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
         }
 
         const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showLogs ? [
@@ -72,36 +80,35 @@ export default {
                 icon: faWalking,
                 iconColor: '#3c973c',
                 label: 'Activity',
-                shouldHighlight: answer => answer.answers[0] !== '0',
+                shouldHighlight: () => false,
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: answer => `An activity level of ${answer.answers[0]} was recorded on this day.`
+                formatDisplayValue: () => 'custom display value'
             },
             {
                 resultIdentifier: 'sleep',
                 icon: faBed,
                 iconColor: '#664cda',
                 label: 'Sleep',
-                shouldHighlight: answer => answer.answers[0] !== '0',
-                customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: answer => `A sleep level of ${answer.answers[0]} was recorded on this day.`
+                shouldHighlight: () => false,
+                customHighlightStyling: customHighlightStyling
             },
             {
                 resultIdentifier: 'swimming',
                 icon: faSwimmer,
                 iconColor: '#0877b8',
                 label: 'Swimming',
-                shouldHighlight: answer => answer.answers[0] !== '0',
+                shouldHighlight: () => false,
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: answer => `A swimming level of ${answer.answers[0]} was recorded on this day.`
+                formatDisplayValue: () => 'custom display value'
             },
             {
                 resultIdentifier: 'cycling',
                 icon: faBicycle,
                 iconColor: '#976d1e',
                 label: 'Cycling',
-                shouldHighlight: answer => answer.answers[0] !== '0',
+                shouldHighlight: () => false,
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: answer => `A cycling level of ${answer.answers[0]} was recorded on this day.`
+                formatDisplayValue: () => 'custom display value'
             }
         ] : undefined;
 
@@ -109,7 +116,7 @@ export default {
             <DateRangeCoordinator intervalType="Month">
                 <SurveyAnswerLogCalendar
                     {...args}
-                    previewState={args.state ? 'default' : undefined}
+                    previewState={args.state}
                     stateConfiguration={stateConfiguration}
                     answerRenderingConfigurations={answerRenderingConfigurations}
                 />
@@ -137,26 +144,26 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'default']
+            options: ['loading', 'default', 'reloading']
         },
         includeStates: {
-            name: 'include states?',
+            name: 'include states',
             control: 'boolean'
         },
         customizeToday: {
-            name: 'customize today?',
+            name: 'customize today',
             control: 'boolean'
         },
         customizeFuture: {
-            name: 'customize future?',
+            name: 'customize future',
             control: 'boolean'
         },
         customizeNoData: {
-            name: 'customize no-data?',
+            name: 'customize no-data',
             control: 'boolean'
         },
         showLogs: {
-            name: 'show logs?',
+            name: 'show logs',
             control: 'boolean'
         },
         ...argTypesToHide(['previewState', 'surveyName', 'computeState', 'answerRenderingConfigurations', 'innerRef'])
