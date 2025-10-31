@@ -6,8 +6,7 @@ import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import React from 'react';
 
 export async function generatePreviewSurveyAnswerLogs(answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined, startDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
-    const resultIdentifiers = answerRenderingConfigurations?.map(answerRenderingConfiguration => answerRenderingConfiguration.resultIdentifier)
-        ?? ['result1', 'result2', 'result3', 'result4'];
+    const resultIdentifiers = answerRenderingConfigurations?.map(configuration => configuration.resultIdentifier) ?? ['result1', 'result2', 'result3', 'result4'];
     const surveyAnswers = (await generateSurveyAnswers(startDate, startOfToday(), resultIdentifiers, 0, 5, { days: 1 })).flat();
 
     return surveyAnswers.reduce((surveyAnswerLogs, surveyAnswer) => {
@@ -35,10 +34,10 @@ export function computePreviewState(stateConfiguration: CalendarDayStateConfigur
 }
 
 export function createPreviewAnswerRenderingConfigurations(answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined): SurveyAnswerRenderingConfiguration[] {
-    return answerRenderingConfigurations?.map(answerRenderingConfiguration => ({
-        ...answerRenderingConfiguration,
-        shouldHighlight: answerRenderingConfiguration.shouldHighlight ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
-        formatDisplayValue: answerRenderingConfiguration.formatDisplayValue
+    return answerRenderingConfigurations?.map(configuration => ({
+        ...configuration,
+        shouldHighlight: configuration.shouldHighlight ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
+        formatDisplayValue: configuration.formatDisplayValue
             ? () => <i>Expression formatted value will appear here.</i>
             : () => <i>Raw value will appear here.</i>
     })) ?? [];

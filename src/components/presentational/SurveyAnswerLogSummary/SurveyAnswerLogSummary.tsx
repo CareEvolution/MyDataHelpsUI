@@ -22,20 +22,26 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     const [selectedResultIdentifier, setSelectedResultIdentifier] = useState<string>();
 
     useEffect(() => {
+        if (selectedResultIdentifier && !props.answerRenderingConfigurations?.some(configuration => configuration.resultIdentifier === selectedResultIdentifier)) {
+            setSelectedResultIdentifier(undefined);
+        }
+    }, [props.answerRenderingConfigurations]);
+
+    useEffect(() => {
         if (selectedResultIdentifier) return;
         if (!props.answerRenderingConfigurations?.length) return;
         if (!props.alwaysShowAnswerDetails && !props.showAnswerDetailsOnLoad) return;
         setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
     }, [props.alwaysShowAnswerDetails, props.showAnswerDetailsOnLoad, props.answerRenderingConfigurations?.length]);
 
-    const answerRenderingConfigurationsByResultIdentifier = props.answerRenderingConfigurations?.reduce((answerRenderingConfigurationsByResultIdentifier, answerRenderingConfiguration) => {
-        answerRenderingConfigurationsByResultIdentifier[answerRenderingConfiguration.resultIdentifier] = answerRenderingConfiguration;
-        return answerRenderingConfigurationsByResultIdentifier;
+    const answerRenderingConfigurationLookup = props.answerRenderingConfigurations?.reduce((lookup, configuration) => {
+        lookup[configuration.resultIdentifier] = configuration;
+        return lookup;
     }, {} as Record<string, SurveyAnswerRenderingConfiguration>) ?? {};
 
-    const surveyAnswersByResultIdentifier = props.surveyAnswerLog.surveyAnswers.reduce((surveyAnswersByResultIdentifier, surveyAnswer) => {
-        surveyAnswersByResultIdentifier[surveyAnswer.resultIdentifier] = surveyAnswer;
-        return surveyAnswersByResultIdentifier;
+    const surveyAnswerLookup = props.surveyAnswerLog.surveyAnswers.reduce((lookup, surveyAnswer) => {
+        lookup[surveyAnswer.resultIdentifier] = surveyAnswer;
+        return lookup;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
     const onBadgeClicked = (resultIdentifier: string): void => {
@@ -47,13 +53,13 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     };
 
     const getDisplayLabel = (resultIdentifier: string): string => {
-        return answerRenderingConfigurationsByResultIdentifier[resultIdentifier].label ?? resultIdentifier;
+        return answerRenderingConfigurationLookup[resultIdentifier].label ?? resultIdentifier;
     };
 
     const getDisplayValue = (resultIdentifier: string): ReactNode => {
-        const answerRenderingConfiguration = answerRenderingConfigurationsByResultIdentifier[resultIdentifier];
+        const answerRenderingConfiguration = answerRenderingConfigurationLookup[resultIdentifier];
 
-        const surveyAnswer = surveyAnswersByResultIdentifier[resultIdentifier];
+        const surveyAnswer = surveyAnswerLookup[resultIdentifier];
         if (surveyAnswer) {
             return answerRenderingConfiguration.formatDisplayValue
                 ? answerRenderingConfiguration.formatDisplayValue(surveyAnswer)
@@ -73,23 +79,23 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
         {props.answerRenderingConfigurations && props.answerRenderingConfigurations.length > 0 &&
             <>
                 <div className="mdhui-sa-log-summary-badges">
-                    {props.answerRenderingConfigurations.map((answerRenderingConfiguration, index) => {
-                        const surveyAnswer = surveyAnswersByResultIdentifier[answerRenderingConfiguration.resultIdentifier];
-                        const shouldHighlight = surveyAnswer && (answerRenderingConfiguration.shouldHighlight?.(surveyAnswer) ?? surveyAnswer.answers.length);
+                    {props.answerRenderingConfigurations.map((configuration, index) => {
+                        const surveyAnswer = surveyAnswerLookup[configuration.resultIdentifier];
+                        const shouldHighlight = surveyAnswer && (configuration.shouldHighlight?.(surveyAnswer) ?? surveyAnswer.answers.length);
                         const defaultIconColor = { lightMode: 'var(--mdhui-background-color-2)', darkMode: 'var(--mdhui-background-color-1)' };
-                        const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (answerRenderingConfiguration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
+                        const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (configuration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
                         return <UnstyledButton
                             key={index}
-                            className={['mdhui-sa-log-summary-badge', ...(selectedResultIdentifier === answerRenderingConfiguration.resultIdentifier ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
-                            style={{ background: iconColor, borderColor: iconColor, ...(shouldHighlight && answerRenderingConfiguration.customHighlightStyling) }}
-                            onClick={() => onBadgeClicked(answerRenderingConfiguration.resultIdentifier)}
+                            className={['mdhui-sa-log-summary-badge', ...(selectedResultIdentifier === configuration.resultIdentifier ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
+                            style={{ background: iconColor, borderColor: iconColor, ...(shouldHighlight && configuration.customHighlightStyling) }}
+                            onClick={() => onBadgeClicked(configuration.resultIdentifier)}
                         >
-                            {answerRenderingConfiguration.icon &&
-                                <FontAwesomeSvgIcon icon={answerRenderingConfiguration.icon ?? faRing} style={{ color: 'var(--mdhui-background-color-0)' }} />
+                            {configuration.icon &&
+                                <FontAwesomeSvgIcon icon={configuration.icon ?? faRing} style={{ color: 'var(--mdhui-background-color-0)' }} />
                             }
-                            {!answerRenderingConfiguration.icon &&
+                            {!configuration.icon &&
                                 <div className="mdhui-sa-log-summary-badge-label" style={{ color: shouldHighlight ? 'var(--mdhui-text-color-1)' : 'var(--mdhui-text-color-3)' }}>
-                                    {getDisplayLabel(answerRenderingConfiguration.resultIdentifier).substring(0, 1).toUpperCase()}
+                                    {getDisplayLabel(configuration.resultIdentifier).substring(0, 1).toUpperCase()}
                                 </div>
                             }
                         </UnstyledButton>;
