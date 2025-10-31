@@ -51,7 +51,8 @@ export default function YouTubeStep(props: YouTubeStepProps) {
                   src={`https://www.youtube.com/embed/${props.videoId}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                  allowFullScreen={true}>
+                  allowFullScreen={true}
+                  referrerPolicy="strict-origin-when-cross-origin">
               </iframe>
             </div>
             <StepDetailText 
