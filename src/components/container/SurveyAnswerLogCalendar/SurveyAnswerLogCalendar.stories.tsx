@@ -29,7 +29,7 @@ export default {
     },
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
         const stateConfiguration: CalendarDayStateConfiguration = args.includeStates ? {
-            'red-state': {
+            'purple-state': {
                 style: {
                     background: '#664cda',
                     border: '2px solid #664cda',

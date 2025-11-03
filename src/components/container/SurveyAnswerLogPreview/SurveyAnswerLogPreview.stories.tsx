@@ -45,7 +45,7 @@ export default {
             {
                 resultIdentifier: 'swimming',
                 icon: faSwimmer,
-                iconColor: '#976d1e',
+                iconColor: '#0877b8',
                 label: 'Swimming',
                 shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
@@ -54,7 +54,7 @@ export default {
             {
                 resultIdentifier: 'cycling',
                 icon: faBicycle,
-                iconColor: '#0877b8',
+                iconColor: '#976d1e',
                 label: 'Cycling',
                 shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,

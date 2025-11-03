@@ -27,7 +27,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     }, {} as Record<string, SurveyAnswerRenderingConfiguration>) ?? {};
 
     const surveyAnswerLookup = props.surveyAnswerLog.surveyAnswers.reduce((lookup, surveyAnswer) => {
-        lookup[surveyAnswer.resultIdentifier] = surveyAnswer;
+        lookup[surveyAnswer.resultIdentifier.toLowerCase()] = surveyAnswer;
         return lookup;
     }, {} as Partial<Record<string, SurveyAnswer>>);
 
@@ -55,7 +55,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     };
 
     const getDisplayValue = (resultIdentifier: string): ReactNode => {
-        const surveyAnswer = surveyAnswerLookup[resultIdentifier];
+        const surveyAnswer = surveyAnswerLookup[resultIdentifier.toLowerCase()];
         if (surveyAnswer) {
             const configuration = answerRenderingConfigurationLookup[resultIdentifier];
             return configuration.formatDisplayValue?.(surveyAnswer) ?? surveyAnswer.answers.join(', ');

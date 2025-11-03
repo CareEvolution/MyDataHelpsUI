@@ -56,7 +56,7 @@ export default {
             {
                 resultIdentifier: 'swimming',
                 icon: args.customIcons ? faSwimmer : undefined,
-                iconColor: args.customIconColors ? '#976d1e' : undefined,
+                iconColor: args.customIconColors ? '#0877b8' : undefined,
                 label: args.customLabels ? 'Swimming' : undefined,
                 shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
@@ -65,7 +65,7 @@ export default {
             {
                 resultIdentifier: 'cycling',
                 icon: args.customIcons ? faBicycle : undefined,
-                iconColor: args.customIconColors ? '#0877b8' : undefined,
+                iconColor: args.customIconColors ? '#976d1e' : undefined,
                 label: args.customLabels ? 'Cycling' : undefined,
                 shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
