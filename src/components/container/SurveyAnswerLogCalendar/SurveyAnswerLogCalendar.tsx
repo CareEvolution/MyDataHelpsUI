@@ -4,7 +4,7 @@ import { add, isAfter, isSameDay, startOfDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import './SurveyAnswerLogCalendar.css';
-import { computePreviewState, createPreviewAnswerRenderingConfigurations, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
+import { computePreviewState, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
 
 export interface SurveyAnswerLogCalendarProps {
     previewState?: 'loading' | 'reloading' | 'default';
@@ -117,10 +117,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
                 <SurveyAnswerLogSummary
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEnterLog(surveyAnswerLog)}
-                    answerRenderingConfigurations={props.previewState
-                        ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
-                        : props.answerRenderingConfigurations
-                    }
+                    answerRenderingConfigurations={props.answerRenderingConfigurations}
                 />
                 {loading &&
                     <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />

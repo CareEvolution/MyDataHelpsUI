@@ -80,35 +80,36 @@ export default {
                 icon: faWalking,
                 iconColor: '#3c973c',
                 label: 'Activity',
-                shouldHighlight: () => false,
+                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `An activity level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'sleep',
                 icon: faBed,
                 iconColor: '#664cda',
                 label: 'Sleep',
-                shouldHighlight: () => false,
-                customHighlightStyling: customHighlightStyling
+                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
+                customHighlightStyling: customHighlightStyling,
+                formatDisplayValue: surveyAnswer => `A sleep level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'swimming',
                 icon: faSwimmer,
                 iconColor: '#0877b8',
                 label: 'Swimming',
-                shouldHighlight: () => false,
+                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `A swimming level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'cycling',
                 icon: faBicycle,
                 iconColor: '#976d1e',
                 label: 'Cycling',
-                shouldHighlight: () => false,
+                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `A cycling level of ${surveyAnswer.answers[0]} was recorded on this day.`
             }
         ] : undefined;
 
@@ -166,6 +167,6 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'show logs',
             control: 'boolean'
         },
-        ...argTypesToHide(['previewState', 'surveyName', 'computeState', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['previewState', 'surveyName', 'stateConfiguration', 'computeState', 'answerRenderingConfigurations', 'innerRef'])
     }
 };

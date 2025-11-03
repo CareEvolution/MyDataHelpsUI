@@ -29,8 +29,9 @@ export default {
                 icon: faWalking,
                 iconColor: '#3c973c',
                 label: 'Activity',
+                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `An activity level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'sleep',
@@ -38,7 +39,8 @@ export default {
                 iconColor: '#664cda',
                 label: 'Sleep',
                 shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
-                customHighlightStyling: customHighlightStyling
+                customHighlightStyling: customHighlightStyling,
+                formatDisplayValue: surveyAnswer => `A sleep level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'swimming',
@@ -47,7 +49,7 @@ export default {
                 label: 'Swimming',
                 shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `A swimming level of ${surveyAnswer.answers[0]} was recorded on this day.`
             },
             {
                 resultIdentifier: 'cycling',
@@ -56,7 +58,7 @@ export default {
                 label: 'Cycling',
                 shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: () => 'custom display value'
+                formatDisplayValue: surveyAnswer => `A cycling level of ${surveyAnswer.answers[0]} was recorded on this day.`
             }
         ] : undefined;
 
@@ -93,13 +95,11 @@ export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
         },
         alwaysShowAnswerDetails: {
             name: 'always show answer details',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            control: 'boolean'
         },
         showAnswerDetailsOnLoad: {
             name: 'show answer details on load',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            control: 'boolean'
         },
         ...argTypesToHide(['surveyName', 'answerRenderingConfigurations', 'innerRef'])
     }

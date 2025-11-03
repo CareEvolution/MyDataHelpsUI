@@ -40,36 +40,36 @@ export default {
                 icon: args.customIcons ? faWalking : undefined,
                 iconColor: args.customIconColors ? '#3c973c' : undefined,
                 label: args.customLabels ? 'Activity' : undefined,
-                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
-                formatDisplayValue: args.customDisplayValues ? answer => `An activity level of ${answer.answers[0]} was recorded on this day.` : undefined
+                formatDisplayValue: args.customDisplayValues ? surveyAnswer => `An activity level of ${surveyAnswer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'sleep',
                 icon: args.customIcons ? faBed : undefined,
                 iconColor: args.customIconColors ? '#664cda' : undefined,
                 label: args.customLabels ? 'Sleep' : undefined,
-                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
-                formatDisplayValue: args.customDisplayValues ? answer => `A sleep level of ${answer.answers[0]} was recorded on this day.` : undefined
+                formatDisplayValue: args.customDisplayValues ? surveyAnswer => `A sleep level of ${surveyAnswer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'swimming',
                 icon: args.customIcons ? faSwimmer : undefined,
                 iconColor: args.customIconColors ? '#976d1e' : undefined,
                 label: args.customLabels ? 'Swimming' : undefined,
-                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
-                formatDisplayValue: args.customDisplayValues ? answer => `A swimming level of ${answer.answers[0]} was recorded on this day.` : undefined
+                formatDisplayValue: args.customDisplayValues ? surveyAnswer => `A swimming level of ${surveyAnswer.answers[0]} was recorded on this day.` : undefined
             },
             {
                 resultIdentifier: 'cycling',
                 icon: args.customIcons ? faBicycle : undefined,
                 iconColor: args.customIconColors ? '#0877b8' : undefined,
                 label: args.customLabels ? 'Cycling' : undefined,
-                shouldHighlight: args.customHighlightEvaluation ? answer => answer.answers[0] !== '0' : undefined,
+                shouldHighlight: args.customHighlightEvaluation ? surveyAnswer => surveyAnswer.answers[0] !== '0' : undefined,
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
-                formatDisplayValue: args.customDisplayValues ? answer => `A cycling level of ${answer.answers[0]} was recorded on this day.` : undefined
+                formatDisplayValue: args.customDisplayValues ? surveyAnswer => `A cycling level of ${surveyAnswer.answers[0]} was recorded on this day.` : undefined
             }
         ] : undefined;
 
@@ -126,44 +126,36 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         },
         alwaysShowAnswerDetails: {
             name: 'always show answer details',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            control: 'boolean'
         },
         showAnswerDetailsOnLoad: {
             name: 'show answer details on load',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            control: 'boolean'
         },
         customIcons: {
-            name: 'custom icons',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom icons',
+            control: 'boolean'
         },
         customIconColors: {
-            name: 'custom icon colors',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom icon colors',
+            control: 'boolean'
         },
         customLabels: {
-            name: 'custom labels',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom labels',
+            control: 'boolean'
         },
         customDisplayValues: {
-            name: 'custom display values',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom display values',
+            control: 'boolean'
         },
         customHighlightEvaluation: {
-            name: 'custom highlight evaluation',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom highlight evaluation',
+            control: 'boolean'
         },
         customHighlightStyling: {
-            name: 'custom highlight styling',
-            control: 'boolean',
-            if: { arg: 'showAnswers', eq: true }
+            name: 'answer custom highlight styling',
+            control: 'boolean'
         },
-        ...argTypesToHide(['title', 'log', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['title', 'surveyAnswerLog', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])
     }
 };

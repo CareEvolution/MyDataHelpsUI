@@ -3,7 +3,7 @@ import { Action, Card, DateRangeContext, SurveyAnswerLogSummary } from '../../pr
 import { isSameDay, startOfDay } from 'date-fns';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { createPreviewAnswerRenderingConfigurations, generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
+import { generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
 
 export interface SurveyAnswerLogPreviewProps {
     previewState?: SurveyAnswerLogPreviewPreviewState;
@@ -61,10 +61,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     title={isSameDay(surveyAnswerLog.date, new Date()) ? 'Today\'s Log' : undefined}
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEnterLog(surveyAnswerLog)}
-                    answerRenderingConfigurations={props.previewState
-                        ? createPreviewAnswerRenderingConfigurations(props.answerRenderingConfigurations)
-                        : props.answerRenderingConfigurations
-                    }
+                    answerRenderingConfigurations={props.answerRenderingConfigurations}
                     alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
                     showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
                 />
