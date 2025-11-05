@@ -99,7 +99,7 @@ export default {
             }
         ] : undefined;
 
-        function computePreviewStates(states: CalendarDayState[], date: Date, surveyAnswers: SurveyAnswer[]): CalendarDayState[] {
+        const computePreviewStatesForDay = (states: CalendarDayState[], date: Date, surveyAnswers: SurveyAnswer[]): CalendarDayState[] => {
             if (states.length === 0) {
                 return [];
             }
@@ -121,14 +121,14 @@ export default {
             if (isSameDay(date, new Date())) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
             if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff' }] : [];
             return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
-        }
+        };
 
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <SurveyAnswerLogCalendar
                     {...args}
                     previewState={args.state}
-                    computeStatesForDay={(date, surveyAnswers) => computePreviewStates(states, date, surveyAnswers)}
+                    computeStatesForDay={(date, surveyAnswers) => computePreviewStatesForDay(states, date, surveyAnswers)}
                     answerRenderingConfigurations={answerRenderingConfigurations}
                 />
             </DateRangeCoordinator>

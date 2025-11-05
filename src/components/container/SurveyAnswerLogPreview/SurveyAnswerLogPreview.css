@@ -1,4 +1,4 @@
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator-overlay {
+.mdhui-sa-log-preview .mdhui-sa-log-preview-loading-indicator-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     background: var(--mdhui-background-color-0);
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator.mdhui-loading-indicator {
+.mdhui-sa-log-preview .mdhui-sa-log-preview-loading-indicator.mdhui-loading-indicator {
     font-size: 1.5em;
     color: var(--mdhui-text-color-2);
 }

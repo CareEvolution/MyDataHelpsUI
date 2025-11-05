@@ -1,12 +1,13 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { Action, Card, DateRangeContext, SurveyAnswerLogSummary } from '../../presentational';
+import { Action, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
 import { isSameDay, startOfDay } from 'date-fns';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
+import './SurveyAnswerLogPreview.css';
 
 export interface SurveyAnswerLogPreviewProps {
-    previewState?: SurveyAnswerLogPreviewPreviewState;
+    previewState?: 'loading' | 'reloading without log' | 'reloading with log' | SurveyAnswerLogPreviewPreviewState;
     surveyName: string;
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     alwaysShowAnswerDetails?: boolean;
@@ -18,6 +19,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
     const dateRangeContext = useContext(DateRangeContext);
 
     const [loading, setLoading] = useState<boolean>(true);
+    const [initialized, setInitialized] = useState<boolean>(false);
     const [surveyAnswerLog, setSurveyAnswerLog] = useState<SurveyAnswerLog>();
 
     const currentDate = useMemo<Date>(
@@ -25,20 +27,37 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         [dateRangeContext?.intervalStart, getDayKey(new Date())]
     );
 
-    useInitializeView(() => {
-        setLoading(true);
-
-        const load = props.previewState
-            ? () => generateSurveyAnswerLog(props.previewState!, props.answerRenderingConfigurations, currentDate)
-            : () => loadSurveyAnswerLog(props.surveyName, currentDate);
-
-        load().then(surveyAnswerLog => {
+    const applyPreviewState = (previewState: 'loading' | 'reloading without log' | 'reloading with log' | SurveyAnswerLogPreviewPreviewState) => {
+        setInitialized(false);
+        setSurveyAnswerLog(undefined);
+        if (previewState === 'loading') return;
+        generateSurveyAnswerLog(previewState.replace('reloading ', '') as SurveyAnswerLogPreviewPreviewState, props.answerRenderingConfigurations, currentDate).then(surveyAnswerLog => {
             setSurveyAnswerLog(surveyAnswerLog);
+            setInitialized(true);
+            if (!previewState.startsWith('reloading')) {
+                setLoading(false);
+            }
+        });
+    };
+
+    const loadState = () => {
+        loadSurveyAnswerLog(props.surveyName, currentDate).then(surveyAnswerLog => {
+            setSurveyAnswerLog(surveyAnswerLog);
+            setInitialized(true);
             setLoading(false);
         });
+    };
+
+    useInitializeView(() => {
+        setLoading(true);
+        if (props.previewState) {
+            applyPreviewState(props.previewState);
+            return;
+        }
+        loadState();
     }, [], [props.previewState, props.surveyName, currentDate]);
 
-    if (loading) return null;
+    if (!initialized && loading) return null;
 
     const onEnterLog = (priorSurveyAnswerLog?: SurveyAnswerLog): void => {
         if (props.previewState) return;
@@ -47,12 +66,17 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
 
     return <div className="mdhui-sa-log-preview" ref={props.innerRef}>
         {!surveyAnswerLog &&
-            <Card variant="highlight">
+            <Card>
                 <Action
                     title="Add Log"
                     onClick={onEnterLog}
                     indicatorIcon={faPlus}
                 />
+                {loading &&
+                    <div className="mdhui-sa-log-preview-loading-indicator-overlay">
+                        <LoadingIndicator className="mdhui-sa-log-preview-loading-indicator" />
+                    </div>
+                }
             </Card>
         }
         {surveyAnswerLog &&
@@ -65,6 +89,11 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
                     showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
                 />
+                {loading &&
+                    <div className="mdhui-sa-log-preview-loading-indicator-overlay">
+                        <LoadingIndicator className="mdhui-sa-log-preview-loading-indicator" />
+                    </div>
+                }
             </Card>
         }
     </div>;
