@@ -1,21 +1,22 @@
-import { Calendar, CalendarDay, CalendarDayStateConfiguration, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
+import { Calendar, CalendarDay, CalendarDayState, CalendarDayStateConfiguration, Card, DateRangeContext, LayoutContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
 import { add, isAfter, isSameDay, startOfDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import './SurveyAnswerLogCalendar.css';
-import { computePreviewState, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
+import { computePreviewStates, generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
 
 export interface SurveyAnswerLogCalendarProps {
     previewState?: 'loading' | 'reloading' | 'default';
     surveyName: string;
-    stateConfiguration?: CalendarDayStateConfiguration;
-    computeState?: (date: Date, surveyAnswers: SurveyAnswer[]) => string | undefined;
+    stateConfiguration?: Partial<Record<string, CalendarDayState>>;
+    computeStates?: (date: Date, surveyAnswers: SurveyAnswer[]) => string[] | undefined;
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarProps) {
+    const layoutContext = useContext(LayoutContext);
     const dateRangeContext = useContext(DateRangeContext);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -62,17 +63,33 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
         .reverse();
 
-    const computeStateForDay = (date: Date): string | undefined => {
+    const stateConfiguration: CalendarDayStateConfiguration = {
+        'future': {
+            style: {
+                cursor: 'default'
+            }
+        },
+        ...(props.stateConfiguration && {
+            ...Object.fromEntries(Object.entries(props.stateConfiguration).map(([state, stateConfiguration]) => {
+                if (['today', 'future', 'no-data'].includes(state)) {
+                    return [state, stateConfiguration];
+                }
+                return [state, { ...stateConfiguration, streakIdentifier: state }];
+            }))
+        })
+    };
+
+    const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
 
-        const state = props.previewState
-            ? computePreviewState(props.stateConfiguration, date, surveyAnswers)
-            : props.computeState?.(date, surveyAnswers);
+        const stateKeys = props.previewState
+            ? computePreviewStates(props.stateConfiguration, date, surveyAnswers)
+            : props.computeStates?.(date, surveyAnswers);
 
-        if (state) return state;
-        if (isSameDay(date, new Date())) return 'today';
-        if (isAfter(date, new Date())) return 'future';
-        return 'no-data';
+        if (stateKeys) return stateKeys.map(stateKey => stateConfiguration[stateKey]).filter(state => !!state) as CalendarDayState[];
+        if (isSameDay(date, new Date()) && stateConfiguration['today']) return [stateConfiguration['today']];
+        if (isAfter(date, new Date()) && stateConfiguration['future']) return [stateConfiguration['future']];
+        return stateConfiguration['no-data'] ? [stateConfiguration['no-data']] : [];
     };
 
     const onDayClicked = (date: Date): void => {
@@ -81,19 +98,12 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
+
         return <CalendarDay
             year={year}
             month={month}
             day={day}
-            stateConfiguration={{
-                'future': {
-                    style: {
-                        cursor: 'default'
-                    }
-                },
-                ...props.stateConfiguration
-            }}
-            computeStateForDay={computeStateForDay}
+            computeStatesForDay={computeStatesForDay}
             onClick={onDayClicked}
         />;
     };

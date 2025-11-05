@@ -1,54 +1,37 @@
 import React, { useContext } from 'react';
-import CalendarDay, { CalendarDayProps, CalendarDayStateConfiguration } from './CalendarDay';
+import CalendarDay, { CalendarDayProps, CalendarDayState } from './CalendarDay';
 import { Calendar, Card, DateRangeContext, DateRangeCoordinator, Layout } from '../../presentational';
 import { add, formatISO, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
+import { StoryObj } from '@storybook/react';
 
 export default {
     title: 'Presentational/CalendarDay',
     component: CalendarDay,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' }
 };
 
 const render = (args: CalendarDayProps) => <Layout colorScheme="auto">
-    <div style={{width: '60px', margin: '20px auto 0'}}>
+    <div style={{ width: '60px', margin: '20px auto 0' }}>
         <CalendarDay {...args} />
     </div>
 </Layout>;
 
 const testDate = parseISO('2023-11-29T21:41:43.678Z');
 const now = new Date();
-const tomorrow = startOfDay(add(new Date(now), {days: 1}));
+const tomorrow = startOfDay(add(new Date(now), { days: 1 }));
 
 const commonProps = {
     year: testDate.getFullYear(),
     month: testDate.getMonth(),
     day: testDate.getDate(),
-    stateConfiguration: {
-        'state1': {
-            style: {
-                background: '#35A6A0'
-            }
-        },
-        'state2': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true
-        },
-        'state3': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
-        }
-    },
     onClick: () => {
-        console.log("day clicked.");
+        console.log('day clicked.');
     }
 };
 
-export const NoDay = {
+type Story = StoryObj<CalendarDayProps>;
+
+export const NoDay: Story = {
     args: {
         ...commonProps,
         day: undefined
@@ -56,192 +39,213 @@ export const NoDay = {
     render: render
 };
 
-export const Default = {
+export const Default: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state0';
-        }
+        computeStateForDay: () => undefined
     },
     render: render
 };
 
-export const Today = {
+export const Today: Story = {
     args: {
         ...commonProps,
         year: now.getFullYear(),
         month: now.getMonth(),
         day: now.getDate(),
-        computeStateForDay: (date: Date): string => {
-            return 'today';
-        }
+        computeStateForDay: () => undefined
     },
     render: render
 };
 
-export const Future = {
+export const Future: Story = {
     args: {
         ...commonProps,
         year: tomorrow.getFullYear(),
         month: tomorrow.getMonth(),
         day: tomorrow.getDate(),
-        computeStateForDay: (date: Date): string => {
-            return 'future';
-        }
+        computeStateForDay: () => undefined
     },
     render: render
 };
 
-export const StreakLeftNotSupported = {
+export const StreakLeftNotSupported: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state1";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: -1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakLeftDefaultColor = {
+export const StreakLeftDefaultColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state2";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: -1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0',
+                    streakIdentifier: 'state1'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakLeftCustomColor = {
+export const StreakLeftCustomColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: -1}), date)) {
-                return "state3";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: -1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0',
+                    streakIdentifier: 'state1',
+                    streakColor: '#35A6A066'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakRightNotSupported = {
+export const StreakRightNotSupported: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state1";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: 1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakRightDefaultColor = {
+export const StreakRightDefaultColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state2";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: 1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0',
+                    streakIdentifier: 'state1'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakRightCustomColor = {
+export const StreakRightCustomColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), {days: 1}), date)) {
-                return "state3";
+        computeStatesForDay: (date: Date): CalendarDayState[] => {
+            if (isSameDay(new Date(testDate), date) || isSameDay(add(new Date(testDate), { days: 1 }), date)) {
+                return [{
+                    backgroundColor: '#35A6A0',
+                    streakIdentifier: 'state1',
+                    streakColor: '#35A6A066'
+                }];
             }
-            return 'state0';
+            return [];
         }
     },
     render: render
 };
 
-export const StreakBothNotSupported = {
+export const StreakBothNotSupported: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state1';
+        computeStatesForDay: (): CalendarDayState[] => {
+            return [{
+                backgroundColor: '#35A6A0'
+            }];
         }
     },
     render: render
 };
 
-export const StreakBothDefaultColor = {
+export const StreakBothDefaultColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state2';
+        computeStatesForDay: (): CalendarDayState[] => {
+            return [{
+                backgroundColor: '#35A6A0',
+                streakIdentifier: 'state1'
+            }];
         }
     },
     render: render
 };
 
-export const StreakBothCustomColor = {
+export const StreakBothCustomColor: Story = {
     args: {
         ...commonProps,
-        computeStateForDay: (date: Date): string => {
-            return 'state3';
+        computeStatesForDay: (): CalendarDayState[] => {
+            return [{
+                backgroundColor: '#35A6A0',
+                streakIdentifier: 'state1',
+                streakColor: '#35A6A066'
+            }];
         }
     },
     render: render
 };
 
-export const InCalendarNoData = {
+export const InCalendarNoData: Story = {
     render: () => {
         return <Layout colorScheme="auto">
             <Card>
                 <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar/>
+                    <CalendarDayInCalendar />
                 </DateRangeCoordinator>
             </Card>
         </Layout>;
     }
 };
 
-export const InCalendarNoDataWithClickHandler = {
+export const InCalendarNoDataWithClickHandler: Story = {
     render: () => {
         return <Layout colorScheme="auto">
             <Card>
                 <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withClickHandler={true}/>
+                    <CalendarDayInCalendar withClickHandler={true} />
                 </DateRangeCoordinator>
             </Card>
         </Layout>;
     }
 };
 
-export const InCalendarWithData = {
+export const InCalendarWithData: Story = {
     render: () => {
         return <Layout colorScheme="auto">
             <Card>
                 <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withData={true}/>
+                    <CalendarDayInCalendar withData={true} />
                 </DateRangeCoordinator>
             </Card>
         </Layout>;
     }
 };
 
-export const InCalendarWithDataWithClickHandler = {
+export const InCalendarWithDataWithClickHandler: Story = {
     render: () => {
         return <Layout colorScheme="auto">
             <Card>
                 <DateRangeCoordinator intervalType="Month">
-                    <CalendarDayInCalendar withData={true} withClickHandler={true}/>
+                    <CalendarDayInCalendar withData={true} withClickHandler={true} />
                 </DateRangeCoordinator>
             </Card>
         </Layout>;
@@ -249,58 +253,44 @@ export const InCalendarWithDataWithClickHandler = {
 };
 
 function CalendarDayInCalendar(props: { withData?: boolean, withClickHandler?: boolean }) {
-    let dateRangeContext = useContext(DateRangeContext);
+    const dateRangeContext = useContext(DateRangeContext);
 
-    const stateConfiguration: CalendarDayStateConfiguration = {
-        'state1': {
-            style: {
-                background: '#F86A5C',
-                color: '#000'
-            },
-            streak: true,
-            streakColor: 'rgba(248,106,92,0.4)'
-        },
-        'state2': {
-            style: {
-                background: '#35A6A0'
-            },
-            streak: true,
-            streakColor: 'rgba(53,166,160,0.4)'
-        },
-        'state3': {
-            style: {
-                background: '#6f35a6',
-                color: '#fff'
-            },
-            streak: true
-        },
-        'state4': {
-            style: {
-                background: '#f3fa3a'
-            }
-        }
-    };
-
-    const computeStateForDay = (date: Date): string => {
+    const computeStatesForDay = (date: Date): CalendarDayState[] => {
         if (props.withData && isBefore(date, new Date())) {
             if ((date.getDate() >= 5 && date.getDate() <= 13) || date.getDate() === 17) {
-                return 'state1';
+                return [{
+                    backgroundColor: '#F86A5C',
+                    textColor: '#000',
+                    streakIdentifier: 'state1',
+                    streakColor: '#F86A5C66'
+                }];
             }
             if ((date.getDate() >= 2 && date.getDate() <= 4) || (date.getDate() >= 19 && date.getDate() <= 22) || date.getDate() === 16) {
-                return 'state2';
+                return [{
+                    backgroundColor: '#35A6A0',
+                    streakIdentifier: 'state2',
+                    streakColor: '#35A6A066'
+                }];
             }
             if (date.getDate() >= 24 && date.getDate() <= 25) {
-                return 'state3';
+                return [{
+                    backgroundColor: '#6f35a6',
+                    textColor: '#fff',
+                    streakIdentifier: 'state3'
+                }];
             }
             if (date.getDate() >= 26 && date.getDate() <= 27) {
-                return 'state4';
+                return [{
+                    backgroundColor: '#f3fa3a',
+                    textColor: '#000'
+                }];
             }
         }
-        return 'state5';
+        return [];
     };
 
     const onDayClicked = (date: Date): void => {
-        console.log('day clicked: ' + formatISO(date, {representation: 'date'}));
+        console.log('day clicked: ' + formatISO(date, { representation: 'date' }));
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
@@ -308,13 +298,12 @@ function CalendarDayInCalendar(props: { withData?: boolean, withClickHandler?: b
             year={year}
             month={month}
             day={day}
-            stateConfiguration={stateConfiguration}
-            computeStateForDay={computeStateForDay}
+            computeStatesForDay={computeStatesForDay}
             onClick={props.withClickHandler ? onDayClicked : undefined}
         />;
     };
 
     let intervalStart = dateRangeContext!.intervalStart;
 
-    return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay}/>;
+    return <Calendar className="mdhui-simple-calendar" year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />;
 }

@@ -20,15 +20,25 @@ export async function generatePreviewSurveyAnswerLogs(answerRenderingConfigurati
     }, {} as Record<string, SurveyAnswerLog>);
 }
 
-export function computePreviewState(stateConfiguration: CalendarDayStateConfiguration | undefined, date: Date, surveyAnswers: SurveyAnswer[]): string | undefined {
+export function computePreviewStates(stateConfiguration: CalendarDayStateConfiguration | undefined, date: Date, surveyAnswers: SurveyAnswer[]): string[] | undefined {
     if (!stateConfiguration || !surveyAnswers || !surveyAnswers.length) {
         return undefined;
     }
 
-    const states = Object.keys(stateConfiguration).filter(key => !['today', 'future', 'no-data'].includes(key));
+    const stateKeys = Object.keys(stateConfiguration).filter(key => !['today', 'future', 'no-data'].includes(key));
     if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
-        return states[fnvPredictableRandomNumber(getDayKey(date)) % states.length];
+        const dayKey = getDayKey(date);
+        const stateKeyCount = (fnvPredictableRandomNumber(dayKey + '-state-key-count') % stateKeys.length) + 1;
+
+        const stateKeysToReturn: string[] = [];
+        let currentStateIndex = fnvPredictableRandomNumber(dayKey + '-state-key-index') % stateKeys.length;
+        while (stateKeysToReturn.length < stateKeyCount) {
+            stateKeysToReturn.push(stateKeys[currentStateIndex]);
+            currentStateIndex = (currentStateIndex + 1) % stateKeys.length;
+        }
+        return stateKeysToReturn;
     }
+
     return undefined;
 }
 

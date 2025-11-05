@@ -30,48 +30,39 @@ export default {
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
         const stateConfiguration: CalendarDayStateConfiguration = args.includeStates ? {
             'purple-state': {
-                style: {
-                    background: '#664cda',
-                    border: '2px solid #664cda',
-                    marginTop: '-12px',
-                    color: '#f4d6ff',
-                    ...customHighlightStyling
-                },
-                streak: true,
-                streakColor: '#edc4ff'
+                backgroundColor: '#664cda',
+                borderColor: '#664cda',
+                textColor: '#f4d6ff',
+                style: customHighlightStyling,
+                streakIdentifier: 'purple-state',
+                streakColor: '#664cda'
             },
             'green-state': {
-                style: {
-                    background: '#3c973c',
-                    border: '2px solid #3c973c',
-                    marginTop: '-12px',
-                    color: '#bdead7',
-                    ...customHighlightStyling
-                },
-                streak: true,
-                streakColor: '#bdead7'
+                backgroundColor: '#3c973c',
+                borderColor: '#3c973c',
+                textColor: '#bdead7',
+                style: customHighlightStyling,
+                streakIdentifier: 'green-state',
+                streakColor: '#3c973c'
             },
             'blue-state': {
-                style: {
-                    background: '#0877b8',
-                    border: '2px solid #0877b8',
-                    marginTop: '-12px',
-                    color: '#abe0ff',
-                    ...customHighlightStyling
-                },
-                streak: true,
-                streakColor: '#67c0f4'
+                backgroundColor: '#0877b8',
+                borderColor: '#0877b8',
+                textColor: '#abe0ff',
+                style: customHighlightStyling,
+                streakIdentifier: 'blue-state',
+                streakColor: '#0877b8'
             }
         } : {};
 
         if (args.customizeToday) {
-            stateConfiguration['today'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
+            stateConfiguration['today'] = { borderColor: '#fff' };
         }
         if (args.customizeFuture) {
-            stateConfiguration['future'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
+            stateConfiguration['future'] = { borderColor: '#fff' };
         }
         if (args.customizeNoData) {
-            stateConfiguration['no-data'] = { style: { border: '2px solid #fff', marginTop: '-12px' } };
+            stateConfiguration['no-data'] = { borderColor: '#fff' };
         }
 
         const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showLogs ? [

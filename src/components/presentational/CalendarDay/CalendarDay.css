@@ -7,19 +7,20 @@
     width: 100%;
     height: 22px;
     margin-top: 5px;
-    --mdhui-calendar-day-streak-color: #ddd;
+    --mdhui-calendar-day-streak-left-color: #ddd;
+    --mdhui-calendar-day-streak-right-color: #ddd;
 }
 
 .mdhui-calendar-day-streak-left {
-    background: linear-gradient(90deg, var(--mdhui-calendar-day-streak-color) 50%, transparent 50%);
+    background: linear-gradient(90deg, var(--mdhui-calendar-day-streak-left-color) 50%, transparent 50%);
 }
 
 .mdhui-calendar-day-streak-right {
-    background: linear-gradient(90deg, transparent 50%, var(--mdhui-calendar-day-streak-color) 50%);
+    background: linear-gradient(90deg, transparent 50%, var(--mdhui-calendar-day-streak-right-color) 50%);
 }
 
 .mdhui-calendar-day-streak-both {
-    background-color: var(--mdhui-calendar-day-streak-color);
+    background: linear-gradient(90deg, var(--mdhui-calendar-day-streak-left-color) 50%, transparent 50%), linear-gradient(90deg, transparent 50%, var(--mdhui-calendar-day-streak-right-color) 50%);
 }
 
 .mdhui-calendar-day .mdhui-unstyled-button {
