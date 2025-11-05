@@ -64,7 +64,10 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
 
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
-        return props.computeStatesForDay(date, surveyAnswers);
+        const calendarDayStates = props.computeStatesForDay(date, surveyAnswers);
+        if (calendarDayStates.length > 0) return calendarDayStates;
+        if (isAfter(date, new Date())) return [{ style: { cursor: 'default' } }];
+        return [];
     };
 
     const onDayClicked = (date: Date): void => {

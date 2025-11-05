@@ -119,7 +119,7 @@ export default {
             }
 
             if (isSameDay(date, new Date())) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
-            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff', style: { cursor: 'default' } }] : [{ style: { cursor: 'default' } }];
+            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff' }] : [];
             return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
         }
 
