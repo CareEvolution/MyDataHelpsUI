@@ -1,10 +1,12 @@
 import React, { CSSProperties } from 'react';
-import { CalendarDayStateConfiguration, DateRangeCoordinator, Layout } from '../../presentational';
+import { CalendarDayState, DateRangeCoordinator, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyAnswerLogCalendar from './SurveyAnswerLogCalendar';
-import { SurveyAnswerRenderingConfiguration } from '../../../helpers';
+import { fnvPredictableRandomNumber, getDayKey, SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import { isAfter, isSameDay } from 'date-fns';
 
 const customHighlightStyling: CSSProperties = {
     boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
@@ -28,42 +30,35 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
-        const stateConfiguration: CalendarDayStateConfiguration = args.includeStates ? {
-            'purple-state': {
+        const states: CalendarDayState[] = args.includeStates ? [
+            {
                 backgroundColor: '#664cda',
                 borderColor: '#664cda',
                 textColor: '#f4d6ff',
                 style: customHighlightStyling,
                 streakIdentifier: 'purple-state',
-                streakColor: '#664cda'
+                streakColor: '#664cda',
+                combineWhenSolo: true
             },
-            'green-state': {
+            {
                 backgroundColor: '#3c973c',
                 borderColor: '#3c973c',
                 textColor: '#bdead7',
                 style: customHighlightStyling,
                 streakIdentifier: 'green-state',
-                streakColor: '#3c973c'
+                streakColor: '#3c973c',
+                combineWhenSolo: true
             },
-            'blue-state': {
+            {
                 backgroundColor: '#0877b8',
                 borderColor: '#0877b8',
                 textColor: '#abe0ff',
                 style: customHighlightStyling,
                 streakIdentifier: 'blue-state',
-                streakColor: '#0877b8'
+                streakColor: '#0877b8',
+                combineWhenSolo: true
             }
-        } : {};
-
-        if (args.customizeToday) {
-            stateConfiguration['today'] = { borderColor: '#fff' };
-        }
-        if (args.customizeFuture) {
-            stateConfiguration['future'] = { borderColor: '#fff' };
-        }
-        if (args.customizeNoData) {
-            stateConfiguration['no-data'] = { borderColor: '#fff' };
-        }
+        ] : [];
 
         const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showLogs ? [
             {
@@ -104,12 +99,36 @@ export default {
             }
         ] : undefined;
 
+        function computePreviewStates(states: CalendarDayState[], date: Date, surveyAnswers: SurveyAnswer[]): CalendarDayState[] {
+            if (states.length === 0) {
+                return [];
+            }
+
+            if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
+                const dayKey = getDayKey(date);
+                const statesCount = (fnvPredictableRandomNumber(dayKey + '-states-count') % states.length) + 1;
+
+                const statesToReturn: CalendarDayState[] = [];
+                let currentStateIndex = fnvPredictableRandomNumber(dayKey + '-states-start-index') % states.length;
+                while (statesToReturn.length < statesCount) {
+                    statesToReturn.push(states[currentStateIndex]);
+                    currentStateIndex = (currentStateIndex + 1) % states.length;
+                }
+
+                return statesToReturn.sort((a, b) => states.indexOf(a) - states.indexOf(b));
+            }
+
+            if (isSameDay(date, new Date())) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
+            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff', style: { cursor: 'default' } }] : [{ style: { cursor: 'default' } }];
+            return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
+        }
+
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <SurveyAnswerLogCalendar
                     {...args}
                     previewState={args.state}
-                    stateConfiguration={stateConfiguration}
+                    computeStatesForDay={(date, surveyAnswers) => computePreviewStates(states, date, surveyAnswers)}
                     answerRenderingConfigurations={answerRenderingConfigurations}
                 />
             </DateRangeCoordinator>
@@ -122,6 +141,7 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
         colorScheme: 'auto',
         state: 'default',
         includeStates: true,
+        multiStateStartAngle: 270,
         customizeToday: false,
         customizeFuture: false,
         customizeNoData: false,
@@ -142,6 +162,15 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'include states',
             control: 'boolean'
         },
+        multiStateStartAngle: {
+            name: 'multi-state start angle',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 360,
+                step: 1
+            }
+        },
         customizeToday: {
             name: 'customize today',
             control: 'boolean'
@@ -158,6 +187,6 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'show logs',
             control: 'boolean'
         },
-        ...argTypesToHide(['previewState', 'surveyName', 'stateConfiguration', 'computeState', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['previewState', 'surveyName', 'computeStatesForDay', 'answerRenderingConfigurations', 'innerRef'])
     }
 };

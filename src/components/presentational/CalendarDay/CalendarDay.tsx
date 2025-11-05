@@ -6,9 +6,9 @@ import { add, isAfter, isSameDay } from 'date-fns';
 import UnstyledButton from '../UnstyledButton';
 
 export interface CalendarDayState {
-    backgroundColor?: ColorDefinition,
-    borderColor?: ColorDefinition,
-    textColor?: ColorDefinition,
+    backgroundColor?: ColorDefinition;
+    borderColor?: ColorDefinition;
+    textColor?: ColorDefinition;
     /**
      * @deprecated - This property has been deprecated and will be removed in a future release.
      *
@@ -16,10 +16,11 @@ export interface CalendarDayState {
      * when a matching state has been computed for the prior and/or following days which causes a
      * streak to be rendered.
      */
-    streak?: boolean,
-    streakIdentifier?: string,
-    streakColor?: ColorDefinition,
-    style?: CSSProperties
+    streak?: boolean;
+    streakIdentifier?: string;
+    streakColor?: ColorDefinition;
+    combineWhenSolo?: boolean;
+    style?: CSSProperties;
 }
 
 export type CalendarDayStateConfiguration = Partial<Record<string, CalendarDayState>>;
@@ -42,10 +43,11 @@ export interface CalendarDayProps {
     computeStateForDay?: (date: Date) => string | undefined;
     computeStatesForDay?: (date: Date) => CalendarDayState[];
     onClick?: (date: Date) => void;
+    multiStateStartAngle?: number;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function(props: CalendarDayProps) {
+export default function CalendarDay(props: CalendarDayProps) {
     const layoutContext = useContext(LayoutContext);
 
     if (!props.day) {
@@ -118,7 +120,7 @@ export default function(props: CalendarDayProps) {
     const createStreakGradient = (colorsToCombine: (ColorDefinition | undefined)[], position: 'left' | 'right'): string => {
         const resolvedColorsToCombine = colorsToCombine.map(colorDefinition => {
             return resolveColor(layoutContext.colorScheme, colorDefinition) ?? '#ddd';
-        }).sort((a, b) => a.localeCompare(b));
+        });
 
         const chunkPercent = 100 / resolvedColorsToCombine.length;
         let background = 'linear-gradient(to bottom, ';
@@ -131,24 +133,21 @@ export default function(props: CalendarDayProps) {
                 background += ', ';
             }
         }
-        background += `) ${position} / 50% 100% no-repeat`;
+        background += `) ${position === 'left' ? 'calc(0% - 1px)' : 'calc(100% + 1px)'} / 50% 100% no-repeat`;
 
         return background;
     };
 
     if (currentDayStreakIdentifiers.length > 0) {
         if (leftStreakColors.length > 0 && rightStreakColors.length > 0 && canStreakLeft(date) && canStreakRight(date)) {
-            dayClasses.push('mdhui-calendar-day-streak-both');
             dayStyle = {
                 background: createStreakGradient(leftStreakColors, 'left') + ', ' + createStreakGradient(rightStreakColors, 'right')
             } as CSSProperties;
         } else if (leftStreakColors.length > 0 && canStreakLeft(date)) {
-            dayClasses.push('mdhui-calendar-day-streak-left');
             dayStyle = {
                 background: createStreakGradient(leftStreakColors, 'left')
             } as CSSProperties;
         } else if (rightStreakColors.length > 0 && canStreakRight(date)) {
-            dayClasses.push('mdhui-calendar-day-streak-right');
             dayStyle = {
                 background: createStreakGradient(rightStreakColors, 'right')
             } as CSSProperties;
@@ -161,7 +160,7 @@ export default function(props: CalendarDayProps) {
         });
 
         const chunkPercent = 100 / resolvedColorsToCombine.length;
-        let background = 'conic-gradient(from 270deg at 50% 50%,';
+        let background = `conic-gradient(from ${props.multiStateStartAngle ?? 270}deg at 50% 50%,`;
         let currentPercent = 0;
         for (let i = 0; i < resolvedColorsToCombine.length; i++) {
             background = background + resolvedColorsToCombine[i] + ' ' + currentPercent + '%, ';
@@ -178,7 +177,7 @@ export default function(props: CalendarDayProps) {
 
     const createCombinedStateIfNecessary = (states: CalendarDayState[]): CalendarDayState | undefined => {
         if (states.length === 0) return undefined;
-        //if (states.length === 1) return states[0];
+        if (states.length === 1 && !states[0].combineWhenSolo) return states[0];
 
         const backgroundColors = states.map(state => state.backgroundColor ?? 'inherit');
 

@@ -1,7 +1,7 @@
-import { parseISO, startOfToday } from 'date-fns';
+import { isAfter, isSameDay, parseISO, startOfToday } from 'date-fns';
 import { fnvPredictableRandomNumber, generateSurveyAnswers, getDayKey, SurveyAnswerLog, SurveyAnswerRenderingConfiguration } from '../../../helpers';
 import { v4 as uuid } from 'uuid';
-import { CalendarDayStateConfiguration } from '../../presentational';
+import { CalendarDayState } from '../../presentational';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 
 export async function generatePreviewSurveyAnswerLogs(answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined, startDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
@@ -19,26 +19,3 @@ export async function generatePreviewSurveyAnswerLogs(answerRenderingConfigurati
         return surveyAnswerLogs;
     }, {} as Record<string, SurveyAnswerLog>);
 }
-
-export function computePreviewStates(stateConfiguration: CalendarDayStateConfiguration | undefined, date: Date, surveyAnswers: SurveyAnswer[]): string[] | undefined {
-    if (!stateConfiguration || !surveyAnswers || !surveyAnswers.length) {
-        return undefined;
-    }
-
-    const stateKeys = Object.keys(stateConfiguration).filter(key => !['today', 'future', 'no-data'].includes(key));
-    if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
-        const dayKey = getDayKey(date);
-        const stateKeyCount = (fnvPredictableRandomNumber(dayKey + '-state-key-count') % stateKeys.length) + 1;
-
-        const stateKeysToReturn: string[] = [];
-        let currentStateIndex = fnvPredictableRandomNumber(dayKey + '-state-key-index') % stateKeys.length;
-        while (stateKeysToReturn.length < stateKeyCount) {
-            stateKeysToReturn.push(stateKeys[currentStateIndex]);
-            currentStateIndex = (currentStateIndex + 1) % stateKeys.length;
-        }
-        return stateKeysToReturn;
-    }
-
-    return undefined;
-}
-
