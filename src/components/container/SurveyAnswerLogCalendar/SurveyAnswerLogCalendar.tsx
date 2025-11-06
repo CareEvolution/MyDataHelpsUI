@@ -1,5 +1,5 @@
 import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, LayoutContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { add, compareDesc, isAfter, startOfDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, resolveColor, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
@@ -11,7 +11,7 @@ export interface SurveyAnswerLogCalendarProps {
     surveyName: string;
     computeStatesForDay: (date: Date, surveyAnswers: SurveyAnswer[]) => CalendarDayState[];
     multiStateStartAngle?: number;
-    showLegend?: boolean;
+    legend?: CalendarDayState[];
     answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -22,7 +22,6 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
 
     const [loading, setLoading] = useState<boolean>(true);
     const [surveyAnswerLogs, setSurveyAnswerLogs] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
-    const [statesRendered, setStatesRendered] = useState<Record<string, CalendarDayState>>({});
 
     const applyPreviewState = (previewState: 'loading' | 'reloading' | 'default') => {
         setSurveyAnswerLogs({});
@@ -61,12 +60,6 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         [intervalStart]
     );
 
-    useEffect(() => {
-        if (Object.keys(statesRendered).length > 0) {
-            setStatesRendered({});
-        }
-    }, [intervalStart, props.computeStatesForDay]);
-
     const currentSurveyAnswerLogs = Object.values(surveyAnswerLogs as Record<string, SurveyAnswerLog>)
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
         .sort((a, b) => compareDesc(a.date, b.date));
@@ -74,16 +67,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
         const calendarDayStates = props.computeStatesForDay(date, surveyAnswers);
-        if (calendarDayStates.length > 0) {
-            queueMicrotask(() => setStatesRendered(previousStatesRendered => {
-                const newStates = calendarDayStates.filter(state => state.label && !previousStatesRendered[state.label]);
-                if (newStates.length > 0) {
-                    return { ...previousStatesRendered, ...Object.fromEntries(newStates.map(state => [state.label, state])) };
-                }
-                return previousStatesRendered;
-            }));
-            return calendarDayStates;
-        }
+        if (calendarDayStates.length > 0) return calendarDayStates;
         if (isAfter(date, new Date())) return [{ style: { cursor: 'default' } }];
         return [];
     };
@@ -112,9 +96,9 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     return <div ref={props.innerRef} className="mdhui-sa-log-calendar">
         <Card>
             <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
-            {props.showLegend && Object.keys(statesRendered).length > 0 &&
+            {props.legend && props.legend.length > 0 &&
                 <div className="mdhui-sa-log-calendar-legend">
-                    {Object.values(statesRendered).sort((a, b) => a.label!.localeCompare(b.label!)).map(state => {
+                    {props.legend.map(state => {
                         const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
                         const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
 

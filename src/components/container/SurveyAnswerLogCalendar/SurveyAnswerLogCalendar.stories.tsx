@@ -17,6 +17,7 @@ type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswer
     colorScheme: 'auto' | 'light' | 'dark';
     state: 'loading' | 'default';
     includeStates: boolean;
+    showLegend: boolean;
     customizeToday: boolean;
     customizeFuture: boolean;
     customizeNoData: boolean;
@@ -132,6 +133,7 @@ export default {
                     {...args}
                     previewState={args.state}
                     computeStatesForDay={(date, surveyAnswers) => computePreviewStatesForDay(states, date, surveyAnswers)}
+                    legend={args.showLegend ? states : undefined}
                     answerRenderingConfigurations={answerRenderingConfigurations}
                 />
             </DateRangeCoordinator>
