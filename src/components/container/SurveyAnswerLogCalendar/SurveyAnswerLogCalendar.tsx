@@ -65,7 +65,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         if (Object.keys(statesRendered).length > 0) {
             setStatesRendered({});
         }
-    }, [intervalStart]);
+    }, [intervalStart, props.computeStatesForDay]);
 
     const currentSurveyAnswerLogs = Object.values(surveyAnswerLogs as Record<string, SurveyAnswerLog>)
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
