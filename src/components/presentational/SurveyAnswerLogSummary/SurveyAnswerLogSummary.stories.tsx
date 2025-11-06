@@ -13,7 +13,6 @@ import { startOfToday } from 'date-fns';
 type SurveyAnswerLogSummaryStoryArgs = React.ComponentProps<typeof SurveyAnswerLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
     customTitle: boolean;
-    showAnswers: boolean;
     customIcons: boolean;
     customIconColors: boolean;
     customLabels: boolean;
@@ -34,7 +33,7 @@ export default {
             transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showAnswers ? [
+        const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] = [
             {
                 resultIdentifier: 'activity',
                 icon: args.customIcons ? faWalking : undefined,
@@ -71,7 +70,7 @@ export default {
                 customHighlightStyling: args.customHighlightStyling ? customHighlightStyling : undefined,
                 formatDisplayValue: args.customDisplayValues ? surveyAnswer => `A cycling level of ${surveyAnswer.answers[0]} was recorded on this day.` : undefined
             }
-        ] : undefined;
+        ];
 
         return <Layout colorScheme={args.colorScheme}>
             <Card>
@@ -100,7 +99,6 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
             ]
         },
         onEdit: noop,
-        showAnswers: true,
         alwaysShowAnswerDetails: true,
         showAnswerDetailsOnLoad: true,
         customIcons: true,
@@ -118,10 +116,6 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         },
         customTitle: {
             name: 'custom title',
-            control: 'boolean'
-        },
-        showAnswers: {
-            name: 'show answers',
             control: 'boolean'
         },
         alwaysShowAnswerDetails: {

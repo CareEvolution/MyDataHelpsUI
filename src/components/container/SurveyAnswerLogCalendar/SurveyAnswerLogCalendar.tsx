@@ -1,6 +1,6 @@
 import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
-import { add, isAfter, startOfDay, startOfMonth } from 'date-fns';
+import { add, compareDesc, isAfter, startOfDay, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import './SurveyAnswerLogCalendar.css';
@@ -60,7 +60,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
 
     const currentSurveyAnswerLogs = Object.values(surveyAnswerLogs as Record<string, SurveyAnswerLog>)
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
-        .reverse();
+        .sort((a, b) => compareDesc(a.date, b.date));
 
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
@@ -105,11 +105,9 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
                 <SurveyAnswerLogSummary
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEnterLog(surveyAnswerLog)}
-                    answerRenderingConfigurations={props.answerRenderingConfigurations}
+                    answerRenderingConfigurations={props.answerRenderingConfigurations!}
                 />
-                {loading &&
-                    <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />
-                }
+                {loading && <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />}
             </Card>;
         })}
     </div>;

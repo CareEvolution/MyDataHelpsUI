@@ -1,8 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { Action, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
+import { Action, Button, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary } from '../../presentational';
 import { isSameDay, startOfDay } from 'date-fns';
-import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { enterSurveyAnswerLog, formatDateForLocale, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, SurveyAnswerRenderingConfiguration, useInitializeView } from '../../../helpers';
 import { generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
 import './SurveyAnswerLogPreview.css';
 
@@ -55,7 +54,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
             return;
         }
         loadState();
-    }, [], [props.previewState, props.surveyName, currentDate]);
+    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, currentDate]);
 
     if (!initialized && loading) return null;
 
@@ -65,12 +64,13 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
     };
 
     return <div className="mdhui-sa-log-preview" ref={props.innerRef}>
-        {!surveyAnswerLog &&
+        {(!surveyAnswerLog || !props.answerRenderingConfigurations) &&
             <Card>
                 <Action
-                    title="Add Log"
-                    onClick={onEnterLog}
-                    indicatorIcon={faPlus}
+                    title={isSameDay(currentDate, new Date()) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
+                    subtitle={surveyAnswerLog ? 'A log has been entered' : 'A log has not been entered.'}
+                    renderAs="div"
+                    indicator={<Button onClick={() => onEnterLog(surveyAnswerLog)}>{surveyAnswerLog ? 'Edit Log' : 'Add Log'}</Button>}
                 />
                 {loading &&
                     <div className="mdhui-sa-log-preview-loading-indicator-overlay">
@@ -79,7 +79,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                 }
             </Card>
         }
-        {surveyAnswerLog &&
+        {surveyAnswerLog && props.answerRenderingConfigurations &&
             <Card>
                 <SurveyAnswerLogSummary
                     title={isSameDay(surveyAnswerLog.date, new Date()) ? 'Today\'s Log' : undefined}
