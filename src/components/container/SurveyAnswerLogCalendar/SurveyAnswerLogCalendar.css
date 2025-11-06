@@ -15,3 +15,32 @@
     font-size: 1.5em;
     color: var(--mdhui-text-color-2);
 }
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend {
+    padding: 0 32px 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-color {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+}
+
+.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-label {
+    font-size: 0.75em;
+    color: var(--mdhui-text-color-2);
+    font-weight: bold;
+}

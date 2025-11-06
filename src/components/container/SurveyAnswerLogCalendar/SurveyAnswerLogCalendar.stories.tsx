@@ -32,6 +32,7 @@ export default {
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
         const states: CalendarDayState[] = args.includeStates ? [
             {
+                label: 'Sleep',
                 backgroundColor: '#664cda',
                 borderColor: '#664cda',
                 textColor: '#f4d6ff',
@@ -41,6 +42,7 @@ export default {
                 combineWhenSolo: true
             },
             {
+                label: 'Activity',
                 backgroundColor: '#3c973c',
                 borderColor: '#3c973c',
                 textColor: '#bdead7',
@@ -50,6 +52,7 @@ export default {
                 combineWhenSolo: true
             },
             {
+                label: 'Swimming',
                 backgroundColor: '#0877b8',
                 borderColor: '#0877b8',
                 textColor: '#abe0ff',
@@ -141,6 +144,7 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
         colorScheme: 'auto',
         state: 'default',
         includeStates: true,
+        showLegend: false,
         multiStateStartAngle: 270,
         customizeToday: false,
         customizeFuture: false,
@@ -160,6 +164,10 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
         },
         includeStates: {
             name: 'include states',
+            control: 'boolean'
+        },
+        showLegend: {
+            name: 'show legend',
             control: 'boolean'
         },
         multiStateStartAngle: {

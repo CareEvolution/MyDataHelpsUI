@@ -6,6 +6,7 @@ import { add, isAfter, isSameDay } from 'date-fns';
 import UnstyledButton from '../UnstyledButton';
 
 export interface CalendarDayState {
+    label?: string;
     backgroundColor?: ColorDefinition;
     borderColor?: ColorDefinition;
     textColor?: ColorDefinition;
@@ -179,7 +180,7 @@ export default function CalendarDay(props: CalendarDayProps) {
         if (states.length === 0) return undefined;
         if (states.length === 1 && !states[0].combineWhenSolo) return states[0];
 
-        const backgroundColors = states.map(state => state.backgroundColor ?? 'inherit');
+        const backgroundColors = states.map(state => state.backgroundColor ?? 'var(--mdhui-border-color-2)');
 
         const backgroundColor = combinedColors(backgroundColors);
         const borderColor = combinedColors(states.map((state, index) => state.borderColor ?? backgroundColors[index]));
