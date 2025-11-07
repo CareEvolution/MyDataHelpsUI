@@ -83,7 +83,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.FitbitActiveCaloriesBurned,
         dataProvider: fitbitActiveCaloriesBurnedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Calories", "CaloriesBMR"], { strict: true }),
+        availabilityCheck: simpleAvailabilityCheck("Fitbit", ["Calories", "CaloriesBMR"], { requireAllTypes: true }),
         labelKey: "active-calories-burned",
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,

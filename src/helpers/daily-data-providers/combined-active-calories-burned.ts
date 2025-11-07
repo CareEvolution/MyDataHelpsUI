@@ -2,29 +2,36 @@ import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDa
 import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from './combined-data-collection-settings';
 import { DailyDataQueryResult } from '../query-daily-data';
 import { combineResultsUsingMaxValue } from './daily-data';
-import { canQuery } from './data-collection-helper';
+import { getSupportedApis, SupportedAPIsQuery } from './data-collection-helper';
 
 export default async function(startDate: Date, endDate: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
     combinedDataCollectionSettings = combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(true);
 
-    if (canQuery(combinedDataCollectionSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true).v1.enabled) {
+    const fitbitSupportedApisQuery: SupportedAPIsQuery = { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true };
+    if (getSupportedApis(combinedDataCollectionSettings, fitbitSupportedApisQuery).v1.enabled) {
         providers.push(fitbitActiveCaloriesBurnedDataProvider(startDate, endDate, combinedDataCollectionSettings));
     }
-    if (canQuery(combinedDataCollectionSettings, 'Garmin', ['Calories'], false).v1.enabled) {
+
+    const garminSupportedApisQuery: SupportedAPIsQuery = { namespace: 'Garmin', types: ['Calories'], requireAllTypes: false };
+    if (getSupportedApis(combinedDataCollectionSettings, garminSupportedApisQuery).v1.enabled) {
         providers.push(garminActiveCaloriesDataProvider(startDate, endDate));
     }
 
-    const appleHealthCanQueryResult = canQuery(combinedDataCollectionSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
-    if (appleHealthCanQueryResult.v1.enabled || appleHealthCanQueryResult.v2.enabled) {
+    const appleHealthSupportedApisQuery: SupportedAPIsQuery = { namespace: 'AppleHealth', types: ['ActiveEnergyBurned', 'Active Energy Burned'], requireAllTypes: false };
+    const appleHealthSupportedApisResult = getSupportedApis(combinedDataCollectionSettings, appleHealthSupportedApisQuery);
+    if (appleHealthSupportedApisResult.v1.enabled || appleHealthSupportedApisResult.v2.enabled) {
         providers.push(appleHealthActiveEnergyBurnedDataProvider(startDate, endDate, combinedDataCollectionSettings));
     }
 
-    if (canQuery(combinedDataCollectionSettings, 'HealthConnect', ['active-calories-burned-daily'], false).v2.enabled) {
+    const healthConnectSupportedApisQuery: SupportedAPIsQuery = { namespace: 'HealthConnect', types: ['active-calories-burned-daily'], requireAllTypes: false };
+    if (getSupportedApis(combinedDataCollectionSettings, healthConnectSupportedApisQuery).v2.enabled) {
         providers.push(healthConnectActiveCaloriesBurnedDataProvider(startDate, endDate));
     }
-    if (canQuery(combinedDataCollectionSettings, 'Oura', ['daily-activity'], false).v2.enabled) {
+
+    const ouraSupportedApisQuery: SupportedAPIsQuery = { namespace: 'Oura', types: ['daily-activity'], requireAllTypes: false };
+    if (getSupportedApis(combinedDataCollectionSettings, ouraSupportedApisQuery).v2.enabled) {
         providers.push(ouraActiveCaloriesBurnedDataProvider(startDate, endDate));
     }
 

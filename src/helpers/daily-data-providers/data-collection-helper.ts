@@ -14,11 +14,17 @@ const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV
     WeatherBit: 'weatherEnabled'
 };
 
-export type CanQueryApiResult = { enabled: true; types: string[] } | { enabled: false; types?: never };
+export interface SupportedAPIsQuery {
+    namespace: DeviceDataNamespace | DeviceDataV2Namespace;
+    types: string[];
+    requireAllTypes: boolean;
+}
 
-export interface CanQueryResult {
-    v1: CanQueryApiResult;
-    v2: CanQueryApiResult;
+export type SupportedAPI = { enabled: true; types: string[] } | { enabled: false; types?: never };
+
+export interface SupportedAPIsResult {
+    v1: SupportedAPI;
+    v2: SupportedAPI;
 }
 
 /**
@@ -27,12 +33,14 @@ export interface CanQueryResult {
  * checking because only enabled types are included in such queries.
  *
  * @param combinedDataCollectionSettings - The combined data collection settings used to determine the above.
- * @param namespace - The V1 or V2 namespace to check.
- * @param types - The V1 or V2 data types to check.
- * @param strict - If true, all types must be available from an API for it to be enabled.  If false, only one type must be available.
+ * @param query.namespace - The V1 or V2 namespace to check.
+ * @param query.types - The V1 or V2 data types to check.
+ * @param query.requireAllTypes - If true, all types must be available from an API for it to be enabled.  If false, only one type must be available.
  */
-export function canQuery(combinedDataCollectionSettings: CombinedDataCollectionSettings, namespace: DeviceDataNamespace | DeviceDataV2Namespace, types: string[], strict: boolean): CanQueryResult {
-    const result: CanQueryResult = { v1: { enabled: false }, v2: { enabled: false } };
+export function getSupportedApis(combinedDataCollectionSettings: CombinedDataCollectionSettings, query: SupportedAPIsQuery): SupportedAPIsResult {
+    const result: SupportedAPIsResult = { v1: { enabled: false }, v2: { enabled: false } };
+
+    const { namespace, types, requireAllTypes } = query;
 
     if (namespace === 'Project') {
         result.v1.enabled = true;
@@ -44,10 +52,10 @@ export function canQuery(combinedDataCollectionSettings: CombinedDataCollectionS
             .map(dataType => dataType.type);
 
         if (v1DataTypes.length > 0) {
-            if (strict && types.every(type => v1DataTypes.includes(type))) {
+            if (requireAllTypes && types.every(type => v1DataTypes.includes(type))) {
                 result.v1.enabled = true;
                 result.v1.types = types;
-            } else if (!strict && types.some(type => v1DataTypes.includes(type))) {
+            } else if (!requireAllTypes && types.some(type => v1DataTypes.includes(type))) {
                 result.v1.enabled = true;
                 result.v1.types = types.filter(type => v1DataTypes.includes(type));
             }
@@ -58,10 +66,10 @@ export function canQuery(combinedDataCollectionSettings: CombinedDataCollectionS
             .map(dataType => dataType.type);
 
         if (v2DataTypes.length > 0) {
-            if (strict && types.every(type => v2DataTypes.includes(type))) {
+            if (requireAllTypes && types.every(type => v2DataTypes.includes(type))) {
                 result.v2.enabled = true;
                 result.v2.types = types;
-            } else if (!strict && types.some(type => v2DataTypes.includes(type))) {
+            } else if (!requireAllTypes && types.some(type => v2DataTypes.includes(type))) {
                 result.v2.enabled = true;
                 result.v2.types = types.filter(type => v2DataTypes.includes(type));
             }

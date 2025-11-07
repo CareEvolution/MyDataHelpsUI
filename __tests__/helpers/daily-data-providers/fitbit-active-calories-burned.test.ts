@@ -5,12 +5,12 @@ import fitbitActiveCaloriesBurned from '../../../src/helpers/daily-data-provider
 import getDayKey from '../../../src/helpers/get-day-key';
 import { add } from 'date-fns';
 import { DailyDataQueryResult } from '../../../src';
-import { canQuery } from '../../../src/helpers/daily-data-providers/data-collection-helper';
+import { getSupportedApis } from '../../../src/helpers/daily-data-providers/data-collection-helper';
 import { CombinedDataCollectionSettings } from '../../../src/helpers/daily-data-providers/combined-data-collection-settings';
 
 jest.mock('../../../src/helpers/daily-data-providers/data-collection-helper', () => ({
     __esModule: true,
-    canQuery: jest.fn()
+    getSupportedApis: jest.fn()
 }));
 
 jest.mock('../../../src/helpers/daily-data-providers/fitbit-calories-burned', () => ({
@@ -25,11 +25,13 @@ jest.mock('../../../src/helpers/daily-data-providers/fitbit-resting-calories-bur
 
 describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
 
-    const canQueryMock = canQuery as jest.Mock;
+    const getSupportedApisMock = getSupportedApis as jest.Mock;
     const fitbitCaloriesBurnedDataProviderMock = fitbitCaloriesBurnedDataProvider as jest.Mock;
     const fitbitRestingCaloriesBurnedDataProviderMock = fitbitRestingCaloriesBurnedDataProvider as jest.Mock;
 
     const combinedSettings = createEmptyCombinedDataCollectionSettings();
+
+    const expectedSupportedApisQuery = { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true };
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -37,33 +39,33 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
     });
 
     it('Should return an empty result when querying for the required types is not enabled.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
 
         const result = await fitbitActiveCaloriesBurned(sampleStartDate, sampleEndDate);
 
         expect(result).toEqual({});
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(fitbitCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
         expect(fitbitRestingCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
     });
 
     it('Should return an empty result when querying for the required types is enabled, but only for v2.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: true, types: ['Calories', 'CaloriesBMR'] } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: true, types: ['Calories', 'CaloriesBMR'] } });
 
         const result = await fitbitActiveCaloriesBurned(sampleStartDate, sampleEndDate);
 
         expect(result).toEqual({});
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(fitbitCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
         expect(fitbitRestingCaloriesBurnedDataProviderMock).not.toHaveBeenCalled();
     });
 
     it('Should return the result when querying for the required types is enabled for v1.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
 
         const totalCaloriesResult: DailyDataQueryResult = {
             [getDayKey(sampleStartDate)]: 2500,
@@ -85,8 +87,8 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
         expect(result[getDayKey(sampleStartDate)]).toBe(500);
         expect(result[getDayKey(add(sampleStartDate, { days: 3 }))]).toBe(400);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
         expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
@@ -94,7 +96,7 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
     });
 
     it('Should use specified combined settings, when provided.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
 
         const totalCaloriesResult: DailyDataQueryResult = {
             [getDayKey(sampleStartDate)]: 2500,
@@ -118,8 +120,8 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
         expect(result[getDayKey(sampleStartDate)]).toBe(500);
         expect(result[getDayKey(add(sampleStartDate, { days: 3 }))]).toBe(400);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(specifiedCombinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(specifiedCombinedSettings, expectedSupportedApisQuery);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
         expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
@@ -127,7 +129,7 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
     });
 
     it('Should ignore non-positive computed values.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
 
         const totalCaloriesResult: DailyDataQueryResult = {
             [getDayKey(sampleStartDate)]: 2500,
@@ -145,8 +147,8 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
 
         expect(result).toEqual({});
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
         expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
         expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);

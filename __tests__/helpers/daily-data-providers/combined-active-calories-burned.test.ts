@@ -2,12 +2,12 @@ import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDataProvider, garminActiveCaloriesDataProvider, healthConnectActiveCaloriesBurnedDataProvider, ouraActiveCaloriesBurnedDataProvider } from '../../../src/helpers/daily-data-providers';
 import combinedActiveCaloriesBurned from '../../../src/helpers/daily-data-providers/combined-active-calories-burned';
-import { canQuery } from '../../../src/helpers/daily-data-providers/data-collection-helper';
+import { getSupportedApis } from '../../../src/helpers/daily-data-providers/data-collection-helper';
 import { combineResultsUsingMaxValue } from '../../../src/helpers/daily-data-providers/daily-data';
 
 jest.mock('../../../src/helpers/daily-data-providers/data-collection-helper', () => ({
     __esModule: true,
-    canQuery: jest.fn()
+    getSupportedApis: jest.fn()
 }));
 
 jest.mock('../../../src/helpers/daily-data-providers/fitbit-active-calories-burned', () => ({
@@ -42,7 +42,7 @@ jest.mock('../../../src/helpers/daily-data-providers/daily-data/daily-data-resul
 
 describe('Daily Data Provider - Combined Active Calories Burned', () => {
 
-    const canQueryMock = canQuery as jest.Mock;
+    const getSupportedApisMock = getSupportedApis as jest.Mock;
     const fitbitActiveCaloriesBurnedDataProviderMock = fitbitActiveCaloriesBurnedDataProvider as jest.Mock;
     const garminActiveCaloriesDataProviderMock = garminActiveCaloriesDataProvider as jest.Mock;
     const appleHealthActiveEnergyBurnedDataProviderMock = appleHealthActiveEnergyBurnedDataProvider as jest.Mock;
@@ -65,12 +65,12 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     const verifyCanQueryCalls = (): void => {
-        expect(canQueryMock).toHaveBeenCalledTimes(5);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Garmin', ['Calories'], false);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'HealthConnect', ['active-calories-burned-daily'], false);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Oura', ['daily-activity'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(5);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true });
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Garmin', types: ['Calories'], requireAllTypes: false });
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'AppleHealth', types: ['ActiveEnergyBurned', 'Active Energy Burned'], requireAllTypes: false });
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'HealthConnect', types: ['active-calories-burned-daily'], requireAllTypes: false });
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Oura', types: ['daily-activity'], requireAllTypes: false });
     };
 
     const verifyDataProvidersCalls = (dataProviderMockThatWasCalled?: jest.Mock, includeCombinedSettings?: boolean): void => {
@@ -88,7 +88,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     };
 
     it('Should return an empty result when the required types cannot be queried.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
 
         const result = await combinedActiveCaloriesBurned(sampleStartDate, sampleEndDate);
 
@@ -100,7 +100,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the Fitbit result when the required types can been queried from v1.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Fitbit') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } };
         });
@@ -118,7 +118,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return an empty result when the Fitbit required types can only be queried from v2.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Fitbit') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: false }, v2: { enabled: true, types: ['Calories', 'CaloriesBMR'] } };
         });
@@ -133,7 +133,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the Garmin result when the required types can been queried from v1.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Garmin') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: true, types: ['Calories'] }, v2: { enabled: false } };
         });
@@ -151,7 +151,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return an empty result when the Garmin required types can only be queried from v2.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Garmin') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: false }, v2: { enabled: true, types: ['Calories'] } };
         });
@@ -166,7 +166,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the AppleHealth result when the required types can been queried from v1.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'AppleHealth') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: false } };
         });
@@ -184,7 +184,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the AppleHealth result when the required types can been queried from v2.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'AppleHealth') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: false }, v2: { enabled: true, types: ['Active Energy Burned'] } };
         });
@@ -202,7 +202,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return an empty result when the HealthConnect required types can only be queried from v1.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'HealthConnect') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: true, types: ['active-calories-burned-daily'] }, v2: { enabled: false } };
         });
@@ -217,7 +217,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the HealthConnect result when the required types can been queried from v2.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'HealthConnect') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: false }, v2: { enabled: true, types: ['active-calories-burned-daily'] } };
         });
@@ -235,7 +235,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return an empty result when the Oura required types can only be queried from v1.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Oura') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: true, types: ['daily-activity'] }, v2: { enabled: false } };
         });
@@ -250,7 +250,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return the Oura result when the required types can been queried from v2.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace !== 'Oura') return { v1: { enabled: false }, v2: { enabled: false } };
             return { v1: { enabled: false }, v2: { enabled: true, types: ['daily-activity'] } };
         });
@@ -268,7 +268,7 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     it('Should return a combined max-value result when multiple sources are enabled.', async () => {
-        canQueryMock.mockImplementation((_, namespace) => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
             if (namespace === 'Fitbit') return { v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } };
             if (namespace === 'Garmin') return { v1: { enabled: true, types: ['Calories'] }, v2: { enabled: false } };
             if (namespace === 'AppleHealth') return { v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } };

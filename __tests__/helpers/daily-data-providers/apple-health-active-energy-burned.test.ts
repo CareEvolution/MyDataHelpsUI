@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings } from '../../fixtures/daily-data-providers';
 import appleHealthActiveEnergyBurned from '../../../src/helpers/daily-data-providers/apple-health-active-energy-burned';
 import { buildTotalValueResult, getStartDate, queryForDailyData, queryForDailyDataV2 } from '../../../src/helpers/daily-data-providers/daily-data';
-import { canQuery } from '../../../src/helpers/daily-data-providers/data-collection-helper';
+import { getSupportedApis } from '../../../src/helpers/daily-data-providers/data-collection-helper';
 import { CombinedDataCollectionSettings } from '../../../src/helpers/daily-data-providers/combined-data-collection-settings';
 
 jest.mock('../../../src/helpers/daily-data-providers/combined-data-collection-settings', () => ({
@@ -12,7 +12,7 @@ jest.mock('../../../src/helpers/daily-data-providers/combined-data-collection-se
 
 jest.mock('../../../src/helpers/daily-data-providers/data-collection-helper', () => ({
     __esModule: true,
-    canQuery: jest.fn()
+    getSupportedApis: jest.fn()
 }));
 
 jest.mock('../../../src/helpers/daily-data-providers/daily-data/daily-data-query', () => ({
@@ -28,12 +28,14 @@ jest.mock('../../../src/helpers/daily-data-providers/daily-data/daily-data-resul
 
 describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
 
-    const canQueryMock = canQuery as jest.Mock;
+    const getSupportedApisMock = getSupportedApis as jest.Mock;
     const queryForDailyDataMock = queryForDailyData as jest.Mock;
     const queryForDailyDataV2Mock = queryForDailyDataV2 as jest.Mock;
     const buildTotalValueResultMock = buildTotalValueResult as jest.Mock;
 
     const combinedSettings = createEmptyCombinedDataCollectionSettings();
+
+    const expectedSupportedApisQuery = { namespace: 'AppleHealth', types: ['ActiveEnergyBurned', 'Active Energy Burned'], requireAllTypes: false };
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -41,26 +43,26 @@ describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
     });
 
     it('Should return an empty result when Apple Health is not enabled.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
 
         expect(await appleHealthActiveEnergyBurned(sampleStartDate, sampleEndDate)).toEqual({});
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(queryForDailyDataMock).not.toHaveBeenCalled();
         expect(queryForDailyDataV2Mock).not.toHaveBeenCalled();
         expect(buildTotalValueResultMock).not.toHaveBeenCalled();
     });
 
     it('Should query for daily data and build a total value result keyed by start date when available from v1.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: false } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: false } });
         queryForDailyDataMock.mockResolvedValue(sampleDailyData);
         buildTotalValueResultMock.mockReturnValue(sampleResult);
 
         expect(await appleHealthActiveEnergyBurned(sampleStartDate, sampleEndDate)).toBe(sampleResult);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(queryForDailyDataMock).toHaveBeenCalledTimes(1);
         expect(queryForDailyDataMock).toHaveBeenCalledWith('AppleHealth', 'ActiveEnergyBurned', sampleStartDate, sampleEndDate, getStartDate);
         expect(queryForDailyDataV2Mock).not.toHaveBeenCalled();
@@ -69,14 +71,14 @@ describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
     });
 
     it('Should query for daily data and build a total value result keyed by start date when available from v2, even if v1 is also available.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
         queryForDailyDataV2Mock.mockResolvedValue(sampleDailyDataV2);
         buildTotalValueResultMock.mockReturnValue(sampleResult);
 
         expect(await appleHealthActiveEnergyBurned(sampleStartDate, sampleEndDate)).toBe(sampleResult);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(queryForDailyDataMock).not.toHaveBeenCalled();
         expect(queryForDailyDataV2Mock).toHaveBeenCalledTimes(1);
         expect(queryForDailyDataV2Mock).toHaveBeenCalledWith('AppleHealth', 'Active Energy Burned', sampleStartDate, sampleEndDate, getStartDate);
@@ -85,15 +87,15 @@ describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
     });
 
     it('Should fall back to v1 if no data is available in v2.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
         queryForDailyDataMock.mockResolvedValue(sampleDailyData);
         queryForDailyDataV2Mock.mockResolvedValue({});
         buildTotalValueResultMock.mockReturnValue(sampleResult);
 
         expect(await appleHealthActiveEnergyBurned(sampleStartDate, sampleEndDate)).toBe(sampleResult);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, expectedSupportedApisQuery);
         expect(queryForDailyDataMock).toHaveBeenCalledTimes(1);
         expect(queryForDailyDataMock).toHaveBeenCalledWith('AppleHealth', 'ActiveEnergyBurned', sampleStartDate, sampleEndDate, getStartDate);
         expect(queryForDailyDataV2Mock).toHaveBeenCalledTimes(1);
@@ -103,7 +105,7 @@ describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
     });
 
     it('Should use specified combined settings, when provided.', async () => {
-        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
+        getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: ['ActiveEnergyBurned'] }, v2: { enabled: true, types: ['Active Energy Burned'] } });
         queryForDailyDataV2Mock.mockResolvedValue(sampleDailyDataV2);
         buildTotalValueResultMock.mockReturnValue(sampleResult);
 
@@ -111,8 +113,8 @@ describe('Daily Data Provider - Apple Health Active Energy Burned', () => {
 
         expect(await appleHealthActiveEnergyBurned(sampleStartDate, sampleEndDate, specifiedCombinedSettings)).toBe(sampleResult);
 
-        expect(canQueryMock).toHaveBeenCalledTimes(1);
-        expect(canQueryMock).toHaveBeenCalledWith(specifiedCombinedSettings, 'AppleHealth', ['ActiveEnergyBurned', 'Active Energy Burned'], false);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+        expect(getSupportedApisMock).toHaveBeenCalledWith(specifiedCombinedSettings, expectedSupportedApisQuery);
         expect(queryForDailyDataMock).not.toHaveBeenCalled();
         expect(queryForDailyDataV2Mock).toHaveBeenCalledTimes(1);
         expect(queryForDailyDataV2Mock).toHaveBeenCalledWith('AppleHealth', 'Active Energy Burned', sampleStartDate, sampleEndDate, getStartDate);

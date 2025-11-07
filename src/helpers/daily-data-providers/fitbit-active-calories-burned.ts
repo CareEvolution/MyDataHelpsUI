@@ -1,12 +1,13 @@
 import { fitbitCaloriesBurnedDataProvider, fitbitRestingCaloriesBurnedDataProvider } from '.';
 import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from './combined-data-collection-settings';
 import { DailyDataQueryResult } from '../query-daily-data';
-import { canQuery } from './data-collection-helper';
+import { getSupportedApis, SupportedAPIsQuery } from './data-collection-helper';
 
 export default async function(startDate: Date, endDate: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<DailyDataQueryResult> {
-    const canQueryResult = canQuery(combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(), 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+    const supportedApisQuery: SupportedAPIsQuery = { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true };
+    const supportedApisResult = getSupportedApis(combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(), supportedApisQuery);
 
-    if (canQueryResult.v1.enabled) {
+    if (supportedApisResult.v1.enabled) {
         const [totalCaloriesResult, restingCaloriesResult] = await Promise.all([
             fitbitCaloriesBurnedDataProvider(startDate, endDate),
             fitbitRestingCaloriesBurnedDataProvider(startDate, endDate)

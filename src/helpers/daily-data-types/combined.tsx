@@ -51,7 +51,7 @@ const THERAPY_MINUTES_SOURCES = sources(
 );
 
 const ACTIVE_CALORIES_BURNED_SOURCES = sources(
-    ["Fitbit", ["Calories", "CaloriesBMR"], { strict: true }],
+    ["Fitbit", ["Calories", "CaloriesBMR"], { requireAllTypes: true }],
     ["Garmin", "Daily"],
     ["AppleHealth", "ActiveEnergyBurned"],
     ["AppleHealth", "Active Energy Burned"],

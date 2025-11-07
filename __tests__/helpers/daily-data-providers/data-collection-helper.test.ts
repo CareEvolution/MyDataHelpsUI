@@ -1,6 +1,6 @@
 import { describe, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings } from '../../fixtures/daily-data-providers';
-import { canQuery, hasV1Data, hasV2Data } from '../../../src/helpers/daily-data-providers/data-collection-helper';
+import { getSupportedApis, hasV1Data, hasV2Data } from '../../../src/helpers/daily-data-providers/data-collection-helper';
 import MyDataHelps, { DataCollectionSettings, DeviceDataNamespace, DeviceDataPointsPage, DeviceDataV2Namespace, DeviceDataV2Page } from '@careevolution/mydatahelps-js';
 
 type DataCollectionSettingsEnabledPropertyPrefixes<T> = T extends `${infer P}Enabled` ? P : never;
@@ -25,7 +25,7 @@ describe('Data Collection Helper Function Tests', () => {
             it('Project - Should return a result with v1 enabled with all types and v2 disabled.', async () => {
                 const combinedDataCollectionSettings = createEmptyCombinedDataCollectionSettings();
 
-                const result = canQuery(combinedDataCollectionSettings, 'Project', ['Any Type'], false);
+                const result = getSupportedApis(combinedDataCollectionSettings, { namespace: 'Project', types: ['Any Type'], requireAllTypes: false });
 
                 expect(result).toEqual({
                     v1: { enabled: true, types: ['Any Type'] },
@@ -64,7 +64,7 @@ describe('Data Collection Helper Function Tests', () => {
                         combinedDataCollectionSettings.settings.queryableDeviceDataTypes.push({ namespace: queryNamespace, type: 'Supported Type' });
                     }
 
-                    const result = canQuery(combinedDataCollectionSettings, queryNamespace, queryTypes, false);
+                    const result = getSupportedApis(combinedDataCollectionSettings, { namespace: queryNamespace, types: queryTypes, requireAllTypes: false });
 
                     expect(result).toEqual({
                         v1: { enabled: expected, types: expected ? ['Supported Type'] : undefined },
@@ -105,7 +105,7 @@ describe('Data Collection Helper Function Tests', () => {
                         combinedDataCollectionSettings.deviceDataV2Types.push({ namespace: queryNamespace, type: 'Supported Type', enabled: true });
                     }
 
-                    const result = canQuery(combinedDataCollectionSettings, queryNamespace, queryTypes, false);
+                    const result = getSupportedApis(combinedDataCollectionSettings, { namespace: queryNamespace, types: queryTypes, requireAllTypes: false });
 
                     expect(result).toEqual({
                         v1: { enabled: false },
@@ -144,7 +144,7 @@ describe('Data Collection Helper Function Tests', () => {
                         combinedDataCollectionSettings.deviceDataV2Types.push({ namespace: queryNamespace, type: 'Supported Type', enabled: true });
                     }
 
-                    const result = canQuery(combinedDataCollectionSettings, queryNamespace, queryTypes, false);
+                    const result = getSupportedApis(combinedDataCollectionSettings, { namespace: queryNamespace, types: queryTypes, requireAllTypes: false });
 
                     expect(result).toEqual({
                         v1: { enabled: expected, types: expected ? ['Supported Type'] : undefined },
@@ -167,9 +167,11 @@ describe('Data Collection Helper Function Tests', () => {
             );
 
             it('Should allow partial type matches when not in strict mode.', () => {
-                const result = canQuery(combinedDataCollectionSettings, 'AppleHealth', [
-                    'Supported Type V1', 'Another Supported Type V1', 'Unsupported Type', 'Supported Type V2', 'Another Supported Type V2'
-                ], false);
+                const result = getSupportedApis(combinedDataCollectionSettings, {
+                    namespace: 'AppleHealth',
+                    types: ['Supported Type V1', 'Another Supported Type V1', 'Unsupported Type', 'Supported Type V2', 'Another Supported Type V2'],
+                    requireAllTypes: false
+                });
                 expect(result).toEqual({
                     v1: { enabled: true, types: ['Supported Type V1', 'Another Supported Type V1'] },
                     v2: { enabled: true, types: ['Supported Type V2', 'Another Supported Type V2'] }
@@ -177,9 +179,11 @@ describe('Data Collection Helper Function Tests', () => {
             });
 
             it('Should not allow partial type matches when in strict mode.', () => {
-                const result = canQuery(combinedDataCollectionSettings, 'AppleHealth', [
-                    'Supported Type V1', 'Another Supported Type V1', 'Supported Type V2', 'Another Supported Type V2'
-                ], true);
+                const result = getSupportedApis(combinedDataCollectionSettings, {
+                    namespace: 'AppleHealth',
+                    types: ['Supported Type V1', 'Another Supported Type V1', 'Supported Type V2', 'Another Supported Type V2'],
+                    requireAllTypes: true
+                });
                 expect(result).toEqual({
                     v1: { enabled: false },
                     v2: { enabled: false }
@@ -187,9 +191,11 @@ describe('Data Collection Helper Function Tests', () => {
             });
 
             it('Should not allow partial type match when in strict mode, even within a single source.', () => {
-                const result = canQuery(combinedDataCollectionSettings, 'AppleHealth', [
-                    'Supported Type V1', 'Another Supported Type V1', 'Unsupported Type'
-                ], true);
+                const result = getSupportedApis(combinedDataCollectionSettings, {
+                    namespace: 'AppleHealth',
+                    types: ['Supported Type V1', 'Another Supported Type V1', 'Unsupported Type'],
+                    requireAllTypes: true
+                });
                 expect(result).toEqual({
                     v1: { enabled: false },
                     v2: { enabled: false }
@@ -197,9 +203,11 @@ describe('Data Collection Helper Function Tests', () => {
             });
 
             it('Should allow full type match when in strict mode, within V1.', () => {
-                const result = canQuery(combinedDataCollectionSettings, 'AppleHealth', [
-                    'Supported Type V1', 'Another Supported Type V1'
-                ], true);
+                const result = getSupportedApis(combinedDataCollectionSettings, {
+                    namespace: 'AppleHealth',
+                    types: ['Supported Type V1', 'Another Supported Type V1'],
+                    requireAllTypes: true
+                });
                 expect(result).toEqual({
                     v1: { enabled: true, types: ['Supported Type V1', 'Another Supported Type V1'] },
                     v2: { enabled: false }
@@ -207,9 +215,11 @@ describe('Data Collection Helper Function Tests', () => {
             });
 
             it('Should allow full type match when in strict mode, within V2.', () => {
-                const result = canQuery(combinedDataCollectionSettings, 'AppleHealth', [
-                    'Supported Type V2', 'Another Supported Type V2'
-                ], true);
+                const result = getSupportedApis(combinedDataCollectionSettings, {
+                    namespace: 'AppleHealth',
+                    types: ['Supported Type V2', 'Another Supported Type V2'],
+                    requireAllTypes: true
+                });
                 expect(result).toEqual({
                     v1: { enabled: false },
                     v2: { enabled: true, types: ['Supported Type V2', 'Another Supported Type V2'] }
