@@ -64,8 +64,6 @@ export default function YouTubeStep(props: YouTubeStepProps) {
               fontWeight={props.styles.detailTextFontWeight}
             />
             
-            <p>Test</p>
-
             <StepNextButton 
               text={props.nextButtonText} 
               color={props.styles.nextButtonTextColor}
