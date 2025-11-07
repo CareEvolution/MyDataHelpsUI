@@ -22,7 +22,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectRestingHeartRate,
         dataProvider: healthConnectRestingHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'resting-heart-rate', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'resting-heart-rate'),
         labelKey: 'resting-heart-rate',
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -32,7 +32,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectTotalSleepMinutes,
         dataProvider: healthConnectTotalSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep'),
         labelKey: 'sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -42,7 +42,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectRemSleepMinutes,
         dataProvider: healthConnectRemSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep'),
         labelKey: 'rem-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -52,7 +52,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectDeepSleepMinutes,
         dataProvider: healthConnectDeepSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep'),
         labelKey: 'deep-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -62,7 +62,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectLightSleepMinutes,
         dataProvider: healthConnectLightSleepMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'sleep'),
         labelKey: 'light-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -72,7 +72,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectSteps,
         dataProvider: healthConnectStepsDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'steps-daily', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'steps-daily'),
         labelKey: 'steps',
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -81,7 +81,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectDistance,
         dataProvider: healthConnectDistanceDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'distance-daily', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'distance-daily'),
         labelKey: 'distance-traveled',
         icon: <FontAwesomeSvgIcon icon={faRoute} />,
         formatter: distanceFormatter,
@@ -91,7 +91,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectMaxHeartRate,
         dataProvider: healthConnectMaxHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'heart-rate-daily-maximum', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'heart-rate-daily-maximum'),
         labelKey: 'max-heart-rate',
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -100,7 +100,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectMinHeartRate,
         dataProvider: healthConnectMinHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'heart-rate-daily-minimum', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'heart-rate-daily-minimum'),
         labelKey: 'min-heart-rate',
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -109,7 +109,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectActiveCaloriesBurned,
         dataProvider: healthConnectActiveCaloriesBurnedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'active-calories-burned-daily', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'active-calories-burned-daily'),
         labelKey: 'active-calories-burned',
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
@@ -118,7 +118,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectTotalCaloriesBurned,
         dataProvider: healthConnectTotalCaloriesBurnedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'total-calories-burned-daily', true),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'total-calories-burned-daily'),
         labelKey: 'total-calories-burned',
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
