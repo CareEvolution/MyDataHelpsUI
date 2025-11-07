@@ -14,7 +14,10 @@ export default async function(startDate: Date, endDate: Date, combinedDataCollec
 
         return Object.keys(totalCaloriesResult).reduce((activeCaloriesResult, dayKey) => {
             if (dayKey in restingCaloriesResult) {
-                activeCaloriesResult[dayKey] = totalCaloriesResult[dayKey] - restingCaloriesResult[dayKey];
+                const activeCaloriesForDay = totalCaloriesResult[dayKey] - restingCaloriesResult[dayKey];
+                if (activeCaloriesForDay > 0) {
+                    activeCaloriesResult[dayKey] = activeCaloriesForDay;
+                }
             }
             return activeCaloriesResult;
         }, {} as DailyDataQueryResult);

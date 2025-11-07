@@ -125,4 +125,31 @@ describe('Daily Data Provider - Fitbit Active Calories Burned', () => {
         expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
         expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
     });
+
+    it('Should ignore non-positive computed values.', async () => {
+        canQueryMock.mockReturnValue({ v1: { enabled: true, types: ['Calories', 'CaloriesBMR'] }, v2: { enabled: false } });
+
+        const totalCaloriesResult: DailyDataQueryResult = {
+            [getDayKey(sampleStartDate)]: 2500,
+            [getDayKey(add(sampleStartDate, { days: 1 }))]: 2400
+        };
+        const restingCaloriesResult: DailyDataQueryResult = {
+            [getDayKey(sampleStartDate)]: 2600,
+            [getDayKey(add(sampleStartDate, { days: 1 }))]: 2400
+        };
+
+        fitbitCaloriesBurnedDataProviderMock.mockResolvedValue(totalCaloriesResult);
+        fitbitRestingCaloriesBurnedDataProviderMock.mockResolvedValue(restingCaloriesResult);
+
+        const result = await fitbitActiveCaloriesBurned(sampleStartDate, sampleEndDate);
+
+        expect(result).toEqual({});
+
+        expect(canQueryMock).toHaveBeenCalledTimes(1);
+        expect(canQueryMock).toHaveBeenCalledWith(combinedSettings, 'Fitbit', ['Calories', 'CaloriesBMR'], true);
+        expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
+        expect(fitbitCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
+        expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledTimes(1);
+        expect(fitbitRestingCaloriesBurnedDataProviderMock).toHaveBeenCalledWith(sampleStartDate, sampleEndDate);
+    });
 });
