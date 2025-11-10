@@ -70,7 +70,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
         <div className="mdhui-sa-log-summary-badges">
             {props.answerRenderingConfigurations.map((configuration, index) => {
                 const surveyAnswer = surveyAnswerLookup[configuration.resultIdentifier];
-                const shouldHighlight = surveyAnswer && (configuration.shouldHighlight?.(surveyAnswer) ?? surveyAnswer.answers.length);
+                const shouldHighlight = surveyAnswer && (configuration.shouldHighlight?.(surveyAnswer) === true ?? surveyAnswer.answers.length);
                 const defaultIconColor = { lightMode: 'var(--mdhui-background-color-2)', darkMode: 'var(--mdhui-background-color-1)' };
                 const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (configuration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
                 return <UnstyledButton
