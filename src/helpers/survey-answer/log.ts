@@ -12,11 +12,7 @@ export interface SurveyAnswerLog {
 
 export function enterSurveyAnswerLog(surveyName: string, priorSurveyAnswerLog?: SurveyAnswerLog, date?: Date) {
     if (priorSurveyAnswerLog) {
-        if (priorSurveyAnswerLog.event) {
-            MyDataHelps.startSurvey(surveyName, { event: priorSurveyAnswerLog.event });
-        } else {
-            MyDataHelps.startSurvey(surveyName, { editResultID: priorSurveyAnswerLog.resultId });
-        }
+        MyDataHelps.startSurvey(surveyName, { event: priorSurveyAnswerLog.event ?? getDayKey(priorSurveyAnswerLog.date) });
     } else if (date) {
         MyDataHelps.startSurvey(surveyName, { event: getDayKey(date) });
     } else {
