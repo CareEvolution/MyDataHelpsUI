@@ -48,7 +48,7 @@ export default function YouTubeStep(props: YouTubeStepProps) {
             <div style={{textAlign: 'center', width: "100%"}} >
               <iframe
                 style={{width: "100%", height: frameHeight, border: 0}}
-                  src={`https://www.youtube.com/embed/${props.videoId || 'Ee3x4oK_qv8'}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
+                  src={`https://www.youtube.com/embed/${props.videoId}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
                   key={props.videoId}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
