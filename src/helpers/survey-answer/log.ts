@@ -1,7 +1,7 @@
 import { getDayKey } from '../index';
 import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
-import { eachDayOfInterval, Interval, isWithinInterval, parseISO } from 'date-fns';
+import { add, eachDayOfInterval, Interval, parseISO } from 'date-fns';
 
 export interface SurveyAnswerLog {
     resultId: string;
@@ -20,7 +20,7 @@ export async function loadSurveyAnswerLog(surveyName: string, date: Date): Promi
 }
 
 export function loadSurveyAnswerLogs(surveyName: string, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
-    const event = eachDayOfInterval({ start: startDate, end: endDate }).reduce((events, date) => {
+    const event = eachDayOfInterval({ start: startDate, end: add(endDate, { days: -1 }) }).reduce((events, date) => {
         const event = getDayKey(date).substring(0, 8) + '*';
         if (!events.includes(event)) events.push(event);
         return events;
@@ -44,7 +44,7 @@ async function queryAndCompileLogs(surveyName: string, event: string, filter?: I
 
     return latestSurveyAnswers.reduce((surveyAnswerLogs, surveyAnswer) => {
         const date = parseISO(surveyAnswer.event!);
-        if (!filter || isWithinInterval(date, filter)) {
+        if (!filter || (date >= filter.start && date < filter.end)) {
             const dayKey = getDayKey(date);
             surveyAnswerLogs[dayKey] ??= {
                 resultId: surveyAnswer.surveyResultID.toString(),

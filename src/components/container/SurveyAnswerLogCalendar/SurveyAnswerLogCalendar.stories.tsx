@@ -197,6 +197,6 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'show logs',
             control: 'boolean'
         },
-        ...argTypesToHide(['previewState', 'surveyName', 'computeStatesForDay', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['previewState', 'surveyName', 'computeStatesForDay', 'legend', 'answerRenderingConfigurations', 'innerRef'])
     }
 };
