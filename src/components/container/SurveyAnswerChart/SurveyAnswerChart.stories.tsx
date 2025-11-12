@@ -3,7 +3,8 @@ import { Card, DateRangeCoordinator, Layout } from '../../presentational';
 import SurveyAnswerChart, { SurveyAnswerChartProps } from './SurveyAnswerChart';
 import { Meta, StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import { generateSurveyAnswers } from './SurveyAnswerChart.previewdata';
+import { generateSurveyAnswers } from '../../../helpers/survey-answer';
+
 
 type SurveyAnswerChartStoryArgs = ComponentProps<typeof SurveyAnswerChart> & {
     colorScheme: 'auto' | 'light' | 'dark';
