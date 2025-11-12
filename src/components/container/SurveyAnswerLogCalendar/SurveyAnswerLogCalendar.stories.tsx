@@ -15,7 +15,7 @@ const customHighlightStyling: CSSProperties = {
 
 type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    state: 'loading' | 'default';
+    state: 'loading' | 'loaded' | 'reloading';
     includeStates: boolean;
     showLegend: boolean;
     customizeToday: boolean;
@@ -144,7 +144,7 @@ export default {
 export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        state: 'default',
+        state: 'loaded',
         includeStates: true,
         showLegend: false,
         multiStateStartAngle: 270,
@@ -162,7 +162,7 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
         state: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'default', 'reloading']
+            options: ['loading', 'loaded', 'reloading']
         },
         includeStates: {
             name: 'include states',

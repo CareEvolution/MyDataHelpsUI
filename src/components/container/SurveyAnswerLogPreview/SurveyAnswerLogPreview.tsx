@@ -59,7 +59,8 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
     if (!initialized && loading) return null;
 
     const onEnterLog = (): void => {
-        if (props.previewState) return;
+        if (props.previewState || loading) return;
+        setLoading(true);
         enterSurveyAnswerLog(props.surveyName, currentDate);
     };
 
@@ -70,13 +71,11 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     title={isSameDay(currentDate, new Date()) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
                     subtitle={surveyAnswerLog ? 'A log has been entered' : 'A log has not been entered.'}
                     renderAs="div"
-                    indicator={<Button onClick={onEnterLog}>{surveyAnswerLog ? 'Edit Log' : 'Add Log'}</Button>}
+                    indicator={loading
+                        ? <LoadingIndicator className="mdhui-sa-log-preview-loading-indicator" />
+                        : <Button className="mdhui-sa-log-preview-edit-button" onClick={onEnterLog}>{surveyAnswerLog ? 'Edit Log' : 'Add Log'}</Button>
+                    }
                 />
-                {loading &&
-                    <div className="mdhui-sa-log-preview-loading-indicator-overlay">
-                        <LoadingIndicator className="mdhui-sa-log-preview-loading-indicator" />
-                    </div>
-                }
             </Card>
         }
         {surveyAnswerLog && props.answerRenderingConfigurations &&
@@ -88,12 +87,8 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     answerRenderingConfigurations={props.answerRenderingConfigurations}
                     alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
                     showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
+                    loading={loading}
                 />
-                {loading &&
-                    <div className="mdhui-sa-log-preview-loading-indicator-overlay">
-                        <LoadingIndicator className="mdhui-sa-log-preview-loading-indicator" />
-                    </div>
-                }
             </Card>
         }
     </div>;

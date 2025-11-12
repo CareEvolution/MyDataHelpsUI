@@ -86,7 +86,7 @@ export const Default: StoryObj<SurveyAnswerLogPreviewStoryArgs> = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'without log', 'with log', 'reloading without log', 'reloading with log']
+            options: ['loading', 'without log', 'reloading without log', 'with log', 'reloading with log']
         },
         showAnswers: {
             name: 'show answers',

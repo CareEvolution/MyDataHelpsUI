@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode, useContext, useEffect, useState } from 'react';
-import { LayoutContext, Title, UnstyledButton } from '../index';
+import { LayoutContext, LoadingIndicator, Title, UnstyledButton } from '../index';
 import { ColorDefinition, formatDateForLocale, resolveColor, SurveyAnswerLog } from '../../../helpers';
 import './SurveyAnswerLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -24,6 +24,7 @@ export interface SurveyAnswerLogSummaryProps {
     answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[];
     alwaysShowAnswerDetails?: boolean;
     showAnswerDetailsOnLoad?: boolean;
+    loading?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -75,7 +76,13 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     };
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
-        <Title order={4} accessory={<UnstyledButton onClick={props.onEdit}><FontAwesomeSvgIcon icon={faEdit} /></UnstyledButton>}>
+        <Title
+            order={4}
+            accessory={props.loading
+                ? <LoadingIndicator variant="inline" />
+                : <UnstyledButton onClick={props.onEdit}><FontAwesomeSvgIcon icon={faEdit} /></UnstyledButton>
+            }
+        >
             {props.title ?? formatDateForLocale(props.surveyAnswerLog.date, 'PPP')}
         </Title>
         <div className="mdhui-sa-log-summary-badges">

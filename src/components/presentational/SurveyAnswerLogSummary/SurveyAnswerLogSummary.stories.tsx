@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import { Card, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyAnswerLogSummary, { SurveyAnswerRenderingConfiguration } from "./SurveyAnswerLogSummary";
+import SurveyAnswerLogSummary, { SurveyAnswerRenderingConfiguration } from './SurveyAnswerLogSummary';
 import { v4 as uuid } from 'uuid';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { noop } from '../../../helpers/functions';
@@ -105,7 +105,8 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         customLabels: true,
         customDisplayValues: true,
         customHighlightEvaluation: true,
-        customHighlightStyling: true
+        customHighlightStyling: true,
+        loading: false
     },
     argTypes: {
         colorScheme: {
@@ -147,6 +148,10 @@ export const Default: StoryObj<SurveyAnswerLogSummaryStoryArgs> = {
         },
         customHighlightStyling: {
             name: 'answer custom highlight styling',
+            control: 'boolean'
+        },
+        loading: {
+            name: 'loading',
             control: 'boolean'
         },
         ...argTypesToHide(['title', 'surveyAnswerLog', 'onEdit', 'answerRenderingConfigurations', 'innerRef'])

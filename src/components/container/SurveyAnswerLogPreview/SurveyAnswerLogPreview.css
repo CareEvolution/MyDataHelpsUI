@@ -1,17 +1,9 @@
-.mdhui-sa-log-preview .mdhui-sa-log-preview-loading-indicator-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0.8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--mdhui-background-color-0);
+.mdhui-sa-log-preview .mdhui-sa-log-preview-loading-indicator.mdhui-loading-indicator {
+    padding: 0 16px;
+    height: 48px;
+    line-height: 48px;
 }
 
-.mdhui-sa-log-preview .mdhui-sa-log-preview-loading-indicator.mdhui-loading-indicator {
-    font-size: 1.5em;
-    color: var(--mdhui-text-color-2);
+.mdhui-sa-log-preview .mdhui-sa-log-preview-edit-button {
+    height: 48px;
 }

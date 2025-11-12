@@ -7,7 +7,7 @@ import './SurveyAnswerLogCalendar.css';
 import { generatePreviewSurveyAnswerLogs } from './SurveyAnswerLogCalendar.previewData';
 
 export interface SurveyAnswerLogCalendarProps {
-    previewState?: 'loading' | 'reloading' | 'default';
+    previewState?: 'loading' | 'loaded' | 'reloading';
     surveyName: string;
     computeStatesForDay: (date: Date, surveyAnswers: SurveyAnswer[]) => CalendarDayState[];
     multiStateStartAngle?: number;
@@ -36,7 +36,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
         .sort((surveyAnswerLog1, surveyAnswerLog2) => compareDesc(surveyAnswerLog1.date, surveyAnswerLog2.date));
 
-    const applyPreviewState = (previewState: 'loading' | 'reloading' | 'default') => {
+    const applyPreviewState = (previewState: 'loading' | 'loaded' | 'reloading') => {
         setSurveyAnswerLogs({});
         if (previewState === 'loading') return;
         generatePreviewSurveyAnswerLogs(props.answerRenderingConfigurations, intervalStart, intervalEnd).then(surveyAnswerLogs => {
@@ -72,7 +72,8 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     };
 
     const onDayClicked = (date: Date): void => {
-        if (props.previewState || isAfter(date, new Date())) return;
+        if (props.previewState || loading || isAfter(date, new Date())) return;
+        setLoading(true);
         enterSurveyAnswerLog(props.surveyName, date);
     };
 
@@ -88,33 +89,32 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     };
 
     const onEditLog = (surveyAnswerLog: SurveyAnswerLog): void => {
-        if (props.previewState) return;
+        if (props.previewState || loading) return;
+        setLoading(true);
         enterSurveyAnswerLog(props.surveyName, surveyAnswerLog.date);
     };
 
     return <div ref={props.innerRef} className="mdhui-sa-log-calendar">
         <Card>
             <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
-            {props.legend && props.legend.length > 0 &&
-                <div className="mdhui-sa-log-calendar-legend">
-                    {props.legend.map(state => {
-                        const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
-                        const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
+            {(loading || props.legend && props.legend.length > 0) &&
+                <div className="mdhui-sa-log-calendar-footer">
+                    <div className="mdhui-sa-log-calendar-legend">
+                        {props.legend && props.legend.length > 0 && props.legend.map(state => {
+                            const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
+                            const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
 
-                        return <div key={state.label} className="mdhui-sa-log-calendar-legend-entry">
-                            <div className="mdhui-sa-log-calendar-legend-entry-color" style={{
-                                background: backgroundColor,
-                                border: `2px solid ${borderColor}`,
-                                ...state.style
-                            }}>&nbsp;</div>
-                            <div className="mdhui-sa-log-calendar-legend-entry-label">{state.label}</div>
-                        </div>;
-                    })}
-                </div>
-            }
-            {loading &&
-                <div className="mdhui-sa-log-calendar-loading-indicator-overlay">
-                    <LoadingIndicator className="mdhui-sa-log-calendar-loading-indicator" />
+                            return <div key={state.label} className="mdhui-sa-log-calendar-legend-entry">
+                                <div className="mdhui-sa-log-calendar-legend-entry-color" style={{
+                                    background: backgroundColor,
+                                    border: `2px solid ${borderColor}`,
+                                    ...state.style
+                                }}>&nbsp;</div>
+                                <div className="mdhui-sa-log-calendar-legend-entry-label">{state.label}</div>
+                            </div>;
+                        })}
+                    </div>
+                    {loading && <LoadingIndicator className="mdhui-sa-log-calendar-loading-indicator" />}
                 </div>
             }
         </Card>
@@ -124,8 +124,8 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEditLog(surveyAnswerLog)}
                     answerRenderingConfigurations={props.answerRenderingConfigurations!}
+                    loading={loading}
                 />
-                {loading && <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />}
             </Card>;
         })}
     </div>;
