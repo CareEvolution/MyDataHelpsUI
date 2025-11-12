@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary, SurveyAnswerRenderingConfiguration } from '../../presentational';
 import { isSameDay, startOfDay } from 'date-fns';
 import { enterSurveyAnswerLog, formatDateForLocale, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, useInitializeView } from '../../../helpers';
@@ -21,7 +21,10 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
     const [initialized, setInitialized] = useState<boolean>(false);
     const [surveyAnswerLog, setSurveyAnswerLog] = useState<SurveyAnswerLog>();
 
-    const currentDate = startOfDay(dateRangeContext?.intervalStart ?? new Date());
+    const currentDate = useMemo<Date>(
+        () => startOfDay(dateRangeContext?.intervalStart ?? new Date()),
+        [dateRangeContext?.intervalStart, getDayKey(new Date())]
+    );
 
     const applyPreviewState = (previewState: 'loading' | 'reloading without log' | 'reloading with log' | SurveyAnswerLogPreviewPreviewState) => {
         setInitialized(false);
@@ -51,13 +54,13 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
             return;
         }
         loadState();
-    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, dateRangeContext?.intervalStart, getDayKey(new Date())]);
+    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, currentDate]);
 
     if (!initialized && loading) return null;
 
-    const onEnterLog = (priorSurveyAnswerLog?: SurveyAnswerLog): void => {
+    const onEnterLog = (): void => {
         if (props.previewState) return;
-        enterSurveyAnswerLog(props.surveyName, priorSurveyAnswerLog, currentDate);
+        enterSurveyAnswerLog(props.surveyName, currentDate);
     };
 
     return <div className="mdhui-sa-log-preview" ref={props.innerRef}>
@@ -67,7 +70,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                     title={isSameDay(currentDate, new Date()) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
                     subtitle={surveyAnswerLog ? 'A log has been entered' : 'A log has not been entered.'}
                     renderAs="div"
-                    indicator={<Button onClick={() => onEnterLog(surveyAnswerLog)}>{surveyAnswerLog ? 'Edit Log' : 'Add Log'}</Button>}
+                    indicator={<Button onClick={onEnterLog}>{surveyAnswerLog ? 'Edit Log' : 'Add Log'}</Button>}
                 />
                 {loading &&
                     <div className="mdhui-sa-log-preview-loading-indicator-overlay">
@@ -81,7 +84,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                 <SurveyAnswerLogSummary
                     title={isSameDay(surveyAnswerLog.date, new Date()) ? 'Today\'s Log' : undefined}
                     surveyAnswerLog={surveyAnswerLog}
-                    onEdit={() => onEnterLog(surveyAnswerLog)}
+                    onEdit={onEnterLog}
                     answerRenderingConfigurations={props.answerRenderingConfigurations}
                     alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
                     showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}

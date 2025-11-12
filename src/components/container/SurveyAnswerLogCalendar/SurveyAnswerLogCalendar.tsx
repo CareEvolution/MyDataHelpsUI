@@ -1,6 +1,6 @@
 import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, LayoutContext, LoadingIndicator, SurveyAnswerLogSummary, SurveyAnswerRenderingConfiguration } from '../../presentational';
-import React, { useContext, useState } from 'react';
-import { add, compareDesc, isAfter, startOfDay, startOfMonth } from 'date-fns';
+import React, { useContext, useMemo, useState } from 'react';
+import { add, compareDesc, isAfter, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { enterSurveyAnswerLog, getDayKey, loadSurveyAnswerLogs, resolveColor, SurveyAnswerLog, useInitializeView } from '../../../helpers';
 import './SurveyAnswerLogCalendar.css';
@@ -23,8 +23,14 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     const [loading, setLoading] = useState<boolean>(true);
     const [surveyAnswerLogs, setSurveyAnswerLogs] = useState<Partial<Record<string, SurveyAnswerLog>>>({});
 
-    const intervalStart = startOfMonth(dateRangeContext?.intervalStart ?? new Date());
-    const intervalEnd = add(intervalStart, { months: 1 });
+    const intervalStart = useMemo<Date>(
+        () => startOfMonth(dateRangeContext?.intervalStart ?? new Date()),
+        [dateRangeContext?.intervalStart, getDayKey(new Date())]
+    );
+    const intervalEnd = useMemo<Date>(
+        () => add(intervalStart, { months: 1 }),
+        [intervalStart]
+    );
 
     const currentSurveyAnswerLogs = Object.values(surveyAnswerLogs as Record<string, SurveyAnswerLog>)
         .filter(surveyAnswerLog => surveyAnswerLog.date >= intervalStart && surveyAnswerLog.date < intervalEnd)
@@ -33,7 +39,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     const applyPreviewState = (previewState: 'loading' | 'reloading' | 'default') => {
         setSurveyAnswerLogs({});
         if (previewState === 'loading') return;
-        generatePreviewSurveyAnswerLogs(props.answerRenderingConfigurations, startOfDay(add(new Date(), { months: -6 }))).then(surveyAnswerLogs => {
+        generatePreviewSurveyAnswerLogs(props.answerRenderingConfigurations, intervalStart, intervalEnd).then(surveyAnswerLogs => {
             setSurveyAnswerLogs(surveyAnswerLogs);
             if (previewState !== 'reloading') {
                 setLoading(false);
@@ -42,7 +48,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     };
 
     const loadState = () => {
-        loadSurveyAnswerLogs(props.surveyName).then(surveyAnswerLogs => {
+        loadSurveyAnswerLogs(props.surveyName, intervalStart, intervalEnd).then(surveyAnswerLogs => {
             setSurveyAnswerLogs(surveyAnswerLogs);
             setLoading(false);
         });
@@ -55,7 +61,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
             return;
         }
         loadState();
-    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, getDayKey(new Date())]);
+    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, intervalStart, intervalEnd]);
 
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
@@ -67,7 +73,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
 
     const onDayClicked = (date: Date): void => {
         if (props.previewState || isAfter(date, new Date())) return;
-        enterSurveyAnswerLog(props.surveyName, surveyAnswerLogs[getDayKey(date)], date);
+        enterSurveyAnswerLog(props.surveyName, date);
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
@@ -81,9 +87,9 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
         />;
     };
 
-    const onEnterLog = (priorSurveyAnswerLog: SurveyAnswerLog): void => {
+    const onEditLog = (surveyAnswerLog: SurveyAnswerLog): void => {
         if (props.previewState) return;
-        enterSurveyAnswerLog(props.surveyName, priorSurveyAnswerLog);
+        enterSurveyAnswerLog(props.surveyName, surveyAnswerLog.date);
     };
 
     return <div ref={props.innerRef} className="mdhui-sa-log-calendar">
@@ -112,11 +118,11 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
                 </div>
             }
         </Card>
-        {props.answerRenderingConfigurations && currentSurveyAnswerLogs.map((surveyAnswerLog, index) => {
+        {props.answerRenderingConfigurations && currentSurveyAnswerLogs.sort((a, b) => compareDesc(a.date, b.date)).map((surveyAnswerLog, index) => {
             return <Card key={index}>
                 <SurveyAnswerLogSummary
                     surveyAnswerLog={surveyAnswerLog}
-                    onEdit={() => onEnterLog(surveyAnswerLog)}
+                    onEdit={() => onEditLog(surveyAnswerLog)}
                     answerRenderingConfigurations={props.answerRenderingConfigurations!}
                 />
                 {loading && <div className="mdhui-sa-log-calendar-loading-indicator-overlay" />}

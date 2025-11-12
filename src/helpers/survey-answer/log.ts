@@ -1,35 +1,40 @@
 import { getDayKey } from '../index';
-import MyDataHelps, { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
-import { parseISO } from 'date-fns';
+import { eachDayOfInterval, Interval, isWithinInterval, parseISO } from 'date-fns';
 
 export interface SurveyAnswerLog {
     resultId: string;
     date: Date;
     surveyAnswers: SurveyAnswer[];
-    event?: string;
 }
 
-export function enterSurveyAnswerLog(surveyName: string, priorSurveyAnswerLog?: SurveyAnswerLog, date?: Date) {
-    if (priorSurveyAnswerLog) {
-        MyDataHelps.startSurvey(surveyName, { event: priorSurveyAnswerLog.event ?? getDayKey(priorSurveyAnswerLog.date) });
-    } else if (date) {
-        MyDataHelps.startSurvey(surveyName, { event: getDayKey(date) });
-    } else {
-        MyDataHelps.startSurvey(surveyName);
-    }
+export function enterSurveyAnswerLog(surveyName: string, date: Date) {
+    MyDataHelps.startSurvey(surveyName, { event: getDayKey(date) });
 }
 
 export async function loadSurveyAnswerLog(surveyName: string, date: Date): Promise<SurveyAnswerLog | undefined> {
-    const surveyAnswerLogs = await loadSurveyAnswerLogs(surveyName);
-    return surveyAnswerLogs[getDayKey(date)];
+    const dayKey = getDayKey(date);
+    const surveyAnswerLogs = await queryAndCompileLogs(surveyName, dayKey);
+    return surveyAnswerLogs[dayKey];
 }
 
-export async function loadSurveyAnswerLogs(surveyName: string): Promise<Partial<Record<string, SurveyAnswerLog>>> {
-    const allSurveyAnswers = (await queryAllSurveyAnswers({ surveyName: surveyName })).sort((a, b) => b.date.localeCompare(a.date));
+export function loadSurveyAnswerLogs(surveyName: string, startDate: Date, endDate: Date): Promise<Partial<Record<string, SurveyAnswerLog>>> {
+    const event = eachDayOfInterval({ start: startDate, end: endDate }).reduce((events, date) => {
+        const event = getDayKey(date).substring(0, 8) + '*';
+        if (!events.includes(event)) events.push(event);
+        return events;
+    }, [] as string[]).join(',');
+    return queryAndCompileLogs(surveyName, event, { start: startDate, end: endDate });
+}
+
+async function queryAndCompileLogs(surveyName: string, event: string, filter?: Interval): Promise<Partial<Record<string, SurveyAnswerLog>>> {
+    // @ts-ignore
+    const surveyAnswersQuery: SurveyAnswersQuery = { surveyName: surveyName, event: event };
+    const allSurveyAnswers = (await queryAllSurveyAnswers(surveyAnswersQuery)).sort((a, b) => b.date.localeCompare(a.date));
 
     const latestResultIdsByDate = allSurveyAnswers.reduce((latestResultIdsByDate, surveyAnswer) => {
-        const dayKey = getSurveyAnswerDayKey(surveyAnswer);
+        const dayKey = surveyAnswer.event!;
         latestResultIdsByDate[dayKey] ??= surveyAnswer.surveyResultID.toString();
         return latestResultIdsByDate;
     }, {} as Record<string, string>);
@@ -38,18 +43,16 @@ export async function loadSurveyAnswerLogs(surveyName: string): Promise<Partial<
     const latestSurveyAnswers = allSurveyAnswers.filter(surveyAnswer => latestResultIds.includes(surveyAnswer.surveyResultID.toString()));
 
     return latestSurveyAnswers.reduce((surveyAnswerLogs, surveyAnswer) => {
-        const dayKey = getSurveyAnswerDayKey(surveyAnswer);
-        surveyAnswerLogs[dayKey] ??= {
-            resultId: surveyAnswer.surveyResultID.toString(),
-            date: parseISO(dayKey),
-            surveyAnswers: [],
-            event: surveyAnswer.event
-        };
-        surveyAnswerLogs[dayKey].surveyAnswers.push(surveyAnswer);
+        const date = parseISO(surveyAnswer.event!);
+        if (!filter || isWithinInterval(date, filter)) {
+            const dayKey = getDayKey(date);
+            surveyAnswerLogs[dayKey] ??= {
+                resultId: surveyAnswer.surveyResultID.toString(),
+                date: parseISO(dayKey),
+                surveyAnswers: []
+            };
+            surveyAnswerLogs[dayKey].surveyAnswers.push(surveyAnswer);
+        }
         return surveyAnswerLogs;
     }, {} as Record<string, SurveyAnswerLog>);
-}
-
-export function getSurveyAnswerDayKey(surveyAnswer: SurveyAnswer): string {
-    return surveyAnswer.event ?? getDayKey(surveyAnswer.date);
 }
