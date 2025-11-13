@@ -34,7 +34,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
     const badgeConfigurationLookup = props.badgeConfigurations.reduce((lookup, configuration) => {
         lookup[configuration.identifier] = configuration;
         return lookup;
-    }, {} as Record<string, SurveyAnswerLogBadgeConfiguration>);
+    }, {} as Partial<Record<string, SurveyAnswerLogBadgeConfiguration>>);
 
     useEffect(() => {
         if (props.badgeConfigurations.length > 0 && (props.showFirstBadgeDetailsOnLoad || props.alwaysShowBadgeDetails)) {
@@ -56,7 +56,7 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
         if (!selectedBadgeIdentifier) return undefined;
 
         const configuration = badgeConfigurationLookup[selectedBadgeIdentifier];
-        if (!configuration.getBadgeDetails) return undefined;
+        if (!configuration?.getBadgeDetails) return undefined;
 
         const badgeDetails = configuration.getBadgeDetails(props.surveyAnswerLog.surveyAnswers);
         return badgeDetails ? <div className="mdhui-sa-log-summary-badge-details">{badgeDetails}</div> : undefined;

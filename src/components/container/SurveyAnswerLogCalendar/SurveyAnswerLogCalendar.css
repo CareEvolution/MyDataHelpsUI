@@ -4,7 +4,7 @@
 }
 
 .mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend {
-    padding: 0 40px;
+    padding: 0 40px 16px;
     width: 100%;
     display: flex;
     align-items: center;
