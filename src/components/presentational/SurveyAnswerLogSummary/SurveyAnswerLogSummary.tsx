@@ -4,75 +4,62 @@ import { ColorDefinition, formatDateForLocale, resolveColor, SurveyAnswerLog } f
 import './SurveyAnswerLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { faEdit, faRing } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
-export interface SurveyAnswerRenderingConfiguration {
-    resultIdentifier: string;
+export interface SurveyAnswerLogBadgeConfiguration {
+    identifier: string;
+    shouldHighlight: (surveyAnswers: SurveyAnswer[]) => boolean;
+    customHighlightStyling?: CSSProperties;
+    getBadgeDetails?: (surveyAnswers: SurveyAnswer[]) => NonNullable<ReactNode>;
     icon?: IconDefinition;
     iconColor?: ColorDefinition;
-    label?: string;
-    shouldHighlight?: (answer: SurveyAnswer) => boolean;
-    customHighlightStyling?: CSSProperties;
-    formatDisplayValue?: (answer: SurveyAnswer) => ReactNode;
 }
 
 export interface SurveyAnswerLogSummaryProps {
     title?: string;
     surveyAnswerLog: SurveyAnswerLog;
     onEdit: () => void;
-    answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[];
-    alwaysShowAnswerDetails?: boolean;
-    showAnswerDetailsOnLoad?: boolean;
+    badgeConfigurations: SurveyAnswerLogBadgeConfiguration[];
+    showFirstBadgeDetailsOnLoad?: boolean;
+    alwaysShowBadgeDetails?: boolean;
     loading?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProps) {
-    const layoutContext = useContext(LayoutContext);
 
-    const [selectedResultIdentifier, setSelectedResultIdentifier] = useState<string>();
+    const [selectedBadgeIdentifier, setSelectedBadgeIdentifier] = useState<string>();
 
-    const answerRenderingConfigurationLookup = props.answerRenderingConfigurations.reduce((lookup, configuration) => {
-        lookup[configuration.resultIdentifier] = configuration;
+    const badgeConfigurationLookup = props.badgeConfigurations.reduce((lookup, configuration) => {
+        lookup[configuration.identifier] = configuration;
         return lookup;
-    }, {} as Record<string, SurveyAnswerRenderingConfiguration>);
-
-    const surveyAnswerLookup = props.surveyAnswerLog.surveyAnswers.reduce((lookup, surveyAnswer) => {
-        lookup[surveyAnswer.resultIdentifier.toLowerCase()] = surveyAnswer;
-        return lookup;
-    }, {} as Partial<Record<string, SurveyAnswer>>);
+    }, {} as Record<string, SurveyAnswerLogBadgeConfiguration>);
 
     useEffect(() => {
-        if (!selectedResultIdentifier || !answerRenderingConfigurationLookup[selectedResultIdentifier]) {
-            if (props.answerRenderingConfigurations.length && (props.alwaysShowAnswerDetails || props.showAnswerDetailsOnLoad)) {
-                setSelectedResultIdentifier(props.answerRenderingConfigurations[0].resultIdentifier);
-            } else {
-                setSelectedResultIdentifier(undefined);
-            }
+        if (props.badgeConfigurations.length > 0 && (props.showFirstBadgeDetailsOnLoad || props.alwaysShowBadgeDetails)) {
+            setSelectedBadgeIdentifier(props.badgeConfigurations.find(configuration => configuration.getBadgeDetails)?.identifier);
+        } else {
+            setSelectedBadgeIdentifier(undefined);
         }
-    }, [props.answerRenderingConfigurations, props.alwaysShowAnswerDetails, props.showAnswerDetailsOnLoad]);
+    }, [props.badgeConfigurations, props.showFirstBadgeDetailsOnLoad, props.alwaysShowBadgeDetails]);
 
-    const onBadgeClicked = (resultIdentifier: string): void => {
-        if (selectedResultIdentifier !== resultIdentifier) {
-            setSelectedResultIdentifier(resultIdentifier);
-        } else if (!props.alwaysShowAnswerDetails) {
-            setSelectedResultIdentifier(undefined);
+    const onBadgeClicked = (configuration: SurveyAnswerLogBadgeConfiguration): void => {
+        if (selectedBadgeIdentifier !== configuration.identifier) {
+            setSelectedBadgeIdentifier(configuration.identifier);
+        } else if (!props.alwaysShowBadgeDetails) {
+            setSelectedBadgeIdentifier(undefined);
         }
     };
 
-    const getDisplayLabel = (resultIdentifier: string): string => {
-        const configuration = answerRenderingConfigurationLookup[resultIdentifier];
-        return configuration.label ?? configuration.resultIdentifier;
-    };
+    const getSelectedBadgeDetails = (): ReactNode => {
+        if (!selectedBadgeIdentifier) return undefined;
 
-    const getDisplayValue = (resultIdentifier: string): ReactNode => {
-        const surveyAnswer = surveyAnswerLookup[resultIdentifier.toLowerCase()];
-        if (surveyAnswer) {
-            const configuration = answerRenderingConfigurationLookup[resultIdentifier];
-            return configuration.formatDisplayValue?.(surveyAnswer) ?? surveyAnswer.answers.join(', ');
-        }
-        return `No value was recorded for ${getDisplayLabel(resultIdentifier)} on this day.`;
+        const configuration = badgeConfigurationLookup[selectedBadgeIdentifier];
+        if (!configuration.getBadgeDetails) return undefined;
+
+        const badgeDetails = configuration.getBadgeDetails(props.surveyAnswerLog.surveyAnswers);
+        return badgeDetails ? <div className="mdhui-sa-log-summary-badge-details">{badgeDetails}</div> : undefined;
     };
 
     return <div className="mdhui-sa-log-summary" ref={props.innerRef}>
@@ -86,33 +73,55 @@ export default function SurveyAnswerLogSummary(props: SurveyAnswerLogSummaryProp
             {props.title ?? formatDateForLocale(props.surveyAnswerLog.date, 'PPP')}
         </Title>
         <div className="mdhui-sa-log-summary-badges">
-            {props.answerRenderingConfigurations.map((configuration, index) => {
-                const surveyAnswer = surveyAnswerLookup[configuration.resultIdentifier];
-                const shouldHighlight = surveyAnswer && (configuration.shouldHighlight?.(surveyAnswer) === true ?? surveyAnswer.answers.length);
-                const defaultIconColor = { lightMode: 'var(--mdhui-background-color-2)', darkMode: 'var(--mdhui-background-color-1)' };
-                const iconColor = resolveColor(layoutContext.colorScheme, shouldHighlight ? (configuration.iconColor ?? 'var(--mdhui-color-primary') : defaultIconColor);
-                return <UnstyledButton
-                    key={index}
-                    className={['mdhui-sa-log-summary-badge', ...(selectedResultIdentifier === configuration.resultIdentifier ? ['mdhui-sa-log-summary-badge-selected'] : [])].join(' ')}
-                    style={{ background: iconColor, borderColor: iconColor, ...(shouldHighlight && configuration.customHighlightStyling) }}
-                    onClick={() => onBadgeClicked(configuration.resultIdentifier)}
-                >
-                    {configuration.icon &&
-                        <FontAwesomeSvgIcon icon={configuration.icon ?? faRing} style={{ color: 'var(--mdhui-background-color-0)' }} />
-                    }
-                    {!configuration.icon &&
-                        <div className="mdhui-sa-log-summary-badge-label" style={{ color: shouldHighlight ? 'var(--mdhui-text-color-1)' : 'var(--mdhui-text-color-3)' }}>
-                            {getDisplayLabel(configuration.resultIdentifier).substring(0, 1).toUpperCase()}
-                        </div>
-                    }
-                </UnstyledButton>;
+            {props.badgeConfigurations.map((configuration, index) => {
+                const badge = <Badge
+                    surveyAnswerLog={props.surveyAnswerLog}
+                    configuration={configuration}
+                    selected={selectedBadgeIdentifier === configuration.identifier}
+                />;
+                if (configuration.getBadgeDetails) {
+                    return <UnstyledButton key={index} onClick={() => onBadgeClicked(configuration)}>{badge}</UnstyledButton>;
+                }
+                return <div key={index}>{badge}</div>;
             })}
         </div>
-        {selectedResultIdentifier && answerRenderingConfigurationLookup[selectedResultIdentifier] &&
-            <div className="mdhui-sa-log-summary-badge-details">
-                <div className="mdhui-sa-log-summary-badge-details-label">{getDisplayLabel(selectedResultIdentifier)}</div>
-                <div className="mdhui-sa-log-summary-badge-details-value">{getDisplayValue(selectedResultIdentifier)}</div>
-            </div>
+        {getSelectedBadgeDetails()}
+    </div>;
+}
+
+interface BadgeProps {
+    surveyAnswerLog: SurveyAnswerLog,
+    configuration: SurveyAnswerLogBadgeConfiguration,
+    selected: boolean;
+}
+
+function Badge(props: BadgeProps) {
+    const layoutContext = useContext(LayoutContext);
+
+    const shouldHighlight = props.configuration.shouldHighlight(props.surveyAnswerLog.surveyAnswers);
+    const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary' : { lightMode: '#ddd', darkMode: '#1c1c1d' };
+    const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
+
+    const classNames: string[] = ['mdhui-sa-log-summary-badge'];
+    if (shouldHighlight) {
+        classNames.push('mdhui-sa-log-summary-badge-highlighted');
+    }
+    if (props.selected) {
+        classNames.push('mdhui-sa-log-summary-badge-selected');
+    }
+
+    const style: CSSProperties = {
+        background: resolvedIconColor,
+        borderColor: resolvedIconColor,
+        ...(shouldHighlight && props.configuration.customHighlightStyling)
+    };
+
+    return <div className={classNames.join(' ')} style={style}>
+        {props.configuration.icon &&
+            <FontAwesomeSvgIcon icon={props.configuration.icon} className="mdhui-sa-log-summary-badge-icon" />
+        }
+        {!props.configuration.icon &&
+            <div className="mdhui-sa-log-summary-badge-label">{props.configuration.identifier.substring(0, 1).toUpperCase()}</div>
         }
     </div>;
 }

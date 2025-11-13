@@ -1,4 +1,4 @@
-import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, LayoutContext, LoadingIndicator, SurveyAnswerLogSummary, SurveyAnswerRenderingConfiguration } from '../../presentational';
+import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, LayoutContext, LoadingIndicator, SurveyAnswerLogBadgeConfiguration, SurveyAnswerLogSummary } from '../../presentational';
 import React, { useContext, useMemo, useState } from 'react';
 import { add, compareDesc, isAfter, startOfMonth } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
@@ -12,7 +12,7 @@ export interface SurveyAnswerLogCalendarProps {
     computeStatesForDay: (date: Date, surveyAnswers: SurveyAnswer[]) => CalendarDayState[];
     multiStateStartAngle?: number;
     legend?: CalendarDayState[];
-    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
+    badgeConfigurations?: SurveyAnswerLogBadgeConfiguration[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -39,7 +39,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
     const applyPreviewState = (previewState: 'loading' | 'loaded' | 'reloading') => {
         setSurveyAnswerLogs({});
         if (previewState === 'loading') return;
-        generatePreviewSurveyAnswerLogs(props.answerRenderingConfigurations, intervalStart, intervalEnd).then(surveyAnswerLogs => {
+        generatePreviewSurveyAnswerLogs(props.badgeConfigurations, intervalStart, intervalEnd).then(surveyAnswerLogs => {
             setSurveyAnswerLogs(surveyAnswerLogs);
             if (previewState !== 'reloading') {
                 setLoading(false);
@@ -61,7 +61,7 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
             return;
         }
         loadState();
-    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, intervalStart, intervalEnd]);
+    }, [], [props.previewState, props.surveyName, props.badgeConfigurations, intervalStart, intervalEnd]);
 
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyAnswers = surveyAnswerLogs[getDayKey(date)]?.surveyAnswers ?? [];
@@ -118,12 +118,12 @@ export default function SurveyAnswerLogCalendar(props: SurveyAnswerLogCalendarPr
                 </div>
             }
         </Card>
-        {props.answerRenderingConfigurations && currentSurveyAnswerLogs.sort((a, b) => compareDesc(a.date, b.date)).map((surveyAnswerLog, index) => {
+        {props.badgeConfigurations && currentSurveyAnswerLogs.sort((a, b) => compareDesc(a.date, b.date)).map((surveyAnswerLog, index) => {
             return <Card key={index}>
                 <SurveyAnswerLogSummary
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={() => onEditLog(surveyAnswerLog)}
-                    answerRenderingConfigurations={props.answerRenderingConfigurations!}
+                    badgeConfigurations={props.badgeConfigurations!}
                     loading={loading}
                 />
             </Card>;

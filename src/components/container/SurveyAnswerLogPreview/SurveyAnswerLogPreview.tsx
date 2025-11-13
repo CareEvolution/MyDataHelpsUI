@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { Action, Button, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogSummary, SurveyAnswerRenderingConfiguration } from '../../presentational';
+import { Action, Button, Card, DateRangeContext, LoadingIndicator, SurveyAnswerLogBadgeConfiguration, SurveyAnswerLogSummary } from '../../presentational';
 import { isSameDay, startOfDay } from 'date-fns';
 import { enterSurveyAnswerLog, formatDateForLocale, getDayKey, loadSurveyAnswerLog, SurveyAnswerLog, useInitializeView } from '../../../helpers';
 import { generateSurveyAnswerLog, SurveyAnswerLogPreviewPreviewState } from './SurveyAnswerLogPreview.previewData';
@@ -8,9 +8,9 @@ import './SurveyAnswerLogPreview.css';
 export interface SurveyAnswerLogPreviewProps {
     previewState?: 'loading' | 'reloading without log' | 'reloading with log' | SurveyAnswerLogPreviewPreviewState;
     surveyName: string;
-    answerRenderingConfigurations?: SurveyAnswerRenderingConfiguration[];
-    alwaysShowAnswerDetails?: boolean;
-    showAnswerDetailsOnLoad?: boolean;
+    badgeConfigurations?: SurveyAnswerLogBadgeConfiguration[];
+    showFirstBadgeDetailsOnLoad?: boolean;
+    alwaysShowBadgeDetails?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -30,7 +30,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
         setInitialized(false);
         setSurveyAnswerLog(undefined);
         if (previewState === 'loading') return;
-        generateSurveyAnswerLog(previewState.replace('reloading ', '') as SurveyAnswerLogPreviewPreviewState, props.answerRenderingConfigurations, currentDate).then(surveyAnswerLog => {
+        generateSurveyAnswerLog(previewState.replace('reloading ', '') as SurveyAnswerLogPreviewPreviewState, props.badgeConfigurations, currentDate).then(surveyAnswerLog => {
             setSurveyAnswerLog(surveyAnswerLog);
             setInitialized(true);
             if (!previewState.startsWith('reloading')) {
@@ -54,7 +54,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
             return;
         }
         loadState();
-    }, [], [props.previewState, props.surveyName, props.answerRenderingConfigurations, currentDate]);
+    }, [], [props.previewState, props.surveyName, props.badgeConfigurations, currentDate]);
 
     if (!initialized && loading) return null;
 
@@ -65,7 +65,7 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
     };
 
     return <div className="mdhui-sa-log-preview" ref={props.innerRef}>
-        {(!surveyAnswerLog || !props.answerRenderingConfigurations) &&
+        {(!surveyAnswerLog || !props.badgeConfigurations) &&
             <Card>
                 <Action
                     title={isSameDay(currentDate, new Date()) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
@@ -78,15 +78,15 @@ export default function SurveyAnswerLogPreview(props: SurveyAnswerLogPreviewProp
                 />
             </Card>
         }
-        {surveyAnswerLog && props.answerRenderingConfigurations &&
+        {surveyAnswerLog && props.badgeConfigurations &&
             <Card>
                 <SurveyAnswerLogSummary
                     title={isSameDay(surveyAnswerLog.date, new Date()) ? 'Today\'s Log' : undefined}
                     surveyAnswerLog={surveyAnswerLog}
                     onEdit={onEnterLog}
-                    answerRenderingConfigurations={props.answerRenderingConfigurations}
-                    alwaysShowAnswerDetails={props.alwaysShowAnswerDetails}
-                    showAnswerDetailsOnLoad={props.showAnswerDetailsOnLoad}
+                    badgeConfigurations={props.badgeConfigurations}
+                    showFirstBadgeDetailsOnLoad={props.showFirstBadgeDetailsOnLoad}
+                    alwaysShowBadgeDetails={props.alwaysShowBadgeDetails}
                     loading={loading}
                 />
             </Card>

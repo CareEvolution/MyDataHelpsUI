@@ -1,16 +1,16 @@
-import { SurveyAnswerRenderingConfiguration } from '../../presentational';
+import { SurveyAnswerLogBadgeConfiguration } from '../../presentational';
 import { fnvPredictableRandomNumber, generateSurveyAnswers, getDayKey, SurveyAnswerLog } from '../../../helpers';
 import { add } from 'date-fns';
 import { v4 as uuid } from 'uuid';
 
 export type SurveyAnswerLogPreviewPreviewState = 'without log' | 'with log';
 
-export async function generateSurveyAnswerLog(previewState: SurveyAnswerLogPreviewPreviewState, answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined, date: Date): Promise<SurveyAnswerLog | undefined> {
+export async function generateSurveyAnswerLog(previewState: SurveyAnswerLogPreviewPreviewState, badgeConfigurations: SurveyAnswerLogBadgeConfiguration[] | undefined, date: Date): Promise<SurveyAnswerLog | undefined> {
     if (previewState === 'without log') return undefined;
 
-    if (!answerRenderingConfigurations) return { resultId: uuid(), date: date, surveyAnswers: [] };
+    if (!badgeConfigurations) return { resultId: uuid(), date: date, surveyAnswers: [] };
 
-    const resultIdentifiers = [...answerRenderingConfigurations.map(configuration => configuration.resultIdentifier), 'hidden'];
+    const resultIdentifiers = [...badgeConfigurations.map(configuration => configuration.identifier), 'hidden'];
     const randomNumber = fnvPredictableRandomNumber(getDayKey(date));
     if (randomNumber % 3 === 0) {
         resultIdentifiers.splice(randomNumber % resultIdentifiers.length, 1);

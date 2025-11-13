@@ -1,5 +1,5 @@
-import React, { CSSProperties } from 'react';
-import { CalendarDayState, DateRangeCoordinator, Layout, SurveyAnswerRenderingConfiguration } from '../../presentational';
+import React, { CSSProperties, ReactNode } from 'react';
+import { CalendarDayState, DateRangeCoordinator, Layout, SurveyAnswerLogBadgeConfiguration } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyAnswerLogCalendar from './SurveyAnswerLogCalendar';
@@ -8,15 +8,12 @@ import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { isAfter, isSameDay } from 'date-fns';
 
-const customHighlightStyling: CSSProperties = {
-    boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
-    transition: 'border-radius: 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease'
-};
-
 type SurveyAnswerLogCalendarStoryArgs = React.ComponentProps<typeof SurveyAnswerLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
     state: 'loading' | 'loaded' | 'reloading';
+    customStyling: boolean;
     includeStates: boolean;
+    multiStateStartAngle: number;
     showLegend: boolean;
     customizeToday: boolean;
     customizeFuture: boolean;
@@ -31,6 +28,11 @@ export default {
         layout: 'fullscreen'
     },
     render: (args: SurveyAnswerLogCalendarStoryArgs) => {
+        const customHighlightStyling: CSSProperties | undefined = args.customStyling ? {
+            boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
+            transition: 'border-radius: 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease'
+        } : undefined;
+
         const states: CalendarDayState[] = args.includeStates ? [
             {
                 label: 'Sleep',
@@ -64,42 +66,54 @@ export default {
             }
         ] : [];
 
-        const answerRenderingConfigurations: SurveyAnswerRenderingConfiguration[] | undefined = args.showLogs ? [
+        const shouldHighlight = (surveyAnswers: SurveyAnswer[], resultIdentifier: string): boolean => {
+            const surveyAnswer = surveyAnswers.find(sa => sa.resultIdentifier === resultIdentifier);
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
+        };
+
+        const getBadgeDetails = (surveyAnswers: SurveyAnswer[], label: string, resultIdentifier: string): NonNullable<ReactNode> => {
+            const surveyAnswer = surveyAnswers.find(sa => sa.resultIdentifier === resultIdentifier);
+            return <>
+                <div style={{ fontWeight: 'bold' }}>{label}</div>
+                <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                    {surveyAnswer && `A value of ${surveyAnswer.answers[0]} was recorded for ${resultIdentifier} for this day.`}
+                    {!surveyAnswer && `No value was recorded for ${resultIdentifier} for this day.`}
+                </div>
+            </>;
+        };
+
+        const badgeConfigurations: SurveyAnswerLogBadgeConfiguration[] | undefined = args.showLogs ? [
             {
-                resultIdentifier: 'activity',
+                identifier: 'activity',
+                shouldHighlight: surveyAnswers => shouldHighlight(surveyAnswers, 'activity'),
+                customHighlightStyling: customHighlightStyling,
+                getBadgeDetails: surveyAnswers => getBadgeDetails(surveyAnswers, 'Activity', 'activity'),
                 icon: faWalking,
-                iconColor: '#3c973c',
-                label: 'Activity',
-                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
-                customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: surveyAnswer => `An activity level of ${surveyAnswer.answers[0]} was recorded on this day.`
+                iconColor: '#3c973c'
             },
             {
-                resultIdentifier: 'sleep',
+                identifier: 'sleep',
+                shouldHighlight: surveyAnswers => shouldHighlight(surveyAnswers, 'sleep'),
+                customHighlightStyling: customHighlightStyling,
+                getBadgeDetails: surveyAnswers => getBadgeDetails(surveyAnswers, 'Sleep', 'sleep'),
                 icon: faBed,
-                iconColor: '#664cda',
-                label: 'Sleep',
-                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
-                customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: surveyAnswer => `A sleep level of ${surveyAnswer.answers[0]} was recorded on this day.`
+                iconColor: '#664cda'
             },
             {
-                resultIdentifier: 'swimming',
+                identifier: 'swimming',
+                shouldHighlight: surveyAnswers => shouldHighlight(surveyAnswers, 'swimming'),
+                customHighlightStyling: customHighlightStyling,
+                getBadgeDetails: surveyAnswers => getBadgeDetails(surveyAnswers, 'Swimming', 'swimming'),
                 icon: faSwimmer,
-                iconColor: '#0877b8',
-                label: 'Swimming',
-                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
-                customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: surveyAnswer => `A swimming level of ${surveyAnswer.answers[0]} was recorded on this day.`
+                iconColor: '#0877b8'
             },
             {
-                resultIdentifier: 'cycling',
-                icon: faBicycle,
-                iconColor: '#976d1e',
-                label: 'Cycling',
-                shouldHighlight: surveyAnswer => surveyAnswer.answers[0] !== '0',
+                identifier: 'cycling',
+                shouldHighlight: surveyAnswers => shouldHighlight(surveyAnswers, 'cycling'),
                 customHighlightStyling: customHighlightStyling,
-                formatDisplayValue: surveyAnswer => `A cycling level of ${surveyAnswer.answers[0]} was recorded on this day.`
+                getBadgeDetails: surveyAnswers => getBadgeDetails(surveyAnswers, 'Cycling', 'cycling'),
+                icon: faBicycle,
+                iconColor: '#976d1e'
             }
         ] : undefined;
 
@@ -134,7 +148,7 @@ export default {
                     previewState={args.state}
                     computeStatesForDay={(date, surveyAnswers) => computePreviewStatesForDay(states, date, surveyAnswers)}
                     legend={args.showLegend ? states : undefined}
-                    answerRenderingConfigurations={answerRenderingConfigurations}
+                    badgeConfigurations={badgeConfigurations}
                 />
             </DateRangeCoordinator>
         </Layout>;
@@ -145,13 +159,14 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
         state: 'loaded',
+        customStyling: true,
         includeStates: true,
-        showLegend: false,
         multiStateStartAngle: 270,
+        showLegend: true,
         customizeToday: false,
         customizeFuture: false,
         customizeNoData: false,
-        showLogs: false
+        showLogs: true
     },
     argTypes: {
         colorScheme: {
@@ -168,10 +183,6 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'include states',
             control: 'boolean'
         },
-        showLegend: {
-            name: 'show legend',
-            control: 'boolean'
-        },
         multiStateStartAngle: {
             name: 'multi-state start angle',
             control: {
@@ -180,6 +191,10 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
                 max: 360,
                 step: 1
             }
+        },
+        showLegend: {
+            name: 'show legend',
+            control: 'boolean'
         },
         customizeToday: {
             name: 'customize today',
@@ -197,6 +212,6 @@ export const Default: StoryObj<SurveyAnswerLogCalendarStoryArgs> = {
             name: 'show logs',
             control: 'boolean'
         },
-        ...argTypesToHide(['previewState', 'surveyName', 'computeStatesForDay', 'legend', 'answerRenderingConfigurations', 'innerRef'])
+        ...argTypesToHide(['previewState', 'surveyName', 'computeStatesForDay', 'legend', 'badgeConfigurations', 'innerRef'])
     }
 };
