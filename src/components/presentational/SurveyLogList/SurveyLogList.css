@@ -1,9 +1,9 @@
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-footer {
+.mdhui-survey-log-list .mdhui-survey-log-list-footer {
     position: relative;
     min-height: 32px;
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend {
+.mdhui-survey-log-list .mdhui-survey-log-list-legend {
     padding: 0 40px 16px;
     width: 100%;
     display: flex;
@@ -14,25 +14,25 @@
     box-sizing: border-box;
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry {
+.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-color {
+.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry-color {
     height: 16px;
     width: 16px;
     border-radius: 50%;
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-legend-entry-label {
+.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry-label {
     font-size: 0.7em;
     color: var(--mdhui-text-color-2);
     font-weight: bold;
 }
 
-.mdhui-sa-log-calendar .mdhui-sa-log-calendar-loading-indicator.mdhui-loading-indicator {
+.mdhui-survey-log-list .mdhui-survey-log-list-loading-indicator.mdhui-loading-indicator {
     position: absolute;
     bottom: 8px;
     right: 16px;

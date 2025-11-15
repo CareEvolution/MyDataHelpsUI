@@ -5,7 +5,7 @@ import { generateSurveyAnswers } from '../../../helpers/survey-answer';
 export type SurveyAnswerChartPreviewState = 'default' | 'no data' | 'with one data point' | 'with one data point in first series' | 'with two data points' | 'with two data points in first series' | 'with two data points in first series with gap' | 'with gap';
 
 export async function generatePreviewData(previewState: SurveyAnswerChartPreviewState | undefined, startDate: Date, endDate: Date, seriesCount: number, dataCadence: Duration): Promise<SurveyAnswer[][]> {
-    const previewDataProvider = (startDate: Date, endDate: Date) => {
+    const previewDataProvider = async (startDate: Date, endDate: Date) => {
         const resultIdentifiers = Array.from({ length: seriesCount }, (_, i) => 'Result ' + i);
         return generateSurveyAnswers(startDate, endDate, resultIdentifiers, 10, 100, dataCadence);
     };
