@@ -13,6 +13,7 @@ type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar>
     customStyling: boolean;
     includeStates: boolean;
     multiStateStartAngle: number;
+    hasLegend: boolean;
     showLegend: boolean;
     customizeToday: boolean;
     customizeFuture: boolean;
@@ -90,6 +91,8 @@ export default {
             return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
         };
 
+        const calendar = <SurveyLogCalendar showLegend={args.showLegend} />;
+
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <SurveyLogCoordinator previewState={args.previewState} surveyName="Log Survey" dailyDataTypes={[]}>
@@ -97,10 +100,10 @@ export default {
                         ? <SurveyLogStateCoordinator
                             computeStatesForDay={computePreviewStatesForDay}
                             multiStateStartAngle={args.multiStateStartAngle}
-                            legend={args.showLegend ? states : undefined}
-                            children={<SurveyLogCalendar />}
+                            legend={args.hasLegend ? states : undefined}
+                            children={calendar}
                         />
-                        : <SurveyLogCalendar />
+                        : calendar
                     }
                 </SurveyLogCoordinator>
             </DateRangeCoordinator>
@@ -115,6 +118,7 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
         customStyling: true,
         includeStates: true,
         multiStateStartAngle: 270,
+        hasLegend: true,
         showLegend: true,
         customizeToday: false,
         customizeFuture: false,
@@ -143,6 +147,10 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
                 max: 360,
                 step: 1
             }
+        },
+        hasLegend: {
+            name: 'has legend',
+            control: 'boolean'
         },
         showLegend: {
             name: 'show legend',

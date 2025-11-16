@@ -5,11 +5,11 @@ import { SurveyLog } from '../../../helpers';
 import './SurveyLogList.css';
 import { SurveyLogContext } from '../../container';
 
-export interface SurveyLogCalendarProps {
+export interface SurveyLogListProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function SurveyLogList(props: SurveyLogCalendarProps) {
+export default function SurveyLogList(props: SurveyLogListProps) {
     const surveyLogContext = useContext(SurveyLogContext);
 
     if (!surveyLogContext) {

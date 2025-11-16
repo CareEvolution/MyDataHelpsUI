@@ -6,6 +6,7 @@ import './SurveyLogCalendar.css';
 import { SurveyLogContext } from '../../container';
 
 export interface SurveyLogCalendarProps {
+    showLegend?: boolean;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -51,9 +52,9 @@ export default function SurveyLogCalendar(props: SurveyLogCalendarProps) {
     return <div className="mdhui-survey-log-calendar" ref={props.innerRef}>
         <Card>
             <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
-            {(surveyLogContext.loading || !!surveyLogStateContext?.legend?.length) &&
+            {(surveyLogContext.loading || (props.showLegend && !!surveyLogStateContext?.legend?.length)) &&
                 <div className="mdhui-survey-log-calendar-footer">
-                    {!!surveyLogStateContext?.legend?.length &&
+                    {(props.showLegend && !!surveyLogStateContext?.legend?.length) &&
                         <div className="mdhui-survey-log-calendar-legend">
                             {surveyLogStateContext.legend.map(state => {
                                 const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
