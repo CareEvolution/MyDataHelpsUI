@@ -1,4 +1,4 @@
-import { add, eachDayOfInterval, Interval, min, parseISO, startOfToday } from 'date-fns';
+import { add, eachDayOfInterval, Interval, isToday, min, parseISO, startOfToday } from 'date-fns';
 import { fnvPredictableRandomNumber, getDayKey, queryDailyData, SurveyLog } from '../index';
 import { SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
@@ -28,10 +28,11 @@ async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: D
 
 function generatePreviewSurveyAnswers(startDate: Date, endDate: Date): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
     const resultIdentifiers = Array.from({ length: 10 }, (_, index) => `result${index + 1}`);
-    const surveyAnswers = generateSurveyAnswers(startDate, min([startOfToday(), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
+    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: 1 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
     return surveyAnswers.reduce((sparseSurveyAnswers, surveyAnswer) => {
         const dayKey = getDayKey(surveyAnswer.date);
-        if (fnvPredictableRandomNumber(dayKey) % 3 !== 0 && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0) {
+        if ((isToday(surveyAnswer.date) || fnvPredictableRandomNumber(dayKey) % 3 !== 0)
+            && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0) {
             sparseSurveyAnswers[dayKey] ??= [];
             sparseSurveyAnswers[dayKey].push({
                 surveyName: surveyAnswer.surveyName,

@@ -4,7 +4,7 @@ import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogCalendar from './SurveyLogCalendar';
 import { fnvPredictableRandomNumber, getDayKey, SurveyLog } from '../../../helpers';
-import { isAfter, isSameDay } from 'date-fns';
+import { isAfter, isToday } from 'date-fns';
 import { SurveyLogCoordinator } from '../../container';
 
 type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
@@ -72,7 +72,7 @@ export default {
 
             const surveyAnswers = surveyLog?.surveyAnswers ?? [];
 
-            if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
+            if (!isToday(date) && surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
                 const dayKey = getDayKey(date);
                 const statesCount = (fnvPredictableRandomNumber(dayKey + '-states-count') % states.length) + 1;
 
@@ -86,7 +86,7 @@ export default {
                 return statesToReturn.sort((a, b) => states.indexOf(a) - states.indexOf(b));
             }
 
-            if (isSameDay(date, new Date())) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
+            if (isToday(date)) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
             if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff' }] : [];
             return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
         };

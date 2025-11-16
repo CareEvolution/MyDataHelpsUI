@@ -2,7 +2,7 @@ import React, { CSSProperties, useContext } from 'react';
 import './CalendarDay.css';
 import { LayoutContext } from '../Layout';
 import { ColorDefinition, resolveColor } from '../../../helpers';
-import { add, isAfter, isSameDay } from 'date-fns';
+import { add, isAfter, isToday } from 'date-fns';
 import UnstyledButton from '../UnstyledButton';
 
 export interface CalendarDayState {
@@ -94,7 +94,7 @@ export default function CalendarDay(props: CalendarDayProps) {
     const dayClasses: string[] = ['mdhui-calendar-day'];
     const dayStyle: CSSProperties = {};
 
-    if (isSameDay(date, new Date())) {
+    if (isToday(date)) {
         dayClasses.push('mdhui-calendar-day-today');
     } else if (isAfter(date, new Date())) {
         dayClasses.push('mdhui-calendar-day-future');
