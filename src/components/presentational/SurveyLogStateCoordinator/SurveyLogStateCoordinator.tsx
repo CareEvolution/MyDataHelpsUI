@@ -3,21 +3,30 @@ import { SurveyLog } from '../../../helpers';
 import { CalendarDayState } from '../index';
 
 export interface SurveyLogStateContext {
-    computeStatesForDay: (date: Date, surveyLog?: SurveyLog) => CalendarDayState[];
+    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayState[];
+    multiStateStartAngle?: number;
+    legend?: CalendarDayState[];
 }
 
 export const SurveyLogStateContext = createContext<SurveyLogStateContext | null>(null);
 
 export interface SurveyLogStateCoordinatorProps {
-    computeStatesForDay: (date: Date, surveyLog?: SurveyLog) => CalendarDayState[];
+    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayState[];
+    multiStateStartAngle?: number;
+    legend?: CalendarDayState[];
     children: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
 export default function SurveyLogStateCoordinator(props: SurveyLogStateCoordinatorProps) {
     return <div ref={props.innerRef}>
-        <SurveyLogStateContext.Provider value={{ computeStatesForDay: props.computeStatesForDay }}>
-            {props.children}
-        </SurveyLogStateContext.Provider>
+        <SurveyLogStateContext.Provider
+            value={{
+                computeStatesForDay: props.computeStatesForDay,
+                multiStateStartAngle: props.multiStateStartAngle,
+                legend: props.legend
+            }}
+            children={props.children}
+        />
     </div>;
 }

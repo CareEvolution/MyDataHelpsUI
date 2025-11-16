@@ -73,8 +73,9 @@ export default function SurveyLogCoordinator(props: SurveyLogCoordinatorProps) {
     };
 
     return <div ref={props.innerRef}>
-        <SurveyLogContext.Provider value={{ surveyName: props.surveyName, loading, firstTimeLoading, surveyLogs, enterSurveyLog }}>
-            {props.children}
-        </SurveyLogContext.Provider>
+        <SurveyLogContext.Provider
+            value={{ surveyName: props.surveyName, loading, firstTimeLoading, surveyLogs, enterSurveyLog }}
+            children={props.children}
+        />
     </div>;
 }

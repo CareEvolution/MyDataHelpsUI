@@ -90,16 +90,18 @@ export default {
             return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
         };
 
-        const calendar = <SurveyLogCalendar
-            multiStateStartAngle={args.multiStateStartAngle}
-            legend={args.includeStates && args.showLegend ? states : undefined}
-        />;
-
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
                 <SurveyLogCoordinator previewState={args.previewState} surveyName="Log Survey" dailyDataTypes={[]}>
-                    {args.includeStates && <SurveyLogStateCoordinator computeStatesForDay={computePreviewStatesForDay} children={calendar} />}
-                    {!args.includeStates && calendar}
+                    {args.includeStates
+                        ? <SurveyLogStateCoordinator
+                            computeStatesForDay={computePreviewStatesForDay}
+                            multiStateStartAngle={args.multiStateStartAngle}
+                            legend={args.showLegend ? states : undefined}
+                            children={<SurveyLogCalendar />}
+                        />
+                        : <SurveyLogCalendar />
+                    }
                 </SurveyLogCoordinator>
             </DateRangeCoordinator>
         </Layout>;

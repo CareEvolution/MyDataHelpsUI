@@ -1,6 +1,6 @@
 .mdhui-survey-log-calendar .mdhui-survey-log-calendar-footer {
     position: relative;
-    min-height: 32px;
+    min-height: 36px;
 }
 
 .mdhui-survey-log-calendar .mdhui-survey-log-calendar-legend {
@@ -34,7 +34,7 @@
 
 .mdhui-survey-log-calendar .mdhui-survey-log-calendar-loading-indicator.mdhui-loading-indicator {
     position: absolute;
-    bottom: 8px;
+    bottom: 12px;
     right: 16px;
     padding: 0;
 }

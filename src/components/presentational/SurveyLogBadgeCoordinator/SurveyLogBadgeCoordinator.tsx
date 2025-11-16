@@ -29,12 +29,13 @@ export interface SurveyLogBadgeCoordinatorProps {
 
 export default function SurveyLogBadgeCoordinator(props: SurveyLogBadgeCoordinatorProps) {
     return <div ref={props.innerRef}>
-        <SurveyLogBadgeContext.Provider value={{
-            badgeConfigurations: props.badgeConfigurations,
-            showFirstBadgeDetailsOnLoad: props.showFirstBadgeDetailsOnLoad ?? false,
-            alwaysShowBadgeDetails: props.alwaysShowBadgeDetails ?? false
-        }}>
-            {props.children}
-        </SurveyLogBadgeContext.Provider>
+        <SurveyLogBadgeContext.Provider
+            value={{
+                badgeConfigurations: props.badgeConfigurations,
+                showFirstBadgeDetailsOnLoad: props.showFirstBadgeDetailsOnLoad ?? false,
+                alwaysShowBadgeDetails: props.alwaysShowBadgeDetails ?? false
+            }}
+            children={props.children}
+        />
     </div>;
 }

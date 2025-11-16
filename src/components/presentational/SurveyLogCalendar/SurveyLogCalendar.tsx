@@ -6,8 +6,6 @@ import './SurveyLogCalendar.css';
 import { SurveyLogContext } from '../../container';
 
 export interface SurveyLogCalendarProps {
-    multiStateStartAngle?: number;
-    legend?: CalendarDayState[];
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -46,30 +44,31 @@ export default function SurveyLogCalendar(props: SurveyLogCalendarProps) {
             day={day}
             computeStatesForDay={computeStatesForDay}
             onClick={onDayClicked}
-            multiStateStartAngle={props.multiStateStartAngle}
+            multiStateStartAngle={surveyLogStateContext?.multiStateStartAngle}
         />;
     };
 
     return <div className="mdhui-survey-log-calendar" ref={props.innerRef}>
         <Card>
             <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
-            {(surveyLogContext.loading || props.legend && props.legend.length > 0) &&
+            {(surveyLogContext.loading || !!surveyLogStateContext?.legend?.length) &&
                 <div className="mdhui-survey-log-calendar-footer">
-                    <div className="mdhui-survey-log-calendar-legend">
-                        {props.legend && props.legend.length > 0 && props.legend.map(state => {
-                            const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
-                            const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
-
-                            return <div key={state.label} className="mdhui-survey-log-calendar-legend-entry">
-                                <div className="mdhui-survey-log-calendar-legend-entry-color" style={{
-                                    background: backgroundColor,
-                                    border: `2px solid ${borderColor}`,
-                                    ...state.style
-                                }}>&nbsp;</div>
-                                <div className="mdhui-survey-log-calendar-legend-entry-label">{state.label}</div>
-                            </div>;
-                        })}
-                    </div>
+                    {!!surveyLogStateContext?.legend?.length &&
+                        <div className="mdhui-survey-log-calendar-legend">
+                            {surveyLogStateContext.legend.map(state => {
+                                const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
+                                const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
+                                return <div key={state.label} className="mdhui-survey-log-calendar-legend-entry">
+                                    <div className="mdhui-survey-log-calendar-legend-entry-color" style={{
+                                        background: backgroundColor,
+                                        border: `2px solid ${borderColor}`,
+                                        ...state.style
+                                    }}>&nbsp;</div>
+                                    <div className="mdhui-survey-log-calendar-legend-entry-label">{state.label}</div>
+                                </div>;
+                            })}
+                        </div>
+                    }
                     {surveyLogContext.loading && <LoadingIndicator className="mdhui-survey-log-calendar-loading-indicator" />}
                 </div>
             }
