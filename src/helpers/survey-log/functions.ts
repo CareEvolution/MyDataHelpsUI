@@ -5,9 +5,11 @@ import queryAllSurveyAnswers from '../query-all-survey-answers';
 import { SurveyLogDataPoint, SurveyLogSurveyAnswer } from './types';
 import { generateSurveyAnswers } from '../survey-answer';
 
-export async function loadSurveyLogs(surveyName: string, dailyDataTypes: string[], startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, SurveyLog>>> {
-    const surveyAnswers = await loadSurveyAnswers(surveyName, startDate, endDate, preview);
-    const dataPoints = Object.keys(surveyAnswers).length > 0 ? await loadDataPoints(dailyDataTypes, startDate, endDate, preview) : {};
+export type SurveyLogPreviewState = 'loaded' | 'reloading' | 'loaded with today' | 'reloading with today';
+
+export async function loadSurveyLogs(surveyName: string, dailyDataTypes: string[], startDate: Date, endDate: Date, previewState: SurveyLogPreviewState | undefined): Promise<Partial<Record<string, SurveyLog>>> {
+    const surveyAnswers = await loadSurveyAnswers(surveyName, startDate, endDate, previewState);
+    const dataPoints = Object.keys(surveyAnswers).length > 0 ? await loadDataPoints(dailyDataTypes, startDate, endDate, !!previewState) : {};
 
     return Object.entries(surveyAnswers as Record<string, SurveyLogSurveyAnswer[]>).reduce((dailyLogs, [dayKey, surveyAnswers]) => {
         dailyLogs[dayKey] = { date: parseISO(dayKey), surveyAnswers: surveyAnswers, dataPoints: dataPoints[dayKey] ?? [] };
@@ -15,8 +17,8 @@ export async function loadSurveyLogs(surveyName: string, dailyDataTypes: string[
     }, {} as Record<string, SurveyLog>);
 }
 
-async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, SurveyLogSurveyAnswer[]>>> {
-    if (preview) return generatePreviewSurveyAnswers(startDate, endDate);
+async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: Date, previewState: SurveyLogPreviewState | undefined): Promise<Partial<Record<string, SurveyLogSurveyAnswer[]>>> {
+    if (previewState) return generatePreviewSurveyAnswers(startDate, endDate, previewState);
 
     const event = eachDayOfInterval({ start: startDate, end: add(endDate, { days: -1 }) }).reduce((events, date) => {
         const event = getDayKey(date).substring(0, 8) + '*';
@@ -26,13 +28,13 @@ async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: D
     return queryAndCompileSurveyAnswers(surveyName, event, { start: startDate, end: endDate });
 }
 
-function generatePreviewSurveyAnswers(startDate: Date, endDate: Date): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
+function generatePreviewSurveyAnswers(startDate: Date, endDate: Date, previewState: SurveyLogPreviewState): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
     const resultIdentifiers = Array.from({ length: 10 }, (_, index) => `result${index + 1}`);
-    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: 1 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
+    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: previewState.endsWith('with today') ? 1 : 0 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
     return surveyAnswers.reduce((sparseSurveyAnswers, surveyAnswer) => {
         const dayKey = getDayKey(surveyAnswer.date);
-        if ((isToday(surveyAnswer.date) || fnvPredictableRandomNumber(dayKey) % 3 !== 0)
-            && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0) {
+        if ((previewState.endsWith('with today') && isToday(surveyAnswer.date)) ||
+            (fnvPredictableRandomNumber(dayKey) % 3 !== 0 && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0)) {
             sparseSurveyAnswers[dayKey] ??= [];
             sparseSurveyAnswers[dayKey].push({
                 surveyName: surveyAnswer.surveyName,

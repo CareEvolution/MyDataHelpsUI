@@ -3,13 +3,13 @@ import { CalendarDayState, DateRangeCoordinator, Layout, SurveyLogStateCoordinat
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogCalendar from './SurveyLogCalendar';
-import { fnvPredictableRandomNumber, getDayKey, SurveyLog } from '../../../helpers';
+import { fnvPredictableRandomNumber, getDayKey, SurveyLog, SurveyLogPreviewState } from '../../../helpers';
 import { isAfter, isToday } from 'date-fns';
 import { SurveyLogCoordinator } from '../../container';
 
 type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | 'loaded' | 'reloading';
+    previewState: 'loading' | SurveyLogPreviewState;
     customStyling: boolean;
     includeStates: boolean;
     multiStateStartAngle: number;
@@ -72,7 +72,7 @@ export default {
 
             const surveyAnswers = surveyLog?.surveyAnswers ?? [];
 
-            if (!isToday(date) && surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
+            if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
                 const dayKey = getDayKey(date);
                 const statesCount = (fnvPredictableRandomNumber(dayKey + '-states-count') % states.length) + 1;
 
@@ -115,7 +115,7 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: true,
+        customStyling: false,
         includeStates: true,
         multiStateStartAngle: 270,
         hasLegend: true,

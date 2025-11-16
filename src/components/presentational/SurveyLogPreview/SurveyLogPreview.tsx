@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { Action, Button, Card, DateRangeContext, LoadingIndicator, TextBlock } from '../index';
-import { isSameDay, startOfToday } from 'date-fns';
+import { isToday, startOfToday } from 'date-fns';
 import { formatDateForLocale, getDayKey } from '../../../helpers';
 import './SurveyLogPreview.css';
 import { SurveyLogContext } from '../../container';
@@ -35,7 +35,7 @@ export default function SurveyLogPreview(props: SurveyLogPreviewProps) {
         <Card>
             {!surveyLog &&
                 <Action
-                    title={isSameDay(currentDate, new Date()) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
+                    title={isToday(currentDate) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
                     subtitle="A log has not been entered."
                     renderAs="div"
                     indicator={surveyLogContext.loading
@@ -45,7 +45,12 @@ export default function SurveyLogPreview(props: SurveyLogPreviewProps) {
                 />
             }
             {surveyLog &&
-                <SurveyLogSummary surveyLog={surveyLog} onEdit={onEnterLog} loading={surveyLogContext.loading} />
+                <SurveyLogSummary
+                    title={isToday(currentDate) ? 'Today\'s Log' : undefined}
+                    surveyLog={surveyLog}
+                    onEdit={onEnterLog}
+                    loading={surveyLogContext.loading}
+                />
             }
         </Card>
     </div>;

@@ -10,6 +10,7 @@ import { SurveyLog, SurveyLogSurveyAnswer } from '../../../helpers';
 
 type SurveyLogSummaryStoryArgs = React.ComponentProps<typeof SurveyLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    customTitle: boolean;
     customStyling: boolean;
     badges: boolean;
     badgeDetails: boolean;
@@ -84,6 +85,7 @@ export default {
 
         const logSummary = <Card>
             <SurveyLogSummary
+                title={args.customTitle ? 'Custom Title' : undefined}
                 surveyLog={{
                     date: startOfToday(),
                     surveyAnswers: [
@@ -114,6 +116,7 @@ export default {
 export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
+        customTitle: false,
         customStyling: true,
         badges: true,
         badgeDetails: true,
@@ -128,6 +131,10 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        customTitle: {
+            name: 'custom title',
+            control: 'boolean'
         },
         customStyling: {
             name: 'custom styling',
@@ -161,6 +168,6 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
             name: 'loading',
             control: 'boolean'
         },
-        ...argTypesToHide(['surveyLog', 'onEdit', 'innerRef'])
+        ...argTypesToHide(['title', 'surveyLog', 'onEdit', 'innerRef'])
     }
 };

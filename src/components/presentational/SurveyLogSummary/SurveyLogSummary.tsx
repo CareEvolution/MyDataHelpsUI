@@ -4,9 +4,9 @@ import { formatDateForLocale, resolveColor, SurveyLog } from '../../../helpers';
 import './SurveyLogSummary.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { isSameDay } from 'date-fns';
 
 export interface DailyLogSummaryProps {
+    title?: string;
     surveyLog: SurveyLog;
     onEdit: () => void;
     loading?: boolean;
@@ -39,7 +39,7 @@ export default function SurveyLogSummary(props: DailyLogSummaryProps) {
         }
     };
 
-    const title = isSameDay(props.surveyLog.date, new Date()) ? 'Today\'s Log' : formatDateForLocale(props.surveyLog.date, 'PPP');
+    const title = props.title ?? formatDateForLocale(props.surveyLog.date, 'PPP');
 
     const titleAccessory = props.loading
         ? <LoadingIndicator variant="inline" />

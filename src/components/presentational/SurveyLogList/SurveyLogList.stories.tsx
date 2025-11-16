@@ -3,13 +3,13 @@ import { DateRangeCoordinator, Layout, SurveyLogBadgeConfiguration, SurveyLogBad
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogList from './SurveyLogList';
-import { SurveyLog } from '../../../helpers';
+import { SurveyLog, SurveyLogPreviewState } from '../../../helpers';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 import { SurveyLogCoordinator } from '../../container';
 
 type SurveyLogListStoryArgs = React.ComponentProps<typeof SurveyLogList> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | 'loaded' | 'reloading';
+    previewState: 'loading' | SurveyLogPreviewState;
     customStyling: boolean;
     useBadges: boolean;
 };
@@ -92,7 +92,7 @@ export const Default: StoryObj<SurveyLogListStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: true,
+        customStyling: false,
         useBadges: true
     },
     argTypes: {
@@ -104,7 +104,11 @@ export const Default: StoryObj<SurveyLogListStoryArgs> = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'loaded', 'reloading']
+            options: ['loading', 'loaded', 'reloading'],
+            mapping: {
+                'loaded': 'loaded with today',
+                'reloading': 'reloading with today'
+            }
         },
         useBadges: {
             name: 'use badges',

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
-import { getDayKey, loadSurveyLogs, SurveyLog, useInitializeView } from '../../../helpers';
+import { getDayKey, loadSurveyLogs, SurveyLog, SurveyLogPreviewState, useInitializeView } from '../../../helpers';
 import { DateRangeContext } from '../../presentational';
 import { add, startOfToday } from 'date-fns';
 import MyDataHelps from '@careevolution/mydatahelps-js';
@@ -15,7 +15,7 @@ export interface SurveyLogContext {
 export const SurveyLogContext = createContext<SurveyLogContext | null>(null);
 
 export interface SurveyLogCoordinatorProps {
-    previewState?: 'loading' | 'loaded' | 'reloading';
+    previewState?: 'loading' | SurveyLogPreviewState;
     surveyName: string;
     dailyDataTypes: string[];
     children: React.ReactNode;
@@ -57,10 +57,10 @@ export default function SurveyLogCoordinator(props: SurveyLogCoordinatorProps) {
             setSurveyLogs({});
             if (props.previewState === 'loading') return;
         }
-        loadSurveyLogs(props.surveyName, props.dailyDataTypes, intervalStart, intervalEnd, !!props.previewState).then(surveyLogs => {
+        loadSurveyLogs(props.surveyName, props.dailyDataTypes, intervalStart, intervalEnd, props.previewState).then(surveyLogs => {
             setSurveyLogs(surveyLogs);
             setFirstTimeLoading(false);
-            if (props.previewState !== 'reloading') {
+            if (!props.previewState?.startsWith('reloading')) {
                 setLoading(false);
             }
         });

@@ -4,12 +4,12 @@ import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogPreview from './SurveyLogPreview';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
-import { SurveyLog } from '../../../helpers';
+import { SurveyLog, SurveyLogPreviewState } from '../../../helpers';
 import { SurveyLogCoordinator } from '../../container';
 
 type SurveyLogPreviewStoryArgs = React.ComponentProps<typeof SurveyLogPreview> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | 'loaded' | 'reloading';
+    previewState: 'loading' | SurveyLogPreviewState;
     customStyling: boolean;
     badges: boolean;
     showFirstBadgeDetailsOnLoad: boolean;
@@ -101,7 +101,7 @@ export const Default: StoryObj<SurveyLogPreviewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: true,
+        customStyling: false,
         badges: true,
         showFirstBadgeDetailsOnLoad: true,
         alwaysShowBadgeDetails: true
@@ -115,7 +115,7 @@ export const Default: StoryObj<SurveyLogPreviewStoryArgs> = {
         previewState: {
             name: 'state',
             control: 'radio',
-            options: ['loading', 'loaded', 'reloading']
+            options: ['loading', 'loaded', 'reloading', 'loaded with today', 'reloading with today']
         },
         badges: {
             name: 'with badges',
