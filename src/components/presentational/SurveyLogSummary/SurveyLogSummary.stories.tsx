@@ -117,7 +117,7 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
         customTitle: false,
-        customStyling: true,
+        customStyling: false,
         badges: true,
         badgeDetails: true,
         showFirstBadgeDetailsOnLoad: true,
