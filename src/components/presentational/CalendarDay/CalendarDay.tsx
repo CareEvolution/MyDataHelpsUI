@@ -223,7 +223,7 @@ export default function CalendarDay(props: CalendarDayProps) {
         {date.getDate()}
         {currentDayStates.note &&
             <div className="mdhui-calendar-day-note-wrapper" style={{
-                backgroundColor: currentDayStates.noteBorderColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,
+                backgroundColor: currentDayStates.noteBackgroundColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,
                 border: currentDayStates.noteBorderColor ? `1px solid ${resolveColor(layoutContext.colorScheme, currentDayStates.noteBorderColor)}` : undefined,
                 color: currentDayStates.noteTextColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteTextColor) : undefined
             }}>
