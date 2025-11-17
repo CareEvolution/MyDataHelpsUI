@@ -1,12 +1,11 @@
 import React, { CSSProperties } from 'react';
-import { CalendarDayState, DateRangeCoordinator, Layout, SurveyLogStateCoordinator } from '../index';
+import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, Layout, SurveyLogStateCoordinator } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogCalendar from './SurveyLogCalendar';
 import { fnvPredictableRandomNumber, getDayKey, SurveyLog, SurveyLogPreviewState } from '../../../helpers';
 import { isAfter, isToday } from 'date-fns';
 import { SurveyLogCoordinator } from '../../container';
-import { CalendarDayStates } from '../CalendarDay/CalendarDay';
 
 type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
