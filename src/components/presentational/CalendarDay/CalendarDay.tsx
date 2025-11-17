@@ -24,6 +24,13 @@ export interface CalendarDayState {
     style?: CSSProperties;
 }
 
+export interface CalendarDayStates extends Array<CalendarDayState> {
+    note?: string;
+    noteBackgroundColor?: ColorDefinition;
+    noteBorderColor?: ColorDefinition;
+    noteTextColor?: ColorDefinition;
+}
+
 export type CalendarDayStateConfiguration = Partial<Record<string, CalendarDayState>>;
 
 export interface CalendarDayProps {
@@ -42,7 +49,7 @@ export interface CalendarDayProps {
      * Please use computeStatesForDay instead.
      */
     computeStateForDay?: (date: Date) => string | undefined;
-    computeStatesForDay?: (date: Date) => CalendarDayState[];
+    computeStatesForDay?: (date: Date) => CalendarDayStates;
     onClick?: (date: Date) => void;
     multiStateStartAngle?: number;
     innerRef?: React.Ref<HTMLDivElement>;
@@ -71,7 +78,7 @@ export default function CalendarDay(props: CalendarDayProps) {
         return !isLastDayOfMonth && !isLastDayOfWeek;
     };
 
-    const computeStatesForDay = (date: Date): CalendarDayState[] => {
+    const computeStatesForDay = (date: Date): CalendarDayStates => {
         if (props.stateConfiguration && props.computeStateForDay) {
             const stateKey = props.computeStateForDay(date);
             if (stateKey === undefined) return [];
@@ -212,14 +219,23 @@ export default function CalendarDay(props: CalendarDayProps) {
         ...currentDayState.style
     } : undefined;
 
+    const dayValue = <div className="mdhui-calendar-day-value" style={dayValueStyle}>
+        {date.getDate()}
+        {currentDayStates.note &&
+            <div
+                className="mdhui-calendar-day-note"
+                style={{
+                    backgroundColor: currentDayStates.noteBorderColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,
+                    border: currentDayStates.noteBorderColor ? `1px solid ${resolveColor(layoutContext.colorScheme, currentDayStates.noteBorderColor)}` : undefined,
+                    color: currentDayStates.noteTextColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteTextColor) : undefined
+                }}
+            >
+                {currentDayStates.note}
+            </div>
+        }
+    </div>;
+
     return <div ref={props.innerRef} className={dayClasses.join(' ')} style={dayStyle}>
-        {props.onClick &&
-            <UnstyledButton onClick={() => props.onClick!(date)}>
-                <div className="mdhui-calendar-day-value" style={dayValueStyle}>{date.getDate()}</div>
-            </UnstyledButton>
-        }
-        {!props.onClick &&
-            <div className="mdhui-calendar-day-value" style={dayValueStyle}>{date.getDate()}</div>
-        }
+        {props.onClick ? <UnstyledButton onClick={() => props.onClick!(date)} children={dayValue} /> : dayValue}
     </div>;
 }

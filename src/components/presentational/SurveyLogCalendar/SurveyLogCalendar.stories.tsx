@@ -6,18 +6,21 @@ import SurveyLogCalendar from './SurveyLogCalendar';
 import { fnvPredictableRandomNumber, getDayKey, SurveyLog, SurveyLogPreviewState } from '../../../helpers';
 import { isAfter, isToday } from 'date-fns';
 import { SurveyLogCoordinator } from '../../container';
+import { CalendarDayStates } from '../CalendarDay/CalendarDay';
 
 type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
     previewState: 'loading' | SurveyLogPreviewState;
     customStyling: boolean;
     includeStates: boolean;
+    includeStatesNote: boolean;
     multiStateStartAngle: number;
     hasLegend: boolean;
     showLegend: boolean;
     customizeToday: boolean;
     customizeFuture: boolean;
     customizeNoData: boolean;
+    customizeStatesNote: boolean;
 };
 
 export default {
@@ -65,30 +68,33 @@ export default {
             }
         ];
 
-        const computePreviewStatesForDay = (date: Date, surveyLog?: SurveyLog): CalendarDayState[] => {
-            if (states.length === 0) {
-                return [];
-            }
-
+        const computePreviewStatesForDay = (date: Date, surveyLog?: SurveyLog): CalendarDayStates => {
             const surveyAnswers = surveyLog?.surveyAnswers ?? [];
 
             if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
                 const dayKey = getDayKey(date);
                 const statesCount = (fnvPredictableRandomNumber(dayKey + '-states-count') % states.length) + 1;
 
-                const statesToReturn: CalendarDayState[] = [];
+                const statesToReturn: CalendarDayStates = [];
                 let currentStateIndex = fnvPredictableRandomNumber(dayKey + '-states-start-index') % states.length;
                 while (statesToReturn.length < statesCount) {
                     statesToReturn.push(states[currentStateIndex]);
                     currentStateIndex = (currentStateIndex + 1) % states.length;
                 }
 
+                if (args.includeStatesNote && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
+                    statesToReturn.note = ((fnvPredictableRandomNumber(dayKey + '-states-note') % 20) + 1).toString();
+                    if (args.customizeStatesNote) {
+                        statesToReturn.noteBorderColor = { lightMode: '#000', darkMode: '#fff' };
+                    }
+                }
+
                 return statesToReturn.sort((a, b) => states.indexOf(a) - states.indexOf(b));
             }
 
-            if (isToday(date)) return args.customizeToday ? [{ borderColor: '#fff' }] : [];
-            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: '#fff' }] : [];
-            return args.customizeNoData ? [{ borderColor: '#fff' }] : [];
+            if (isToday(date)) return args.customizeToday ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
+            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
+            return args.customizeNoData ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
         };
 
         const calendar = <SurveyLogCalendar showLegend={args.showLegend} />;
@@ -117,12 +123,14 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
         previewState: 'loaded',
         customStyling: false,
         includeStates: true,
+        includeStatesNote: false,
         multiStateStartAngle: 270,
         hasLegend: true,
         showLegend: true,
         customizeToday: false,
         customizeFuture: false,
-        customizeNoData: false
+        customizeNoData: false,
+        customizeStatesNote: false
     },
     argTypes: {
         colorScheme: {
@@ -137,6 +145,10 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
         },
         includeStates: {
             name: 'include states',
+            control: 'boolean'
+        },
+        includeStatesNote: {
+            name: 'include state notes',
             control: 'boolean'
         },
         multiStateStartAngle: {
@@ -166,6 +178,10 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
         },
         customizeNoData: {
             name: 'customize no-data',
+            control: 'boolean'
+        },
+        customizeStatesNote: {
+            name: 'customize states note',
             control: 'boolean'
         },
         ...argTypesToHide(['legend', 'innerRef'])

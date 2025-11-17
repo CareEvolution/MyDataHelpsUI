@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import CalendarDay, { CalendarDayState } from './CalendarDay';
+import CalendarDay, { CalendarDayState, CalendarDayStates } from './CalendarDay';
 import { Calendar, Card, DateRangeContext, DateRangeCoordinator, Layout } from '../../presentational';
 import { add, formatISO, isBefore, isSameDay, parseISO, startOfToday } from 'date-fns';
 import { StoryObj } from '@storybook/react';
@@ -11,7 +11,8 @@ type CalendarDayStoryArgs = React.ComponentProps<typeof CalendarDay> & {
         'multi-state' | 'multi-state w/ streak' | 'multi-state (combine when solo)' |
         'streak-left (not supported)' | 'streak-left (default color)' | 'streak-left (custom color)' |
         'streak-right (not supported)' | 'streak-right (default color)' | 'streak-right (custom color)' |
-        'streak-both (not supported)' | 'streak-both (default color)' | 'streak-both (custom color)';
+        'streak-both (not supported)' | 'streak-both (default color)' | 'streak-both (custom color)' |
+        'with note' | 'with note (custom color)';
 };
 
 type InCalendarCalendarDayStoryArgs = React.ComponentProps<typeof CalendarDay> & {
@@ -88,6 +89,17 @@ export default {
                                 return [{ backgroundColor: '#35A6A0', streakIdentifier: 'streakId', streakColor: '#35A6A066' }];
                             }
                             return [{ backgroundColor: '#35A6A0', streakIdentifier: 'streakId' }];
+                        } else if (args.state === 'with note') {
+                            return Object.assign([{ backgroundColor: '#35A6A0', combineWhenSolo: true }] as CalendarDayStates, {
+                                note: 'note'
+                            });
+                        } else if (args.state === 'with note (custom color)') {
+                            return Object.assign([{ backgroundColor: '#35A6A0', combineWhenSolo: true }] as CalendarDayStates, {
+                                note: 'note',
+                                noteBackgroundColor: { lightMode: '#fff', darkMode: '#000' },
+                                noteBorderColor: '#888',
+                                noteTextColor: { lightMode: '#000', darkMode: '#fff' }
+                            });
                         }
                         return [];
                     }}
@@ -116,7 +128,8 @@ export const Default: StoryObj<CalendarDayStoryArgs> = {
                 'no-data', 'today', 'future', 'multi-state', 'multi-state w/ streak', 'multi-state (combine when solo)',
                 'streak-left (not supported)', 'streak-left (default color)', 'streak-left (custom color)',
                 'streak-right (not supported)', 'streak-right (default color)', 'streak-right (custom color)',
-                'streak-both (not supported)', 'streak-both (default color)', 'streak-both (custom color)'
+                'streak-both (not supported)', 'streak-both (default color)', 'streak-both (custom color)',
+                'with note', 'with note (custom color)'
             ]
         },
         multiStateStartAngle: {

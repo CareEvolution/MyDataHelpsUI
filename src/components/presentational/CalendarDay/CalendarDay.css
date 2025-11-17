@@ -40,3 +40,20 @@
     border: 2px solid var(--mdhui-border-color-2);
     margin-top: -12px;
 }
+
+.mdhui-calendar-day-note {
+    position: absolute;
+    bottom: -10px;
+    left: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mdhui-border-color-2);
+    border: 1px solid var(--mdhui-border-color-2);
+    border-radius: 8px;
+    height: 16px;
+    min-width: 16px;
+    padding: 0 4px;
+    font-size: 0.62em;
+    box-sizing: border-box;
+}

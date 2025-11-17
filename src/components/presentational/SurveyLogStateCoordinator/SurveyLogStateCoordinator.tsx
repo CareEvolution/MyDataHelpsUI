@@ -1,9 +1,10 @@
 import React, { createContext } from 'react';
 import { SurveyLog } from '../../../helpers';
+import { CalendarDayStates } from '../CalendarDay/CalendarDay';
 import { CalendarDayState } from '../index';
 
 export interface SurveyLogStateContext {
-    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayState[];
+    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayStates;
     multiStateStartAngle?: number;
     legend?: CalendarDayState[];
 }
@@ -11,7 +12,7 @@ export interface SurveyLogStateContext {
 export const SurveyLogStateContext = createContext<SurveyLogStateContext | null>(null);
 
 export interface SurveyLogStateCoordinatorProps {
-    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayState[];
+    computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayStates;
     multiStateStartAngle?: number;
     legend?: CalendarDayState[];
     children: React.ReactNode;
