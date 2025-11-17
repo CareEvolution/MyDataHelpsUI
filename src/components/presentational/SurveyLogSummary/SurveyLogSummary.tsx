@@ -24,6 +24,7 @@ export default function SurveyLogSummary(props: DailyLogSummaryProps) {
     }, {} as Partial<Record<string, SurveyLogBadgeConfiguration>>) ?? {};
 
     useEffect(() => {
+        if (selectedBadgeIdentifier && badgeConfigurationLookup[selectedBadgeIdentifier]?.getBadgeDetails) return;
         if (surveyLogBadgeContext?.showFirstBadgeDetailsOnLoad || surveyLogBadgeContext?.alwaysShowBadgeDetails) {
             setSelectedBadgeIdentifier(surveyLogBadgeContext?.badgeConfigurations.find(configuration => configuration.getBadgeDetails)?.identifier);
         } else {
