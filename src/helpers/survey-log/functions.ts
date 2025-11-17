@@ -18,7 +18,7 @@ export async function loadSurveyLogs(surveyName: string, dailyDataTypes: string[
 }
 
 async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: Date, previewState: SurveyLogPreviewState | undefined): Promise<Partial<Record<string, SurveyLogSurveyAnswer[]>>> {
-    if (previewState) return generatePreviewSurveyAnswers(startDate, endDate, previewState);
+    if (previewState) return generatePreviewSurveyAnswers(startDate, endDate, previewState.endsWith('with today'));
 
     const event = eachDayOfInterval({ start: startDate, end: add(endDate, { days: -1 }) }).reduce((events, date) => {
         const event = getDayKey(date).substring(0, 8) + '*';
@@ -28,19 +28,19 @@ async function loadSurveyAnswers(surveyName: string, startDate: Date, endDate: D
     return queryAndCompileSurveyAnswers(surveyName, event, { start: startDate, end: endDate });
 }
 
-function generatePreviewSurveyAnswers(startDate: Date, endDate: Date, previewState: SurveyLogPreviewState): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
+function generatePreviewSurveyAnswers(startDate: Date, endDate: Date, ensureTodayHasLog: boolean): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
     const resultIdentifiers = Array.from({ length: 10 }, (_, index) => `result${index + 1}`);
-    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: previewState.endsWith('with today') ? 1 : 0 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
+    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: ensureTodayHasLog ? 1 : 0 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
     return surveyAnswers.reduce((sparseSurveyAnswers, surveyAnswer) => {
         const dayKey = getDayKey(surveyAnswer.date);
-        if ((previewState.endsWith('with today') && isToday(surveyAnswer.date)) ||
-            (fnvPredictableRandomNumber(dayKey) % 3 !== 0 && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0)) {
+        const forceAdd = ensureTodayHasLog && isToday(surveyAnswer.date);
+        if (forceAdd || (fnvPredictableRandomNumber(dayKey) % 3 !== 0 && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0)) {
             sparseSurveyAnswers[dayKey] ??= [];
             sparseSurveyAnswers[dayKey].push({
                 surveyName: surveyAnswer.surveyName,
                 stepIdentifier: surveyAnswer.stepIdentifier,
                 resultIdentifier: surveyAnswer.resultIdentifier,
-                answers: surveyAnswer.answers
+                answers: forceAdd && surveyAnswer.answers[0] === '0' ? ['1'] : surveyAnswer.answers
             });
         }
         return sparseSurveyAnswers;
