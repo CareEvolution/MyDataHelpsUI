@@ -222,15 +222,12 @@ export default function CalendarDay(props: CalendarDayProps) {
     const dayValue = <div className="mdhui-calendar-day-value" style={dayValueStyle}>
         {date.getDate()}
         {currentDayStates.note &&
-            <div
-                className="mdhui-calendar-day-note"
-                style={{
-                    backgroundColor: currentDayStates.noteBorderColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,
-                    border: currentDayStates.noteBorderColor ? `1px solid ${resolveColor(layoutContext.colorScheme, currentDayStates.noteBorderColor)}` : undefined,
-                    color: currentDayStates.noteTextColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteTextColor) : undefined
-                }}
-            >
-                {currentDayStates.note}
+            <div className="mdhui-calendar-day-note-wrapper" style={{
+                backgroundColor: currentDayStates.noteBorderColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,
+                border: currentDayStates.noteBorderColor ? `1px solid ${resolveColor(layoutContext.colorScheme, currentDayStates.noteBorderColor)}` : undefined,
+                color: currentDayStates.noteTextColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteTextColor) : undefined
+            }}>
+                <span className="mdhui-calendar-day-note">{currentDayStates.note}</span>
             </div>
         }
     </div>;

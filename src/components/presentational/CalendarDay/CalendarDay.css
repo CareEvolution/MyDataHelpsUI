@@ -41,10 +41,10 @@
     margin-top: -12px;
 }
 
-.mdhui-calendar-day-note {
+.mdhui-calendar-day-note-wrapper {
     position: absolute;
-    bottom: -10px;
-    left: 60%;
+    bottom: -12px;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,7 +53,15 @@
     border-radius: 8px;
     height: 16px;
     min-width: 16px;
+    max-width: 40px;
     padding: 0 4px;
     font-size: 0.62em;
     box-sizing: border-box;
+}
+
+.mdhui-calendar-day-note {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
