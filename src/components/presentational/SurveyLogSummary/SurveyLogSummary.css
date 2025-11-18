@@ -1,19 +1,19 @@
-.mdhui-survey-log-summary .mdhui-survey-log-summary-without-badges {
+.mdhui-survey-log-summary {
+    padding: 16px;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-without-badges-loading-indicator.mdhui-loading-indicator {
+.mdhui-survey-log-summary .mdhui-survey-log-summary-action.mdhui-action {
+    padding: 0;
+}
+
+.mdhui-survey-log-summary .mdhui-survey-log-summary-action-loading-indicator.mdhui-loading-indicator {
     padding: 0 16px;
     height: 48px;
     line-height: 48px;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-without-badges-edit-button {
+.mdhui-survey-log-summary .mdhui-survey-log-summary-action-edit-button {
     height: 48px;
-}
-
-.mdhui-survey-log-summary .mdhui-survey-log-summary-with-badges {
-    padding: 16px;
-    color: var(--mdhui-text-color-1);
 }
 
 .mdhui-survey-log-summary .mdhui-survey-log-summary-badges {
@@ -34,12 +34,6 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2em;
-    transition: border-radius 0.5s ease;
-}
-
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge-selected {
-    border-radius: var(--mdhui-card-border-radius);
-    transition: border-radius 0.5s;
 }
 
 .mdhui-survey-log-summary .mdhui-survey-log-summary-badge-icon {
@@ -55,7 +49,7 @@
     color: var(--mdhui-text-color-1);
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge-details {
+.mdhui-survey-log-summary .mdhui-survey-log-summary-details {
     background: var(--mdhui-background-color-1);
     border-radius: var(--mdhui-card-border-radius);
     padding: 16px;

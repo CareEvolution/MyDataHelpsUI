@@ -11,13 +11,11 @@ import { SurveyLog, SurveyLogSurveyAnswer } from '../../../helpers';
 type SurveyLogSummaryStoryArgs = React.ComponentProps<typeof SurveyLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
     customTitle: boolean;
+    withBadges: boolean;
+    withDetails: boolean;
+    customBadgeIcons: boolean;
+    customBadgeIconColors: boolean;
     customStyling: boolean;
-    badges: boolean;
-    badgeDetails: boolean;
-    showFirstBadgeDetailsOnLoad: boolean,
-    alwaysShowBadgeDetails: boolean,
-    customIcons: boolean;
-    customIconColors: boolean;
 };
 
 export default {
@@ -37,49 +35,34 @@ export default {
             return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
         };
 
-        const getBadgeDetails = (surveyLog: SurveyLog, label: string, resultIdentifier: string): NonNullable<ReactNode> => {
-            const surveyAnswer = surveyLog.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return <>
-                <div style={{ fontWeight: 'bold' }}>{label}</div>
-                <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
-                    {surveyAnswer && `A value of ${surveyAnswer.answers[0]} was recorded for ${resultIdentifier} for this day.`}
-                    {!surveyAnswer && `No value was recorded for ${resultIdentifier} for this day.`}
-                </div>
-            </>;
-        };
-
         const badgeConfigurations: SurveyLogBadgeConfiguration[] = [
             {
                 identifier: 'activity',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'activity'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
-                getBadgeDetails: args.badgeDetails ? surveyLog => getBadgeDetails(surveyLog, 'Activity', 'activity') : undefined,
-                icon: args.customIcons ? faWalking : undefined,
-                iconColor: args.customIconColors ? '#3c973c' : undefined
+                icon: args.customBadgeIcons ? faWalking : undefined,
+                iconColor: args.customBadgeIconColors ? '#3c973c' : undefined
             },
             {
                 identifier: 'sleep',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'sleep'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
-                getBadgeDetails: args.badgeDetails ? surveyLog => getBadgeDetails(surveyLog, 'Sleep', 'sleep') : undefined,
-                icon: args.customIcons ? faBed : undefined,
-                iconColor: args.customIconColors ? '#664cda' : undefined
+                icon: args.customBadgeIcons ? faBed : undefined,
+                iconColor: args.customBadgeIconColors ? '#664cda' : undefined
             },
             {
                 identifier: 'swimming',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'swimming'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
-                getBadgeDetails: args.badgeDetails ? surveyLog => getBadgeDetails(surveyLog, 'Swimming', 'swimming') : undefined,
-                icon: args.customIcons ? faSwimmer : undefined,
-                iconColor: args.customIconColors ? '#0877b8' : undefined
+                icon: args.customBadgeIcons ? faSwimmer : undefined,
+                iconColor: args.customBadgeIconColors ? '#0877b8' : undefined
             },
             {
                 identifier: 'cycling',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'cycling'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
-                getBadgeDetails: args.badgeDetails ? surveyLog => getBadgeDetails(surveyLog, 'Cycling', 'cycling') : undefined,
-                icon: args.customIcons ? faBicycle : undefined,
-                iconColor: args.customIconColors ? '#976d1e' : undefined
+                icon: args.customBadgeIcons ? faBicycle : undefined,
+                iconColor: args.customBadgeIconColors ? '#976d1e' : undefined
             }
         ];
 
@@ -90,9 +73,8 @@ export default {
                     date: startOfToday(),
                     surveyAnswers: [
                         { resultIdentifier: 'activity', answers: ['5'] },
-                        { resultIdentifier: 'hidden', answers: ['1'] },
-                        { resultIdentifier: 'swimming', answers: ['3'] },
-                        { resultIdentifier: 'sleep', answers: ['0'] }
+                        { resultIdentifier: 'sleep', answers: ['0'] },
+                        { resultIdentifier: 'swimming', answers: ['3'] }
                     ] as SurveyLogSurveyAnswer[],
                     dataPoints: []
                 }}
@@ -102,13 +84,22 @@ export default {
         </Card>;
 
         return <Layout colorScheme={args.colorScheme}>
-            {args.badges && <SurveyLogBadgeCoordinator
-                badgeConfigurations={badgeConfigurations}
-                showFirstBadgeDetailsOnLoad={args.showFirstBadgeDetailsOnLoad}
-                alwaysShowBadgeDetails={args.alwaysShowBadgeDetails}
+            {(args.withBadges || args.withDetails) && <SurveyLogBadgeCoordinator
+                badgeConfigurations={args.withBadges ? badgeConfigurations : []}
+                getDetails={args.withDetails ? (surveyLog?: SurveyLog): NonNullable<ReactNode> => {
+                    const surveyAnswers = surveyLog?.surveyAnswers ?? [];
+                    return <>
+                        <div style={{ fontWeight: 'bold' }}>Some Title</div>
+                        <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                            {surveyAnswers.map((surveyAnswer, index) => {
+                                return <div key={index}>{surveyAnswer.resultIdentifier}: {surveyAnswer.answers.join(', ')}</div>;
+                            })}
+                        </div>
+                    </>;
+                } : undefined}
                 children={logSummary}
             />}
-            {!args.badges && logSummary}
+            {!(args.withBadges || args.withDetails) && logSummary}
         </Layout>;
     }
 };
@@ -117,13 +108,11 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
         customTitle: false,
+        withBadges: true,
+        withDetails: true,
+        customBadgeIcons: true,
+        customBadgeIconColors: true,
         customStyling: false,
-        badges: true,
-        badgeDetails: true,
-        showFirstBadgeDetailsOnLoad: true,
-        alwaysShowBadgeDetails: true,
-        customIcons: true,
-        customIconColors: true,
         loading: false
     },
     argTypes: {
@@ -136,32 +125,24 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
             name: 'custom title',
             control: 'boolean'
         },
-        customStyling: {
-            name: 'custom styling',
-            control: 'boolean'
-        },
-        badges: {
+        withBadges: {
             name: 'with badges',
             control: 'boolean'
         },
-        badgeDetails: {
-            name: 'with badge details',
+        withDetails: {
+            name: 'with details',
             control: 'boolean'
         },
-        showFirstBadgeDetailsOnLoad: {
-            name: 'show first badge details on load',
-            control: 'boolean'
-        },
-        alwaysShowBadgeDetails: {
-            name: 'always show badge details',
-            control: 'boolean'
-        },
-        customIcons: {
+        customBadgeIcons: {
             name: 'custom icons',
             control: 'boolean'
         },
-        customIconColors: {
+        customBadgeIconColors: {
             name: 'custom icon colors',
+            control: 'boolean'
+        },
+        customStyling: {
+            name: 'custom styling',
             control: 'boolean'
         },
         loading: {
