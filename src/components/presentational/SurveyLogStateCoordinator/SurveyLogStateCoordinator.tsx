@@ -1,7 +1,6 @@
 import React, { createContext } from 'react';
 import { SurveyLog } from '../../../helpers';
-import { CalendarDayStates } from '../CalendarDay/CalendarDay';
-import { CalendarDayState } from '../index';
+import { CalendarDayState, CalendarDayStates } from '../index';
 
 export interface SurveyLogStateContext {
     computeStatesForDay: (date: Date, surveyLog: SurveyLog | undefined) => CalendarDayStates;
