@@ -90,7 +90,7 @@ export default {
             }
 
             if (args.includeStatesNote && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
-                statesForDay.note = ((fnvPredictableRandomNumber(dayKey + '-states-note') % 20) + 1).toString();
+                statesForDay.note = 'note';
                 if (args.customizeStatesNote) {
                     statesForDay.noteBorderColor = { lightMode: '#000', darkMode: '#fff' };
                 }
