@@ -51,6 +51,7 @@
     background: var(--mdhui-border-color-2);
     border: 1px solid var(--mdhui-border-color-2);
     border-radius: 8px;
+    color: var(--mdhui-text-color-0);
     height: 16px;
     min-width: 16px;
     max-width: 40px;

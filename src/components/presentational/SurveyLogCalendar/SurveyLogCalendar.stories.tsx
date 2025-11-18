@@ -4,7 +4,7 @@ import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogCalendar from './SurveyLogCalendar';
 import { fnvPredictableRandomNumber, getDayKey, SurveyLog, SurveyLogPreviewState } from '../../../helpers';
-import { isAfter, isToday } from 'date-fns';
+import { isAfter, isBefore, isToday, startOfToday } from 'date-fns';
 import { SurveyLogCoordinator } from '../../container';
 
 type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
@@ -68,32 +68,35 @@ export default {
         ];
 
         const computePreviewStatesForDay = (date: Date, surveyLog?: SurveyLog): CalendarDayStates => {
+            const statesForDay: CalendarDayStates = [];
+
             const surveyAnswers = surveyLog?.surveyAnswers ?? [];
+            const dayKey = getDayKey(date);
 
             if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
-                const dayKey = getDayKey(date);
                 const statesCount = (fnvPredictableRandomNumber(dayKey + '-states-count') % states.length) + 1;
-
-                const statesToReturn: CalendarDayStates = [];
                 let currentStateIndex = fnvPredictableRandomNumber(dayKey + '-states-start-index') % states.length;
-                while (statesToReturn.length < statesCount) {
-                    statesToReturn.push(states[currentStateIndex]);
+                while (statesForDay.length < statesCount) {
+                    statesForDay.push(states[currentStateIndex]);
                     currentStateIndex = (currentStateIndex + 1) % states.length;
                 }
-
-                if (args.includeStatesNote && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
-                    statesToReturn.note = ((fnvPredictableRandomNumber(dayKey + '-states-note') % 20) + 1).toString();
-                    if (args.customizeStatesNote) {
-                        statesToReturn.noteBorderColor = { lightMode: '#000', darkMode: '#fff' };
-                    }
-                }
-
-                return statesToReturn.sort((a, b) => states.indexOf(a) - states.indexOf(b));
+                statesForDay.sort((a, b) => states.indexOf(a) - states.indexOf(b));
+            } else if (isToday(date) && args.customizeToday) {
+                statesForDay.push({ borderColor: { lightMode: '#000', darkMode: '#fff' } });
+            } else if (isAfter(date, new Date()) && args.customizeFuture) {
+                statesForDay.push({ borderColor: { lightMode: '#000', darkMode: '#fff' } });
+            } else if (isBefore(date, startOfToday()) && args.customizeNoData) {
+                statesForDay.push({ borderColor: { lightMode: '#000', darkMode: '#fff' } });
             }
 
-            if (isToday(date)) return args.customizeToday ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
-            if (isAfter(date, new Date())) return args.customizeFuture ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
-            return args.customizeNoData ? [{ borderColor: { lightMode: '#000', darkMode: '#fff' } }] : [];
+            if (args.includeStatesNote && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
+                statesForDay.note = ((fnvPredictableRandomNumber(dayKey + '-states-note') % 20) + 1).toString();
+                if (args.customizeStatesNote) {
+                    statesForDay.noteBorderColor = { lightMode: '#000', darkMode: '#fff' };
+                }
+            }
+
+            return statesForDay;
         };
 
         const calendar = <SurveyLogCalendar showLegend={args.showLegend} />;

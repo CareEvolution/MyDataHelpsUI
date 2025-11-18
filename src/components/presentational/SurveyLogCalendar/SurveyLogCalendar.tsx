@@ -28,9 +28,10 @@ export default function SurveyLogCalendar(props: SurveyLogCalendarProps) {
     const computeStatesForDay = (date: Date): CalendarDayState[] => {
         const surveyLog = surveyLogContext.surveyLogs[getDayKey(date)];
         const calendarDayStates = surveyLogStateContext?.computeStatesForDay(date, surveyLog) ?? [];
-        if (calendarDayStates.length > 0) return calendarDayStates;
-        if (isAfter(date, new Date())) return [{ style: { cursor: 'default' } }];
-        return [];
+        if (calendarDayStates.length === 0 && isAfter(date, new Date())) {
+            calendarDayStates.push({ style: { cursor: 'default' } });
+        }
+        return calendarDayStates;
     };
 
     const onDayClicked = (date: Date): void => {
