@@ -91,7 +91,7 @@ function Badge(props: BadgeProps) {
     const layoutContext = useContext(LayoutContext);
 
     const shouldHighlight = props.configuration.shouldHighlight(props.surveyLog);
-    const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary' : { lightMode: '#ddd', darkMode: '#1c1c1d' };
+    const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#ddd', darkMode: '#1c1c1d' };
     const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
 
     const classNames: string[] = ['mdhui-survey-log-summary-badge'];
