@@ -21,6 +21,7 @@ export interface BloodPressureVisualizationProps {
     surveyDataSource?: SurveyBloodPressureDataParameters,
     weekStartsOn?: WeekStartsOn,
     deviceDataSource?: BloodPressureDeviceDataSource[],
+    suppressGuidance?: boolean,
     innerRef?: React.Ref<HTMLDivElement>
 };
 
@@ -79,6 +80,9 @@ export default function (props: BloodPressureVisualizationProps) {
     }
 
     function assignClass(avgSystolic: number, avgDiastolic: number) {
+        if(props.suppressGuidance) {
+            return DumbbellClass["mdhui-dumbbell-in-range"];
+        }
 
         const systolicCategory = getSystolicCategory(avgSystolic);
         const diastolicCategory = getDiastolicCategory(avgDiastolic);
@@ -227,7 +231,9 @@ export default function (props: BloodPressureVisualizationProps) {
         return <div className="mdhui-blood-pressure-metrics-block">
             <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
             <div className="mdhui-blood-pressure-metric-description">{description}</div>
-            <div className={alertClass}>{getAlertPrompt(alert) ?? language('no-data-yet')}</div>
+            {!props.suppressGuidance &&
+                <div className={alertClass}>{getAlertPrompt(alert) ?? language('no-data-yet')}</div>
+            }
         </div>
     }
 
