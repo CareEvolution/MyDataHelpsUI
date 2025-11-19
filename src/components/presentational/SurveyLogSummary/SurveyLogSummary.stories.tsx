@@ -1,5 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
-import { Card, Layout, SurveyLogBadgeConfiguration, SurveyLogBadgeCoordinator } from '../../presentational';
+import React, { CSSProperties } from 'react';
+import { Card, Layout, SurveyLogBadgeConfiguration } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import SurveyLogSummary from './SurveyLogSummary';
@@ -11,6 +11,8 @@ import { SurveyLog, SurveyLogSurveyAnswer } from '../../../helpers';
 type SurveyLogSummaryStoryArgs = React.ComponentProps<typeof SurveyLogSummary> & {
     colorScheme: 'auto' | 'light' | 'dark';
     customTitle: boolean;
+    canLog: boolean;
+    hasLogged: boolean;
     withBadges: boolean;
     withDetails: boolean;
     customBadgeIcons: boolean;
@@ -66,40 +68,33 @@ export default {
             }
         ];
 
-        const logSummary = <Card>
-            <SurveyLogSummary
-                title={args.customTitle ? 'Custom Title' : undefined}
-                surveyLog={{
-                    date: startOfToday(),
-                    surveyAnswers: [
-                        { resultIdentifier: 'activity', answers: ['5'] },
-                        { resultIdentifier: 'sleep', answers: ['0'] },
-                        { resultIdentifier: 'swimming', answers: ['3'] }
-                    ] as SurveyLogSurveyAnswer[],
-                    dataPoints: []
-                }}
-                onEdit={noop}
-                loading={args.loading}
-            />
-        </Card>;
-
         return <Layout colorScheme={args.colorScheme}>
-            {(args.withBadges || args.withDetails) && <SurveyLogBadgeCoordinator
-                badgeConfigurations={args.withBadges ? badgeConfigurations : []}
-                getDetails={args.withDetails ? (surveyLog?: SurveyLog): NonNullable<ReactNode> => {
-                    const surveyAnswers = surveyLog?.surveyAnswers ?? [];
-                    return <>
-                        <div style={{ fontWeight: 'bold' }}>Some Title</div>
-                        <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
-                            {surveyAnswers.map((surveyAnswer, index) => {
-                                return <div key={index}>{surveyAnswer.resultIdentifier}: {surveyAnswer.answers.join(', ')}</div>;
-                            })}
-                        </div>
-                    </>;
-                } : undefined}
-                children={logSummary}
-            />}
-            {!(args.withBadges || args.withDetails) && logSummary}
+            <Card>
+                <SurveyLogSummary
+                    title={args.customTitle ? 'Custom Title' : undefined}
+                    logSurveyName={args.canLog ? 'Log Survey' : undefined}
+                    badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
+                    getDetails={args.withDetails ? () => {
+                        return <>
+                            <div style={{ fontWeight: 'bold' }}>Details</div>
+                            <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                                <div>Some details about the day.</div>
+                            </div>
+                        </>;
+                    } : undefined}
+                    onEnterLog={noop}
+                    surveyLog={{
+                        date: startOfToday(),
+                        surveyAnswers: [
+                            { surveyName: args.hasLogged ? 'Log Survey' : undefined, resultIdentifier: 'activity', answers: ['5'] },
+                            { resultIdentifier: 'sleep', answers: ['0'] },
+                            { resultIdentifier: 'swimming', answers: ['3'] }
+                        ] as SurveyLogSurveyAnswer[],
+                        dataPoints: []
+                    }}
+                    loading={args.loading}
+                />
+            </Card>
         </Layout>;
     }
 };
@@ -108,6 +103,8 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
     args: {
         colorScheme: 'auto',
         customTitle: false,
+        canLog: true,
+        hasLogged: false,
         withBadges: true,
         withDetails: true,
         customBadgeIcons: true,
@@ -123,6 +120,14 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
         },
         customTitle: {
             name: 'custom title',
+            control: 'boolean'
+        },
+        canLog: {
+            name: 'can log',
+            control: 'boolean'
+        },
+        hasLogged: {
+            name: 'has logged',
             control: 'boolean'
         },
         withBadges: {
@@ -149,6 +154,6 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
             name: 'loading',
             control: 'boolean'
         },
-        ...argTypesToHide(['title', 'surveyLog', 'onEdit', 'innerRef'])
+        ...argTypesToHide(['title', 'logSurveyName', 'onEnterLog', 'badgeConfigurations', 'getDetails', 'surveyLog', 'innerRef'])
     }
 };

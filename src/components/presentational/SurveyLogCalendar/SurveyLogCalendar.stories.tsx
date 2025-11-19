@@ -103,7 +103,7 @@ export default {
 
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
-                <SurveyLogCoordinator previewState={args.previewState} surveyName="Log Survey" dailyDataTypes={[]}>
+                <SurveyLogCoordinator previewState={args.previewState} logSurveyName="Log Survey">
                     {args.includeStates
                         ? <SurveyLogStateCoordinator
                             computeStatesForDay={computePreviewStatesForDay}

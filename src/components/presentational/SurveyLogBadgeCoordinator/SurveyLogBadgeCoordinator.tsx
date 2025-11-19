@@ -11,14 +11,14 @@ export interface SurveyLogBadgeConfiguration {
 }
 
 export interface SurveyLogBadgeContext {
-    badgeConfigurations: SurveyLogBadgeConfiguration[];
+    badgeConfigurations?: SurveyLogBadgeConfiguration[];
     getDetails?: (surveyLog: SurveyLog) => NonNullable<ReactNode>;
 }
 
 export const SurveyLogBadgeContext = createContext<SurveyLogBadgeContext | null>(null);
 
 export interface SurveyLogBadgeCoordinatorProps {
-    badgeConfigurations: SurveyLogBadgeConfiguration[];
+    badgeConfigurations?: SurveyLogBadgeConfiguration[];
     getDetails?: (surveyLog: SurveyLog) => NonNullable<ReactNode>;
     children: ReactNode;
     innerRef?: Ref<HTMLDivElement>;

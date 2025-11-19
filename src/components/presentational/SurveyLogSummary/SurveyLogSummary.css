@@ -2,18 +2,10 @@
     padding: 16px;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-action.mdhui-action {
-    padding: 0;
-}
-
-.mdhui-survey-log-summary .mdhui-survey-log-summary-action-loading-indicator.mdhui-loading-indicator {
-    padding: 0 16px;
-    height: 48px;
-    line-height: 48px;
-}
-
-.mdhui-survey-log-summary .mdhui-survey-log-summary-action-edit-button {
-    height: 48px;
+.mdhui-survey-log-summary .mdhui-survey-log-summary-log-button {
+    color: var(--mdhui-color-primary);
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .mdhui-survey-log-summary .mdhui-survey-log-summary-badges {
@@ -25,11 +17,11 @@
 }
 
 .mdhui-survey-log-summary .mdhui-survey-log-summary-badge {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border: 1px solid var(--mdhui-border-color-1);
     border-radius: 50%;
-    padding: 2px;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;

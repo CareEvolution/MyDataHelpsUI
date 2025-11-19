@@ -1,8 +1,7 @@
 import React, { useContext, useMemo } from 'react';
-import { Action, Button, Card, DateRangeContext, LoadingIndicator, TextBlock } from '../index';
+import { Card, DateRangeContext, SurveyLogBadgeContext, TextBlock } from '../index';
 import { isToday, startOfToday } from 'date-fns';
-import { formatDateForLocale, getDayKey } from '../../../helpers';
-import './SurveyLogPreview.css';
+import { getDayKey } from '../../../helpers';
 import { SurveyLogContext } from '../../container';
 import SurveyLogSummary from '../SurveyLogSummary';
 
@@ -13,6 +12,7 @@ export interface SurveyLogPreviewProps {
 export default function SurveyLogPreview(props: SurveyLogPreviewProps) {
     const dateRangeContext = useContext(DateRangeContext);
     const surveyLogContext = useContext(SurveyLogContext);
+    const surveyLogBadgeContext = useContext(SurveyLogBadgeContext);
 
     if (!surveyLogContext) {
         return <TextBlock innerRef={props.innerRef}>Error: SurveyLogPreview must be used within a SurveyLogCoordinator.</TextBlock>;
@@ -26,6 +26,7 @@ export default function SurveyLogPreview(props: SurveyLogPreviewProps) {
     if (surveyLogContext.loading && surveyLogContext.firstTimeLoading) return null;
 
     const surveyLog = surveyLogContext.surveyLogs[getDayKey(currentDate)];
+    if (!surveyLog) return null;
 
     const onEnterLog = (): void => {
         surveyLogContext.enterSurveyLog(currentDate);
@@ -33,25 +34,15 @@ export default function SurveyLogPreview(props: SurveyLogPreviewProps) {
 
     return <div className="mdhui-survey-log-preview" ref={props.innerRef}>
         <Card>
-            {!surveyLog &&
-                <Action
-                    title={isToday(currentDate) ? 'Today\'s Log' : formatDateForLocale(currentDate, 'PPP')}
-                    subtitle="A log has not been entered."
-                    renderAs="div"
-                    indicator={surveyLogContext.loading
-                        ? <LoadingIndicator className="mdhui-survey-log-preview-loading-indicator" />
-                        : <Button className="mdhui-survey-log-preview-edit-button" onClick={onEnterLog}>Add Log</Button>
-                    }
-                />
-            }
-            {surveyLog &&
-                <SurveyLogSummary
-                    title={isToday(currentDate) ? 'Today\'s Log' : undefined}
-                    surveyLog={surveyLog}
-                    onEdit={onEnterLog}
-                    loading={surveyLogContext.loading}
-                />
-            }
+            <SurveyLogSummary
+                title={isToday(currentDate) ? 'Today' : undefined}
+                logSurveyName={surveyLogContext.logSurveyName}
+                onEnterLog={onEnterLog}
+                badgeConfigurations={surveyLogBadgeContext?.badgeConfigurations}
+                getDetails={surveyLogBadgeContext?.getDetails}
+                surveyLog={surveyLog}
+                loading={surveyLogContext.loading}
+            />
         </Card>
     </div>;
 }

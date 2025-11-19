@@ -5,7 +5,7 @@ import { add, startOfToday } from 'date-fns';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface SurveyLogContext {
-    surveyName: string;
+    logSurveyName?: string;
     loading: boolean;
     firstTimeLoading: boolean;
     surveyLogs: Partial<Record<string, SurveyLog>>;
@@ -16,8 +16,8 @@ export const SurveyLogContext = createContext<SurveyLogContext | null>(null);
 
 export interface SurveyLogCoordinatorProps {
     previewState?: 'loading' | SurveyLogPreviewState;
-    surveyName: string;
-    dailyDataTypes: string[];
+    logSurveyName?: string;
+    dailyDataTypes?: string[];
     children: React.ReactNode;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -65,7 +65,7 @@ export default function SurveyLogCoordinator(props: SurveyLogCoordinatorProps) {
         }
 
         const requestId = ++latestRequestId.current;
-        loadSurveyLogs(props.surveyName, props.dailyDataTypes, intervalStart, intervalEnd, props.previewState).then(surveyLogs => {
+        loadSurveyLogs(props.logSurveyName, props.dailyDataTypes ?? [], intervalStart, intervalEnd, props.previewState).then(surveyLogs => {
             if (requestId !== latestRequestId.current) return;
             setSurveyLogs(surveyLogs);
             setFirstTimeLoading(false);
@@ -73,17 +73,17 @@ export default function SurveyLogCoordinator(props: SurveyLogCoordinatorProps) {
                 setLoading(false);
             }
         });
-    }, [], [props.previewState, props.surveyName, props.dailyDataTypes, intervalStart, intervalEnd]);
+    }, [], [props.previewState, props.logSurveyName, props.dailyDataTypes, intervalStart, intervalEnd]);
 
     const enterSurveyLog = (date: Date) => {
-        if (props.previewState || loading) return;
+        if (props.previewState || loading || !props.logSurveyName) return;
         setLoading(true);
-        MyDataHelps.startSurvey(props.surveyName, { event: getDayKey(date) });
+        MyDataHelps.startSurvey(props.logSurveyName, { event: getDayKey(date) });
     };
 
     return <div ref={props.innerRef}>
         <SurveyLogContext.Provider
-            value={{ surveyName: props.surveyName, loading, firstTimeLoading, surveyLogs, enterSurveyLog }}
+            value={{ logSurveyName: props.logSurveyName, loading, firstTimeLoading, surveyLogs, enterSurveyLog }}
             children={props.children}
         />
     </div>;

@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties } from 'react';
 import { DateRangeCoordinator, Layout, SurveyLogBadgeConfiguration, SurveyLogBadgeCoordinator } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
@@ -10,8 +10,11 @@ import { SurveyLogCoordinator } from '../../container';
 type SurveyLogListStoryArgs = React.ComponentProps<typeof SurveyLogList> & {
     colorScheme: 'auto' | 'light' | 'dark';
     previewState: 'loading' | SurveyLogPreviewState;
+    canLog: boolean;
+    withBadges: boolean;
+    withDetails: boolean;
+    customFiltering: boolean;
     customStyling: boolean;
-    useBadges: boolean;
 };
 
 export default {
@@ -31,23 +34,11 @@ export default {
             return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
         };
 
-        const getBadgeDetails = (surveyLog: SurveyLog, label: string, resultIdentifier: string): NonNullable<ReactNode> => {
-            const surveyAnswer = surveyLog.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return <>
-                <div style={{ fontWeight: 'bold' }}>{label}</div>
-                <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
-                    {surveyAnswer && `A value of ${surveyAnswer.answers[0]} was recorded for ${label.toLowerCase()} for this day.`}
-                    {!surveyAnswer && `No value was recorded for ${label.toLowerCase()} for this day.`}
-                </div>
-            </>;
-        };
-
         const badgeConfigurations: SurveyLogBadgeConfiguration[] = [
             {
                 identifier: 'activity',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result1'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Activity', 'result1'),
                 icon: faWalking,
                 iconColor: '#3c973c'
             },
@@ -55,7 +46,6 @@ export default {
                 identifier: 'sleep',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result2'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Sleep', 'result2'),
                 icon: faBed,
                 iconColor: '#664cda'
             },
@@ -63,7 +53,6 @@ export default {
                 identifier: 'swimming',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result3'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Swimming', 'result3'),
                 icon: faSwimmer,
                 iconColor: '#0877b8'
             },
@@ -71,17 +60,31 @@ export default {
                 identifier: 'cycling',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result4'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Cycling', 'result4'),
                 icon: faBicycle,
                 iconColor: '#976d1e'
             }
         ];
 
+        const surveyLogList = <SurveyLogList
+            shouldRender={args.customFiltering ? surveyLog => surveyLog.surveyAnswers.length > 0 : undefined}
+        />;
+
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
-                <SurveyLogCoordinator previewState={args.previewState} surveyName="Log Survey" dailyDataTypes={[]}>
-                    {args.useBadges && <SurveyLogBadgeCoordinator badgeConfigurations={badgeConfigurations}><SurveyLogList /></SurveyLogBadgeCoordinator>}
-                    {!args.useBadges && <SurveyLogList />}
+                <SurveyLogCoordinator previewState={args.previewState} logSurveyName={args.canLog ? 'Log Survey' : undefined}>
+                    {(args.withBadges || args.withDetails) && <SurveyLogBadgeCoordinator
+                        badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
+                        getDetails={args.withDetails ? () => {
+                            return <>
+                                <div style={{ fontWeight: 'bold' }}>Details</div>
+                                <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                                    <div>Some details about the day.</div>
+                                </div>
+                            </>;
+                        } : undefined}
+                        children={surveyLogList}
+                    />}
+                    {!(args.withBadges || args.withDetails) && surveyLogList}
                 </SurveyLogCoordinator>
             </DateRangeCoordinator>
         </Layout>;
@@ -92,8 +95,11 @@ export const Default: StoryObj<SurveyLogListStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: false,
-        useBadges: true
+        canLog: true,
+        withBadges: true,
+        withDetails: true,
+        customFiltering: false,
+        customStyling: false
     },
     argTypes: {
         colorScheme: {
@@ -110,8 +116,24 @@ export const Default: StoryObj<SurveyLogListStoryArgs> = {
                 'reloading': 'reloading with today'
             }
         },
-        useBadges: {
-            name: 'use badges',
+        canLog: {
+            name: 'can log',
+            control: 'boolean'
+        },
+        withBadges: {
+            name: 'with badges',
+            control: 'boolean'
+        },
+        withDetails: {
+            name: 'with details',
+            control: 'boolean'
+        },
+        customFiltering: {
+            name: 'custom filtering',
+            control: 'boolean'
+        },
+        customStyling: {
+            name: 'custom styling',
             control: 'boolean'
         },
         ...argTypesToHide(['innerRef'])

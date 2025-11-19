@@ -11,6 +11,7 @@ export function generateSurveyAnswers(startDate: Date, endDate: Date, resultIden
         for (let i = 0; i < data.length; i++) {
             const answer = fnvPredictableRandomNumber(getDayKey(currentDate) + resultIdentifiers[i]);
             data[i].push({
+                stepIdentifier: resultIdentifiers[i],
                 resultIdentifier: resultIdentifiers[i],
                 date: formatISO(add(currentDate, { hours: 12 })),
                 answers: [(answer % (maxValue - minValue) + minValue).toString()]

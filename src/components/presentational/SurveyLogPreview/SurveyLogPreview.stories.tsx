@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties } from 'react';
 import { DateRangeCoordinator, Layout, SurveyLogBadgeConfiguration, SurveyLogBadgeCoordinator } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
@@ -10,10 +10,10 @@ import { SurveyLogCoordinator } from '../../container';
 type SurveyLogPreviewStoryArgs = React.ComponentProps<typeof SurveyLogPreview> & {
     colorScheme: 'auto' | 'light' | 'dark';
     previewState: 'loading' | SurveyLogPreviewState;
+    canLog: boolean;
+    withBadges: boolean;
+    withDetails: boolean;
     customStyling: boolean;
-    badges: boolean;
-    showFirstBadgeDetailsOnLoad: boolean;
-    alwaysShowBadgeDetails: boolean;
 };
 
 export default {
@@ -33,23 +33,11 @@ export default {
             return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
         };
 
-        const getBadgeDetails = (surveyLog: SurveyLog, label: string, resultIdentifier: string): NonNullable<ReactNode> => {
-            const surveyAnswer = surveyLog.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return <>
-                <div style={{ fontWeight: 'bold' }}>{label}</div>
-                <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
-                    {surveyAnswer && `A value of ${surveyAnswer.answers[0]} was recorded for ${label.toLowerCase()} for this day.`}
-                    {!surveyAnswer && `No value was recorded for ${label.toLowerCase()} for this day.`}
-                </div>
-            </>;
-        };
-
         const badgeConfigurations: SurveyLogBadgeConfiguration[] = [
             {
                 identifier: 'activity',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result1'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Activity', 'result1'),
                 icon: faWalking,
                 iconColor: '#3c973c'
             },
@@ -57,7 +45,6 @@ export default {
                 identifier: 'sleep',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result2'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Sleep', 'result2'),
                 icon: faBed,
                 iconColor: '#664cda'
             },
@@ -65,7 +52,6 @@ export default {
                 identifier: 'swimming',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result3'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Swimming', 'result3'),
                 icon: faSwimmer,
                 iconColor: '#0877b8'
             },
@@ -73,7 +59,6 @@ export default {
                 identifier: 'cycling',
                 shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result4'),
                 customHighlightStyling: customHighlightStyling,
-                getBadgeDetails: surveyLog => getBadgeDetails(surveyLog, 'Cycling', 'result4'),
                 icon: faBicycle,
                 iconColor: '#976d1e'
             }
@@ -81,16 +66,21 @@ export default {
 
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Day">
-                <SurveyLogCoordinator previewState={args.previewState} surveyName="Log Survey" dailyDataTypes={[]}>
-                    {args.badges &&
+                <SurveyLogCoordinator previewState={args.previewState} logSurveyName={args.canLog ? 'Log Survey' : undefined}>
+                    {(args.withBadges || args.withDetails) &&
                         <SurveyLogBadgeCoordinator
-                            badgeConfigurations={badgeConfigurations}
-                            showFirstBadgeDetailsOnLoad={args.showFirstBadgeDetailsOnLoad}
-                            alwaysShowBadgeDetails={args.alwaysShowBadgeDetails}
-                        >
-                            <SurveyLogPreview />
-                        </SurveyLogBadgeCoordinator>}
-                    {!args.badges && <SurveyLogPreview />}
+                            badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
+                            getDetails={args.withDetails ? () => {
+                                return <>
+                                    <div style={{ fontWeight: 'bold' }}>Details</div>
+                                    <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                                        <div>Some details about the day.</div>
+                                    </div>
+                                </>;
+                            } : undefined}
+                            children={<SurveyLogPreview />}
+                        />}
+                    {!(args.withBadges || args.withDetails) && <SurveyLogPreview />}
                 </SurveyLogCoordinator>
             </DateRangeCoordinator>
         </Layout>;
@@ -101,10 +91,10 @@ export const Default: StoryObj<SurveyLogPreviewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: false,
-        badges: true,
-        showFirstBadgeDetailsOnLoad: true,
-        alwaysShowBadgeDetails: true
+        canLog: true,
+        withBadges: true,
+        withDetails: true,
+        customStyling: false
     },
     argTypes: {
         colorScheme: {
@@ -117,18 +107,22 @@ export const Default: StoryObj<SurveyLogPreviewStoryArgs> = {
             control: 'radio',
             options: ['loading', 'loaded', 'reloading', 'loaded with today', 'reloading with today']
         },
-        badges: {
+        canLog: {
+            name: 'can log',
+            control: 'boolean'
+        },
+        withBadges: {
             name: 'with badges',
             control: 'boolean'
         },
-        showFirstBadgeDetailsOnLoad: {
-            name: 'show first badge details on load',
+        withDetails: {
+            name: 'with details',
             control: 'boolean'
         },
-        alwaysShowBadgeDetails: {
-            name: 'always show badge details',
+        customStyling: {
+            name: 'custom styling',
             control: 'boolean'
         },
-        ...argTypesToHide(['surveyName', 'badgeConfigurations', 'innerRef'])
+        ...argTypesToHide(['innerRef'])
     }
 };
