@@ -11,7 +11,7 @@ export interface InsightsStateContext {
 export const InsightsStateContext = createContext<InsightsStateContext | null>(null);
 
 export interface InsightStateCoordinatorProps {
-    computeStatesForDay: (date: Date, insightData: InsightsData | undefined) => CalendarDayStates;
+    computeStatesForDay: (date: Date, insightsData: InsightsData | undefined) => CalendarDayStates;
     multiStateStartAngle?: number;
     legend?: CalendarDayState[];
     children: ReactNode;
