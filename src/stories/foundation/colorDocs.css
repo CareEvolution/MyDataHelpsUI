@@ -3,6 +3,7 @@
   --color-highlight-40: var(--ce-grey-30);
   --color-highlight-50: var(--ce-green-40);
   --color-highlight-70: var(--ce-cyan-50);
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 * {
   box-sizing: border-box;
@@ -29,6 +30,7 @@ summary {
   font-weight: 600;
   cursor: pointer;
   padding: 10px 15px;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 details .details-content {
   padding: 0 20px 10px 20px !important;
@@ -245,10 +247,12 @@ td, th {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 .colorCell-tooltipTitle,
 .colorCell-detailLabel span {
   font-size: 14px !important;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 
 /* hover borders */
