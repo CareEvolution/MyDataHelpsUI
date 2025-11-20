@@ -2,7 +2,7 @@ import { add, eachDayOfInterval, Interval, isToday, min, parseISO, startOfToday 
 import { fnvPredictableRandomNumber, getDayKey, queryDailyData } from '../index';
 import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
-import { DataPoint, InsightsData } from './types';
+import { InsightsDataPoint, InsightsData } from './types';
 import { generateSurveyAnswers } from '../survey-answer';
 
 export type InsightsDataPreviewState = 'loaded' | 'reloading' | 'loaded with today' | 'reloading with today';
@@ -92,7 +92,7 @@ async function queryAndCompileSurveyAnswers(surveyNames: string[], event: string
     }, {} as Record<string, SurveyAnswer[]>);
 }
 
-async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, DataPoint[]>>> {
+async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, InsightsDataPoint[]>>> {
     if (dailyDataTypes.length === 0) return {};
 
     const results = await Promise.all(dailyDataTypes.map(dailyDataType => queryDailyData(dailyDataType, startDate, endDate, preview)));
@@ -105,5 +105,5 @@ async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate
             });
         });
         return dataPointsByDate;
-    }, {} as Record<string, DataPoint[]>);
+    }, {} as Record<string, InsightsDataPoint[]>);
 }
