@@ -1,14 +1,15 @@
-import React, { CSSProperties } from 'react';
-import { Card, Layout, SurveyLogBadgeConfiguration } from '../../presentational';
+import React, { ComponentProps, CSSProperties } from 'react';
+import { Card, InsightsBadgeConfiguration, Layout } from '../../presentational';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyLogSummary from './SurveyLogSummary';
+import InsightsRenderer from './InsightsRenderer';
 import { noop } from '../../../helpers/functions';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 import { startOfToday } from 'date-fns';
-import { SurveyLog, SurveyLogSurveyAnswer } from '../../../helpers';
+import { InsightsData } from '../../../helpers';
+import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 
-type SurveyLogSummaryStoryArgs = React.ComponentProps<typeof SurveyLogSummary> & {
+type InsightsRendererStoryArgs = ComponentProps<typeof InsightsRenderer> & {
     colorScheme: 'auto' | 'light' | 'dark';
     customTitle: boolean;
     canLog: boolean;
@@ -21,47 +22,47 @@ type SurveyLogSummaryStoryArgs = React.ComponentProps<typeof SurveyLogSummary> &
 };
 
 export default {
-    title: 'Presentational/SurveyLogSummary',
-    component: SurveyLogSummary,
+    title: 'Presentational/InsightsRenderer',
+    component: InsightsRenderer,
     parameters: {
         layout: 'fullscreen'
     },
-    render: (args: SurveyLogSummaryStoryArgs) => {
+    render: (args: InsightsRendererStoryArgs) => {
         const customHighlightStyling: CSSProperties | undefined = args.customStyling ? {
             boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
             transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        const shouldHighlight = (surveyLog: SurveyLog, resultIdentifier: string): boolean => {
-            const surveyAnswer = surveyLog.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
+        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+            const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
             return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
         };
 
-        const badgeConfigurations: SurveyLogBadgeConfiguration[] = [
+        const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'activity'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'activity'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faWalking : undefined,
                 iconColor: args.customBadgeIconColors ? '#3c973c' : undefined
             },
             {
                 identifier: 'sleep',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'sleep'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'sleep'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBed : undefined,
                 iconColor: args.customBadgeIconColors ? '#664cda' : undefined
             },
             {
                 identifier: 'swimming',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'swimming'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'swimming'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faSwimmer : undefined,
                 iconColor: args.customBadgeIconColors ? '#0877b8' : undefined
             },
             {
                 identifier: 'cycling',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'cycling'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'cycling'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBicycle : undefined,
                 iconColor: args.customBadgeIconColors ? '#976d1e' : undefined
@@ -70,9 +71,10 @@ export default {
 
         return <Layout colorScheme={args.colorScheme}>
             <Card>
-                <SurveyLogSummary
+                <InsightsRenderer
                     title={args.customTitle ? 'Custom Title' : undefined}
                     logSurveyName={args.canLog ? 'Log Survey' : undefined}
+                    onEnterSurveyLog={noop}
                     badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
                     getDetails={args.withDetails ? () => {
                         return <>
@@ -82,14 +84,13 @@ export default {
                             </div>
                         </>;
                     } : undefined}
-                    onEnterLog={noop}
-                    surveyLog={{
+                    insightsData={{
                         date: startOfToday(),
                         surveyAnswers: [
                             { surveyName: args.hasLogged ? 'Log Survey' : undefined, resultIdentifier: 'activity', answers: ['5'] },
                             { resultIdentifier: 'sleep', answers: ['0'] },
                             { resultIdentifier: 'swimming', answers: ['3'] }
-                        ] as SurveyLogSurveyAnswer[],
+                        ] as SurveyAnswer[],
                         dataPoints: []
                     }}
                     loading={args.loading}
@@ -99,7 +100,7 @@ export default {
     }
 };
 
-export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
+export const Default: StoryObj<InsightsRendererStoryArgs> = {
     args: {
         colorScheme: 'auto',
         customTitle: false,
@@ -154,6 +155,6 @@ export const Default: StoryObj<SurveyLogSummaryStoryArgs> = {
             name: 'loading',
             control: 'boolean'
         },
-        ...argTypesToHide(['title', 'logSurveyName', 'onEnterLog', 'badgeConfigurations', 'getDetails', 'surveyLog', 'innerRef'])
+        ...argTypesToHide(['title', 'logSurveyName', 'onEnterSurveyLog', 'badgeConfigurations', 'getDetails', 'insightsData', 'innerRef'])
     }
 };

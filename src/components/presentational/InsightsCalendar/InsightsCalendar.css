@@ -1,9 +1,9 @@
-.mdhui-survey-log-list .mdhui-survey-log-list-footer {
+.mdhui-insights-calendar .mdhui-insights-calendar-footer {
     position: relative;
-    min-height: 32px;
+    min-height: 36px;
 }
 
-.mdhui-survey-log-list .mdhui-survey-log-list-legend {
+.mdhui-insights-calendar .mdhui-insights-calendar-legend {
     padding: 0 40px 16px;
     width: 100%;
     display: flex;
@@ -14,27 +14,27 @@
     box-sizing: border-box;
 }
 
-.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry {
+.mdhui-insights-calendar .mdhui-insights-calendar-legend-entry {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry-color {
+.mdhui-insights-calendar .mdhui-insights-calendar-legend-entry-color {
     height: 16px;
     width: 16px;
     border-radius: 50%;
 }
 
-.mdhui-survey-log-list .mdhui-survey-log-list-legend-entry-label {
+.mdhui-insights-calendar .mdhui-insights-calendar-legend-entry-label {
     font-size: 0.7em;
     color: var(--mdhui-text-color-2);
     font-weight: bold;
 }
 
-.mdhui-survey-log-list .mdhui-survey-log-list-loading-indicator.mdhui-loading-indicator {
+.mdhui-insights-calendar .mdhui-insights-calendar-loading-indicator.mdhui-loading-indicator {
     position: absolute;
-    bottom: 8px;
+    bottom: 12px;
     right: 16px;
     padding: 0;
 }

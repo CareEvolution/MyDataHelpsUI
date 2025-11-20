@@ -1,14 +1,14 @@
-.mdhui-survey-log-summary {
+.mdhui-insights-renderer {
     padding: 16px;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-log-button {
+.mdhui-insights-renderer .mdhui-insights-renderer-log-button {
     color: var(--mdhui-color-primary);
     font-weight: bold;
     text-decoration: underline;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badges {
+.mdhui-insights-renderer .mdhui-insights-renderer-badges {
     margin-top: 16px;
     display: flex;
     align-items: center;
@@ -16,7 +16,7 @@
     flex-wrap: wrap;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge {
+.mdhui-insights-renderer .mdhui-insights-renderer-badge {
     width: 28px;
     height: 28px;
     border: 1px solid var(--mdhui-border-color-1);
@@ -28,20 +28,20 @@
     font-size: 1.2em;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge-icon {
+.mdhui-insights-renderer .mdhui-insights-renderer-badge-icon {
     color: var(--mdhui-background-color-0);
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge-label {
-    color: var(--mdhui-text-color-3);
+.mdhui-insights-renderer .mdhui-insights-renderer-badge-label {
+    color: var(--mdhui-text-color-2);
     line-height: 40px;
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-badge-highlighted .mdhui-survey-log-summary-badge-label {
+.mdhui-insights-renderer .mdhui-insights-renderer-badge-highlighted .mdhui-insights-renderer-badge-label {
     color: var(--mdhui-text-color-1);
 }
 
-.mdhui-survey-log-summary .mdhui-survey-log-summary-details {
+.mdhui-insights-renderer .mdhui-insights-renderer-details {
     background: var(--mdhui-background-color-1);
     border-radius: var(--mdhui-card-border-radius);
     padding: 16px;

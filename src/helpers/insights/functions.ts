@@ -1,37 +1,34 @@
 import { add, eachDayOfInterval, Interval, isToday, min, parseISO, startOfToday } from 'date-fns';
-import { fnvPredictableRandomNumber, getDayKey, queryDailyData, SurveyLog } from '../index';
-import { SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import { fnvPredictableRandomNumber, getDayKey, queryDailyData } from '../index';
+import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
 import queryAllSurveyAnswers from '../query-all-survey-answers';
-import { SurveyLogDataPoint, SurveyLogSurveyAnswer } from './types';
+import { DataPoint, InsightsData } from './types';
 import { generateSurveyAnswers } from '../survey-answer';
 
-export type SurveyLogPreviewState = 'loaded' | 'reloading' | 'loaded with today' | 'reloading with today';
+export type InsightsDataPreviewState = 'loaded' | 'reloading' | 'loaded with today' | 'reloading with today';
 
-export async function loadSurveyLogs(logSurveyName: string | undefined, dailyDataTypes: string[], startDate: Date, endDate: Date, previewState: SurveyLogPreviewState | undefined): Promise<Partial<Record<string, SurveyLog>>> {
-    const surveyNames: string[] = [];
-    if (logSurveyName) surveyNames.push(logSurveyName);
-
+export async function loadInsightsData(surveyNames: string[], dailyDataTypes: string[], startDate: Date, endDate: Date, previewState: InsightsDataPreviewState | undefined): Promise<Partial<Record<string, InsightsData>>> {
     const [surveyAnswers, dataPoints] = await Promise.all([
         loadSurveyAnswers(surveyNames, startDate, endDate, previewState),
         loadDataPoints(dailyDataTypes, startDate, endDate, !!previewState)
     ]);
 
-    const surveyLogs: Partial<Record<string, SurveyLog>> = {};
+    const insightsDataByDate: Partial<Record<string, InsightsData>> = {};
 
     let currentDate = startDate;
     while (currentDate < endDate) {
         const dayKey = getDayKey(currentDate);
-        surveyLogs[dayKey] = { date: parseISO(dayKey), surveyAnswers: surveyAnswers[dayKey] ?? [], dataPoints: dataPoints[dayKey] ?? [] };
+        insightsDataByDate[dayKey] = { date: parseISO(dayKey), surveyAnswers: surveyAnswers[dayKey] ?? [], dataPoints: dataPoints[dayKey] ?? [] };
         currentDate = add(currentDate, { days: 1 });
     }
 
-    return surveyLogs;
+    return insightsDataByDate;
 }
 
-async function loadSurveyAnswers(surveyNames: string[], startDate: Date, endDate: Date, previewState: SurveyLogPreviewState | undefined): Promise<Partial<Record<string, SurveyLogSurveyAnswer[]>>> {
+async function loadSurveyAnswers(surveyNames: string[], startDate: Date, endDate: Date, previewState: InsightsDataPreviewState | undefined): Promise<Partial<Record<string, SurveyAnswer[]>>> {
     if (surveyNames.length === 0) return {};
 
-    if (previewState) return generatePreviewSurveyAnswers(surveyNames[0], startDate, endDate, previewState.endsWith('with today'));
+    if (previewState) return generatePreviewSurveyAnswers(surveyNames, startDate, endDate, previewState.endsWith('with today'));
 
     const event = eachDayOfInterval({ start: startDate, end: add(endDate, { days: -1 }) }).reduce((events, date) => {
         const event = getDayKey(date).substring(0, 8) + '*';
@@ -41,26 +38,33 @@ async function loadSurveyAnswers(surveyNames: string[], startDate: Date, endDate
     return queryAndCompileSurveyAnswers(surveyNames, event, { start: startDate, end: endDate });
 }
 
-function generatePreviewSurveyAnswers(surveyName: string, startDate: Date, endDate: Date, ensureTodayHasLog: boolean): Partial<Record<string, SurveyLogSurveyAnswer[]>> {
+function generatePreviewSurveyAnswers(surveyNames: string[], startDate: Date, endDate: Date, ensureTodayHasLog: boolean): Partial<Record<string, SurveyAnswer[]>> {
     const resultIdentifiers = Array.from({ length: 10 }, (_, index) => `result${index + 1}`);
-    const surveyAnswers = generateSurveyAnswers(startDate, min([add(startOfToday(), { days: ensureTodayHasLog ? 1 : 0 }), endDate]), resultIdentifiers, 0, 5, { days: 1 }).flat();
+    const surveyAnswers = surveyNames.reduce((surveyAnswers, surveyName) => {
+        const clampedEndDate = min([add(startOfToday(), { days: ensureTodayHasLog ? 1 : 0 }), endDate]);
+        generateSurveyAnswers(startDate, clampedEndDate, resultIdentifiers, 0, 5, { days: 1 }).flat().forEach(surveyAnswer => {
+            surveyAnswers.push({ ...surveyAnswer, surveyName });
+        });
+        return surveyAnswers;
+    }, [] as SurveyAnswer[]);
     return surveyAnswers.reduce((sparseSurveyAnswers, surveyAnswer) => {
         const dayKey = getDayKey(surveyAnswer.date);
         const forceAdd = ensureTodayHasLog && isToday(surveyAnswer.date);
-        if (forceAdd || (fnvPredictableRandomNumber(dayKey) % 3 !== 0 && fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.resultIdentifier) % 3 !== 0)) {
+        const shouldIncludeDay = fnvPredictableRandomNumber(dayKey) % 3 !== 0;
+        const shouldIncludeSurveyOnDay = fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.surveyName) % 3 !== 0;
+        const shouldIncludeResultFromSurveyOnDay = fnvPredictableRandomNumber(dayKey + '_' + surveyAnswer.surveyName + '_' + surveyAnswer.resultIdentifier) % 3 !== 0;
+        if (forceAdd || (shouldIncludeDay && shouldIncludeSurveyOnDay && shouldIncludeResultFromSurveyOnDay)) {
             sparseSurveyAnswers[dayKey] ??= [];
             sparseSurveyAnswers[dayKey].push({
-                surveyName: surveyName,
-                stepIdentifier: surveyAnswer.stepIdentifier,
-                resultIdentifier: surveyAnswer.resultIdentifier,
+                ...surveyAnswer,
                 answers: forceAdd && surveyAnswer.answers[0] === '0' ? ['1'] : surveyAnswer.answers
-            });
+            } as SurveyAnswer);
         }
         return sparseSurveyAnswers;
-    }, {} as Record<string, SurveyLogSurveyAnswer[]>);
+    }, {} as Record<string, SurveyAnswer[]>);
 }
 
-async function queryAndCompileSurveyAnswers(surveyNames: string[], event: string, filter?: Interval): Promise<Partial<Record<string, SurveyLogSurveyAnswer[]>>> {
+async function queryAndCompileSurveyAnswers(surveyNames: string[], event: string, filter?: Interval): Promise<Partial<Record<string, SurveyAnswer[]>>> {
     const surveyAnswersQuery: SurveyAnswersQuery = {
         surveyName: surveyNames,
         // @ts-ignore
@@ -82,18 +86,13 @@ async function queryAndCompileSurveyAnswers(surveyNames: string[], event: string
         if (!filter || (date >= filter.start && date < filter.end)) {
             const dayKey = getDayKey(date);
             surveyAnswersByDate[dayKey] ??= [];
-            surveyAnswersByDate[dayKey].push({
-                surveyName: surveyAnswer.surveyName,
-                stepIdentifier: surveyAnswer.stepIdentifier,
-                resultIdentifier: surveyAnswer.resultIdentifier,
-                answers: surveyAnswer.answers
-            });
+            surveyAnswersByDate[dayKey].push(surveyAnswer);
         }
         return surveyAnswersByDate;
-    }, {} as Record<string, SurveyLogSurveyAnswer[]>);
+    }, {} as Record<string, SurveyAnswer[]>);
 }
 
-async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, SurveyLogDataPoint[]>>> {
+async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate: Date, preview: boolean): Promise<Partial<Record<string, DataPoint[]>>> {
     if (dailyDataTypes.length === 0) return {};
 
     const results = await Promise.all(dailyDataTypes.map(dailyDataType => queryDailyData(dailyDataType, startDate, endDate, preview)));
@@ -106,5 +105,5 @@ async function loadDataPoints(dailyDataTypes: string[], startDate: Date, endDate
             });
         });
         return dataPointsByDate;
-    }, {} as Record<string, SurveyLogDataPoint[]>);
+    }, {} as Record<string, DataPoint[]>);
 }

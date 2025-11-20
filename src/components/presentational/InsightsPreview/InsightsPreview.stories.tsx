@@ -1,15 +1,15 @@
-import React, { CSSProperties } from 'react';
-import { DateRangeCoordinator, Layout, SurveyLogBadgeConfiguration, SurveyLogBadgeCoordinator } from '../index';
+import React, { ComponentProps, CSSProperties } from 'react';
+import { DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoordinator, Layout } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyLogPreview from './SurveyLogPreview';
+import InsightsPreview from './InsightsPreview';
 import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
-import { SurveyLog, SurveyLogPreviewState } from '../../../helpers';
-import { SurveyLogCoordinator } from '../../container';
+import { DailyDataType, InsightsData, InsightsDataPreviewState } from '../../../helpers';
+import { InsightsDataCoordinator } from '../../container';
 
-type SurveyLogPreviewStoryArgs = React.ComponentProps<typeof SurveyLogPreview> & {
+type InsightsPreviewStoryArgs = ComponentProps<typeof InsightsPreview> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | SurveyLogPreviewState;
+    previewState: 'loading' | InsightsDataPreviewState;
     canLog: boolean;
     withBadges: boolean;
     withDetails: boolean;
@@ -17,47 +17,47 @@ type SurveyLogPreviewStoryArgs = React.ComponentProps<typeof SurveyLogPreview> &
 };
 
 export default {
-    title: 'Presentational/SurveyLogPreview',
-    component: SurveyLogPreview,
+    title: 'Presentational/InsightsPreview',
+    component: InsightsPreview,
     parameters: {
         layout: 'fullscreen'
     },
-    render: (args: SurveyLogPreviewStoryArgs) => {
+    render: (args: InsightsPreviewStoryArgs) => {
         const customHighlightStyling: CSSProperties | undefined = args.customStyling ? {
             boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
             transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        const shouldHighlight = (surveyLog: SurveyLog, resultIdentifier: string): boolean => {
-            const surveyAnswer = surveyLog.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
+        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+            const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
             return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
         };
 
-        const badgeConfigurations: SurveyLogBadgeConfiguration[] = [
+        const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result1'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result1'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faWalking,
                 iconColor: '#3c973c'
             },
             {
                 identifier: 'sleep',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result2'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result2'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBed,
                 iconColor: '#664cda'
             },
             {
                 identifier: 'swimming',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result3'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result3'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faSwimmer,
                 iconColor: '#0877b8'
             },
             {
                 identifier: 'cycling',
-                shouldHighlight: surveyLog => shouldHighlight(surveyLog, 'result4'),
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result4'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBicycle,
                 iconColor: '#976d1e'
@@ -66,9 +66,14 @@ export default {
 
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Day">
-                <SurveyLogCoordinator previewState={args.previewState} logSurveyName={args.canLog ? 'Log Survey' : undefined}>
+                <InsightsDataCoordinator
+                    previewState={args.previewState}
+                    logSurveyName={args.canLog ? 'Log Survey' : undefined}
+                    otherSurveyNames={['Other Survey']}
+                    dailyDataTypes={[DailyDataType.AirQuality]}
+                >
                     {(args.withBadges || args.withDetails) &&
-                        <SurveyLogBadgeCoordinator
+                        <InsightsRenderingCoordinator
                             badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
                             getDetails={args.withDetails ? () => {
                                 return <>
@@ -78,16 +83,16 @@ export default {
                                     </div>
                                 </>;
                             } : undefined}
-                            children={<SurveyLogPreview />}
+                            children={<InsightsPreview />}
                         />}
-                    {!(args.withBadges || args.withDetails) && <SurveyLogPreview />}
-                </SurveyLogCoordinator>
+                    {!(args.withBadges || args.withDetails) && <InsightsPreview />}
+                </InsightsDataCoordinator>
             </DateRangeCoordinator>
         </Layout>;
     }
 };
 
-export const Default: StoryObj<SurveyLogPreviewStoryArgs> = {
+export const Default: StoryObj<InsightsPreviewStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',

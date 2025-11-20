@@ -1,18 +1,17 @@
 import React, { CSSProperties } from 'react';
-import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, Layout, SurveyLogStateCoordinator } from '../index';
+import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, InsightsStateCoordinator, Layout } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import SurveyLogCalendar from './SurveyLogCalendar';
-import { fnvPredictableRandomNumber, getDayKey, SurveyLog, SurveyLogPreviewState } from '../../../helpers';
+import InsightsCalendar from './InsightsCalendar';
+import { fnvPredictableRandomNumber, getDayKey, InsightsData, InsightsDataPreviewState } from '../../../helpers';
 import { isAfter, isBefore, isToday, startOfToday } from 'date-fns';
-import { SurveyLogCoordinator } from '../../container';
+import { InsightsDataCoordinator } from '../../container';
 
-type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar> & {
+type InsightsCalendarStoryArgs = React.ComponentProps<typeof InsightsCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    previewState: 'loading' | SurveyLogPreviewState;
-    customStyling: boolean;
-    includeStates: boolean;
-    includeStatesNote: boolean;
+    previewState: 'loading' | InsightsDataPreviewState;
+    withStates: boolean;
+    withNotes: boolean;
     multiStateStartAngle: number;
     hasLegend: boolean;
     showLegend: boolean;
@@ -20,15 +19,16 @@ type SurveyLogCalendarStoryArgs = React.ComponentProps<typeof SurveyLogCalendar>
     customizeFuture: boolean;
     customizeNoData: boolean;
     customizeStatesNote: boolean;
+    customStyling: boolean;
 };
 
 export default {
-    title: 'Presentational/SurveyLogCalendar',
-    component: SurveyLogCalendar,
+    title: 'Presentational/InsightsCalendar',
+    component: InsightsCalendar,
     parameters: {
         layout: 'fullscreen'
     },
-    render: (args: SurveyLogCalendarStoryArgs) => {
+    render: (args: InsightsCalendarStoryArgs) => {
         const customHighlightStyling: CSSProperties | undefined = args.customStyling ? {
             boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
             transition: 'border-radius: 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease'
@@ -67,10 +67,10 @@ export default {
             }
         ];
 
-        const computePreviewStatesForDay = (date: Date, surveyLog?: SurveyLog): CalendarDayStates => {
+        const computePreviewStatesForDay = (date: Date, insightsData?: InsightsData): CalendarDayStates => {
             const statesForDay: CalendarDayStates = [];
 
-            const surveyAnswers = surveyLog?.surveyAnswers ?? [];
+            const surveyAnswers = insightsData?.surveyAnswers ?? [];
             const dayKey = getDayKey(date);
 
             if (surveyAnswers.some(surveyAnswer => parseInt(surveyAnswer.answers[0]) > 0)) {
@@ -89,7 +89,7 @@ export default {
                 statesForDay.push({ borderColor: { lightMode: '#000', darkMode: '#fff' } });
             }
 
-            if (args.includeStatesNote && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
+            if (args.withNotes && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
                 statesForDay.note = 'note';
                 if (args.customizeStatesNote) {
                     statesForDay.noteBorderColor = { lightMode: '#000', darkMode: '#fff' };
@@ -99,13 +99,13 @@ export default {
             return statesForDay;
         };
 
-        const calendar = <SurveyLogCalendar showLegend={args.showLegend} />;
+        const calendar = <InsightsCalendar showLegend={args.showLegend} />;
 
         return <Layout colorScheme={args.colorScheme}>
             <DateRangeCoordinator intervalType="Month">
-                <SurveyLogCoordinator previewState={args.previewState} logSurveyName="Log Survey">
-                    {args.includeStates
-                        ? <SurveyLogStateCoordinator
+                <InsightsDataCoordinator previewState={args.previewState} logSurveyName="Log Survey">
+                    {args.withStates
+                        ? <InsightsStateCoordinator
                             computeStatesForDay={computePreviewStatesForDay}
                             multiStateStartAngle={args.multiStateStartAngle}
                             legend={args.hasLegend ? states : undefined}
@@ -113,26 +113,26 @@ export default {
                         />
                         : calendar
                     }
-                </SurveyLogCoordinator>
+                </InsightsDataCoordinator>
             </DateRangeCoordinator>
         </Layout>;
     }
 };
 
-export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
+export const Default: StoryObj<InsightsCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
         previewState: 'loaded',
-        customStyling: false,
-        includeStates: true,
-        includeStatesNote: false,
+        withStates: true,
+        withNotes: false,
         multiStateStartAngle: 270,
         hasLegend: true,
         showLegend: true,
         customizeToday: false,
         customizeFuture: false,
         customizeNoData: false,
-        customizeStatesNote: false
+        customizeStatesNote: false,
+        customStyling: false
     },
     argTypes: {
         colorScheme: {
@@ -145,12 +145,12 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
             control: 'radio',
             options: ['loading', 'loaded', 'reloading']
         },
-        includeStates: {
-            name: 'include states',
+        withStates: {
+            name: 'with states',
             control: 'boolean'
         },
-        includeStatesNote: {
-            name: 'include state notes',
+        withNotes: {
+            name: 'with notes',
             control: 'boolean'
         },
         multiStateStartAngle: {
@@ -184,6 +184,10 @@ export const Default: StoryObj<SurveyLogCalendarStoryArgs> = {
         },
         customizeStatesNote: {
             name: 'customize states note',
+            control: 'boolean'
+        },
+        customStyling: {
+            name: 'custom styling',
             control: 'boolean'
         },
         ...argTypesToHide(['legend', 'innerRef'])

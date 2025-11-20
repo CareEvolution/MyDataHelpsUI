@@ -1,1 +1,0 @@
-export { default, SurveyLogBadgeConfiguration, SurveyLogBadgeContext } from './SurveyLogBadgeCoordinator';
