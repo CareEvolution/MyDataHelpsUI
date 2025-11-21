@@ -1,20 +1,22 @@
-import React, { CSSProperties } from 'react';
-import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, InsightsStateCoordinator, Layout } from '../index';
+import React, { CSSProperties, ReactNode } from 'react';
+import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoordinator, InsightsStateCoordinator, Layout } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import InsightsCalendar from './InsightsCalendar';
 import { fnvPredictableRandomNumber, getDayKey, InsightsData, InsightsDataPreviewState } from '../../../helpers';
 import { isAfter, isBefore, isToday, startOfToday } from 'date-fns';
 import { InsightsDataCoordinator } from '../../container';
+import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
 type InsightsCalendarStoryArgs = React.ComponentProps<typeof InsightsCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    intervalType: 'Month' | 'Week';
     previewState: 'loading' | InsightsDataPreviewState;
     withStates: boolean;
+    withBadges: boolean;
     withNotes: boolean;
     multiStateStartAngle: number;
     hasLegend: boolean;
-    showLegend: boolean;
     customizeToday: boolean;
     customizeFuture: boolean;
     customizeNoData: boolean;
@@ -99,20 +101,70 @@ export default {
             return statesForDay;
         };
 
-        const calendar = <InsightsCalendar showLegend={args.showLegend} />;
+        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+            const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
+        };
+
+        const badgeConfigurations: InsightsBadgeConfiguration[] = [
+            {
+                identifier: 'activity',
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result1'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faWalking,
+                iconColor: '#3c973c'
+            },
+            {
+                identifier: 'sleep',
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result2'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBed,
+                iconColor: '#664cda'
+            },
+            {
+                identifier: 'swimming',
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result3'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faSwimmer,
+                iconColor: '#0877b8'
+            },
+            {
+                identifier: 'cycling',
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result4'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBicycle,
+                iconColor: '#976d1e'
+            }
+        ];
+
+        const calendar = <InsightsCalendar showLegend={args.showLegend} highlightedBadgesOnly={args.highlightedBadgesOnly} />;
+
+        const wrapWithStateCoordinatorIfNecessary = (children: ReactNode): ReactNode => {
+            return args.withStates
+                ? <InsightsStateCoordinator
+                    computeStatesForDay={computePreviewStatesForDay}
+                    multiStateStartAngle={args.multiStateStartAngle}
+                    legend={args.hasLegend ? states : undefined}
+                    children={children}
+                />
+                : children;
+        };
+
+        const wrapWithRenderingCoordinatorIfNecessary = (children: ReactNode): ReactNode => {
+            return args.withBadges
+                ? <InsightsRenderingCoordinator
+                    badgeConfigurations={badgeConfigurations}
+                    children={children}
+                />
+                : children;
+        };
 
         return <Layout colorScheme={args.colorScheme}>
-            <DateRangeCoordinator intervalType="Month">
+            <DateRangeCoordinator intervalType={args.intervalType} weekStartsOn="6DaysAgo">
                 <InsightsDataCoordinator previewState={args.previewState} logSurveyName="Log Survey">
-                    {args.withStates
-                        ? <InsightsStateCoordinator
-                            computeStatesForDay={computePreviewStatesForDay}
-                            multiStateStartAngle={args.multiStateStartAngle}
-                            legend={args.hasLegend ? states : undefined}
-                            children={calendar}
-                        />
-                        : calendar
-                    }
+                    {wrapWithStateCoordinatorIfNecessary(
+                        wrapWithRenderingCoordinatorIfNecessary(calendar)
+                    )}
                 </InsightsDataCoordinator>
             </DateRangeCoordinator>
         </Layout>;
@@ -122,8 +174,11 @@ export default {
 export const Default: StoryObj<InsightsCalendarStoryArgs> = {
     args: {
         colorScheme: 'auto',
+        intervalType: 'Month',
         previewState: 'loaded',
         withStates: true,
+        withBadges: false,
+        highlightedBadgesOnly: false,
         withNotes: false,
         multiStateStartAngle: 270,
         hasLegend: true,
@@ -140,6 +195,11 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
             control: 'radio',
             options: ['auto', 'light', 'dark']
         },
+        intervalType: {
+            name: 'interval type',
+            control: 'radio',
+            options: ['Month', 'Week']
+        },
         previewState: {
             name: 'state',
             control: 'radio',
@@ -147,6 +207,14 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
         },
         withStates: {
             name: 'with states',
+            control: 'boolean'
+        },
+        withBadges: {
+            name: 'with badges',
+            control: 'boolean'
+        },
+        highlightedBadgesOnly: {
+            name: 'highlighted badges only',
             control: 'boolean'
         },
         withNotes: {

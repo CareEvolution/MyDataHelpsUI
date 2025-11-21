@@ -1,8 +1,7 @@
-import React, { CSSProperties, ReactNode, Ref, useContext } from 'react';
-import { InsightsBadgeConfiguration, LayoutContext, LoadingIndicator, Title, UnstyledButton } from '../index';
-import { formatDateForLocale, InsightsData, resolveColor } from '../../../helpers';
+import React, { ReactNode, Ref, useContext } from 'react';
+import { InsightsBadge, InsightsBadgeConfiguration, LayoutContext, LoadingIndicator, Title, UnstyledButton } from '../index';
+import { formatDateForLocale, InsightsData } from '../../../helpers';
 import './InsightsRenderer.css';
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface InsightsRendererProps {
     title?: string;
@@ -35,27 +34,7 @@ export default function InsightsRenderer(props: InsightsRendererProps) {
         {!!props.badgeConfigurations?.length &&
             <div className="mdhui-insights-renderer-badges">
                 {props.badgeConfigurations.map((configuration, index) => {
-                    const shouldHighlight = configuration.shouldHighlight(props.insightsData);
-                    const iconColor = shouldHighlight ? configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#ccc', darkMode: '#555' };
-                    const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
-
-                    const classNames: string[] = ['mdhui-insights-renderer-badge'];
-                    if (shouldHighlight) {
-                        classNames.push('mdhui-insights-renderer-badge-highlighted');
-                    }
-
-                    const style: CSSProperties = {
-                        background: resolvedIconColor,
-                        borderColor: resolvedIconColor,
-                        ...(shouldHighlight && configuration.customHighlightStyling)
-                    };
-
-                    return <div key={index} className={classNames.join(' ')} style={style}>
-                        {configuration.icon
-                            ? <FontAwesomeSvgIcon className="mdhui-insights-renderer-badge-icon" icon={configuration.icon} />
-                            : <div className="mdhui-insights-renderer-badge-label">{configuration.identifier.substring(0, 1).toUpperCase()}</div>
-                        }
-                    </div>;
+                    return <InsightsBadge key={index} configuration={configuration} data={props.insightsData} />;
                 })}
             </div>
         }

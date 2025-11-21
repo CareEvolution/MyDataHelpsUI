@@ -1,10 +1,50 @@
+.mdhui-insights-calendar .mdhui-calendar {
+    padding-bottom: 8px;
+}
+
+.mdhui-insights-calendar .mdhui-week-calendar {
+    border-top: none;
+    border-bottom: none;
+}
+
+.mdhui-insights-calendar .mdhui-insights-week-calendar-day {
+    margin: 8px 0 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.mdhui-insights-calendar .mdhui-insights-week-calendar-day-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--mdhui-text-color-2);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.mdhui-insights-calendar .mdhui-insights-week-calendar-day-footer {
+    margin: 24px 2px 0;
+}
+
+.mdhui-insights-calendar .mdhui-insights-week-calendar-day-badges {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    flex-wrap: wrap;
+}
+
 .mdhui-insights-calendar .mdhui-insights-calendar-footer {
+    border-top: 1px solid var(--mdhui-border-color-1);
     position: relative;
-    min-height: 36px;
+    min-height: 38px;
 }
 
 .mdhui-insights-calendar .mdhui-insights-calendar-legend {
-    padding: 0 40px 16px;
+    padding: 8px 40px 8px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -34,7 +74,7 @@
 
 .mdhui-insights-calendar .mdhui-insights-calendar-loading-indicator.mdhui-loading-indicator {
     position: absolute;
-    bottom: 12px;
+    bottom: 8px;
     right: 16px;
     padding: 0;
 }
