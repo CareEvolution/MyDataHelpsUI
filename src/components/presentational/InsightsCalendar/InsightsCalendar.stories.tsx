@@ -6,7 +6,7 @@ import InsightsCalendar from './InsightsCalendar';
 import { fnvPredictableRandomNumber, getDayKey, InsightsData, InsightsDataPreviewState } from '../../../helpers';
 import { isAfter, isBefore, isToday, startOfToday } from 'date-fns';
 import { InsightsDataCoordinator } from '../../container';
-import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 
 type InsightsCalendarStoryArgs = React.ComponentProps<typeof InsightsCalendar> & {
     colorScheme: 'auto' | 'light' | 'dark';
@@ -134,10 +134,18 @@ export default {
                 customHighlightStyling: customHighlightStyling,
                 icon: faBicycle,
                 iconColor: '#976d1e'
+            },
+            {
+                identifier: 'other',
+                shouldRender: () => false,
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
+                icon: faBurn,
+                iconColor: '#d81442'
             }
         ];
 
-        const calendar = <InsightsCalendar showLegend={args.showLegend} highlightedBadgesOnly={args.highlightedBadgesOnly} />;
+        const calendar = <InsightsCalendar showLegend={args.showLegend} />;
 
         const wrapWithStateCoordinatorIfNecessary = (children: ReactNode): ReactNode => {
             return args.withStates
@@ -178,7 +186,6 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
         previewState: 'loaded',
         withStates: true,
         withBadges: false,
-        highlightedBadgesOnly: false,
         withNotes: false,
         multiStateStartAngle: 270,
         hasLegend: true,
@@ -211,10 +218,6 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
         },
         withBadges: {
             name: 'with badges',
-            control: 'boolean'
-        },
-        highlightedBadgesOnly: {
-            name: 'highlighted badges only',
             control: 'boolean'
         },
         withNotes: {

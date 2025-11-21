@@ -4,6 +4,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export interface InsightsBadgeConfiguration {
     identifier: string;
+    shouldRender?: (insightsData: InsightsData) => boolean;
     shouldHighlight: (insightsData: InsightsData) => boolean;
     customHighlightStyling?: CSSProperties;
     icon?: IconDefinition;

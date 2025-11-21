@@ -4,7 +4,7 @@ import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import InsightsRenderer from './InsightsRenderer';
 import { noop } from '../../../helpers/functions';
-import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 import { startOfToday } from 'date-fns';
 import { InsightsData } from '../../../helpers';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
@@ -16,6 +16,7 @@ type InsightsRendererStoryArgs = ComponentProps<typeof InsightsRenderer> & {
     hasLogged: boolean;
     withBadges: boolean;
     withDetails: boolean;
+    withEmptyDetails: boolean;
     customBadgeIcons: boolean;
     customBadgeIconColors: boolean;
     customStyling: boolean;
@@ -41,6 +42,7 @@ export default {
         const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
+                shouldRender: () => true,
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'activity'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faWalking : undefined,
@@ -66,6 +68,14 @@ export default {
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBicycle : undefined,
                 iconColor: args.customBadgeIconColors ? '#976d1e' : undefined
+            },
+            {
+                identifier: 'other',
+                shouldRender: () => false,
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
+                icon: args.customBadgeIcons ? faBurn : undefined,
+                iconColor: args.customBadgeIconColors ? '#d81442' : undefined
             }
         ];
 
@@ -77,12 +87,12 @@ export default {
                     onEnterSurveyLog={noop}
                     badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
                     getDetails={args.withDetails ? () => {
-                        return <>
+                        return !args.withEmptyDetails ? <>
                             <div style={{ fontWeight: 'bold' }}>Details</div>
                             <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
                                 <div>Some details about the day.</div>
                             </div>
-                        </>;
+                        </> : undefined;
                     } : undefined}
                     insightsData={{
                         date: startOfToday(),
@@ -108,6 +118,7 @@ export const Default: StoryObj<InsightsRendererStoryArgs> = {
         hasLogged: false,
         withBadges: true,
         withDetails: true,
+        withEmptyDetails: false,
         customBadgeIcons: true,
         customBadgeIconColors: true,
         customStyling: false,
@@ -137,6 +148,10 @@ export const Default: StoryObj<InsightsRendererStoryArgs> = {
         },
         withDetails: {
             name: 'with details',
+            control: 'boolean'
+        },
+        withEmptyDetails: {
+            name: 'with empty details',
             control: 'boolean'
         },
         customBadgeIcons: {

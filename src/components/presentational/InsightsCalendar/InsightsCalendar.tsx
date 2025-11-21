@@ -8,7 +8,6 @@ import { getDayOfWeekLetter } from '../../../helpers/date-helpers';
 
 export interface InsightsCalendarProps {
     showLegend?: boolean;
-    highlightedBadgesOnly?: boolean;
     innerRef?: Ref<HTMLDivElement>;
 }
 
@@ -66,7 +65,7 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
 
                         const badges = insightsData
                             ? insightsRenderingContext?.badgeConfigurations
-                                ?.filter(configuration => !props.highlightedBadgesOnly || configuration.shouldHighlight(insightsData))
+                                ?.filter(configuration => !configuration.shouldRender || configuration.shouldRender(insightsData))
                                 .map((configuration, index) => {
                                     return <InsightsBadge key={index} variant="xsmall" configuration={configuration} data={insightsData} />;
                                 })
@@ -76,7 +75,7 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
                             <div className="mdhui-insights-week-calendar-day-label">{getDayOfWeekLetter(date)}</div>
                             {renderDay(year, month, day)}
                             <div className="mdhui-insights-week-calendar-day-footer">
-                                {badges && <div className="mdhui-insights-week-calendar-day-badges">{badges}</div>}
+                                {!!badges?.length && <div className="mdhui-insights-week-calendar-day-badges">{badges}</div>}
                             </div>
                         </div>;
                     }}
