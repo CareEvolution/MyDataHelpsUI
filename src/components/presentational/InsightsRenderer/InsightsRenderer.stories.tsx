@@ -19,6 +19,7 @@ type InsightsRendererStoryArgs = ComponentProps<typeof InsightsRenderer> & {
     withEmptyDetails: boolean;
     customBadgeIcons: boolean;
     customBadgeIconColors: boolean;
+    customBadgeIconTextColors: boolean;
     customStyling: boolean;
 };
 
@@ -46,28 +47,32 @@ export default {
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'activity'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faWalking : undefined,
-                iconColor: args.customBadgeIconColors ? '#3c973c' : undefined
+                iconColor: args.customBadgeIconColors ? '#3c973c' : undefined,
+                iconTextColor: args.customBadgeIconTextColors ? '#082c08' : undefined
             },
             {
                 identifier: 'sleep',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'sleep'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBed : undefined,
-                iconColor: args.customBadgeIconColors ? '#664cda' : undefined
+                iconColor: args.customBadgeIconColors ? '#664cda' : undefined,
+                iconTextColor: args.customBadgeIconTextColors ? '#231565' : undefined
             },
             {
                 identifier: 'swimming',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'swimming'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faSwimmer : undefined,
-                iconColor: args.customBadgeIconColors ? '#0877b8' : undefined
+                iconColor: args.customBadgeIconColors ? '#0877b8' : undefined,
+                iconTextColor: args.customBadgeIconTextColors ? '#0e2d40' : undefined
             },
             {
                 identifier: 'cycling',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'cycling'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBicycle : undefined,
-                iconColor: args.customBadgeIconColors ? '#976d1e' : undefined
+                iconColor: args.customBadgeIconColors ? '#976d1e' : undefined,
+                iconTextColor: args.customBadgeIconTextColors ? '#322711' : undefined
             },
             {
                 identifier: 'other',
@@ -75,7 +80,8 @@ export default {
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBurn : undefined,
-                iconColor: args.customBadgeIconColors ? '#d81442' : undefined
+                iconColor: args.customBadgeIconColors ? '#d81442' : undefined,
+                iconTextColor: args.customBadgeIconTextColors ? '#2b0a11' : undefined
             }
         ];
 
@@ -121,6 +127,7 @@ export const Default: StoryObj<InsightsRendererStoryArgs> = {
         withEmptyDetails: false,
         customBadgeIcons: true,
         customBadgeIconColors: true,
+        customBadgeIconTextColors: true,
         customStyling: false,
         loading: false
     },
@@ -160,6 +167,10 @@ export const Default: StoryObj<InsightsRendererStoryArgs> = {
         },
         customBadgeIconColors: {
             name: 'custom icon colors',
+            control: 'boolean'
+        },
+        customBadgeIconTextColors: {
+            name: 'custom icon text colors',
             control: 'boolean'
         },
         customStyling: {

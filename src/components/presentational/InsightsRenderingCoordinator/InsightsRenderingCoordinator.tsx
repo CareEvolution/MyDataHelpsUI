@@ -9,6 +9,7 @@ export interface InsightsBadgeConfiguration {
     customHighlightStyling?: CSSProperties;
     icon?: IconDefinition;
     iconColor?: ColorDefinition;
+    iconTextColor?: ColorDefinition;
 }
 
 export interface InsightsRenderingContext {

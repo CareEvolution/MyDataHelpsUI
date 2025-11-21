@@ -3,7 +3,7 @@ import { DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoor
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import InsightsPreview from './InsightsPreview';
-import { faBed, faBicycle, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 import { DailyDataType, InsightsData, InsightsDataPreviewState } from '../../../helpers';
 import { InsightsDataCoordinator } from '../../container';
 
@@ -39,28 +39,41 @@ export default {
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'result1'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faWalking,
-                iconColor: '#3c973c'
+                iconColor: '#3c973c',
+                iconTextColor: '#082c08'
             },
             {
                 identifier: 'sleep',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'result2'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBed,
-                iconColor: '#664cda'
+                iconColor: '#664cda',
+                iconTextColor: '#231565'
             },
             {
                 identifier: 'swimming',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'result3'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faSwimmer,
-                iconColor: '#0877b8'
+                iconColor: '#0877b8',
+                iconTextColor: '#0e2d40'
             },
             {
                 identifier: 'cycling',
                 shouldHighlight: insightsData => shouldHighlight(insightsData, 'result4'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBicycle,
-                iconColor: '#976d1e'
+                iconColor: '#976d1e',
+                iconTextColor: '#322711'
+            },
+            {
+                identifier: 'other',
+                shouldRender: () => false,
+                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBurn,
+                iconColor: '#d81442',
+                iconTextColor: '#2b0a11'
             }
         ];
 

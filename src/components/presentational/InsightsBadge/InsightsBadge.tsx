@@ -16,8 +16,12 @@ export default function InsightsBadge(props: InsightsBadgeProps) {
     const layoutContext = useContext(LayoutContext);
 
     const shouldHighlight = props.configuration.shouldHighlight(props.data);
+
     const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#ccc', darkMode: '#555' };
+    const iconTextColor = shouldHighlight ? props.configuration.iconTextColor ?? 'var(--mdhui-background-color-0)' : 'var(--mdhui-background-color-0)';
+
     const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
+    const resolvedIconTextColor = resolveColor(layoutContext.colorScheme, iconTextColor);
 
     const classNames: string[] = ['mdhui-insights-badge'];
     if (props.variant === 'xsmall') {
@@ -35,7 +39,7 @@ export default function InsightsBadge(props: InsightsBadgeProps) {
 
     return <div className={classNames.join(' ')} style={style} ref={props.innerRef}>
         {props.configuration.icon
-            ? <FontAwesomeSvgIcon className="mdhui-insights-badge-icon" icon={props.configuration.icon} />
+            ? <FontAwesomeSvgIcon className="mdhui-insights-badge-icon" icon={props.configuration.icon} style={{ color: resolvedIconTextColor }} />
             : <div className="mdhui-insights-badge-label">{props.configuration.identifier.substring(0, 1).toUpperCase()}</div>
         }
     </div>;
