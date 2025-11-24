@@ -2,6 +2,8 @@ import React, { ReactNode, Ref } from 'react';
 import { InsightsBadge, InsightsBadgeConfiguration, LoadingIndicator, Title, UnstyledButton } from '../index';
 import { formatDateForLocale, InsightsData } from '../../../helpers';
 import './InsightsRenderer.css';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 export interface InsightsRendererProps {
     title?: string;
@@ -23,8 +25,11 @@ export default function InsightsRenderer(props: InsightsRendererProps) {
     const titleAccessory = props.loading
         ? <LoadingIndicator variant="inline" />
         : canLog
-            ? <UnstyledButton className="mdhui-insights-renderer-log-button" onClick={() => props.onEnterSurveyLog!(props.insightsData.date)}>
-                {hasLogged ? 'Edit Log' : 'Add Log'}
+            ? <UnstyledButton onClick={() => props.onEnterSurveyLog!(props.insightsData.date)}>
+                {hasLogged ?
+                    <FontAwesomeSvgIcon icon={faEdit} /> :
+                    <div className="mdhui-insights-renderer-log-button">Add Log</div>
+                }
             </UnstyledButton>
             : undefined;
 
