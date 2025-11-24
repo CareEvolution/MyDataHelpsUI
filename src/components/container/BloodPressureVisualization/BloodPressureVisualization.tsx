@@ -232,7 +232,7 @@ export default function (props: BloodPressureVisualizationProps) {
             <div className="mdhui-blood-pressure-metric-value">{value ?? "--"} <span className="mdhui-blood-pressure-units">mm HG</span></div>
             <div className="mdhui-blood-pressure-metric-description">{description}</div>
             {!props.suppressGuidance &&
-                <div className={alertClass}>{getAlertPrompt(alert) ?? language('no-data-yet')}</div>
+                <div className={alertClass}>{getAlertPrompt(alert)}</div>
             }
         </div>
     }
