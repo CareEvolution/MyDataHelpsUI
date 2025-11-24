@@ -186,7 +186,7 @@ export default function CalendarDay(props: CalendarDayProps) {
         const backgroundColor = createConicGradient(backgroundColors);
         const borderColor = createConicGradient(states.map((state, index) => state.borderColor ?? backgroundColors[index]));
         const textBackgroundColor = resolveColor(layoutContext.colorScheme, { lightMode: '#eee', darkMode: '#444' })?.replace('#', '%23');
-        const textBorderColor = resolveColor(layoutContext.colorScheme, { lightMode: '#888', darkMode: '#333' })?.replace('#', '%23');
+        const textBorderColor = resolveColor(layoutContext.colorScheme, { lightMode: '#aaa', darkMode: '#333' })?.replace('#', '%23');
 
         return {
             ...states[0],
