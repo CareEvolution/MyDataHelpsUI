@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoordinator, InsightsStateCoordinator, Layout } from '../index';
+import { CalendarDayState, CalendarDayStates, DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoordinator, InsightsStateCoordinator, Layout, Section } from '../index';
 import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import InsightsCalendar from './InsightsCalendar';
@@ -150,7 +150,9 @@ export default {
             }
         ];
 
-        const calendar = <InsightsCalendar showLegend={args.showLegend} />;
+        const calendar = <Section noTopMargin>
+            <InsightsCalendar showLegend={args.showLegend} />
+        </Section>;
 
         const wrapWithStateCoordinatorIfNecessary = (children: ReactNode): ReactNode => {
             return args.withStates

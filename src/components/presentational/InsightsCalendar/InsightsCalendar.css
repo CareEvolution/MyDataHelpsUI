@@ -25,7 +25,7 @@
 }
 
 .mdhui-insights-calendar .mdhui-insights-week-calendar-day-footer {
-    margin: 24px 1px 0;
+    margin: 24px 2px 0;
 }
 
 .mdhui-insights-calendar .mdhui-insights-week-calendar-day-badges {
@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1px;
+    gap: 2px;
     flex-wrap: wrap;
 }
 

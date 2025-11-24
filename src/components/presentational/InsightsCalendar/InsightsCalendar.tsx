@@ -1,4 +1,4 @@
-import { Calendar, CalendarDay, CalendarDayState, Card, DateRangeContext, InsightsBadge, InsightsRenderingContext, InsightsStateContext, LayoutContext, LoadingIndicator, TextBlock, WeekCalendar } from '../index';
+import { Calendar, CalendarDay, CalendarDayState, DateRangeContext, InsightsBadge, InsightsRenderingContext, InsightsStateContext, LayoutContext, LoadingIndicator, TextBlock, WeekCalendar } from '../index';
 import React, { Ref, useContext, useMemo } from 'react';
 import { isAfter, startOfMonth } from 'date-fns';
 import { getDayKey, resolveColor } from '../../../helpers';
@@ -53,58 +53,57 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
     };
 
     return <div className="mdhui-insights-calendar" ref={props.innerRef}>
-        <Card>
-            {dateRangeContext?.intervalType === 'Week'
-                ? <WeekCalendar
-                    minimumDate={intervalStart}
-                    startDate={intervalStart}
-                    onDateSelected={onDayClicked}
-                    dayRenderer={(year: number, month: number, day?: number): React.JSX.Element => {
-                        const date = new Date(year, month, day);
-                        const insightsData = insightsDataContext.insightsData[getDayKey(date)];
 
-                        const badges = insightsData
-                            ? insightsRenderingContext?.badgeConfigurations
-                                ?.filter(configuration => !configuration.shouldRender || configuration.shouldRender(insightsData))
-                                .map((configuration, index) => {
-                                    return <InsightsBadge key={index} variant="xsmall" configuration={configuration} data={insightsData} />;
-                                })
-                            : undefined;
+        {dateRangeContext?.intervalType === 'Week'
+            ? <WeekCalendar
+                minimumDate={intervalStart}
+                startDate={intervalStart}
+                onDateSelected={onDayClicked}
+                dayRenderer={(year: number, month: number, day?: number): React.JSX.Element => {
+                    const date = new Date(year, month, day);
+                    const insightsData = insightsDataContext.insightsData[getDayKey(date)];
 
-                        return <div className="mdhui-insights-week-calendar-day">
-                            <div className="mdhui-insights-week-calendar-day-label">{getDayOfWeekLetter(date)}</div>
-                            {renderDay(year, month, day)}
-                            <div className="mdhui-insights-week-calendar-day-footer">
-                                {!!badges?.length && <div className="mdhui-insights-week-calendar-day-badges">{badges}</div>}
-                            </div>
-                        </div>;
-                    }}
-                    hideDateLabel
-                    loading={insightsDataContext.loading}
-                />
-                : <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
-            }
-            {(insightsDataContext.loading || (props.showLegend && !!insightsStateContext?.legend?.length)) &&
-                <div className="mdhui-insights-calendar-footer">
-                    {(props.showLegend && !!insightsStateContext?.legend?.length) &&
-                        <div className="mdhui-insights-calendar-legend">
-                            {insightsStateContext.legend.map(state => {
-                                const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
-                                const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
-                                return <div key={state.label} className="mdhui-insights-calendar-legend-entry">
-                                    <div className="mdhui-insights-calendar-legend-entry-color" style={{
-                                        background: backgroundColor,
-                                        border: `2px solid ${borderColor}`,
-                                        ...state.style
-                                    }}>&nbsp;</div>
-                                    <div className="mdhui-insights-calendar-legend-entry-label">{state.label}</div>
-                                </div>;
-                            })}
+                    const badges = insightsData
+                        ? insightsRenderingContext?.badgeConfigurations
+                            ?.filter(configuration => !configuration.shouldRender || configuration.shouldRender(insightsData))
+                            .map((configuration, index) => {
+                                return <InsightsBadge key={index} variant="xsmall" configuration={configuration} data={insightsData} />;
+                            })
+                        : undefined;
+
+                    return <div className="mdhui-insights-week-calendar-day">
+                        <div className="mdhui-insights-week-calendar-day-label">{getDayOfWeekLetter(date)}</div>
+                        {renderDay(year, month, day)}
+                        <div className="mdhui-insights-week-calendar-day-footer">
+                            {!!badges?.length && <div className="mdhui-insights-week-calendar-day-badges">{badges}</div>}
                         </div>
-                    }
-                    {insightsDataContext.loading && <LoadingIndicator className="mdhui-insights-calendar-loading-indicator" />}
-                </div>
-            }
-        </Card>
+                    </div>;
+                }}
+                hideDateLabel
+                loading={insightsDataContext.loading}
+            />
+            : <Calendar year={intervalStart.getFullYear()} month={intervalStart.getMonth()} dayRenderer={renderDay} />
+        }
+        {(insightsDataContext.loading || (props.showLegend && !!insightsStateContext?.legend?.length)) &&
+            <div className="mdhui-insights-calendar-footer">
+                {(props.showLegend && !!insightsStateContext?.legend?.length) &&
+                    <div className="mdhui-insights-calendar-legend">
+                        {insightsStateContext.legend.map(state => {
+                            const backgroundColor = resolveColor(layoutContext.colorScheme, state.backgroundColor) ?? 'var(--mdhui-border-color-2)';
+                            const borderColor = resolveColor(layoutContext.colorScheme, state.borderColor) ?? backgroundColor;
+                            return <div key={state.label} className="mdhui-insights-calendar-legend-entry">
+                                <div className="mdhui-insights-calendar-legend-entry-color" style={{
+                                    background: backgroundColor,
+                                    border: `2px solid ${borderColor}`,
+                                    ...state.style
+                                }}>&nbsp;</div>
+                                <div className="mdhui-insights-calendar-legend-entry-label">{state.label}</div>
+                            </div>;
+                        })}
+                    </div>
+                }
+                {insightsDataContext.loading && <LoadingIndicator className="mdhui-insights-calendar-loading-indicator" />}
+            </div>
+        }
     </div>;
 }
