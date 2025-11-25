@@ -13,8 +13,9 @@ type InsightsCalendarStoryArgs = React.ComponentProps<typeof InsightsCalendar> &
     intervalType: 'Month' | 'Week';
     previewState: 'loading' | InsightsDataPreviewState;
     withStates: boolean;
-    withBadges: boolean;
+    withDisplayValues: boolean;
     withNotes: boolean;
+    withBadges: boolean;
     multiStateStartAngle: number;
     hasLegend: boolean;
     customizeToday: boolean;
@@ -91,6 +92,10 @@ export default {
                 statesForDay.push({ borderColor: { lightMode: '#000', darkMode: '#fff' } });
             }
 
+            if (args.withDisplayValues) {
+                statesForDay.displayValue = surveyAnswers[0]?.answers[0] ?? '-';
+            }
+
             if (args.withNotes && fnvPredictableRandomNumber(dayKey + '-states-note-include') % 2 === 0) {
                 statesForDay.note = 'note';
                 if (args.customizeStatesNote) {
@@ -101,52 +106,47 @@ export default {
             return statesForDay;
         };
 
-        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+        const getPercentComplete = (insightsData: InsightsData, resultIdentifier: string): number => {
             const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0' ? 100 : fnvPredictableRandomNumber(`${resultIdentifier}-${getDayKey(insightsData.date)}`) % 90;
         };
 
         const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result1'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result1'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faWalking,
-                iconColor: '#3c973c',
-                iconTextColor: '#082c08'
+                iconColor: '#3c973c'
             },
             {
                 identifier: 'sleep',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result2'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result2'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBed,
-                iconColor: '#664cda',
-                iconTextColor: '#231565'
+                iconColor: '#664cda'
             },
             {
                 identifier: 'swimming',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result3'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result3'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faSwimmer,
-                iconColor: '#0877b8',
-                iconTextColor: '#0e2d40'
+                iconColor: '#0877b8'
             },
             {
                 identifier: 'cycling',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result4'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result4'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBicycle,
-                iconColor: '#976d1e',
-                iconTextColor: '#322711'
+                iconColor: '#976d1e'
             },
             {
                 identifier: 'other',
                 shouldRender: () => false,
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'other'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBurn,
-                iconColor: '#d81442',
-                iconTextColor: '#2b0a11'
+                iconColor: '#d81442'
             }
         ];
 
@@ -192,8 +192,9 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
         intervalType: 'Month',
         previewState: 'loaded',
         withStates: true,
-        withBadges: false,
+        withDisplayValues: false,
         withNotes: false,
+        withBadges: false,
         multiStateStartAngle: 270,
         hasLegend: true,
         showLegend: true,
@@ -223,12 +224,16 @@ export const Default: StoryObj<InsightsCalendarStoryArgs> = {
             name: 'with states',
             control: 'boolean'
         },
-        withBadges: {
-            name: 'with badges',
+        withDisplayValues: {
+            name: 'with display values',
             control: 'boolean'
         },
         withNotes: {
             name: 'with notes',
+            control: 'boolean'
+        },
+        withBadges: {
+            name: 'with badges',
             control: 'boolean'
         },
         multiStateStartAngle: {

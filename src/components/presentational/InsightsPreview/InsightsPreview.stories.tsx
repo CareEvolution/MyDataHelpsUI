@@ -4,7 +4,7 @@ import { StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 import InsightsPreview from './InsightsPreview';
 import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
-import { DailyDataType, InsightsData, InsightsDataPreviewState } from '../../../helpers';
+import { DailyDataType, fnvPredictableRandomNumber, getDayKey, InsightsData, InsightsDataPreviewState } from '../../../helpers';
 import { InsightsDataCoordinator } from '../../container';
 
 type InsightsPreviewStoryArgs = ComponentProps<typeof InsightsPreview> & {
@@ -28,52 +28,47 @@ export default {
             transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+        const getPercentComplete = (insightsData: InsightsData, resultIdentifier: string): number => {
             const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0' ? 100 : fnvPredictableRandomNumber(`${resultIdentifier}-${getDayKey(insightsData.date)}`) % 90;
         };
 
         const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result1'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result1'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faWalking,
-                iconColor: '#3c973c',
-                iconTextColor: '#082c08'
+                iconColor: '#3c973c'
             },
             {
                 identifier: 'sleep',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result2'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result2'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBed,
-                iconColor: '#664cda',
-                iconTextColor: '#231565'
+                iconColor: '#664cda'
             },
             {
                 identifier: 'swimming',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result3'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result3'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faSwimmer,
-                iconColor: '#0877b8',
-                iconTextColor: '#0e2d40'
+                iconColor: '#0877b8'
             },
             {
                 identifier: 'cycling',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'result4'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result4'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBicycle,
-                iconColor: '#976d1e',
-                iconTextColor: '#322711'
+                iconColor: '#976d1e'
             },
             {
                 identifier: 'other',
                 shouldRender: () => false,
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'other'),
                 customHighlightStyling: customHighlightStyling,
                 icon: faBurn,
-                iconColor: '#d81442',
-                iconTextColor: '#2b0a11'
+                iconColor: '#d81442'
             }
         ];
 

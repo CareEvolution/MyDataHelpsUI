@@ -16,25 +16,35 @@
     justify-content: flex-start;
 }
 
-.mdhui-insights-calendar .mdhui-insights-week-calendar-day-label {
+.mdhui-insights-calendar .mdhui-insights-week-calendar-day-of-week {
     font-size: 14px;
     font-weight: bold;
     color: var(--mdhui-text-color-2);
     text-align: center;
-    margin-bottom: 16px;
+}
+
+.mdhui-insights-week-calendar-day-of-month {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.mdhui-insights-calendar .mdhui-insigts-week-calendar-day-rendered {
+    width: 100%;
+    margin: 16px 0 8px;
 }
 
 .mdhui-insights-calendar .mdhui-insights-week-calendar-day-footer {
-    margin: 24px 2px 0;
+    margin: 16px 2px 0;
 }
 
 .mdhui-insights-calendar .mdhui-insights-week-calendar-day-badges {
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
-    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .mdhui-insights-calendar .mdhui-insights-calendar-footer {

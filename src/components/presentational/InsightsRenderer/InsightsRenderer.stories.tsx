@@ -6,7 +6,7 @@ import InsightsRenderer from './InsightsRenderer';
 import { noop } from '../../../helpers/functions';
 import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
 import { startOfToday } from 'date-fns';
-import { InsightsData } from '../../../helpers';
+import { fnvPredictableRandomNumber, getDayKey, InsightsData } from '../../../helpers';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 
 type InsightsRendererStoryArgs = ComponentProps<typeof InsightsRenderer> & {
@@ -35,53 +35,48 @@ export default {
             transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
         } : undefined;
 
-        const shouldHighlight = (insightsData: InsightsData, resultIdentifier: string): boolean => {
+        const getPercentComplete = (insightsData: InsightsData, resultIdentifier: string): number => {
             const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
-            return !!surveyAnswer && surveyAnswer.answers[0] !== '0';
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0' ? 100 : fnvPredictableRandomNumber(`${resultIdentifier}-${getDayKey(insightsData.date)}`) % 90;
         };
 
         const badgeConfigurations: InsightsBadgeConfiguration[] = [
             {
                 identifier: 'activity',
                 shouldRender: () => true,
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'activity'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'activity'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faWalking : undefined,
-                iconColor: args.customBadgeIconColors ? '#3c973c' : undefined,
-                iconTextColor: args.customBadgeIconTextColors ? '#082c08' : undefined
+                iconColor: args.customBadgeIconColors ? '#3c973c' : undefined
             },
             {
                 identifier: 'sleep',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'sleep'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'sleep'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBed : undefined,
-                iconColor: args.customBadgeIconColors ? '#664cda' : undefined,
-                iconTextColor: args.customBadgeIconTextColors ? '#231565' : undefined
+                iconColor: args.customBadgeIconColors ? '#664cda' : undefined
             },
             {
                 identifier: 'swimming',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'swimming'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'swimming'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faSwimmer : undefined,
-                iconColor: args.customBadgeIconColors ? '#0877b8' : undefined,
-                iconTextColor: args.customBadgeIconTextColors ? '#0e2d40' : undefined
+                iconColor: args.customBadgeIconColors ? '#0877b8' : undefined
             },
             {
                 identifier: 'cycling',
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'cycling'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'cycling'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBicycle : undefined,
-                iconColor: args.customBadgeIconColors ? '#976d1e' : undefined,
-                iconTextColor: args.customBadgeIconTextColors ? '#322711' : undefined
+                iconColor: args.customBadgeIconColors ? '#976d1e' : undefined
             },
             {
                 identifier: 'other',
                 shouldRender: () => false,
-                shouldHighlight: insightsData => shouldHighlight(insightsData, 'other'),
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'other'),
                 customHighlightStyling: args.customStyling ? customHighlightStyling : undefined,
                 icon: args.customBadgeIcons ? faBurn : undefined,
-                iconColor: args.customBadgeIconColors ? '#d81442' : undefined,
-                iconTextColor: args.customBadgeIconTextColors ? '#2b0a11' : undefined
+                iconColor: args.customBadgeIconColors ? '#d81442' : undefined
             }
         ];
 

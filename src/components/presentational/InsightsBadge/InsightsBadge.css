@@ -1,29 +1,20 @@
-.mdhui-insights-badge {
-    width: 32px;
-    height: 32px;
+.mdhui-insights-badge > .mdhui-progress-ring {
+    margin: 0;
+}
+
+.mdhui-insights-badge .mdhui-insights-badge-icon {
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--mdhui-border-color-1);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-.mdhui-insights-badge.mdhui-insights-badge-xsmall {
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
-}
-
-.mdhui-insights-badge .mdhui-insights-badge-icon {
-    color: var(--mdhui-background-color-0);
-}
-
-.mdhui-insights-badge .mdhui-insights-badge-label {
-    color: var(--mdhui-text-color-2);
+.mdhui-insights-badge .mdhui-insights-badge-icon-label {
     line-height: 40px;
-}
-
-.mdhui-insights-badge.mdhui-insights-badge-highlighted .mdhui-insights-badge-label {
-    color: var(--mdhui-text-color-1);
+    font-weight: bold;
 }

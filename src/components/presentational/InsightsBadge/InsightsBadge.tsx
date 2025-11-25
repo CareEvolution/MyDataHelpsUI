@@ -2,45 +2,50 @@ import { InsightsData, resolveColor } from '../../../helpers';
 import React, { CSSProperties, Ref, useContext } from 'react';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { InsightsBadgeConfiguration } from '../InsightsRenderingCoordinator';
-import { LayoutContext } from '../index';
+import { LayoutContext, ProgressRing } from '../index';
 import './InsightsBadge.css';
 
 export interface InsightsBadgeProps {
     configuration: InsightsBadgeConfiguration;
     data: InsightsData;
-    variant?: 'default' | 'xsmall';
     innerRef?: Ref<HTMLDivElement>;
 }
 
 export default function InsightsBadge(props: InsightsBadgeProps) {
     const layoutContext = useContext(LayoutContext);
 
-    const shouldHighlight = props.configuration.shouldHighlight(props.data);
+    const percentComplete = props.configuration.getPercentComplete(props.data);
+    const shouldHighlight = percentComplete === 100;
 
-    const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#ccc', darkMode: '#555' };
-    const iconTextColor = shouldHighlight ? props.configuration.iconTextColor ?? 'var(--mdhui-background-color-0)' : 'var(--mdhui-background-color-0)';
+    const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#acacb8', darkMode: '#8f8f9f' };
+    const progressColor = props.configuration.iconColor ?? 'var(--mdhui-color-primary)';
 
+    const resolvedBackgroundColor = resolveColor(layoutContext.colorScheme, { lightMode: '#f3f3f3', darkMode: '#43424f' });
     const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
-    const resolvedIconTextColor = resolveColor(layoutContext.colorScheme, iconTextColor);
+    const resolvedProgressColor = resolveColor(layoutContext.colorScheme, progressColor);
 
-    const classNames: string[] = ['mdhui-insights-badge'];
-    if (props.variant === 'xsmall') {
-        classNames.push('mdhui-insights-badge-xsmall');
-    }
-    if (shouldHighlight) {
-        classNames.push('mdhui-insights-badge-highlighted');
-    }
-
-    const style: CSSProperties = {
-        background: resolvedIconColor,
-        borderColor: resolvedIconColor,
+    const iconStyle: CSSProperties = {
+        background: resolvedBackgroundColor,
+        borderColor: resolvedBackgroundColor,
+        color: resolvedIconColor,
         ...(shouldHighlight && props.configuration.customHighlightStyling)
     };
 
-    return <div className={classNames.join(' ')} style={style} ref={props.innerRef}>
-        {props.configuration.icon
-            ? <FontAwesomeSvgIcon className="mdhui-insights-badge-icon" icon={props.configuration.icon} style={{ color: resolvedIconTextColor }} />
-            : <div className="mdhui-insights-badge-label">{props.configuration.identifier.substring(0, 1).toUpperCase()}</div>
-        }
+    return <div className="mdhui-insights-badge" ref={props.innerRef}>
+        <ProgressRing
+            diameter={44}
+            strokeWidth={6}
+            color={resolvedProgressColor}
+            incompleteColor={resolvedBackgroundColor}
+            percentCompleted={percentComplete}
+            animate
+        >
+            <div className="mdhui-insights-badge-icon" style={iconStyle}>
+                {props.configuration.icon
+                    ? <FontAwesomeSvgIcon icon={props.configuration.icon} style={{ height: '100%', width: '100%' }} />
+                    : <div className="mdhui-insights-badge-icon-label">{props.configuration.identifier.substring(0, 1).toUpperCase()}</div>
+                }
+            </div>
+        </ProgressRing>
     </div>;
 }

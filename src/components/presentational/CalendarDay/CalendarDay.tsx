@@ -25,6 +25,7 @@ export interface CalendarDayState {
 }
 
 export interface CalendarDayStates extends Array<CalendarDayState> {
+    displayValue?: string;
     note?: string;
     noteBackgroundColor?: ColorDefinition;
     noteBorderColor?: ColorDefinition;
@@ -220,7 +221,7 @@ export default function CalendarDay(props: CalendarDayProps) {
     } : undefined;
 
     const dayValue = <div className="mdhui-calendar-day-value" style={dayValueStyle}>
-        {date.getDate()}
+        {currentDayStates.displayValue ?? date.getDate()}
         {currentDayStates.note &&
             <div className="mdhui-calendar-day-note-wrapper" style={{
                 backgroundColor: currentDayStates.noteBackgroundColor ? resolveColor(layoutContext.colorScheme, currentDayStates.noteBackgroundColor) : undefined,

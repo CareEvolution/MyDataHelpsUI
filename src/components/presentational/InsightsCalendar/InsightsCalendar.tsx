@@ -1,10 +1,10 @@
-import { Calendar, CalendarDay, CalendarDayState, DateRangeContext, InsightsBadge, InsightsRenderingContext, InsightsStateContext, LayoutContext, LoadingIndicator, TextBlock, WeekCalendar } from '../index';
+import { Calendar, CalendarDay, CalendarDayStates, DateRangeContext, InsightsBadge, InsightsRenderingContext, InsightsStateContext, LayoutContext, LoadingIndicator, TextBlock, WeekCalendar } from '../index';
 import React, { Ref, useContext, useMemo } from 'react';
 import { isAfter, startOfMonth } from 'date-fns';
 import { getDayKey, resolveColor } from '../../../helpers';
 import './InsightsCalendar.css';
 import { InsightsDataContext } from '../../container';
-import { getDayOfWeekLetter } from '../../../helpers/date-helpers';
+import { getDayOfMonth, getDayOfWeekLetter } from '../../../helpers/date-helpers';
 
 export interface InsightsCalendarProps {
     showLegend?: boolean;
@@ -27,7 +27,7 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
         [dateRangeContext?.intervalStart, getDayKey(new Date())]
     );
 
-    const computeStatesForDay = (date: Date): CalendarDayState[] => {
+    const computeStatesForDay = (date: Date): CalendarDayStates => {
         const insightsData = insightsDataContext.insightsData[getDayKey(date)];
         const calendarDayStates = insightsStateContext?.computeStatesForDay(date, insightsData) ?? [];
         if (calendarDayStates.length === 0 && isAfter(date, new Date())) {
@@ -67,13 +67,18 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
                         ? insightsRenderingContext?.badgeConfigurations
                             ?.filter(configuration => !configuration.shouldRender || configuration.shouldRender(insightsData))
                             .map((configuration, index) => {
-                                return <InsightsBadge key={index} variant="xsmall" configuration={configuration} data={insightsData} />;
+                                return <InsightsBadge key={index} configuration={configuration} data={insightsData} />;
                             })
                         : undefined;
 
                     return <div className="mdhui-insights-week-calendar-day">
-                        <div className="mdhui-insights-week-calendar-day-label">{getDayOfWeekLetter(date)}</div>
-                        {renderDay(year, month, day)}
+                        <div className="mdhui-insights-week-calendar-day-of-week">{getDayOfWeekLetter(date)}</div>
+                        {computeStatesForDay(date).displayValue !== undefined &&
+                            <div className="mdhui-insights-week-calendar-day-of-month">{getDayOfMonth(date)}</div>
+                        }
+                        <div className="mdhui-insigts-week-calendar-day-rendered">
+                            {renderDay(year, month, day)}
+                        </div>
                         <div className="mdhui-insights-week-calendar-day-footer">
                             {!!badges?.length && <div className="mdhui-insights-week-calendar-day-badges">{badges}</div>}
                         </div>
