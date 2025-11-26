@@ -1,9 +1,10 @@
 .mdhui-insights-calendar .mdhui-calendar {
+    border-top: solid 1px var(--mdhui-border-color-1);
     padding-bottom: 8px;
 }
 
 .mdhui-insights-calendar .mdhui-week-calendar {
-    border-top: none;
+    overflow-x: hidden;
     border-bottom: none;
 }
 

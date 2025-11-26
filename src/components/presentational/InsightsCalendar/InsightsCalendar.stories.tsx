@@ -175,7 +175,7 @@ export default {
         };
 
         return <Layout colorScheme={args.colorScheme}>
-            <DateRangeCoordinator intervalType={args.intervalType} weekStartsOn="6DaysAgo">
+            <DateRangeCoordinator variant="rounded" intervalType={args.intervalType} weekStartsOn="6DaysAgo">
                 <InsightsDataCoordinator previewState={args.previewState} logSurveyName="Log Survey">
                     {wrapWithStateCoordinatorIfNecessary(
                         wrapWithRenderingCoordinatorIfNecessary(calendar)
