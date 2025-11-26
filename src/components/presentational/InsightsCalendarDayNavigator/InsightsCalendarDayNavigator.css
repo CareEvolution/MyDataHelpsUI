@@ -1,0 +1,7 @@
+.mdhui-insights-calendar-day-navigator {
+    --mdhui-insights-calendar-day-navigator-selected-day-bg-color: var(--mdhui-background-color-1);
+}
+
+.mdhui-insights-calendar-day-navigator .mdhui-week-calendar .mdhui-week-calendar-day-selected {
+    background: var(--mdhui-insights-calendar-day-navigator-selected-day-bg-color);
+}

@@ -41,7 +41,7 @@ export default function ProgressRing(props: ProgressRingProps) {
     } as CSSProperties;
 
     const backgroundCircleStyle = {
-        strokeWidth: Math.max(strokeWidth - 2, 1),
+        strokeWidth: strokeWidth,
         strokeDasharray: circleCircumference,
         stroke: resolveColor(context.colorScheme, props.incompleteColor)
     } as CSSProperties;

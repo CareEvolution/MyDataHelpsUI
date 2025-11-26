@@ -20,9 +20,10 @@ export default function InsightsBadge(props: InsightsBadgeProps) {
     const iconColor = shouldHighlight ? props.configuration.iconColor ?? 'var(--mdhui-color-primary)' : { lightMode: '#acacb8', darkMode: '#8f8f9f' };
     const progressColor = props.configuration.iconColor ?? 'var(--mdhui-color-primary)';
 
-    const resolvedBackgroundColor = resolveColor(layoutContext.colorScheme, { lightMode: '#f3f3f3', darkMode: '#43424f' });
+    const resolvedBackgroundColor = resolveColor(layoutContext.colorScheme, { lightMode: '#fdfdfd', darkMode: '#43424f' });
     const resolvedIconColor = resolveColor(layoutContext.colorScheme, iconColor);
     const resolvedProgressColor = resolveColor(layoutContext.colorScheme, progressColor);
+    const resolvedIncompleteProgressColor = resolveColor(layoutContext.colorScheme, { lightMode: '#dedfe3', darkMode: '#43424f' });
 
     const iconStyle: CSSProperties = {
         background: resolvedBackgroundColor,
@@ -36,7 +37,7 @@ export default function InsightsBadge(props: InsightsBadgeProps) {
             diameter={44}
             strokeWidth={6}
             color={resolvedProgressColor}
-            incompleteColor={resolvedBackgroundColor}
+            incompleteColor={resolvedIncompleteProgressColor}
             percentCompleted={percentComplete}
             animate
         >

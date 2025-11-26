@@ -1,6 +1,6 @@
 import { Calendar, CalendarDay, CalendarDayStates, DateRangeContext, InsightsBadge, InsightsRenderingContext, InsightsStateContext, LayoutContext, LoadingIndicator, TextBlock, WeekCalendar } from '../index';
 import React, { Ref, useContext, useMemo } from 'react';
-import { isAfter, startOfMonth } from 'date-fns';
+import { isAfter, isBefore, isToday, startOfMonth, startOfToday } from 'date-fns';
 import { getDayKey, resolveColor } from '../../../helpers';
 import './InsightsCalendar.css';
 import { InsightsDataContext } from '../../container';
@@ -8,6 +8,8 @@ import { getDayOfMonth, getDayOfWeekLetter } from '../../../helpers/date-helpers
 
 export interface InsightsCalendarProps {
     showLegend?: boolean;
+    onDayClicked?: (date: Date) => void;
+    selectedDate?: Date;
     innerRef?: Ref<HTMLDivElement>;
 }
 
@@ -30,15 +32,21 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
     const computeStatesForDay = (date: Date): CalendarDayStates => {
         const insightsData = insightsDataContext.insightsData[getDayKey(date)];
         const calendarDayStates = insightsStateContext?.computeStatesForDay(date, insightsData) ?? [];
-        if (calendarDayStates.length === 0 && isAfter(date, new Date())) {
-            calendarDayStates.push({ style: { cursor: 'default' } });
+        if (calendarDayStates.length === 0) {
+            if (isToday(date)) {
+                calendarDayStates.push({ borderColor: '#369CFF' });
+            } else if (isAfter(date, new Date())) {
+                calendarDayStates.push({ style: { cursor: 'default' } });
+            } else if (isBefore(date, startOfToday())) {
+                calendarDayStates.push({ borderColor: 'var(--mdhui-border-color-2)' });
+            }
         }
         return calendarDayStates;
     };
 
     const onDayClicked = (date: Date): void => {
         if (isAfter(date, new Date())) return;
-        insightsDataContext.enterSurveyLog(date);
+        props.onDayClicked ? props.onDayClicked(date) : insightsDataContext.enterSurveyLog(date);
     };
 
     const renderDay = (year: number, month: number, day?: number): React.JSX.Element => {
@@ -53,12 +61,12 @@ export default function InsightsCalendar(props: InsightsCalendarProps) {
     };
 
     return <div className="mdhui-insights-calendar" ref={props.innerRef}>
-
         {dateRangeContext?.intervalType === 'Week'
             ? <WeekCalendar
                 minimumDate={intervalStart}
                 startDate={intervalStart}
                 onDateSelected={onDayClicked}
+                selectedDate={props.selectedDate}
                 dayRenderer={(year: number, month: number, day?: number): React.JSX.Element => {
                     const date = new Date(year, month, day);
                     const insightsData = insightsDataContext.insightsData[getDayKey(date)];

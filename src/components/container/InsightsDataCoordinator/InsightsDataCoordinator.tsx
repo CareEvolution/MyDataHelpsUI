@@ -50,7 +50,7 @@ export default function InsightsDataCoordinator(props: InsightsDataCoordinatorPr
             }
             return add(intervalStart, { days: 1 });
         },
-        [intervalStart]
+        [intervalStart, dateRangeContext?.intervalType]
     );
 
     useEffect(() => {

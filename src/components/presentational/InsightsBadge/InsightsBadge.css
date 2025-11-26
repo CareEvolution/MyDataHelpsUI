@@ -3,8 +3,8 @@
 }
 
 .mdhui-insights-badge .mdhui-insights-badge-icon {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border: 1px solid var(--mdhui-border-color-1);
     border-radius: 50%;
     display: flex;
