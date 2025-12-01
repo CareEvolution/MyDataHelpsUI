@@ -194,17 +194,19 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                     }
                 </Button>
             </div>
-            <div ref={report} className="mdhui-force-light-mode">
-                <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month", update: noop }}>
-                    <SymptomSharkVisualizationContext.Provider value={{ logEntries: logEntries, symptoms: getSelectedSymptomConfigurations(), treatments: getSelectedTreatmentConfigurations(), hasFilteredSymptoms: !!selectedSymptoms.length }}>
-                        <MonthReport
-                            includeDailyOverallFeeling={includeDailyOverallExperience}
-                            includeNotes={includeNotes}
-                            productLogo={props.productLogo}
-                            productUrl={props.productUrl}
-                            productName={props.productName} />
-                    </SymptomSharkVisualizationContext.Provider>
-                </DateRangeContext.Provider>
+            <div ref={report} style={{ display: "none" }}>
+                <div className="mdhui-force-light-mode">
+                    <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month", update: noop }}>
+                        <SymptomSharkVisualizationContext.Provider value={{ logEntries: logEntries, symptoms: getSelectedSymptomConfigurations(), treatments: getSelectedTreatmentConfigurations(), hasFilteredSymptoms: !!selectedSymptoms.length }}>
+                            <MonthReport
+                                includeDailyOverallFeeling={includeDailyOverallExperience}
+                                includeNotes={includeNotes}
+                                productLogo={props.productLogo}
+                                productUrl={props.productUrl}
+                                productName={props.productName} />
+                        </SymptomSharkVisualizationContext.Provider>
+                    </DateRangeContext.Provider>
+                </div>
             </div>
         </div>
     );
