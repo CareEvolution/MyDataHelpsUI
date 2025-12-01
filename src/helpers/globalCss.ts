@@ -310,6 +310,33 @@ export const core = css`
     --ce-gradient-summit-sunset: linear-gradient(180deg, rgba(244, 215, 255), rgba(246, 145, 148));
     --ce-gradient-tropical-mist-dark: linear-gradient(180deg, rgba(76, 145, 248), rgba(35, 164, 130));
     --ce-gradient-tropical-mist: linear-gradient(180deg, rgba(117, 180, 225), rgba(137, 218, 183));
+}
+
+.mdhui-force-light-mode {
+    --mdhui-background-color-0: #fff;
+    --mdhui-background-color-1: #f5f5f5;
+    --mdhui-background-color-2: #ddd;
+    --mdhui-background-color-highest-contrast: #fff;
+
+    --mdhui-border-color-0: #eee;
+    --mdhui-border-color-1: #ddd;
+    --mdhui-border-color-2: #bbb;
+
+    --mdhui-text-color-0: #000;
+    --mdhui-text-color-1: #333;
+    --mdhui-text-color-2: #555;
+    --mdhui-text-color-3: #999;
+    --mdhui-text-color-4: #bbb;
+
+    --mdhui-box-shadow-color-0: rgba(0, 0, 0, 0.05);
+    --mdhui-box-shadow-color-1: #aaa;
+
+    --mdhui-box-shadow-0: 0px 4px 4px 0px var(--mdhui-box-shadow-color-0);
+    --mdhui-box-shadow-1: 0px 0px 5px 0px var(--mdhui-box-shadow-color-1);
+
+    --mdhui-overlay-gradient:linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 240, 0.2) 100%);
+
+    color: var(--mdhui-text-color-1);
 }`;
 
 export const lightColorScheme = css`
