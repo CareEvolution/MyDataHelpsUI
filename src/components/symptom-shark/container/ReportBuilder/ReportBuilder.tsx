@@ -96,7 +96,7 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
         html += report.current!.innerHTML;
 
         if (props.previewState == "default") {
-            const blob = new Blob([html], { type: "text/html" });
+            const blob = new Blob(["<!DOCTYPE html>\n" + html], { type: "text/html" });
             const urlObject = window.URL || window.webkitURL;
             const fileUrl = urlObject.createObjectURL(blob);
             const link = document.createElement("a");
