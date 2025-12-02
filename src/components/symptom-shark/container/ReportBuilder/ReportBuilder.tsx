@@ -13,6 +13,7 @@ import { faCheckCircle, faCircle } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "./ReportBuilder.css"
 import { noop } from "../../../../helpers/functions";
+import { lightColorStyle } from "../../../../helpers/globalCss";
 
 export interface SymptomSharkReportBuilderProps {
     productLogo?: string;
@@ -93,6 +94,18 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
             }
         }
         html += report.current!.innerHTML;
+
+        if (props.previewState == "default") {
+            const blob = new Blob(["<!DOCTYPE html>\n" + html], { type: "text/html" });
+            const urlObject = window.URL || window.webkitURL;
+            const fileUrl = urlObject.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.download = "report.html";
+            link.click();
+            setBuildingReport(false);
+            return;
+        }
 
         renderPdf(html, configuration!.participantID).then(function () {
             setBuildingReport(false);
@@ -195,16 +208,18 @@ export default function ReportBuilder(props: SymptomSharkReportBuilderProps) {
                 </Button>
             </div>
             <div ref={report} style={{ display: "none" }}>
-                <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month", update: noop }}>
-                    <SymptomSharkVisualizationContext.Provider value={{ logEntries: logEntries, symptoms: getSelectedSymptomConfigurations(), treatments: getSelectedTreatmentConfigurations(), hasFilteredSymptoms: !!selectedSymptoms.length }}>
-                        <MonthReport
-                            includeDailyOverallFeeling={includeDailyOverallExperience}
-                            includeNotes={includeNotes}
-                            productLogo={props.productLogo}
-                            productUrl={props.productUrl}
-                            productName={props.productName} />
-                    </SymptomSharkVisualizationContext.Provider>
-                </DateRangeContext.Provider>
+                <div style={lightColorStyle}>
+                    <DateRangeContext.Provider value={{ intervalStart: intervalStartDate, intervalType: "Month", update: noop }}>
+                        <SymptomSharkVisualizationContext.Provider value={{ logEntries: logEntries, symptoms: getSelectedSymptomConfigurations(), treatments: getSelectedTreatmentConfigurations(), hasFilteredSymptoms: !!selectedSymptoms.length }}>
+                            <MonthReport
+                                includeDailyOverallFeeling={includeDailyOverallExperience}
+                                includeNotes={includeNotes}
+                                productLogo={props.productLogo}
+                                productUrl={props.productUrl}
+                                productName={props.productName} />
+                        </SymptomSharkVisualizationContext.Provider>
+                    </DateRangeContext.Provider>
+                </div>
             </div>
         </div>
     );
