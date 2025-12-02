@@ -1,6 +1,8 @@
+import { MyDataHelps } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { getStartDate, queryForDailyDataV2 } from "./daily-data";
-import { parseISO, format, getMinutes } from 'date-fns';
+import { parseISO, format, getMinutes, add } from 'date-fns';
+import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     
@@ -22,39 +24,29 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
         20:34 - 1.6 % OVER,
         23:03 - 1.2 % OVER
     ]
-    https://careevolution.slack.com/archives/C08QJ2BDQ12/p1748453259744509
     */
-    
+
     const BUCKET_INTERVAL_MINUTES = 10;  // must be a factor of 60
     const SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR = 1;
 
-    const allDailyData = await queryForDailyDataV2("AppleHealth", "Heart Rate", startDate, endDate, getStartDate);
-    const groupedData: { [dayKey: string]: number } = {};
+    const bucketedData = await queryAllDeviceDataV2Aggregates({
+        namespace: 'AppleHealth',
+        type: 'Heart Rate',
+        observedAfter: startDate.toISOString(),
+        observedBefore: endDate.toISOString(),
+        dataSource: { deviceModel: 'Watch' },
+        intervalAmount: BUCKET_INTERVAL_MINUTES,
+        intervalType: 'Minutes',
+        aggregateFunctions: ['count']
+    })
     const result: DailyDataQueryResult = {};
-    for (const dayKey in allDailyData) {
-        const dataPoints = allDailyData[dayKey];
-        const dayDict: { [timeString: string]: number } = {};
-        // uses local time for bucketing based on startDate and offset of data point
-        for (const dataPoint of dataPoints) {
-            if (!dataPoint.startDate) {
-                continue;
-            }
-            const date = parseISO(dataPoint.startDate);
-            const hourString = format(date, "HH");
-            const minute = getMinutes(date);
-            const ordinalBucket = Math.floor(minute / BUCKET_INTERVAL_MINUTES);
-            const timeString = `${hourString}:${(ordinalBucket * BUCKET_INTERVAL_MINUTES).toString().padStart(2, '0')}`;
-            let summedCount = (dayDict[timeString] || 0) + 1;
-            dayDict[timeString] = summedCount;
+    for (const bucket of bucketedData) {
+        if (bucket.statistics['count'] >= SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR) {
+            const date = parseISO(bucket.date);
+            const dayKey = format(date, "yyyy-MM-dd");
+            result[dayKey] = (result[dayKey] || 0) + BUCKET_INTERVAL_MINUTES;
         }
-        let durationMinutes = 0;
-        for (const timeString in dayDict) {
-            if (dayDict[timeString] >= SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR) {
-                durationMinutes += BUCKET_INTERVAL_MINUTES;
-            }
-        }
-        groupedData[dayKey] = durationMinutes;
-        result[dayKey] = durationMinutes;
     }
+    
     return result;
 }
