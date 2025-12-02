@@ -1,4 +1,5 @@
-﻿export { default as appleHealthFlightsClimbedDataProvider } from "./apple-health-flights-climbed"
+﻿export { default as appleHealthEstimatedAppleWatchWearTimeDataProvider } from "./apple-health-estimated-apple-watch-wear-time"
+export { default as appleHealthFlightsClimbedDataProvider } from "./apple-health-flights-climbed"
 export { default as appleHealthHrvDataProvider } from "./apple-health-hrv"
 export { default as appleHealthHeartRateRangeDataProvider } from "./apple-health-heart-rate-range"
 export { default as appleHealthMaxHeartRateDataProvider } from "./apple-health-max-heart-rate"

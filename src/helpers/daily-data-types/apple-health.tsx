@@ -1,13 +1,13 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import {
-    appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
+    appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthEstimatedAppleWatchWearTimeDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
     appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -23,6 +23,16 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         formatter: distanceFormatter,
         yAxisConverter: distanceYAxisConverter,
         previewDataRange: [3000, 5000]
+    },
+    {
+        type: DailyDataType.AppleHealthEstimatedAppleWatchWearTime,
+        dataProvider: appleHealthEstimatedAppleWatchWearTimeDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HeartRate"]),
+        labelKey: "apple-watch-wear-time",
+        icon: <FontAwesomeSvgIcon icon={faHandBackFist} />,
+        formatter: minutesFormatter,
+        yAxisConverter: distanceYAxisConverter,
+        previewDataRange: [8, 18]
     },
     {
         type: DailyDataType.AppleHealthFlightsClimbed,

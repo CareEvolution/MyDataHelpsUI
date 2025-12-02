@@ -242,6 +242,20 @@ export const liveSleepAppleHealthBarChart = {
     render: render
 };
 
+export const liveEstimatedAppleWatchWearBarChart = {
+    args: {
+        title: "Apple Watch Wear Time",
+        intervalType: "Week",
+        weekStartsOn: "6DaysAgo",
+        dailyDataType: DailyDataType.AppleHealthEstimatedAppleWatchWearTime,
+        valueConverter: (value: number) => {
+            return value / 60.0;
+        },
+        chartType: "Bar",
+    },
+    render: render
+};
+
 export const liveSleepCoreAppleHealthBarChart = {
     args: {
         title: "Sleep",

@@ -3,6 +3,7 @@ import { DailyDataAvailabilityCheck, DailyDataProvider } from "./query-daily-dat
 
 export enum DailyDataType {
 	AppleHealthDistanceWalkingRunning = "AppleHealthDistanceWalkingRunning",
+	AppleHealthEstimatedAppleWatchWearTime = "AppleHealthEstimatedAppleWatchWearTime",
 	AppleHealthFlightsClimbed = "AppleHealthFlightsClimbed",
 	AppleHealthHeartRateRange = "AppleHealthHeartRateRange",
 	AppleHealthHrv = "AppleHealthHrv",
