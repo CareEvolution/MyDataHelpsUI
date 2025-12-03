@@ -1,7 +1,5 @@
-import { MyDataHelps } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
-import { getStartDate, queryForDailyDataV2 } from "./daily-data";
-import { parseISO, format, getMinutes, add } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
