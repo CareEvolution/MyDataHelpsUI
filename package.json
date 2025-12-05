@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "3.7.0",
+  "version": "3.7.1-SurveyEventUpdates.2",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -106,7 +106,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@careevolution/mydatahelps-js": "^5.0.0",
+    "@careevolution/mydatahelps-js": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
