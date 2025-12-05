@@ -1,23 +1,25 @@
-import React, { useContext, useMemo, useState } from 'react'
-import { DateRangeContext, LayoutContext } from '../../presentational'
-import { add, compareAsc, Duration, parseISO, startOfDay, startOfToday } from 'date-fns'
-import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js'
-import { AreaChartSeries, ChartSeries, formatNumberForLocale, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor, useInitializeView, WeekStartsOn } from '../../../helpers'
-import TimeSeriesChart, { TimeSeriesDataPoint } from '../../presentational/TimeSeriesChart/TimeSeriesChart'
-import queryAllSurveyAnswers from '../../../helpers/query-all-survey-answers'
-import { generatePreviewData, getPreviewDataFromProvider, SurveyAnswerChartPreviewState } from './SurveyAnswerChart.previewdata'
+import React, { useContext, useMemo, useState } from 'react';
+import { DateRangeContext, LayoutContext } from '../../presentational';
+import { add, compareAsc, Duration, parseISO, startOfDay, startOfToday } from 'date-fns';
+import { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import { AreaChartSeries, ChartSeries, formatNumberForLocale, getDefaultIntervalStart, MultiSeriesBarChartOptions, MultiSeriesLineChartOptions, resolveColor, useInitializeView, WeekStartsOn } from '../../../helpers';
+import TimeSeriesChart, { TimeSeriesDataPoint } from '../../presentational/TimeSeriesChart/TimeSeriesChart';
+import { generatePreviewData, getPreviewDataFromProvider, SurveyAnswerChartPreviewState } from './SurveyAnswerChart.previewdata';
 import { getShortDateString } from '../../../helpers/date-helpers';
+import queryLatestSurveyAnswersByDate from '../../../helpers/query-latest-survey-answers-by-date';
 
 export interface SurveyAnswerChartSeries extends ChartSeries {
     surveyName?: string | string[];
     stepIdentifier?: string | string[];
     resultIdentifier: string | string[];
+    useEventAsDate?: boolean;
 }
 
 export interface SurveyAnswerAreaChartSeries extends AreaChartSeries {
     surveyName?: string | string[];
     stepIdentifier?: string | string[];
     resultIdentifier: string | string[];
+    useEventAsDate?: boolean;
 }
 
 export interface SurveyAnswerChartProps {
@@ -83,14 +85,18 @@ export default function SurveyAnswerChart(props: SurveyAnswerChartProps) {
             return;
         }
 
-        const surveyAnswerQueries = props.series.map(series => {
-            const params: SurveyAnswersQuery = {};
-            if (intervalStart) params.after = intervalStart.toISOString();
-            if (intervalEnd) params.before = intervalEnd.toISOString();
-            if (series.surveyName) params.surveyName = series.surveyName;
-            if (series.resultIdentifier) params.resultIdentifier = series.resultIdentifier;
-            if (series.stepIdentifier) params.stepIdentifier = series.stepIdentifier;
-            return queryAllSurveyAnswers(params);
+        const surveyAnswerQueries = props.series.map(async series => {
+            const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(
+                intervalStart,
+                intervalEnd,
+                series.surveyName,
+                series.stepIdentifier,
+                series.resultIdentifier,
+                series.useEventAsDate
+            );
+            return Object.entries(latestSurveyAnswersByDate as Record<string, SurveyAnswer[]>).map(([dayKey, surveyAnswers]) => {
+                return { date: dayKey, answers: surveyAnswers[0].answers } as SurveyAnswer;
+            });
         });
         setSurveyAnswers(await Promise.all(surveyAnswerQueries));
     };
@@ -106,7 +112,7 @@ export default function SurveyAnswerChart(props: SurveyAnswerChartProps) {
 
     const dataByTimestamp: Record<number, TimeSeriesDataPoint> = {};
     props.series.forEach((series, index) => {
-        const seriesSurveyAnswers = (surveyAnswers?.[index] ?? []).sort((a, b) => compareAsc(parseISO(a.date), parseISO(b.date)))
+        const seriesSurveyAnswers = (surveyAnswers?.[index] ?? []).sort((a, b) => a.date.localeCompare(b.date));
         seriesSurveyAnswers.forEach(answer => {
             const timestamp = startOfDay(parseISO(answer.date)).getTime();
             dataByTimestamp[timestamp] = dataByTimestamp[timestamp] ?? { timestamp };

@@ -89,7 +89,7 @@ export default function InsightMatrix(props: InsightMatrixProps) {
 
     const getDefaultDataLabel = (configuration: InsightMatrixDataConfiguration): string => {
         if (isSurveyDataType(configuration.rawDataType)) {
-            return configuration.rawDataType.stepIdentifier;
+            return configuration.rawDataType.resultIdentifier || configuration.rawDataType.stepIdentifier || configuration.rawDataType.surveyName;
         }
         const labelKey = getDailyDataTypeDefinition(configuration.rawDataType).labelKey;
         return labelKey ? language(labelKey) : configuration.rawDataType;
