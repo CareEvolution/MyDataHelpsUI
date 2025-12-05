@@ -1,0 +1,64 @@
+import { SurveyAnswer, SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
+import queryAllSurveyAnswers from './query-all-survey-answers';
+import { getDayKey } from './index';
+import { add, eachDayOfInterval } from 'date-fns';
+import { parseISOWithoutOffset } from './date-helpers';
+
+// Temporary until the MDH.js lib catches up.
+declare module '@careevolution/mydatahelps-js' {
+    interface SurveyAnswersQuery {
+        event?: string;
+    }
+}
+
+export default async function queryLatestSurveyAnswersByDate(
+    startDate: Date,
+    endDate: Date,
+    surveyName: string | string[],
+    stepIdentifier?: string | string[],
+    resultIdentifier?: string | string[],
+    useEventAsDate = false
+): Promise<Partial<Record<string, SurveyAnswer[]>>> {
+
+    const query: SurveyAnswersQuery = { surveyName: surveyName };
+
+    if (useEventAsDate) {
+        query.event = eachDayOfInterval({ start: startDate, end: add(endDate, { days: -1 }) }).reduce((events, date) => {
+            const event = getDayKey(date).substring(0, 9) + '*';
+            if (!events.includes(event)) events.push(event);
+            return events;
+        }, [] as string[]).join(',');
+    } else {
+        query.after = add(startDate, { days: -1 }).toISOString();
+        query.before = add(endDate, { days: 1 }).toISOString();
+    }
+
+    if (stepIdentifier) {
+        query.stepIdentifier = stepIdentifier;
+    }
+
+    if (resultIdentifier) {
+        query.resultIdentifier = resultIdentifier;
+    }
+
+    const allSurveyAnswers = (await queryAllSurveyAnswers(query)).sort((a, b) => b.date.localeCompare(a.date));
+
+    const latestResultIdsBySurveyAndDate = allSurveyAnswers.reduce((latestResultIdsBySurveyAndDate, surveyAnswer) => {
+        const key = `${surveyAnswer.surveyName}-${(useEventAsDate && surveyAnswer.event) ? surveyAnswer.event : getDayKey(surveyAnswer.date)}`;
+        latestResultIdsBySurveyAndDate[key] ??= surveyAnswer.surveyResultID.toString();
+        return latestResultIdsBySurveyAndDate;
+    }, {} as Record<string, string>);
+
+    const latestResultIds = Object.values(latestResultIdsBySurveyAndDate);
+    const latestSurveyAnswers = allSurveyAnswers.filter(surveyAnswer => latestResultIds.includes(surveyAnswer.surveyResultID.toString()));
+
+    return latestSurveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
+        const date = parseISOWithoutOffset((useEventAsDate && surveyAnswer.event) ? surveyAnswer.event : surveyAnswer.date);
+        if (date >= startDate && date < endDate) {
+            const dayKey = getDayKey(date);
+            surveyAnswersByDate[dayKey] ??= [];
+            surveyAnswersByDate[dayKey].push(surveyAnswer);
+        }
+        return surveyAnswersByDate;
+    }, {} as Record<string, SurveyAnswer[]>);
+}
