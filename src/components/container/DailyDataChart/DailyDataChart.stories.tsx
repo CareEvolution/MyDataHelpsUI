@@ -254,7 +254,6 @@ export const liveEstimatedAppleWatchWearBarChart = {
         chartType: "Bar",
     },
     render: (args: DailyDataChartProps) => <Layout colorScheme="auto">
-        
             <DateRangeCoordinator intervalType={args.intervalType!}>
                 <Card>
                     <DailyDataChart {...args} />

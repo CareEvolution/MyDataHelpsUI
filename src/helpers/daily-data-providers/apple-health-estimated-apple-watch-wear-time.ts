@@ -16,11 +16,11 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     actual wear time by 1-2%.
     average actual wear per day by PPT and relative error at 10 min buckets and 1/bucket
     [
-        12:17 - 0.7 % UNDERESTIMATE,
-        21:48 - 1.0 % OVERESTIMATE, 
-        18:18 - 12.8 % OVER,
-        20:34 - 1.6 % OVER,
-        23:03 - 1.2 % OVER
+        12h 17m - 0.7 % UNDERESTIMATE,
+        21h 48m - 1.0 % OVERESTIMATE, 
+        18h 18m - 12.8 % OVER,
+        20h 34m - 1.6 % OVER,
+        23h 03 - 1.2 % OVER
     ]
     */
 

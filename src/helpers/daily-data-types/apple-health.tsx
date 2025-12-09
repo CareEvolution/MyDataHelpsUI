@@ -32,7 +32,8 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHandBackFist} />,
         formatter: minutesFormatter,
         yAxisConverter: minutesToHoursYAxisConverter,
-        previewDataRange: [8, 18]
+        previewDataRange: [480, 1080],
+        requiresV2Api: true
     },
     {
         type: DailyDataType.AppleHealthFlightsClimbed,
