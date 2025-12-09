@@ -2,7 +2,7 @@ import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
@@ -99,7 +99,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [420, 540]
     },
     {

@@ -9,7 +9,7 @@ import {
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 
@@ -27,11 +27,11 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthEstimatedAppleWatchWearTime,
         dataProvider: appleHealthEstimatedAppleWatchWearTimeDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HeartRate"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Heart Rate"]),
         labelKey: "apple-watch-wear-time",
         icon: <FontAwesomeSvgIcon icon={faHandBackFist} />,
         formatter: minutesFormatter,
-        yAxisConverter: distanceYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [8, 18]
     },
     {
@@ -95,7 +95,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [420, 540]
     },
     {
@@ -105,7 +105,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "core-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -115,7 +115,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -125,7 +125,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -135,7 +135,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "in-bed-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [420, 540]
     },
     {
