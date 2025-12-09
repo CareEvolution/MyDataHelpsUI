@@ -1,13 +1,13 @@
 import { DailyDataQueryResult } from "../query-daily-data";
-import { parseISO, format } from 'date-fns';
+import { parseISO, add } from 'date-fns';
 import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
+import { dailyDataDateFilter } from "./daily-data";
+import getDayKey from "../get-day-key";
 
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     
     /*
     Requires Heart Rate data from Apple Health stored in V2 format.
-
-    Takes about 5-6 seconds to run for a week.
 
     Built using analysis of Apple SensorKit data that has actual on/off wrist timestamps.
     n = 5 PPTs, 48 full days of data
@@ -30,19 +30,24 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     const bucketedData = await queryAllDeviceDataV2Aggregates({
         namespace: 'AppleHealth',
         type: 'Heart Rate',
-        observedAfter: startDate.toISOString(),
-        observedBefore: endDate.toISOString(),
+        observedAfter: add(startDate, { days: -1 }).toISOString(),
+        observedBefore: add(endDate, { days: 1 }).toISOString(),
         dataSource: { deviceModel: 'Watch' },
         intervalAmount: BUCKET_INTERVAL_MINUTES,
         intervalType: 'Minutes',
         aggregateFunctions: ['count']
     })
+
     const result: DailyDataQueryResult = {};
     for (const bucket of bucketedData) {
         if (bucket.statistics['count'] >= SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR) {
+            if (!dailyDataDateFilter(bucket.date, startDate, endDate)) {
+                continue;
+            }
+            // NOTE: bucket.date for aggregate call has no offset included in date string
             const date = parseISO(bucket.date);
-            const dayKey = format(date, "yyyy-MM-dd");
-            result[dayKey] = (result[dayKey] || 0) + BUCKET_INTERVAL_MINUTES;
+            const dayKey = getDayKey(date);
+            result[dayKey] = (result[dayKey] ?? 0) + BUCKET_INTERVAL_MINUTES;
         }
     }
     
