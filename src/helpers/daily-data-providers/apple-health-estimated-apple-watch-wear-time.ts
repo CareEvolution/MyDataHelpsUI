@@ -1,5 +1,5 @@
 import { DailyDataQueryResult } from "../query-daily-data";
-import { parseISO, add } from 'date-fns';
+import { add } from 'date-fns';
 import queryAllDeviceDataV2Aggregates from "../query-all-device-data-v2-aggregates";
 import { dailyDataDateFilter } from "./daily-data";
 import getDayKey from "../get-day-key";
@@ -40,13 +40,9 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
 
     const result: DailyDataQueryResult = {};
     for (const bucket of bucketedData) {
-        if (bucket.statistics['count'] >= SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR) {
-            if (!dailyDataDateFilter(bucket.date, startDate, endDate)) {
-                continue;
-            }
+        if (bucket.statistics['count'] >= SAMPLES_PER_BUCKET_INTERVAL_TO_INDICATE_WEAR && dailyDataDateFilter(bucket.date, startDate, endDate)) {
             // NOTE: bucket.date for aggregate call has no offset included in date string
-            const date = parseISO(bucket.date);
-            const dayKey = getDayKey(date);
+            const dayKey = getDayKey(bucket.date);
             result[dayKey] = (result[dayKey] ?? 0) + BUCKET_INTERVAL_MINUTES;
         }
     }
