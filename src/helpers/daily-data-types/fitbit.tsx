@@ -3,7 +3,7 @@ import { fitbitActiveCaloriesBurnedDataProvider, fitbitBreathingRateDataProvider
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPerson, faPersonRunning, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 
@@ -159,7 +159,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [400, 540]
     },
     {
@@ -169,7 +169,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "light-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -179,7 +179,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -189,7 +189,7 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
