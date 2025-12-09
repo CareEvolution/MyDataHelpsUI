@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import queryLatestSurveyAnswersByDate from '../../src/helpers/query-latest-survey-answers-by-date';
 import queryAllSurveyAnswers from '../../src/helpers/query-all-survey-answers';
-import { add, formatISO } from 'date-fns';
+import { add, endOfDay, formatISO } from 'date-fns';
 import getDayKey from '../../src/helpers/get-day-key';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { v4 as uuid } from 'uuid';
@@ -49,49 +49,57 @@ describe('Query Latest Survey Answers By Date', () => {
 
     describe('Date Filtering', () => {
         it('Should ignore survey answers that are too old.', async () => {
-            queryAllSurveyAnswersMock.mockResolvedValue([{
-                surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(startDate, { seconds: -1 })), answers: ['5'], event: getDayKey(startDate)
-            }]);
+            queryAllSurveyAnswersMock.mockResolvedValue([
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(startDate, { seconds: -1 })), answers: ['5'] },
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'] }
+            ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier);
 
-            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(0);
+            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(1);
+            expect(latestSurveyAnswersByDate[getDayKey(startDate)]?.[0].answers).toEqual(['7']);
 
             verifyQueryAssertions(false);
         });
 
         it('Should ignore survey answers that are too old (with events as dates).', async () => {
-            queryAllSurveyAnswersMock.mockResolvedValue([{
-                surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['5'], event: getDayKey(add(startDate, { seconds: -1 }))
-            }]);
+            queryAllSurveyAnswersMock.mockResolvedValue([
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['5'], event: getDayKey(add(startDate, { days: -1 })) },
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'], event: getDayKey(startDate) }
+            ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier, true);
 
-            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(0);
+            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(1);
+            expect(latestSurveyAnswersByDate[getDayKey(startDate)]?.[0].answers).toEqual(['7']);
 
             verifyQueryAssertions(true);
         });
 
         it('Should ignore survey answers that are too recent.', async () => {
-            queryAllSurveyAnswersMock.mockResolvedValue([{
-                surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(endDate, { days: 1 })), answers: ['5'], event: getDayKey(endDate)
-            }]);
+            queryAllSurveyAnswersMock.mockResolvedValue([
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(endDate, { days: 1 })), answers: ['5'] },
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endOfDay(endDate)), answers: ['7'] }
+            ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier);
 
-            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(0);
+            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(1);
+            expect(latestSurveyAnswersByDate[getDayKey(endDate)]?.[0].answers).toEqual(['7']);
 
             verifyQueryAssertions(false);
         });
 
         it('Should ignore survey answers that are too recent (with events as dates).', async () => {
-            queryAllSurveyAnswersMock.mockResolvedValue([{
-                surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['5'], event: getDayKey(add(endDate, { days: 1 }))
-            }]);
+            queryAllSurveyAnswersMock.mockResolvedValue([
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['5'], event: getDayKey(add(endDate, { days: 1 })) },
+                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['7'], event: getDayKey(endDate) }
+            ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier, true);
 
-            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(0);
+            expect(Object.keys(latestSurveyAnswersByDate)).toHaveLength(1);
+            expect(latestSurveyAnswersByDate[getDayKey(endDate)]?.[0].answers).toEqual(['7']);
 
             verifyQueryAssertions(true);
         });
