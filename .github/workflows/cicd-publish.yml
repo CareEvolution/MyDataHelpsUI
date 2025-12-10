@@ -26,13 +26,10 @@ jobs:
             -   name: Determine publish type.
                 id: publish-type
                 run: |
-                    echo "tag ref: $GITHUB_REF"
                     if [[ "$GITHUB_REF" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+-.+$ ]]; then
                         echo "result=snapshot" >> $GITHUB_OUTPUT
-                        echo "result set to: snapshot"
                     elif [[ "$GITHUB_REF" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
                         echo "result=release" >> $GITHUB_OUTPUT
-                        echo "result set to: snapshot"
                     fi
             -   name: Deploy snapshot to npmjs
                 if: ${{ steps.publish-type.outputs.result == 'snapshot' }}
