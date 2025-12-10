@@ -1,0 +1,57 @@
+name: Publish to npmjs and ProGet
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - '*.*.*'
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v4
+                with:
+                    node-version: '20.x'
+                    registry-url: 'https://registry.npmjs.org'
+            -   name: Update npm
+                run: npm install -g npm@latest
+            -   name: Install Dependencies
+                run: npm ci
+            -   name: Run Build
+                run: npm run rollup
+            -   name: Determine Publish Type.
+                id: publish-type
+                run: |
+                    if [[ "$GITHUB_REF" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+-.+$ ]]; then
+                        echo "result=snapshot" >> $GITHUB_OUTPUT
+                    elif [[ "$GITHUB_REF" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                        echo "result=release" >> $GITHUB_OUTPUT
+                    fi
+            -   name: Deploy snapshot to npmjs
+                if: ${{ steps.publish-type.outputs.result == 'snapshot' }}
+                run: |
+                    npm publish --tag next --provenance --access public
+            -   name: Deploy release to npmjs
+                if: ${{ steps.publish-type.outputs.result == 'release' }}
+                run: |
+                    npm publish --provenance --access public
+            -   name: Deploy snapshot to ProGet
+                if: ${{ steps.publish-type.outputs.result == 'snapshot' }}
+                run: |
+                    echo "@careevolution:registry=https://proget.careevolution.com/npm/npm/" > .npmrc
+                    npm config set @careevolution:registry=https://proget.careevolution.com/npm/npm/
+                    npm config set //proget.careevolution.com/npm/npm/:_authToken ${{ secrets.PROGET_TOKEN }}
+                    npm publish --tag next
+            -   name: Deploy release to ProGet
+                if: ${{ steps.publish-type.outputs.result == 'release' }}
+                run: |
+                    echo "@careevolution:registry=https://proget.careevolution.com/npm/npm/" > .npmrc
+                    npm config set @careevolution:registry=https://proget.careevolution.com/npm/npm/
+                    npm config set //proget.careevolution.com/npm/npm/:_authToken ${{ secrets.PROGET_TOKEN }}
+                    npm publish
