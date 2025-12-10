@@ -34,7 +34,7 @@ jobs:
             -   name: Deploy snapshot to npmjs
                 if: ${{ steps.publish-type.outputs.result == 'snapshot' }}
                 run: |
-                    npm publish --tag next --access public
+                    npm publish --tag next --provenance --access public
             -   name: Deploy release to npmjs
                 if: ${{ steps.publish-type.outputs.result == 'release' }}
                 run: |
