@@ -32,7 +32,7 @@ describe('Query Latest Survey Answers By Date', () => {
         if (useEventAsDate) {
             expect(queryAllSurveyAnswersMock).toHaveBeenCalledWith({
                 surveyName,
-                event: '2025-11-1*,2025-11-2*,2025-11-3*,2025-12-0*',
+                event: ['2025-11-1*', '2025-11-2*', '2025-11-3*', '2025-12-0*'],
                 stepIdentifier,
                 resultIdentifier
             });
