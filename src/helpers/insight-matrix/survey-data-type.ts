@@ -1,13 +1,12 @@
 import { DailyDataProvider, DailyDataQueryResult } from '../query-daily-data';
-import { SurveyAnswersQuery } from '@careevolution/mydatahelps-js';
-import getDayKey from '../get-day-key';
-import { add, compareDesc } from 'date-fns';
-import queryAllSurveyAnswers from '../query-all-survey-answers';
+import { SurveyAnswer } from '@careevolution/mydatahelps-js';
+import queryLatestSurveyAnswersByDate from '../query-latest-survey-answers-by-date';
 
 export interface SurveyDataType {
     surveyName: string;
-    stepIdentifier: string;
+    stepIdentifier?: string;
     resultIdentifier?: string;
+    useEventAsDate?: boolean;
 }
 
 export function isSurveyDataType(dataType: string | SurveyDataType): dataType is SurveyDataType {
@@ -16,34 +15,22 @@ export function isSurveyDataType(dataType: string | SurveyDataType): dataType is
 
 export function getSurveyDataProvider(dataType: SurveyDataType): DailyDataProvider {
     return async (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> => {
-        const query: SurveyAnswersQuery = {
-            surveyName: dataType.surveyName,
-            stepIdentifier: dataType.stepIdentifier,
-            after: add(startDate, { days: -1 }).toISOString(),
-            before: add(endDate, { days: 1 }).toISOString()
-        };
 
-        if (dataType.resultIdentifier) {
-            query.resultIdentifier = dataType.resultIdentifier;
-        }
+        const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(
+            startDate,
+            endDate,
+            dataType.surveyName,
+            dataType.stepIdentifier,
+            dataType.resultIdentifier,
+            dataType.useEventAsDate
+        );
 
-        const answers = await queryAllSurveyAnswers(query).then(answers => answers.sort((a, b) => compareDesc(a.date, b.date)));
-
-        const result: DailyDataQueryResult = {};
-
-        let currentDate = startDate;
-        while (currentDate <= endDate) {
-            const currentDayKey = getDayKey(currentDate);
-            const answerForDate = answers.find(answer => getDayKey(answer.date) === currentDayKey)?.answers[0];
-            if (answerForDate) {
-                const parsedAnswer = parseInt(answerForDate);
-                if (!Number.isNaN(parsedAnswer)) {
-                    result[currentDayKey] = parsedAnswer;
-                }
+        return Object.entries(latestSurveyAnswersByDate as Record<string, SurveyAnswer[]>).reduce((result, [dayKey, surveyAnswersForDay]) => {
+            const parsedAnswer = parseInt(surveyAnswersForDay[0].answers[0]);
+            if (!Number.isNaN(parsedAnswer)) {
+                result[dayKey] = parsedAnswer;
             }
-            currentDate = add(currentDate, { days: 1 });
-        }
-
-        return result;
+            return result;
+        }, {} as DailyDataQueryResult);
     };
 }

@@ -40,7 +40,7 @@ export default function InsightMatrix(props: InsightMatrixProps) {
 
     const daysToCompute = props.daysToCompute ?? 28;
     const startDate = add(startOfToday(), { days: -daysToCompute });
-    const endDate = add(startOfToday(), { days: -1 })
+    const endDate = add(startOfToday(), { days: -1 });
 
     const getDataProvider = <T extends InsightMatrixDataConfiguration>(configuration: T): InsightMatrixDataProvider<T> => {
         if (isSurveyDataType(configuration.rawDataType)) {
@@ -89,7 +89,7 @@ export default function InsightMatrix(props: InsightMatrixProps) {
 
     const getDefaultDataLabel = (configuration: InsightMatrixDataConfiguration): string => {
         if (isSurveyDataType(configuration.rawDataType)) {
-            return configuration.rawDataType.stepIdentifier;
+            return configuration.rawDataType.resultIdentifier || configuration.rawDataType.stepIdentifier || configuration.rawDataType.surveyName;
         }
         const labelKey = getDailyDataTypeDefinition(configuration.rawDataType).labelKey;
         return labelKey ? language(labelKey) : configuration.rawDataType;

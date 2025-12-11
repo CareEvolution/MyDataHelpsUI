@@ -1,4 +1,4 @@
-import { add, Duration, min, startOfToday } from 'date-fns';
+import { add, Duration, formatISO, min, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { getDayKey, predictableRandomNumber } from '../../../helpers';
 
@@ -55,7 +55,7 @@ export async function generateSurveyAnswers(startDate: Date, endDate: Date, resu
         for (let i = 0; i < data.length; i++) {
             const answer = await predictableRandomNumber(getDayKey(currentDate) + resultIdentifiers[i]);
             data[i].push({
-                date: currentDate.toISOString(),
+                date: formatISO(currentDate),
                 answers: [(answer % (maxValue - minValue) + minValue).toString()]
             } as SurveyAnswer);
         }
