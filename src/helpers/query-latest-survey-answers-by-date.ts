@@ -4,13 +4,6 @@ import { getDayKey } from './index';
 import { add, eachDayOfInterval, endOfDay, isValid, startOfDay } from 'date-fns';
 import { parseISOWithoutOffset } from './date-helpers';
 
-// Temporary until the MDH.js lib catches up.
-declare module '@careevolution/mydatahelps-js' {
-    interface SurveyAnswersQuery {
-        event?: string;
-    }
-}
-
 export default async function queryLatestSurveyAnswersByDate(
     startDate?: Date,
     endDate?: Date,
@@ -30,7 +23,7 @@ export default async function queryLatestSurveyAnswersByDate(
                 const event = getDayKey(date).substring(0, 9) + '*';
                 if (!events.includes(event)) events.push(event);
                 return events;
-            }, [] as string[]).join(',');
+            }, [] as string[]);
         }
     } else {
         if (startDate) {
