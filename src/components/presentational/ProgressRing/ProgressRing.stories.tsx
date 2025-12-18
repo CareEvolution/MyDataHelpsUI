@@ -1,97 +1,81 @@
 ﻿import React from 'react';
 import { Layout } from '../../presentational';
-import ProgressRing, { ProgressRingProps } from './ProgressRing';
-import './ProgressRing.stories.css';
+import ProgressRing from './ProgressRing';
+import { StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
+
+type ProgressRingStoryArgs = React.ComponentProps<typeof ProgressRing> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+};
 
 export default {
     title: 'Presentational/ProgressRing',
     component: ProgressRing,
-    parameters: {layout: 'fullscreen'}
+    parameters: { layout: 'fullscreen' },
+    render: (args: ProgressRingStoryArgs) => {
+        return <Layout colorScheme={args.colorScheme}>
+            <ProgressRing {...args}>
+                <div style={{ fontWeight: 'bold', fontSize: '28px' }}>Great Job!</div>
+            </ProgressRing>
+        </Layout>;
+    }
 };
 
-const render = (args: ProgressRingProps) => <Layout colorScheme="auto"><ProgressRing {...args} /></Layout>
-
-const children = <div className="progress-ring-story">Great Job!</div>;
-
-export const Default = {
+export const Default: StoryObj<ProgressRingStoryArgs> = {
     args: {
-        children: children
-    },
-    render: render
-};
-
-export const OneThirdDone = {
-    args: {
-        children: children,
-        percentCompleted: 33
-    },
-    render: render
-};
-
-export const TwoThirdsDone = {
-    args: {
-        children: children,
-        percentCompleted: 66
-    },
-    render: render
-};
-
-export const Done = {
-    args: {
-        children: children,
-        percentCompleted: 100
-    },
-    render: render
-};
-
-export const DifferentColor = {
-    args: {
-        children: children,
-        color: '#71b345'
-    },
-    render: render
-};
-
-export const Default_Animated = {
-    args: {
-        children: children,
-        animate: true
-    },
-    render: render
-};
-
-export const OneThirdDone_Animated = {
-    args: {
-        children: children,
-        percentCompleted: 33,
-        animate: true
-    },
-    render: render
-};
-
-export const TwoThirdsDone_Animated = {
-    args: {
-        children: children,
-        percentCompleted: 66,
-        animate: true
-    },
-    render: render
-};
-
-export const Done_Animated = {
-    args: {
-        children: children,
+        colorScheme: 'auto',
+        diameter: 220,
+        strokeWidth: 20,
+        color: undefined,
+        incompleteColor: undefined,
         percentCompleted: 100,
         animate: true
     },
-    render: render
-};
-
-export const DifferentColor_Animated = {
-    args: {
-        children: children,
-        color: '#71b345',
-        animate: true
-    },
-    render: render
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        diameter: {
+            name: 'diameter',
+            control: {
+                type: 'range',
+                min: 40,
+                max: 400,
+                step: 1
+            }
+        },
+        strokeWidth: {
+            name: 'strokeWidth',
+            control: {
+                type: 'range',
+                min: 1,
+                max: 40,
+                step: 1
+            }
+        },
+        color: {
+            name: 'color',
+            control: 'color'
+        },
+        incompleteColor: {
+            name: 'incomplete color',
+            control: 'color'
+        },
+        percentCompleted: {
+            name: 'percent completed',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 100,
+                step: 1
+            }
+        },
+        animate: {
+            name: 'animate',
+            control: 'boolean'
+        },
+        ...argTypesToHide(['style', 'innerRef'])
+    }
 };
