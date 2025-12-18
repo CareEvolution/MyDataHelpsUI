@@ -195,13 +195,18 @@ describe('Locale Tests', () => {
     describe('formatMinutesForLocale', () => {        
         it('Should format minutes only.', () => {            
             mockMDHLanguage = "en-US";
-            const result = formatMinutesForLocale(45);
-            expect(result).toBe("45m");
+            expect(formatMinutesForLocale(45.4)).toBe("45m");
+            expect(formatMinutesForLocale(45.5)).toBe("46m");
+        });
+        it('Should format hours only.', () => {
+            mockMDHLanguage = "en-US";
+            expect(formatMinutesForLocale(119.5)).toBe("2h");
+            expect(formatMinutesForLocale(120.4)).toBe("2h");
         });
         it('Should format hours/minutes.', () => {            
             mockMDHLanguage = "en-US";
-            const result = formatMinutesForLocale(94);
-            expect(result).toBe("1h 34m");
+            expect(formatMinutesForLocale(94.4)).toBe("1h 34m");
+            expect(formatMinutesForLocale(94.5)).toBe("1h 35m");
         });
         it('Should format by locale.', () => {            
             mockMDHLanguage = "de-DE";
