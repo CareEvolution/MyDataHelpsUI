@@ -1,1 +1,1 @@
-export { default, CalendarDayStateConfiguration } from './CalendarDay';
+export { default, CalendarDayState, CalendarDayStates, CalendarDayStateConfiguration } from './CalendarDay';
