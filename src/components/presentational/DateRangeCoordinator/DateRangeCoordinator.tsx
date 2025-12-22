@@ -27,13 +27,17 @@ export interface DateRangeContext {
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
 export default function (props: DateRangeCoordinatorProps) {
-    let initialIntervalStart = props.initialIntervalStart || getMonthStart();
-    if (props.intervalType === "Week") {
-        initialIntervalStart = getWeekStart(props.weekStartsOn);
-    }
-    if (props.intervalType === "Day") {
-        initialIntervalStart = startOfDay(new Date());
-    }
+    const getDefaultIntervalStart = (): Date => {
+        if (props.intervalType === "Day") {
+            return startOfDay(new Date());
+        }
+        if (props.intervalType === "Week") {
+            return getWeekStart(props.weekStartsOn);
+        }
+        return getMonthStart();
+    };
+
+    const initialIntervalStart = props.initialIntervalStart ?? getDefaultIntervalStart();
 
     //default to null because the initial context will be set in useEffect below
     //otherwise it could cause a double render of child components
