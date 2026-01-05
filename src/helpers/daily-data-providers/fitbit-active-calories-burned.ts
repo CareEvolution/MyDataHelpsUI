@@ -1,0 +1,28 @@
+import { fitbitCaloriesBurnedDataProvider, fitbitRestingCaloriesBurnedDataProvider } from '.';
+import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from './combined-data-collection-settings';
+import { DailyDataQueryResult } from '../query-daily-data';
+import { getSupportedApis, SupportedAPIsQuery } from './data-collection-helper';
+
+export default async function(startDate: Date, endDate: Date, combinedDataCollectionSettings?: CombinedDataCollectionSettings): Promise<DailyDataQueryResult> {
+    const supportedApisQuery: SupportedAPIsQuery = { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true };
+    const supportedApisResult = getSupportedApis(combinedDataCollectionSettings ?? await getCombinedDataCollectionSettings(), supportedApisQuery);
+
+    if (supportedApisResult.v1.enabled) {
+        const [totalCaloriesResult, restingCaloriesResult] = await Promise.all([
+            fitbitCaloriesBurnedDataProvider(startDate, endDate),
+            fitbitRestingCaloriesBurnedDataProvider(startDate, endDate)
+        ]);
+
+        return Object.keys(totalCaloriesResult).reduce((activeCaloriesResult, dayKey) => {
+            if (dayKey in restingCaloriesResult) {
+                const activeCaloriesForDay = totalCaloriesResult[dayKey] - restingCaloriesResult[dayKey];
+                if (activeCaloriesForDay > 0) {
+                    activeCaloriesResult[dayKey] = activeCaloriesForDay;
+                }
+            }
+            return activeCaloriesResult;
+        }, {} as DailyDataQueryResult);
+    }
+
+    return {};
+}

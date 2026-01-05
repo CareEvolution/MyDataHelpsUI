@@ -19,6 +19,7 @@ const render = (args: ConnectEhrViewProps) => <ConnectEhrView {...args} />;
 export const Default: Story = {
     args: {
         preview: true,
+        enableAppleHealthRecordsSurvey: "preview",
         externalAccountsApplicationUrl: "preview",
         presentation: "Push"
     },
@@ -28,6 +29,7 @@ export const Default: Story = {
 export const ProvidersOnly: Story = {
     args: {
         preview: true,
+        enableAppleHealthRecordsSurvey: "preview",
         externalAccountsApplicationUrl: "preview",
         presentation: "Push",
         excludeHealthPlans: true
@@ -38,6 +40,7 @@ export const ProvidersOnly: Story = {
 export const HealthPlansOnly: Story = {
     args: {
         preview: true,
+        enableAppleHealthRecordsSurvey: "preview",
         externalAccountsApplicationUrl: "preview",
         presentation: "Push",
         excludeProviders: true
@@ -48,6 +51,7 @@ export const HealthPlansOnly: Story = {
 export const Live: Story = {
     args: {
         preview: false,
+        enableAppleHealthRecordsSurvey: "preview",
         externalAccountsApplicationUrl: "preview",
         presentation: "Push"
     },

@@ -12,7 +12,7 @@ import { getShortDateString } from '../../../helpers/date-helpers';
 export type SeverityCalendarPreviewState = "Default" | "NoData";
 
 export interface SeverityCalendarProps {
-    surveyName: string,
+    surveyName?: string,
     dateRecordedResultIdentifier?: string,
     severityResultIdentifier: string,
     severityValueMapper?: (value: string) => string,
@@ -29,9 +29,11 @@ interface SeverityLogEntry {
 
 export default function (props: SeverityCalendarProps) {
     const surveyAnswerQuery: SurveyAnswersQuery = {
-        surveyName: props.surveyName,
         resultIdentifier: props.dateRecordedResultIdentifier ? [props.dateRecordedResultIdentifier, props.severityResultIdentifier] : [props.severityResultIdentifier]
     };
+    if (props.surveyName) {
+        surveyAnswerQuery.surveyName = props.surveyName;
+    }
 
     const [data, setData] = useState<Map<string, SeverityLogEntry> | undefined>();
     const dateRangeContext = useContext(DateRangeContext);

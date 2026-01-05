@@ -21,7 +21,7 @@ customHeaders:
                 style-src 'self' 'unsafe-inline' ; 
                 img-src 'self' data: mydatahelps.org mdhorg.ce.dev rkstudio-customer-assets.s3.amazonaws.com appstorebadges.careevolutionapps.com assets.careevolutionapps.com; 
                 media-src 'self'; 
-                frame-src 'self'; 
+                frame-src 'self' *.youtube.com; 
                 font-src 'self'; 
                 connect-src 'self' mydatahelps.org assets.careevolutionapps.com;"
   # Tell the browser to cache static resources https://careevolution.slab.com/posts/cache-control-headers-9jut90d5

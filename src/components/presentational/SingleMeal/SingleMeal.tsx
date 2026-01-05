@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './SingleMeal.css'
 import UnstyledButton from '../UnstyledButton';
 import { ColorDefinition, getMealTypeDisplayText, language, Meal, resolveColor } from '../../../helpers';
@@ -28,10 +28,22 @@ export default function (props: SingleMealProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [imageLoading, setImageLoading] = useState<boolean>(true);
+    const imgRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
-        setImageLoading(!!props.mealImageUrl);
-    }, [props.mealImageUrl])
+        if (imgRef.current) {
+            const img = imgRef.current;
+            if (img.complete) {
+                setImageLoading(false);
+            } else {
+                const onLoad = () => setImageLoading(false);
+                img.addEventListener('load', onLoad);
+                return () => img.removeEventListener('load', onLoad);
+            }
+        } else {
+            setImageLoading(!!props.mealImageUrl);
+        }
+    }, [imgRef.current, props.mealImageUrl])
 
     return <div className={'mdhui-meal' + (props.onClick ? ' clickable' : '')} onClick={props.onClick} ref={props.innerRef}>
         <div className="mdhui-meal-content">
@@ -47,7 +59,7 @@ export default function (props: SingleMealProps) {
                     {props.mealImageUrl &&
                         <>
                             <div className="mdhui-meal-thumbnail-image" style={{ display: imageLoading ? 'none' : 'block' }}>
-                                <img alt={language('meal-thumbnail-alt')} src={props.mealImageUrl} onLoad={() => setImageLoading(false)} />
+                                <img ref={imgRef} alt={language('meal-thumbnail-alt')} src={props.mealImageUrl} />
                             </div>
                             {imageLoading &&
                                 <LoadingIndicator className="mdhui-meal-loading" />

@@ -4,7 +4,7 @@ import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faBoltLightning, faFireFlameCurved, faHeartbeat, faPersonRunning, faRoute, faShoePrints, faStairs } from "@fortawesome/free-solid-svg-icons";
 import { formatNumberForLocale } from "../locale";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 
 let garminTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -170,7 +170,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [400, 540]
     },
     {
@@ -180,7 +180,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -190,7 +190,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -200,7 +200,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "light-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -210,7 +210,7 @@ let garminTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "awake-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [20, 60]
     },
     {

@@ -1,429 +1,340 @@
-import {
-    simpleAvailabilityCheck,
-    combinedAvailabilityCheck,
-    DataSource
-} from "../../../src/helpers/daily-data-types/availability-check";
-import MyDataHelps, {
-    DeviceDataNamespace,
-    DeviceDataPointsPage,
-    DeviceDataV2Namespace,
-    SupportedDeviceDataV2DataType
-} from "@careevolution/mydatahelps-js";
+import { combinedAvailabilityCheck, DataSource, simpleAvailabilityCheck } from '../../../src/helpers/daily-data-types/availability-check';
+import { DeviceDataNamespace, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
+import { getSupportedApis, hasV1Data, hasV2Data } from '../../../src/helpers/daily-data-providers/data-collection-helper';
+import { createEmptyCombinedDataCollectionSettings } from '../../fixtures/daily-data-providers';
 
-jest.mock("@careevolution/mydatahelps-js", () => ({
+jest.mock('../../../src/helpers/daily-data-providers/data-collection-helper', () => ({
     __esModule: true,
-    default: {
-        queryDeviceData: jest.fn(),
-        queryDeviceDataV2: jest.fn()
-    }
+    getSupportedApis: jest.fn(),
+    hasV1Data: jest.fn(),
+    hasV2Data: jest.fn()
 }));
 
-function createBaseSettings(enabled = false) {
-    return {
-        ouraEnabled: enabled,
-        fitbitEnabled: enabled,
-        garminEnabled: enabled,
-        dexcomEnabled: enabled,
-        ehrEnabled: enabled,
-        googleFitEnabled: enabled,
-        healthConnectEnabled: enabled,
-        omronEnabled: enabled,
-        airQualityEnabled: enabled,
-        weatherEnabled: enabled,
-        appleHealthEnabled: enabled,
-        appleHealthRecordsEnabled: enabled,
-        sensorDataCollectionEndDate: "",
-        queryableDeviceDataTypes: []
-    };
-}
-
-function createDataCollectionSettings(providerName = "", enabled = false) {
-    const settings = createBaseSettings(false);
-    if (providerName) {
-        settings[`${providerName}Enabled`] = enabled;
-    }
-    return settings;
-}
-
-function createTestContext(
-    settings,
-    deviceDataV2Types: SupportedDeviceDataV2DataType[] = []
-) {
-    return {
-        settings,
-        deviceDataV2Types
-    };
-}
-
-describe("simpleAvailabilityCheck", () => {
-    const namespace: DeviceDataNamespace = "Fitbit";
-    const type = "testType";
-    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
+describe('Availability Check Tests', () => {
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.resetAllMocks();
     });
 
-    it("should return true when device data points are available", async () => {
-        queryDeviceData.mockResolvedValue({
-            deviceDataPoints: [{}]
-        } as DeviceDataPointsPage);
+    const getSupportedApisMock = getSupportedApis as jest.Mock;
+    const hasV1DataMock = hasV1Data as jest.Mock;
+    const hasV2DataMock = hasV2Data as jest.Mock;
 
-        const settings = createDataCollectionSettings("fitbit", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type);
-        const result = await checkAvailability(createTestContext(settings));
+    const combinedDataCollectionSettings = createEmptyCombinedDataCollectionSettings();
 
-        expect(result).toBe(true);
-        expect(queryDeviceData).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: [type],
-            limit: 1
+    describe('simpleAvailabilityCheck', () => {
+        const namespace: DeviceDataNamespace | DeviceDataV2Namespace = 'Fitbit';
+        const type1 = 'Type 1';
+        const type2 = 'Type 2';
+
+        it('Should return false when querying is not enabled for the specified types.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2])(combinedDataCollectionSettings);
+
+            expect(result).toBe(false);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: false });
+            expect(hasV1DataMock).not.toHaveBeenCalled();
+            expect(hasV2DataMock).not.toHaveBeenCalled();
+        });
+
+        it('Should return false when querying is enabled for the specified types but no data points exist.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } });
+            hasV1DataMock.mockRejectedValue(false);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2])(combinedDataCollectionSettings);
+
+            expect(result).toBe(false);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+        });
+
+        it('Should return true when querying is enabled for the specified types and data points exist in V1.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } });
+            hasV1DataMock.mockResolvedValue(true);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2])(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+        });
+
+        it('Should return true when querying is enabled for the specified types and data points exist in V2.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } });
+            hasV1DataMock.mockRejectedValue(false);
+            hasV2DataMock.mockResolvedValue(true);
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2])(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+        });
+
+        it('Should use the modifiedAfter date when provided.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } });
+            hasV1DataMock.mockResolvedValue(true);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const modifiedAfter = new Date();
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2])(combinedDataCollectionSettings, modifiedAfter);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], modifiedAfter);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], modifiedAfter);
+        });
+
+        it('Should use the requireAllTypes flag when provided - V1.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: true, types: [type1, type2] }, v2: { enabled: false } });
+            hasV1DataMock.mockResolvedValue(true);
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2], { requireAllTypes: true })(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: true });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1, type2], undefined);
+            expect(hasV2DataMock).not.toHaveBeenCalled();
+        });
+
+        it('Should use the requireAllTypes flag when provided - V2.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: true, types: [type1, type2] } });
+            hasV2DataMock.mockResolvedValue(true);
+
+            const result = await simpleAvailabilityCheck(namespace, [type1, type2], { requireAllTypes: true })(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(1);
+            expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: true });
+            expect(hasV1DataMock).not.toHaveBeenCalled();
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type1, type2], undefined);
         });
     });
 
-    it("should return false when no device data points are available", async () => {
-        queryDeviceData.mockResolvedValue({
-            deviceDataPoints: []
-        } as DeviceDataPointsPage);
+    describe('combinedAvailabilityCheck', () => {
+        const namespace1: DeviceDataNamespace | DeviceDataV2Namespace = 'Fitbit';
+        const namespace2: DeviceDataNamespace | DeviceDataV2Namespace = 'Garmin';
+        const type1 = 'Type 1';
+        const type2 = 'Type 2';
+        const type3 = 'Type 3';
+        const type4 = 'Type 4';
 
-        const settings = createDataCollectionSettings("fitbit", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type);
-        const result = await checkAvailability(createTestContext(settings));
+        it('Should return false when querying is not enabled for the specified types.', async () => {
+            getSupportedApisMock.mockReturnValue({ v1: { enabled: false }, v2: { enabled: false } });
 
-        expect(result).toBe(false);
-        expect(queryDeviceData).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: [type],
-            limit: 1
-        });
-    });
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2] },
+                { namespace: namespace2, type: [type3, type4] }
+            ];
 
-    it("should return false when query fails", async () => {
-        queryDeviceData.mockRejectedValue(new Error("Query failed"));
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
 
-        const settings = createDataCollectionSettings("fitbit", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type);
-        const result = await checkAvailability(createTestContext(settings));
+            expect(result).toBe(false);
 
-        expect(result).toBe(false);
-        expect(queryDeviceData).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: [type],
-            limit: 1
-        });
-    });
-
-    it("should include modifiedAfter parameter when provided", async () => {
-        const modifiedAfter = new Date();
-        queryDeviceData.mockResolvedValue({ deviceDataPoints: [{}] });
-
-        const settings = createDataCollectionSettings("fitbit", true);
-        const checkAvailability = simpleAvailabilityCheck(namespace, type);
-        const result = await checkAvailability(
-            createTestContext(settings),
-            modifiedAfter
-        );
-
-        expect(result).toBe(true);
-        expect(queryDeviceData).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: [type],
-            limit: 1,
-            modifiedAfter: modifiedAfter.toISOString()
-        });
-    });
-});
-
-describe("simpleAvailabilityCheck with deviceDataV2", () => {
-    const namespace = "Oura";
-    const type = "testType";
-    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
-    it("should return true when device data points are available", async () => {
-        queryDeviceDataV2.mockResolvedValue({
-            deviceDataPoints: [{}]
-        } as DeviceDataPointsPage);
-
-        const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(
-            namespace,
-            type,
-            true
-        );
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "testType", enabled: true }
-            ])
-        );
-
-        expect(result).toBe(true);
-        expect(queryDeviceDataV2).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: "testType",
-            limit: 1
-        });
-        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
-            modifiedAfter: expect.anything()
-        }));
-    });
-
-    it("should handle multiple types and return true if any type has data", async () => {
-        const queryCompleted = {
-            Sleep: false,
-            Activity: false,
-            Readiness: false
-        };
-
-        queryDeviceDataV2.mockImplementation(params => {
-            if (params.type === "Sleep") {
-                // Fast response
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        queryCompleted.Sleep = true;
-                        resolve({ deviceDataPoints: [{}] }); // Has data
-                    }, 10);
-                });
-            } else if (params.type === "Activity") {
-                // Slow response
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        queryCompleted.Activity = true;
-                        resolve({ deviceDataPoints: [] }); // No data
-                    }, 200);
-                });
-            } else if (params.type === "Readiness") {
-                // Medium speed response
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        queryCompleted.Readiness = true;
-                        resolve({ deviceDataPoints: [] }); // No data
-                    }, 100);
-                });
-            }
-            return Promise.resolve({ deviceDataPoints: [] });
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).not.toHaveBeenCalled();
+            expect(hasV2DataMock).not.toHaveBeenCalled();
         });
 
-        const settings = createDataCollectionSettings("oura", true);
-        const multipleTypes = ["Sleep", "Activity", "Readiness"];
-        const checkAvailability = simpleAvailabilityCheck(
-            namespace,
-            multipleTypes,
-            true
-        );
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "Sleep", enabled: true },
-                { namespace: "Oura", type: "Activity", enabled: true },
-                { namespace: "Oura", type: "Readiness", enabled: true }
-            ])
-        );
+        it('Should return false when querying is enabled for the specified types but no data points exist.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3] }, v2: { enabled: true, types: [type4] } });
+            hasV1DataMock.mockRejectedValue(false);
+            hasV2DataMock.mockRejectedValue(false);
 
-        expect(result).toBe(true);
-        expect(queryDeviceDataV2).toHaveBeenCalledTimes(3);
-        expect(queryCompleted.Sleep).toBe(true);
-        
-        // Assert that modifiedAfter is not included in any of the calls when undefined
-        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
-            modifiedAfter: expect.anything()
-        }));
-    });
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2] },
+                { namespace: namespace2, type: [type3, type4] }
+            ];
 
-    it("should return false when no device data points are available", async () => {
-        queryDeviceDataV2.mockResolvedValue({
-            deviceDataPoints: []
-        } as DeviceDataPointsPage);
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
 
-        const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(
-            namespace,
-            type,
-            true
-        );
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "testType", enabled: true }
-            ])
-        );
+            expect(result).toBe(false);
 
-        expect(result).toBe(false);
-        expect(queryDeviceDataV2).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: "testType",
-            limit: 1
-        });
-        
-        // Assert that modifiedAfter is not included when undefined
-        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
-            modifiedAfter: expect.anything()
-        }));
-    });
-
-    it("should return false when query fails", async () => {
-        queryDeviceDataV2.mockRejectedValue(new Error("Query failed"));
-
-        const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(
-            namespace,
-            type,
-            true
-        );
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "testType", enabled: true }
-            ])
-        );
-
-        expect(result).toBe(false);
-        expect(queryDeviceDataV2).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: "testType",
-            limit: 1
-        });
-        
-        // Assert that modifiedAfter is not included when undefined
-        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
-            modifiedAfter: expect.anything()
-        }));
-    });
-
-    it("should include modifiedAfter parameter when provided", async () => {
-        const modifiedAfter = new Date();
-        queryDeviceDataV2.mockResolvedValue({ deviceDataPoints: [{}] });
-
-        const settings = createDataCollectionSettings("oura", true);
-        const checkAvailability = simpleAvailabilityCheck(
-            namespace,
-            type,
-            true
-        );
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "testType", enabled: true }
-            ]),
-            modifiedAfter
-        );
-
-        expect(result).toBe(true);
-        expect(queryDeviceDataV2).toHaveBeenCalledWith({
-            namespace: namespace,
-            type: "testType",
-            limit: 1,
-            modifiedAfter: modifiedAfter.toISOString()
-        });
-    });
-});
-
-describe("combinedAvailabilityCheck", () => {
-    const queryDeviceData = MyDataHelps.queryDeviceData as jest.Mock;
-    const queryDeviceDataV2 = MyDataHelps.queryDeviceDataV2 as jest.Mock;
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
-    it("should resolve as soon as one of the sources resolves with data", async () => {
-        const createDelayedMock = (delay: number, hasData: boolean) => {
-            return jest.fn().mockImplementation(() => {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve({
-                            deviceDataPoints: hasData ? [{}] : []
-                        });
-                    }, delay);
-                });
-            });
-        };
-
-        const slowSuccessMock = createDelayedMock(500, true); // Slow but successful
-        const fastFailureMock = createDelayedMock(50, false); // Fast but no data
-        const fastSuccessMock = createDelayedMock(100, true); // Fast and successful
-
-        queryDeviceData.mockImplementation(params => {
-            if (params.namespace === "Fitbit") {
-                return slowSuccessMock(params);
-            } else if (params.namespace === "Garmin") {
-                return fastFailureMock(params);
-            }
-            return Promise.resolve({ deviceDataPoints: [] });
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
         });
 
-        queryDeviceDataV2.mockImplementation(params => {
-            if (params.namespace === "Oura") {
-                return fastSuccessMock(params);
-            }
-            return Promise.resolve({ deviceDataPoints: [] });
+        it('Should return true when querying is enabled for the specified types and data points exist in V1.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3] }, v2: { enabled: true, types: [type4] } });
+            hasV1DataMock
+                .mockRejectedValueOnce(false)
+                .mockResolvedValueOnce(true);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2] },
+                { namespace: namespace2, type: [type3, type4] }
+            ];
+
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
         });
 
-        const sources: DataSource[] = [
-            {
-                namespace: "Fitbit" as DeviceDataNamespace,
-                type: ["Sleep"],
-                isV2: false
-            },
-            {
-                namespace: "Garmin" as DeviceDataNamespace,
-                type: ["Steps"],
-                isV2: false
-            },
-            {
-                namespace: "Oura" as DeviceDataV2Namespace,
-                type: ["Activity"],
-                isV2: true
-            }
-        ];
+        it('Should return true when querying is enabled for the specified types and data points exist in V2.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3] }, v2: { enabled: true, types: [type4] } });
+            hasV1DataMock.mockRejectedValue(false);
+            hasV2DataMock
+                .mockRejectedValueOnce(false)
+                .mockResolvedValueOnce(true);
 
-        const settings = createBaseSettings(false);
-        settings.fitbitEnabled = true;
-        settings.garminEnabled = true;
-        settings.ouraEnabled = true;
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2] },
+                { namespace: namespace2, type: [type3, type4] }
+            ];
 
-        const startTime = Date.now();
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
 
-        const checkAvailability = combinedAvailabilityCheck(sources);
-        const result = await checkAvailability(
-            createTestContext(settings, [
-                { namespace: "Oura", type: "Activity", enabled: true }
-            ])
-        );
+            expect(result).toBe(true);
 
-        const elapsedTime = Date.now() - startTime;
-        console.log("elapsedTime", elapsedTime);
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
+        });
 
-        expect(result).toBe(true);
+        it('Should use the modifiedAfter date when provided.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3] }, v2: { enabled: true, types: [type4] } });
+            hasV1DataMock.mockResolvedValue(true);
+            hasV2DataMock.mockRejectedValue(false);
 
-        // Should resolve faster than the slowest source (Fitbit: 500ms)
-        // but slower than or around the fastest successful source (Oura: 100ms)
-        expect(elapsedTime).toBeLessThan(500);
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2] },
+                { namespace: namespace2, type: [type3, type4] }
+            ];
+            const modifiedAfter = new Date();
 
-        // Verify that Oura was queried (the fastest success)
-        expect(queryDeviceDataV2).toHaveBeenCalledWith(
-            expect.objectContaining({
-                namespace: "Oura",
-                type: "Activity"
-            })
-        );
-        expect(queryDeviceDataV2).not.toHaveBeenCalledWith(expect.objectContaining({
-            modifiedAfter: expect.anything()
-        }));
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings, modifiedAfter);
 
-        // Verify Garmin was also queried (even though it fails)
-        expect(queryDeviceData).toHaveBeenCalledWith(
-            expect.objectContaining({
-                namespace: "Garmin",
-                type: ["Steps"]
-            })
-        );
+            expect(result).toBe(true);
 
-        // Verify Fitbit was queried but was too slow
-        expect(queryDeviceData).toHaveBeenCalledWith(
-            expect.objectContaining({
-                namespace: "Fitbit",
-                type: ["Sleep"]
-            })
-        );
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], modifiedAfter);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], modifiedAfter);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], modifiedAfter);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], modifiedAfter);
+        });
+
+        it('Should use the requireAllTypes flag when provided - V1.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3, type4] }, v2: { enabled: false } });
+            hasV1DataMock
+                .mockRejectedValueOnce(false)
+                .mockReturnValueOnce(true);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2], options: { requireAllTypes: false } },
+                { namespace: namespace2, type: [type3, type4], options: { requireAllTypes: true } }
+            ];
+
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: true });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3, type4], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace1, [type2], undefined);
+        });
+
+        it('Should use the requireAllTypes flag when provided - V2.', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: false }, v2: { enabled: true, types: [type3, type4] } });
+            hasV1DataMock.mockRejectedValue(false);
+            hasV2DataMock
+                .mockRejectedValueOnce(false)
+                .mockResolvedValueOnce(true);
+
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2], options: { requireAllTypes: false } },
+                { namespace: namespace2, type: [type3, type4], options: { requireAllTypes: true } }
+            ];
+
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: true });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(1);
+            expect(hasV1DataMock).toHaveBeenCalledWith(namespace1, [type1], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3, type4], undefined);
+        });
     });
 });

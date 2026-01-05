@@ -49,9 +49,11 @@ export default function YouTubeStep(props: YouTubeStepProps) {
               <iframe
                 style={{width: "100%", height: frameHeight, border: 0}}
                   src={`https://www.youtube.com/embed/${props.videoId}?rel=${showRelated}&cc_lang_pref=${ccLanguage}&controls=${showControls}&autoplay=${autoplay}&fs=${allowFullscreen}&modestbranding=${youTubeBranding}`}
+                  key={props.videoId}
                   title="YouTube video player" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                  allowFullScreen={true}>
+                  allowFullScreen={true}
+                  referrerPolicy="strict-origin-when-cross-origin">
               </iframe>
             </div>
             <StepDetailText 
@@ -61,6 +63,7 @@ export default function YouTubeStep(props: YouTubeStepProps) {
               fontSize={props.styles.detailTextFontSize}
               fontWeight={props.styles.detailTextFontWeight}
             />
+            
             <StepNextButton 
               text={props.nextButtonText} 
               color={props.styles.nextButtonTextColor}

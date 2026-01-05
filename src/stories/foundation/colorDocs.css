@@ -1,0 +1,301 @@
+/* Highlight color variables for border and label */
+:root {
+  --color-highlight-40: var(--ce-grey-30);
+  --color-highlight-50: var(--ce-green-40);
+  --color-highlight-70: var(--ce-cyan-50);
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
+}
+* {
+  box-sizing: border-box;
+}
+
+/* Intro */
+ul, p, details {
+  margin: 8px 0 !important;
+  max-width: 700px;
+}
+h3 {
+  margin-top: 24px !important;
+}
+h4 {
+  margin-top: 16px !important;
+}
+details {
+  background: var(--ce-grey-2);
+  border: 1px solid var(--ce-grey-10);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 15px;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
+}
+details .details-content {
+  padding: 0 20px 10px 20px !important;
+}
+table {
+  background: #fff;
+}
+td, th {
+  line-height: 1.2;
+}
+.emphasis-text {
+  color: var(--ce-cyan-60);
+  background: var(--ce-cyan-4);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* Data Viz Use Case tiles */
+.data-viz-use-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-left: 0 !important;
+}
+.data-viz-use-cases li {
+  list-style: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.data-viz-air {
+  background-color: var(--ce-cyan-50);
+  color: #fff !important;
+}
+.data-viz-sleep {
+  background-color: var(--ce-indigo-50);
+  color: #fff !important;
+}
+.data-viz-heart {
+  background-color: var(--ce-orange-40);
+  color: #fff !important;
+}
+.data-viz-activity {
+  background-color: var(--ce-yellow-10);
+  color: #000 !important;
+}
+
+
+/* Color Cell Rows */
+.colorHeader {
+  display: flex;
+  align-items: center;
+  min-width: 190px;
+  margin-bottom: 10px;
+  gap: 5px;
+}
+
+.colorRow h3,
+.colorRow p {
+  margin: 0 !important;
+}
+
+.colorHeader code {
+  font-size: 11px !important;
+}
+
+.colorRow .colors {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 3px;
+  width: 100%;
+}
+
+
+.colorCell-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 10px;
+  padding: 2px 4px;
+  text-align: center;
+  z-index: 12;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.colorCell-overlay-light {
+  color: #222;
+}
+.colorCell-overlay-dark {
+  color: #fff;
+}
+
+.colorCell-copyIcon {
+  position: absolute;
+  left: 74%;
+  top: 17%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 11;
+}
+
+.colorCell:hover .colorCell-copyIcon {
+  opacity: 1;
+}
+
+.colorCell-copyIcon-light {
+  color: #222;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+}
+
+.colorCell-copyIcon-dark {
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.18));
+}
+
+.colorCell {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.colorCell .color {
+  min-width: 40px;
+  width: 100%;
+  height: 60px;
+  margin: 0 auto;
+}
+
+
+.colorCell .shade {
+  color: var(--mdhui-grey-99);
+  font-size: 12px;
+}
+
+.colorRow {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 20px;
+  flex-direction: column;
+}
+
+
+.colorCell-detailNumber {
+  font-size: 10px !important;
+}
+
+/* tooltips */
+
+.colorCell-copiedTooltip {
+  position: absolute;
+  left: 50%;
+  bottom: 0px;
+  font-size: 12px !important;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  font-size: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+}
+.colorCell-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  margin-top: 4px;
+  transform: translateX(-50%);
+  padding: 6px 10px 7px 10px;
+  border-radius: 6px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+  min-width: 120px;
+  background: rgba(255,255,255,0.95);
+}
+.colorCell-tooltipTitle {}
+.colorCell-tooltipRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2px;
+  align-items: flex-start;
+  /* font-size: 10px !important; */
+}
+.colorCell-detailGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+.colorCell-detailLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
+}
+.colorCell-tooltipTitle,
+.colorCell-detailLabel span {
+  font-size: 14px !important;
+  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
+}
+
+/* hover borders */
+.colorCell {
+  border: 2px solid transparent;
+}
+.colorCell-highlight40 {
+  border: 2px solid var(--color-highlight-40) !important;
+  box-shadow: 0 0 0 2px var(--color-highlight-40);
+  z-index: 2;
+}
+.colorCell-highlight50 {
+  border: 2px solid var(--color-highlight-50) !important;
+  box-shadow: 0 0 0 2px var(--color-highlight-50);
+  z-index: 2;
+}
+.colorCell-highlight70 {
+  border: 2px solid var(--color-highlight-70) !important;
+  box-shadow: 0 0 0 2px var(--color-highlight-70);
+  z-index: 2;
+}
+
+
+/* Gradients */
+
+.gradients {
+  padding-top: 20px;
+}
+.gradients .colorHeader {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.gradients .colorRow {
+  border-top: 1px solid var(--mdhui-grey-30);
+}
+
+.gradientCells .colorCell .color {
+  height: 120px;
+}
+
+.gradientCells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}

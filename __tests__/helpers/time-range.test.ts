@@ -3,7 +3,7 @@ import { describe, it } from '@jest/globals';
 import { DeviceDataPoint, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { buildMinutesResultFromDailyTimeRanges, computeDailyTimeRanges, DailyTimeRanges } from '../../src/helpers/time-range';
 import getDayKey from '../../src/helpers/get-day-key';
-import { getV1DateString, getV2DateString } from "../fixtures/daily-data-providers";
+import { getV1DateString, getV2DateString } from '../fixtures/daily-data-providers';
 
 describe('TimeRange - Helper Function Tests', () => {
     const someDay = add(startOfToday(), { days: -5 });
@@ -38,7 +38,7 @@ describe('TimeRange - Helper Function Tests', () => {
     const dataPointFactories = [deviceDataPointsFactory, deviceDataV2PointsFactory];
     describe.each(dataPointFactories)('Compute Daily Time Ranges ($name)', (dataPointFactory: DataPointFactory<DeviceDataPoint | DeviceDataV2Point>) => {
         it('Should return a single time range when the start and observation dates are from the same day.', async () => {
-            const startDate = add(someDay, { hours: 2 });
+            const startDate = add(someDay, { hours: 4 });
             const observationDate = add(someDay, { hours: 10 });
 
             const dataPoint = dataPointFactory.create(startDate, observationDate);
@@ -143,12 +143,12 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should merge ranges when the tail of the first range overlaps the start of the second range.', async () => {
-            const startDate1 = add(someDay, { hours: 1 });
-            const observationDate1 = add(someDay, { hours: 2 });
+            const startDate1 = add(someDay, { hours: 4 });
+            const observationDate1 = add(someDay, { hours: 5 });
             const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
-            const startDate2 = add(someDay, { hours: 2 });
-            const observationDate2 = add(someDay, { hours: 3 });
+            const startDate2 = add(someDay, { hours: 5 });
+            const observationDate2 = add(someDay, { hours: 6 });
             const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
@@ -162,12 +162,12 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should merge ranges when the tail of the second range overlaps the start of the first range.', async () => {
-            const startDate1 = add(someDay, { hours: 2 });
-            const observationDate1 = add(someDay, { hours: 3 });
+            const startDate1 = add(someDay, { hours: 5 });
+            const observationDate1 = add(someDay, { hours: 6 });
             const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
-            const startDate2 = add(someDay, { hours: 1 });
-            const observationDate2 = add(someDay, { hours: 2 });
+            const startDate2 = add(someDay, { hours: 4 });
+            const observationDate2 = add(someDay, { hours: 5 });
             const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
@@ -181,12 +181,12 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should merge ranges when the first range falls completely within the second range.', async () => {
-            const startDate1 = add(someDay, { hours: 2 });
-            const observationDate1 = add(someDay, { hours: 3 });
+            const startDate1 = add(someDay, { hours: 5 });
+            const observationDate1 = add(someDay, { hours: 6 });
             const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
-            const startDate2 = add(someDay, { hours: 1 });
-            const observationDate2 = add(someDay, { hours: 4 });
+            const startDate2 = add(someDay, { hours: 4 });
+            const observationDate2 = add(someDay, { hours: 7 });
             const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
@@ -200,12 +200,12 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should merge ranges when the second range falls completely within the first range.', async () => {
-            const startDate1 = add(someDay, { hours: 1 });
-            const observationDate1 = add(someDay, { hours: 4 });
+            const startDate1 = add(someDay, { hours: 4 });
+            const observationDate1 = add(someDay, { hours: 7 });
             const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
-            const startDate2 = add(someDay, { hours: 2 });
-            const observationDate2 = add(someDay, { hours: 3 });
+            const startDate2 = add(someDay, { hours: 5 });
+            const observationDate2 = add(someDay, { hours: 6 });
             const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
@@ -219,12 +219,12 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should not merge ranges when there is no overlap at all.', async () => {
-            const startDate1 = add(someDay, { hours: 1 });
-            const observationDate1 = add(someDay, { hours: 2 });
+            const startDate1 = add(someDay, { hours: 4 });
+            const observationDate1 = add(someDay, { hours: 5 });
             const dataPoint1 = dataPointFactory.create(startDate1, observationDate1);
 
-            const startDate2 = add(someDay, { hours: 3 });
-            const observationDate2 = add(someDay, { hours: 4 });
+            const startDate2 = add(someDay, { hours: 6 });
+            const observationDate2 = add(someDay, { hours: 7 });
             const dataPoint2 = dataPointFactory.create(startDate2, observationDate2);
 
             const dailyTimeRanges = computeDailyTimeRanges([dataPoint1, dataPoint2]);
@@ -240,8 +240,8 @@ describe('TimeRange - Helper Function Tests', () => {
         });
 
         it('Should return no time ranges if the start date is greater than the observation date.', async () => {
-            const startDate = add(someDay, { hours: 5 });
-            const observationDate = add(someDay, { hours: 2 });
+            const startDate = add(someDay, { hours: 6 });
+            const observationDate = add(someDay, { hours: 4 });
 
             const dataPoint = dataPointFactory.create(startDate, observationDate);
 
