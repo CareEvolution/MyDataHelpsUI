@@ -1,7 +1,7 @@
 import UnstyledButton from '../UnstyledButton';
 import { faRefresh, faRepeat, faTrash } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
-import MyDataHelps, { ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ExternalAccount, ExternalAccountProvider } from '@careevolution/mydatahelps-js';
 import language from '../../../helpers/language';
 import "./SingleExternalAccount.css";
 import { getRelativeDateString } from "../../../helpers/date-helpers";
@@ -12,10 +12,12 @@ export interface SingleExternalAccountProps {
 	externalAccount: ExternalAccount;
 	onAccountRemoved: (account: ExternalAccount) => void;
 	onReconnectAccount: (account: ExternalAccount) => void;
+	onConnectToSuccessorProvider: (provider: ExternalAccountProvider) => void;
 	innerRef?: React.Ref<HTMLDivElement>;
+	externalAccountProviderIds?: number[];
 }
 
-export default function SingleExternalAccount (props: SingleExternalAccountProps) {
+export default function SingleExternalAccount(props: SingleExternalAccountProps) {
 	const [statusOverride, setStatusOverride] = useState("");
 
 	function removeAccount() {
@@ -52,6 +54,12 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 					</UnstyledButton>
 				}
 			</div>
+			{/* Show link to connect to successor provider if there is one and user doesn't already have an account with them */}
+			{props.externalAccount.provider.successorID && (!props.externalAccountProviderIds || !props.externalAccountProviderIds.includes(props.externalAccount.provider.successorID)) &&
+				<p className="provider-successor-connection-nudge">
+					{language('connect-to-new-provider')} <a href="#" onClick={(e) => { e.preventDefault(); props.onConnectToSuccessorProvider(props.externalAccount.provider); }}>{language('here')}</a>.
+				</p>
+			}
 			<div className="external-account-status">
 				{getStatus() === "unauthorized" &&
 					<p>

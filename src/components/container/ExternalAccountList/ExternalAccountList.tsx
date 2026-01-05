@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider } from '@careevolution/mydatahelps-js';
 import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
 import { previewExternalAccounts } from './ExternalAccountList.previewdata'
 
@@ -53,6 +53,15 @@ export default function (props: ExternalAccountListProps) {
             });
     }
 
+    const connectToSuccessorProvider = async (provider: ExternalAccountProvider): Promise<void> => {
+        if (provider.successorID) {
+            MyDataHelps.connectExternalAccount(provider.successorID, props.connectExternalAccountOptions ?? { openNewWindow: true })
+                .then(function () {
+                    loadExternalAccounts();
+                });
+        }
+    };
+
     useEffect(() => {
         initialize();
         MyDataHelps.on("applicationDidBecomeVisible", initialize);
@@ -70,7 +79,10 @@ export default function (props: ExternalAccountListProps) {
                     <SingleExternalAccount
                         externalAccount={externalAccount}
                         onAccountRemoved={(account: ExternalAccount) => onAccountRemoved(account)}
-                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)} />
+                        onReconnectAccount={(account: ExternalAccount) => reconnectAccount(account)}
+                        onConnectToSuccessorProvider={(provider: ExternalAccountProvider) => connectToSuccessorProvider(provider)}
+                        externalAccountProviderIds={externalAccounts.map(a => a.provider.id)}
+                    />
                 </Card>
             )}
             {loading &&

@@ -12,7 +12,8 @@ export var previewExternalAccounts: ExternalAccount[] =
             "name": "Cedars-Sinai Health System",
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/37/logo",
-            "enabled": true
+            "enabled": true,
+            "successorID": 99
         } as ExternalAccountProvider
     }, {
         id: 2,
@@ -21,10 +22,11 @@ export var previewExternalAccounts: ExternalAccount[] =
         provider:
         {
             "id": 1,
-            "name": "Kaiser Permanente",
+            "name": "CareEVolution",
             "category": "Provider",
             "logoUrl": "https://mdhorg.ce.dev/api/v1/delegated/externalaccountproviders/1/logo",
-            "enabled": true
+            "enabled": true,
+            "successorID": 1
         } as ExternalAccountProvider
     }, {
         id: 3,
