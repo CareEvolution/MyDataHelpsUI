@@ -1,9 +1,10 @@
-﻿import React from 'react'
-import Goal from './Goal'
-import { Layout } from '../../presentational'
+﻿import React from 'react';
+import Goal from './Goal';
+import { Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 import { faBicycle, faDog, faHeartbeat, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
+import { argTypesToHide } from '../../../../.storybook/helpers';
 
 type GoalStoryArgs = React.ComponentProps<typeof Goal> & {
     colorScheme: 'auto' | 'light' | 'dark';
@@ -28,8 +29,9 @@ export const Default: Story = {
     args: {
         colorScheme: 'auto',
         previewState: 'complete',
-        maxValue: 7,
         targetValue: 4,
+        maxValue: 7,
+        maxSegments: 10,
         iconType: 'default',
         label: 'Days Wearing Fitness Tracker',
         notStartedColor: '',
@@ -47,16 +49,26 @@ export const Default: Story = {
             control: 'radio',
             options: ['loading', 'not started', 'in progress', 'complete', 'maxed out', 'random']
         },
-        maxValue: {
-            name: 'maximum value'
-        },
         targetValue: {
-            name: 'target value'
+            name: 'target value',
+            control: 'number'
+        },
+        maxValue: {
+            name: 'maximum value',
+            control: 'number'
+        },
+        maxSegments: {
+            name: 'maximum segments',
+            control: 'number'
         },
         iconType: {
             name: 'icon',
             control: 'radio',
             options: ['default', 'custom']
+        },
+        label: {
+            name: 'label',
+            control: 'text'
         },
         notStartedColor: {
             name: 'not started color',
@@ -69,7 +81,8 @@ export const Default: Story = {
         completedColor: {
             name: 'completed color',
             control: 'color'
-        }
+        },
+        ...argTypesToHide(['valueProvider', 'icon', 'innerRef'])
     }
 };
 
@@ -91,8 +104,8 @@ export const Live: Story = {
             maxValue={10}
             valueProvider={createStaticIntegerValueProvider(3)}
             icon={faDog}
-            inProgressColor={"#6ddec9"}
-            completedColor={"#d81442"}
+            inProgressColor="#6ddec9"
+            completedColor="#d81442"
         />
         <Goal
             label="Value From Random Provider"
@@ -100,8 +113,8 @@ export const Live: Story = {
             maxValue={10}
             valueProvider={createRandomIntegerValueProvider(10)}
             icon={faBicycle}
-            inProgressColor={"#6dde76"}
-            completedColor={"#2f62e4"}
+            inProgressColor="#6dde76"
+            completedColor="#2f62e4"
         />
         <Goal
             label="Value From Custom Field Provider"
@@ -109,8 +122,8 @@ export const Live: Story = {
             maxValue={10}
             valueProvider={createCustomFieldIntegerValueProvider('SomeCustomField')}
             icon={faWandSparkles}
-            inProgressColor={"#a4de6d"}
-            completedColor={"#ca19ee"}
+            inProgressColor="#a4de6d"
+            completedColor="#ca19ee"
         />
     </Layout>
 };

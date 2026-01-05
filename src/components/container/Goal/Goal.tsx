@@ -1,5 +1,5 @@
 ﻿import React, { useContext, useState } from 'react';
-import './Goal.css'
+import './Goal.css';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,7 @@ export interface GoalProps {
     label: string;
     targetValue: number;
     maxValue: number;
+    maxSegments?: number;
     valueProvider: SingleValueProvider<number>;
     icon?: IconDefinition;
     notStartedColor?: ColorDefinition;
@@ -22,15 +23,15 @@ export interface GoalProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
-export default function (props: GoalProps) {
+export default function Goal(props: GoalProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [value, setValue] = useState<number>();
 
-    const notStartedColor = resolveColor(layoutContext?.colorScheme, props.notStartedColor) ?? 'var(--mdhui-text-color-3)';
-    const inProgressColor = resolveColor(layoutContext?.colorScheme, props.inProgressColor) ?? 'var(--mdhui-color-primary)';
-    const completedColor = resolveColor(layoutContext?.colorScheme, props.completedColor) ?? 'var(--mdhui-color-success)';
+    const notStartedColor = resolveColor(layoutContext.colorScheme, props.notStartedColor) ?? 'var(--mdhui-text-color-3)';
+    const inProgressColor = resolveColor(layoutContext.colorScheme, props.inProgressColor) ?? 'var(--mdhui-color-primary)';
+    const completedColor = resolveColor(layoutContext.colorScheme, props.completedColor) ?? 'var(--mdhui-color-success)';
 
     useInitializeView(() => {
         setLoading(true);
@@ -47,13 +48,21 @@ export default function (props: GoalProps) {
         valueProvider.getValue().then(value => {
             setValue(Math.max(0, Math.min(value ?? 0, props.maxValue)));
             setLoading(false);
-        })
+        });
     }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
+
+    let scaledNumerator = value ?? 0;
+    let scaledDenominator = props.maxValue;
+    if (props.maxSegments && scaledDenominator > props.maxSegments) {
+        let scale = scaledDenominator / props.maxSegments;
+        scaledDenominator /= scale;
+        scaledNumerator = scaledNumerator === 0 ? 0 : Math.max(Math.floor(scaledNumerator / scale), 1);
+    }
 
     const getSegmentColor = (index: number) => {
         let segmentColor = notStartedColor;
-        if (value !== undefined && index <= value) {
-            segmentColor = value >= props.targetValue ? completedColor : inProgressColor;
+        if (index <= scaledNumerator) {
+            segmentColor = scaledNumerator >= props.targetValue ? completedColor : inProgressColor;
         }
         return segmentColor;
     };
@@ -64,7 +73,7 @@ export default function (props: GoalProps) {
     }
 
     const data: { value: number, color: string }[] = [];
-    for (let i = 1; i <= props.maxValue; i++) {
+    for (let i = 1; i <= scaledDenominator; i++) {
         data.push({ value: 1, color: getSegmentColor(i) });
     }
 
