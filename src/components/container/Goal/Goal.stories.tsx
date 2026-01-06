@@ -28,6 +28,7 @@ type Story = StoryObj<GoalStoryArgs>;
 export const Default: Story = {
     args: {
         colorScheme: 'auto',
+        variant: 'default' as any,
         previewState: 'complete',
         targetValue: 4,
         maxValue: 7,
@@ -43,6 +44,12 @@ export const Default: Story = {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
+        },
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'compact'],
+            mapping: { 'default' : undefined }
         },
         previewState: {
             name: 'state',

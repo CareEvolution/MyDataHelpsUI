@@ -11,6 +11,7 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface GoalProps {
     previewState?: 'loading' | GoalPreviewState;
+    variant?: 'compact';
     label: string;
     targetValue: number;
     maxValue: number;
@@ -27,7 +28,7 @@ export default function Goal(props: GoalProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [loading, setLoading] = useState<boolean>(true);
-    const [value, setValue] = useState<number>();
+    const [value, setValue] = useState<number>(0);
 
     const notStartedColor = resolveColor(layoutContext.colorScheme, props.notStartedColor) ?? 'var(--mdhui-text-color-3)';
     const inProgressColor = resolveColor(layoutContext.colorScheme, props.inProgressColor) ?? 'var(--mdhui-color-primary)';
@@ -35,7 +36,7 @@ export default function Goal(props: GoalProps) {
 
     useInitializeView(() => {
         setLoading(true);
-        setValue(undefined);
+        setValue(0);
 
         if (props.previewState === 'loading') {
             return;
@@ -51,7 +52,7 @@ export default function Goal(props: GoalProps) {
         });
     }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
 
-    let scaledNumerator = value ?? 0;
+    let scaledNumerator = value;
     let scaledDenominator = props.maxValue;
     if (props.maxSegments && scaledDenominator > props.maxSegments) {
         let scale = scaledDenominator / props.maxSegments;
@@ -62,13 +63,13 @@ export default function Goal(props: GoalProps) {
     const getSegmentColor = (index: number) => {
         let segmentColor = notStartedColor;
         if (index <= scaledNumerator) {
-            segmentColor = scaledNumerator >= props.targetValue ? completedColor : inProgressColor;
+            segmentColor = value >= props.targetValue ? completedColor : inProgressColor;
         }
         return segmentColor;
     };
 
     let statusColor = notStartedColor;
-    if (value !== undefined && value > 0) {
+    if (value > 0) {
         statusColor = value >= props.targetValue ? completedColor : inProgressColor;
     }
 
@@ -77,7 +78,12 @@ export default function Goal(props: GoalProps) {
         data.push({ value: 1, color: getSegmentColor(i) });
     }
 
-    return <div className="mdhui-goal" ref={props.innerRef}>
+    const goalClasses = ['mdhui-goal'];
+    if (props.variant === 'compact') {
+        goalClasses.push('mdhui-goal-compact');
+    }
+
+    return <div className={goalClasses.join(' ')} ref={props.innerRef}>
         <div className="mdhui-goal-chart">
             <ResponsiveContainer>
                 <PieChart>
@@ -104,7 +110,9 @@ export default function Goal(props: GoalProps) {
                 </div>
             }
             {!loading &&
-                <div className="mdhui-goal-ratio" style={{ color: statusColor }}>{value + '/' + props.maxValue}</div>
+                <div className="mdhui-goal-ratio" style={{ color: statusColor }}>
+                    {value}<span className="mdhui-goal-ratio-divider">/</span>{props.maxValue}
+                </div>
             }
             <div className="mdhui-goal-name">{props.label}</div>
         </div>

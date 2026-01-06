@@ -1,7 +1,13 @@
 .mdhui-goal {
-    display: grid;
-    grid-template-columns: max-content auto;
-    margin: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
+    padding: 16px;
+}
+
+.mdhui-goal.mdhui-goal-compact {
+    flex-direction: column;
 }
 
 .mdhui-goal-chart {
@@ -25,21 +31,42 @@
     font-size: 34px;
 }
 
-.mdhui-goal-info {
-    padding-top: 12px;
-    padding-left: 8px;
-}
-
 .mdhui-goal-ratio, .mdhui-goal-ratio-loading {
     height: 40px;
     line-height: 40px;
+}
+
+.mdhui-goal-compact .mdhui-goal-ratio, .mdhui-goal-compact .mdhui-goal-ratio-loading {
+    height: 18px;
+    line-height: 18px;
 }
 
 .mdhui-goal-ratio {
     font-size: 2em;
 }
 
+.mdhui-goal-compact .mdhui-goal-ratio {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.mdhui-goal-ratio-divider {
+    padding: 0 4px;
+}
+
+.mdhui-goal-compact .mdhui-goal-ratio-divider {
+    padding: 0 2px;
+    font-weight: bold;
+}
+
 .mdhui-goal-ratio-loading {
-    padding-left: 8px;
     font-size: 1.5em;
+}
+
+.mdhui-goal-compact .mdhui-goal-ratio-loading {
+    font-size: 0.9em;
+}
+
+.mdhui-goal-compact .mdhui-goal-name {
+    display: none;
 }
