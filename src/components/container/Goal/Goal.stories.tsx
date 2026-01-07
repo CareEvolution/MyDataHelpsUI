@@ -1,43 +1,70 @@
 ﻿import React from 'react';
-import Goal from './Goal';
-import { Layout } from '../../presentational';
+import Goal, { GoalColorConfiguration } from './Goal';
+import { Grid, Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
-import { faBicycle, faDog, faHeartbeat, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
-import { createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
+import { faBicycle, faCalendarDays, faDog, faHandBackFist, faHeartbeat, faListCheck, faSquarePollHorizontal, faUserDoctor, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
+import { ColorDefinition, createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
 import { argTypesToHide } from '../../../../.storybook/helpers';
 
-type GoalStoryArgs = React.ComponentProps<typeof Goal> & {
-    colorScheme: 'auto' | 'light' | 'dark';
-    iconType: 'default' | 'custom';
-};
-
-const meta: Meta<GoalStoryArgs> = {
+const meta: Meta<React.ComponentProps<typeof Goal>> = {
     title: 'Container/Goal',
     component: Goal,
     parameters: {
         layout: 'fullscreen'
-    },
-    render: args => <Layout colorScheme={args.colorScheme}>
-        <Goal {...args} icon={args.iconType === 'custom' ? faHeartbeat : undefined} />
-    </Layout>
+    }
 };
 export default meta;
 
-type Story = StoryObj<GoalStoryArgs>;
+type GoalDefaultStoryArgs = React.ComponentProps<typeof Goal> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    iconType: 'default' | 'custom';
+    targetValue: number;
+    maxValue: number;
+    notStartedStatusColor: ColorDefinition;
+    notStartedOnSegmentColor: ColorDefinition;
+    notStartedOffSegmentColor: ColorDefinition;
+    notStartedIconColor: ColorDefinition;
+    notStartedIconBackgroundColor: ColorDefinition;
+    inProgressStatusColor: ColorDefinition;
+    inProgressOnSegmentColor: ColorDefinition;
+    inProgressOffSegmentColor: ColorDefinition;
+    inProgressIconColor: ColorDefinition;
+    inProgressIconBackgroundColor: ColorDefinition;
+    completedStatusColor: ColorDefinition;
+    completedOnSegmentColor: ColorDefinition;
+    completedOffSegmentColor: ColorDefinition;
+    completedIconColor: ColorDefinition;
+    completedIconBackgroundColor: ColorDefinition;
+};
 
-export const Default: Story = {
+export const Default: StoryObj<GoalDefaultStoryArgs> = {
     args: {
         colorScheme: 'auto',
-        variant: 'default' as any,
+        variant: 'default',
         previewState: 'complete',
+        label: 'Days Wearing Fitness Tracker',
+        description: 'Here is a description about days wearing a fitness tracker.',
         targetValue: 4,
         maxValue: 7,
         maxSegments: 10,
         iconType: 'default',
-        label: 'Days Wearing Fitness Tracker',
-        notStartedColor: '',
-        inProgressColor: '',
-        completedColor: ''
+        notStartedStatusColor: '',
+        notStartedOnSegmentColor: '',
+        notStartedOffSegmentColor: '',
+        notStartedIconColor: '',
+        notStartedIconBackgroundColor: '',
+        inProgressStatusColor: '',
+        inProgressOnSegmentColor: '',
+        inProgressOffSegmentColor: '',
+        inProgressIconColor: '',
+        inProgressIconBackgroundColor: '',
+        completedStatusColor: '',
+        completedOnSegmentColor: '',
+        completedOffSegmentColor: '',
+        completedIconColor: '',
+        completedIconBackgroundColor: '',
+        progressBarColor: '',
+        progressBarBackgroundColor: ''
     },
     argTypes: {
         colorScheme: {
@@ -48,13 +75,20 @@ export const Default: Story = {
         variant: {
             name: 'variant',
             control: 'radio',
-            options: ['default', 'compact'],
-            mapping: { 'default' : undefined }
+            options: ['default', 'verbose', 'compact']
         },
         previewState: {
             name: 'state',
             control: 'radio',
             options: ['loading', 'not started', 'in progress', 'complete', 'maxed out', 'random']
+        },
+        label: {
+            name: 'label',
+            control: 'text'
+        },
+        description: {
+            name: 'description',
+            control: 'text'
         },
         targetValue: {
             name: 'target value',
@@ -73,64 +107,365 @@ export const Default: Story = {
             control: 'radio',
             options: ['default', 'custom']
         },
-        label: {
-            name: 'label',
-            control: 'text'
-        },
-        notStartedColor: {
-            name: 'not started color',
+        notStartedStatusColor: {
+            name: 'not started - status color',
             control: 'color'
         },
-        inProgressColor: {
-            name: 'in progress color',
+        notStartedOnSegmentColor: {
+            name: 'not started - on segment color',
             control: 'color'
         },
-        completedColor: {
-            name: 'completed color',
+        notStartedOffSegmentColor: {
+            name: 'not started - off segment color',
             control: 'color'
         },
-        ...argTypesToHide(['valueProvider', 'icon', 'innerRef'])
+        notStartedIconColor: {
+            name: 'not started - icon color',
+            control: 'color'
+        },
+        notStartedIconBackgroundColor: {
+            name: 'not started - icon background color',
+            control: 'color'
+        },
+        inProgressStatusColor: {
+            name: 'in progress - status color',
+            control: 'color'
+        },
+        inProgressOnSegmentColor: {
+            name: 'in progress - on segment color',
+            control: 'color'
+        },
+        inProgressOffSegmentColor: {
+            name: 'in progress - off segment color',
+            control: 'color'
+        },
+        inProgressIconColor: {
+            name: 'in progress - icon color',
+            control: 'color'
+        },
+        inProgressIconBackgroundColor: {
+            name: 'in progress - icon background color',
+            control: 'color'
+        },
+        completedStatusColor: {
+            name: 'completed - status color',
+            control: 'color'
+        },
+        completedOnSegmentColor: {
+            name: 'completed - on segment color',
+            control: 'color'
+        },
+        completedOffSegmentColor: {
+            name: 'completed - off segment color',
+            control: 'color'
+        },
+        completedIconColor: {
+            name: 'completed - icon color',
+            control: 'color'
+        },
+        completedIconBackgroundColor: {
+            name: 'completed - icon background color',
+            control: 'color'
+        },
+        loadingIndicatorColor: {
+            name: 'loading indicator color',
+            control: 'color'
+        },
+        progressBarColor: {
+            name: 'progress bar color',
+            control: 'color'
+        },
+        progressBarBackgroundColor: {
+            name: 'progress bar background color',
+            control: 'color'
+        },
+        ...argTypesToHide([
+            'tiers', 'valueProvider', 'icon', 'notStartedColor', 'notStartedColors', 'inProgressColor', 'inProgressColors',
+            'completedColor', 'completedColors', 'style', 'innerRef'
+        ])
+    },
+    render: args => {
+        const notStartedColors: GoalColorConfiguration = {
+            statusColor: args.notStartedStatusColor,
+            onSegmentColor: args.notStartedOnSegmentColor,
+            offSegmentColor: args.notStartedOffSegmentColor,
+            iconColor: args.notStartedIconColor,
+            iconBackgroundColor: args.notStartedIconBackgroundColor
+        };
+        const inProgressColors: GoalColorConfiguration = {
+            statusColor: args.inProgressStatusColor,
+            onSegmentColor: args.inProgressOnSegmentColor,
+            offSegmentColor: args.inProgressOffSegmentColor,
+            iconColor: args.inProgressIconColor,
+            iconBackgroundColor: args.inProgressIconBackgroundColor
+        };
+        const completedColors: GoalColorConfiguration = {
+            statusColor: args.completedStatusColor,
+            onSegmentColor: args.completedOnSegmentColor,
+            offSegmentColor: args.completedOffSegmentColor,
+            iconColor: args.completedIconColor,
+            iconBackgroundColor: args.completedIconBackgroundColor
+        };
+
+        return <Layout colorScheme={args.colorScheme}>
+            <Goal
+                {...args}
+                icon={args.iconType === 'custom' ? faHeartbeat : undefined}
+                tiers={[{ targetValue: args.targetValue, maxValue: args.maxValue, color: args.completedStatusColor }]}
+                notStartedColors={notStartedColors}
+                inProgressColors={inProgressColors}
+                completedColors={completedColors}
+            />
+        </Layout>;
     }
 };
 
-export const Live: Story = {
+type GoalTieredStoryArgs = React.ComponentProps<typeof Goal> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    value: number;
+};
+
+export const Tiered: StoryObj<GoalTieredStoryArgs> = {
     args: {
-        colorScheme: 'auto'
+        colorScheme: 'auto',
+        variant: 'default',
+        value: 0
     },
     argTypes: {
         colorScheme: {
             name: 'color scheme',
             control: 'radio',
             options: ['auto', 'light', 'dark']
-        }
+        },
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'verbose', 'compact']
+        },
+        value: {
+            name: 'value',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 365
+            }
+        },
+        ...argTypesToHide([
+            'previewState', 'label', 'description', 'tiers', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon',
+            'notStartedColor', 'notStartedColors', 'inProgressColor', 'inProgressColors', 'completedColor', 'completedColors',
+            'loadingIndicatorColor', 'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
+        ])
     },
-    render: args => <Layout colorScheme={args.colorScheme}>
-        <Goal
-            label="Value From Static Provider"
-            targetValue={5}
-            maxValue={10}
-            valueProvider={createStaticIntegerValueProvider(3)}
-            icon={faDog}
-            inProgressColor="#6ddec9"
-            completedColor="#d81442"
-        />
-        <Goal
-            label="Value From Random Provider"
-            targetValue={5}
-            maxValue={10}
-            valueProvider={createRandomIntegerValueProvider(10)}
-            icon={faBicycle}
-            inProgressColor="#6dde76"
-            completedColor="#2f62e4"
-        />
-        <Goal
-            label="Value From Custom Field Provider"
-            targetValue={5}
-            maxValue={10}
-            valueProvider={createCustomFieldIntegerValueProvider('SomeCustomField')}
-            icon={faWandSparkles}
-            inProgressColor="#a4de6d"
-            completedColor="#ca19ee"
-        />
-    </Layout>
+    render: args => {
+        const createGoal = (args: GoalTieredStoryArgs) => {
+            return <Goal
+                {...args}
+                valueProvider={createStaticIntegerValueProvider(args.value)}
+                maxSegments={10}
+                inProgressColors={{
+                    statusColor: 'var(--mdhui-text-color-3)',
+                    onSegmentColor: '#43963d',
+                    offSegmentColor: 'var(--mdhui-text-color-3)',
+                    iconColor: 'var(--mdhui-text-color-3)'
+                }}
+                completedColors={{
+                    statusColor: '#ffd700',
+                    onSegmentColor: '#ffd700',
+                    iconColor: '#000',
+                    iconBackgroundColor: '#ffd700'
+                }}
+                progressBarColor="#43963d"
+            />;
+        };
+
+        const goals = [
+            createGoal({
+                ...args,
+                label: 'Connect your medical records',
+                description: 'Connect your medical records by scrolling down on your MyDataHelps Dashboard and tapping "Connect Provider".',
+                tiers: [
+                    { targetValue: 1, maxValue: 1, color: '#ffd700' }
+                ],
+                icon: faUserDoctor
+            }),
+            createGoal({
+                ...args,
+                label: 'Log your symptoms',
+                description: 'Enter daily symptoms logs to earn this badge.',
+                tiers: [
+                    { targetValue: 6, maxValue: 6, color: '#cd7f32' },
+                    {
+                        targetValue: 180, maxValue: 180, color: '#bcc6cc',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#cd7f32'
+                        }
+                    },
+                    {
+                        targetValue: 360, maxValue: 360, color: '#ffd700',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#bcc6cc'
+                        }
+                    }
+                ],
+                icon: faCalendarDays
+            }),
+            createGoal({
+                ...args,
+                label: 'Complete your surveys',
+                description: 'Complete surveys on your task list to earn this badge.',
+                tiers: [
+                    { targetValue: 23, maxValue: 23, color: '#ffd700' }
+                ],
+                icon: faSquarePollHorizontal
+            }),
+            createGoal({
+                ...args,
+                label: 'Complete weekly check-ins',
+                description: 'Complete weekly check-in surveys to earn this badge.',
+                tiers: [
+                    { targetValue: 6, maxValue: 6, color: '#cd7f32' },
+                    {
+                        targetValue: 25, maxValue: 25, color: '#bcc6cc',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#cd7f32'
+                        }
+                    },
+                    {
+                        targetValue: 50, maxValue: 50, color: '#ffd700',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#bcc6cc'
+                        }
+                    }],
+                icon: faListCheck
+            }),
+            createGoal({
+                ...args,
+                label: 'Connect your smart device',
+                description: 'Connect your smart device (e.g. Apple Watch, Fitbit) to MyDataHelps, if you own one, by selecting your device and logging in.',
+                tiers: [
+                    { targetValue: 10, maxValue: 10, color: '#cd7f32' },
+                    {
+                        targetValue: 180, maxValue: 180, color: '#bcc6cc',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#cd7f32'
+                        }
+                    },
+                    {
+                        targetValue: 360, maxValue: 360, color: '#ffd700',
+                        inProgressColors: {
+                            iconColor: '#000',
+                            iconBackgroundColor: '#bcc6cc'
+                        }
+                    }
+                ],
+                icon: faHandBackFist
+            })
+        ];
+
+        const grid = args.variant === 'compact'
+            ? <Grid gap={0} style={{ margin: '16px' }}>
+                {goals.map((goal, index) =>
+                    <Grid.Column key={index} span={2.4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {goal}
+                    </Grid.Column>
+                )}
+            </Grid>
+            : <Grid gap={0}>
+                <Grid.Column span={12}>{goals}</Grid.Column>
+            </Grid>;
+
+        return <Layout colorScheme={args.colorScheme}>{grid}</Layout>;
+    }
+};
+
+type GoalLiveStoryArgs = React.ComponentProps<typeof Goal> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+};
+
+export const Live: StoryObj<GoalLiveStoryArgs> = {
+    args: {
+        colorScheme: 'auto',
+        variant: 'default' as any
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'verbose', 'compact'],
+            mapping: { 'default': undefined }
+        },
+        ...argTypesToHide([
+            'previewState', 'label', 'description', 'tiers', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon',
+            'notStartedColor', 'notStartedColors', 'inProgressColor', 'inProgressColors', 'completedColor', 'completedColors',
+            'loadingIndicatorColor', 'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
+        ])
+    },
+    render: args => {
+        const createGoal = (args: GoalLiveStoryArgs, inProgressColor: ColorDefinition, completedColor: ColorDefinition) => {
+            return <Goal
+                {...args}
+                inProgressColors={{
+                    statusColor: inProgressColor,
+                    onSegmentColor: inProgressColor,
+                    iconColor: inProgressColor
+                }}
+                completedColors={{
+                    statusColor: completedColor,
+                    onSegmentColor: completedColor,
+                    iconColor: completedColor
+                }}
+            />;
+        };
+
+        const goals = [
+            createGoal({
+                ...args,
+                label: 'Value From Static Provider',
+                description: 'This goal is populated with a static value.',
+                tiers: [{ targetValue: 5, maxValue: 10, color: '#d81442' }],
+                valueProvider: createStaticIntegerValueProvider(3),
+                icon: faDog
+            }, '#6ddec9', '#d81442'),
+            createGoal({
+                ...args,
+                label: 'Value From Random Provider',
+                description: 'This goal is populated with a random value.',
+                tiers: [{ targetValue: 5, maxValue: 10, color: '#2f62e4' }],
+                valueProvider: createRandomIntegerValueProvider(10),
+                icon: faBicycle
+            }, '#6dde76', '#2f62e4'),
+            createGoal({
+                ...args,
+                label: 'Value From Custom Field Provider',
+                description: 'This goal is populated with a value from a participant custom field.',
+                tiers: [{ targetValue: 5, maxValue: 10, color: '#ca19ee' }],
+                valueProvider: createCustomFieldIntegerValueProvider('SomeCustomField'),
+                icon: faWandSparkles
+            }, '#a4de6d', '#ca19ee')
+        ];
+
+        const grid = args.variant === 'compact'
+            ? <Grid gap={0} style={{ margin: '16px' }}>
+                {goals.map((goal, index) =>
+                    <Grid.Column key={index} span={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {goal}
+                    </Grid.Column>
+                )}
+            </Grid>
+            : <Grid gap={0}>
+                <Grid.Column span={12}>{goals}</Grid.Column>
+            </Grid>;
+
+        return <Layout colorScheme={args.colorScheme}>{grid}</Layout>;
+    }
 };
