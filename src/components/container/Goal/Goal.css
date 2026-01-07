@@ -3,49 +3,74 @@
     align-items: center;
     justify-content: left;
     gap: 8px;
-    padding: 16px;
+    padding: 8px 16px;
 }
 
-.mdhui-goal.mdhui-goal-compact {
-    flex-direction: column;
+.mdhui-goal.verbose {
+    align-items: flex-start;
+}
+
+.mdhui-goal.compact {
+    justify-content: center;
 }
 
 .mdhui-goal-chart {
     position: relative;
     height: 80px;
     width: 80px;
+    flex-shrink: 0;
+}
+
+.mdhui-goal-chart.compact {
+    height: 56px;
+    width: 56px;
 }
 
 .mdhui-goal-chart-icon-wrapper {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    top: 16%;
+    left: 16%;
+    height: 68%;
+    width: 68%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
 }
 
 .mdhui-goal-chart-icon {
     font-size: 34px;
 }
 
-.mdhui-goal-ratio, .mdhui-goal-ratio-loading {
+.mdhui-goal-chart-icon.compact {
+    font-size: 24px;
+}
+
+.mdhui-goal-ratio-loading, .mdhui-goal-ratio {
     height: 40px;
     line-height: 40px;
 }
 
-.mdhui-goal-compact .mdhui-goal-ratio, .mdhui-goal-compact .mdhui-goal-ratio-loading {
-    height: 18px;
-    line-height: 18px;
+.mdhui-goal-ratio-loading.compact, .mdhui-goal-ratio.compact {
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.mdhui-goal-ratio-loading {
+    font-size: 1.5em;
+}
+
+.mdhui-goal-ratio-loading.compact {
+    font-size: 0.9em;
 }
 
 .mdhui-goal-ratio {
     font-size: 2em;
 }
 
-.mdhui-goal-compact .mdhui-goal-ratio {
+.mdhui-goal-ratio.compact {
     font-size: 0.9em;
     font-weight: bold;
 }
@@ -54,19 +79,71 @@
     padding: 0 4px;
 }
 
-.mdhui-goal-compact .mdhui-goal-ratio-divider {
+.mdhui-goal-ratio-divider.compact {
     padding: 0 2px;
     font-weight: bold;
 }
 
-.mdhui-goal-ratio-loading {
-    font-size: 1.5em;
+.mdhui-goal-info {
+    flex-grow: 1;
 }
 
-.mdhui-goal-compact .mdhui-goal-ratio-loading {
-    font-size: 0.9em;
+.mdhui-goal-info.verbose {
+    padding-top: 4px;
 }
 
-.mdhui-goal-compact .mdhui-goal-name {
-    display: none;
+.mdhui-goal-name.verbose {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.mdhui-goal-description {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-2);
+}
+
+.mdhui-goal-progress-wrapper {
+    position: relative;
+    margin: 4px 0;
+    height: 12px;
+}
+
+.mdhui-goal-progress-bar-wrapper {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 2px);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mdhui-goal-progress-bar {
+    display: inline-block;
+    position: absolute;
+    height: 100%;
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+.mdhui-goal-progress-badges {
+    display: inline-block;
+    position: absolute;
+    top: -4px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 2px);
+}
+
+.mdhui-goal-progress-badge {
+    display: inline-block;
+    position: absolute;
+    height: 100%;
+    width: 4px;
+    border: 2px solid #555;
+    border-radius: 8px;
+    transform: translate(-50%, 0);
 }
