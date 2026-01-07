@@ -29,7 +29,7 @@ export { default as GarminDevices } from "./GarminDevices"
 export { default as GarminMonthCharts } from "./GarminMonthCharts"
 export { default as GlucoseChart } from "./GlucoseChart"
 export { default as GlucoseDayCoordinator, GlucoseContext, GlucoseDayCoordinatorPreviewState } from "./GlucoseDayCoordinator"
-export { default as Goal, GoalPreviewState } from "./Goal"
+export { default as Goal, GoalColorConfiguration, GoalPreviewState, GoalTarget } from "./Goal";
 export { default as HealthConnectPhrSync } from "./HealthConnectPhrSync"
 export { default as HealthPreviewSection } from "./HealthPreviewSection"
 export { default as InboxItemList, InboxItemListPreviewState } from "./InboxItemList"
