@@ -18,7 +18,7 @@ export interface GoalColorConfiguration {
     iconBackgroundColor?: ColorDefinition;
 }
 
-function isGoalColorConfiguration(obj: ColorDefinition | GoalColorConfiguration | undefined): obj is GoalColorConfiguration {
+export function isGoalColorConfiguration(obj: ColorDefinition | GoalColorConfiguration | undefined): obj is GoalColorConfiguration {
     return obj !== undefined && typeof obj === 'object' && !('lightMode' in obj || 'darkMode' in obj);
 }
 
