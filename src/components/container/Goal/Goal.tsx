@@ -18,9 +18,8 @@ export interface GoalColorConfiguration {
     iconBackgroundColor?: ColorDefinition;
 }
 
-function isGoalColorConfiguration(obj: any): obj is GoalColorConfiguration {
-    if (!obj || typeof obj === 'string') return false;
-    return 'statusColor' in obj || 'onSegmentColor' in obj || 'offSegmentColor' in obj || 'iconColor' in obj || 'iconBackgroundColor' in obj;
+function isGoalColorConfiguration(obj: ColorDefinition | GoalColorConfiguration | undefined): obj is GoalColorConfiguration {
+    return obj !== undefined && typeof obj === 'object' && !('lightMode' in obj || 'darkMode' in obj);
 }
 
 export interface GoalTarget {
