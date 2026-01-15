@@ -329,19 +329,26 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
                 {...args}
                 valueProvider={createStaticIntegerValueProvider(args.value)}
                 maxSegments={10}
+                notStartedColor={{
+                    statusColor: { lightMode: '#59595d', darkMode: '#ddd' },
+                    offSegmentColor: { lightMode: '#ddd', darkMode: '#59595d' },
+                    iconColor: { lightMode: '#000', darkMode: '#ccc' }
+                }}
                 inProgressColor={{
-                    statusColor: 'var(--mdhui-text-color-3)',
+                    statusColor: { lightMode: '#59595d', darkMode: '#ddd' },
                     onSegmentColor: '#43963d',
-                    offSegmentColor: 'var(--mdhui-text-color-3)',
-                    iconColor: 'var(--mdhui-text-color-3)'
+                    offSegmentColor: { lightMode: '#ddd', darkMode: '#59595d' },
+                    iconColor: { lightMode: '#000', darkMode: '#ccc' }
                 }}
                 completedColor={{
                     statusColor: '#ffd700',
                     onSegmentColor: '#ffd700',
+                    offSegmentColor: { lightMode: '#ddd', darkMode: '#59595d' },
                     iconColor: '#000',
                     iconBackgroundColor: '#ffd700'
                 }}
                 progressBarColor="#43963d"
+                // progressBarBackgroundColor="#e1fad4"
             />;
         };
 
@@ -350,9 +357,7 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
                 ...args,
                 label: 'Connect your medical records',
                 description: 'Connect your medical records by scrolling down on your MyDataHelps Dashboard and tapping "Connect Provider".',
-                targetValue: [
-                    { targetValue: 1, color: '#ffd700' }
-                ],
+                targetValue: 1,
                 maxValue: 1,
                 icon: faUserDoctor
             }),
@@ -384,9 +389,7 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
                 ...args,
                 label: 'Complete your surveys',
                 description: 'Complete surveys on your task list to earn this badge.',
-                targetValue: [
-                    { targetValue: 23, color: '#ffd700' }
-                ],
+                targetValue: 23,
                 maxValue: 23,
                 icon: faSquarePollHorizontal
             }),

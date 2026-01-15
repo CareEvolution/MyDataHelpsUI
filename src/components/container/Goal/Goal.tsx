@@ -187,13 +187,13 @@ export default function Goal(props: GoalProps) {
         const progressBarColor = resolveColor(layoutContext.colorScheme, props.progressBarColor) ?? onSegmentColor;
         const progressBarBackgroundColor = resolveColor(layoutContext.colorScheme, props.progressBarBackgroundColor) ?? offSegmentColor;
 
-        return <div className="mdhui-goal" style={props.style} ref={props.innerRef}>
+        return <div className="mdhui-goal verbose" style={props.style} ref={props.innerRef}>
             <div>
                 {createChart('compact')}
                 {createRatioDisplay('compact')}
             </div>
-            <div className="mdhui-goal-info">
-                <div className="mdhui-goal-name">{props.label}</div>
+            <div className="mdhui-goal-info verbose">
+                <div className="mdhui-goal-name verbose">{props.label}</div>
                 <div className="mdhui-goal-description">{props.description}</div>
                 <div className="mdhui-goal-progress-wrapper">
                     <div className="mdhui-goal-progress-bar-wrapper" style={{ background: progressBarBackgroundColor }}>
