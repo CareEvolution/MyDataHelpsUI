@@ -214,7 +214,7 @@ export default function Goal(props: GoalProps) {
     }
 
     if (props.variant === 'compact') {
-        return <div className="mdhui-goal" style={props.style} ref={props.innerRef}>
+        return <div className="mdhui-goal compact" style={props.style} ref={props.innerRef}>
             <div>
                 {createChart('compact')}
                 {createRatioDisplay('compact')}

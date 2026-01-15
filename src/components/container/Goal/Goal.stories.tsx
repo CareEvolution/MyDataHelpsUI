@@ -442,11 +442,7 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
 
         const grid = args.variant === 'compact'
             ? <Grid gap={0}>
-                {goals.map((goal, index) =>
-                    <Grid.Column key={index} span={2.4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {goal}
-                    </Grid.Column>
-                )}
+                {goals.map((goal, index) => <Grid.Column key={index} span={2.4}>{goal}</Grid.Column>)}
             </Grid>
             : <Grid gap={0}>
                 <Grid.Column span={12}>{goals}</Grid.Column>
@@ -519,11 +515,7 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
 
         const grid = args.variant === 'compact'
             ? <Grid gap={0} style={{ margin: '16px' }}>
-                {goals.map((goal, index) =>
-                    <Grid.Column key={index} span={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {goal}
-                    </Grid.Column>
-                )}
+                {goals.map((goal, index) => <Grid.Column key={index} span={4}>{goal}</Grid.Column>)}
             </Grid>
             : <Grid gap={0}>
                 <Grid.Column span={12}>{goals}</Grid.Column>
