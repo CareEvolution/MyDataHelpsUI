@@ -160,7 +160,7 @@ export default function Goal(props: GoalProps) {
                         cx="50%" cy="50%"
                         innerRadius={variant === 'compact' ? 22 : 30} outerRadius={variant === 'compact' ? 28 : 40}
                         startAngle={450} endAngle={90} paddingAngle={5}
-                        isAnimationActive={false}
+                        isAnimationActive={!loading && scaledNumerator > 0} animationBegin={0} animationDuration={500}
                         strokeWidth={0}
                     >
                         {data.map((entry, index) => <Cell key={index} style={{ fill: entry.color }} />)}
