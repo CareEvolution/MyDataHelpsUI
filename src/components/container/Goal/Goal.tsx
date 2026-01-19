@@ -76,6 +76,8 @@ export default function Goal(props: GoalProps) {
     const defaultInProgressColor = 'var(--mdhui-color-primary)';
     const defaultCompletedColor = 'var(--mdhui-color-success)';
 
+    // These next few blocks of code are for backward compatibility.  When necessary, they map individual ColorDefinitions onto
+    // the new GoalColorConfiguration model in a way that retains backward compatible coloring behavior.
     const notStartedColors: GoalColorConfiguration = isGoalColorConfiguration(props.notStartedColor) ? props.notStartedColor : {
         statusColor: props.notStartedColor,
         onSegmentColor: props.notStartedColor,
