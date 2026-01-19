@@ -114,6 +114,10 @@ export default function Goal(props: GoalProps) {
 
     const loadingIndicatorColor = resolveColor(layoutContext.colorScheme, props.loadingIndicatorColor) ?? defaultColor;
 
+    // GoalColorConfiguration objects consist of zero or more potentially unresolved ColorDefinition properties. In order
+    // to use those colors, they each need to be resolved using the current color scheme.  This helper function takes a
+    // GoalColorConfiguration object, loops through all of its properties, resolves each color, and creates a return object
+    // that has the same keys as the input, but with the respective resolved colors set for each.
     const resolveGoalColors = (colors: GoalColorConfiguration | undefined): { [key in keyof GoalColorConfiguration]: string | undefined } => {
         if (colors === undefined) return {};
         return Object.fromEntries(Object.entries(colors).map(([key, value]) => {
