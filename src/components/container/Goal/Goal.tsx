@@ -73,6 +73,9 @@ export default function Goal(props: GoalProps) {
     }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
 
     const defaultColor = 'var(--mdhui-text-color-3)';
+    const defaultInProgressColor = 'var(--mdhui-color-primary)';
+    const defaultCompletedColor = 'var(--mdhui-color-success)';
+
     const notStartedColors: GoalColorConfiguration = isGoalColorConfiguration(props.notStartedColor) ? props.notStartedColor : {
         statusColor: props.notStartedColor,
         onSegmentColor: props.notStartedColor,
@@ -80,14 +83,12 @@ export default function Goal(props: GoalProps) {
         iconColor: props.notStartedColor
     };
 
-    const defaultInProgressColor = 'var(--mdhui-color-primary)';
     const inProgressColors: GoalColorConfiguration = isGoalColorConfiguration(props.inProgressColor) ? props.inProgressColor : {
         statusColor: props.inProgressColor,
         onSegmentColor: props.inProgressColor,
         iconColor: props.inProgressColor
     };
 
-    const defaultCompletedColor = 'var(--mdhui-color-success)';
     const completedColors: GoalColorConfiguration = isGoalColorConfiguration(props.completedColor) ? props.completedColor : {
         statusColor: props.completedColor,
         onSegmentColor: props.completedColor,
