@@ -18,6 +18,12 @@ export interface GoalColorConfiguration {
     iconBackgroundColor?: ColorDefinition;
 }
 
+/**
+ * This function lets us distinguish between ColorDefinition values and newer GoalColorConfiguration values, since some properties can be set to either.
+ *
+ * A key differentiator is whether the lightMode or darkMode properties are present. An empty object ({}) could technically be either one, but we assume
+ * it is a GoalColorConfiguration and return true since it functions just fine as a GoalColorConfiguration.
+ */
 export function isGoalColorConfiguration(obj: ColorDefinition | GoalColorConfiguration | undefined): obj is GoalColorConfiguration {
     return obj !== undefined && typeof obj === 'object' && !('lightMode' in obj || 'darkMode' in obj);
 }
