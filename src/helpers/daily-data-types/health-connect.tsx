@@ -15,7 +15,7 @@ import {
 import { DailyDataType, DailyDataTypeDefinition } from '../daily-data-types';
 import { faBed, faFireFlameCurved, faHeartbeat, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from './formatters';
+import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -36,7 +36,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: 'sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [400, 540]
     },
     {
@@ -46,7 +46,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: 'rem-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -56,7 +56,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: 'deep-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {
@@ -66,7 +66,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: 'light-sleep-time',
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [180, 240]
     },
     {

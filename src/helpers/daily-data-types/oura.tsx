@@ -2,7 +2,7 @@ import { faBed, faFireFlameCurved, faHeartbeat, faShoePrints } from "@fortawesom
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { ouraActiveCaloriesBurnedDataProvider, ouraRestingHeartRateDataProvider, ouraSleepMinutesDataProvider, ouraStepsDataProvider } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { defaultFormatter, heartRateFormatter, minutesFormatter, sleepYAxisConverter } from "./formatters";
+import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import React from "react";
 import { simpleAvailabilityCheck } from "./availability-check";
 
@@ -34,7 +34,7 @@ let ouraTypeDefinitions: DailyDataTypeDefinition[] = [
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
-        yAxisConverter: sleepYAxisConverter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [400, 540],
         requiresV2Api: true
     },
