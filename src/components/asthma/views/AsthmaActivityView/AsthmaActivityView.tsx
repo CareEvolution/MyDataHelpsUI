@@ -32,11 +32,11 @@ export default function (props: AsthmaActivityViewProps) {
         asthmaDataService.loadParticipant().then(participant => {
             setBaseline(participant.getStepsBaseline());
         });
-    });
+    }, [], [props.previewState]);
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar variant="compressed" showCloseButton={true} backgroundColor="var(--mdhui-background-color-0)">
-            <Title order={1}>{language('asthma-activity-view-title')}</Title>
+            <Title style={{ textAlign: 'left' }} order={1}>{language('asthma-activity-view-title')}</Title>
         </NavigationBar>
         <RecentDailyDataBarChart
             previewState={props.previewState === 'default' ? 'loaded with data' : undefined}
