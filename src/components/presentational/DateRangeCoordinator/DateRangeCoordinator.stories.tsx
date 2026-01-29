@@ -9,7 +9,9 @@ import { SurveyAnswer } from "@careevolution/mydatahelps-js";
 import { noop } from "../../../helpers/functions";
 
 export default { title: "Presentational/DateRangeCoordinator", component: DateRangeCoordinator, parameters: { layout: 'fullscreen' } };
-let render = (args: DateRangeCoordinatorProps) => <Layout><DateRangeCoordinator {...args} /></Layout>
+const render = (args: DateRangeCoordinatorProps) => <Layout>
+    <DateRangeCoordinator {...args} initialIntervalStart={args.initialIntervalStart ? new Date(args.initialIntervalStart) : undefined} />
+</Layout>;
 
 let children = <Card>
 	<DailyDataChart title="Steps"

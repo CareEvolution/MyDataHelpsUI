@@ -31,6 +31,8 @@ export default function DateRangeCoordinator(props: DateRangeCoordinatorProps) {
     const [intervalStart, setIntervalStart] = useState<Date>();
 
     useEffect(() => {
+        // We can't use the existing helper in get-interval-start because this component works
+        // differently in the "day" and "6 month" cases.
         const getDefaultIntervalStart = (): Date => {
             if (props.intervalType === "Day") {
                 return startOfToday();
