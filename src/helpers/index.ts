@@ -6,7 +6,7 @@ export * from './BasicPointsAndBadges';
 export { default as getDayKey } from './get-day-key';
 export * from './get-interval-start';
 export * from './colors';
-export * from './blood-pressure-data-providers'
+export * from './blood-pressure-data-providers';
 export * from './query-all-survey-answers';
 export * from './query-latest-survey-answers-by-date';
 export * from './Initialization';
@@ -28,3 +28,4 @@ export * from './image';
 export * from './news-feed';
 export * from './regex';
 export * from './document-library';
+export * from './insights';

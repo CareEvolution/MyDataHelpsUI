@@ -3,7 +3,7 @@ import { Card, DateRangeCoordinator, Layout } from '../../presentational';
 import SurveyAnswerChart, { SurveyAnswerChartProps } from './SurveyAnswerChart';
 import { Meta, StoryObj } from '@storybook/react';
 import { argTypesToHide } from '../../../../.storybook/helpers';
-import { generateSurveyAnswers } from './SurveyAnswerChart.previewdata';
+import { generateSurveyAnswers } from '../../../helpers/survey-answer';
 
 type SurveyAnswerChartStoryArgs = ComponentProps<typeof SurveyAnswerChart> & {
     colorScheme: 'auto' | 'light' | 'dark';
@@ -189,7 +189,7 @@ export const FFWEL: Story = {
                 }] : undefined
             },
             expectedDataInterval: { months: 1 },
-            previewDataProvider: args.previewState ? (startDate: Date, endDate: Date) => {
+            previewDataProvider: args.previewState ? async (startDate: Date, endDate: Date) => {
                 return generateSurveyAnswers(startDate, endDate, ['CreativeSelf', 'SocialSelf', 'CopingSelf'], 10, 100, { months: 1 });
             } : undefined
         };
@@ -273,7 +273,7 @@ export const DailyPain: Story = {
                 }] : undefined
             },
             expectedDataInterval: { days: 1 },
-            previewDataProvider: args.previewState ? (startDate: Date, endDate: Date) => {
+            previewDataProvider: args.previewState ? async (startDate: Date, endDate: Date) => {
                 return generateSurveyAnswers(startDate, endDate, ['PainToday'], 0, 10, { days: 1 });
             } : undefined
         };
