@@ -1,19 +1,30 @@
 export type ColorDefinition = string | { lightMode?: string, darkMode?: string }
 
 export function resolveColor(colorScheme: "light" | "dark", colorDefinition?: ColorDefinition): string | undefined {
-    if (!colorDefinition) {
-        return undefined;
-    }
-    if (typeof colorDefinition === 'string' || colorDefinition instanceof String) {
-        return colorDefinition as string;
-    }
-    if (colorScheme === "dark" && colorDefinition.darkMode) {
-        return colorDefinition.darkMode;
-    }
+    const resolvedColor = rawResolveColor(colorScheme, colorDefinition);
+    return isColorValid(resolvedColor) ? resolvedColor : undefined;
+}
+
+function rawResolveColor(colorScheme: "light" | "dark", colorDefinition?: ColorDefinition): string | undefined {
+    if (!colorDefinition) return undefined;
+    if (typeof colorDefinition === "string") return colorDefinition;
+    if (colorScheme === "dark" && colorDefinition.darkMode) return colorDefinition.darkMode;
     return colorDefinition.lightMode || colorDefinition.darkMode;
 }
 
-var colorAssortment = [
+function isColorValid(color: string | undefined): boolean {
+    if (!color) return false;
+
+    // Allow CSS variables syntactically.
+    if (color.trim().startsWith("var(")) return true;
+
+    // Otherwise validate the raw color.
+    const test = new Option().style;
+    test.color = color;
+    return !!test.color;
+}
+
+const colorAssortment = [
     "#c4291c",
     "#e35c33",
     "#5db37e",
