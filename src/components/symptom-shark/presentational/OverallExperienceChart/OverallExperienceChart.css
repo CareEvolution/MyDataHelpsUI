@@ -1,5 +1,6 @@
 .mdhui-ss-oe-chart {
     position: relative;
+    page-break-inside: avoid;
 }
 
 .mdhui-ss-oe-chart .container {
@@ -54,7 +55,6 @@
     padding: 16px;
     box-sizing: border-box;
     padding-left: 64px;
-    page-break-inside: avoid;
 }
 
 .mdhui-ss-oe-chart-inner .mdhui-ss-oe-chart-x-axis-line {
