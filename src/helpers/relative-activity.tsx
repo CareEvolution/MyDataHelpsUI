@@ -33,11 +33,13 @@ export function queryRelativeActivity(startDate: Date, endDate: Date, dataTypes:
             if (results[index].status === "fulfilled") {
                 relativeActivityResults[dataType.dailyDataType] = {};
                 const dataTypeData = (results[index] as PromiseFulfilledResult<DailyDataQueryResult>).value;
+                const threshold = dataType.threshold === "30DayAverage" || dataType.threshold === undefined
+                    ? calculatePrevious30DayAverage(dataTypeData, endDate)
+                    : dataType.threshold > 0 ? dataType.threshold : undefined;
                 let currentDate = startDate;
                 while (currentDate <= endDate) {
                     const dayKey = getDayKey(currentDate);
                     const value = dataTypeData?.[dayKey] ?? 0;
-                    let threshold = (dataType.threshold === "30DayAverage" || dataType.threshold === undefined) ? calculatePrevious30DayAverage(dataTypeData, currentDate) : dataType.threshold;
                     relativeActivityResults[dataType.dailyDataType][dayKey] = {
                         value: value
                     };

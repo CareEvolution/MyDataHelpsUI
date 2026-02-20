@@ -20,12 +20,14 @@
     width: 100%;
 }
 
-.mdhui-micro-trend .mdhui-micro-trend-label {
+.mdhui-micro-trend .mdhui-micro-trend-header {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
     font-size: .88em;
-    color: var(--mdhui-text-color-2);
     font-weight: 600;
     z-index: 1;
-    position: relative;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

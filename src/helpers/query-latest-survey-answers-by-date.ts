@@ -3,6 +3,7 @@ import queryAllSurveyAnswers from './query-all-survey-answers';
 import { getDayKey } from './index';
 import { add, eachDayOfInterval, endOfDay, isValid, startOfDay } from 'date-fns';
 import { parseISOWithoutOffset } from './date-helpers';
+import { generateSurveyAnswers } from './survey-answer';
 
 export default async function queryLatestSurveyAnswersByDate(
     startDate?: Date,
@@ -10,10 +11,12 @@ export default async function queryLatestSurveyAnswersByDate(
     surveyName?: string | string[],
     stepIdentifier?: string | string[],
     resultIdentifier?: string | string[],
-    useEventAsDate = false
+    useEventAsDate = false,
+    preview = false
 ): Promise<Partial<Record<string, SurveyAnswer[]>>> {
 
     if (!surveyName && !stepIdentifier && !resultIdentifier) return {};
+    if (preview) return generateLatestSurveyAnswersByDate(startDate, endDate, resultIdentifier);
 
     const query: SurveyAnswersQuery = {};
 
@@ -68,4 +71,15 @@ export default async function queryLatestSurveyAnswersByDate(
         }
         return surveyAnswersByDate;
     }, {} as Record<string, SurveyAnswer[]>);
+}
+
+async function generateLatestSurveyAnswersByDate(startDate?: Date, endDate?: Date, resultIdentifier?: string | string[]): Promise<Partial<Record<string, SurveyAnswer[]>>> {
+    const genStartDate = startDate ?? add(new Date(), { days: -7 });
+    const genEndDate = endDate ?? new Date();
+    const genResultIdentifiers = Array.isArray(resultIdentifier) ? resultIdentifier : resultIdentifier ? [resultIdentifier] : ['result'];
+    const surveyAnswers = generateSurveyAnswers(genStartDate, genEndDate, genResultIdentifiers, 0, 10, { days: 1 })[0];
+    return surveyAnswers.reduce((surveyAnswersByDate, surveyAnswer) => {
+        surveyAnswersByDate[getDayKey(surveyAnswer.date)] = [surveyAnswer];
+        return surveyAnswersByDate;
+    }, {} as Partial<Record<string, SurveyAnswer[]>>);
 }

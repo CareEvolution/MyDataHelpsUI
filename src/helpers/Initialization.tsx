@@ -3,13 +3,15 @@ import { DependencyList, useEffect, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
 export function useInitializeView(initialize: () => void, additionalEvents?: EventName[], dependencies?: DependencyList): void {
-    const isInitialMount = useRef(true);
+    const initialized = useRef<boolean>(false);
 
     useEffect(() => {
-        let debouncedInitialize = debounce(initialize, 500);
+        let debouncedInitialize = debounce(() => {
+            initialized.current = true;
+            initialize();
+        }, 500);
 
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
+        if (!initialized.current) {
             debouncedInitialize();
         } else {
             initialize();
@@ -21,10 +23,11 @@ export function useInitializeView(initialize: () => void, additionalEvents?: Eve
         });
 
         return () => {
+            debouncedInitialize.cancel();
             MyDataHelps.off('applicationDidBecomeVisible', debouncedInitialize);
             additionalEvents?.forEach(additionalEvent => {
                 MyDataHelps.off(additionalEvent, debouncedInitialize);
             });
-        }
+        };
     }, dependencies ?? []);
 }
