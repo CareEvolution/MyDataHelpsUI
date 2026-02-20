@@ -9,7 +9,7 @@ export interface SurveyDataType {
     useEventAsDate?: boolean;
 }
 
-export function isSurveyDataType(dataType: string | SurveyDataType): dataType is SurveyDataType {
+export function isSurveyDataType<T>(dataType: T | SurveyDataType): dataType is SurveyDataType {
     return !!dataType && (dataType as any).surveyName !== undefined;
 }
 
