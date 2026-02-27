@@ -1,6 +1,5 @@
-import { DailyDataType } from '../daily-data-types';
 import { DailyDataProvider, DailyDataQueryResult } from '../query-daily-data';
-import { SurveyDataType } from './survey-data-type';
+import { SurveyDataType } from '../survey-data-type';
 import { InsightMatrixValueCalculator } from './value-calculator';
 import { InsightMatrixValueFormatter } from './value-formatter';
 import { InsightMatrixValueEvaluator } from './value-evaluator';

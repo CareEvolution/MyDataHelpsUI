@@ -1,5 +1,5 @@
 import { add, startOfToday } from 'date-fns';
-import { DailyDataQueryResult, DailyDataType, generateSampleData, InsightMatrixDataConfiguration, InsightMatrixDataProvider, isSurveyDataType, queryPreviewDailyData } from '../../../helpers';
+import { DailyDataQueryResult, generateSampleData, InsightMatrixDataConfiguration, InsightMatrixDataProvider, isSurveyDataType, queryPreviewDailyData } from '../../../helpers';
 
 const endDate = startOfToday();
 const startDate = add(endDate, { days: -28 });

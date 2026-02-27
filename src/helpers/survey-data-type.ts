@@ -1,6 +1,6 @@
-import { DailyDataProvider, DailyDataQueryResult } from '../query-daily-data';
+import { DailyDataProvider, DailyDataQueryResult } from './query-daily-data';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import queryLatestSurveyAnswersByDate from '../query-latest-survey-answers-by-date';
+import queryLatestSurveyAnswersByDate from './query-latest-survey-answers-by-date';
 
 export interface SurveyDataType {
     surveyName: string;
