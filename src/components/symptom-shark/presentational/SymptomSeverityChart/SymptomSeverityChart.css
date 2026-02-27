@@ -21,7 +21,6 @@
     padding: 16px;
     box-sizing: border-box;
     padding-left: 64px;
-    page-break-inside: avoid;
 }
 
 .mdhui-ss-severity-chart .mdhui-ss-severity-chart-inner .mdhui-ss-severity-chart-x-axis-line {
