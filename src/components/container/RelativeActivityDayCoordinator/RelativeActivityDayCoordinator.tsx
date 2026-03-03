@@ -74,7 +74,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
         {!availableDataTypes && <LoadingIndicator />}
         {availableDataTypes &&
             <RelativeActivityContext.Provider value={{ dataTypes: availableDataTypes, data: relativeActivityData }}>
-                <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
+                <DateRangeCoordinator intervalType="Day" useCustomNavigator={true}>
                     <RelativeActivityDayNavigator
                         loadData={loadData}
                         dayRenderer={dayRenderer}

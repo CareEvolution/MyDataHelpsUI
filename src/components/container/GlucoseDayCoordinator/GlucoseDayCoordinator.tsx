@@ -52,7 +52,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
 
     return <div ref={props.innerRef}>
         <GlucoseContext.Provider value={{ readings: glucoseReadings, recentAverage: recentAverage }}>
-            <DateRangeCoordinator initialIntervalStart={startOfToday()} intervalType="Day" useCustomNavigator={true}>
+            <DateRangeCoordinator intervalType="Day" useCustomNavigator={true}>
                 <GlucoseDayNavigator
                     minimumDate={props.minimumDate}
                     loadData={loadData}
