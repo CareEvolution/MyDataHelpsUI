@@ -211,7 +211,7 @@ export default function (props: AsthmaProviderReportProps) {
 
     const openPdf = (deviceInfo: DeviceInfo) => {
         let fileName = `AsthmaTool-ProviderReport-${formatISO(new Date(), {representation: 'date'})}`;
-        let pdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf&fileName=" + encodeURIComponent(fileName);
+        let pdfUrl = MyDataHelps.baseUrl + "WebVisualization/WebVisualizationPDF?patientID=" + participant!.getId() + "&modelType=VisualizationModel&visualizationKey=Shared.HtmlToPdf&parameters=" + encodeURIComponent(JSON.stringify({ fileName }));
         if (deviceInfo && ['Android', 'iOS'].includes(deviceInfo.platform)) {
             // @ts-ignore
             window.webkit.messageHandlers.OpenFile.postMessage({'url': pdfUrl});
