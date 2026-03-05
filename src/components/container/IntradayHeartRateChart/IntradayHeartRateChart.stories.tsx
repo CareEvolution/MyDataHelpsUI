@@ -18,7 +18,7 @@ const renderDefault = (args: IntradayHeartRateChartProps) => <Layout colorScheme
 
 const renderDRC = (args: IntradayHeartRateChartProps) => <Layout colorScheme='auto'>
 	<Card>
-		<DateRangeCoordinator intervalType={'Day'} initialIntervalStart={new Date()}>
+		<DateRangeCoordinator intervalType="Day">
 			<IntradayHeartRateChart {...args} />
 		</DateRangeCoordinator>
 	</Card>

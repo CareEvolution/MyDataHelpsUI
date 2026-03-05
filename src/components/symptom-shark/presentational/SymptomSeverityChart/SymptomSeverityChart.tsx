@@ -91,7 +91,7 @@ export default function (props: SymptomSeverityChartProps) {
         return null;
     }
 
-    return <div ref={props.innerRef} className={"mdhui-ss-severity-chart" + (props.variant == "monthReport" ? " mdhui-ss-severity-chart-month-report" : "")} >
+    return <div ref={props.innerRef} className={"mdhui-ss-severity-chart" + (props.variant == "monthReport" ? " mdhui-ss-severity-chart-month-report" : "")} style={{ breakInside: 'avoid' }}>
         <CardTitle title={props.symptom.name + " " + language("severity")} />
         {props.symptom.severityTracking == "3PointScale" &&
             <>
