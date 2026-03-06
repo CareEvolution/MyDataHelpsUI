@@ -45,4 +45,3 @@ export async function getPreviewDataFromProvider(previewState: SurveyAnswerChart
     }
 
     return surveyAnswers;
-}

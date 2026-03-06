@@ -1,17 +1,17 @@
 import { describe, expect, it } from '@jest/globals';
-import { getSurveyDataProvider, isSurveyDataType, SurveyDataType } from '../../../src/helpers/insight-matrix/survey-data-type';
-import getDayKey from '../../../src/helpers/get-day-key';
-import { DailyDataType } from '../../../src/helpers/daily-data-types';
+import { getSurveyDataProvider, isSurveyDataType, SurveyDataType } from '../../src/helpers/survey-data-type';
+import getDayKey from '../../src/helpers/get-day-key';
+import { DailyDataType } from '../../src/helpers/daily-data-types';
 import { add, formatISO, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import queryLatestSurveyAnswersByDate from '../../../src/helpers/query-latest-survey-answers-by-date';
+import queryLatestSurveyAnswersByDate from '../../src/helpers/query-latest-survey-answers-by-date';
 
-jest.mock('../../../src/helpers/query-latest-survey-answers-by-date', () => ({
+jest.mock('../../src/helpers/query-latest-survey-answers-by-date', () => ({
     __esModule: true,
     default: jest.fn()
 }));
 
-describe('Insight Matrix - Survey Data Type Tests', () => {
+describe('Survey Data Type Tests', () => {
 
     const queryLatestSurveyAnswersByDateMock = queryLatestSurveyAnswersByDate as jest.Mock;
 
