@@ -1,6 +1,5 @@
 import React, { createContext, DependencyList, useContext, useState } from 'react';
 import { checkDailyDataAvailability, queryRelativeActivity, RelativeActivityDataType, RelativeActivityQueryResult, useInitializeView } from '../../../helpers';
-import { startOfToday } from 'date-fns';
 import { DateRangeContext, DateRangeCoordinator, LoadingIndicator, SparkBarChart, SparkBarChartBar } from '../../presentational';
 import { WeeklyDayNavigator } from '../../container';
 
@@ -48,10 +47,6 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
         let bars: SparkBarChartBar[] = availableDataTypes.map(dataType => {
             const dataForDay = relativeActivityData?.[dataType.dailyDataType]?.[dayKey];
-            const relativePercent = dataForDay?.relativePercent ?? 0;
-            if (relativePercent === undefined) {
-                return { color: 'var(--mdhui-color-primary)', barFillPercent: 0 };
-            }
 
             const value = dataForDay?.value ?? 0;
             let color = dataType.color || 'var(--mdhui-color-primary)';
@@ -61,7 +56,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
 
             return {
                 color: color,
-                barFillPercent: relativePercent
+                barFillPercent: dataForDay?.relativePercent ?? 0
             };
         });
 
