@@ -103,14 +103,18 @@ async function getRandomIntradayData(start: Date, intervalMinutes?: number) {
 
 var tooltip = ({ active, payload, _label }: any): React.JSX.Element | null => {
     if (active && payload && payload.length) {
-        return <table className="mdhui-daily-data-tooltip">
-            {payload.map((p: any, index: number) =>
-                <tr key={p.dataKey}>
-                    <th>{p.dataKey}: &nbsp;</th>
-                    <td>{p.value}</td>
-                </tr>
-            )}
-        </table>;
+        return <div className="mdhui-time-series-tooltip">
+            <table>
+                <tbody>
+                {payload.map((p: any, index: number) =>
+                    <tr key={p.dataKey}>
+                        <th>{p.dataKey}: &nbsp;</th>
+                        <td>{p.value}</td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
+        </div>;
     }
     return null;
 }
@@ -141,7 +145,8 @@ export const lineChartWithHorizontalLine: Story = {
         chartType: "Line",
         chartHasData: true,
         series: [{ dataKey: "value" }],
-        intervalStart: add(startOfToday(), { days: -6 })
+        intervalStart: add(startOfToday(), { days: -6 }),
+        tooltip: tooltip
     },
     argTypes: {
         ...argTypesToHide([
