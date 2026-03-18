@@ -16,7 +16,7 @@ import { queryRelativeActivity } from "../../../helpers/relative-activity";
 export interface RelativeActivityProps {
     dataTypes?: RelativeActivityDataType[];
     useContext?: boolean;
-    previewState?: "Default";
+    previewState?: "Default" | "LimitedData" | "NoData";
     title?: string;
     innerRef?: React.Ref<HTMLDivElement>
     date?: Date;
@@ -39,15 +39,20 @@ export default function (props: RelativeActivityProps) {
         function transformResults(results: { [key: string]: { [key: string]: RelativeActivityQueryResult } } | undefined) {
             if (!results) return;
             let transformedResults: { [key: string]: RelativeActivityQueryResult } = {};
+            const dayKey = getDayKey(date);
             dataTypes.forEach(dataType => {
-                if (results[dataType.dailyDataType]?.[getDayKey(date)]?.value) {
-                    transformedResults[dataType.dailyDataType] = results[dataType.dailyDataType][getDayKey(date)];
+                const result = results[dataType.dailyDataType]?.[dayKey];
+                if (result?.value && result.threshold !== undefined && result.relativePercent !== undefined) {
+                    if (props.previewState !== "LimitedData" || (dataType.threshold !== undefined && dataType.threshold !== "30DayAverage")) {
+                        transformedResults[dataType.dailyDataType] = result;
+                    }
                 }
             });
             return transformedResults;
         }
 
         setResults(undefined);
+        if (props.previewState === "NoData") return;
         if (props.useContext) {
             if (!relativeActivityContext?.data) {
                 return;

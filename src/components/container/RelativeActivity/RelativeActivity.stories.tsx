@@ -48,6 +48,12 @@ export const NoThresholds = {
         title: "Activity",
         previewState: "Default"
     },
+    argTypes: {
+        previewState: {
+            control: "radio",
+            options: ["Default", "LimitedData", "NoData"]
+        }
+    },
     render: render
 };
 
@@ -65,6 +71,12 @@ export const SomeThresholds = {
         title: "Activity",
         previewState: "Default",
         specifyThresholds: true
+    },
+    argTypes: {
+        previewState: {
+            control: "radio",
+            options: ["Default", "LimitedData", "NoData"]
+        }
     },
     render: render
 };
@@ -84,6 +96,12 @@ export const AllThresholds = {
         title: "Activity",
         previewState: "Default",
         specifyThresholds: true
+    },
+    argTypes: {
+        previewState: {
+            control: "radio",
+            options: ["Default", "LimitedData", "NoData"]
+        }
     },
     render: render
 };
