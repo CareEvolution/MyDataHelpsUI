@@ -1,13 +1,14 @@
 import React from "react";
 import { Card, Layout } from "..";
-import { add, addDays } from "date-fns";
-import TimeSeriesChart, { TimeSeriesChartProps } from "./TimeSeriesChart";
+import { add, addDays, eachDayOfInterval } from "date-fns";
+import TimeSeriesChart, { TimeSeriesChartProps, TimeSeriesDataPoint } from "./TimeSeriesChart";
 import { predictableRandomNumber } from "../../../helpers/predictableRandomNumber";
 import { Meta, StoryObj } from "@storybook/react";
 import { ChartThreshold, MultiSeriesLineChartOptions } from "../../../helpers";
 import { Bar } from "recharts";
 import { startOfToday } from "date-fns";
 import { getTimeOfDayString } from "../../../helpers/date-helpers";
+import { argTypesToHide } from "../../../../.storybook/helpers";
 
 const meta: Meta<typeof TimeSeriesChart> = {
     title: "Presentational/TimeSeriesChart",
@@ -102,14 +103,18 @@ async function getRandomIntradayData(start: Date, intervalMinutes?: number) {
 
 var tooltip = ({ active, payload, _label }: any): React.JSX.Element | null => {
     if (active && payload && payload.length) {
-        return <table className="mdhui-daily-data-tooltip">
-            {payload.map((p: any, index: number) =>
-                <tr key={p.dataKey}>
-                    <th>{p.dataKey}: &nbsp;</th>
-                    <td>{p.value}</td>
-                </tr>
-            )}
-        </table>;
+        return <div className="mdhui-time-series-tooltip">
+            <table>
+                <tbody>
+                {payload.map((p: any, index: number) =>
+                    <tr key={p.dataKey}>
+                        <th>{p.dataKey}: &nbsp;</th>
+                        <td>{p.value}</td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
+        </div>;
     }
     return null;
 }
@@ -133,6 +138,34 @@ export const lineChart: Story = {
     ]
 };
 
+export const lineChartWithHorizontalLine: Story = {
+    args: {
+        title: "Line Chart with Horizontal Line",
+        intervalType: "Week",
+        chartType: "Line",
+        chartHasData: true,
+        series: [{ dataKey: "value" }],
+        intervalStart: add(startOfToday(), { days: -6 }),
+        tooltip: tooltip
+    },
+    argTypes: {
+        ...argTypesToHide([
+            "title", "intervalType", "chartType", "chartHasData", "series", "intervalStart", "dynamicIntervalEndType",
+            "data", "expectedDataInterval", "tooltip", "options", "syncId", "innerRef"
+        ])
+    },
+    loaders: [
+        async () => ({
+            randomData: (() => {
+                const dataPoints: TimeSeriesDataPoint[] = [];
+                eachDayOfInterval({ start: add(startOfToday(), { days: -6 }), end: startOfToday() }).forEach(date => {
+                    dataPoints.push({ timestamp: date.getTime(), value: 5 });
+                });
+                return dataPoints;
+            })()
+        })
+    ]
+};
 
 export const lineChartWithGaps: Story = {
     args: {
