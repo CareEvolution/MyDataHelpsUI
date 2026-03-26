@@ -84,7 +84,7 @@ describe('Daily Data Query Tests', () => {
             const dataPoint2 = { startDate: getV2DateString(sampleEndDate) } as DeviceDataV2Point;
             const dateFunction: DailyDataDateFunction = dataPoint => dataPoint.startDate;
 
-            setupDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction, [dataPoint1, dataPoint2]);
+            setupDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, undefined, dateFunction, [dataPoint1, dataPoint2]);
 
             const dailyData = await queryForDailyDataV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction);
 
@@ -134,7 +134,7 @@ describe('Daily Data Query Tests', () => {
                 }
             );
 
-            const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction);
+            const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, undefined, dateFunction);
 
             expect(dataPoints).toHaveLength(1);
             expect(dataPoints[0]).toBe(dataPoint2);

@@ -87,6 +87,7 @@ export { default as healthConnectMaxHeartRateDataProvider } from "./health-conne
 export { default as healthConnectMinHeartRateDataProvider } from "./health-connect-min-heart-rate";
 export { default as healthConnectActiveCaloriesBurnedDataProvider } from "./health-connect-active-calories-burned";
 export { default as healthConnectTotalCaloriesBurnedDataProvider } from "./health-connect-total-calories-burned";
+export { default as healthConnectTherapyMinutesDataProvider } from "./health-connect-therapy-minutes";
 export { default as ouraStepsDataProvider } from "./oura-daily-steps"
 export { default as ouraSleepMinutesDataProvider } from "./oura-total-sleep"
 export { default as ouraRestingHeartRateDataProvider } from "./oura-resting-heart-rate"

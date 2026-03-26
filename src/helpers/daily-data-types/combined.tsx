@@ -47,7 +47,8 @@ const MINDFUL_MINUTES_SOURCES = sources(
 
 const THERAPY_MINUTES_SOURCES = sources(
     ["AppleHealth", "MindfulSession"],
-    ["GoogleFit", "SilverCloudSession"]
+    ["GoogleFit", "SilverCloudSession"],
+    ["HealthConnect", "exercise-session"]
 );
 
 const ACTIVE_CALORIES_BURNED_SOURCES = sources(

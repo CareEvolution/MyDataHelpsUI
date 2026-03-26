@@ -1,4 +1,4 @@
-import { DeviceDataNamespace, DeviceDataPoint, DeviceDataV2Namespace, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
+import { DeviceDataNamespace, DeviceDataPoint, DeviceDataV2Namespace, DeviceDataV2Point, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
 import getDayKey from '../../get-day-key';
 import queryAllDeviceData from '../query-all-device-data';
 import { add, endOfDay, Interval, isWithinInterval, startOfDay } from 'date-fns';
@@ -48,7 +48,7 @@ export async function queryForDailyDataV2(
     endDate: Date,
     dateFn: DailyDataDateFunction
 ): Promise<DailyDataV2> {
-    const dataPoints = await self.queryForDailyDataPointsV2(namespace, type, startDate, endDate, dateFn);
+    const dataPoints = await self.queryForDailyDataPointsV2(namespace, type, startDate, endDate, undefined, dateFn);
     return dataPoints.reduce((dailyData, dataPoint) => {
         const dayKey = getDayKey(dateFn(dataPoint)!);
         if (!dailyData[dayKey]) {
@@ -59,19 +59,28 @@ export async function queryForDailyDataV2(
     }, {} as DailyDataV2);
 }
 
+export interface DeviceDataV2QueryFilters {
+    dataSource?: Record<string, string>;
+}
+
 export async function queryForDailyDataPointsV2(
     namespace: DeviceDataV2Namespace,
     type: string,
     startDate: Date,
     endDate: Date,
+    filters?: DeviceDataV2QueryFilters,
     dateFn?: DailyDataDateFunction
 ): Promise<DeviceDataV2Point[]> {
-    const dataPoints = await queryAllDeviceDataV2({
+    const query: DeviceDataV2Query = {
         namespace: namespace,
         type: type,
         observedAfter: add(startDate, { days: -1 }).toISOString(),
         observedBefore: add(endDate, { days: 1 }).toISOString()
-    });
+    };
+    if (filters?.dataSource) {
+        query.dataSource = filters.dataSource;
+    }
+    const dataPoints = await queryAllDeviceDataV2(query);
     return dataPoints.filter(dataPoint => !dateFn || self.dailyDataDateFilter(dateFn(dataPoint), startDate, endDate));
 }
 
