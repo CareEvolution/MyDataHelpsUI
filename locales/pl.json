@@ -396,7 +396,7 @@
     "device-data-month-chart-minutes": "Minuty",
     "device-data-month-chart-no-data": "Brak danych",
     "device-data-month-chart-sleep": "Sen",
-    "device-data-no-data": "Jeśli podłączyłeś Apple Health, Google Fit, Fitbit lub Garmin, wróć później, aby zobaczyć swoje dane.",
+    "device-data-no-data": "Po podłączeniu urządzenia sprawdź je później, aby zobaczyć swoje dane.",
     "device-not-enabled": "@@DEVICE@@ nie jest włączone dla tego projektu.",
     "devices": "Urządzenia",
     "diastolic-average": "Średnie ciśnienie rozkurczowe",

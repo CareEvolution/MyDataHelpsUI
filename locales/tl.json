@@ -396,7 +396,7 @@
     "device-data-month-chart-minutes": "Minuto",
     "device-data-month-chart-no-data": "Walang Data",
     "device-data-month-chart-sleep": "Pagtulog",
-    "device-data-no-data": "Kung nakakonekta ka sa Apple Health, Google Fit, Fitbit, o Garmin, bumalik mamaya upang makita ang iyong data.",
+    "device-data-no-data": "Kapag naikonekta mo na ang iyong device, bumalik mamaya para tingnan ang iyong data.",
     "device-not-enabled": "Ang @@DEVICE@@ ay hindi pinagana para sa proyektong ito.",
     "devices": "Mga Device",
     "diastolic-average": "Diastolic Average",
