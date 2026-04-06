@@ -396,7 +396,7 @@
     "device-data-month-chart-minutes": "Minute",
     "device-data-month-chart-no-data": "Nu există date",
     "device-data-month-chart-sleep": "Somn",
-    "device-data-no-data": "Dacă ai conectat Apple Health, Google Fit, Fitbit sau Garmin, revino mai târziu pentru a-ți vizualiza datele.",
+    "device-data-no-data": "După ce ați conectat dispozitivul, reveniți mai târziu pentru a vizualiza datele.",
     "device-not-enabled": "@@DEVICE@@ nu este activat pentru acest proiect.",
     "devices": "Dispozitive",
     "diastolic-average": "Media diastolică",

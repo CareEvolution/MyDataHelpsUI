@@ -396,7 +396,7 @@
     "device-data-month-chart-minutes": "Phút",
     "device-data-month-chart-no-data": "Không có dữ liệu",
     "device-data-month-chart-sleep": "Giấc ngủ",
-    "device-data-no-data": "Nếu bạn đã kết nối Apple Health, Google Fit, Fitbit hoặc Garmin, hãy kiểm tra lại sau để xem dữ liệu của bạn.",
+    "device-data-no-data": "Sau khi kết nối thiết bị, hãy quay lại sau để xem dữ liệu của bạn.",
     "device-not-enabled": "@@DEVICE@@ không được kích hoạt cho dự án này.",
     "devices": "Thiết bị",
     "diastolic-average": "Trung bình tâm trương",

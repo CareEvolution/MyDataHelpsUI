@@ -396,7 +396,7 @@
     "device-data-month-chart-minutes": "Minutos",
     "device-data-month-chart-no-data": "Sin Datos",
     "device-data-month-chart-sleep": "Dormir",
-    "device-data-no-data": "Si ha conectado Apple Health, Google Fit, Fitbit o Garmin, vuelva más tarde para ver sus datos.",
+    "device-data-no-data": "Una vez que hayas conectado tu dispositivo, vuelve más tarde para consultar tus datos.",
     "device-not-enabled": "@@DEVICE@@ no está habilitado para este proyecto.",
     "devices": "Dispositivos",
     "diastolic-average": "Promedio Diastólico",
