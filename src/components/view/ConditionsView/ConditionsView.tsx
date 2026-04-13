@@ -1,37 +1,40 @@
-import React from 'react'
-import { Layout, Card, NavigationBar, Title, ConditionsList } from "../.."
-import { TermInformationReference } from "../../container/TermInformation/TermInformation";
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import React, { useRef, useState } from 'react';
+import { Card, ConditionsList, Layout, NavigationBar, Title } from "../..";
+import { EhrDownloadButton, TermInformationReference } from "../../container";
 import conditionIcon from "../../../assets/icon-problem.svg";
-import language from '../../../helpers/language';
+import { language } from '../../../helpers';
 
 export interface ConditionsViewProps {
-    presentation?: "Push" | "Modal"
-    previewState?: "default"
-    onViewTermInfo?(termInfo: TermInformationReference): void
-    colorScheme?: "auto" | "light" | "dark"
+    presentation?: "Push" | "Modal";
+    previewState?: "default";
+    onViewTermInfo?: (termInfo: TermInformationReference) => void;
+    colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: ConditionsViewProps) {
-    function viewTermInfo(termInfo: TermInformationReference) {
-        if (props.onViewTermInfo) {
-            props.onViewTermInfo(termInfo);
-            return;
-        }
-        var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
-        MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
-    }
+/**
+ * This view shows a listing of conditions pulled from the connected Providers and Health Plans.
+ */
+export default function ConditionsView(props: ConditionsViewProps) {
+    const [loading, setLoading] = useState<boolean>(true);
 
-    return (
-        <Layout colorScheme={props.colorScheme}>
-            <NavigationBar
-                showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={conditionIcon} />} imageAlignment="left">{language("conditions-title")}</Title>
-            </NavigationBar>
+    const reportRef = useRef<HTMLDivElement>(null);
+
+    return <Layout colorScheme={props.colorScheme}>
+        <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
+        <div ref={reportRef}>
+            <Title
+                order={2}
+                autosizeImage
+                image={<img src={conditionIcon} alt="condition icon" />}
+                imageAlignment="left"
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName="Conditions" hidden={loading} />}
+                defaultMargin
+            >
+                {language("conditions-title")}
+            </Title>
             <Card>
-                <ConditionsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />
+                <ConditionsList previewState={props.previewState} onLoadComplete={() => setLoading(false)} onViewTermInfo={props.onViewTermInfo} />
             </Card>
-        </Layout>
-    )
+        </div>
+    </Layout>;
 }

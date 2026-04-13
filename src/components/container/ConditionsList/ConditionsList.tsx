@@ -1,15 +1,15 @@
-import React, { useState } from "react"
-import { TermInformationReference } from "../TermInformation/TermInformation";
-import MyDataHelps from "@careevolution/mydatahelps-js"
-import { useMyDataHelps } from "../../../helpers/useMyDataHelps"
-import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
+import React, { Ref, useState } from "react";
+import { TermInformationReference } from "../TermInformation";
+import MyDataHelps from "@careevolution/mydatahelps-js";
+import { Action, LoadingIndicator, TermInformationButton } from "../../presentational";
+import { previewConditions } from "./ConditionsList.previewData";
+import { useInitializeView } from "../../../helpers";
 
 export interface ConditionsListProps {
-    previewState?: "default"
-    onViewTermInfo(termInfo: TermInformationReference): void
-    innerRef?: React.Ref<HTMLDivElement>
+    previewState?: "default";
+    onLoadComplete?: () => void;
+    onViewTermInfo?: (termInfo: TermInformationReference) => void;
+    innerRef?: Ref<HTMLDivElement>;
 }
 
 interface Condition {
@@ -17,43 +17,30 @@ interface Condition {
     TermInformation?: TermInformationReference;
 }
 
-export default function (props: ConditionsListProps) {
-    const [conditions, setConditions] = useState<Condition[] | null>(null);
+export default function ConditionsList(props: ConditionsListProps) {
+    const [conditions, setConditions] = useState<Condition[]>();
 
-    function load() {
-        if (props.previewState == "default") {
-            setConditions([
-                {
-                    DisplayName: "Asthma",
-                    TermInformation: {
-                        TermCode: "195967001",
-                        TermNamespace: "SNOMED",
-                        TermFamily: "Problem"
-                    }
-                },
-                {
-                    DisplayName: "Diabetes"
-                },
-                {
-                    DisplayName: "Influenza"
-                },
-            ]);
+    useInitializeView(async () => {
+        if (props.previewState) {
+            setConditions(previewConditions);
+            props.onLoadComplete?.();
             return;
         }
-
-        MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Conditions", "GET", "", true).then(function (response) {
-            setConditions(response);
-        });
-    }
-
-    useMyDataHelps(load, ["externalAccountSyncComplete", "applicationDidBecomeVisible"]);
+        const conditions = await MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Conditions", "GET", "", true) as Condition[];
+        setConditions(conditions);
+        props.onLoadComplete?.();
+    }, ["externalAccountSyncComplete"]);
 
     return <div ref={props.innerRef}>
-        {!conditions &&
-            <LoadingIndicator />
-        }
-        {conditions && conditions.map(c => <Action key={c.DisplayName} renderAs="div" bottomBorder title={c.DisplayName} indicator={
-            c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
-        } />)}
-    </div>
+        {!conditions && <LoadingIndicator />}
+        {conditions?.map(condition =>
+            <Action
+                key={condition.DisplayName}
+                renderAs="div"
+                bottomBorder
+                title={condition.DisplayName}
+                indicator={<TermInformationButton termInformation={condition.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
+            />
+        )}
+    </div>;
 }
