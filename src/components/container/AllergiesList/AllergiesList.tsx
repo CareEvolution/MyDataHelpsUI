@@ -66,7 +66,7 @@ export default function (props: AllergiesListProps) {
                 renderAs="div"
                 bottomBorder
                 title={c.Substance} indicator={
-                    c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
+                    c.TermInformation ? <UnstyledButton className="mdhui-term-information-button" onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
                 } />
         )}
     </div>

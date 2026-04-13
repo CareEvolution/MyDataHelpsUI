@@ -65,7 +65,7 @@ export default function (props: MedicationsListProps) {
             <LoadingIndicator />
         }
         {medications && medications.map(c => <Action key={c.DisplayName} renderAs="div" bottomBorder title={c.DisplayName} indicator={
-            c.TermInformation ? <UnstyledButton onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
+            c.TermInformation ? <UnstyledButton className="mdhui-term-information-button" onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
         } />)}
     </div>
 }
