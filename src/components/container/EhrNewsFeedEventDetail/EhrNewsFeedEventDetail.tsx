@@ -1,9 +1,7 @@
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import { getNewsFeedPage } from "../../../helpers/news-feed/data";
-import { Action, Card, LoadingIndicator, TextBlock, Title, UnstyledButton } from "../../presentational";
+import { Action, Card, LoadingIndicator, TermInformationButton, TextBlock, Title } from "../../presentational";
 import StatBlock from "../../presentational/StatBlock";
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { eventTypeDefinitions } from "../../../helpers/news-feed/eventTypeDefinitions";
 import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedType } from "../../../helpers/news-feed/types";
 import "./EhrNewsFeedEventDetail.css";
@@ -16,7 +14,7 @@ export interface EhrNewsFeedEventDetailProps {
     pageId?: string;
     pageDate?: string;
     previewState?: EhrNewsFeedEventType;
-    onViewLabObservationTermInfo: (labObservationID: string) => void;
+    onViewLabObservationTermInfo?: (labObservationID: string) => void;
 }
 
 export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProps) {
@@ -91,16 +89,20 @@ function ProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
     </>;
 }
 
-function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObservationTermInfo: (labObservationID: string) => void }) {
+function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObservationTermInfo?: (labObservationID: string) => void }) {
     const labReport = props.event.Event as EhrNewsFeedLabReportModel;
     return <div className="mdhui-lab-report-detail">
         <Title defaultMargin order={3}>{labReport.Service}</Title>
         <TextBlock>{labReport.Comment}</TextBlock>
         {labReport.LabObservations.map((observation, index) =>
             <Card key={observation.ID}>
-                <Action renderAs="div" subtitle={observation.Type} indicator={
-                    <UnstyledButton onClick={() => props.onViewLabObservationTermInfo(observation.ID)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton>
-                }>
+                <Action
+                    subtitle={observation.Type}
+                    indicator={
+                        <TermInformationButton labObservationID={observation.ID} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />
+                    }
+                    renderAs="div"
+                >
                     <Title order={2}>
                         <div className="mdhui-lab-report-detail-value">
                             <div>{observation.Value} {observation.Units}</div>
