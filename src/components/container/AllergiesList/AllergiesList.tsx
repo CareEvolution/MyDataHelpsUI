@@ -1,16 +1,15 @@
-import React, { useState } from "react"
-import { TermInformationReference } from "../TermInformation/TermInformation";
-import MyDataHelps from "@careevolution/mydatahelps-js"
-import { useMyDataHelps } from "../../../helpers/useMyDataHelps"
-import { Action, LoadingIndicator, UnstyledButton } from "../../presentational"
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon"
-import language from "../../../helpers/language";
+import React, { Ref, useState } from "react";
+import { TermInformationReference } from "../TermInformation";
+import MyDataHelps from "@careevolution/mydatahelps-js";
+import { Action, LoadingIndicator, TermInformationButton } from "../../presentational";
+import { previewAllergies } from "./AllergiesList.previewData";
+import { language, useInitializeView } from "../../../helpers";
 
 export interface AllergiesListProps {
-    previewState?: "default"
-    onViewTermInfo(termInfo: TermInformationReference): void
-    innerRef?: React.Ref<HTMLDivElement>
+    previewState?: "default";
+    onLoadComplete?: () => void;
+    onViewTermInfo: (termInfo: TermInformationReference) => void;
+    innerRef?: Ref<HTMLDivElement>;
 }
 
 interface Allergy {
@@ -19,55 +18,31 @@ interface Allergy {
     Reactions: string[];
 }
 
-export default function (props: AllergiesListProps) {
-    const [allergies, setAllergies] = useState<Allergy[] | null>(null);
+export default function AllergiesList(props: AllergiesListProps) {
+    const [allergies, setAllergies] = useState<Allergy[]>();
 
-    function load() {
-        if (props.previewState == "default") {
-            setAllergies([
-                {
-                    "Substance": "COVID-19 VACCINE, MRNA, BNT162B2, LNP-S (PFIZER)",
-                    "Reactions": [
-                        "Anaphylaxis"
-                    ],
-                    "TermInformation": {
-                        TermCode: "195967001",
-                        TermNamespace: "SNOMED",
-                        TermFamily: "Problem"
-                    }
-                },
-                {
-                    "Substance": "EGGS",
-                    "Reactions": [
-                        "Coughing", "Rash"
-                    ]
-                },
-                {
-                    "Substance": "IBUPROFEN",
-                    "Reactions": []
-                }]);
+    useInitializeView(async () => {
+        if (props.previewState) {
+            setAllergies(previewAllergies);
+            props.onLoadComplete?.();
             return;
         }
-
-        MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Allergies", "GET", "", true).then(function (response) {
-            setAllergies(response);
-        });
-    }
-
-    useMyDataHelps(load, ["externalAccountSyncComplete", "applicationDidBecomeVisible"]);
+        const allergies = await MyDataHelps.invokeCustomApi("HealthAndWellnessApi.Allergies", "GET", "", true) as Allergy[];
+        setAllergies(allergies);
+        props.onLoadComplete?.();
+    }, ["externalAccountSyncComplete"]);
 
     return <div ref={props.innerRef}>
-        {!allergies &&
-            <LoadingIndicator />
-        }
-        {allergies && allergies.map(c =>
-            <Action key={c.Substance}
-                subtitle={c.Reactions.length > 0 ? `${language('allergylist-reactions')}: ${c.Reactions.join(", ")}` : undefined}
+        {!allergies && <LoadingIndicator />}
+        {allergies?.map(allergy =>
+            <Action
+                key={allergy.Substance}
+                subtitle={allergy.Reactions.length > 0 ? `${language("allergylist-reactions")}: ${allergy.Reactions.join(", ")}` : undefined}
                 renderAs="div"
                 bottomBorder
-                title={c.Substance} indicator={
-                    c.TermInformation ? <UnstyledButton className="mdhui-term-information-button" onClick={() => props.onViewTermInfo(c.TermInformation!)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton> : <></>
-                } />
+                title={allergy.Substance}
+                indicator={<TermInformationButton termInformation={allergy.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
+            />
         )}
-    </div>
+    </div>;
 }

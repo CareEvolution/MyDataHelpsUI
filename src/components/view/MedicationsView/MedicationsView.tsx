@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { Card, Layout, MedicationsList, NavigationBar, Title } from "../..";
-import MyDataHelps, { Guid } from '@careevolution/mydatahelps-js';
+import { EhrDownloadButton, TermInformationReference } from "../../container";
+import MyDataHelps, { Guid } from "@careevolution/mydatahelps-js";
 import medicationIcon from "../../../assets/icon-medication.svg";
-import language from '../../../helpers/language';
-import { TermInformationReference } from "../../container";
-import EhrDownloadButton from '../../container/EhrDownloadButton/EhrDownloadButton';
-import renderPdf from '../../../helpers/renderPdf';
-import { buildHtmlReport, previewHtmlReport } from '../../../helpers/html-report';
+import { buildHtmlReport, language, previewHtmlReport } from "../../../helpers";
+import renderPdf from "../../../helpers/renderPdf";
 
 export interface MedicationsViewProps {
     presentation?: "Push" | "Modal";
@@ -19,8 +17,8 @@ export interface MedicationsViewProps {
  * This view shows a listing of medications pulled from the connected Providers and Health Plans.
  */
 export default function MedicationsView(props: MedicationsViewProps) {
-    const [loading, setLoading] = useState<boolean>(true);
     const [participantID, setParticipantID] = useState<Guid>();
+    const [loading, setLoading] = useState<boolean>(true);
     const [buildingReport, setBuildingReport] = useState<boolean>(false);
 
     const reportRef = useRef<HTMLDivElement>(null);
@@ -28,19 +26,17 @@ export default function MedicationsView(props: MedicationsViewProps) {
     useEffect(() => {
         if (props.previewState) {
             setParticipantID("00000000-0000-0000-0000-000000000000");
-            setLoading(false);
             return;
         }
         MyDataHelps.getParticipantInfo().then(participantInfo => {
             setParticipantID(participantInfo.participantID);
-            setLoading(false);
         });
     }, []);
 
     const buildReport = async (): Promise<void> => {
         if (!reportRef.current || !participantID) return;
         setBuildingReport(true);
-        const html = buildHtmlReport(document, reportRef.current, ['.mdhui-ehr-download-button, .mdhui-term-information-button { display: none; }']);
+        const html = buildHtmlReport(document, reportRef.current, [".mdhui-ehr-download-button, .mdhui-term-information-button { display: none; }"]);
         if (props.previewState) {
             previewHtmlReport(window, document, html);
         } else {
@@ -58,10 +54,10 @@ export default function MedicationsView(props: MedicationsViewProps) {
             termFamily: termInfo.TermFamily,
             termNamespace: termInfo.TermNamespace,
             termCode: termInfo.TermCode,
-            presentation: 'Modal',
+            presentation: "Modal",
             lang: MyDataHelps.getCurrentLanguage()
         }).toString();
-        MyDataHelps.openApplication('https://viewbuilder.careevolutionapps.com/library-views/hw/term-information?' + queryString, { modal: true });
+        MyDataHelps.openApplication("https://viewbuilder.careevolutionapps.com/library-views/hw/term-information?" + queryString, { modal: true });
     };
 
     return <Layout colorScheme={props.colorScheme}>
@@ -72,13 +68,13 @@ export default function MedicationsView(props: MedicationsViewProps) {
                 autosizeImage
                 image={<img src={medicationIcon} alt="medication icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton concept="Medications" disabled={loading || buildingReport} onClick={buildReport} />}
+                accessory={<EhrDownloadButton concept="Medications" disabled={!participantID || loading || buildingReport} onClick={buildReport} />}
                 defaultMargin
             >
                 {language("medications-title")}
             </Title>
             <Card>
-                <MedicationsList previewState={props.previewState} onViewTermInfo={viewTermInfo} />
+                <MedicationsList previewState={props.previewState} onLoadComplete={() => setLoading(false)} onViewTermInfo={viewTermInfo} />
             </Card>
         </div>
     </Layout>;

@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Card, ConditionsList, Layout, NavigationBar, Title } from "../..";
-import { TermInformationReference } from "../../container";
+import { EhrDownloadButton, TermInformationReference } from "../../container";
 import MyDataHelps, { Guid } from '@careevolution/mydatahelps-js';
 import conditionIcon from "../../../assets/icon-problem.svg";
-import language from '../../../helpers/language';
-import EhrDownloadButton from '../../container/EhrDownloadButton/EhrDownloadButton';
+import { buildHtmlReport, language, previewHtmlReport } from '../../../helpers';
 import renderPdf from '../../../helpers/renderPdf';
-import { buildHtmlReport, previewHtmlReport } from '../../../helpers/html-report';
 
 export interface ConditionsViewProps {
     presentation?: "Push" | "Modal";
@@ -19,8 +17,8 @@ export interface ConditionsViewProps {
  * This view shows a listing of conditions pulled from the connected Providers and Health Plans.
  */
 export default function ConditionsView(props: ConditionsViewProps) {
-    const [loading, setLoading] = useState<boolean>(true);
     const [participantID, setParticipantID] = useState<Guid>();
+    const [loading, setLoading] = useState<boolean>(true);
     const [buildingReport, setBuildingReport] = useState<boolean>(false);
 
     const reportRef = useRef<HTMLDivElement>(null);
@@ -28,12 +26,10 @@ export default function ConditionsView(props: ConditionsViewProps) {
     useEffect(() => {
         if (props.previewState) {
             setParticipantID("00000000-0000-0000-0000-000000000000");
-            setLoading(false);
             return;
         }
         MyDataHelps.getParticipantInfo().then(participantInfo => {
             setParticipantID(participantInfo.participantID);
-            setLoading(false);
         });
     }, []);
 
@@ -72,13 +68,13 @@ export default function ConditionsView(props: ConditionsViewProps) {
                 autosizeImage
                 image={<img src={conditionIcon} alt="condition icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton concept="Conditions" disabled={loading || buildingReport} onClick={buildReport} />}
+                accessory={<EhrDownloadButton concept="Conditions" disabled={!participantID || loading || buildingReport} onClick={buildReport} />}
                 defaultMargin
             >
                 {language("conditions-title")}
             </Title>
             <Card>
-                <ConditionsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />
+                <ConditionsList previewState={props.previewState} onLoadComplete={() => setLoading(false)} onViewTermInfo={viewTermInfo} />
             </Card>
         </div>
     </Layout>;
