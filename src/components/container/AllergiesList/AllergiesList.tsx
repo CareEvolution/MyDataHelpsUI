@@ -8,7 +8,7 @@ import { language, useInitializeView } from "../../../helpers";
 export interface AllergiesListProps {
     previewState?: "default";
     onLoadComplete?: () => void;
-    onViewTermInfo: (termInfo: TermInformationReference) => void;
+    onViewTermInfo?: (termInfo: TermInformationReference) => void;
     innerRef?: Ref<HTMLDivElement>;
 }
 

@@ -8,7 +8,7 @@ import { useInitializeView } from '../../../helpers';
 export interface MedicationsListProps {
     previewState?: "default";
     onLoadComplete?: () => void;
-    onViewTermInfo: (termInfo: TermInformationReference) => void;
+    onViewTermInfo?: (termInfo: TermInformationReference) => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
