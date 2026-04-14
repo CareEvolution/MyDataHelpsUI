@@ -1,3 +1,5 @@
+import { lightColorStyle } from './globalCss';
+
 export function buildHtmlReport(document: Document, htmlElement: HTMLElement, additionalCssRules?: string[]): string {
     const documentStyles = document.head.getElementsByTagName('style');
     let html = '';
@@ -8,6 +10,7 @@ export function buildHtmlReport(document: Document, htmlElement: HTMLElement, ad
             html += styleElement.outerHTML;
         }
     }
+    html += `<style>\n:root {\n\t${(Object.entries(lightColorStyle).map(([key, value]) => `${key}: ${value};`).join('\n\t'))}\n}\n</style>`;
     if (additionalCssRules) {
         html += `<style>\n${additionalCssRules.join('\n\n')}\n</style>`;
     }
