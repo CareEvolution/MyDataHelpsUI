@@ -5,6 +5,7 @@ import MyDataHelps, { Guid } from '@careevolution/mydatahelps-js';
 import conditionIcon from "../../../assets/icon-problem.svg";
 import { buildHtmlReport, language, previewHtmlReport } from '../../../helpers';
 import renderPdf from '../../../helpers/renderPdf';
+import { formatISO } from 'date-fns';
 
 export interface ConditionsViewProps {
     presentation?: "Push" | "Modal";
@@ -37,10 +38,11 @@ export default function ConditionsView(props: ConditionsViewProps) {
         if (!reportRef.current || !participantID) return;
         setBuildingReport(true);
         const html = buildHtmlReport(document, reportRef.current, ['.mdhui-ehr-download-button, .mdhui-term-information-button { display: none; }']);
+        const fileName = `Conditions-${formatISO(new Date(), { representation: "date" })}`;
         if (props.previewState) {
-            previewHtmlReport(window, document, html);
+            previewHtmlReport(window, document, html, fileName);
         } else {
-            await renderPdf(html, participantID);
+            await renderPdf(html, participantID, fileName);
         }
         setBuildingReport(false);
     };

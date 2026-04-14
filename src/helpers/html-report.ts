@@ -18,12 +18,12 @@ export function buildHtmlReport(document: Document, htmlElement: HTMLElement, ad
     return html;
 }
 
-export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any }, document: Document, html: string): void {
+export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any }, document: Document, html: string, fileName?: string): void {
     const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
     const urlObject = window.URL || window.webkitURL;
     const fileUrl = urlObject.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = fileUrl;
-    link.download = 'report-preview.html';
+    link.download = `${fileName || 'report-preview'}.html`;
     link.click();
 }

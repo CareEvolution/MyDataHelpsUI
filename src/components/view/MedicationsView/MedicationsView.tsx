@@ -5,6 +5,7 @@ import MyDataHelps, { Guid } from "@careevolution/mydatahelps-js";
 import medicationIcon from "../../../assets/icon-medication.svg";
 import { buildHtmlReport, language, previewHtmlReport } from "../../../helpers";
 import renderPdf from "../../../helpers/renderPdf";
+import { formatISO } from 'date-fns';
 
 export interface MedicationsViewProps {
     presentation?: "Push" | "Modal";
@@ -37,10 +38,11 @@ export default function MedicationsView(props: MedicationsViewProps) {
         if (!reportRef.current || !participantID) return;
         setBuildingReport(true);
         const html = buildHtmlReport(document, reportRef.current, [".mdhui-ehr-download-button, .mdhui-term-information-button { display: none; }"]);
+        const fileName = `Medications-${formatISO(new Date(), { representation: "date" })}`;
         if (props.previewState) {
-            previewHtmlReport(window, document, html);
+            previewHtmlReport(window, document, html, fileName);
         } else {
-            await renderPdf(html, participantID);
+            await renderPdf(html, participantID, fileName);
         }
         setBuildingReport(false);
     };
