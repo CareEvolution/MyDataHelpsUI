@@ -70,7 +70,7 @@ export default function MedicationsView(props: MedicationsViewProps) {
                 autosizeImage
                 image={<img src={medicationIcon} alt="medication icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton concept="Medications" disabled={!participantID || loading || buildingReport} onClick={buildReport} />}
+                accessory={<EhrDownloadButton concept="Medications" hidden={!participantID || loading} disabled={buildingReport} onClick={buildReport} />}
                 defaultMargin
             >
                 {language("medications-title")}

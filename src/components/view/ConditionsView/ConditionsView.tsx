@@ -70,7 +70,7 @@ export default function ConditionsView(props: ConditionsViewProps) {
                 autosizeImage
                 image={<img src={conditionIcon} alt="condition icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton concept="Conditions" disabled={!participantID || loading || buildingReport} onClick={buildReport} />}
+                accessory={<EhrDownloadButton concept="Conditions" hidden={!participantID || loading} disabled={buildingReport} onClick={buildReport} />}
                 defaultMargin
             >
                 {language("conditions-title")}
