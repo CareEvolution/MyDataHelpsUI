@@ -1,8 +1,8 @@
 import React, { Ref, RefObject, useEffect, useState } from 'react';
 import { Button } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { buildHtmlReport, EhrNewsFeedEventType, language, previewHtmlReport } from '../../../helpers';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { buildHtmlReport, EhrNewsFeedEventType, EhrNewsFeedType, language, previewHtmlReport } from '../../../helpers';
+import { faDownload, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import './EhrDownloadButton.css';
 import renderPdf from '../../../helpers/renderPdf';
 import MyDataHelps, { Guid } from '@careevolution/mydatahelps-js';
@@ -16,13 +16,14 @@ const fileNameOverrides: Partial<Record<EhrDownloadButtonConcept, string>> = {
     Report: 'Reports'
 };
 
-export type EhrDownloadButtonConcept = 'Allergies' | 'Medications' | 'Conditions' | EhrNewsFeedEventType;
+export type EhrDownloadButtonConcept = 'Allergies' | 'Medications' | 'Conditions' | EhrNewsFeedType | EhrNewsFeedEventType;
 
 export interface EhrDownloadButtonProps {
     preview?: boolean;
     concept: EhrDownloadButtonConcept;
     reportRef: RefObject<HTMLDivElement>;
     hidden?: boolean;
+    prepareForDownload?: () => Promise<void>;
     innerRef?: Ref<HTMLDivElement>;
 }
 
@@ -44,7 +45,16 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
         if (!props.reportRef.current || !participantID) return;
 
         setBuildingReport(true);
-        const html = buildHtmlReport(document, props.reportRef.current, ['.mdhui-ehr-download-button, .mdhui-term-information-button { display: none; }']);
+        if (props.prepareForDownload) {
+            await props.prepareForDownload();
+        }
+        const classesToHide = [
+            '.mdhui-ehr-download-button',
+            '.mdhui-term-information-button',
+            '.mdhui-action .indicator',
+            '.mdhui-news-feed-search-bar'
+        ];
+        const html = buildHtmlReport(document, props.reportRef.current, [`${classesToHide.join(', ')} { display: none; }`]);
         const fileName = fileNameOverrides[props.concept] ?? props.concept;
         if (props.preview) {
             previewHtmlReport(window, document, html, fileName);
@@ -62,7 +72,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
                 onClick={buildReport}
                 fullWidth={false}
             >
-                {language('download')} <FontAwesomeSvgIcon icon={faDownload} />
+                {language('download')} <FontAwesomeSvgIcon icon={buildingReport ? faRefresh : faDownload} spin={buildingReport} />
             </Button>
         }
     </div>;
