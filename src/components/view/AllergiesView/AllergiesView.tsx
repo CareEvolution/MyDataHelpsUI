@@ -27,7 +27,7 @@ export default function AllergiesView(props: AllergiesViewProps) {
                 autosizeImage
                 image={<img src={allergiesIcon} alt="allergies icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} fileName="Allergies" reportRef={reportRef} hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName="Allergies" hidden={loading} />}
                 defaultMargin
             >
                 {language("allergies-title")}

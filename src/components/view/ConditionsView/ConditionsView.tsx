@@ -27,7 +27,7 @@ export default function ConditionsView(props: ConditionsViewProps) {
                 autosizeImage
                 image={<img src={conditionIcon} alt="condition icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} fileName="Conditions" reportRef={reportRef} hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName="Conditions" hidden={loading} />}
                 defaultMargin
             >
                 {language("conditions-title")}

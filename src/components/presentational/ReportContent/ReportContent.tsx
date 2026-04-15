@@ -40,7 +40,7 @@ export default function ReportContent(props: ReportContentProps) {
             <div className="mdhui-report-content-html">
                 <iframe sandbox="allow-same-origin" srcDoc={props.content} ref={setIframeElement} />
                 {reportRef.current &&
-                    <EhrDownloadButton preview={props.preview} variant="default" text={language('download')} fileName={props.type} reportRef={reportRef} />
+                    <EhrDownloadButton preview={props.preview} variant="default" text={language('download')} styleElements={[]} reportRef={reportRef} fileName={props.type} />
                 }
             </div>
         }

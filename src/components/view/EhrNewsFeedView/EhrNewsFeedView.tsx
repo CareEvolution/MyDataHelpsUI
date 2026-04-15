@@ -75,7 +75,7 @@ export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
                 autosizeImage
                 image={icon}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} fileName={props.feed} reportRef={reportRef} hidden={!atLeastOnePageLoaded} prepareForDownload={prepareForDownload} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName={props.feed} hidden={!atLeastOnePageLoaded} prepareForDownload={prepareForDownload} />}
                 defaultMargin
             >
                 {title}
