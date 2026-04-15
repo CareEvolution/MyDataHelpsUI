@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef } from 'react'
+import React, { CSSProperties, useContext, useLayoutEffect, useRef } from 'react';
 import './NavigationBar.css'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -26,6 +26,7 @@ export interface NavigationBarProps {
 	backgroundColor?: ColorDefinition;
 	onClose?: () => void;
 	onBack?: () => void;
+	style?: CSSProperties;
 }
 
 export default function (props: NavigationBarProps) {
@@ -78,7 +79,7 @@ export default function (props: NavigationBarProps) {
 	let layoutContext = useContext(LayoutContext);
 
 	return (
-		<div className={classes.join(' ')} ref={navBar} style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor) }}>
+		<div className={classes.join(' ')} ref={navBar} style={{ background: resolveColor(layoutContext?.colorScheme, props.backgroundColor), ...props.style }}>
 			{props.showBackButton &&
 				<div className="button back-button" onClick={() => back()} style={{ color: resolveColor(layoutContext?.colorScheme, props.buttonColor) }}>
 					<FontAwesomeSvgIcon icon={faChevronLeft} />
