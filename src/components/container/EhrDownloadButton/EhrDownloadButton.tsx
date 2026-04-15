@@ -1,7 +1,7 @@
 import React, { Ref, RefObject, useEffect, useState } from 'react';
 import { Button } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { buildHtmlReport, language, previewHtmlReport } from '../../../helpers';
+import { buildHtmlReport, previewHtmlReport } from '../../../helpers';
 import { faDownload, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import './EhrDownloadButton.css';
 import renderPdf from '../../../helpers/renderPdf';
@@ -75,7 +75,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
                 onClick={buildReport}
                 fullWidth={false}
             >
-                {language('download')} <FontAwesomeSvgIcon icon={buildingReport ? faRefresh : faDownload} spin={buildingReport} />
+                <FontAwesomeSvgIcon icon={buildingReport ? faRefresh : faDownload} spin={buildingReport} />
             </Button>
         }
     </div>;

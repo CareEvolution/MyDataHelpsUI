@@ -21,9 +21,8 @@
     min-height: 200px;
 }
 
-.mdhui-report-content .mdhui-report-content-download-pdf a {
+.mdhui-report-content .mdhui-report-content-download-pdf {
     padding: 16px;
-    margin: 0 auto;
     background: var(--mdhui-color-primary);
     color: #FFF;
     font-weight: bold;
@@ -32,7 +31,7 @@
     text-align: center;
     display: block;
     width: 200px;
-    margin-top: var(--mdhui-padding-md);
+    margin: var(--mdhui-padding-md) auto 0;
 }
 
 .mdhui-report-content .mdhui-report-content-download-pdf svg {
