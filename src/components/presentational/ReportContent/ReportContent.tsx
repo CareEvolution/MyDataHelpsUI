@@ -23,7 +23,7 @@ export default function ReportContent(props: ReportContentProps) {
             a.download = props.type + ".pdf";
             a.click();
         } else {
-            const url = `Authenticated/ReportViewer/ServeReport.ashx?reportId=${new URLSearchParams({ reportId: props.reportId })}`;
+            const url = `Authenticated/ReportViewer/ServeReport.ashx?${new URLSearchParams({ reportId: props.reportId })}`;
             (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });
         }
     };
