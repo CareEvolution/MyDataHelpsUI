@@ -4,9 +4,9 @@ import Layout from "../Layout";
 import { previewReportHtml, previewReportPdf, xssHtml } from "./ReportContent.previewData";
 
 export default { title: "Presentational/ReportContent", component: ReportContent, parameters: { layout: 'fullscreen' } };
-let render = (args: ReportContentProps) => <Layout colorScheme="auto">
-    <ReportContent {...args} />
-</Layout>
+const render = (args: ReportContentProps) => <Layout colorScheme="auto">
+    <ReportContent preview {...args} />
+</Layout>;
 
 export const Html = {
     args: {
@@ -33,4 +33,4 @@ export const Pdf = {
         "contentType": "application/pdf"
     },
     render: render
-}
+};

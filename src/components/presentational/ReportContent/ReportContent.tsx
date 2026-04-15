@@ -6,6 +6,7 @@ import { language } from "../../../helpers/language";
 import { EhrDownloadButton } from "../../container";
 
 export interface ReportContentProps {
+    preview?: boolean;
     content: string;
     contentType: string;
     type: string;
@@ -16,7 +17,7 @@ export default function ReportContent(props: ReportContentProps) {
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
                 <iframe sandbox="" srcDoc={props.content} />
-                <EhrDownloadButton preview={true} variant="default" fileName={props.type} reportHtml={props.content} />
+                <EhrDownloadButton preview={props.preview} variant="default" fileName={props.type} reportHtml={props.content} />
             </div>
         }
         {props.contentType === "application/pdf" &&

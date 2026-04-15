@@ -62,6 +62,6 @@ export default function (props: ReportViewProps) {
     return <Layout className="mdhui-report-view" colorScheme={props.colorScheme}>
         <NavigationBar subtitle={title} variant="compressedModal" showCloseButton />
         {!reportContent && <LoadingIndicator />}
-        {reportContent && <ReportContent type={reportContent.Type} content={reportContent.Content} contentType={reportContent.ContentType} />}
+        {reportContent && <ReportContent preview={!!props.previewState} type={reportContent.Type} content={reportContent.Content} contentType={reportContent.ContentType} />}
     </Layout>
 }
