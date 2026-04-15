@@ -1,5 +1,5 @@
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import "./ReportContent.css";
 import { language } from "../../../helpers/language";
@@ -15,6 +15,13 @@ export interface ReportContentProps {
 }
 
 export default function ReportContent(props: ReportContentProps) {
+    const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(null);
+    const reportRef = {
+        get current() {
+            return iframeElement?.contentDocument?.documentElement ?? null;
+        }
+    };
+
     const downloadPdfReport = async (): Promise<void> => {
         const deviceInfo = await MyDataHelps.getDeviceInfo();
         if (!deviceInfo || deviceInfo.platform === "Web") {
@@ -31,8 +38,10 @@ export default function ReportContent(props: ReportContentProps) {
     return <div className="mdhui-report-content">
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
-                <iframe sandbox="" srcDoc={props.content} />
-                <EhrDownloadButton preview={props.preview} variant="default" text={language('download')} fileName={props.type} reportHtml={props.content} />
+                <iframe sandbox="allow-same-origin" srcDoc={props.content} ref={setIframeElement} />
+                {reportRef.current &&
+                    <EhrDownloadButton preview={props.preview} variant="default" text={language('download')} fileName={props.type} reportRef={reportRef} />
+                }
             </div>
         }
         {props.contentType === "application/pdf" &&
