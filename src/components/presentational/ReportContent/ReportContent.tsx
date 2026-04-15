@@ -8,6 +8,7 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 
 export interface ReportContentProps {
     preview?: boolean;
+    reportId: string;
     content: string;
     contentType: string;
     type: string;
@@ -15,15 +16,14 @@ export interface ReportContentProps {
 
 export default function ReportContent(props: ReportContentProps) {
     const downloadPdfReport = async (): Promise<void> => {
-        const url = "data:application/pdf;base64," + props.content;
-
         const deviceInfo = await MyDataHelps.getDeviceInfo();
         if (!deviceInfo || deviceInfo.platform === "Web") {
             const a = document.createElement('a');
-            a.href = url;
+            a.href = "data:application/pdf;base64," + props.content;
             a.download = props.type + ".pdf";
             a.click();
         } else {
+            const url = `Authenticated/ReportViewer/ServeReport.ashx?reportId=${new URLSearchParams({ reportId: props.reportId })}`;
             (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });
         }
     };
