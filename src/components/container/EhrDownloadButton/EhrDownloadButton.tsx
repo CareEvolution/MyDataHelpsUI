@@ -20,6 +20,7 @@ const fileNameOverrides: Partial<Record<string, string>> = {
 export interface EhrDownloadButtonProps {
     preview?: boolean;
     variant?: ButtonVariant;
+    text?: string;
     styleElements?: HTMLStyleElement[];
     reportHtml?: string;
     reportRef?: RefObject<HTMLElement>;
@@ -75,7 +76,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
                 onClick={buildReport}
                 fullWidth={false}
             >
-                <FontAwesomeSvgIcon icon={buildingReport ? faRefresh : faDownload} spin={buildingReport} />
+                {props.text} <FontAwesomeSvgIcon icon={buildingReport ? faRefresh : faDownload} spin={buildingReport} />
             </Button>
         }
     </div>;

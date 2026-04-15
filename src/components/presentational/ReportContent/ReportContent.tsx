@@ -32,7 +32,7 @@ export default function ReportContent(props: ReportContentProps) {
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
                 <iframe sandbox="" srcDoc={props.content} />
-                <EhrDownloadButton preview={props.preview} variant="default" fileName={props.type} reportHtml={props.content} />
+                <EhrDownloadButton preview={props.preview} variant="default" text={language('download')} fileName={props.type} reportHtml={props.content} />
             </div>
         }
         {props.contentType === "application/pdf" &&
