@@ -1,9 +1,8 @@
 import { lightColorStyle } from './globalCss';
 
-export function buildHtmlReport(document: Document, htmlElement: HTMLElement, additionalCssRules?: string[]): string {
-    const documentStyles = document.head.getElementsByTagName('style');
+export function buildHtmlReport(styleElements: HTMLStyleElement[], additionalCssRules: string[], reportHtml: string): string {
     let html = '';
-    for (const styleElement of documentStyles) {
+    for (const styleElement of styleElements) {
         if (styleElement.getAttribute('data-emotion') && styleElement.sheet) {
             html += `<style>\n${Array.from(styleElement.sheet.cssRules).map(rule => rule.cssText).join('\n\n')}\n</style>`;
         } else {
@@ -11,14 +10,14 @@ export function buildHtmlReport(document: Document, htmlElement: HTMLElement, ad
         }
     }
     html += `<style>\n:root {\n\t${(Object.entries(lightColorStyle).map(([key, value]) => `${key}: ${value};`).join('\n\t'))}\n}\n</style>`;
-    if (additionalCssRules) {
+    if (additionalCssRules.length > 0) {
         html += `<style>\n${additionalCssRules.join('\n\n')}\n</style>`;
     }
-    html += htmlElement.innerHTML;
+    html += reportHtml;
     return html;
 }
 
-export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any }, document: Document, html: string, fileName?: string): void {
+export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any }, html: string, fileName?: string): void {
     const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
     const urlObject = window.URL || window.webkitURL;
     const fileUrl = urlObject.createObjectURL(blob);

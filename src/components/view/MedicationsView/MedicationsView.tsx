@@ -27,7 +27,7 @@ export default function MedicationsView(props: MedicationsViewProps) {
                 autosizeImage
                 image={<img src={medicationIcon} alt="medication icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} concept="Medications" reportRef={reportRef} hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} fileName="Medications" reportRef={reportRef} hidden={loading} />}
                 defaultMargin
             >
                 {language("medications-title")}

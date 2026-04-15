@@ -2,6 +2,14 @@
     min-height: 200px;
 }
 
+.mdhui-report-content .mdhui-report-content-html {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
 .mdhui-report-content iframe {
     border: none;
     padding: 0;

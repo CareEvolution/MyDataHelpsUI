@@ -8,12 +8,13 @@ export default async function renderPdf(reportHtml: string, participantID: Guid,
         patientID: participantID.toString(),
         modelType: "VisualizationModel",
         visualizationKey: "Shared.HtmlToPdf",
-        ...options
+        ...(options?.fileName ? { fileName: options.fileName } : undefined),
+        ...(options?.pageNumbers ? { pageNumbers: "true" } : undefined)
     });
     const url = `${MyDataHelps.baseUrl}WebVisualization/WebVisualizationPDF?${queryParams}`;
 
     const deviceInfo = await MyDataHelps.getDeviceInfo();
-    if (!deviceInfo || deviceInfo.platform == "Web") {
+    if (!deviceInfo || deviceInfo.platform === "Web") {
         window.open(url);
     } else {
         (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });

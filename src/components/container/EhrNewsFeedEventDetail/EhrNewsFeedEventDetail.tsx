@@ -66,7 +66,7 @@ function NewsFeedDetailTitle(props: { preview?: boolean, event: EhrNewsFeedEvent
         icon={<img src={handler.icon} width={24} alt="icon" />}
         title={title}
         subtitle={subtitle}
-        indicator={<EhrDownloadButton preview={props.preview} concept={props.event.Type} reportRef={props.reportRef} hidden={props.loading} />}
+        indicator={<EhrDownloadButton preview={props.preview} fileName={props.event.Type} reportRef={props.reportRef} hidden={props.loading} />}
         renderAs="div"
     />;
 }
