@@ -1,14 +1,14 @@
 import MyDataHelps, { Guid } from "@careevolution/mydatahelps-js";
 import { formatISO } from "date-fns";
 
-export default async function renderPdf(reportHtml: string, participantID: Guid, fileName?: string): Promise<void> {
+export default async function renderPdf(reportHtml: string, participantID: Guid, options?: { fileName?: string, pageNumbers?: boolean }): Promise<void> {
     await MyDataHelps.persistDeviceData([{ type: "ReportHtml", observationDate: formatISO(new Date()), value: reportHtml }]);
 
     const queryParams = new URLSearchParams({
         patientID: participantID.toString(),
         modelType: "VisualizationModel",
         visualizationKey: "Shared.HtmlToPdf",
-        ...(fileName ? { fileName } : undefined)
+        ...options
     });
     const url = `${MyDataHelps.baseUrl}WebVisualization/WebVisualizationPDF?${queryParams}`;
 

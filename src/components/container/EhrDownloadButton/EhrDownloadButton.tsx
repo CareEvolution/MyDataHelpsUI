@@ -54,12 +54,16 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
             '.mdhui-action .indicator',
             '.mdhui-news-feed-search-bar'
         ];
-        const html = buildHtmlReport(document, props.reportRef.current, [`${classesToHide.join(', ')} { display: none; }`]);
+        const additionalCssRules = [
+            `${classesToHide.join(', ')} { display: none; }`,
+            'html, body { height: unset; }'
+        ];
+        const html = buildHtmlReport(document, props.reportRef.current, additionalCssRules);
         const fileName = fileNameOverrides[props.concept] ?? props.concept;
         if (props.preview) {
             previewHtmlReport(window, document, html, fileName);
         } else {
-            await renderPdf(html, participantID, fileName);
+            await renderPdf(html, participantID, { fileName, pageNumbers: true });
         }
         setBuildingReport(false);
     };
