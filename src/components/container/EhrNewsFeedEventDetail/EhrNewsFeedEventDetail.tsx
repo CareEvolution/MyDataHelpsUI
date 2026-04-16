@@ -106,9 +106,7 @@ function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObserva
             <Card key={observation.ID}>
                 <Action
                     subtitle={observation.Type}
-                    indicator={
-                        <TermInformationButton labObservationID={observation.ID} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />
-                    }
+                    indicator={<TermInformationButton labObservationID={observation.ID} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
                     renderAs="div"
                 >
                     <Title order={2}>

@@ -37,11 +37,11 @@ export default function AllergiesList(props: AllergiesListProps) {
         {allergies?.map(allergy =>
             <Action
                 key={allergy.Substance}
+                title={allergy.Substance}
                 subtitle={allergy.Reactions.length > 0 ? `${language("allergylist-reactions")}: ${allergy.Reactions.join(", ")}` : undefined}
+                indicator={<TermInformationButton termInformation={allergy.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
                 renderAs="div"
                 bottomBorder
-                title={allergy.Substance}
-                indicator={<TermInformationButton termInformation={allergy.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
             />
         )}
     </div>;

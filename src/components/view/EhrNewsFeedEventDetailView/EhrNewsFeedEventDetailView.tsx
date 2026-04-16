@@ -15,16 +15,13 @@ export interface EhrNewsFeedEventDetailViewProps {
 
 export default function EhrNewsFeedEventDetailView(props: EhrNewsFeedEventDetailViewProps) {
     return <Layout colorScheme={props.colorScheme}>
-        <NavigationBar
-            variant="compressed"
-            showBackButton={props.presentation == "Push"}
-            showCloseButton={props.presentation == "Modal"}>
-        </NavigationBar>
+        <NavigationBar variant="compressed" showBackButton={props.presentation === "Push"} showCloseButton={props.presentation === "Modal"} />
         <EhrNewsFeedEventDetail
             feed={props.feed}
             pageId={props.pageId}
             pageDate={props.pageDate}
             previewState={props.previewState}
-            onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />
+            onViewLabObservationTermInfo={props.onViewLabObservationTermInfo}
+        />
     </Layout>;
 }

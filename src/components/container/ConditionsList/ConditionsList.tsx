@@ -36,10 +36,10 @@ export default function ConditionsList(props: ConditionsListProps) {
         {conditions?.map(condition =>
             <Action
                 key={condition.DisplayName}
-                renderAs="div"
-                bottomBorder
                 title={condition.DisplayName}
                 indicator={<TermInformationButton termInformation={condition.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
+                renderAs="div"
+                bottomBorder
             />
         )}
     </div>;

@@ -37,10 +37,10 @@ export default function MedicationsList(props: MedicationsListProps) {
         {medications?.map(medication =>
             <Action
                 key={medication.DisplayName}
-                renderAs="div"
-                bottomBorder
                 title={medication.DisplayName}
                 indicator={<TermInformationButton termInformation={medication.TermInformation} onViewTermInfo={props.onViewTermInfo} />}
+                renderAs="div"
+                bottomBorder
             />
         )}
     </div>;
