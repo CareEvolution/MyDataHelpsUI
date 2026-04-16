@@ -28,7 +28,7 @@ export default function ReportContent(props: ReportContentProps) {
 
     const reportRef = {
         get current() {
-            return iframeElement?.contentDocument?.documentElement ?? null;
+            return iframeElement?.contentDocument?.body ?? null;
         }
     };
 
@@ -52,7 +52,7 @@ export default function ReportContent(props: ReportContentProps) {
             <div className="mdhui-report-content-html">
                 <iframe sandbox="allow-same-origin" srcDoc={props.content} ref={setIframeElement} />
                 {reportRef.current &&
-                    <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} styleElements={[]} reportRef={reportRef} fileName={props.type} />
+                    <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} reportRef={reportRef} fileName={props.type} />
                 }
             </div>
         }

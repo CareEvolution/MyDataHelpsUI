@@ -1,6 +1,6 @@
 import { lightColorStyle } from './globalCss';
 
-export function buildHtmlReport(styleElements: HTMLStyleElement[], additionalCssRules: string[], reportHtml: string): string {
+export function buildHtmlReport(reportHtml: string, styleElements: HTMLStyleElement[] = [], additionalCssRules: string[] = []): string {
     let html = '';
     for (const styleElement of styleElements) {
         if (styleElement.getAttribute('data-emotion') && styleElement.sheet) {

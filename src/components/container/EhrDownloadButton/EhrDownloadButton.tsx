@@ -12,7 +12,6 @@ export interface EhrDownloadButtonProps {
     preview?: boolean;
     variant?: ButtonVariant;
     text?: string;
-    styleElements?: HTMLStyleElement[];
     reportHtml?: string;
     reportRef?: RefObject<HTMLElement>;
     fileName: string;
@@ -79,32 +78,34 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
         if ((!props.reportHtml && !props.reportRef?.current) || !participantID) return;
 
         setBuildingReport(true);
-        if (props.prepareForDownload) {
-            await props.prepareForDownload();
+
+        try {
+            if (props.prepareForDownload) {
+                await props.prepareForDownload();
+            }
+
+            let htmlReport: string;
+            if (props.reportRef?.current) {
+                const element = props.reportRef.current;
+                const clone = element.cloneNode(true) as HTMLElement;
+                syncCollapsibleState(element, clone);
+
+                const styleElements: HTMLStyleElement[] = Array.from(element.ownerDocument.head.getElementsByTagName('style'));
+                const classesToHide: string[] = ['.mdhui-ehr-download-button', '.mdhui-term-information-button', '.mdhui-action .indicator', '.mdhui-news-feed-search-bar'];
+                const additionalCssRules = [`${classesToHide.join(', ')} { display: none; }`, 'html, body { height: unset; }'];
+                htmlReport = buildHtmlReport(clone.innerHTML, styleElements, additionalCssRules);
+            } else {
+                htmlReport = buildHtmlReport(props.reportHtml ?? '');
+            }
+
+            if (props.preview) {
+                previewHtmlReport(window, htmlReport, props.fileName);
+            } else {
+                await renderPdf(htmlReport, participantID, { fileName: props.fileName, pageNumbers: true });
+            }
+        } finally {
+            setBuildingReport(false);
         }
-
-        const styleElements = props.styleElements ?? Array.from(document.head.getElementsByTagName('style'));
-        const classesToHide = ['.mdhui-ehr-download-button', '.mdhui-term-information-button', '.mdhui-action .indicator', '.mdhui-news-feed-search-bar'];
-        const additionalCssRules = [`${classesToHide.join(', ')} { display: none; }`, 'html, body { height: unset; }'];
-
-        let reportHtml: string;
-        if (props.reportRef?.current) {
-            const element = props.reportRef.current;
-            const clone = element.cloneNode(true) as HTMLElement;
-            syncCollapsibleState(element, clone);
-            reportHtml = clone.innerHTML;
-        } else {
-            reportHtml = props.reportHtml ?? '';
-        }
-
-        const htmlReport = buildHtmlReport(styleElements, additionalCssRules, reportHtml);
-
-        if (props.preview) {
-            previewHtmlReport(window, htmlReport, props.fileName);
-        } else {
-            await renderPdf(htmlReport, participantID, { fileName: props.fileName, pageNumbers: true });
-        }
-        setBuildingReport(false);
     };
 
     return <div className="mdhui-ehr-download-button" ref={props.innerRef}>
