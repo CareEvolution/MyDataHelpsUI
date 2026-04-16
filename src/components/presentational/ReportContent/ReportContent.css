@@ -11,6 +11,22 @@
     height: 100%;
 }
 
+.mdhui-report-content .mdhui-report-content-pdf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.mdhui-report-content .mdhui-report-content-pdf .mdhui-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+}
+
 .mdhui-report-content iframe {
     border: none;
     padding: 0;
@@ -21,22 +37,6 @@
     min-height: 200px;
 }
 
-.mdhui-report-content .mdhui-report-content-download-pdf {
-    padding: 16px;
-    background: var(--mdhui-color-primary);
-    color: #FFF;
-    font-weight: bold;
-    border-radius: 6px;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-    width: 200px;
-    margin: var(--mdhui-padding-md) auto 0;
-}
-
-.mdhui-report-content .mdhui-report-content-download-pdf svg {
-    display: block;
-    text-align: center;
-    width: 100%;
-    margin-bottom: var(--mdhui-padding-md);
+.mdhui-report-content .mdhui-pdf-preview .react-pdf__Page {
+    background: var(--mdhui-background-color-1) !important;
 }
