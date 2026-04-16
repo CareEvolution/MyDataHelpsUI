@@ -34,17 +34,20 @@ export default function ReportContent(props: ReportContentProps) {
 
     const downloadPdfReport = async (): Promise<void> => {
         setDownloadingPdfReport(true);
-        const deviceInfo = await MyDataHelps.getDeviceInfo();
-        if (!deviceInfo || deviceInfo.platform === "Web") {
-            const a = document.createElement("a");
-            a.href = "data:application/pdf;base64," + props.content;
-            a.download = props.type + ".pdf";
-            a.click();
-        } else {
-            const url = `Authenticated/ReportViewer/ServeReport.ashx?${new URLSearchParams({ reportId: props.reportId })}`;
-            (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });
+        try {
+            const deviceInfo = await MyDataHelps.getDeviceInfo();
+            if (!deviceInfo || deviceInfo.platform === "Web") {
+                const a = document.createElement("a");
+                a.href = "data:application/pdf;base64," + props.content;
+                a.download = props.type + ".pdf";
+                a.click();
+            } else {
+                const url = `Authenticated/ReportViewer/ServeReport.ashx?${new URLSearchParams({ reportId: props.reportId })}`;
+                (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });
+            }
+        } finally {
+            setDownloadingPdfReport(false);
         }
-        setDownloadingPdfReport(false);
     };
 
     return <div className="mdhui-report-content">
