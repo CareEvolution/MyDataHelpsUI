@@ -1,5 +1,5 @@
 import { faDownload, faRefresh } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import "./ReportContent.css";
 import { language } from "../../../helpers/language";
@@ -18,6 +18,13 @@ export interface ReportContentProps {
 export default function ReportContent(props: ReportContentProps) {
     const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(null);
     const [downloadingPdfReport, setDownloadingPdfReport] = useState<boolean>(false);
+    const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+    useEffect(() => {
+        const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const reportRef = {
         get current() {
@@ -51,7 +58,7 @@ export default function ReportContent(props: ReportContentProps) {
         }
         {props.contentType === "application/pdf" &&
             <div className="mdhui-report-content-pdf">
-                <PdfPreview url={"data:application/pdf;base64," + props.content} maxHeight={window.innerHeight * 0.8} maxWidth={window.innerWidth * 0.8} />
+                <PdfPreview url={"data:application/pdf;base64," + props.content} maxHeight={windowSize.height * 0.8} maxWidth={windowSize.width * 0.8} />
                 <Button onClick={downloadPdfReport} fullWidth={false}>
                     {language("download-pdf-report")} <FontAwesomeSvgIcon icon={downloadingPdfReport ? faRefresh : faDownload} spin={downloadingPdfReport} />
                 </Button>
