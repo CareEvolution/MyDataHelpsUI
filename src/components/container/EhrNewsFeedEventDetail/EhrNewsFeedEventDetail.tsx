@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getNewsFeedPage } from "../../../helpers/news-feed/data";
 import { Action, Card, LoadingIndicator, TermInformationButton, TextBlock, Title } from "../../presentational";
 import StatBlock from "../../presentational/StatBlock";
@@ -18,10 +18,9 @@ export interface EhrNewsFeedEventDetailProps {
 }
 
 export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement>();
     const [loading, setLoading] = useState<boolean>(true);
     const [event, setEvent] = useState<EhrNewsFeedEventModel>();
-
-    const reportRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (props.previewState) {
@@ -35,12 +34,12 @@ export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProp
         });
     }, []);
 
-    return <div ref={reportRef}>
+    return <div ref={element => setReportElement(element ?? undefined)}>
         <div className="mdhui-ehr-news-feed-event-detail">
             {loading && <LoadingIndicator />}
             {event &&
                 <>
-                    <NewsFeedDetailTitle preview={!!props.previewState} event={event} reportRef={reportRef} loading={loading} />
+                    <NewsFeedDetailTitle preview={!!props.previewState} event={event} reportElement={reportElement} loading={loading} />
                     {event.Type === "ProcedureGroup" && <ProcedureGroupDetail event={event} />}
                     {event.Type === "ClaimProcedureGroup" && <ClaimProcedureGroupDetail event={event} />}
                     {event.Type === "LabReport" && <LabReportDetail event={event} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
@@ -51,7 +50,7 @@ export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProp
     </div>;
 }
 
-function NewsFeedDetailTitle(props: { preview?: boolean, event: EhrNewsFeedEventModel, reportRef: RefObject<HTMLDivElement>, loading?: boolean }) {
+function NewsFeedDetailTitle(props: { preview?: boolean, event: EhrNewsFeedEventModel, reportElement?: HTMLElement, loading?: boolean }) {
     const handler = eventTypeDefinitions[props.event.Type];
 
     const title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
@@ -74,7 +73,7 @@ function NewsFeedDetailTitle(props: { preview?: boolean, event: EhrNewsFeedEvent
         icon={<img src={handler.icon} width={24} alt="icon" />}
         title={title}
         subtitle={subtitle}
-        indicator={<EhrDownloadButton preview={props.preview} reportRef={props.reportRef} fileName={getDownloadFileName(props.event)} hidden={props.loading} />}
+        indicator={<EhrDownloadButton preview={props.preview} reportElement={props.reportElement} fileName={getDownloadFileName(props.event)} hidden={props.loading} />}
         renderAs="div"
     />;
 }

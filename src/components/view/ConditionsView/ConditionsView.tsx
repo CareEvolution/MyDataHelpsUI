@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Card, ConditionsList, Layout, NavigationBar, Title } from "../..";
 import { EhrDownloadButton, TermInformationReference } from "../../container";
 import conditionIcon from "../../../assets/icon-problem.svg";
@@ -15,19 +15,18 @@ export interface ConditionsViewProps {
  * This view shows a listing of conditions pulled from the connected Providers and Health Plans.
  */
 export default function ConditionsView(props: ConditionsViewProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement>();
     const [loading, setLoading] = useState<boolean>(true);
-
-    const reportRef = useRef<HTMLDivElement>(null);
 
     return <Layout colorScheme={props.colorScheme}>
         <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
-        <div ref={reportRef}>
+        <div ref={element => setReportElement(element ?? undefined)}>
             <Title
                 order={2}
                 autosizeImage
                 image={<img src={conditionIcon} alt="condition icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName="Conditions" hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement} fileName="Conditions" hidden={loading} />}
                 defaultMargin
             >
                 {language("conditions-title")}

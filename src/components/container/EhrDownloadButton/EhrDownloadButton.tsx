@@ -1,4 +1,4 @@
-import React, { Ref, RefObject, useEffect, useState } from 'react';
+import React, { Ref, useEffect, useState } from 'react';
 import { Button } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { buildHtmlReport, language, previewHtmlReport } from '../../../helpers';
@@ -13,7 +13,7 @@ export interface EhrDownloadButtonProps {
     variant?: ButtonVariant;
     text?: string;
     reportHtml?: string;
-    reportRef?: RefObject<HTMLElement>;
+    reportElement?: HTMLElement;
     fileName: string;
     hidden?: boolean;
     prepareForDownload?: () => Promise<void>;
@@ -75,7 +75,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
     };
 
     const buildReport = async (): Promise<void> => {
-        if ((!props.reportHtml && !props.reportRef?.current) || !participantID) return;
+        if ((!props.reportHtml && !props.reportElement) || !participantID) return;
 
         setBuildingReport(true);
 
@@ -85,8 +85,8 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
             }
 
             let htmlReport: string;
-            if (props.reportRef?.current) {
-                const element = props.reportRef.current;
+            if (props.reportElement) {
+                const element = props.reportElement;
                 const clone = element.cloneNode(true) as HTMLElement;
                 syncCollapsibleState(element, clone);
 
@@ -109,7 +109,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
     };
 
     return <div className="mdhui-ehr-download-button" ref={props.innerRef}>
-        {(props.reportHtml || props.reportRef?.current) && participantID && !props.hidden &&
+        {(props.reportHtml || props.reportElement) && participantID && !props.hidden &&
             <Button
                 variant={props.variant ?? 'subtle'}
                 disabled={buildingReport}

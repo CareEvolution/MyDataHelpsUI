@@ -1,6 +1,6 @@
 import React from 'react';
 import { TermInformationReference } from '../../container';
-import { UnstyledButton } from '../index';
+import UnstyledButton from '../UnstyledButton';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import MyDataHelps from '@careevolution/mydatahelps-js';

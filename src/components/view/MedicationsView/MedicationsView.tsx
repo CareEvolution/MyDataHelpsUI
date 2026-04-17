@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Card, Layout, MedicationsList, NavigationBar, Title } from "../..";
 import { EhrDownloadButton, TermInformationReference } from "../../container";
 import medicationIcon from "../../../assets/icon-medication.svg";
@@ -15,19 +15,18 @@ export interface MedicationsViewProps {
  * This view shows a listing of medications pulled from the connected Providers and Health Plans.
  */
 export default function MedicationsView(props: MedicationsViewProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement>();
     const [loading, setLoading] = useState<boolean>(true);
-
-    const reportRef = useRef<HTMLDivElement>(null);
 
     return <Layout colorScheme={props.colorScheme}>
         <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
-        <div ref={reportRef}>
+        <div ref={element => setReportElement(element ?? undefined)}>
             <Title
                 order={2}
                 autosizeImage
                 image={<img src={medicationIcon} alt="medication icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} reportRef={reportRef} fileName="Medications" hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement} fileName="Medications" hidden={loading} />}
                 defaultMargin
             >
                 {language("medications-title")}

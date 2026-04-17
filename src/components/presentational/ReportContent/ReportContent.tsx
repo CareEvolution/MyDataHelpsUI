@@ -18,7 +18,7 @@ export interface ReportContentProps {
 }
 
 export default function ReportContent(props: ReportContentProps) {
-    const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(null);
+    const [reportElement, setReportElement] = useState<HTMLElement>();
     const [downloadingPdfReport, setDownloadingPdfReport] = useState<boolean>(false);
     const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
@@ -27,12 +27,6 @@ export default function ReportContent(props: ReportContentProps) {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-
-    const reportRef = {
-        get current() {
-            return iframeElement?.contentDocument?.body ?? null;
-        }
-    };
 
     const downloadPdfReport = async (): Promise<void> => {
         setDownloadingPdfReport(true);
@@ -59,9 +53,9 @@ export default function ReportContent(props: ReportContentProps) {
     return <div className="mdhui-report-content" style={props.style}>
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
-                <iframe sandbox="allow-same-origin" srcDoc={sanitizedHtmlContent} ref={setIframeElement} />
-                {reportRef.current &&
-                    <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} reportRef={reportRef} fileName={props.type} />
+                <iframe sandbox="allow-same-origin" srcDoc={sanitizedHtmlContent} onLoad={event => setReportElement(event.currentTarget.contentDocument?.body)} />
+                {reportElement &&
+                    <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} reportElement={reportElement} fileName={props.type} />
                 }
             </div>
         }
