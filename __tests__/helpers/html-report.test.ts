@@ -90,16 +90,18 @@ describe('HTML Report Helper Tests', () => {
         const createObjectURLMock = jest.fn();
         const revokeObjectURLMock = jest.fn();
         const clickMock = jest.fn();
-
         const createElementSpy = jest.spyOn(document, 'createElement');
+
+        let originalURL: typeof window.URL;
 
         beforeEach(() => {
             createObjectURLMock.mockReset().mockReturnValue(mockFileUrl);
             revokeObjectURLMock.mockReset();
             clickMock.mockReset();
 
-            window.URL.createObjectURL = createObjectURLMock;
-            window.URL.revokeObjectURL = revokeObjectURLMock;
+            originalURL = window.URL;
+            const urlMock = { createObjectURL: createObjectURLMock, revokeObjectURL: revokeObjectURLMock };
+            Object.defineProperty(window, 'URL', { value: urlMock, writable: true, configurable: true });
 
             createElementSpy.mockReset().mockImplementation((tag: string) => {
                 const element = document.createElementNS('http://www.w3.org/1999/xhtml', tag) as HTMLElement;
@@ -108,6 +110,10 @@ describe('HTML Report Helper Tests', () => {
                 }
                 return element;
             });
+        });
+
+        afterEach(() => {
+            Object.defineProperty(window, 'URL', { value: originalURL, writable: true, configurable: true });
         });
 
         it('Should create a blob with the correct HTML content and trigger a download link click.', async () => {
@@ -128,11 +134,11 @@ describe('HTML Report Helper Tests', () => {
         });
 
         it('Should use webkitURL when URL is not available.', async () => {
-            const originalURL = window.URL;
             Object.defineProperty(window, 'URL', { value: undefined, writable: true, configurable: true });
 
-            window.webkitURL.createObjectURL = createObjectURLMock;
-            window.webkitURL.revokeObjectURL = revokeObjectURLMock;
+            const originalWebkitURL = window.webkitURL;
+            const webkitURLMock = { createObjectURL: createObjectURLMock, revokeObjectURL: revokeObjectURLMock };
+            Object.defineProperty(window, 'webkitURL', { value: webkitURLMock, writable: true, configurable: true });
 
             const html = '<div>report</div>';
 
@@ -149,7 +155,7 @@ describe('HTML Report Helper Tests', () => {
             })).toBe('<!DOCTYPE html>\n' + html);
             expect(clickMock).toHaveBeenCalledTimes(1);
 
-            Object.defineProperty(window, 'URL', { value: originalURL, writable: true, configurable: true });
+            Object.defineProperty(window, 'webkitURL', { value: originalWebkitURL, writable: true, configurable: true });
         });
 
         it('Should use the provided fileName for the download attribute.', () => {
@@ -189,7 +195,6 @@ describe('HTML Report Helper Tests', () => {
         });
 
         it('Should do nothing when URL API is not available.', () => {
-            const originalURL = window.URL;
             const originalWebkitURL = window.webkitURL;
             Object.defineProperty(window, 'URL', { value: undefined, writable: true, configurable: true });
             Object.defineProperty(window, 'webkitURL', { value: undefined, writable: true, configurable: true });
@@ -197,7 +202,6 @@ describe('HTML Report Helper Tests', () => {
             expect(() => previewHtmlReport('<p>test</p>')).not.toThrow();
             expect(clickMock).not.toHaveBeenCalled();
 
-            Object.defineProperty(window, 'URL', { value: originalURL, writable: true, configurable: true });
             Object.defineProperty(window, 'webkitURL', { value: originalWebkitURL, writable: true, configurable: true });
         });
     });
