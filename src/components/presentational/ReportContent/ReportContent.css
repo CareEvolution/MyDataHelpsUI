@@ -1,5 +1,6 @@
 .mdhui-report-content {
     min-height: 200px;
+    padding-bottom: 8px;
 }
 
 .mdhui-report-content .mdhui-report-content-html {
@@ -17,6 +18,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    padding-top: 16px;
 }
 
 .mdhui-report-content .mdhui-report-content-pdf .mdhui-button {

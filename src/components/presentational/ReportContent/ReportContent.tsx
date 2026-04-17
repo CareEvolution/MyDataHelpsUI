@@ -1,5 +1,5 @@
 import { faDownload, faRefresh } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import "./ReportContent.css";
 import { language } from "../../../helpers/language";
@@ -13,6 +13,7 @@ export interface ReportContentProps {
     content: string;
     contentType: string;
     type: string;
+    style?: CSSProperties;
 }
 
 export default function ReportContent(props: ReportContentProps) {
@@ -50,7 +51,7 @@ export default function ReportContent(props: ReportContentProps) {
         }
     };
 
-    return <div className="mdhui-report-content">
+    return <div className="mdhui-report-content" style={props.style}>
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
                 <iframe sandbox="allow-same-origin" srcDoc={props.content} ref={setIframeElement} />
