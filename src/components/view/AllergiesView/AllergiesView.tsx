@@ -15,18 +15,18 @@ export interface AllergiesViewProps {
  * This view shows a listing of allergies pulled from the connected Providers and Health Plans.
  */
 export default function AllergiesView(props: AllergiesViewProps) {
-    const [reportElement, setReportElement] = useState<HTMLElement>();
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     return <Layout colorScheme={props.colorScheme}>
         <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
-        <div ref={element => setReportElement(element ?? undefined)}>
+        <div ref={setReportElement}>
             <Title
                 order={2}
                 autosizeImage
                 image={<img src={allergiesIcon} alt="allergies icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement} fileName="Allergies" hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement ?? undefined} fileName="Allergies" hidden={loading} />}
                 defaultMargin
             >
                 {language("allergies-title")}

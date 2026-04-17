@@ -15,18 +15,18 @@ export interface MedicationsViewProps {
  * This view shows a listing of medications pulled from the connected Providers and Health Plans.
  */
 export default function MedicationsView(props: MedicationsViewProps) {
-    const [reportElement, setReportElement] = useState<HTMLElement>();
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     return <Layout colorScheme={props.colorScheme}>
         <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
-        <div ref={element => setReportElement(element ?? undefined)}>
+        <div ref={setReportElement}>
             <Title
                 order={2}
                 autosizeImage
                 image={<img src={medicationIcon} alt="medication icon" />}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement} fileName="Medications" hidden={loading} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement ?? undefined} fileName="Medications" hidden={loading} />}
                 defaultMargin
             >
                 {language("medications-title")}

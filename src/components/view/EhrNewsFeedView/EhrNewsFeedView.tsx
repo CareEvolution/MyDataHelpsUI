@@ -23,7 +23,7 @@ export interface EhrNewsFeedViewProps {
  * Procedures, Reports, Lab Results, and Immunizations
  */
 export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
-    const [reportElement, setReportElement] = useState<HTMLElement>();
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
     const [atLeastOnePageLoaded, setAtLeastOnePageLoaded] = useState<boolean>(false);
     const [allPagesLoaded, setAllPagesLoaded] = useState<boolean>(false);
     const [loadAllPages, setLoadAllPages] = useState<boolean>(false);
@@ -68,13 +68,13 @@ export default function EhrNewsFeedView(props: EhrNewsFeedViewProps) {
 
     return <Layout colorScheme={props.colorScheme}>
         <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
-        <div ref={element => setReportElement(element ?? undefined)}>
+        <div ref={setReportElement}>
             <Title
                 order={2}
                 autosizeImage
                 image={icon}
                 imageAlignment="left"
-                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement} fileName={props.feed} hidden={!atLeastOnePageLoaded} prepareForDownload={prepareForDownload} />}
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement ?? undefined} fileName={props.feed} hidden={!atLeastOnePageLoaded} prepareForDownload={prepareForDownload} />}
                 defaultMargin
             >
                 {title}

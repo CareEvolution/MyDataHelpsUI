@@ -18,7 +18,7 @@ export interface EhrNewsFeedEventDetailProps {
 }
 
 export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProps) {
-    const [reportElement, setReportElement] = useState<HTMLElement>();
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [event, setEvent] = useState<EhrNewsFeedEventModel>();
 
@@ -34,12 +34,12 @@ export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProp
         });
     }, []);
 
-    return <div ref={element => setReportElement(element ?? undefined)}>
+    return <div ref={setReportElement}>
         <div className="mdhui-ehr-news-feed-event-detail">
             {loading && <LoadingIndicator />}
             {event &&
                 <>
-                    <NewsFeedDetailTitle preview={!!props.previewState} event={event} reportElement={reportElement} loading={loading} />
+                    <NewsFeedDetailTitle preview={!!props.previewState} event={event} reportElement={reportElement ?? undefined} loading={loading} />
                     {event.Type === "ProcedureGroup" && <ProcedureGroupDetail event={event} />}
                     {event.Type === "ClaimProcedureGroup" && <ClaimProcedureGroupDetail event={event} />}
                     {event.Type === "LabReport" && <LabReportDetail event={event} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
