@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { buildHtmlReport } from '../../src/helpers/html-report';
+import { buildHtmlReport, previewHtmlReport } from '../../src/helpers/html-report';
 import { lightColorStyle } from '../../src/helpers/globalCss';
 
 describe('HTML Report Helper Tests', () => {
@@ -81,6 +81,124 @@ describe('HTML Report Helper Tests', () => {
             const result = buildHtmlReport(reportHtml, [], additionalCssRules);
 
             expect(result).toBe(buildExpectedRootStyle() + `<style>\n${additionalCssRules.join('\n\n')}\n</style>` + reportHtml);
+        });
+    });
+
+    describe('previewHtmlReport', () => {
+        const mockFileUrl = 'blob:http://localhost/mock-url';
+
+        const createObjectURLMock = jest.fn();
+        const revokeObjectURLMock = jest.fn();
+        const clickMock = jest.fn();
+
+        const createElementSpy = jest.spyOn(document, 'createElement');
+
+        beforeEach(() => {
+            createObjectURLMock.mockReset().mockReturnValue(mockFileUrl);
+            revokeObjectURLMock.mockReset();
+            clickMock.mockReset();
+
+            window.URL.createObjectURL = createObjectURLMock;
+            window.URL.revokeObjectURL = revokeObjectURLMock;
+
+            createElementSpy.mockReset().mockImplementation((tag: string) => {
+                const element = document.createElementNS('http://www.w3.org/1999/xhtml', tag) as HTMLElement;
+                if (tag === 'a') {
+                    element.click = clickMock;
+                }
+                return element;
+            });
+        });
+
+        it('Should create a blob with the correct HTML content and trigger a download link click.', async () => {
+            const html = '<div>report</div>';
+
+            previewHtmlReport(html);
+
+            expect(createObjectURLMock).toHaveBeenCalledTimes(1);
+
+            const blob: Blob = createObjectURLMock.mock.calls[0][0];
+            expect(blob.type).toBe('text/html');
+            expect(await new Promise<string>(resolve => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.readAsText(blob);
+            })).toBe('<!DOCTYPE html>\n' + html);
+            expect(clickMock).toHaveBeenCalledTimes(1);
+        });
+
+        it('Should use webkitURL when URL is not available.', async () => {
+            const originalURL = window.URL;
+            Object.defineProperty(window, 'URL', { value: undefined, writable: true, configurable: true });
+
+            window.webkitURL.createObjectURL = createObjectURLMock;
+            window.webkitURL.revokeObjectURL = revokeObjectURLMock;
+
+            const html = '<div>report</div>';
+
+            previewHtmlReport(html);
+
+            expect(createObjectURLMock).toHaveBeenCalledTimes(1);
+
+            const blob: Blob = createObjectURLMock.mock.calls[0][0];
+            expect(blob.type).toBe('text/html');
+            expect(await new Promise<string>(resolve => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.readAsText(blob);
+            })).toBe('<!DOCTYPE html>\n' + html);
+            expect(clickMock).toHaveBeenCalledTimes(1);
+
+            Object.defineProperty(window, 'URL', { value: originalURL, writable: true, configurable: true });
+        });
+
+        it('Should use the provided fileName for the download attribute.', () => {
+            previewHtmlReport('<p>test</p>', 'my-report');
+
+            const anchorElement = clickMock.mock.contexts[0] as HTMLAnchorElement;
+            expect(anchorElement.download).toBe('my-report.html');
+            expect(anchorElement.href).toBe(mockFileUrl);
+        });
+
+        it('Should default the fileName to "report-preview" when not provided.', () => {
+            previewHtmlReport('<p>test</p>');
+
+            const anchorElement = clickMock.mock.contexts[0] as HTMLAnchorElement;
+            expect(anchorElement.download).toBe('report-preview.html');
+            expect(anchorElement.href).toBe(mockFileUrl);
+        });
+
+        it('Should default the fileName to "report-preview" when an empty string is provided.', () => {
+            previewHtmlReport('<p>test</p>', '');
+
+            const anchorElement = clickMock.mock.contexts[0] as HTMLAnchorElement;
+            expect(anchorElement.download).toBe('report-preview.html');
+            expect(anchorElement.href).toBe(mockFileUrl);
+        });
+
+        it('Should revoke the object URL after the click.', () => {
+            jest.useFakeTimers();
+
+            previewHtmlReport('<p>test</p>');
+
+            expect(revokeObjectURLMock).not.toHaveBeenCalled();
+            jest.runAllTimers();
+            expect(revokeObjectURLMock).toHaveBeenCalledWith(mockFileUrl);
+
+            jest.useRealTimers();
+        });
+
+        it('Should do nothing when URL API is not available.', () => {
+            const originalURL = window.URL;
+            const originalWebkitURL = window.webkitURL;
+            Object.defineProperty(window, 'URL', { value: undefined, writable: true, configurable: true });
+            Object.defineProperty(window, 'webkitURL', { value: undefined, writable: true, configurable: true });
+
+            expect(() => previewHtmlReport('<p>test</p>')).not.toThrow();
+            expect(clickMock).not.toHaveBeenCalled();
+
+            Object.defineProperty(window, 'URL', { value: originalURL, writable: true, configurable: true });
+            Object.defineProperty(window, 'webkitURL', { value: originalWebkitURL, writable: true, configurable: true });
         });
     });
 });
