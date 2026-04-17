@@ -25,5 +25,5 @@ export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any 
     link.href = fileUrl;
     link.download = `${fileName || 'report-preview'}.html`;
     link.click();
-    urlObject.revokeObjectURL(fileUrl);
+    setTimeout(() => urlObject.revokeObjectURL(fileUrl));
 }
