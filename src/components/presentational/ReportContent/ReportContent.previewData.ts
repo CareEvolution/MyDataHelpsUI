@@ -1,7 +1,7 @@
 export let xssHtml = `<!DOCTYPE html>
 <html>
 <body>
-  <p>This page contains a hidden XSS payload. If DOMPurify is working, no alert should appear.</p>
+  <p>This page contains a hidden XSS attack. If sandboxing and/or DOMPurify are working, no further messages should appear.</p>
   <script type="text/javascript">
     try {
       const cookies = window.parent.document.cookie;
