@@ -17,9 +17,11 @@ export function buildHtmlReport(reportHtml: string, styleElements: HTMLStyleElem
     return html;
 }
 
-export function previewHtmlReport(window: Window & { URL?: any, webkitURL?: any }, html: string, fileName?: string): void {
-    const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+export function previewHtmlReport(html: string, fileName?: string): void {
     const urlObject = window.URL || window.webkitURL;
+    if (!urlObject) return;
+
+    const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
     const fileUrl = urlObject.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = fileUrl;

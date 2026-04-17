@@ -99,7 +99,7 @@ export default function EhrDownloadButton(props: EhrDownloadButtonProps) {
             }
 
             if (props.preview) {
-                previewHtmlReport(window, htmlReport, props.fileName);
+                previewHtmlReport(htmlReport, props.fileName);
             } else {
                 await renderPdf(htmlReport, participantID, { fileName: props.fileName, pageNumbers: true });
             }
