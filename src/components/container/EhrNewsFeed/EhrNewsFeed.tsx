@@ -16,7 +16,7 @@ export interface EhrNewsFeedProps {
     feed: EhrNewsFeedType;
     loadAllPages?: boolean;
     onPageLoaded?: () => void;
-    onAllPagesLoaded?: () => void;
+    onAllPagesLoaded?: (error?: unknown) => void;
     onEventSelected: (eventReference: EhrNewsFeedEventReference) => void;
     onReportSelected: (reportID: string) => void;
 }
@@ -46,8 +46,8 @@ export default function EhrNewsFeed(props: EhrNewsFeedProps) {
         }
     }, [props.loadAllPages, dayBuckets]);
 
-    const loadMore = (): void => {
-        function addEvents(events: EhrNewsFeedEventModel[]) {
+    const loadMore = async (): Promise<void> => {
+        const addEvents = (events: EhrNewsFeedEventModel[]): void => {
             let newDayBuckets = [...dayBuckets];
             events.forEach((event) => {
                 let eventDayLabel = getFullDateString(event.Date);
@@ -61,7 +61,7 @@ export default function EhrNewsFeed(props: EhrNewsFeedProps) {
                 }
             });
             setDayBuckets(newDayBuckets);
-        }
+        };
 
         setLoading(true);
 
@@ -82,7 +82,8 @@ export default function EhrNewsFeed(props: EhrNewsFeedProps) {
             return;
         }
 
-        getNewsFeedPage(props.feed, nextPageId, nextPageDate).then((result) => {
+        try {
+            const result = await getNewsFeedPage(props.feed, nextPageId, nextPageDate);
             addEvents(result.Events);
             setNextPageDate(result.NextPageDate);
             setNextPageId(result.NextPageID);
@@ -94,7 +95,13 @@ export default function EhrNewsFeed(props: EhrNewsFeedProps) {
             } else {
                 setLoading(!!props.loadAllPages);
             }
-        });
+        } catch (error) {
+            // If there is an error loading any of the pages, just mark the load as finished
+            // so it doesn't loop infinitely trying to load more pages.
+            setLoading(false);
+            setFinished(true);
+            props.onAllPagesLoaded?.(error);
+        }
     };
 
     const filterEvents = (events: EhrNewsFeedEventModel[], filter: string): EhrNewsFeedEventModel[] => {
