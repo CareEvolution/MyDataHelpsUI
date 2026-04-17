@@ -48,16 +48,13 @@ export default function EhrNewsFeed(props: EhrNewsFeedProps) {
 
     const loadMore = async (): Promise<void> => {
         const addEvents = (events: EhrNewsFeedEventModel[]): void => {
-            let newDayBuckets = [...dayBuckets];
-            events.forEach((event) => {
-                let eventDayLabel = getFullDateString(event.Date);
-                if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day == eventDayLabel) {
+            const newDayBuckets = [...dayBuckets];
+            events.forEach(event => {
+                const eventDayLabel = getFullDateString(event.Date);
+                if (newDayBuckets.length && newDayBuckets[newDayBuckets.length - 1].day === eventDayLabel) {
                     newDayBuckets[newDayBuckets.length - 1].items.push(event);
                 } else {
-                    newDayBuckets.push({
-                        day: eventDayLabel,
-                        items: [event]
-                    });
+                    newDayBuckets.push({ day: eventDayLabel, items: [event] });
                 }
             });
             setDayBuckets(newDayBuckets);
