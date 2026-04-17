@@ -17,7 +17,7 @@ const meta: Meta<ReportContentStoryArgs> = {
         layout: "fullscreen"
     },
     render: (args: ReportContentStoryArgs) => <Layout colorScheme={args.colorScheme}>
-        <ReportContent {...args} style={{ background: "var(--mdhui-background-color-2)" }} />
+        <ReportContent {...args} style={{ height: '600px', background: "var(--mdhui-background-color-2)" }} />
     </Layout>,
     args: {
         colorScheme: "auto",

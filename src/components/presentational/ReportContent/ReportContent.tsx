@@ -1,5 +1,6 @@
 import { faDownload, faRefresh } from "@fortawesome/free-solid-svg-icons";
-import React, { CSSProperties, useEffect, useState } from "react";
+import DOMPurify from "dompurify";
+import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import "./ReportContent.css";
 import { language } from "../../../helpers/language";
@@ -51,10 +52,14 @@ export default function ReportContent(props: ReportContentProps) {
         }
     };
 
+    const sanitizedHtmlContent = useMemo(() => {
+        return props.contentType === "text/html" ? DOMPurify.sanitize(props.content, { WHOLE_DOCUMENT: true, FORCE_BODY: false }) : "";
+    }, [props.contentType, props.content]);
+
     return <div className="mdhui-report-content" style={props.style}>
         {props.contentType === "text/html" &&
             <div className="mdhui-report-content-html">
-                <iframe sandbox="allow-same-origin" srcDoc={props.content} ref={setIframeElement} />
+                <iframe sandbox="allow-same-origin" srcDoc={sanitizedHtmlContent} ref={setIframeElement} />
                 {reportRef.current &&
                     <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} reportRef={reportRef} fileName={props.type} />
                 }
