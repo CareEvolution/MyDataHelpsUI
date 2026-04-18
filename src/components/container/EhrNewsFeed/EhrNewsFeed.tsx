@@ -12,7 +12,7 @@ import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefini
 import { getFullDateString, getTimeOfDayString, toDate } from '../../../helpers/date-helpers';
 
 export interface EhrNewsFeedProps {
-    previewState?: "default";
+    previewState?: "default" | "procedures" | "labReports" | "immunizations" | "reports";
     feed: EhrNewsFeedType;
     loadAllPages?: boolean;
     onPageLoaded?: () => void;
