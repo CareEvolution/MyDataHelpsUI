@@ -1,0 +1,20 @@
+.mdhui-insights-badge > .mdhui-progress-ring {
+    margin: 0;
+}
+
+.mdhui-insights-badge .mdhui-insights-badge-icon {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--mdhui-border-color-1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.mdhui-insights-badge .mdhui-insights-badge-icon-label {
+    line-height: 40px;
+    font-weight: bold;
+}
