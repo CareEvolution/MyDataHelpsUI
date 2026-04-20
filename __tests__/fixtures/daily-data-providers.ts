@@ -26,6 +26,10 @@ export const sampleDataPoints: DeviceDataPoint[] = [
     {} as DeviceDataPoint
 ];
 
+export const sampleDataPointsV2: DeviceDataV2Point[] = [
+    {} as DeviceDataV2Point
+];
+
 export const sampleResult: DailyDataQueryResult = {
     'SomeDate': 100
 };
