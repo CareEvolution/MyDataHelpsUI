@@ -48,7 +48,9 @@ const MINDFUL_MINUTES_SOURCES = sources(
 const THERAPY_MINUTES_SOURCES = sources(
     ["AppleHealth", "MindfulSession"],
     ["GoogleFit", "SilverCloudSession"],
-    ["HealthConnect", "exercise-session"]
+    ["HealthConnect", "exercise-session", {
+        deviceDataV2QueryFilters: { dataSource: { dataOriginPackageName: "com.silvercloudhealth.android.app" } }
+    }]
 );
 
 const ACTIVE_CALORIES_BURNED_SOURCES = sources(
