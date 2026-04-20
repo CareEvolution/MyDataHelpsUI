@@ -6,7 +6,7 @@ import { combineResultsUsingFirstValue } from './daily-data';
 export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const providers: Promise<DailyDataQueryResult>[] = [];
 
-    const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(false);
+    const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
 
     if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'AppleHealth' && type.type === 'MindfulSession')) {
         providers.push(appleHealthTherapyMinutesDataProvider(startDate, endDate));
