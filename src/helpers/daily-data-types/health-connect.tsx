@@ -129,7 +129,9 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectTherapyMinutes,
         dataProvider: healthConnectTherapyMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session'),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session', {
+            deviceDataV2QueryFilters: { dataSource: { dataOriginPackageName: 'com.silvercloudhealth.android.app' } }
+        }),
         labelKey: 'therapy-minutes',
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),

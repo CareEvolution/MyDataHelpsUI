@@ -2,9 +2,11 @@ import { DeviceDataNamespace, DeviceDataV2Namespace } from '@careevolution/mydat
 import { CombinedDataCollectionSettings } from '../daily-data-providers/combined-data-collection-settings';
 import { getSupportedApis, hasV1Data, hasV2Data, SupportedAPIsQuery } from '../daily-data-providers/data-collection-helper';
 import { DailyDataAvailabilityCheck } from '../query-daily-data';
+import { DeviceDataV2QueryFilters } from '../daily-data-providers/daily-data';
 
 export interface AvailabilityCheckOptions {
     requireAllTypes?: boolean;
+    deviceDataV2QueryFilters?: DeviceDataV2QueryFilters;
 }
 
 export type DataSource = {
@@ -47,7 +49,7 @@ async function checkSourceAvailability(combinedSettings: CombinedDataCollectionS
             typePromises.push(hasV1Data(source.namespace as DeviceDataNamespace, supportedApisResult.v1.types, modifiedAfter));
         }
         if (supportedApisResult.v2.enabled) {
-            typePromises.push(hasV2Data(source.namespace as DeviceDataV2Namespace, supportedApisResult.v2.types, modifiedAfter));
+            typePromises.push(hasV2Data(source.namespace as DeviceDataV2Namespace, supportedApisResult.v2.types, modifiedAfter, source.options?.deviceDataV2QueryFilters));
         }
         return Promise.any(typePromises);
     });
