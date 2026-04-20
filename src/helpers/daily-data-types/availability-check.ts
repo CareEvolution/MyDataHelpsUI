@@ -6,7 +6,7 @@ import { DeviceDataV2QueryFilters } from '../daily-data-providers/daily-data';
 
 export interface AvailabilityCheckOptions {
     requireAllTypes?: boolean;
-    deviceDataV2QueryFilters?: DeviceDataV2QueryFilters;
+    v2QueryFilters?: DeviceDataV2QueryFilters;
 }
 
 export type DataSource = {
@@ -49,7 +49,7 @@ async function checkSourceAvailability(combinedSettings: CombinedDataCollectionS
             typePromises.push(hasV1Data(source.namespace as DeviceDataNamespace, supportedApisResult.v1.types, modifiedAfter));
         }
         if (supportedApisResult.v2.enabled) {
-            typePromises.push(hasV2Data(source.namespace as DeviceDataV2Namespace, supportedApisResult.v2.types, modifiedAfter, source.options?.deviceDataV2QueryFilters));
+            typePromises.push(hasV2Data(source.namespace as DeviceDataV2Namespace, supportedApisResult.v2.types, modifiedAfter, source.options?.v2QueryFilters));
         }
         return Promise.any(typePromises);
     });

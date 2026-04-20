@@ -19,6 +19,7 @@ import React from 'react';
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
 import { formatNumberForLocale } from '../locale';
+import { EXERCISE_SESSION_FILTERS } from '../daily-data-providers/health-connect-therapy-minutes';
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -129,9 +130,7 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.HealthConnectTherapyMinutes,
         dataProvider: healthConnectTherapyMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session', {
-            deviceDataV2QueryFilters: { dataSource: { dataOriginPackageName: 'com.silvercloudhealth.android.app' } }
-        }),
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session', { v2QueryFilters: EXERCISE_SESSION_FILTERS }),
         labelKey: 'therapy-minutes',
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),

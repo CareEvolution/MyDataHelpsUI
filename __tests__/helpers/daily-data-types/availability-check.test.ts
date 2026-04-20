@@ -289,8 +289,8 @@ describe('Availability Check Tests', () => {
             hasV2DataMock.mockRejectedValue(false);
 
             const sources: DataSource[] = [
-                { namespace: namespace1, type: [type1, type2], options: { deviceDataV2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } },
-                { namespace: namespace2, type: [type3, type4], options: { deviceDataV2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } }
+                { namespace: namespace1, type: [type1, type2], options: { v2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } },
+                { namespace: namespace2, type: [type3, type4], options: { v2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } }
             ];
 
             const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
