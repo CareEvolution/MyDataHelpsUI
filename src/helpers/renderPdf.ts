@@ -8,8 +8,8 @@ export default async function renderPdf(reportHtml: string, participantID: Guid,
         patientID: participantID.toString(),
         modelType: "VisualizationModel",
         visualizationKey: "Shared.HtmlToPdf",
-        ...(options?.fileName ? { fileName: options.fileName } : undefined),
-        ...(options?.pageNumbers ? { pageNumbers: "true" } : undefined)
+        ...(options?.fileName && { fileName: options.fileName }),
+        ...(options?.pageNumbers && { pageNumbers: "true" })
     });
     const url = `${MyDataHelps.baseUrl}WebVisualization/WebVisualizationPDF?${queryParams}`;
 
