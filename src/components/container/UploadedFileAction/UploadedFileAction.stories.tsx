@@ -27,9 +27,17 @@ const meta: Meta<UploadedFileActionStoryArgs> = {
             name: 'title',
             control: 'text'
         },
+        titleColor: {
+            name: 'title color',
+            control: 'color'
+        },
         subtitle: {
             name: 'subtitle',
             control: 'text'
+        },
+        subtitleColor: {
+            name: 'subtitle color',
+            control: 'color'
         },
         withCustomIcon: {
             name: 'with custom icon',
@@ -52,7 +60,9 @@ export const Default: StoryObj<UploadedFileActionStoryArgs> = {
         preview: true,
         colorScheme: 'auto',
         title: 'Some File Title',
+        titleColor: '',
         subtitle: 'Some subtitle for this file',
+        subtitleColor: '',
         withCustomIcon: false
     }
 };

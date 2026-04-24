@@ -4,14 +4,16 @@ import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import MyDataHelps from '@careevolution/mydatahelps-js';
 import { UploadedFile } from '@careevolution/mydatahelps-js/types';
-import { useInitializeView } from '../../../helpers';
+import { ColorDefinition, useInitializeView } from '../../../helpers';
 import queryAllFiles from '../../../helpers/query-all-files';
 
 export interface UploadedFileActionProps {
     preview?: boolean;
     icon?: ReactElement;
     title?: string;
+    titleColor?: ColorDefinition;
     subtitle?: string;
+    subtitleColor?: ColorDefinition;
     category: string;
     fileNamePattern?: string | RegExp;
     trackUsage?: boolean;
@@ -54,7 +56,9 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
     return <Action
         icon={props.icon ?? <FontAwesomeSvgIcon icon={faFile} />}
         title={props.title}
+        titleColor={props.titleColor}
         subtitle={props.subtitle}
+        subtitleColor={props.subtitleColor}
         bottomBorder
         onClick={openFile}
         innerRef={props.innerRef}
