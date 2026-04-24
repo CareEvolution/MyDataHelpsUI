@@ -1,4 +1,4 @@
-import React, { Ref, useState } from 'react';
+import React, { ReactElement, Ref, useState } from 'react';
 import { Action } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import queryAllFiles from '../../../helpers/query-all-files';
 
 export interface UploadedFileActionProps {
     preview?: boolean;
+    icon?: ReactElement;
     title?: string;
     subtitle?: string;
     category: string;
@@ -51,7 +52,7 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
     };
 
     return <Action
-        icon={<FontAwesomeSvgIcon icon={faFile} />}
+        icon={props.icon ?? <FontAwesomeSvgIcon icon={faFile} />}
         title={props.title}
         subtitle={props.subtitle}
         bottomBorder
