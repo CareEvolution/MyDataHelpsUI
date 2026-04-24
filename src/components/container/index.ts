@@ -62,6 +62,7 @@ export { default as SurveyTaskList, type SurveyTaskListSortBehavior } from "./Su
 export { default as SeverityCalendar } from "./SeverityCalendar"
 export { default as StressLevel } from "./StressLevel"
 export { default as TermInformation, TermInformationReference } from "./TermInformation"
+export { default as UploadedFileAction } from "./UploadedFileAction"
 export { default as ViewDeviceActivity } from "./ViewDeviceActivity"
 export { default as ViewEhr } from "./ViewEhr"
 export { default as WeeklyDayNavigator } from "./WeeklyDayNavigator"
