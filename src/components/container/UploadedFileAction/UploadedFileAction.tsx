@@ -65,5 +65,6 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
         subtitle={props.subtitle}
         bottomBorder
         onClick={openFile}
+        innerRef={props.innerRef}
     />;
 }
