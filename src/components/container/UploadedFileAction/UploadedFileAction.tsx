@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from 'react';
+import React, { Ref, useState } from 'react';
 import { Action } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,7 @@ export interface UploadedFileActionProps {
     fileNamePattern?: string | RegExp;
     trackUsage?: boolean;
     embedded?: boolean;
-    innerRef: RefObject<HTMLDivElement>;
+    innerRef: Ref<HTMLDivElement>;
 }
 
 export default function UploadedFileAction(props: UploadedFileActionProps) {
