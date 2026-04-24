@@ -8,9 +8,8 @@ import { useInitializeView } from '../../../helpers';
 
 export interface UploadedFileActionProps {
     preview?: boolean;
-    title: string;
+    title?: string;
     subtitle?: string;
-    renderAs?: 'div' | 'button';
     category: string;
     fileNamePattern?: string | RegExp;
     trackUsage?: boolean;
@@ -64,7 +63,6 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
         icon={<FontAwesomeSvgIcon icon={faFile} />}
         title={props.title}
         subtitle={props.subtitle}
-        renderAs={props.renderAs}
         bottomBorder
         onClick={openFile}
     />;

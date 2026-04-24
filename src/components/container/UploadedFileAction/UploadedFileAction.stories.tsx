@@ -28,14 +28,6 @@ const meta: Meta<UploadedFileActionStoryArgs> = {
             name: 'subtitle',
             control: 'text'
         },
-        renderAs: {
-            name: 'render as',
-            control: 'radio',
-            options: ['default', 'button', 'div'],
-            mapping: {
-                default: undefined
-            }
-        },
         ...argTypesToHide(['preview', 'category', 'fileNamePattern', 'trackUsage', 'embedded', 'innerRef'])
     },
     render: args => {
@@ -53,7 +45,6 @@ export const Default: StoryObj<UploadedFileActionStoryArgs> = {
         preview: true,
         colorScheme: 'auto',
         title: 'Some File Title',
-        subtitle: 'Some subtitle for this file',
-        renderAs: 'default' as any
+        subtitle: 'Some subtitle for this file'
     }
 };
