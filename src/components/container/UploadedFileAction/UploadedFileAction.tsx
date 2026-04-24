@@ -2,9 +2,10 @@ import React, { Ref, useState } from 'react';
 import { Action } from '../../presentational';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
-import MyDataHelps, { UploadedFileQuery, UploadedFilesPage } from '@careevolution/mydatahelps-js';
+import MyDataHelps from '@careevolution/mydatahelps-js';
 import { UploadedFile } from '@careevolution/mydatahelps-js/types';
 import { useInitializeView } from '../../../helpers';
+import queryAllFiles from '../../../helpers/query-all-files';
 
 export interface UploadedFileActionProps {
     preview?: boolean;
@@ -18,39 +19,29 @@ export interface UploadedFileActionProps {
 }
 
 export default function UploadedFileAction(props: UploadedFileActionProps) {
-    const [uploadedFile, setUploadedFile] = useState<UploadedFile>();
+    const [file, setFile] = useState<UploadedFile>();
 
     useInitializeView(async () => {
         if (props.preview) {
-            setUploadedFile({} as UploadedFile);
+            setFile({} as UploadedFile);
             return;
         }
 
-        const queryParameters: UploadedFileQuery = { category: props.category };
-        let filesPage: UploadedFilesPage;
-        do {
-            filesPage = await MyDataHelps.queryFiles(queryParameters);
-            if (filesPage.files.length > 0) {
-                const matchingFile = props.fileNamePattern
-                    ? filesPage.files.find(file => file.fileName.match(props.fileNamePattern!))
-                    : filesPage.files[0];
-                if (matchingFile) {
-                    setUploadedFile(matchingFile);
-                    break;
-                }
-            }
-            queryParameters.pageID = filesPage.nextPageID;
-        } while (filesPage.nextPageID);
+        const allFiles = await queryAllFiles({ category: props.category });
+        if (allFiles.length > 0) {
+            const sortedFiles = allFiles.sort((a, b) => b.lastModified.localeCompare(a.lastModified));
+            setFile(props.fileNamePattern ? sortedFiles.find(file => file.fileName.match(props.fileNamePattern!)) : sortedFiles[0]);
+        }
     }, [], [props.category, props.fileNamePattern]);
 
-    if (!uploadedFile) return null;
+    if (!file) return null;
 
     const openFile = async (): Promise<void> => {
         if (props.preview) return;
 
-        const downloadedFile = await MyDataHelps.getFileDownloadUrl(uploadedFile.key);
+        const downloadedFile = await MyDataHelps.getFileDownloadUrl(file.key);
         if (props.trackUsage) {
-            void MyDataHelps.trackCustomEvent({ eventType: 'OpenUploadedFile', properties: { fileName: uploadedFile.fileName, fileKey: uploadedFile.key } });
+            void MyDataHelps.trackCustomEvent({ eventType: 'OpenUploadedFile', properties: { fileName: file.fileName, fileKey: file.key } });
         }
         if (props.embedded) {
             MyDataHelps.openEmbeddedUrl(downloadedFile.preSignedUrl);
