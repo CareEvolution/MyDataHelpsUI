@@ -18,6 +18,7 @@ export interface UploadedFileActionProps {
     fileNamePattern?: string | RegExp;
     trackUsage?: boolean;
     embedded?: boolean;
+    viewKey?: string;
     innerRef: Ref<HTMLDivElement>;
 }
 
@@ -44,7 +45,12 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
 
         const downloadedFile = await MyDataHelps.getFileDownloadUrl(file.key);
         if (props.trackUsage) {
-            void MyDataHelps.trackCustomEvent({ eventType: 'OpenUploadedFile', properties: { fileName: file.fileName, fileKey: file.key } });
+            const properties = {
+                fileName: file.fileName,
+                fileKey: file.key,
+                viewKey: props.viewKey
+            };
+            void MyDataHelps.trackCustomEvent({ eventType: 'OpenUploadedFile', properties });
         }
         if (props.embedded) {
             MyDataHelps.openEmbeddedUrl(downloadedFile.preSignedUrl);
