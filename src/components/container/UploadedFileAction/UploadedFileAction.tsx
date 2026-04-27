@@ -48,7 +48,7 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
             const properties = {
                 fileName: file.fileName,
                 fileKey: file.key,
-                viewKey: props.viewKey
+                ...(props.viewKey && { viewKey: props.viewKey })
             };
             void MyDataHelps.trackCustomEvent({ eventType: 'OpenUploadedFile', properties });
         }
