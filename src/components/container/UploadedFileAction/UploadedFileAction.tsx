@@ -14,7 +14,7 @@ export interface UploadedFileActionProps {
     titleColor?: ColorDefinition;
     subtitle?: string;
     subtitleColor?: ColorDefinition;
-    category: string;
+    category?: string;
     fileNamePattern?: string | RegExp;
     trackUsage?: boolean;
     embedded?: boolean;
@@ -31,7 +31,7 @@ export default function UploadedFileAction(props: UploadedFileActionProps) {
             return;
         }
 
-        const allFiles = await queryAllFiles({ category: props.category });
+        const allFiles = await queryAllFiles({ ...(props.category && { category: props.category }) });
         if (allFiles.length > 0) {
             const sortedFiles = allFiles.sort((a, b) => b.lastModified.localeCompare(a.lastModified));
             setFile(props.fileNamePattern ? sortedFiles.find(file => file.fileName.match(props.fileNamePattern!)) : sortedFiles[0]);
