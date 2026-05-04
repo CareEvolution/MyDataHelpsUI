@@ -2,11 +2,11 @@ import { describe, it } from '@jest/globals';
 import { add, endOfDay, formatISO, parseISO, startOfDay, startOfToday } from 'date-fns';
 import { getMealImageUrls, getMeals, getMealToEdit, Meal, MealReference, prepareMealForEditing, saveMeals, uploadMealImageFile } from '../../../src/helpers/glucose-and-meals';
 import MyDataHelps, { DeviceDataPoint, DeviceDataPointQuery, DeviceDataPointsPage, DownloadedFile, Guid, UploadedFile, UploadedFileQuery } from '@careevolution/mydatahelps-js';
-import { v4 as uuid } from 'uuid';
 import * as image from '../../../src/helpers/image';
 import * as queryAllFiles from '../../../src/helpers/query-all-files';
 import { getMealsByDate, itemSortByConfidenceDesc, itemSortByNameAsc } from '../../../src/helpers/glucose-and-meals/meals';
 import getDayKey from '../../../src/helpers/get-day-key';
+import { randomUUID } from 'crypto';
 
 jest.mock('@careevolution/mydatahelps-js', () => {
     return {
@@ -17,7 +17,7 @@ jest.mock('@careevolution/mydatahelps-js', () => {
             uploadFile: jest.fn(),
             getFileDownloadUrl: jest.fn()
         }
-    }
+    };
 });
 
 describe('Meals - Helper Function Tests', () => {
@@ -25,27 +25,27 @@ describe('Meals - Helper Function Tests', () => {
 
     const createTestMeals = (date: Date) => {
         const withDescription: Meal = {
-            id: uuid(),
+            id: randomUUID(),
             timestamp: add(date, { hours: 12 }),
             type: 'meal',
             description: 'Some tasty food!',
             created: add(date, { hours: 13 })
         };
         const archived: Meal = {
-            id: uuid(),
+            id: randomUUID(),
             timestamp: add(date, { hours: 11 }),
             type: 'snack',
             archiveTimestamp: add(date, { hours: 11, minutes: 30 })
         };
         const withImage: Meal = {
-            id: uuid(),
+            id: randomUUID(),
             timestamp: add(date, { hours: 10 }),
             type: 'drink',
             hasImage: true,
             lastModified: add(date, { hours: 16 })
         };
         const withAnalysis: Meal = {
-            id: uuid(),
+            id: randomUUID(),
             timestamp: add(date, { hours: 14 }),
             type: 'meal',
             hasImage: true,
@@ -59,7 +59,7 @@ describe('Meals - Helper Function Tests', () => {
             lastModified: add(date, { hours: 14, minutes: 45 })
         };
         const withItems: Meal = {
-            id: uuid(),
+            id: randomUUID(),
             timestamp: add(date, { hours: 13 }),
             type: 'meal',
             items: [{ name: 'bread' }, { name: 'cheese' }],
@@ -196,8 +196,8 @@ describe('Meals - Helper Function Tests', () => {
 
         it('Should save all meals.', async () => {
             const allMeals: Meal[] = [
-                { id: uuid() as Guid } as Meal,
-                { id: uuid() as Guid } as Meal
+                { id: randomUUID() as Guid } as Meal,
+                { id: randomUUID() as Guid } as Meal
             ];
 
             await saveMeals(add(today, { hours: 14 }), allMeals);
@@ -219,7 +219,7 @@ describe('Meals - Helper Function Tests', () => {
         });
 
         it('Should save a meal reference that can be used to look up the meal for editing.', async () => {
-            const meal: Meal = { id: uuid() as Guid, timestamp: add(today, { hours: 12 }) } as Meal;
+            const meal: Meal = { id: randomUUID() as Guid, timestamp: add(today, { hours: 12 }) } as Meal;
             const mealReference: MealReference = { date: today, id: meal.id };
 
             await prepareMealForEditing(meal);
@@ -255,7 +255,7 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should load the meal reference that can be used to look up the meal for editing.', async () => {
-            const mealReference: MealReference = { date: today, id: uuid() };
+            const mealReference: MealReference = { date: today, id: randomUUID() };
 
             setupMealReference(mealReference);
 
@@ -289,7 +289,7 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should upload just the image file when a thumbnail is not necessary.', async () => {
-            const meal: Meal = { id: uuid() as Guid } as Meal;
+            const meal: Meal = { id: randomUUID() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
             const fileToUpload = { name: 'file-to-upload.png' } as File;
 
@@ -303,7 +303,7 @@ describe('Meals - Helper Function Tests', () => {
         });
 
         it('Should upload the image file and a thumbnail, when necessary.', async () => {
-            const meal: Meal = { id: uuid() as Guid } as Meal;
+            const meal: Meal = { id: randomUUID() as Guid } as Meal;
             const file = { name: 'image.png' } as File;
             const fileToUpload = { name: 'file-to-upload.png' } as File;
             const thumbnailFile = { name: 'thumbnail.png' } as File;
@@ -338,8 +338,8 @@ describe('Meals - Helper Function Tests', () => {
         };
 
         it('Should return the image urls for each meal.', async () => {
-            const meal1: Meal = { id: uuid() as Guid, hasImage: true } as Meal;
-            const meal2: Meal = { id: uuid() as Guid, hasImage: true } as Meal;
+            const meal1: Meal = { id: randomUUID() as Guid, hasImage: true } as Meal;
+            const meal2: Meal = { id: randomUUID() as Guid, hasImage: true } as Meal;
 
             const meal1ImageFile = { fileName: `${meal1.id}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 1' } as UploadedFile;
             const meal2ImageFile = { fileName: `${meal2.id}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 2' } as UploadedFile;
@@ -354,7 +354,7 @@ describe('Meals - Helper Function Tests', () => {
         });
 
         it('Should prefer the latest image.', async () => {
-            const meal: Meal = { id: uuid() as Guid, hasImage: true } as Meal;
+            const meal: Meal = { id: randomUUID() as Guid, hasImage: true } as Meal;
 
             const imageFile1 = { fileName: `${meal.id}_thumbnail.png`, lastModified: add(today, { hours: 7 }).toISOString(), key: 'image 1' } as UploadedFile;
             const imageFile2 = { fileName: `${meal.id}.png`, lastModified: add(today, { hours: 8 }).toISOString(), key: 'image 2' } as UploadedFile;
@@ -370,7 +370,7 @@ describe('Meals - Helper Function Tests', () => {
         });
 
         it('Should prefer thumbnail images when both are available with the same last modified date.', async () => {
-            const meal: Meal = { id: uuid() as Guid, hasImage: true } as Meal;
+            const meal: Meal = { id: randomUUID() as Guid, hasImage: true } as Meal;
 
             const imageFile1 = { fileName: `${meal.id}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 1' } as UploadedFile;
             const imageFile2 = { fileName: `${meal.id}_thumbnail.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 2' } as UploadedFile;
@@ -384,8 +384,8 @@ describe('Meals - Helper Function Tests', () => {
         });
 
         it('Should return an empty object if there are no meals.', async () => {
-            const imageFile1 = { fileName: `${uuid()}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 1' } as UploadedFile;
-            const imageFile2 = { fileName: `${uuid()}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 2' } as UploadedFile;
+            const imageFile1 = { fileName: `${randomUUID()}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 1' } as UploadedFile;
+            const imageFile2 = { fileName: `${randomUUID()}.png`, lastModified: add(today, { hours: 9 }).toISOString(), key: 'image 2' } as UploadedFile;
 
             setupImageFiles([imageFile1, imageFile2]);
 
