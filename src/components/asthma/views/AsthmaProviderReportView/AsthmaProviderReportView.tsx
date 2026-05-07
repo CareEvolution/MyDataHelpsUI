@@ -10,7 +10,7 @@ export interface AsthmaProviderReportViewProps {
 export default function (props: AsthmaProviderReportViewProps) {
     return <Layout colorScheme="light">
         <NavigationBar variant="compressed" showCloseButton={true}>
-            <Title order={1}>Provider Report</Title>
+            <Title style={{ textAlign: 'left' }} order={1}>Provider Report</Title>
         </NavigationBar>
         <AsthmaProviderReport
             previewState={props.previewState}

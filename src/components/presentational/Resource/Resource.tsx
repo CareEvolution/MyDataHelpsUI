@@ -1,8 +1,7 @@
-import React from 'react'
-import './Resource.css'
+import React from 'react';
+import './Resource.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import UnstyledButton from '../UnstyledButton/UnstyledButton';
-import Button from '../Button/Button';
 import { noop } from '../../../helpers/functions';
 import language from '../../../helpers/language';
 

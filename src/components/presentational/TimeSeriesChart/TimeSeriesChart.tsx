@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { add, addDays, addHours, addMonths, differenceInDays, Duration, getDaysInMonth, isToday, startOfDay, startOfMonth, startOfToday } from 'date-fns'
 import { CardTitle, LayoutContext, LoadingIndicator } from '..'
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
@@ -35,6 +35,28 @@ export interface TimeSeriesChartProps {
 }
 
 export default function TimeSeriesChart(props: TimeSeriesChartProps) {
+    // This is a hack to work around an issue with SVG horizontal line rendering
+    // when using a gradient as the stroke. The gradient gets a height of 0 when
+    // the points of the line all share the same y value, so the browser doesn't
+    // render it.  By slightly adjusting one of the y values, we can force the
+    // SVG line to have a height > 0, causing it to render correctly.
+    //
+    // This approach is somewhat fragile because it relies on internal ReCharts
+    // functionality.  This fix will need to be regression tested and possibly
+    // adjusted any time we update the ReCharts dependency.
+    const [chartRef, setChartRef] = useState<any>();
+    useEffect(() => {
+        if (!chartRef?.state?.formattedGraphicalItems) return;
+
+        const lines = chartRef.state.formattedGraphicalItems.filter((fgi: any) => fgi.props?.key?.startsWith("line-"));
+        lines.forEach((line: any) => {
+            const points: any[] = line.props?.points ?? [];
+            if (points.length > 1 && points.every((point: any) => point.y === points[0].y)) {
+                points[0].y += 0.001;
+            }
+        });
+    }, [chartRef?.state?.formattedGraphicalItems]);
+
     let layoutContext = useContext(LayoutContext);
     let intervalType = props.intervalType || "Month";
 
@@ -203,7 +225,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
             {!props.chartHasData && !!dataToDisplay && <div className="no-data-label">{language('no-data')}</div>}
             {!props.chartHasData && !dataToDisplay && <LoadingIndicator />}
             <ResponsiveContainer width="100%" height={150} {...props.options?.containerOptions}>
-                <ComposedChart data={dataToDisplay} syncId={props.syncId}>
+                <ComposedChart data={dataToDisplay} syncId={props.syncId} ref={setChartRef}>
                     {props.chartHasData && props.tooltip &&
                         <Tooltip wrapperStyle={{ outline: "none" }} active content={<props.tooltip />} />
                     }

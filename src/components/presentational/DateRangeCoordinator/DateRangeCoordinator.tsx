@@ -1,7 +1,7 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import DateRangeNavigator from "../DateRangeNavigator/DateRangeNavigator";
 import { getMonthStart, getWeekStart, WeekStartsOn } from "../../../helpers";
-import { startOfDay } from "date-fns";
+import { startOfToday } from "date-fns";
 
 export interface DateRangeCoordinatorProps {
     initialIntervalStart?: Date;
@@ -26,45 +26,43 @@ export interface DateRangeContext {
 
 export const DateRangeContext = createContext<DateRangeContext | null>(null);
 
-export default function (props: DateRangeCoordinatorProps) {
-    let initialIntervalStart = props.initialIntervalStart || getMonthStart();
-    if (props.intervalType === "Week") {
-        initialIntervalStart = getWeekStart(props.weekStartsOn);
-    }
-    if (props.intervalType === "Day") {
-        initialIntervalStart = startOfDay(new Date());
-    }
+export default function DateRangeCoordinator(props: DateRangeCoordinatorProps) {
 
-    //default to null because the initial context will be set in useEffect below
-    //otherwise it could cause a double render of child components
-    const [currentContext, setCurrentContext] = useState<DateRangeContext | null>(null);
-    const currentContextRef = useRef<DateRangeContext | null>();
-
-    currentContextRef.current = currentContext;
+    const [intervalStart, setIntervalStart] = useState<Date>();
 
     useEffect(() => {
-        setCurrentContext({
-            intervalType: props.intervalType,
-            intervalStart: initialIntervalStart,
-            update: (updates: DateRangeContextUpdates) => {
-                setCurrentContext({ ...currentContextRef.current!, ...updates } as DateRangeContext);
+        // We can't use the existing helper in get-interval-start because this component works
+        // differently in the "day" and "6 month" cases.
+        const getDefaultIntervalStart = (): Date => {
+            if (props.intervalType === "Day") {
+                return startOfToday();
             }
-        });
-    }, [props.intervalType, props.weekStartsOn]);
+            if (props.intervalType === "Week") {
+                return getWeekStart(props.weekStartsOn);
+            }
+            return getMonthStart();
+        };
+        setIntervalStart(props.initialIntervalStart ?? getDefaultIntervalStart());
+    }, [props.initialIntervalStart, props.intervalType, props.weekStartsOn]);
 
-    if (!currentContext) return null;
+    if (!intervalStart) return null;
 
-    return <div ref={props.innerRef}><DateRangeContext.Provider value={currentContext}>
-        {!props.useCustomNavigator &&
-            <DateRangeNavigator
-                sticky={props.sticky}
-                intervalType={props.intervalType}
-                intervalStart={currentContext.intervalStart}
-                onIntervalChange={(d) => setCurrentContext({ ...currentContext, intervalStart: d })}
-                variant={props.variant}
-            />
-        }
-        {props.children}
-    </DateRangeContext.Provider>
-    </div>
+    const update = (updates: DateRangeContextUpdates): void => {
+        setIntervalStart(updates.intervalStart);
+    };
+
+    return <div ref={props.innerRef}>
+        <DateRangeContext.Provider value={({ intervalStart, intervalType: props.intervalType, update })}>
+            {!props.useCustomNavigator &&
+                <DateRangeNavigator
+                    sticky={props.sticky}
+                    intervalType={props.intervalType}
+                    intervalStart={intervalStart}
+                    onIntervalChange={setIntervalStart}
+                    variant={props.variant}
+                />
+            }
+            {props.children}
+        </DateRangeContext.Provider>
+    </div>;
 }

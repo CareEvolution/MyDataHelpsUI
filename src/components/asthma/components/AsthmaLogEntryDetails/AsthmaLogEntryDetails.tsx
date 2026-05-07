@@ -121,7 +121,7 @@ function LogEntryComponent(props: { className: string, label: string, data: stri
             <div className="mdhui-asthma-log-entry-details-component-no-data">{language('asthma-log-entry-details-component-no-data', undefined, { dataType: props.label.toLowerCase() })}</div>
         }
         {props.data.length > 0 && props.data.map(data => {
-            return <div className="mdhui-asthma-log-entry-details-component-data">{data}</div>;
+            return <div key={data} className="mdhui-asthma-log-entry-details-component-data">{data}</div>;
         })}
     </div>;
 }

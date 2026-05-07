@@ -10,27 +10,22 @@
 .mdhui-progress-ring {
     position: relative;
     margin: 0 auto 0 auto;
-    width: 220px;
-    height: 220px;
-    --mdhui-progress-ring-animation-start: 630;
     --mdhui-progress-ring-animation-end: 0;
 }
 
-.mdhui-progress-ring svg {
-    width: 220px;
-    height: 220px;
+.mdhui-progress-ring > svg {
+    position: relative;
     transform: rotate(-90deg);
+    z-index: 1;
 }
 
-.mdhui-progress-ring circle {
+.mdhui-progress-ring > svg circle {
     margin: 0 auto;
     fill: none;
-    stroke-width: 20;
-    stroke-dasharray: 630;
     stroke-linecap: round;
 }
 
-.mdhui-progress-ring circle:nth-child(2) {
+.mdhui-progress-ring > svg circle:nth-child(n+2) {
     stroke: var(--mdhui-color-primary);
     animation-fill-mode: forwards;
 }

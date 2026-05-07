@@ -79,7 +79,7 @@ export default function (props: OverallExperienceChartProps) {
 
     let overallFeelingAverage = calculateOverallFeelingAverage();
 
-    return <div ref={props.innerRef} className={"mdhui-ss-oe-chart" + (props.variant == "monthReport" ? " mdhui-ss-oe-chart-month-report" : "")}>
+    return <div ref={props.innerRef} className={"mdhui-ss-oe-chart" + (props.variant == "monthReport" ? " mdhui-ss-oe-chart-month-report" : "")} style={{ breakInside: 'avoid' }}>
         <div className="mdhui-ss-oe-chart-title-container">
             <CardTitle title={language("daily-overall-experience")} />
             {overallFeelingAverage &&

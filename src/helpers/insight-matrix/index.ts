@@ -1,5 +1,4 @@
 export { generateSampleData } from './sample-data';
-export { SurveyDataType, isSurveyDataType, getSurveyDataProvider } from './survey-data-type';
 export { InsightMatrixDataConfiguration, InsightMatrixGroupByDataConfiguration, InsightMatrixComparisonDataConfiguration, InsightMatrixDataProvider, InsightMatrixData } from './types';
 export { InsightMatrixValueCalculator, createNonZeroAverageValueInsightMatrixValueCalculator, createPercentageOfDaysInsightMatrixValueCalculator } from './value-calculator';
 export { InsightMatrixValueEvaluator, createMinMaxInsightMatrixValueEvaluator } from './value-evaluator';

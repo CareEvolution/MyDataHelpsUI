@@ -41,11 +41,11 @@ export default function (props: AsthmaDayViewProps) {
             setParticipant(participant);
             setLoading(false);
         });
-    }, [], [props.previewState])
+    }, [], [props.previewState]);
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'}>
         <NavigationBar variant="compressed" showCloseButton={true}>
-            <Title order={2}>
+            <Title style={{ textAlign: 'left' }} order={2}>
                 {getFullDateString(props.date)}
             </Title>
         </NavigationBar>

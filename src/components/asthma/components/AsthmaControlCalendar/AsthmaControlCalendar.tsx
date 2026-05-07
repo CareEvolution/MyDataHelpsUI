@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './AsthmaControlCalendar.css';
 import { add, differenceInDays, formatISO, isAfter, isBefore, isSameDay, parseISO, startOfMonth, startOfToday } from 'date-fns';
 import { AsthmaLogEntry } from '../../model';
-import { useInitializeView } from '../../../../helpers/Initialization';
+import { useInitializeView } from '../../../../helpers';
 import { asthmaDataService, computeAsthmaControlState, dateToAsthmaLogEntryIdentifier, getAsthmaSymptomLevelText } from '../../helpers';
 import { AsthmaControlCalendarPreviewState, previewData } from './AsthmaControlCalendar.previewData';
 import { Action, Calendar, CalendarDay, CalendarDayStateConfiguration, Card, DateRangeContext, Section } from '../../../presentational';
@@ -42,7 +42,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 border: '3px dashed var(--mdhui-text-color-0)',
                 color: 'var(--mdhui-text-color-0)',
                 fontWeight: 600,
-                marginTop: '-12px'
+                marginTop: '-13px'
             }
         },
         'not-controlled': {
@@ -51,7 +51,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 border: '3px solid #F86A5C',
                 color: '#fff',
                 fontWeight: 600,
-                marginTop: '-12px'
+                marginTop: '-13px'
             }
         },
         'controlled': {
@@ -60,12 +60,13 @@ export default function (props: AsthmaControlCalendarProps) {
                 border: '3px solid #35A6A0',
                 color: '#35A6A0',
                 fontWeight: 600,
-                marginTop: '-12px'
+                marginTop: '-13px'
             }
         },
         'today': {
             style: {
-                border: '3px solid #369CFF'
+                border: '3px solid #369CFF',
+                marginTop: '-13px'
             }
         },
         'future': {
@@ -74,7 +75,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 border: '3px solid var(--mdhui-background-color-0)',
                 color: 'var(--mdhui-text-color-3)',
                 fontWeight: 600,
-                marginTop: '-12px'
+                marginTop: '-13px'
             }
         },
         'no-data': {
@@ -83,7 +84,7 @@ export default function (props: AsthmaControlCalendarProps) {
                 border: '3px solid var(--mdhui-background-color-0)',
                 color: 'var(--mdhui-text-color-0)',
                 fontWeight: 600,
-                marginTop: '-12px'
+                marginTop: '-13px'
             }
         }
     };
