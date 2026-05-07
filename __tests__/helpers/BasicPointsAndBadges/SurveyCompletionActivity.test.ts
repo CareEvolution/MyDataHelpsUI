@@ -3,39 +3,39 @@ import { add, startOfToday } from 'date-fns';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
 import { describe, it } from '@jest/globals';
 import { awardSurveyCompletionActivityPoints, SurveyCompletionActivity } from '../../../src/helpers/BasicPointsAndBadges/SurveyCompletionActivity';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 
 describe('Basic Points And Badges - SurveyCompletionActivity', () => {
 
     const startDate = add(startOfToday(), { days: -7 });
 
-    const sa1: SurveyAnswer = {
+    const sa1 = {
         date: add(startDate, { days: 1, minutes: 1 }).toISOString(),
         answers: ["1"],
         insertedDate: add(startDate, { days: 1, minutes: 1 }).toISOString(),
-        surveyResultID: uuid(),
-        id: uuid(),
-        surveyID: uuid(),
+        surveyResultID: randomUUID(),
+        id: randomUUID(),
+        surveyID: randomUUID(),
         surveyVersion: 1,
         surveyName: 'Project Consent',
         surveyDisplayName: 'Consent to Study',
         stepIdentifier: '1',
         resultIdentifier: ''
-    };
+    } as unknown as SurveyAnswer;
 
-    const sa2: SurveyAnswer = {
+    const sa2 = {
         date: add(startDate, { days: 1, minutes: 2 }).toISOString(),
         answers: ["2"],
         insertedDate: add(startDate, { days: 1, minutes: 2 }).toISOString(),
-        surveyResultID: uuid(),
-        id: uuid(),
-        surveyID: uuid(),
+        surveyResultID: randomUUID(),
+        id: randomUUID(),
+        surveyID: randomUUID(),
         surveyVersion: 1,
         surveyName: 'Project Consent',
         surveyDisplayName: 'Consent to Study',
         stepIdentifier: '1',
         resultIdentifier: ''
-    };
+    } as unknown as SurveyAnswer;
 
     const queryAllSurveyAnswersMock = jest.spyOn(queryAllSurveyAnswersModule, 'default').mockImplementation();
 
