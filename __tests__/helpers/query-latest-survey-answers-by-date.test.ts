@@ -4,8 +4,8 @@ import queryAllSurveyAnswers from '../../src/helpers/query-all-survey-answers';
 import { add, endOfDay, formatISO } from 'date-fns';
 import getDayKey from '../../src/helpers/get-day-key';
 import { SurveyAnswer } from '@careevolution/mydatahelps-js';
-import { v4 as uuid } from 'uuid';
 import { parseISOWithoutOffset } from '../../src/helpers/date-helpers';
+import { randomUUID} from 'crypto';
 
 jest.mock('../../src/helpers/query-all-survey-answers', () => ({
     __esModule: true,
@@ -50,8 +50,8 @@ describe('Query Latest Survey Answers By Date', () => {
     describe('Date Filtering', () => {
         it('Should ignore survey answers that are too old.', async () => {
             queryAllSurveyAnswersMock.mockResolvedValue([
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(startDate, { seconds: -1 })), answers: ['5'] },
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'] }
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(add(startDate, { seconds: -1 })), answers: ['5'] },
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'] }
             ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier);
@@ -64,8 +64,8 @@ describe('Query Latest Survey Answers By Date', () => {
 
         it('Should ignore survey answers that are too old (with events as dates).', async () => {
             queryAllSurveyAnswersMock.mockResolvedValue([
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['5'], event: getDayKey(add(startDate, { days: -1 })) },
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'], event: getDayKey(startDate) }
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['5'], event: getDayKey(add(startDate, { days: -1 })) },
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(startDate), answers: ['7'], event: getDayKey(startDate) }
             ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier, true);
@@ -78,8 +78,8 @@ describe('Query Latest Survey Answers By Date', () => {
 
         it('Should ignore survey answers that are too recent.', async () => {
             queryAllSurveyAnswersMock.mockResolvedValue([
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(add(endDate, { days: 1 })), answers: ['5'] },
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endOfDay(endDate)), answers: ['7'] }
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(add(endDate, { days: 1 })), answers: ['5'] },
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(endOfDay(endDate)), answers: ['7'] }
             ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier);
@@ -92,8 +92,8 @@ describe('Query Latest Survey Answers By Date', () => {
 
         it('Should ignore survey answers that are too recent (with events as dates).', async () => {
             queryAllSurveyAnswersMock.mockResolvedValue([
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['5'], event: getDayKey(add(endDate, { days: 1 })) },
-                { surveyResultID: uuid().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['7'], event: getDayKey(endDate) }
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['5'], event: getDayKey(add(endDate, { days: 1 })) },
+                { surveyResultID: randomUUID().toString(), surveyName: 'Survey Name', date: formatISO(endDate), answers: ['7'], event: getDayKey(endDate) }
             ]);
 
             const latestSurveyAnswersByDate = await queryLatestSurveyAnswersByDate(startDate, endDate, surveyName, stepIdentifier, resultIdentifier, true);
@@ -106,10 +106,10 @@ describe('Query Latest Survey Answers By Date', () => {
     });
 
     describe('Survey Answer Collation', () => {
-        const surveyResultID1 = uuid().toString();
-        const surveyResultID2 = uuid().toString();
-        const surveyResultID3 = uuid().toString();
-        const surveyResultID4 = uuid().toString();
+        const surveyResultID1 = randomUUID().toString();
+        const surveyResultID2 = randomUUID().toString();
+        const surveyResultID3 = randomUUID().toString();
+        const surveyResultID4 = randomUUID().toString();
 
         const surveyAnswers: Partial<SurveyAnswer>[] = [
             { surveyResultID: surveyResultID1, surveyName: 'Survey Name', date: formatISO(add(endDate, { hours: 8 })), answers: ['5'], event: getDayKey(startDate) },

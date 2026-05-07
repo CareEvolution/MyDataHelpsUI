@@ -1,5 +1,5 @@
 .mdhui-report-view {
-    height: calc(100dvh - 8px);
+    height: calc(100dvh);
     display: flex;
     flex-direction: column;
 }

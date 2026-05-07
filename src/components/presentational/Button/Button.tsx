@@ -18,6 +18,7 @@ export interface ButtonProps {
 	innerRef?: React.Ref<HTMLButtonElement>;
 	defaultMargin?: boolean;
 	fullWidth?: boolean;
+	title?: string;
 }
 
 export default function Button(props: ButtonProps) {
@@ -49,6 +50,7 @@ export default function Button(props: ButtonProps) {
 	return (
 		<button ref={props.innerRef} style={{ backgroundColor: props.disabled ? undefined : backgroundColor, color: props.disabled ? undefined : textColor }}
 			className={classes.join(" ")}
+			title={props.title}
 			disabled={(props.disabled || props.loading)}
 			onClick={event => {
 				if (props.disabled || props.loading) {
