@@ -4,7 +4,7 @@
 import React, { ReactNode } from 'react';
 import ReportContent from '../../../../src/components/presentational/ReportContent/ReportContent';
 import { act, render } from '@testing-library/react';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 
 jest.mock('../../../../src/components/container', () => ({
     EhrDownloadButton: () => null,
@@ -12,7 +12,7 @@ jest.mock('../../../../src/components/container', () => ({
 }));
 
 describe('ReportContent Component Tests', () => {
-    const defaultReportContentProps = { reportId: uuid(), type: 'Any Type', contentType: 'text/html' };
+    const defaultReportContentProps = { reportId: randomUUID(), type: 'Any Type', contentType: 'text/html' };
 
     const getContainer = async (component: ReactNode): Promise<HTMLElement | undefined> => {
         let container: HTMLElement | undefined = undefined;
