@@ -394,5 +394,17 @@ describe('Data Collection Helper Function Tests', () => {
             expect(queryDeviceDataV2Mock).toHaveBeenNthCalledWith(1, { namespace: namespace, type: type1, limit: 1, modifiedAfter: modifiedAfter.toISOString() });
             expect(queryDeviceDataV2Mock).toHaveBeenNthCalledWith(2, { namespace: namespace, type: type2, limit: 1, modifiedAfter: modifiedAfter.toISOString() });
         });
+
+        it('Should include the optional filters when provided.', async () => {
+            queryDeviceDataV2Mock.mockResolvedValue({ deviceDataPoints: [{}] } as DeviceDataV2Page);
+
+            const result = await hasV2Data(namespace, [type1, type2], undefined, { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } });
+
+            expect(result).toBe(true);
+
+            expect(queryDeviceDataV2Mock).toHaveBeenCalledTimes(2);
+            expect(queryDeviceDataV2Mock).toHaveBeenNthCalledWith(1, { namespace: namespace, type: type1, limit: 1, dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } });
+            expect(queryDeviceDataV2Mock).toHaveBeenNthCalledWith(2, { namespace: namespace, type: type2, limit: 1, dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } });
+        });
     });
 });

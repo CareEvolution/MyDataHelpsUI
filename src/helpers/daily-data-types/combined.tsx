@@ -6,6 +6,7 @@ import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursY
 import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
+import { EXERCISE_SESSION_FILTERS } from "../daily-data-providers/health-connect-therapy-minutes";
 
 const RESTING_HEART_RATE_SOURCES = sources(
     ["AppleHealth", "RestingHeartRate"],
@@ -47,7 +48,8 @@ const MINDFUL_MINUTES_SOURCES = sources(
 
 const THERAPY_MINUTES_SOURCES = sources(
     ["AppleHealth", "MindfulSession"],
-    ["GoogleFit", "SilverCloudSession"]
+    ["GoogleFit", "SilverCloudSession"],
+    ["HealthConnect", "exercise-session", { v2QueryFilters: EXERCISE_SESSION_FILTERS }]
 );
 
 const ACTIVE_CALORIES_BURNED_SOURCES = sources(
