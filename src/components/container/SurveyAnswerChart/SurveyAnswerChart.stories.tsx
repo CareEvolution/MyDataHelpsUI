@@ -294,3 +294,55 @@ export const DailyPain: Story = {
         </Layout>;
     }
 };
+
+export const HorizontalLines: Story = {
+    name: 'Horizontal Lines',
+    args: {
+        colorScheme: 'auto'
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        ...argTypesToHide([
+            'previewState', 'title', 'intervalType', 'dynamicIntervalEndType', 'weekStartsOn', 'series', 'chartType', 'options',
+            'expectedDataInterval', 'previewDataProvider', 'innerRef'
+        ])
+    },
+    render: (args: SurveyAnswerChartStoryArgs) => {
+        const props: SurveyAnswerChartProps = {
+            previewState: 'default',
+            title: 'Horizontal Lines',
+            intervalType: 'Week',
+            weekStartsOn: '6DaysAgo',
+            series: [
+                { dataKey: 'Pain Level', surveyName: 'Pain Survey', stepIdentifier: 'PainToday', resultIdentifier: 'PainToday' }
+            ],
+            chartType: 'Line',
+            options: {
+                yAxisOptions: {
+                    domain: [0, 'auto']
+                }
+            },
+            expectedDataInterval: { days: 1 },
+            previewDataProvider: async (startDate: Date, endDate: Date) => {
+                const surveyAnswers = generateSurveyAnswers(startDate, endDate, ['PainToday'], 0, 10, { days: 1 });
+                surveyAnswers.forEach(surveyAnswers => {
+                    surveyAnswers.forEach(surveyAnswer => {
+                        surveyAnswer.answers[0] = '5';
+                    });
+                    surveyAnswers.splice(2, 1);
+                });
+                return surveyAnswers;
+            }
+        };
+
+        return <Layout colorScheme={args.colorScheme}>
+            <Card>
+                <SurveyAnswerChart {...props} />
+            </Card>
+        </Layout>;
+    }
+};
