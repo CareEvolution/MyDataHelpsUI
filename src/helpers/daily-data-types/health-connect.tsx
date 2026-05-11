@@ -5,6 +5,7 @@ import {
     healthConnectDistanceDataProvider,
     healthConnectLightSleepMinutesDataProvider,
     healthConnectMaxHeartRateDataProvider,
+    healthConnectMindfulMinutesDataProvider,
     healthConnectMinHeartRateDataProvider,
     healthConnectRemSleepMinutesDataProvider,
     healthConnectRestingHeartRateDataProvider,
@@ -132,6 +133,15 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         dataProvider: healthConnectTherapyMinutesDataProvider,
         availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session', { v2QueryFilters: EXERCISE_SESSION_FILTERS }),
         labelKey: 'therapy-minutes',
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => formatNumberForLocale(value),
+        previewDataRange: [0, 120]
+    },
+    {
+        type: DailyDataType.HealthConnectMindfulMinutes,
+        dataProvider: healthConnectMindfulMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'mindfulness-sessions'),
+        labelKey: 'mindful-minutes',
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]

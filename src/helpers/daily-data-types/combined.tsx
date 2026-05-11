@@ -43,7 +43,8 @@ const SLEEP_MINUTES_SOURCES = sources(
 
 const MINDFUL_MINUTES_SOURCES = sources(
     ["AppleHealth", "MindfulSession"],
-    ["GoogleFit", "ActivitySegment"]
+    ["GoogleFit", "ActivitySegment"],
+    ["HealthConnect", "mindfulness-sessions"]
 );
 
 const THERAPY_MINUTES_SOURCES = sources(
