@@ -81,7 +81,8 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 						</a>
 					</p>
 				}
-				{getStatus() === "unauthorized" &&
+				{(getStatus() === "unauthorized" || (!!props.externalAccount.provider.successorID && getStatus() !== "deleting")) &&
+					getStatus() !== "fetchingData" && getStatus() !== "deleting" &&
 					<p>
 						<a href="javascript:{}" onClick={() => props.onReconnectAccount(props.externalAccount)}>
 							<FontAwesomeSvgIcon icon={faRepeat} /> {language("external-account-reconnect")}

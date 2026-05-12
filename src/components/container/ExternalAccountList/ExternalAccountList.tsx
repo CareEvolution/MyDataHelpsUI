@@ -47,7 +47,8 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id, props.connectExternalAccountOptions || { openNewWindow: true })
+        const providerIdToConnect = account.provider.successorID ?? account.provider.id;
+        MyDataHelps.connectExternalAccount(providerIdToConnect, props.connectExternalAccountOptions || { openNewWindow: true })
             .then(function () {
                 loadExternalAccounts();
             });
