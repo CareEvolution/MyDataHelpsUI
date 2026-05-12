@@ -15,7 +15,7 @@ describe('Daily Data Provider - Garmin Sleep V2', () => {
             dataPoints.push({ value: level } as DeviceDataV2Point);
         });
 
-        setupDailyDataPointsV2('Garmin', 'sleep-levels', sampleStartDate, sampleEndDate, undefined, dataPoints);
+        setupDailyDataPointsV2('Garmin', 'sleep-levels', sampleStartDate, sampleEndDate, undefined, undefined, dataPoints);
         setupDailyTimeRanges(dataPoints.slice(1), sampleTimeRanges, -6);
         setupMinutesResult(sampleStartDate, sampleEndDate, sampleTimeRanges, sampleResult);
 

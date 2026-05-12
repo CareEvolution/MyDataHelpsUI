@@ -1,37 +1,39 @@
-import React from 'react'
-import { Layout, Card, NavigationBar, MedicationsList, Title } from "../.."
-import MyDataHelps from '@careevolution/mydatahelps-js';
+import React, { useState } from "react";
+import { Card, Layout, MedicationsList, NavigationBar, Title } from "../..";
+import { EhrDownloadButton, TermInformationReference } from "../../container";
 import medicationIcon from "../../../assets/icon-medication.svg";
-import language from '../../../helpers/language';
-import { TermInformationReference } from "../../container/TermInformation/TermInformation";
+import { language } from "../../../helpers";
 
 export interface MedicationsViewProps {
-    presentation?: "Push" | "Modal"
-    previewState?: "default"
-    onViewTermInfo?(termInfo: TermInformationReference): void
-    colorScheme?: "auto" | "light" | "dark"
+    presentation?: "Push" | "Modal";
+    previewState?: "default";
+    onViewTermInfo?: (termInfo: TermInformationReference) => void;
+    colorScheme?: "auto" | "light" | "dark";
 }
 
-export default function (props: MedicationsViewProps) {
-    function viewTermInfo(termInfo: TermInformationReference) {
-        if (props.onViewTermInfo) {
-            props.onViewTermInfo(termInfo);
-            return;
-        }
-        var queryString = new URLSearchParams({ termFamily: termInfo.TermFamily, termNamespace: termInfo.TermNamespace, termCode: termInfo.TermCode, lang: MyDataHelps.getCurrentLanguage() }).toString();
-        MyDataHelps.openApplication("https://hw.careevolutionapps.com/TermInformation.html?" + queryString, { modal: true });
-    }
+/**
+ * This view shows a listing of medications pulled from the connected Providers and Health Plans.
+ */
+export default function MedicationsView(props: MedicationsViewProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    return (
-        <Layout colorScheme={props.colorScheme}>
-            <NavigationBar
-                showBackButton={props.presentation == "Push"}
-                showCloseButton={props.presentation == "Modal"}>
-                <Title order={2} autosizeImage image={<img src={medicationIcon} />} imageAlignment="left">{language("medications-title")}</Title>
-            </NavigationBar>
+    return <Layout colorScheme={props.colorScheme}>
+        <NavigationBar showBackButton={props.presentation == "Push"} showCloseButton={props.presentation == "Modal"} />
+        <div ref={setReportElement}>
+            <Title
+                order={2}
+                autosizeImage
+                image={<img src={medicationIcon} alt="medication icon" />}
+                imageAlignment="left"
+                accessory={<EhrDownloadButton preview={!!props.previewState} reportElement={reportElement ?? undefined} fileName="Medications" hidden={loading} />}
+                defaultMargin
+            >
+                {language("medications-title")}
+            </Title>
             <Card>
-                <MedicationsList previewState={props.previewState} onViewTermInfo={(t) => viewTermInfo(t)} />
+                <MedicationsList previewState={props.previewState} onLoadComplete={() => setLoading(false)} onViewTermInfo={props.onViewTermInfo} />
             </Card>
-        </Layout>
-    )
+        </div>
+    </Layout>;
 }

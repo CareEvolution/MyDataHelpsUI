@@ -92,6 +92,7 @@ export enum DailyDataType {
 	HealthConnectMinHeartRate = "HealthConnectMinHeartRate",
 	HealthConnectActiveCaloriesBurned = "HealthConnectActiveCaloriesBurned",
 	HealthConnectTotalCaloriesBurned = "HealthConnectTotalCaloriesBurned",
+	HealthConnectTherapyMinutes = "HealthConnectTherapyMinutes",
 	OuraSteps = "OuraSteps",
 	OuraRestingHeartRate = "OuraRestingHeartRate",
 	OuraSleepMinutes = "OuraSleepMinutes",

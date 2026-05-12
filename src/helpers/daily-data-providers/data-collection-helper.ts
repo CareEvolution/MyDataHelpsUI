@@ -1,5 +1,6 @@
 import MyDataHelps, { DataCollectionSettings, DeviceDataNamespace, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
 import { CombinedDataCollectionSettings } from './combined-data-collection-settings';
+import { DeviceDataV2QueryFilters } from './daily-data';
 
 const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV2Namespace, keyof DataCollectionSettings> = {
     AirNowApi: 'airQualityEnabled',
@@ -93,13 +94,14 @@ export async function hasV1Data(namespace: DeviceDataNamespace, types: string[],
     }
 }
 
-export async function hasV2Data(namespace: DeviceDataV2Namespace, types: string[], modifiedAfter?: Date): Promise<true> {
+export async function hasV2Data(namespace: DeviceDataV2Namespace, types: string[], modifiedAfter?: Date, queryFilters?: DeviceDataV2QueryFilters): Promise<true> {
     return Promise.any(types.map(async type => {
         const result = await MyDataHelps.queryDeviceDataV2({
             namespace: namespace,
             type: type,
             limit: 1,
-            ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() })
+            ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() }),
+            ...queryFilters
         });
         return result.deviceDataPoints.length > 0 || Promise.reject(false);
     })).catch(() => Promise.reject(false));
