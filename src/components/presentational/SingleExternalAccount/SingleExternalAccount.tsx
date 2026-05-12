@@ -74,7 +74,7 @@ export default function SingleExternalAccount (props: SingleExternalAccountProps
 						{language("external-account-error")}
 					</p>
 				}
-				{(getStatus() === "fetchComplete" || getStatus() === "error") &&
+				{(getStatus() === "fetchComplete" || getStatus() === "error") && !props.externalAccount.provider.successorID &&
 					<p>
 						<a href="javascript:{}" onClick={refresh}>
 							<FontAwesomeSvgIcon icon={faRepeat} /> {language("external-account-refresh")}

@@ -58,6 +58,12 @@ HealthPlansAndDeviceManufacturers.args = {
     externalAccountProviderCategories: ["Health Plan", "Device Manufacturer"]
 };
 
+export const WithSuccessorProvider = Template.bind({});
+WithSuccessorProvider.args = {
+    previewState: "withSuccessor",
+    externalAccountProviderCategories: ["Provider"]
+};
+
 export const Live = Template.bind({});
 Default.args = {
     externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
