@@ -4,6 +4,7 @@ import * as queryAllDeviceDataModule from '../../../../src/helpers/daily-data-pr
 import * as queryAllDeviceDataV2Module from '../../../../src/helpers/query-all-device-data-v2';
 import { DeviceDataPoint, DeviceDataPointQuery, DeviceDataV2Point, DeviceDataV2Query } from '@careevolution/mydatahelps-js';
 import * as dailyDataQueryFunctions from '../../../../src/helpers/daily-data-providers/daily-data/daily-data-query';
+import { DeviceDataV2QueryFilters } from '../../../../src/helpers/daily-data-providers/daily-data/daily-data-query';
 import { dailyDataDateFilter, DailyDataDateFunction, queryForDailyData, queryForDailyDataPoints, queryForDailyDataPointsV2, queryForDailyDataV2 } from '../../../../src/helpers/daily-data-providers/daily-data';
 import { add, endOfDay, isEqual, startOfDay } from 'date-fns';
 import { parseISOWithoutOffset } from '../../../../src/helpers/date-helpers';
@@ -84,7 +85,7 @@ describe('Daily Data Query Tests', () => {
             const dataPoint2 = { startDate: getV2DateString(sampleEndDate) } as DeviceDataV2Point;
             const dateFunction: DailyDataDateFunction = dataPoint => dataPoint.startDate;
 
-            setupDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction, [dataPoint1, dataPoint2]);
+            setupDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, undefined, dateFunction, [dataPoint1, dataPoint2]);
 
             const dailyData = await queryForDailyDataV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction);
 
@@ -101,18 +102,21 @@ describe('Daily Data Query Tests', () => {
         const dataPoint2 = { startDate: getV2DateString(sampleEndDate) } as DeviceDataV2Point;
         const dateFunction: DailyDataDateFunction = dataPoint => dataPoint.startDate;
 
-        beforeEach(() => {
+        const setupDeviceDataV2 = (filters?: DeviceDataV2QueryFilters) => {
             jest.spyOn(queryAllDeviceDataV2Module, 'default').mockImplementation((query: DeviceDataV2Query): Promise<DeviceDataV2Point[]> => {
                 if (query.namespace !== 'Fitbit') return Promise.reject();
                 if (query.type !== 'Type') return Promise.reject();
                 if (query.observedAfter !== add(sampleStartDate, { days: -1 }).toISOString()) return Promise.reject();
                 if (query.observedBefore !== add(sampleEndDate, { days: 1 }).toISOString()) return Promise.reject();
+                if (JSON.stringify(query.dataSource) !== JSON.stringify(filters?.dataSource)) return Promise.reject();
 
                 return Promise.resolve([dataPoint1, dataPoint2]);
             });
-        });
+        };
 
         it('Should query for and return data points.', async () => {
+            setupDeviceDataV2();
+
             const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate);
 
             expect(dataPoints).toHaveLength(2);
@@ -120,7 +124,20 @@ describe('Daily Data Query Tests', () => {
             expect(dataPoints[1]).toBe(dataPoint2);
         });
 
+        it('Should query for and return data points using filters.', async () => {
+            const filters = { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } };
+
+            setupDeviceDataV2(filters);
+
+            const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, filters);
+
+            expect(dataPoints).toHaveLength(2);
+            expect(dataPoints[0]).toBe(dataPoint1);
+            expect(dataPoints[1]).toBe(dataPoint2);
+        });
+
         it('Should filter data points if a date function is provided.', async () => {
+            setupDeviceDataV2();
             jest.spyOn(dailyDataQueryFunctions, 'dailyDataDateFilter').mockImplementation(
                 (
                     actualDateStrOrDate: string | Date | undefined,
@@ -134,7 +151,7 @@ describe('Daily Data Query Tests', () => {
                 }
             );
 
-            const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, dateFunction);
+            const dataPoints = await queryForDailyDataPointsV2('Fitbit', 'Type', sampleStartDate, sampleEndDate, undefined, dateFunction);
 
             expect(dataPoints).toHaveLength(1);
             expect(dataPoints[0]).toBe(dataPoint2);

@@ -1,6 +1,6 @@
 import * as dailyDataQueryFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-query';
+import { DailyData, DailyDataDateFunction, DailyDataV2, DailyDataValueFunction, DeviceDataV2QueryFilters } from '../../src/helpers/daily-data-providers/daily-data';
 import * as dailyDataResultFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-result';
-import { DailyData, DailyDataDateFunction, DailyDataV2, DailyDataValueFunction } from '../../src/helpers/daily-data-providers/daily-data';
 import * as dataCollectionSettingsFunctions from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
 import { CombinedDataCollectionSettings } from '../../src/helpers/daily-data-providers/combined-data-collection-settings';
 import * as timeRangeFunctions from '../../src/helpers/time-range';
@@ -24,6 +24,10 @@ export const sampleDailyDataV2: DailyDataV2 = {
 
 export const sampleDataPoints: DeviceDataPoint[] = [
     {} as DeviceDataPoint
+];
+
+export const sampleDataPointsV2: DeviceDataV2Point[] = [
+    {} as DeviceDataV2Point
 ];
 
 export const sampleResult: DailyDataQueryResult = {
@@ -185,6 +189,7 @@ export function setupDailyDataPointsV2(
     expectedType: string,
     expectedStartDate: Date,
     expectedEndDate: Date,
+    expectedFilters: DeviceDataV2QueryFilters | undefined,
     expectedDateFn: DailyDataDateFunction | undefined,
     dataPoints: DeviceDataV2Point[]
 ): void {
@@ -194,12 +199,14 @@ export function setupDailyDataPointsV2(
             actualType: string,
             actualStartDate: Date,
             actualEndDate: Date,
+            actualFilters?: DeviceDataV2QueryFilters,
             actualDateFn?: DailyDataDateFunction
         ): Promise<DeviceDataV2Point[]> => {
             if (actualNamespace !== expectedNamespace) return Promise.reject();
             if (actualType !== expectedType) return Promise.reject();
             if (!isEqual(actualStartDate, expectedStartDate)) return Promise.reject();
             if (!isEqual(actualEndDate, expectedEndDate)) return Promise.reject();
+            if (JSON.stringify(actualFilters) !== JSON.stringify(expectedFilters)) return Promise.reject();
             if (actualDateFn !== expectedDateFn) return Promise.reject();
             return Promise.resolve(dataPoints);
         }

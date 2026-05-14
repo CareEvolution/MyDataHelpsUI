@@ -1,29 +1,71 @@
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import { faDownload, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import DOMPurify from "dompurify";
+import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
-import "./ReportContent.css"
-import { language } from "../../../helpers/language"
+import "./ReportContent.css";
+import { language } from "../../../helpers/language";
+import { EhrDownloadButton, PdfPreview } from "../../container";
+import MyDataHelps from "@careevolution/mydatahelps-js";
+import Button from "../Button";
 
 export interface ReportContentProps {
+    preview?: boolean;
+    reportId: string;
     content: string;
     contentType: string;
-    type: string
+    type: string;
+    style?: CSSProperties;
 }
 
-export default function (props: ReportContentProps) {
-    return (
-        <div className="mdhui-report-content">
-            {props.contentType == "text/html" &&
-                <iframe sandbox="" srcDoc={props.content} />
+export default function ReportContent(props: ReportContentProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement>();
+    const [downloadingPdfReport, setDownloadingPdfReport] = useState<boolean>(false);
+    const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+    useEffect(() => {
+        const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const downloadPdfReport = async (): Promise<void> => {
+        setDownloadingPdfReport(true);
+        try {
+            const deviceInfo = await MyDataHelps.getDeviceInfo();
+            if (!deviceInfo || deviceInfo.platform === "Web") {
+                const a = document.createElement("a");
+                a.href = "data:application/pdf;base64," + props.content;
+                a.download = props.type + ".pdf";
+                a.click();
+            } else {
+                const url = `Authenticated/ReportViewer/ServeReport.ashx?${new URLSearchParams({ reportId: props.reportId })}`;
+                (window as any).webkit.messageHandlers.OpenFile.postMessage({ url: url });
             }
-            {props.contentType == "application/pdf" &&
-                <div className="mdhui-report-content-download-pdf" ng-if="$ctrl.report.ContentType == 'application/pdf'" ng-show="$ctrl.srcSet = true">
-                    <a href={"data:application/pdf;base64," + props.content} download={props.type + ".pdf"} title={language('download-pdf-report')}>
-                        <FontAwesomeSvgIcon icon={faDownload} />
-                        {language('download-pdf-report')}
-                    </a>
-                </div>
-            }
-        </div>
-    )
+        } finally {
+            setDownloadingPdfReport(false);
+        }
+    };
+
+    const sanitizedHtmlContent = useMemo(() => {
+        return props.contentType === "text/html" ? DOMPurify.sanitize(props.content, { WHOLE_DOCUMENT: true, FORCE_BODY: false }) : "";
+    }, [props.contentType, props.content]);
+
+    return <div className="mdhui-report-content" style={props.style}>
+        {props.contentType === "text/html" &&
+            <div className="mdhui-report-content-html">
+                <iframe sandbox="allow-same-origin" srcDoc={sanitizedHtmlContent} onLoad={event => setReportElement(event.currentTarget.contentDocument?.body)} />
+                {reportElement &&
+                    <EhrDownloadButton preview={props.preview} variant="default" text={language("download-pdf-report")} reportElement={reportElement} fileName={props.type} />
+                }
+            </div>
+        }
+        {props.contentType === "application/pdf" &&
+            <div className="mdhui-report-content-pdf">
+                <PdfPreview url={"data:application/pdf;base64," + props.content} maxHeight={windowSize.height * 0.8} maxWidth={windowSize.width * 0.8} />
+                <Button onClick={downloadPdfReport} fullWidth={false}>
+                    {language("download-pdf-report")} <FontAwesomeSvgIcon icon={downloadingPdfReport ? faRefresh : faDownload} spin={downloadingPdfReport} />
+                </Button>
+            </div>
+        }
+    </div>;
 }

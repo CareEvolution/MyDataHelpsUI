@@ -1,81 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { getNewsFeedPage } from '../../../helpers/news-feed/data';
-import { Action, Card, LoadingIndicator, TextBlock, Title, UnstyledButton } from '../../presentational';
-import StatBlock from '../../presentational/StatBlock';
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { eventTypeDefinitions } from '../../../helpers/news-feed/eventTypeDefinitions';
-import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel } from '../../../helpers/news-feed/types';
-import "./EhrNewsFeedEventDetail.css"
-import language from '../../../helpers/language';
-import { getTimeOfDayString, getDayAndDateAndTimeString } from "../../../helpers/date-helpers";
+import React, { useEffect, useState } from "react";
+import { getNewsFeedPage } from "../../../helpers/news-feed/data";
+import { Action, Card, LoadingIndicator, TermInformationButton, TextBlock, Title } from "../../presentational";
+import StatBlock from "../../presentational/StatBlock";
+import { eventTypeDefinitions } from "../../../helpers/news-feed/eventTypeDefinitions";
+import { EhrNewsFeedClaimProcedureModel, EhrNewsFeedClaimServiceModel, EhrNewsFeedEventModel, EhrNewsFeedEventType, EhrNewsFeedLabReportModel, EhrNewsFeedProcedureModel, EhrNewsFeedType } from "../../../helpers/news-feed/types";
+import "./EhrNewsFeedEventDetail.css";
+import language from "../../../helpers/language";
+import { getDayAndDateAndTimeString, getTimeOfDayString } from "../../../helpers/date-helpers";
+import EhrDownloadButton from "../EhrDownloadButton";
 
 export interface EhrNewsFeedEventDetailProps {
-    feed: EhrNewsFeedType
-    pageId?: string
-    pageDate?: string
-    previewState?: EhrNewsFeedEventType
-    onViewLabObservationTermInfo(labObservationID: string): void
+    feed: EhrNewsFeedType;
+    pageId?: string;
+    pageDate?: string;
+    previewState?: EhrNewsFeedEventType;
+    onViewLabObservationTermInfo?: (labObservationID: string) => void;
 }
 
-export default function (props: EhrNewsFeedEventDetailProps) {
-    let [loading, setLoading] = useState<boolean>(false);
-    let [event, setEvent] = useState<EhrNewsFeedEventModel | null>(null);
+export default function EhrNewsFeedEventDetail(props: EhrNewsFeedEventDetailProps) {
+    const [reportElement, setReportElement] = useState<HTMLElement | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [event, setEvent] = useState<EhrNewsFeedEventModel>();
 
-    function load() {
+    useEffect(() => {
         if (props.previewState) {
-            let handler = eventTypeDefinitions[props.previewState!];
-            setEvent(handler.getPreviewEvent());
+            setEvent(eventTypeDefinitions[props.previewState].getPreviewEvent());
+            setLoading(false);
             return;
         }
-
-        setLoading(true);
         getNewsFeedPage(props.feed, props.pageId, props.pageDate).then((result) => {
             setEvent(result.Events[0]);
             setLoading(false);
         });
-    }
-
-    useEffect(() => {
-        load();
     }, []);
 
-    return <div className="mdhui-ehr-news-feed-event-detail">
-        {loading &&
-            <LoadingIndicator />
-        }
-        {event &&
-            <>
-                <NewsFeedDetailTitle event={event} />
-                {event.Type == "ProcedureGroup" && <ProcedureGroupDetail event={event} />}
-                {event.Type == "ClaimProcedureGroup" && <ClaimProcedureGroupDetail event={event} />}
-                {event.Type == "LabReport" && <LabReportDetail event={event} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
-                {event.Type == "ClaimServiceGroup" && <ClaimServiceGroupDetail event={event} />}
-            </>
-        }
-    </div>
+    return <div ref={setReportElement}>
+        <div className="mdhui-ehr-news-feed-event-detail">
+            {loading && <LoadingIndicator />}
+            {event &&
+                <>
+                    <NewsFeedDetailTitle preview={!!props.previewState} event={event} reportElement={reportElement ?? undefined} loading={loading} />
+                    {event.Type === "ProcedureGroup" && <ProcedureGroupDetail event={event} />}
+                    {event.Type === "ClaimProcedureGroup" && <ClaimProcedureGroupDetail event={event} />}
+                    {event.Type === "LabReport" && <LabReportDetail event={event} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
+                    {event.Type === "ClaimServiceGroup" && <ClaimServiceGroupDetail event={event} />}
+                </>
+            }
+        </div>
+    </div>;
 }
 
-function NewsFeedDetailTitle(props: { event: EhrNewsFeedEventModel }) {
-    let handler = eventTypeDefinitions[props.event.Type];
+function NewsFeedDetailTitle(props: { preview?: boolean, event: EhrNewsFeedEventModel, reportElement?: HTMLElement, loading?: boolean }) {
+    const handler = eventTypeDefinitions[props.event.Type];
 
-    let title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
-    if (!title) { return null; }
+    const title = handler.getDetailTitle ? handler.getDetailTitle(props.event) : undefined;
+    if (!title) return null;
 
-    let subtitle = `${getDayAndDateAndTimeString(props.event.Date)} • ${props.event.Patient.RecordAuthority}`
+    let subtitle = `${getDayAndDateAndTimeString(props.event.Date)} • ${props.event.Patient.RecordAuthority}`;
     if (getTimeOfDayString(props.event.Date) === "") {
         subtitle = props.event.Patient.RecordAuthority;
     }
 
+    const getDownloadFileName = (event: EhrNewsFeedEventModel): string => {
+        let fileName: string = event.Type;
+        if (["ProcedureGroup", "ClaimProcedureGroup", "ClaimServiceGroup"].includes(event.Type)) {
+            fileName = "Procedures";
+        }
+        return fileName;
+    };
+
     return <Action
-        indicator={<></>}
+        icon={<img src={handler.icon} width={24} alt="icon" />}
         title={title}
         subtitle={subtitle}
-        icon={<img src={handler.icon} width={24} />} />;
+        indicator={<EhrDownloadButton preview={props.preview} reportElement={props.reportElement} fileName={getDownloadFileName(props.event)} hidden={props.loading} />}
+        renderAs="div"
+    />;
 }
 
 function ProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
-    let procedures = props.event.Event as EhrNewsFeedProcedureModel[];
+    const procedures = props.event.Event as EhrNewsFeedProcedureModel[];
     return <>
         {procedures.map((procedure, index) =>
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
@@ -89,19 +93,21 @@ function ProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
                 ]} />
             </Card>
         )}
-    </>
+    </>;
 }
 
-function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObservationTermInfo: (labObservationID: string) => void }) {
-    let labReport = props.event.Event as EhrNewsFeedLabReportModel;
+function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObservationTermInfo?: (labObservationID: string) => void }) {
+    const labReport = props.event.Event as EhrNewsFeedLabReportModel;
     return <div className="mdhui-lab-report-detail">
         <Title defaultMargin order={3}>{labReport.Service}</Title>
         <TextBlock>{labReport.Comment}</TextBlock>
         {labReport.LabObservations.map((observation, index) =>
             <Card key={observation.ID}>
-                <Action renderAs="div" subtitle={observation.Type} indicator={
-                    <UnstyledButton onClick={() => props.onViewLabObservationTermInfo(observation.ID)}><FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} /></UnstyledButton>
-                }>
+                <Action
+                    subtitle={observation.Type}
+                    indicator={<TermInformationButton labObservationID={observation.ID} onViewLabObservationTermInfo={props.onViewLabObservationTermInfo} />}
+                    renderAs="div"
+                >
                     <Title order={2}>
                         <div className="mdhui-lab-report-detail-value">
                             <div>{observation.Value} {observation.Units}</div>
@@ -130,7 +136,7 @@ function LabReportDetail(props: { event: EhrNewsFeedEventModel, onViewLabObserva
 }
 
 function ClaimProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
-    let procedures = props.event.Event as EhrNewsFeedClaimProcedureModel[];
+    const procedures = props.event.Event as EhrNewsFeedClaimProcedureModel[];
     return <>
         {procedures.map((procedure) =>
             <Card key={procedure.ID} style={{ marginTop: "0" }}>
@@ -140,16 +146,16 @@ function ClaimProcedureGroupDetail(props: { event: EhrNewsFeedEventModel }) {
                 ]} />
             </Card>
         )}
-    </>
+    </>;
 }
 
 function ClaimServiceGroupDetail(props: { event: EhrNewsFeedEventModel }) {
-    let services = props.event.Event as EhrNewsFeedClaimServiceModel[];
+    const services = props.event.Event as EhrNewsFeedClaimServiceModel[];
     return <>
         {services.map((service) =>
             <Card key={service.ID} style={{ marginTop: "0" }}>
                 <Title defaultMargin order={5}>{service.Service}</Title>
             </Card>
         )}
-    </>
+    </>;
 }

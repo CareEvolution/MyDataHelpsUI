@@ -51,7 +51,7 @@ export default function TimeSeriesChart(props: TimeSeriesChartProps) {
         const lines = chartRef.state.formattedGraphicalItems.filter((fgi: any) => fgi.props?.key?.startsWith("line-"));
         lines.forEach((line: any) => {
             const points: any[] = line.props?.points ?? [];
-            if (points.length > 1 && points.every((point: any) => point.y === points[0].y)) {
+            if (points.length > 1 && points.every((point: any) => point.y === null || point.y === points[0].y)) {
                 points[0].y += 0.001;
             }
         });
