@@ -46,10 +46,25 @@ export const HighlightVariant = {
 	render: render
 };
 
-export const ClickableCard = {
+export const NonClickableCard = {
+	name: "Non-Clickable Card",
 	args: {
 		children: <>
-			<Action title="See more details" bottomBorder />
+			<Action title="Non-Clickable Card" subtitle="Observe that no console log appears when clicked." bottomBorder />
+			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+				<Goal variant="compact" label="Goal 1" targetValue={5} maxValue={10} valueProvider={{ type: 'static integer', getValue: async () => 7 }} />
+				<Goal variant="compact" label="Goal 2" targetValue={5} maxValue={10} valueProvider={{ type: 'static integer', getValue: async () => 3 }} />
+			</div>
+		</>
+	},
+	render: render
+};
+
+export const ClickableCard = {
+	name: "Clickable Card",
+	args: {
+		children: <>
+			<Action title="Clickable Card" subtitle="Observe that a console log appears when clicked." bottomBorder />
 			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 				<Goal variant="compact" label="Goal 1" targetValue={5} maxValue={10} valueProvider={{ type: 'static integer', getValue: async () => 7 }} />
 				<Goal variant="compact" label="Goal 2" targetValue={5} maxValue={10} valueProvider={{ type: 'static integer', getValue: async () => 3 }} />
