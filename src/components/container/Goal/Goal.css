@@ -147,3 +147,11 @@
     border-radius: 8px;
     transform: translate(-50%, 0);
 }
+
+.mdhui-goal .recharts-wrapper {
+    cursor: inherit !important;
+}
+
+.mdhui-goal .recharts-sector {
+    outline: none;
+}

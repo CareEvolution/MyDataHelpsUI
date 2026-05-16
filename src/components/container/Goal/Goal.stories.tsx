@@ -18,6 +18,7 @@ export default meta;
 type GoalDefaultStoryArgs = React.ComponentProps<typeof Goal> & {
     colorScheme: 'auto' | 'light' | 'dark';
     iconType: 'default' | 'custom';
+    parentCursor: 'default' | 'pointer' | 'crosshair';
 };
 
 export const Default: StoryObj<GoalDefaultStoryArgs> = {
@@ -31,6 +32,7 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
         maxValue: 7,
         maxSegments: 10,
         iconType: 'default',
+        parentCursor: 'default',
         notStartedColor: '',
         inProgressColor: '',
         completedColor: '',
@@ -80,6 +82,11 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
             control: 'radio',
             options: ['default', 'custom']
         },
+        parentCursor: {
+            name: 'parent cursor',
+            control: 'radio',
+            options: ['default', 'pointer', 'crosshair']
+        },
         notStartedColor: {
             name: 'not started color',
             control: 'color'
@@ -110,10 +117,12 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
     },
     render: args => {
         return <Layout colorScheme={args.colorScheme}>
-            <Goal
-                {...args}
-                icon={args.iconType === 'custom' ? faHeartbeat : undefined}
-            />
+            <div style={{ cursor: args.parentCursor }}>
+                <Goal
+                    {...args}
+                    icon={args.iconType === 'custom' ? faHeartbeat : undefined}
+                />
+            </div>
         </Layout>;
     }
 };
