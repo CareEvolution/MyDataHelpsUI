@@ -1,7 +1,6 @@
-﻿import { DailyDataQueryResult } from "../query-daily-data";
-import { buildMaxValueResult, getStartDate, queryForDailyData } from "./daily-data";
+﻿import { DailyDataQueryResult } from '../query-daily-data';
+import { queryAggregateDailyData } from './daily-data/daily-data-aggregate';
 
-export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    const dailyData = await queryForDailyData("AppleHealth", "HourlyMaximumHeartRate", startDate, endDate, getStartDate);
-    return buildMaxValueResult(dailyData);
+export default async function(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    return queryAggregateDailyData('AppleHealth', 'Hourly Maximum Heart Rate', startDate, endDate, 'max');
 }
