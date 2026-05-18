@@ -75,7 +75,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthMindfulMinutes,
         dataProvider: appleHealthMindfulMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "Mindful Sessions"),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),

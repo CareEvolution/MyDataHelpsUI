@@ -64,8 +64,8 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'MindfulSession' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Mindful Sessions', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -126,11 +126,11 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
         combinedSettings.settings.appleHealthEnabled = true;
         combinedSettings.settings.googleFitEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'MindfulSession' },
             { namespace: 'GoogleFit', type: 'ActivitySegment' }
         );
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Mindful Sessions', enabled: true },
             { namespace: 'HealthConnect', type: 'mindfulness-sessions', enabled: true }
         );
 
