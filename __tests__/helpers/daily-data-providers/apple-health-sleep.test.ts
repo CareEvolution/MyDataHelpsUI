@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
-import { sampleEndDate, sampleResult, sampleStartDate, sampleTimeRanges, setupDailyDataPoints, setupDailyTimeRanges, setupMinutesResult } from '../../fixtures/daily-data-providers';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
+import { sampleEndDate, sampleResult, sampleStartDate, sampleTimeRanges, setupDailyDataPointsV2, setupDailyTimeRanges, setupMinutesResult } from '../../fixtures/daily-data-providers';
+import { DeviceDataV2Point } from '@careevolution/mydatahelps-js';
 import { asleepCoreTime, asleepDeepTime, asleepRemTime, asleepTime, inBedTime } from '../../../src/helpers/daily-data-providers/apple-health-sleep';
 
 describe('Daily Data Provider - Apple Health Sleep', () => {
@@ -11,12 +11,12 @@ describe('Daily Data Provider - Apple Health Sleep', () => {
         { title: 'Deep', sleepFunction: asleepDeepTime, sleepTypes: ['AsleepDeep'] },
         { title: 'Total', sleepFunction: asleepTime, sleepTypes: ['AsleepCore', 'AsleepREM', 'AsleepDeep', 'Asleep'] }
     ])('$title - Should query for daily data points, filter by sleep type, and build a minutes result.', async ({ sleepFunction, sleepTypes }) => {
-        const dataPoints: DeviceDataPoint[] = [{ value: 'Other' } as DeviceDataPoint];
+        const dataPoints = [{ value: 'Other' } as DeviceDataV2Point];
         sleepTypes.forEach(sleepType => {
-            dataPoints.push({ value: sleepType } as DeviceDataPoint);
+            dataPoints.push({ value: sleepType } as DeviceDataV2Point);
         });
 
-        setupDailyDataPoints('AppleHealth', 'SleepAnalysisInterval', sampleStartDate, sampleEndDate, undefined, dataPoints);
+        setupDailyDataPointsV2('AppleHealth', 'Sleep Analysis', sampleStartDate, sampleEndDate, undefined, undefined, dataPoints);
         setupDailyTimeRanges(dataPoints.slice(1), sampleTimeRanges, -6);
         setupMinutesResult(sampleStartDate, sampleEndDate, sampleTimeRanges, sampleResult);
 

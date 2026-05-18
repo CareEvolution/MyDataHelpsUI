@@ -1,36 +1,27 @@
-import { describe, expect, it } from '@jest/globals';
-import { sampleEndDate, sampleStartDate, setupDailyData, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
+import { describe, expect, it, jest } from '@jest/globals';
+import { sampleEndDate, sampleStartDate, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import getDayKey from '../../../src/helpers/get-day-key';
-import { DailyData } from '../../../src/helpers/daily-data-providers/daily-data';
-import { DeviceDataPoint } from '@careevolution/mydatahelps-js';
 import appleHealthHeartRateRange from '../../../src/helpers/daily-data-providers/apple-health-heart-rate-range';
+import { appleHealthMaxHeartRateDataProvider, appleHealthMinHeartRateDataProvider } from '../../../src/helpers/daily-data-providers/index';
+
+jest.mock('../../../src/helpers/daily-data-providers/index');
 
 describe('Daily Data Provider - Apple Health Heart Rate Range', () => {
-    it('Should query for daily data and build a result keyed by start date.', async () => {
-        const dailyData: DailyData = {
-            [getDayKey(sampleStartDate)]: [
-                { type: 'HourlyMaximumHeartRate', value: '120' } as DeviceDataPoint,
-                { type: 'HourlyMinimumHeartRate', value: '65' } as DeviceDataPoint,
-                { type: 'HourlyMaximumHeartRate', value: '100' } as DeviceDataPoint,
-                { type: 'HourlyMinimumHeartRate', value: '60' } as DeviceDataPoint
-            ]
-        };
-        setupDailyData('AppleHealth', ['HourlyMaximumHeartRate', 'HourlyMinimumHeartRate'], sampleStartDate, sampleEndDate, startDateFunctionEvaluator, dailyData);
+    it('Should query for daily data and compute ranges by subtracting min from max for each day.', async () => {
+        const dayKey = getDayKey(sampleStartDate);
+        setupDailyDataProvider(appleHealthMinHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, { [dayKey]: 60 });
+        setupDailyDataProvider(appleHealthMaxHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, { [dayKey]: 110 });
 
         const result = await appleHealthHeartRateRange(sampleStartDate, sampleEndDate);
 
         expect(Object.keys(result)).toHaveLength(1);
-        expect(result[getDayKey(sampleStartDate)]).toBe(60);
+        expect(result[dayKey]).toBe(50);
     });
 
     it('Should exclude days that do not have a minimum value.', async () => {
-        const dailyData: DailyData = {
-            [getDayKey(sampleStartDate)]: [
-                { type: 'HourlyMaximumHeartRate', value: '120' } as DeviceDataPoint,
-                { type: 'HourlyMaximumHeartRate', value: '100' } as DeviceDataPoint,
-            ]
-        };
-        setupDailyData('AppleHealth', ['HourlyMaximumHeartRate', 'HourlyMinimumHeartRate'], sampleStartDate, sampleEndDate, startDateFunctionEvaluator, dailyData);
+        const dayKey = getDayKey(sampleStartDate);
+        setupDailyDataProvider(appleHealthMinHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, {});
+        setupDailyDataProvider(appleHealthMaxHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, { [dayKey]: 110 });
 
         const result = await appleHealthHeartRateRange(sampleStartDate, sampleEndDate);
 
@@ -38,13 +29,9 @@ describe('Daily Data Provider - Apple Health Heart Rate Range', () => {
     });
 
     it('Should exclude days that do not have a maximum value.', async () => {
-        const dailyData: DailyData = {
-            [getDayKey(sampleStartDate)]: [
-                { type: 'HourlyMinimumHeartRate', value: '65' } as DeviceDataPoint,
-                { type: 'HourlyMinimumHeartRate', value: '60' } as DeviceDataPoint
-            ]
-        };
-        setupDailyData('AppleHealth', ['HourlyMaximumHeartRate', 'HourlyMinimumHeartRate'], sampleStartDate, sampleEndDate, startDateFunctionEvaluator, dailyData);
+        const dayKey = getDayKey(sampleStartDate);
+        setupDailyDataProvider(appleHealthMinHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, { [dayKey]: 60 });
+        setupDailyDataProvider(appleHealthMaxHeartRateDataProvider as jest.Mock, sampleStartDate, sampleEndDate, {});
 
         const result = await appleHealthHeartRateRange(sampleStartDate, sampleEndDate);
 
