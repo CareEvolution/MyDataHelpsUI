@@ -16,14 +16,26 @@ export const buildMostRecentValueResult = (dailyData: DailyData | DailyDataV2, v
     return result;
 };
 
+export const buildMinValueResult = (dailyData: DailyData | DailyDataV2, valueFn: DailyDataValueFunction = getFloatValue): DailyDataQueryResult => {
+    const result: DailyDataQueryResult = {};
+
+    Object.keys(dailyData).forEach(dayKey => {
+        const dayValues = dailyData[dayKey].map(valueFn).filter(value => value > 0);
+        if (dayValues.length > 0) {
+            result[dayKey] = Math.min(...dayValues);
+        }
+    });
+
+    return result;
+};
+
 export const buildMaxValueResult = (dailyData: DailyData | DailyDataV2, valueFn: DailyDataValueFunction = getFloatValue): DailyDataQueryResult => {
     const result: DailyDataQueryResult = {};
 
     Object.keys(dailyData).forEach(dayKey => {
-        const dayValues = dailyData[dayKey].map(valueFn);
-        const maxValue = Math.max(...dayValues);
-        if (maxValue > 0) {
-            result[dayKey] = maxValue;
+        const dayValues = dailyData[dayKey].map(valueFn).filter(value => value > 0);
+        if (dayValues.length > 0) {
+            result[dayKey] = Math.max(...dayValues);
         }
     });
 
@@ -42,7 +54,7 @@ export const buildTotalValueResult = (dailyData: DailyData | DailyDataV2, valueF
     });
 
     return result;
-}
+};
 
 export const buildAverageValueResult = (dailyData: DailyData | DailyDataV2, valueFn: DailyDataValueFunction = getFloatValue): DailyDataQueryResult => {
     const result: DailyDataQueryResult = {};
@@ -51,12 +63,12 @@ export const buildAverageValueResult = (dailyData: DailyData | DailyDataV2, valu
         const dayValues = dailyData[dayKey].map(valueFn).filter(value => value > 0);
         const totalValue = dayValues.reduce((a, b) => a + b, 0);
         if (totalValue > 0) {
-            result[dayKey] = totalValue / dayValues.length
+            result[dayKey] = totalValue / dayValues.length;
         }
     });
 
     return result;
-}
+};
 
 export function combineResultsUsingFirstValue(startDate: Date, endDate: Date, resultsToCombine: DailyDataQueryResult[]): DailyDataQueryResult {
     return combineResults(startDate, endDate, resultsToCombine, values => values[0]);
