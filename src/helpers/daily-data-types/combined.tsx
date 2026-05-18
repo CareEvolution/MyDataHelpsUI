@@ -34,7 +34,7 @@ const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
 );
 
 const SLEEP_MINUTES_SOURCES = sources(
-    ["AppleHealth", "SleepAnalysisInterval"],
+    ["AppleHealth", "Sleep Analysis"],
     ["Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]],
     ["Garmin", "Sleep"],
     ["Oura", "sleep"],

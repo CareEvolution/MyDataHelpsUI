@@ -92,7 +92,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthSleepMinutes,
         dataProvider: appleHealthSleepDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -102,7 +102,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthCoreSleepMinutes,
         dataProvider: appleHealthSleepCoreDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "core-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -112,7 +112,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthDeepSleepMinutes,
         dataProvider: appleHealthSleepDeepDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -122,7 +122,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthRemSleepMinutes,
         dataProvider: appleHealthSleepRemDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -132,7 +132,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthInBedMinutes,
         dataProvider: appleHealthInBedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "in-bed-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
