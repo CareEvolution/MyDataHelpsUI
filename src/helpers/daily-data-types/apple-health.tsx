@@ -4,10 +4,10 @@ import {
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider, appleHealthAverageBloodGlucoseDataProvider, appleHealthMinBloodGlucoseDataProvider, appleHealthMaxBloodGlucoseDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist, faDroplet } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -202,6 +202,33 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faCocktail} />,
         formatter: defaultFormatter,
         previewDataRange: [0, 20]
+    },
+    {
+        type: DailyDataType.AppleHealthAverageBloodGlucose,
+        dataProvider: appleHealthAverageBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose-average",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [80, 160]
+    },
+    {
+        type: DailyDataType.AppleHealthMinBloodGlucose,
+        dataProvider: appleHealthMinBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose-min",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [60, 80]
+    },
+    {
+        type: DailyDataType.AppleHealthMaxBloodGlucose,
+        dataProvider: appleHealthMaxBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose-max",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [160, 180]
     }
 ];
 appleHealthTypeDefinitions.forEach((def) => {

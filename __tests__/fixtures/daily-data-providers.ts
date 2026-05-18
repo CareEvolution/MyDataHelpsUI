@@ -108,6 +108,14 @@ export function setupDailyDataV2(
     );
 }
 
+export function setupMinValueResult(
+    dailyData: DailyData | DailyDataV2,
+    result: DailyDataQueryResult,
+    valueFunctionEvaluator?: (valueFn: DailyDataValueFunction | undefined) => boolean
+): void {
+    setupResult('buildMinValueResult', dailyData, result, valueFunctionEvaluator ?? (valueFn => !valueFn));
+}
+
 export function setupMaxValueResult(
     dailyData: DailyData | DailyDataV2,
     result: DailyDataQueryResult,
@@ -141,7 +149,7 @@ export function setupMostRecentValueResult(
 }
 
 function setupResult(
-    functionName: 'buildMaxValueResult' | 'buildTotalValueResult' | 'buildAverageValueResult' | 'buildMostRecentValueResult',
+    functionName: 'buildMinValueResult' | 'buildMaxValueResult' | 'buildTotalValueResult' | 'buildAverageValueResult' | 'buildMostRecentValueResult',
     expectedDailyData: DailyData | DailyDataV2,
     result: DailyDataQueryResult,
     valueFunctionEvaluator: (valueFn: DailyDataValueFunction | undefined) => boolean
