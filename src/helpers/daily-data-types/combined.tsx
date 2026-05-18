@@ -17,7 +17,7 @@ const RESTING_HEART_RATE_SOURCES = sources(
 );
 
 const STEPS_SOURCES = sources(
-    ["AppleHealth", "HourlySteps"],
+    ["AppleHealth", "Hourly Steps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
     ["HealthConnect", "steps-daily"],
@@ -25,7 +25,7 @@ const STEPS_SOURCES = sources(
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
-    ["AppleHealth", "HourlySteps"],
+    ["AppleHealth", "Hourly Steps"],
     ["GoogleFit", "Steps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],

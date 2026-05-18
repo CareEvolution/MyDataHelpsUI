@@ -4,10 +4,11 @@ import {
     appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider, appleHealthAverageBloodGlucoseDataProvider, appleHealthMinBloodGlucoseDataProvider, appleHealthMaxBloodGlucoseDataProvider
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider,
+    appleHealthAverageBloodGlucoseDataProvider, appleHealthMinBloodGlucoseDataProvider, appleHealthMaxBloodGlucoseDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist, faDroplet } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faCocktail, faDroplet, faFireFlameCurved, faHandBackFist, faHeartbeat, faHourglassHalf, faPerson, faRoute, faShoePrints, faStairs } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -151,7 +152,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthSteps,
         dataProvider: appleHealthStepsDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Hourly Steps"]),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -160,7 +161,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthStepsWhileWearingDevice,
         dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "Hourly Steps"),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,

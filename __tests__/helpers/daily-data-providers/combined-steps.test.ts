@@ -138,8 +138,8 @@ describe('Daily Data Provider - Combined Steps', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'HourlySteps' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Hourly Steps', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -209,10 +209,10 @@ describe('Daily Data Provider - Combined Steps', () => {
         combinedSettings.settings.googleFitEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'HourlySteps' },
             { namespace: 'GoogleFit', type: 'Steps' }
         );
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Hourly Steps', enabled: true },
             { namespace: 'Oura', type: 'daily-activity', enabled: true }
         );
 
