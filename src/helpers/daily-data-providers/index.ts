@@ -3,6 +3,7 @@ export { default as appleHealthFlightsClimbedDataProvider } from "./apple-health
 export { default as appleHealthHrvDataProvider } from "./apple-health-hrv"
 export { default as appleHealthHeartRateRangeDataProvider } from "./apple-health-heart-rate-range"
 export { default as appleHealthMaxHeartRateDataProvider } from "./apple-health-max-heart-rate"
+export { default as appleHealthMinHeartRateDataProvider } from "./apple-health-min-heart-rate"
 export { default as appleHealthMindfulMinutesDataProvider } from "./apple-health-mindful-minutes"
 export { default as appleHealthRestingHeartRateDataProvider } from "./apple-health-resting-heart-rate"
 export { asleepTime as appleHealthSleepDataProvider } from "./apple-health-sleep"
@@ -17,6 +18,9 @@ export { default as appleHealthTherapyMinutesDataProvider } from "./apple-health
 export { default as appleHealthWalkingHeartRateAverageDataProvider } from "./apple-health-walking-heart-rate-average"
 export { default as appleHealthActiveEnergyBurnedDataProvider } from "./apple-health-active-energy-burned"
 export { default as appleHealthNumberOfAlcoholicBeveragesDataProvider } from "./apple-health-number-of-alcoholic-beverages"
+export { default as appleHealthBloodGlucoseDataProvider } from "./apple-health-blood-glucose"
+export { default as appleHealthMinBloodGlucoseDataProvider } from "./apple-health-min-blood-glucose"
+export { default as appleHealthMaxBloodGlucoseDataProvider } from "./apple-health-max-blood-glucose"
 export { sedentaryMinutes as fitbitSedentaryMinutesDataProvider } from "./fitbit-activity-minutes"
 export { totalActiveMinutes as fitbitTotalActiveMinutesDataProvider } from "./fitbit-activity-minutes"
 export { lightlyActiveMinutes as fitbitLightlyActiveMinutesDataProvider } from "./fitbit-activity-minutes"
@@ -46,6 +50,7 @@ export { default as combinedStepsDataProvider } from "./combined-steps"
 export { default as combinedActiveCaloriesBurnedDataProvider } from "./combined-active-calories-burned"
 export { default as combinedSleepDataProvider } from "./combined-sleep"
 export { default as combinedTherapyMinutesDataProvider } from "./combined-therapy-minutes"
+export { default as combinedBloodGlucoseDataProvider } from "./combined-blood-glucose"
 export { default as googleFitMindfulMinutesDataProvider } from "./google-fit-mindful-minutes"
 export { default as googleFitStepsDataProvider } from "./google-fit-steps"
 export { default as googleFitTherapyMinutesDataProvider } from "./google-fit-therapy-minutes"
@@ -89,6 +94,9 @@ export { default as healthConnectActiveCaloriesBurnedDataProvider } from "./heal
 export { default as healthConnectTotalCaloriesBurnedDataProvider } from "./health-connect-total-calories-burned";
 export { default as healthConnectTherapyMinutesDataProvider } from "./health-connect-therapy-minutes";
 export { default as healthConnectMindfulMinutesDataProvider } from "./health-connect-mindful-minutes";
+export { default as healthConnectBloodGlucoseDataProvider } from "./health-connect-blood-glucose";
+export { default as healthConnectMinBloodGlucoseDataProvider } from "./health-connect-min-blood-glucose";
+export { default as healthConnectMaxBloodGlucoseDataProvider } from "./health-connect-max-blood-glucose";
 export { default as ouraStepsDataProvider } from "./oura-daily-steps"
 export { default as ouraSleepMinutesDataProvider } from "./oura-total-sleep"
 export { default as ouraRestingHeartRateDataProvider } from "./oura-resting-heart-rate"

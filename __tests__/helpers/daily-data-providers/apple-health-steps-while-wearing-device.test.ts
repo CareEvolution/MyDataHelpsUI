@@ -1,33 +1,23 @@
 import { describe, expect, it } from '@jest/globals';
-import { sampleEndDate, sampleResult, sampleStartDate, setupDailyData, setupTotalValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
-import { DailyData } from '../../../src/helpers/daily-data-providers/daily-data';
+import { sampleEndDate, sampleStartDate, setupAggregateDailyData } from '../../fixtures/daily-data-providers';
 import getDayKey from '../../../src/helpers/get-day-key';
-import { DeviceDataPoint, DeviceDataV2Aggregate, DeviceDataV2AggregateQuery } from '@careevolution/mydatahelps-js';
+import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery } from '@careevolution/mydatahelps-js';
 import { add, format } from 'date-fns';
 import * as queryAllDeviceDataV2AggregatesModule from '../../../src/helpers/query-all-device-data-v2-aggregates';
 import appleHealthStepsWhileWearingDevice from '../../../src/helpers/daily-data-providers/apple-health-steps-while-wearing-device';
+import { DailyDataQueryResult } from '../../../src';
 
 describe('Daily Data Provider - Apple Health Steps While Wearing Device', () => {
-    it('Should query for daily data and build a total value result keyed by start date.', async () => {
-        const dailyData: DailyData = {
-            [getDayKey(sampleStartDate)]: [
-                { identifier: 'Watch Date' } as DeviceDataPoint
-            ],
-            [getDayKey(add(sampleStartDate, { days: 1 }))]: [
-                { identifier: 'Oura Date' } as DeviceDataPoint
-            ],
-            [getDayKey(sampleEndDate)]: [
-                { identifier: 'Other Date' } as DeviceDataPoint
-            ]
+    it('Should query for aggregate daily data and return the sum of values keyed by date.', async () => {
+        const result: DailyDataQueryResult = {
+            [getDayKey(sampleStartDate)]: 500,
+            [getDayKey(add(sampleStartDate, { days: 1 }))]: 600,
+            [getDayKey(sampleEndDate)]: 400
         };
 
-        const filteredDailyData: DailyData = {
-            [getDayKey(sampleStartDate)]: [
-                { identifier: 'Watch Date' } as DeviceDataPoint
-            ],
-            [getDayKey(add(sampleStartDate, { days: 1 }))]: [
-                { identifier: 'Oura Date' } as DeviceDataPoint
-            ]
+        const filteredResult: DailyDataQueryResult = {
+            [getDayKey(sampleStartDate)]: 500,
+            [getDayKey(add(sampleStartDate, { days: 1 }))]: 600
         };
 
         jest.spyOn(queryAllDeviceDataV2AggregatesModule, 'default').mockImplementation((query: DeviceDataV2AggregateQuery): Promise<DeviceDataV2Aggregate[]> => {
@@ -52,8 +42,7 @@ describe('Daily Data Provider - Apple Health Steps While Wearing Device', () => 
                 }
             ] as DeviceDataV2Aggregate[]);
         });
-        setupDailyData('AppleHealth', 'HourlySteps', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, dailyData);
-        setupTotalValueResult(filteredDailyData, sampleResult);
-        expect(await appleHealthStepsWhileWearingDevice(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+        setupAggregateDailyData('AppleHealth', 'Hourly Steps', sampleStartDate, sampleEndDate, 'sum', result);
+        expect(await appleHealthStepsWhileWearingDevice(sampleStartDate, sampleEndDate)).toEqual(filteredResult);
     });
 });
