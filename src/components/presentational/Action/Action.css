@@ -9,7 +9,7 @@
     align-items: center;
     gap: 16px;
     box-sizing: border-box;
-    cursor: default;
+    cursor: inherit;
 }
 
 .mdhui-action.mdhui-action-clickable,
