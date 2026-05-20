@@ -141,6 +141,7 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         previewDataRange: [300, 500]
     },
     {
+        dataSource: "Unified",
         type: DailyDataType.BloodGlucose,
         dataProvider: combinedBloodGlucoseDataProvider,
         availabilityCheck: combinedAvailabilityCheck(BLOOD_GLUCOSE_SOURCES),
