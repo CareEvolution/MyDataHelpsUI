@@ -6,7 +6,7 @@ import { DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
 
 export type AggregateFunction = 'sum' | 'avg' | 'min' | 'max' | 'count';
 
-export async function queryAggregateDailyData(namespace: DeviceDataV2Namespace, type: string, startDate: Date, endDate: Date, aggregateFn: AggregateFunction): Promise<DailyDataQueryResult> {
+export async function queryAggregateDailyData(namespace: DeviceDataV2Namespace, type: string, startDate: Date, endDate: Date, aggregateFn: AggregateFunction, scaleFactor?: number): Promise<DailyDataQueryResult> {
     const aggregates = await queryAllDeviceDataV2Aggregates({
         namespace: namespace,
         type: type,
@@ -17,7 +17,7 @@ export async function queryAggregateDailyData(namespace: DeviceDataV2Namespace, 
         aggregateFunctions: [aggregateFn]
     });
     return aggregates.reduce((result, aggregate) => {
-        const aggregateValue = aggregate.statistics[aggregateFn];
+        const aggregateValue = aggregate.statistics[aggregateFn] * (scaleFactor ?? 1);
         if (aggregateValue > 0) {
             result[getDayKey(aggregate.date)] = aggregateValue;
         }

@@ -4,7 +4,7 @@ import healthConnectMinBloodGlucose from '../../../src/helpers/daily-data-provid
 
 describe('Daily Data Provider - Health Connect Min Blood Glucose', () => {
     it('Should query for aggregate daily data and return the minimum values keyed by date.', async () => {
-        setupAggregateDailyData('HealthConnect', 'blood-glucose', sampleStartDate, sampleEndDate, 'min', sampleResult);
+        setupAggregateDailyData('HealthConnect', 'blood-glucose', sampleStartDate, sampleEndDate, 'min', sampleResult, 18);
         expect(await healthConnectMinBloodGlucose(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 });

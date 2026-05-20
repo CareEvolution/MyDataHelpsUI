@@ -116,7 +116,8 @@ export function setupAggregateDailyData(
     expectedStartDate: Date,
     expectedEndDate: Date,
     expectedAggregateFn: AggregateFunction,
-    result: DailyDataQueryResult
+    result: DailyDataQueryResult,
+    optionalScaleFactor?: number
 ): void {
     jest.spyOn(dailyDataAggregateFunctions, 'queryAggregateDailyData').mockImplementation(
         (
@@ -124,13 +125,15 @@ export function setupAggregateDailyData(
             actualType: string,
             actualStartDate: Date,
             actualEndDate: Date,
-            actualAggregateFn: AggregateFunction
+            actualAggregateFn: AggregateFunction,
+            actualScaleFactor: number | undefined
         ): Promise<DailyDataQueryResult> => {
             if (actualNamespace !== expectedNamespace) return Promise.reject();
             if (actualType !== expectedType) return Promise.reject();
             if (!isEqual(actualStartDate, expectedStartDate)) return Promise.reject();
             if (!isEqual(actualEndDate, expectedEndDate)) return Promise.reject();
             if (actualAggregateFn !== expectedAggregateFn) return Promise.reject();
+            if (actualScaleFactor !== optionalScaleFactor) return Promise.reject();
             return Promise.resolve(result);
         }
     );

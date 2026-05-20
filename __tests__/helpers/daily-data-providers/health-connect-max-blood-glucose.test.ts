@@ -4,7 +4,7 @@ import healthConnectMaxBloodGlucose from '../../../src/helpers/daily-data-provid
 
 describe('Daily Data Provider - Health Connect Max Blood Glucose', () => {
     it('Should query for aggregate daily data and return the maximum values keyed by date.', async () => {
-        setupAggregateDailyData('HealthConnect', 'blood-glucose', sampleStartDate, sampleEndDate, 'max', sampleResult);
+        setupAggregateDailyData('HealthConnect', 'blood-glucose', sampleStartDate, sampleEndDate, 'max', sampleResult, 18);
         expect(await healthConnectMaxBloodGlucose(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 });
