@@ -5,18 +5,22 @@ import {
     healthConnectDistanceDataProvider,
     healthConnectLightSleepMinutesDataProvider,
     healthConnectMaxHeartRateDataProvider,
+    healthConnectMindfulMinutesDataProvider,
     healthConnectMinHeartRateDataProvider,
     healthConnectRemSleepMinutesDataProvider,
     healthConnectRestingHeartRateDataProvider,
     healthConnectStepsDataProvider,
+    healthConnectTherapyMinutesDataProvider,
     healthConnectTotalCaloriesBurnedDataProvider,
     healthConnectTotalSleepMinutesDataProvider
 } from '../daily-data-providers';
 import { DailyDataType, DailyDataTypeDefinition } from '../daily-data-types';
-import { faBed, faFireFlameCurved, faHeartbeat, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
+import { formatNumberForLocale } from '../locale';
+import { EXERCISE_SESSION_FILTERS } from '../daily-data-providers/health-connect-therapy-minutes';
 
 const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
     {
@@ -123,6 +127,24 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [1800, 2200]
+    },
+    {
+        type: DailyDataType.HealthConnectTherapyMinutes,
+        dataProvider: healthConnectTherapyMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'exercise-session', { v2QueryFilters: EXERCISE_SESSION_FILTERS }),
+        labelKey: 'therapy-minutes',
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => formatNumberForLocale(value),
+        previewDataRange: [0, 120]
+    },
+    {
+        type: DailyDataType.HealthConnectMindfulMinutes,
+        dataProvider: healthConnectMindfulMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck('HealthConnect', 'mindfulness-sessions'),
+        labelKey: 'mindful-minutes',
+        icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
+        formatter: value => formatNumberForLocale(value),
+        previewDataRange: [0, 120]
     }
 ];
 healthConnectTypeDefinitions.forEach((def) => {

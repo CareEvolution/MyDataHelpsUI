@@ -48,7 +48,7 @@ export async function queryForDailyDataV2(
     endDate: Date,
     dateFn: DailyDataDateFunction
 ): Promise<DailyDataV2> {
-    const dataPoints = await self.queryForDailyDataPointsV2(namespace, type, startDate, endDate, dateFn);
+    const dataPoints = await self.queryForDailyDataPointsV2(namespace, type, startDate, endDate, undefined, dateFn);
     return dataPoints.reduce((dailyData, dataPoint) => {
         const dayKey = getDayKey(dateFn(dataPoint)!);
         if (!dailyData[dayKey]) {
@@ -59,18 +59,24 @@ export async function queryForDailyDataV2(
     }, {} as DailyDataV2);
 }
 
+export interface DeviceDataV2QueryFilters {
+    dataSource?: Record<string, string>;
+}
+
 export async function queryForDailyDataPointsV2(
     namespace: DeviceDataV2Namespace,
     type: string,
     startDate: Date,
     endDate: Date,
+    filters?: DeviceDataV2QueryFilters,
     dateFn?: DailyDataDateFunction
 ): Promise<DeviceDataV2Point[]> {
     const dataPoints = await queryAllDeviceDataV2({
         namespace: namespace,
         type: type,
         observedAfter: add(startDate, { days: -1 }).toISOString(),
-        observedBefore: add(endDate, { days: 1 }).toISOString()
+        observedBefore: add(endDate, { days: 1 }).toISOString(),
+        ...(filters?.dataSource && { dataSource: filters.dataSource })
     });
     return dataPoints.filter(dataPoint => !dateFn || self.dailyDataDateFilter(dateFn(dataPoint), startDate, endDate));
 }

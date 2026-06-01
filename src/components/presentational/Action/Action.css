@@ -9,7 +9,7 @@
     align-items: center;
     gap: 16px;
     box-sizing: border-box;
-    cursor: default;
+    cursor: inherit;
 }
 
 .mdhui-action.mdhui-action-clickable,
@@ -53,6 +53,6 @@
     font-weight: bold;
 }
 
-.mdhui-action.mdhui-action-bottom-border {
+.mdhui-action.mdhui-action-bottom-border:not(:last-child), div:not(:last-child) > .mdhui-action.mdhui-action-bottom-border {
     border-bottom: solid 1px var(--mdhui-border-color-0);
 }

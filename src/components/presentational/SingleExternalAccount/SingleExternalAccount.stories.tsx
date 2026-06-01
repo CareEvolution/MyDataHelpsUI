@@ -60,3 +60,24 @@ export const WithError: Story = {
     },
     render: render
 };
+
+export const WithSuccessorProvider: Story = {
+    args: {
+        externalAccount: {
+            ...externalAccount,
+            provider: { ...externalAccount.provider, successorID: 999 } as ExternalAccountProvider
+        }
+    },
+    render: render
+};
+
+export const UnauthorizedWithSuccessorProvider: Story = {
+    args: {
+        externalAccount: {
+            ...externalAccount,
+            status: "unauthorized",
+            provider: { ...externalAccount.provider, successorID: 999 } as ExternalAccountProvider
+        }
+    },
+    render: render
+};

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount } from '@careevolution/mydatahelps-js';
 import { Card, LoadingIndicator, SingleExternalAccount } from '../../presentational'
-import { previewExternalAccounts } from './ExternalAccountList.previewdata'
+import { previewExternalAccounts, previewExternalAccountsWithSuccessor } from './ExternalAccountList.previewdata'
 
 export interface ExternalAccountListProps {
     externalAccountProviderCategories?: string[];
-    previewState?: "default"
+    previewState?: "default" | "withSuccessor"
     onExternalAccountsLoaded?: (accounts: ExternalAccount[]) => void;
     innerRef?: React.Ref<HTMLDivElement>
     connectExternalAccountOptions?: ConnectExternalAccountOptions
@@ -19,6 +19,11 @@ export default function (props: ExternalAccountListProps) {
         if (props.previewState == "default") {
             setLoading(false);
             updateExternalAccounts(previewExternalAccounts);
+            return;
+        }
+        if (props.previewState == "withSuccessor") {
+            setLoading(false);
+            updateExternalAccounts(previewExternalAccountsWithSuccessor);
             return;
         }
         loadExternalAccounts();
@@ -47,7 +52,8 @@ export default function (props: ExternalAccountListProps) {
     }
 
     function reconnectAccount(account: ExternalAccount) {
-        MyDataHelps.connectExternalAccount(account.provider.id, props.connectExternalAccountOptions || { openNewWindow: true })
+        const providerIdToConnect = account.provider.successorID ?? account.provider.id;
+        MyDataHelps.connectExternalAccount(providerIdToConnect, props.connectExternalAccountOptions || { openNewWindow: true })
             .then(function () {
                 loadExternalAccounts();
             });

@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedFirstValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import combinedMindfulMinutes from '../../../src/helpers/daily-data-providers/combined-mindful-minutes';
 import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
-import { appleHealthMindfulMinutesDataProvider, googleFitMindfulMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
+import { appleHealthMindfulMinutesDataProvider, googleFitMindfulMinutesDataProvider, healthConnectMindfulMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
 
 jest.mock('../../../src/helpers/daily-data-providers/apple-health-mindful-minutes', () => ({
     __esModule: true,
@@ -14,10 +14,16 @@ jest.mock('../../../src/helpers/daily-data-providers/google-fit-mindful-minutes'
     default: jest.fn()
 }));
 
+jest.mock('../../../src/helpers/daily-data-providers/health-connect-mindful-minutes', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
 describe('Daily Data Provider - Combined Mindful Minutes', () => {
 
     const appleHealthMindfulMinutesDataProviderMock = appleHealthMindfulMinutesDataProvider as jest.Mock;
     const googleFitMindfulMinutesDataProviderMock = googleFitMindfulMinutesDataProvider as jest.Mock;
+    const healthConnectMindfulMinutesDataProviderMock = healthConnectMindfulMinutesDataProvider as jest.Mock;
     const combinedFirstValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingFirstValue');
 
     beforeEach(() => {
@@ -27,13 +33,14 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
     it('Should return an empty result when no providers are enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
 
-        setupCombinedDataCollectionSettings(false, combinedSettings);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
 
         const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
 
         expect(result).toEqual({});
         expect(appleHealthMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -41,14 +48,16 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
         combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
 
-        setupCombinedDataCollectionSettings(false, combinedSettings);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
 
         const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
 
         expect(result).toEqual({});
         expect(appleHealthMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -61,13 +70,14 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
 
         const appleHealthResult = createMockResult();
 
-        setupCombinedDataCollectionSettings(false, combinedSettings);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
         setupDailyDataProvider(appleHealthMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
 
         const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
 
         expect(result).toBe(appleHealthResult);
         expect(googleFitMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -80,13 +90,34 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
 
         const googleFitResult = createMockResult();
 
-        setupCombinedDataCollectionSettings(false, combinedSettings);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
         setupDailyDataProvider(googleFitMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
 
         const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
 
         expect(result).toBe(googleFitResult);
         expect(appleHealthMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Health Connect result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'HealthConnect', type: 'mindfulness-sessions', enabled: true }
+        );
+
+        const healthConnectResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(healthConnectMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
+
+        const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(healthConnectResult);
+        expect(appleHealthMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitMindfulMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -98,14 +129,20 @@ describe('Daily Data Provider - Combined Mindful Minutes', () => {
             { namespace: 'AppleHealth', type: 'MindfulSession' },
             { namespace: 'GoogleFit', type: 'ActivitySegment' }
         );
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'HealthConnect', type: 'mindfulness-sessions', enabled: true }
+        );
 
         const appleHealthResult = createMockResult();
         const googleFitResult = createMockResult();
+        const healthConnectResult = createMockResult();
 
-        setupCombinedDataCollectionSettings(false, combinedSettings);
+        setupCombinedDataCollectionSettings(true, combinedSettings);
         setupDailyDataProvider(appleHealthMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
         setupDailyDataProvider(googleFitMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
-        setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [appleHealthResult, googleFitResult], sampleResult);
+        setupDailyDataProvider(healthConnectMindfulMinutesDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
+        setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [appleHealthResult, googleFitResult, healthConnectResult], sampleResult);
 
         const result = await combinedMindfulMinutes(sampleStartDate, sampleEndDate);
 

@@ -11,6 +11,7 @@ export interface CardProps {
 	innerRef?: React.Ref<HTMLDivElement>;
 	variant?: "default" | "subtle" | "highlight";
 	backgroundColor?: ColorDefinition;
+	onClick?: () => void;
 	style?: React.CSSProperties;
 }
 
@@ -36,7 +37,7 @@ export default function (props: CardProps) {
 	let backgroundColor = resolveColor(layoutContext?.colorScheme, props.backgroundColor);
 
 	return (
-		<div style={{...props.style, backgroundColor:backgroundColor}} ref={props.innerRef} className={classes.join(" ")}>
+		<div style={{ ...props.style, backgroundColor: backgroundColor, ...(props.onClick && { cursor: "pointer" }) }} ref={props.innerRef} className={classes.join(" ")} onClick={props.onClick}>
 			{props.children}
 			{props.children && variant === "highlight" && <ShinyOverlay />}
 		</div>

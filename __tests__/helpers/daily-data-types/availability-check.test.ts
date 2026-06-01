@@ -54,7 +54,7 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenCalledTimes(1);
             expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined, undefined);
         });
 
         it('Should return true when querying is enabled for the specified types and data points exist in V1.', async () => {
@@ -71,7 +71,7 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenCalledTimes(1);
             expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined, undefined);
         });
 
         it('Should return true when querying is enabled for the specified types and data points exist in V2.', async () => {
@@ -88,7 +88,7 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenCalledTimes(1);
             expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], undefined, undefined);
         });
 
         it('Should use the modifiedAfter date when provided.', async () => {
@@ -107,7 +107,7 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenCalledTimes(1);
             expect(hasV1DataMock).toHaveBeenCalledWith(namespace, [type1], modifiedAfter);
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], modifiedAfter);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type2], modifiedAfter, undefined);
         });
 
         it('Should use the requireAllTypes flag when provided - V1.', async () => {
@@ -137,7 +137,7 @@ describe('Availability Check Tests', () => {
             expect(getSupportedApisMock).toHaveBeenCalledWith(combinedDataCollectionSettings, { namespace: namespace, types: [type1, type2], requireAllTypes: true });
             expect(hasV1DataMock).not.toHaveBeenCalled();
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type1, type2], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace, [type1, type2], undefined, undefined);
         });
     });
 
@@ -191,8 +191,8 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
             expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(2);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined, undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined, undefined);
         });
 
         it('Should return true when querying is enabled for the specified types and data points exist in V1.', async () => {
@@ -220,8 +220,8 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
             expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(2);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined, undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined, undefined);
         });
 
         it('Should return true when querying is enabled for the specified types and data points exist in V2.', async () => {
@@ -249,8 +249,8 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
             expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(2);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined, undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined, undefined);
         });
 
         it('Should use the modifiedAfter date when provided.', async () => {
@@ -277,8 +277,35 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], modifiedAfter);
             expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], modifiedAfter);
             expect(hasV2DataMock).toHaveBeenCalledTimes(2);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], modifiedAfter);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], modifiedAfter);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], modifiedAfter, undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], modifiedAfter, undefined);
+        });
+
+        it('Should use the device data v2 query filters when provided (and querying V2).', async () => {
+            getSupportedApisMock
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type1] }, v2: { enabled: true, types: [type2] } })
+                .mockReturnValueOnce({ v1: { enabled: true, types: [type3] }, v2: { enabled: true, types: [type4] } });
+            hasV1DataMock.mockResolvedValue(true);
+            hasV2DataMock.mockRejectedValue(false);
+
+            const sources: DataSource[] = [
+                { namespace: namespace1, type: [type1, type2], options: { v2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } },
+                { namespace: namespace2, type: [type3, type4], options: { v2QueryFilters: { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } } } }
+            ];
+
+            const result = await combinedAvailabilityCheck(sources)(combinedDataCollectionSettings);
+
+            expect(result).toBe(true);
+
+            expect(getSupportedApisMock).toHaveBeenCalledTimes(2);
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(1, combinedDataCollectionSettings, { namespace: namespace1, types: [type1, type2], requireAllTypes: false });
+            expect(getSupportedApisMock).toHaveBeenNthCalledWith(2, combinedDataCollectionSettings, { namespace: namespace2, types: [type3, type4], requireAllTypes: false });
+            expect(hasV1DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
+            expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledTimes(2);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined, { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } });
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type4], undefined, { dataSource: { dataSourceProperty: 'dataSourcePropertyValue' } });
         });
 
         it('Should use the requireAllTypes flag when provided - V1.', async () => {
@@ -306,7 +333,7 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenNthCalledWith(1, namespace1, [type1], undefined);
             expect(hasV1DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3, type4], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(1);
-            expect(hasV2DataMock).toHaveBeenCalledWith(namespace1, [type2], undefined);
+            expect(hasV2DataMock).toHaveBeenCalledWith(namespace1, [type2], undefined, undefined);
         });
 
         it('Should use the requireAllTypes flag when provided - V2.', async () => {
@@ -333,8 +360,8 @@ describe('Availability Check Tests', () => {
             expect(hasV1DataMock).toHaveBeenCalledTimes(1);
             expect(hasV1DataMock).toHaveBeenCalledWith(namespace1, [type1], undefined);
             expect(hasV2DataMock).toHaveBeenCalledTimes(2);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined);
-            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3, type4], undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(1, namespace1, [type2], undefined, undefined);
+            expect(hasV2DataMock).toHaveBeenNthCalledWith(2, namespace2, [type3, type4], undefined, undefined);
         });
     });
 });

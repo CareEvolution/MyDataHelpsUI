@@ -29,4 +29,5 @@ export * from './news-feed';
 export * from './regex';
 export * from './document-library';
 export * from './survey-data-type';
+export * from './html-report';
 export * from './insights';
