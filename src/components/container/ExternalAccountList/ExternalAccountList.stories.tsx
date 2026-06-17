@@ -18,44 +18,50 @@ const Template: ComponentStory<typeof ExternalAccountList> = (args: ExternalAcco
 
 export const Default = Template.bind({});
 Default.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Provider", "Health Plan", "Device Manufacturer"]
 };
 
 export const ProvidersOnly = Template.bind({});
 ProvidersOnly.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Provider"]
 };
 
 export const HealthPlansOnly = Template.bind({});
 HealthPlansOnly.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Health Plan"]
 };
 
 export const DeviceManufacturersOnly = Template.bind({});
 DeviceManufacturersOnly.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Device Manufacturer"]
 };
 
 export const ProvidersAndHealthPlans = Template.bind({});
 ProvidersAndHealthPlans.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Provider", "Health Plan"]
 };
 
 export const ProvidersAndDeviceManufacturers = Template.bind({});
 ProvidersAndDeviceManufacturers.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Provider", "Device Manufacturer"]
 };
 
 export const HealthPlansAndDeviceManufacturers = Template.bind({});
 HealthPlansAndDeviceManufacturers.args = {
-    previewState: "Default",
+    previewState: "default",
     externalAccountProviderCategories: ["Health Plan", "Device Manufacturer"]
+};
+
+export const WithSuccessorProvider = Template.bind({});
+WithSuccessorProvider.args = {
+    previewState: "withSuccessor",
+    externalAccountProviderCategories: ["Provider"]
 };
 
 export const Live = Template.bind({});
