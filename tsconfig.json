@@ -16,6 +16,14 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "resolveJsonModule": true,
+    "paths": {
+        "@langchain/langgraph/prebuilt": [
+            "./node_modules/@langchain/langgraph/dist/prebuilt"
+        ],
+        "@langchain/langgraph/web": [
+            "./node_modules/@langchain/langgraph/dist/web"
+        ]
+    }
   },
   "include": [
     "src/**/*"

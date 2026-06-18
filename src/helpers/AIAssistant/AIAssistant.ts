@@ -93,12 +93,12 @@ export class MyDataHelpsAIAssistant {
             }
         };
 
-        const boundModel = new ChatOpenAI({
-            model: "gpt-4o-2024-08-06",
+        const boundModel = new ChatOpenAI("gpt-4o-2024-08-06", {
             temperature: 0,
-            apiKey: MyDataHelps.token.access_token
-        }, {
-            baseURL: this.baseUrl
+            configuration: {
+                apiKey: MyDataHelps.token.access_token,
+                baseURL: this.baseUrl
+            }
         }).bindTools(this.tools.map(t => convertToOpenAITool(t)));
 
         const promptTemplate = ChatPromptTemplate.fromMessages([
