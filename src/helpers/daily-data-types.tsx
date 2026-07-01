@@ -80,6 +80,8 @@ export enum DailyDataType {
 	GoogleHealthCaloriesBurned = "GoogleHealthCaloriesBurned",
 	GoogleHealthActiveCaloriesBurned = "GoogleHealthActiveCaloriesBurned",
 	GoogleHealthFloors = "GoogleHealthFloors",
+	GoogleHealthDistance = "GoogleHealthDistance",
+	GoogleHealthSedentaryMinutes = "GoogleHealthSedentaryMinutes",
 	GoogleHealthWearMinutes = "GoogleHealthWearMinutes",
 	GoogleHealthBreathingRate = "GoogleHealthBreathingRate",
 	GoogleHealthHrv = "GoogleHealthHrv",

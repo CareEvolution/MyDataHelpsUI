@@ -24,6 +24,15 @@ async function googleHealthDailyTotal(type: string, startDate: Date, endDate: Da
     return buildTotalValueResult(dailyData);
 }
 
+// Scales every day's value by a constant factor (used to convert Google Health's raw units).
+function scaleResult(result: DailyDataQueryResult, factor: number): DailyDataQueryResult {
+    const scaled: DailyDataQueryResult = {};
+    Object.keys(result).forEach(dayKey => {
+        scaled[dayKey] = result[dayKey] * factor;
+    });
+    return scaled;
+}
+
 // Multiple session/stage metrics summed together per day (e.g. total active minutes across levels).
 async function googleHealthDailyTotalOfTypes(types: string[], startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const perType = await Promise.all(types.map(type => queryForDailyDataV2(googleHealthNamespace, type, startDate, endDate, getStartDate)));
@@ -54,6 +63,16 @@ export function googleHealthCaloriesBurnedDataProvider(startDate: Date, endDate:
 
 export function googleHealthFloorsDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     return googleHealthDailyValue("floors-daily", startDate, endDate);
+}
+
+// distance-daily is a summed distance in millimeters; convert to meters to match the other distance sources.
+export async function googleHealthDistanceDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    return scaleResult(await googleHealthDailyValue("distance-daily", startDate, endDate), 1 / 1000);
+}
+
+// sedentaryPeriod-daily is a summed duration in seconds; convert to minutes to match the Fitbit sedentary type.
+export async function googleHealthSedentaryMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    return scaleResult(await googleHealthDailyValue("sedentaryPeriod-daily", startDate, endDate), 1 / 60);
 }
 
 export function googleHealthWearMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {

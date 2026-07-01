@@ -35,11 +35,14 @@ with Google Health, remove the bridge, and fill in the real `getGoogleHealthProv
 dev/prod IDs (placeholder `0` today) and the official Google Health logo (a FontAwesome
 placeholder is used in the menu).
 
-**Deferred** (unit conversion needed, verify against real data before adding): Google
-Health `distance-daily` is millimeters (frontend distance is meters) and
-`sedentaryPeriod-daily` is seconds (Fitbit sedentary is minutes). These two Fitbit types
-(`FitbitSedentaryMinutes`) and any distance combined/Fitbit type were intentionally left
-without a Google Health source/fallback.
+**Unit conversions — implemented, but verify against real data:** Google Health
+`distance-daily` is a summed distance in **millimeters** (other distance sources are in
+meters) and `sedentaryPeriod-daily` is a summed duration in **seconds** (Fitbit sedentary
+is minutes). The providers convert (`distance ÷ 1000` → meters, `sedentary ÷ 60` →
+minutes); `FitbitSedentaryMinutes` now falls back to Google Health, and a standalone
+`GoogleHealthDistance` type was added (there is no Fitbit/combined distance type). The two
+divisors are assumptions drawn from the back-end field units — confirm the scaled values
+match a real Google-Health-connected participant before relying on them.
 
 ---
 

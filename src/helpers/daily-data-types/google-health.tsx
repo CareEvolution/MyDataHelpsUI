@@ -1,8 +1,8 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPersonRunning, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPerson, faPersonRunning, faRoute, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
+import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 import {
@@ -12,11 +12,13 @@ import {
     googleHealthCaloriesBurnedDataProvider,
     googleHealthCardioMinutesDataProvider,
     googleHealthDeepSleepMinutesDataProvider,
+    googleHealthDistanceDataProvider,
     googleHealthElevatedHeartRateMinutesDataProvider,
     googleHealthFairlyActiveMinutesDataProvider,
     googleHealthFatBurnMinutesDataProvider,
     googleHealthFloorsDataProvider,
     googleHealthHrvDataProvider,
+    googleHealthSedentaryMinutesDataProvider,
     googleHealthLightSleepMinutesDataProvider,
     googleHealthLightlyActiveMinutesDataProvider,
     googleHealthMaxHeartRateDataProvider,
@@ -117,6 +119,25 @@ let googleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faStairs} />,
         formatter: defaultFormatter,
         previewDataRange: [2, 8]
+    },
+    {
+        type: DailyDataType.GoogleHealthDistance,
+        dataProvider: googleHealthDistanceDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("GoogleHealth", "distance-daily"),
+        labelKey: "distance-traveled",
+        icon: <FontAwesomeSvgIcon icon={faRoute} />,
+        formatter: distanceFormatter,
+        yAxisConverter: distanceYAxisConverter,
+        previewDataRange: [3000, 5000]
+    },
+    {
+        type: DailyDataType.GoogleHealthSedentaryMinutes,
+        dataProvider: googleHealthSedentaryMinutesDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("GoogleHealth", "sedentaryPeriod-daily"),
+        labelKey: "sedentary-time",
+        icon: <FontAwesomeSvgIcon icon={faPerson} />,
+        formatter: minutesFormatter,
+        previewDataRange: [200, 300]
     },
     {
         type: DailyDataType.GoogleHealthWearMinutes,
