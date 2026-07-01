@@ -16,6 +16,31 @@ analogous to the Fitbit Web API). It covers three efforts:
 > the SDK version in `package.json` (`@careevolution/mydatahelps-js`) is bumped to the
 > release that includes them.
 
+## Implementation status (this branch)
+
+Bucket 1 (Google Health as a source for existing/combined metrics + Fitbit fallback),
+plus **wear time** (the new `wearTime-daily` from Consumers PR #13629), and the Connect
+Devices menu item are implemented and covered by unit tests (`tsc` clean, full Jest suite
+green). Because the SDK isn't published yet, a small **bridge** stands in until it ships —
+delete it when bumping the SDK:
+
+- `src/components/@types/custom.d.ts` — ambient augmentation adding `googleHealthEnabled`
+  to `DataCollectionSettings`.
+- `src/helpers/daily-data-providers/google-health-namespace.ts` — widens the V2 namespace
+  (`DeviceDataV2NamespaceEx` / `SupportedDeviceDataV2DataTypeEx`) to include `GoogleHealth`,
+  with casts only at the two SDK call sites (`queryDeviceDataV2`, `getDeviceDataV2AllDataTypes`).
+
+Still required before this can ship: bump `@careevolution/mydatahelps-js` to the release
+with Google Health, remove the bridge, and fill in the real `getGoogleHealthProviderID()`
+dev/prod IDs (placeholder `0` today) and the official Google Health logo (a FontAwesome
+placeholder is used in the menu).
+
+**Deferred** (unit conversion needed, verify against real data before adding): Google
+Health `distance-daily` is millimeters (frontend distance is meters) and
+`sedentaryPeriod-daily` is seconds (Fitbit sedentary is minutes). These two Fitbit types
+(`FitbitSedentaryMinutes`) and any distance combined/Fitbit type were intentionally left
+without a Google Health source/fallback.
+
 ---
 
 ## Resolved decisions & remaining open questions

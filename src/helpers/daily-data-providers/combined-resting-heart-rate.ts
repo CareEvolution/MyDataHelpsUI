@@ -1,4 +1,4 @@
-﻿import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, healthConnectRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from ".";
+﻿import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, googleHealthRestingHeartRateDataProvider, healthConnectRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from ".";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { combineResultsUsingRoundedAverageValue } from "./daily-data";
@@ -22,6 +22,9 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     }
     if (settings.ouraEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "Oura" && ddt.type === "sleep")) {
         providers.push(ouraRestingHeartRateDataProvider(startDate, endDate));
+    }
+    if (settings.googleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "GoogleHealth" && ddt.type === "dailyRestingHeartRate-list-beatsPerMinute")) {
+        providers.push(googleHealthRestingHeartRateDataProvider(startDate, endDate));
     }
 
     if (providers.length === 0) return {};

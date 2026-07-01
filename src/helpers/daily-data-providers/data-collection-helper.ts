@@ -1,14 +1,16 @@
 import MyDataHelps, { DataCollectionSettings, DeviceDataNamespace, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
 import { CombinedDataCollectionSettings } from './combined-data-collection-settings';
 import { DeviceDataV2QueryFilters } from './daily-data';
+import { DeviceDataV2NamespaceEx } from './google-health-namespace';
 
-const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV2Namespace, keyof DataCollectionSettings> = {
+const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV2NamespaceEx, keyof DataCollectionSettings> = {
     AirNowApi: 'airQualityEnabled',
     AppleHealth: 'appleHealthEnabled',
     Dexcom: 'dexcomEnabled',
     Fitbit: 'fitbitEnabled',
     Garmin: 'garminEnabled',
     GoogleFit: 'googleFitEnabled',
+    GoogleHealth: 'googleHealthEnabled',
     HealthConnect: 'healthConnectEnabled',
     Omron: 'omronEnabled',
     Oura: 'ouraEnabled',
@@ -16,7 +18,7 @@ const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV
 };
 
 export interface SupportedAPIsQuery {
-    namespace: DeviceDataNamespace | DeviceDataV2Namespace;
+    namespace: DeviceDataNamespace | DeviceDataV2NamespaceEx;
     types: string[];
     requireAllTypes: boolean;
 }
@@ -94,10 +96,10 @@ export async function hasV1Data(namespace: DeviceDataNamespace, types: string[],
     }
 }
 
-export async function hasV2Data(namespace: DeviceDataV2Namespace, types: string[], modifiedAfter?: Date, queryFilters?: DeviceDataV2QueryFilters): Promise<true> {
+export async function hasV2Data(namespace: DeviceDataV2NamespaceEx, types: string[], modifiedAfter?: Date, queryFilters?: DeviceDataV2QueryFilters): Promise<true> {
     return Promise.any(types.map(async type => {
         const result = await MyDataHelps.queryDeviceDataV2({
-            namespace: namespace,
+            namespace: namespace as DeviceDataV2Namespace,
             type: type,
             limit: 1,
             ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() }),

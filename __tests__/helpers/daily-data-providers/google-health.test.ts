@@ -1,0 +1,23 @@
+import { describe, expect, it } from '@jest/globals';
+import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, setupTotalValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
+import { googleHealthRestingHeartRateDataProvider, googleHealthStepsDataProvider, googleHealthTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers/google-health';
+
+describe('Daily Data Provider - Google Health', () => {
+    it('Steps: queries steps-daily and builds a most recent value result keyed by start date.', async () => {
+        setupDailyDataV2('GoogleHealth' as any, 'steps-daily', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
+        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        expect(await googleHealthStepsDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+    });
+
+    it('Resting heart rate: queries the daily resting heart rate list and builds a most recent value result.', async () => {
+        setupDailyDataV2('GoogleHealth' as any, 'dailyRestingHeartRate-list-beatsPerMinute', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
+        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        expect(await googleHealthRestingHeartRateDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+    });
+
+    it('Sleep: sums the per-session asleep minutes into a total value result.', async () => {
+        setupDailyDataV2('GoogleHealth' as any, 'sleep-list-session-asleep', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
+        setupTotalValueResult(sampleDailyData, sampleResult);
+        expect(await googleHealthTotalSleepMinutesDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
+    });
+});

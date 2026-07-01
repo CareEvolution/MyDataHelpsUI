@@ -71,6 +71,30 @@ export enum DailyDataType {
 	GoogleFitMindfulMinutes = "GoogleFitMindfulMinutes",
 	GoogleFitSteps = "GoogleFitSteps",
 	GoogleFitTherapyMinutes = "GoogleFitTherapyMinutes",
+	GoogleHealthSteps = "GoogleHealthSteps",
+	GoogleHealthRestingHeartRate = "GoogleHealthRestingHeartRate",
+	GoogleHealthSleepMinutes = "GoogleHealthSleepMinutes",
+	GoogleHealthLightSleepMinutes = "GoogleHealthLightSleepMinutes",
+	GoogleHealthRemSleepMinutes = "GoogleHealthRemSleepMinutes",
+	GoogleHealthDeepSleepMinutes = "GoogleHealthDeepSleepMinutes",
+	GoogleHealthCaloriesBurned = "GoogleHealthCaloriesBurned",
+	GoogleHealthActiveCaloriesBurned = "GoogleHealthActiveCaloriesBurned",
+	GoogleHealthFloors = "GoogleHealthFloors",
+	GoogleHealthWearMinutes = "GoogleHealthWearMinutes",
+	GoogleHealthBreathingRate = "GoogleHealthBreathingRate",
+	GoogleHealthHrv = "GoogleHealthHrv",
+	GoogleHealthSpO2 = "GoogleHealthSpO2",
+	GoogleHealthMaxHeartRate = "GoogleHealthMaxHeartRate",
+	GoogleHealthMinHeartRate = "GoogleHealthMinHeartRate",
+	GoogleHealthAverageHeartRate = "GoogleHealthAverageHeartRate",
+	GoogleHealthLightlyActiveMinutes = "GoogleHealthLightlyActiveMinutes",
+	GoogleHealthFairlyActiveMinutes = "GoogleHealthFairlyActiveMinutes",
+	GoogleHealthVeryActiveMinutes = "GoogleHealthVeryActiveMinutes",
+	GoogleHealthActiveMinutes = "GoogleHealthActiveMinutes",
+	GoogleHealthFatBurnHeartRateMinutes = "GoogleHealthFatBurnHeartRateMinutes",
+	GoogleHealthCardioHeartRateMinutes = "GoogleHealthCardioHeartRateMinutes",
+	GoogleHealthPeakHeartRateMinutes = "GoogleHealthPeakHeartRateMinutes",
+	GoogleHealthElevatedHeartRateMinutes = "GoogleHealthElevatedHeartRateMinutes",
 	Steps = "Steps",
 	StepsWithGoogleFit = "StepsWithGoogleFit",
 	ActiveCaloriesBurned = "ActiveCaloriesBurned",
@@ -101,7 +125,7 @@ export enum DailyDataType {
 }
 
 export interface DailyDataTypeDefinition {
-	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "AirQuality" | "Oura" | "HealthConnect";
+	dataSource?: "Unified" | "AppleHealth" | "Garmin" | "Fitbit" | "GoogleFit" | "GoogleHealth" | "AirQuality" | "Oura" | "HealthConnect";
 	type: string;
 	dataProvider: DailyDataProvider;
 	availabilityCheck: DailyDataAvailabilityCheck;
