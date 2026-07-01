@@ -18,24 +18,28 @@ analogous to the Fitbit Web API). It covers three efforts:
 
 ---
 
-## Key open questions (confirm before implementing)
+## Resolved decisions & remaining open questions
 
-1. **Connection model.** This plan assumes Google Health is an **OAuth external
-   account** (a cloud API you "connect" to, like Fitbit/Garmin/Oura), not an on-device
-   SDK integration (like Health Connect / Google Fit). That matches the framing
-   ("separate back-end API", "both connected in the meantime") and the fact that the
-   poller lives in `CfhrFramework/GoogleHealth`. If correct, the menu item reuses the
-   existing `ExternalAccountMenuItem` and needs a **provider ID**. If instead it is an
-   on-device integration, the menu item looks like the Health Connect / Google Fit
-   items and item 1 changes substantially.
-2. **Provider ID(s).** If OAuth, we need the dev and prod provider IDs to add to
+- **Connection model — RESOLVED: OAuth external account.** Google Health is a cloud API
+  you "connect" to, exactly like Fitbit/Garmin/Oura (not on-device like Health Connect /
+  Google Fit). Fitbit participants will be prompted to connect Google Health before
+  Fitbit shuts down, so both will be connected during the transition. The menu item
+  reuses the existing `ExternalAccountMenuItem` + a provider ID.
+- **V2 device-data type names — RESEARCHED** from the Consumers back-end (see the
+  "Google Health V2 type mapping" section below). Data is served through the **V2 query
+  device data API** (`GoogleHealth` namespace). Steps and resting heart rate are already
+  rolled up to one value per day server-side (no aggregate query needed); **sleep** is
+  session-based and needs a per-day **sum** aggregate (or client-side summation) — which
+  matches your intuition.
+
+Still to confirm:
+
+1. **Provider ID(s).** Need the dev and prod provider IDs to add to
    `src/helpers/providerIDs.ts` (see the `getFitbitProviderID` / `getOuraProviderID`
    pattern).
-3. **Exact V2 device-data type names** exposed by the SDK for the `GoogleHealth`
-   namespace (e.g. is daily steps `"steps-daily"`, `"Steps"`, ...; resting heart rate;
-   sleep). The availability checks and providers key off these strings, so they must
-   match what the SDK/back-end actually emit. Values below are best-guess placeholders
-   drawn from the back-end conversion rules and the Health Connect naming convention.
+2. **SDK type-name exposure.** Confirm the pending SDK reports these exact type strings
+   via `getDeviceDataV2AllDataTypes()` (the availability layer reads them from there) and
+   that `googleHealthEnabled` is on `DataCollectionSettings`.
 
 ---
 
@@ -145,9 +149,51 @@ entries (`GoogleHealthSteps`, `GoogleHealthRestingHeartRate`, `GoogleHealthSleep
 
 Create the providers in `daily-data-providers/` and export them from `index.ts`
 (`google-health-steps.ts`, `google-health-resting-heart-rate.ts`, `google-health-sleep.ts`,
-...). Follow the existing V2 provider shape (`queryForDailyData` /
-`buildTotalValueResult` / `buildMostRecentValueResult`, as in `google-fit-steps.ts` and
-the Health Connect providers). The exact `type` strings depend on open question 3.
+...). All Google Health data is **V2** (`queryDeviceDataV2` / `queryForDailyDataV2` /
+`queryAllDeviceDataV2Aggregates`), like the Health Connect providers.
+
+### Google Health V2 type mapping (researched from the Consumers back-end)
+
+The queryable V2 `type` string for a given metric is the back-end `RealtimeTypeName`,
+which is derived deterministically in `CfhrFramework/GoogleHealth` as follows:
+
+- **S3/type prefix per request provider** (`GoogleHealthRequestProvider.cs`):
+  - List provider → `{dataType}-list`
+  - Daily-rollup provider → `{dataType}-daily` (all sources) or `{dataType}-daily-tracker`
+    (tracker/wearable only)
+- **Type name per query factory** (`GoogleHealthQueries.cs`):
+  - daily-rollup query → `{s3}` (e.g. `steps-daily`)
+  - daily-"list" query → `{s3}-{alias ?? valueJPath}` (e.g. `dailyRestingHeartRate-list-beatsPerMinute`)
+  - sleep-session-metric query → `{s3}-session-{metricName}` (s3 = `sleep-list`)
+  - sample/interval query → `{s3}`
+
+Applying that to the three required metrics:
+
+| Metric | Namespace | V2 `type` | Shape | Provider approach |
+|---|---|---|---|---|
+| **Steps** (daily total) | `GoogleHealth` | `steps-daily` (also `steps-daily-tracker`) | pre-rolled, 1 value/day | `queryForDailyDataV2` + `buildMostRecentValueResult` — identical to `health-connect-steps.ts` |
+| **Resting heart rate** | `GoogleHealth` | `dailyRestingHeartRate-list-beatsPerMinute` | pre-daily list, 1 value/day | `queryForDailyDataV2` + `buildMostRecentValueResult` — **no aggregate query needed** (unlike Health Connect RHR, which must `avg` because it's sample-based) |
+| **Sleep time** (minutes asleep) | `GoogleHealth` | `sleep-list-session-asleep` | per **session**, multiple/day | `queryAllDeviceDataV2Aggregates` with `aggregateFunctions: ["sum"]`, `intervalType: "Days"` → daily total; or query raw + `buildTotalValueResult` |
+
+Notes:
+- Use `steps-daily` (all sources) for the combined/steps providers, not the
+  `-daily-tracker` variant (that excludes phone step data).
+- For sleep, `sleep-list-session-asleep` = minutes actually asleep;
+  `sleep-list-session-inSleepPeriod` = time in the sleep period (closer to "in bed").
+  Match `SleepMinutes` to `-asleep` to stay consistent with the other sources' "sleep
+  time". Because a day can contain several sleep sessions (naps + main sleep), summation
+  is required — this is the one metric that needs an aggregate/rollup step.
+
+Fast-follow metrics resolve by the same rule, e.g. active calories burned
+`activeEnergyBurned-daily`, total calories `totalCalories-daily`, floors `floors-daily`,
+distance `distance-daily` (millimeters — needs unit conversion), sedentary
+`sedentaryPeriod-daily`, SpO2 `dailyOxygenSaturation-list-avg`, breathing rate
+`dailyRespiratoryRate-list-breathsPerMinute`, HRV `dailyHeartRateVariability-list-averageRmssd`,
+heart-rate avg/max/min `heartRate-daily-avg|-max|-min`.
+
+> These strings should be spot-checked against the SDK's `getDeviceDataV2AllDataTypes()`
+> output for a Google-Health-connected participant once the SDK ships, in case the type
+> registry renames anything.
 
 ### 2c. Wire Google Health into the combined ("Unified") types
 
@@ -155,9 +201,9 @@ The combined types are the real payoff — one configured graph draws from every
 source. Add Google Health as a source to the three called-out metrics (and, as fast
 follow, active calories burned):
 
-- **`combined.tsx`** — add `["GoogleHealth", "<steps type>"]` to `STEPS_SOURCES` (and
-  `STEPS_WITH_GOOGLE_FIT_SOURCES`), `["GoogleHealth", "<rhr type>"]` to
-  `RESTING_HEART_RATE_SOURCES`, `["GoogleHealth", "<sleep type>"]` to
+- **`combined.tsx`** — add `["GoogleHealth", "steps-daily"]` to `STEPS_SOURCES` (and
+  `STEPS_WITH_GOOGLE_FIT_SOURCES`), `["GoogleHealth", "dailyRestingHeartRate-list-beatsPerMinute"]`
+  to `RESTING_HEART_RATE_SOURCES`, and `["GoogleHealth", "sleep-list-session-asleep"]` to
   `SLEEP_MINUTES_SOURCES`.
 - **`combined-steps.ts`, `combined-resting-heart-rate.ts`, `combined-sleep.ts`** — add a
   `settings.googleHealthEnabled && <type present>` branch that pushes the corresponding
