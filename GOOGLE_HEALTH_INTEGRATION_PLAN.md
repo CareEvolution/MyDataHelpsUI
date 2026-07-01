@@ -302,3 +302,113 @@ Google Health equivalent stay exactly as they are.
 - `src/helpers/daily-data-providers/data-collection-helper.ts` (`enabledFlags`)
 - `src/helpers/daily-data-providers/google-health-*.ts` (new), `index.ts`
 - `src/helpers/daily-data-providers/combined-steps.ts`, `combined-resting-heart-rate.ts`, `combined-sleep.ts` (+ optionally `combined-active-calories-burned.ts`)
+
+---
+
+## Appendix A — Complete Google Health V2 type catalog
+
+Every queryable `GoogleHealth` V2 `type` string, derived from the back-end
+`FetchingPlan.FetchRules` (`GoogleHealthFetchRules.cs`) and the type-name formulas in
+`GoogleHealthQueries.cs`. Cadence legend: **D** = daily rollup (`*-daily`, one value/day,
+plus a `*-daily-tracker` wearable-only twin where noted); **DL** = daily list (civil-date,
+one value/day); **I** = intraday interval; **S** = sample (intraday point); **Se** =
+session (0..n/day, aggregatable); **U** = user/static config. Only D/DL (and summed Se)
+are directly usable as daily data types.
+
+| Back-end DataType | V2 type string(s) | Cadence |
+|---|---|---|
+| ActiveEnergyBurned | `activeEnergyBurned-list` / `activeEnergyBurned-daily`(+`-tracker`) | I / **D** |
+| ActiveMinutes | `activeMinutes-list-{light,moderate,vigorous}` / `activeMinutes-daily-{light,moderate,vigorous}`(+`-tracker`) | I / **D** |
+| ActiveZoneMinutes | `activeZoneMinutes-list-{fat-burn,cardio,peak}` / `activeZoneMinutes-daily-{fat-burn,cardio,peak}` | I / **D** |
+| ActivityLevel | `activityLevel-list` (categorical) | I |
+| Altitude | `altitude-list` / `altitude-daily`(+`-tracker`) | I / **D** |
+| BloodGlucose | `bloodGlucose-list` / `bloodGlucose-daily` (avg) | S / **D** |
+| BodyFat | `bodyFat-list` / `bodyFat-daily`(+`-tracker`) | S / **D** |
+| CaloriesInHeartRateZone | `caloriesInHeartRateZone-daily-{light,moderate,vigorous,peak}` | **D** |
+| CoreBodyTemperature | `coreBodyTemperature-list` / `coreBodyTemperature-daily-{avg,max,min}` | S / **D** |
+| DailyHeartRateVariability | `dailyHeartRateVariability-list-{averageRmssd,nonRemHeartRate,entropy,deepSleepRmssd}` | **DL** |
+| DailyHeartRateZones | `dailyHeartRateZones-list-{light,moderate,vigorous,peak}-{min,max}` | **DL** |
+| DailyOxygenSaturation | `dailyOxygenSaturation-list-{avg,lower,upper,stddev}` | **DL** |
+| DailyRespiratoryRate | `dailyRespiratoryRate-list-breathsPerMinute` | **DL** |
+| DailyRestingHeartRate | `dailyRestingHeartRate-list-beatsPerMinute` | **DL** |
+| DailySleepTemperatureDerivations | `dailySleepTemperatureDerivations-list-{nightly,baseline,relativeStddev}` | **DL** |
+| DailyVo2Max | `dailyVo2Max-list-{cardioFitnessLevel,vo2Max,vo2MaxCovariance}` | **DL** |
+| Distance | `distance-list` / `distance-daily`(+`-tracker`) | I / **D** |
+| Electrocardiogram | `electrocardiogram-list`, `electrocardiogram-list-waveformSamples` | S |
+| Exercise | `exercise-list-session`, `exercise-list-session-{calories,distance,steps,averageSpeed,averagePace,averageHeartRate,elevationGain,activeZoneMinutes,runVo2Max,totalSwimLengths,heartRateZoneDurations-*Time,mobilityMetrics-*}`, `exercise-list-events`, `exercise-list-splits` | Se |
+| Floors | `floors-reconcile` / `floors-daily`(+`-tracker`) | I / **D** |
+| HeartRate | `heartRate-list` / `heartRate-daily-{avg,max,min}` | S / **D** |
+| HeartRateVariability | `heartRateVariability-list-{rmssd,stddev}` | S |
+| Height | `height-list` | S |
+| HydrationLog | `hydrationLog-list` / `hydrationLog-daily` | Se / **D** |
+| IrregularRhythmNotification | `irregularRhythmNotification-list` | Se |
+| NutritionLog | `nutritionLog-list-session` / `nutritionLog-daily-{energy,energyFromFat,totalCarbohydrate,totalFat}` | Se / **D** |
+| OxygenSaturation | `oxygenSaturation-list` | S |
+| PairedDevices | `pairedDevices` | U |
+| Profile | `profile-{age,membershipStartDate,autoRunningStrideLengthMm,autoWalkingStrideLengthMm,userConfiguredRunningStrideLengthMm,userConfiguredWalkingStrideLengthMm}` | U |
+| RespiratoryRateSleepSummary | `respiratoryRateSleepSummary-list-{deep,light,rem,full}` | S (per sleep) |
+| RunVo2Max | `runVo2Max-list` / `runVo2Max-daily-{min,avg,max}` | S / **D** |
+| SedentaryPeriod | `sedentaryPeriod-list` / `sedentaryPeriod-daily`(+`-tracker`) | I / **D** |
+| Settings | `settings-{autoStrideEnabled,distanceUnit,glucoseUnit,heightUnit,languageLocale,strideLengthRunningType,strideLengthWalkingType,swimUnit,temperatureUnit,timeZone,utcOffset,waterUnit,weightUnit}` | U |
+| Sleep | `sleep-list-session`, `sleep-list-session-{inSleepPeriod,afterWakeUp,toFallAsleep,asleep,awake}`, `sleep-list-stages`, `sleep-list-stages-summary-{awake,light,deep,rem}-{minutes,count}`, `sleep-list-out-of-bed` | Se (sum→daily) |
+| Steps | `steps-list` / `steps-daily`(+`-tracker`) | I / **D** |
+| SwimLengthsData | `swimLengthsData-list` / `swimLengthsData-daily` | I / **D** |
+| TimeInHeartRateZone | `timeInHeartRateZone-list` / `timeInHeartRateZone-daily-{light,moderate,vigorous,peak}` | I / **D** |
+| TotalCalories | `totalCalories-daily`(+`-tracker`) | **D** |
+| Vo2Max | `vo2Max-list` | S |
+| Weight | `weight-list` / `weight-daily`(+`-tracker`) | S / **D** |
+
+> The set a given participant/project actually exposes is whatever
+> `getDeviceDataV2AllDataTypes()` reports as enabled — treat this catalog as the superset.
+
+## Appendix B — Candidate daily data types
+
+### B1. Feed existing metrics (combined sources + Fitbit fallback) — do these first
+
+These have a direct analog already in the daily-data system, so Google Health just becomes
+another source (Effort 2c) and a Fitbit fallback (Effort 3):
+
+| Existing metric | Google Health V2 type |
+|---|---|
+| Steps | `steps-daily` |
+| Resting heart rate | `dailyRestingHeartRate-list-beatsPerMinute` |
+| Sleep time (total) | `sleep-list-session-asleep` (sum/day) |
+| Active calories burned | `activeEnergyBurned-daily` |
+| Calories burned (total) | `totalCalories-daily` |
+| Floors climbed | `floors-daily` |
+| Distance | `distance-daily` (millimeters → convert) |
+| Breathing/respiratory rate | `dailyRespiratoryRate-list-breathsPerMinute` |
+| HRV | `dailyHeartRateVariability-list-averageRmssd` |
+| SpO2 | `dailyOxygenSaturation-list-avg` |
+| Light/REM/Deep sleep minutes | `sleep-list-stages-summary-{light,rem,deep}-minutes` (sum/day) |
+| Sedentary minutes | `sedentaryPeriod-daily` |
+| Active minutes (light/moderate/vigorous ≈ lightly/fairly/very) | `activeMinutes-daily-{light,moderate,vigorous}` |
+| Fat-burn/Cardio/Peak HR-zone minutes | `activeZoneMinutes-daily-{fat-burn,cardio,peak}` |
+| Max/Min/Avg heart rate | `heartRate-daily-{max,min,avg}` |
+
+### B2. Net-new daily data types Google Health enables (not currently modeled)
+
+Worth adding as new `DailyDataType`s (Google-Health-specific or as future combined
+metrics as other sources catch up):
+
+- **VO2 Max / cardio fitness** — `dailyVo2Max-list-vo2Max`, `dailyVo2Max-list-cardioFitnessLevel`
+- **Body weight** — `weight-daily`
+- **Body fat %** — `bodyFat-daily`
+- **Blood glucose (daily avg)** — `bloodGlucose-daily`
+- **Hydration (water volume)** — `hydrationLog-daily`
+- **Nutrition** — `nutritionLog-daily-energy` (calories in), `-totalCarbohydrate`, `-totalFat`
+- **Skin/core body temperature** — `coreBodyTemperature-daily-avg`
+- **Sleeping skin temperature deviation** — `dailySleepTemperatureDerivations-list-nightly` / `-relativeStddev`
+- **Sleep sub-metrics** — time in bed (`sleep-list-session-inSleepPeriod`), sleep latency (`sleep-list-session-toFallAsleep`), awake time (`sleep-list-session-awake` / `sleep-list-stages-summary-awake-minutes`)
+- **Calories in HR zone** — `caloriesInHeartRateZone-daily-{light,moderate,vigorous,peak}`
+- **Time in HR zone** (alt to active-zone-minutes) — `timeInHeartRateZone-daily-*`
+- **Altitude / elevation gain** — `altitude-daily`
+- **Swim stroke count** — `swimLengthsData-daily`
+- **Daily HR zone min/max bounds** — `dailyHeartRateZones-list-*-{min,max}`
+
+### B3. Not daily-data material
+
+Intraday/sample series (`heartRate-list`, `oxygenSaturation-list`, `electrocardiogram-*`,
+`vo2Max-list`, `height-list`), session detail (`exercise-*`, `irregularRhythmNotification-list`),
+and user/config (`profile-*`, `settings-*`, `pairedDevices`) — useful for detail views,
+exercise/session components, or config, but not day-granular chartable metrics.
