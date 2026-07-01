@@ -17,17 +17,20 @@ const Template: StoryFn<typeof AppDownload> = (args: AppDownloadProps) =>
 		<Card><AppDownload {...args} /></Card>
 	</Layout>;
 
-export const WebBoth = Template.bind({});
-WebBoth.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web'};
+export const DesktopBoth = Template.bind({});
+DesktopBoth.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const WebAndroid = Template.bind({});
-WebAndroid.args = {previewProjectPlatforms: ['Web', 'Android'], previewDevicePlatform: 'Web'};
+export const DesktopAndroidOnly = Template.bind({});
+DesktopAndroidOnly.args = {previewProjectPlatforms: ['Web', 'Android'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const WebIOS = Template.bind({});
-WebIOS.args = {previewProjectPlatforms: ['Web', 'iOS'], previewDevicePlatform: 'Web'};
+export const DesktopIOSOnly = Template.bind({});
+DesktopIOSOnly.args = {previewProjectPlatforms: ['Web', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const Android = Template.bind({});
-Android.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Android'};
+export const MobileAndroid = Template.bind({});
+MobileAndroid.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: 'Android'};
 
-export const IOS = Template.bind({});
-IOS.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'iOS'};
+export const MobileIOS = Template.bind({});
+MobileIOS.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: 'iOS'};
+
+export const NativeApp = Template.bind({});
+NativeApp.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'iOS', previewOperatingSystem: 'iOS'};
