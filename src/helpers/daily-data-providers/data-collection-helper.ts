@@ -1,9 +1,8 @@
 import MyDataHelps, { DataCollectionSettings, DeviceDataNamespace, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
 import { CombinedDataCollectionSettings } from './combined-data-collection-settings';
 import { DeviceDataV2QueryFilters } from './daily-data';
-import { DeviceDataV2NamespaceEx } from './google-health-namespace';
 
-const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV2NamespaceEx, keyof DataCollectionSettings> = {
+const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV2Namespace, keyof DataCollectionSettings> = {
     AirNowApi: 'airQualityEnabled',
     AppleHealth: 'appleHealthEnabled',
     Dexcom: 'dexcomEnabled',
@@ -18,7 +17,7 @@ const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV
 };
 
 export interface SupportedAPIsQuery {
-    namespace: DeviceDataNamespace | DeviceDataV2NamespaceEx;
+    namespace: DeviceDataNamespace | DeviceDataV2Namespace;
     types: string[];
     requireAllTypes: boolean;
 }
@@ -96,10 +95,10 @@ export async function hasV1Data(namespace: DeviceDataNamespace, types: string[],
     }
 }
 
-export async function hasV2Data(namespace: DeviceDataV2NamespaceEx, types: string[], modifiedAfter?: Date, queryFilters?: DeviceDataV2QueryFilters): Promise<true> {
+export async function hasV2Data(namespace: DeviceDataV2Namespace, types: string[], modifiedAfter?: Date, queryFilters?: DeviceDataV2QueryFilters): Promise<true> {
     return Promise.any(types.map(async type => {
         const result = await MyDataHelps.queryDeviceDataV2({
-            namespace: namespace as DeviceDataV2Namespace,
+            namespace: namespace,
             type: type,
             limit: 1,
             ...(modifiedAfter && { modifiedAfter: modifiedAfter.toISOString() }),

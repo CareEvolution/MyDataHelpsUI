@@ -1,9 +1,8 @@
-import MyDataHelps, { DataCollectionSettings } from "@careevolution/mydatahelps-js";
-import { SupportedDeviceDataV2DataTypeEx } from "./google-health-namespace";
+import MyDataHelps, { DataCollectionSettings, SupportedDeviceDataV2DataType } from "@careevolution/mydatahelps-js";
 
 export interface CombinedDataCollectionSettings {
     settings: DataCollectionSettings;
-    deviceDataV2Types: SupportedDeviceDataV2DataTypeEx[];
+    deviceDataV2Types: SupportedDeviceDataV2DataType[];
 }
 
 export async function getCombinedDataCollectionSettings(useV2: boolean = false): Promise<CombinedDataCollectionSettings> {

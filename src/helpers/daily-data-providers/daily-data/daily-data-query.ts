@@ -1,5 +1,4 @@
 import { DeviceDataNamespace, DeviceDataPoint, DeviceDataV2Namespace, DeviceDataV2Point } from '@careevolution/mydatahelps-js';
-import { DeviceDataV2NamespaceEx } from '../google-health-namespace';
 import getDayKey from '../../get-day-key';
 import queryAllDeviceData from '../query-all-device-data';
 import { add, endOfDay, Interval, isWithinInterval, startOfDay } from 'date-fns';
@@ -43,7 +42,7 @@ export async function queryForDailyDataPoints(
 }
 
 export async function queryForDailyDataV2(
-    namespace: DeviceDataV2NamespaceEx,
+    namespace: DeviceDataV2Namespace,
     type: string,
     startDate: Date,
     endDate: Date,
@@ -65,7 +64,7 @@ export interface DeviceDataV2QueryFilters {
 }
 
 export async function queryForDailyDataPointsV2(
-    namespace: DeviceDataV2NamespaceEx,
+    namespace: DeviceDataV2Namespace,
     type: string,
     startDate: Date,
     endDate: Date,
@@ -73,7 +72,7 @@ export async function queryForDailyDataPointsV2(
     dateFn?: DailyDataDateFunction
 ): Promise<DeviceDataV2Point[]> {
     const dataPoints = await queryAllDeviceDataV2({
-        namespace: namespace as DeviceDataV2Namespace,
+        namespace: namespace,
         type: type,
         observedAfter: add(startDate, { days: -1 }).toISOString(),
         observedBefore: add(endDate, { days: 1 }).toISOString(),

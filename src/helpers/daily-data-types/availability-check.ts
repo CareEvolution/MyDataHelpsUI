@@ -3,7 +3,6 @@ import { CombinedDataCollectionSettings } from '../daily-data-providers/combined
 import { getSupportedApis, hasV1Data, hasV2Data, SupportedAPIsQuery } from '../daily-data-providers/data-collection-helper';
 import { DailyDataAvailabilityCheck } from '../query-daily-data';
 import { DeviceDataV2QueryFilters } from '../daily-data-providers/daily-data';
-import { DeviceDataV2NamespaceEx } from '../daily-data-providers/google-health-namespace';
 
 export interface AvailabilityCheckOptions {
     requireAllTypes?: boolean;
@@ -11,12 +10,12 @@ export interface AvailabilityCheckOptions {
 }
 
 export type DataSource = {
-    namespace: DeviceDataNamespace | DeviceDataV2NamespaceEx;
+    namespace: DeviceDataNamespace | DeviceDataV2Namespace;
     type: string[];
     options?: AvailabilityCheckOptions;
 };
 
-export function sources(...sources: Array<[DeviceDataNamespace | DeviceDataV2NamespaceEx, string | string[], AvailabilityCheckOptions?]>): DataSource[] {
+export function sources(...sources: Array<[DeviceDataNamespace | DeviceDataV2Namespace, string | string[], AvailabilityCheckOptions?]>): DataSource[] {
     return sources.map(([namespace, type, options]) => ({
         namespace: namespace,
         type: Array.isArray(type) ? type : [type],
@@ -24,7 +23,7 @@ export function sources(...sources: Array<[DeviceDataNamespace | DeviceDataV2Nam
     }));
 }
 
-export function simpleAvailabilityCheck(namespace: DeviceDataNamespace | DeviceDataV2NamespaceEx, type: string | string[], options?: AvailabilityCheckOptions): DailyDataAvailabilityCheck {
+export function simpleAvailabilityCheck(namespace: DeviceDataNamespace | DeviceDataV2Namespace, type: string | string[], options?: AvailabilityCheckOptions): DailyDataAvailabilityCheck {
     return async (combinedSettings: CombinedDataCollectionSettings, modifiedAfter?: Date): Promise<boolean> => {
         return await checkSourceAvailability(combinedSettings, sources([namespace, type, options]), modifiedAfter);
     };

@@ -1,6 +1,8 @@
+import { DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { buildMostRecentValueResult, buildTotalValueResult, DailyDataV2, getStartDate, queryForDailyDataV2 } from "./daily-data";
-import { googleHealthNamespace } from "./google-health-namespace";
+
+const googleHealthNamespace: DeviceDataV2Namespace = "GoogleHealth";
 
 /**
  * Google Health daily data providers.
