@@ -1,0 +1,258 @@
+# Google Health Integration Plan
+
+This document plans the MyDataHelpsUI-side work to support the new **Google Health**
+back-end (a cloud/polling API served by `CfhrFramework/GoogleHealth` in Consumers,
+analogous to the Fitbit Web API). It covers three efforts:
+
+1. Adding Google Health to the **Connect Devices menu**.
+2. Adding **daily data types** for Google Health and wiring them into the shared
+   ("combined") daily data types.
+3. A **Fitbit backwards-compatibility** strategy so existing Fitbit-configured
+   graphs keep working and transparently fall back to Google Health.
+
+> **Dependency:** All of this depends on the pending MyDataHelps.js SDK release that
+> adds the `GoogleHealth` device-data namespace and the `googleHealthEnabled` flag on
+> `DataCollectionSettings`. Work can be staged behind that; nothing should merge until
+> the SDK version in `package.json` (`@careevolution/mydatahelps-js`) is bumped to the
+> release that includes them.
+
+---
+
+## Key open questions (confirm before implementing)
+
+1. **Connection model.** This plan assumes Google Health is an **OAuth external
+   account** (a cloud API you "connect" to, like Fitbit/Garmin/Oura), not an on-device
+   SDK integration (like Health Connect / Google Fit). That matches the framing
+   ("separate back-end API", "both connected in the meantime") and the fact that the
+   poller lives in `CfhrFramework/GoogleHealth`. If correct, the menu item reuses the
+   existing `ExternalAccountMenuItem` and needs a **provider ID**. If instead it is an
+   on-device integration, the menu item looks like the Health Connect / Google Fit
+   items and item 1 changes substantially.
+2. **Provider ID(s).** If OAuth, we need the dev and prod provider IDs to add to
+   `src/helpers/providerIDs.ts` (see the `getFitbitProviderID` / `getOuraProviderID`
+   pattern).
+3. **Exact V2 device-data type names** exposed by the SDK for the `GoogleHealth`
+   namespace (e.g. is daily steps `"steps-daily"`, `"Steps"`, ...; resting heart rate;
+   sleep). The availability checks and providers key off these strings, so they must
+   match what the SDK/back-end actually emit. Values below are best-guess placeholders
+   drawn from the back-end conversion rules and the Health Connect naming convention.
+
+---
+
+## Background: how the daily-data system is wired today
+
+- **`DailyDataType` enum** — `src/helpers/daily-data-types.tsx`. One entry per selectable
+  metric (per-source ones like `FitbitSteps`, plus shared ones like `Steps`).
+- **Per-source type definition files** — `src/helpers/daily-data-types/*.tsx`
+  (`fitbit.tsx`, `google-fit.tsx`, `combined.tsx`, ...). Each exports an array of
+  `DailyDataTypeDefinition` (provider, availability check, label, icon, formatter,
+  preview range, `dataSource`). All arrays are merged in
+  `src/helpers/daily-data-types/all.ts`.
+- **Data providers** — `src/helpers/daily-data-providers/*.ts`, re-exported from
+  `index.ts`. A provider is `(startDate, endDate) => Promise<DailyDataQueryResult>`
+  (a `dayKey -> number` map).
+- **"Combined" / `"Unified"` types** — `combined.tsx` defines cross-source metrics
+  (`Steps`, `RestingHeartRate`, `SleepMinutes`, `MindfulMinutes`, `TherapyMinutes`,
+  `ActiveCaloriesBurned`). Each has:
+  - a `combined*DataProvider` (`daily-data-providers/combined-*.ts`) that checks each
+    `settings.<x>Enabled` flag + presence of the relevant queryable type, runs the
+    per-source providers, and merges them with `combineResultsUsingMaxValue`
+    (steps/sleep) or `combineResultsUsingRoundedAverageValue` (resting heart rate); and
+  - an availability check built from a `*_SOURCES` list via `combinedAvailabilityCheck`.
+- **Availability checks** — `daily-data-types/availability-check.ts` +
+  `daily-data-providers/data-collection-helper.ts`. `sources([namespace, type, opts])`
+  declares where a metric can come from; `getSupportedApis` gates each namespace on its
+  `settings.<x>Enabled` flag via the `enabledFlags` map and figures out whether the V1
+  (`queryDeviceData`) and/or V2 (`queryDeviceDataV2`) API can serve it.
+- **Combine helpers** — `daily-data-providers/daily-data/daily-data-result.ts`.
+  `combineResultsUsingFirstValue([a, b])` takes, per day, the value from the **first**
+  result in the array that has data that day — this is the key primitive for
+  "prefer X, fall back to Y".
+
+### Existing precedent worth copying
+
+`StepsWithGoogleFit` (`DailyDataType.StepsWithGoogleFit`, `combined.tsx`) is a variant
+of `Steps` that opts an extra source (Google Fit) into the combined provider via a
+boolean flag on `combinedStepsDataProvider`. This is the template for adding a new
+source to a combined metric without disturbing the existing one.
+
+---
+
+## Effort 1 — Add Google Health to the Connect Devices menu
+
+**File:** `src/components/container/ConnectDevicesMenu/ConnectDevicesMenu.tsx`
+(plus assets, provider IDs, preview data).
+
+Assuming the OAuth-external-account model, this mirrors the Fitbit/Garmin/Oura items:
+
+1. Add `"GoogleHealth"` to the `DeviceAccountType` union.
+2. Add `"GoogleHealth"` to the default `accountTypes` array, positioned **above
+   `"Fitbit"`** (first in the list). Order in this array = display order.
+3. Gate it: after the other `settings?.*Enabled` filters, add
+   `if (!settings?.googleHealthEnabled) accountTypes = accountTypes.filter(a => a != "GoogleHealth");`
+4. Add `getGoogleHealthProviderID()` to `src/helpers/providerIDs.ts` (dev/prod IDs — see
+   open question 2).
+5. Add a `GoogleHealthLogo` asset under `src/assets/` and import it.
+6. Add `getGoogleHealthMenuItem()` that returns
+   `getExternalAccountMenuItem("Google Health", getGoogleHealthProviderID(), <img src={GoogleHealthLogo} />)`
+   and render it **before** `{getFitbitMenuItem()}` in the JSX.
+7. Update `ConnectDevicesMenu.previewdata.ts` to set `googleHealthEnabled: true` and add a
+   sample connected account so the story/preview shows it.
+
+This is the "pretty straightforward" item — no new menu-item component is needed if the
+OAuth assumption holds; it reuses `ExternalAccountMenuItem`, which already handles the
+connect / fetching / connected / reconnect states.
+
+**If instead on-device:** model it on `HealthConnectMenuItem` / `GoogleFitMenuItem`
+(platform-aware, "download MyDataHelps" on Web, an SDK settings/prompt call otherwise).
+That requires a new SDK method for the Google Health prompt.
+
+---
+
+## Effort 2 — Google Health daily data types + combined mappings
+
+### 2a. Register the namespace
+
+In `src/helpers/daily-data-providers/data-collection-helper.ts` add to `enabledFlags`:
+
+```ts
+GoogleHealth: 'googleHealthEnabled',
+```
+
+Add `"GoogleHealth"` to the `dataSource` union on `DailyDataTypeDefinition`
+(`daily-data-types.tsx`).
+
+### 2b. Per-source Google Health types
+
+Google Health's back-end (`CfhrFramework/GoogleHealth/Models/DailyData.cs`) produces a
+Fitbit-sized set of daily metrics: steps, resting heart rate, sleep (minutes asleep / in
+sleep period), floors, distance, active/total calories, active minutes (light/moderate/
+vigorous), sedentary minutes, HRV, SpO2, breathing rate, heart-rate-zone minutes, VO2max,
+body weight/fat, water, nutrition. We do **not** need all of these on day one.
+
+- **Day one (required):** steps, resting heart rate, sleep time — these are the metrics
+  the user called out and the ones that feed the "combined" types.
+- **Fast follow (natural analogs to existing Fitbit types):** active calories burned,
+  total calories, floors, distance, active minutes, SpO2, breathing rate, HRV,
+  heart-rate-zone minutes.
+
+Create `src/helpers/daily-data-types/google-health.tsx` (mirroring `google-fit.tsx` /
+`fitbit.tsx`): an array of definitions with `simpleAvailabilityCheck("GoogleHealth", ...)`,
+reusing existing `labelKey`s (`"steps"`, `"resting-heart-rate"`, `"sleep-time"`, etc.) and
+formatters. Set `def.dataSource = "GoogleHealth"`. Add matching `DailyDataType` enum
+entries (`GoogleHealthSteps`, `GoogleHealthRestingHeartRate`, `GoogleHealthSleepMinutes`,
+...). Register the array in `all.ts`.
+
+Create the providers in `daily-data-providers/` and export them from `index.ts`
+(`google-health-steps.ts`, `google-health-resting-heart-rate.ts`, `google-health-sleep.ts`,
+...). Follow the existing V2 provider shape (`queryForDailyData` /
+`buildTotalValueResult` / `buildMostRecentValueResult`, as in `google-fit-steps.ts` and
+the Health Connect providers). The exact `type` strings depend on open question 3.
+
+### 2c. Wire Google Health into the combined ("Unified") types
+
+The combined types are the real payoff — one configured graph draws from every connected
+source. Add Google Health as a source to the three called-out metrics (and, as fast
+follow, active calories burned):
+
+- **`combined.tsx`** — add `["GoogleHealth", "<steps type>"]` to `STEPS_SOURCES` (and
+  `STEPS_WITH_GOOGLE_FIT_SOURCES`), `["GoogleHealth", "<rhr type>"]` to
+  `RESTING_HEART_RATE_SOURCES`, `["GoogleHealth", "<sleep type>"]` to
+  `SLEEP_MINUTES_SOURCES`.
+- **`combined-steps.ts`, `combined-resting-heart-rate.ts`, `combined-sleep.ts`** — add a
+  `settings.googleHealthEnabled && <type present>` branch that pushes the corresponding
+  Google Health provider, matching the existing per-source branches.
+
+Because `combined-steps`/`combined-sleep` merge with `combineResultsUsingMaxValue` and
+`combined-resting-heart-rate` with rounded-average, adding Google Health as one more
+source needs no new merge logic. (Consider whether averaging RHR across Fitbit **and**
+Google Health on days both report is desirable, or whether a source preference is better —
+see Effort 3, which argues for per-day preference rather than blending.)
+
+### What the "combined" types are
+
+For reference, the shared metrics that already exist and that Google Health can
+contribute to: **Steps, Resting Heart Rate, Sleep Minutes** (the three requested),
+plus **Active Calories Burned** (Google Health reports it), and **Mindful/Therapy
+Minutes** (Google Health does **not** report these — leave as-is).
+
+---
+
+## Effort 3 — Fitbit backwards compatibility
+
+**Goal:** a graph already configured with a Fitbit metric (e.g. `FitbitSteps`) must keep
+working and, if Fitbit stops sending data while Google Health is connected, automatically
+show the Google Health value — without anyone editing the graph config.
+
+### Recommended approach: Fitbit-preferred / Google-Health-fallback at the Fitbit type
+
+Keep the `DailyDataType.Fitbit*` enum keys **unchanged** (so stored configs still
+resolve), but change the *provider* and *availability check* for the Fitbit metrics that
+have a Google Health analog (Steps, Resting Heart Rate, Sleep, and the fast-follow
+analogs) so they merge `[fitbitProvider, googleHealthProvider]` using
+**`combineResultsUsingFirstValue`**. Because that helper takes, per day, the first result
+that has data, ordering the array `[fitbit, googleHealth]` yields exactly "use Fitbit when
+present, otherwise Google Health" — no blending, no double counting, and days where
+Fitbit still reports are unchanged. The availability check becomes the OR of Fitbit and
+Google Health (reuse the `sources(...)` + `combinedAvailabilityCheck` machinery instead of
+`simpleAvailabilityCheck`).
+
+Concretely, for each affected Fitbit type in `fitbit.tsx`:
+- swap `dataProvider` from e.g. `fitbitStepsDataProvider` to a small combined provider
+  that runs Fitbit + (if `googleHealthEnabled` and type present) Google Health and merges
+  first-value;
+- swap `availabilityCheck` from `simpleAvailabilityCheck("Fitbit", [...])` to
+  `combinedAvailabilityCheck(sources(["Fitbit", ...], ["GoogleHealth", ...]))`.
+
+This is transparent to existing configs and satisfies the requirement precisely. The only
+semantic change is that a "Fitbit steps" graph may now show Google Health values on days
+Fitbit is silent — which is the desired behavior. Labels are already generic
+(`"steps"`, not "Fitbit steps"), so no copy changes are needed.
+
+Guard every fallback on `settings.googleHealthEnabled` so participants who never connect
+Google Health see identical behavior to today.
+
+### Alternatives considered
+
+- **Redirect Fitbit types to the combined types.** Simpler conceptually, but existing
+  graphs pinned to `FitbitSteps` would need config migration to benefit, so it does not
+  meet "the existing graph keeps working" transparently. The combined types (Effort 2c)
+  already cover *new* configs; Effort 3 exists specifically for *legacy Fitbit-pinned*
+  configs.
+- **Blend (max/average) Fitbit + Google Health.** Rejected: max would over-report steps
+  if both briefly report the same day from overlapping wear, and averaging RHR across two
+  ecosystems is not meaningful. Per-day first-value preference is cleaner.
+
+### Scope of Effort 3
+
+Apply the fallback to the Fitbit types with a genuine Google Health equivalent (steps,
+resting heart rate, sleep total, and the fast-follow analogs). Fitbit-only metrics with no
+Google Health equivalent stay exactly as they are.
+
+---
+
+## Suggested sequencing
+
+1. **Gate on the SDK release** (namespace + `googleHealthEnabled`). Bump
+   `@careevolution/mydatahelps-js`.
+2. **Effort 1** (menu) — smallest, independently shippable once the provider ID and SDK
+   flag are known.
+3. **Effort 2** (Google Health daily data types + combined wiring) — start with steps,
+   resting heart rate, sleep; then the fast-follow analogs.
+4. **Effort 3** (Fitbit fallback) — depends on Effort 2's Google Health providers +
+   availability sources existing.
+5. Tests/stories: add Google Health preview data to `ConnectDevicesMenu.stories.tsx`, and
+   unit tests for the combined providers and the new Fitbit fallback providers following
+   the existing `__tests__` patterns for daily data providers.
+
+## Files that will change (summary)
+
+- `src/components/container/ConnectDevicesMenu/ConnectDevicesMenu.tsx` (+ `.previewdata.ts`, `.stories.tsx`)
+- `src/helpers/providerIDs.ts`
+- `src/assets/googlehealth-logo.*` (new)
+- `src/helpers/daily-data-types.tsx` (enum + `dataSource` union)
+- `src/helpers/daily-data-types/google-health.tsx` (new), `all.ts`, `combined.tsx`
+- `src/helpers/daily-data-types/fitbit.tsx` (Effort 3)
+- `src/helpers/daily-data-providers/data-collection-helper.ts` (`enabledFlags`)
+- `src/helpers/daily-data-providers/google-health-*.ts` (new), `index.ts`
+- `src/helpers/daily-data-providers/combined-steps.ts`, `combined-resting-heart-rate.ts`, `combined-sleep.ts` (+ optionally `combined-active-calories-burned.ts`)
