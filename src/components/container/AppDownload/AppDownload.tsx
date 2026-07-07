@@ -53,8 +53,8 @@ export default function (props: AppDownloadProps) {
 	// integrates with their device. On desktop (or when the OS can't be determined)
 	// show both. This only applies on the web platform; in the native app the whole
 	// widget is hidden by PlatformSpecificContent below.
-	let showAndroid = projectInfo.platforms.includes('Android') && operatingSystem !== 'iOS';
-	let showIOS = projectInfo.platforms.includes('iOS') && operatingSystem !== 'Android';
+	const showAndroid = projectInfo.platforms.includes('Android') && operatingSystem !== 'iOS';
+	const showIOS = projectInfo.platforms.includes('iOS') && operatingSystem !== 'Android';
 
 	return (
 		<PlatformSpecificContent platforms={['Web']} previewDevicePlatform={props.previewDevicePlatform} innerRef={props.innerRef}>
