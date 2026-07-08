@@ -1,124 +1,89 @@
-import { DataCollectionSettings, ExternalAccount, ExternalAccountProvider, HealthConnectStatus, ParticipantInfo } from "@careevolution/mydatahelps-js";
-import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
+import React from "react";
+import { Card, Layout } from "../../presentational";
+import ConnectDevicesMenu, { ConnectDevicesMenuProps } from "./ConnectDevicesMenu";
 
-export const previewAccounts:ExternalAccount[] = [
-        {
-            id: 6,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getGoogleHealthProviderID(),
-                name: "Google Health",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "fetchComplete"
-        },
-        {
-            id: 1,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getFitbitProviderID(),
-                name: "Fitbit",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "fetchingData"
-        },
-        {
-            id: 2,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getGarminProviderID(),
-                name: "Garmin",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "unauthorized"
-        },
-        {
-            id: 3,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getDexcomProviderID(),
-                name: "Dexcom",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "fetchComplete"
-        },
-        {
-            id: 4,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getOmronProviderID(),
-                name: "Omron",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "fetchComplete"
-        },
-        {
-            id: 5,
-            lastRefreshDate: "",
-            provider: {
-                category: "Device Manufacturer",
-                id: getOuraProviderID(),
-                name: "Oura",
-                logoUrl: "",
-                enabled: true
-            } as ExternalAccountProvider,
-            status: "fetchComplete"
-        }
-    ];
+export default { title: "Container/ConnectDevicesMenu", component: ConnectDevicesMenu, parameters: { layout: 'fullscreen' } };
+let render = (args: ConnectDevicesMenuProps) => <Layout colorScheme="auto"><Card><ConnectDevicesMenu {...args} /></Card></Layout>
 
-export const previewSettings:DataCollectionSettings = {
-    fitbitEnabled: true,
-    garminEnabled: true,
-    dexcomEnabled: true,
-    ouraEnabled: true,
-    queryableDeviceDataTypes: [
-        {
-            namespace: "AppleHealth",
-            type: "Steps"
-        },
-        {
-            namespace: "GoogleFit",
-            type: "Steps"
-        }
-    ],
-    airQualityEnabled: true,
-    weatherEnabled: true,
-    ehrEnabled: true,
-    sensorDataCollectionEndDate: "",
-    omronEnabled: true,
-    healthConnectEnabled: true,
-    googleFitEnabled: true,
-    googleHealthEnabled: true,
-    appleHealthEnabled: true,
-    appleHealthRecordsEnabled: true
+export const Web = {
+    args: {
+        previewState: "Web"
+    },
+    render: render
+};
+
+export const iOS = {
+    name: "iOS",
+    args: {
+        previewState: "iOS"
+    },
+    render: render
+};
+
+export const Android = {
+    name: "Android",
+    args: {
+        previewState: "Android"
+    },
+    render: render
+};
+
+export const ConnectedStates = {
+    args: {
+        previewState: "ConnectedStates",
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Environmental", "Oura", "GoogleHealth"],
+        postalCodeSurveyName: "SetPostalCode"
+    },
+    render: render
+};
+
+export const CustomLanguage = {
+    args: {
+        previewState: "Web",
+        title: "Custom title",
+        text: "Custom text"
+    },
+    render: render
+};
+
+export const MediumHeader = {
+    args: {
+        previewState: "Web",
+        headerVariant: "medium"
+    },
+    render: render
+};
+
+export const iOSEnableAppleHealthSurvey = {
+    name: "Enable Apple Health Survey",
+    args: {
+        previewState: "iOS",
+        enableAppleHealthSurveyName: "EnableAppleHealth"
+    },
+    render: render
+};
+
+export const AndroidEnableGoogleFitSurvey = {
+    name: "Enable Google Fit Survey",
+    args: {
+        previewState: "Android",
+        enableGoogleFitSurveyName: "EnableGoogleFit"
+    },
+    render: render
+};
+
+export const ConnectEnvironmental = {
+    name: "Connect Environmental Collection",
+    args: {
+        previewState: "Web",
+        postalCodeSurveyName: "SetPostalCode"
+    },
+    render: render
 };
 
 
-export const previewHealthConnectStatus: HealthConnectStatus = {
-    available: true,
-    requestedQueryRules: [
-        "Steps"
-    ],
-    enabledQueryRules: [],
-    running: false,
-    lastPrompted: ""
+export const Live = {
+    args: {
+    },
+    render: render
 };
-
-export const generateSampleParticipantInfo = () => {
-    return {
-        demographics: {
-            postalCode: ""
-        },
-        customFields: {}
-    } as ParticipantInfo;
-}

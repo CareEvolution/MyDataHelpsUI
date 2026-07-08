@@ -17,7 +17,6 @@ import OuraLogo from '../../../assets/oura-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
-import { faHeartPulse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import HealthConnectIcon from '../../presentational/HealthConnectIcon/HealthConnectIcon';
 
