@@ -19,3 +19,8 @@ export function getOmronProviderID() {
 export function getOuraProviderID() {
     return isDevelopment() ? 10414 : 45417;
 }
+
+// TODO: Replace these placeholders with the real Google Health dev/prod provider IDs once provisioned.
+export function getGoogleHealthProviderID() {
+    return isDevelopment() ? 46913 : 0;
+}
