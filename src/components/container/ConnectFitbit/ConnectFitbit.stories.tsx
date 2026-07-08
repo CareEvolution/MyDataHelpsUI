@@ -101,3 +101,21 @@ export const HideConnected: Story = {
     },
     render: render
 };
+
+export const ConnectedPromptGoogleHealth: Story = {
+    args: {
+        previewState: "fetchComplete",
+        googleHealthPreviewState: "notConnected",
+        title: "Fitbit"
+    },
+    render: render
+};
+
+export const DisabledPromptGoogleHealth: Story = {
+    args: {
+        previewState: "notEnabled",
+        googleHealthPreviewState: "notConnected",
+        title: "Fitbit"
+    },
+    render: render
+};
