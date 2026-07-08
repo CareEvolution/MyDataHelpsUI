@@ -190,7 +190,6 @@ export default function (props: ConnectDevicesMenuProps) {
         if (!accountTypes.includes("GoogleHealth")) {
             return null;
         }
-        // TODO: Swap the FontAwesome placeholder for the official Google Health logo asset once available.
         return getExternalAccountMenuItem("Google Health", getGoogleHealthProviderID(), <img src={GoogleHealthLogo} />);
     }
 
