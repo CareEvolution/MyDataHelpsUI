@@ -12,11 +12,11 @@ import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
 import GoogleFitLogo from '../../../assets/googlefit-logo.svg';
 import OmronLogo from '../../../assets/omron-logo.png';
+import GoogleHealthLogo from '../../../assets/google-health-logo.png';
 import OuraLogo from '../../../assets/oura-logo.svg';
 import { add, formatISO } from 'date-fns';
 import { useInitializeView } from '../../../helpers';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
-import { faHeartPulse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import HealthConnectIcon from '../../presentational/HealthConnectIcon/HealthConnectIcon';
 
@@ -190,8 +190,7 @@ export default function (props: ConnectDevicesMenuProps) {
         if (!accountTypes.includes("GoogleHealth")) {
             return null;
         }
-        // TODO: Swap the FontAwesome placeholder for the official Google Health logo asset once available.
-        return getExternalAccountMenuItem("Google Health", getGoogleHealthProviderID(), <FontAwesomeSvgIcon icon={faHeartPulse} color="#4285F4" />);
+        return getExternalAccountMenuItem("Google Health", getGoogleHealthProviderID(), <img src={GoogleHealthLogo} />);
     }
 
     function getFitbitMenuItem() {

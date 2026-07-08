@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { faExclamationTriangle, faCheckCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
-import MyDataHelps, { ConnectExternalAccountOptions, ExternalAccount, ExternalAccountProvider, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
+import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, ExternalAccount, ExternalAccountProvider, ExternalAccountStatus } from "@careevolution/mydatahelps-js"
 import { Button, TextBlock, Title } from '../../presentational';
 import "./ConnectDevice.css"
 import language from "../../../helpers/language"
@@ -18,9 +18,17 @@ export interface ConnectDeviceProps {
 	titleImage: React.ReactNode
 	hideWhenConnected?: boolean
 	connectExternalAccountOptions?: ConnectExternalAccountOptions
+	onInitialized?: (info: ConnectDeviceInfo) => void
 }
 
 export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" | "notEnabled";
+
+export interface ConnectDeviceInfo {
+	enabled: boolean;
+	connected: boolean;
+	settings?: DataCollectionSettings;
+	externalAccounts?: ExternalAccount[];
+}
 
 export default function (props: ConnectDeviceProps) {
 	const [loading, setLoading] = useState(true);
@@ -28,7 +36,7 @@ export default function (props: ConnectDeviceProps) {
 	const [deviceExternalAccount, setDeviceExternalAccount] = useState<ExternalAccount | null>(null);
 
 	function buildLanguageKey(key: string) {
-		return key.replace("{device}", props.providerName.toLowerCase());
+		return key.replace("{device}", props.providerName.toLowerCase().replace(/\s+/g, "-"));
 	}
 	function initialize() {
 		if (props.previewState) {
@@ -37,14 +45,17 @@ export default function (props: ConnectDeviceProps) {
 			setDeviceExternalAccount(null);
 
 			if (props.previewState == "notEnabled") {
+				props.onInitialized?.({ enabled: false, connected: false });
 				setLoading(false);
 				return;
 			}
 			setDeviceEnabled(true);
 			if (props.previewState == "notConnected") {
+				props.onInitialized?.({ enabled: true, connected: false });
 				setLoading(false);
 				return;
 			}
+			props.onInitialized?.({ enabled: true, connected: true });
 			setDeviceExternalAccount({
 				id: 1,
 				lastRefreshDate: formatISO(add(new Date(), { hours: -1 })),
@@ -62,17 +73,22 @@ export default function (props: ConnectDeviceProps) {
 		}
 
 		MyDataHelps.getDataCollectionSettings().then(function (settings: any) {
-			setDeviceEnabled(settings[props.dataCollectionProperty]);
-			if (settings[props.dataCollectionProperty]) {
+			let enabled = settings[props.dataCollectionProperty];
+			setDeviceEnabled(enabled);
+			if (enabled) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {
+					let connected = false;
 					for (let i = 0; i < accounts.length; i++) {
 						if (accounts[i].provider.id == props.providerID) {
 							setDeviceExternalAccount(accounts[i]);
+							connected = true;
 						}
 					}
+					props.onInitialized?.({ enabled: true, connected: connected, settings: settings, externalAccounts: accounts });
 					setLoading(false);
 				});
 			} else {
+				props.onInitialized?.({ enabled: false, connected: false, settings: settings });
 				setLoading(false);
 			}
 		});
