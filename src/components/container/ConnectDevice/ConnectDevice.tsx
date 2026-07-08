@@ -28,7 +28,7 @@ export default function (props: ConnectDeviceProps) {
 	const [deviceExternalAccount, setDeviceExternalAccount] = useState<ExternalAccount | null>(null);
 
 	function buildLanguageKey(key: string) {
-		return key.replace("{device}", props.providerName.toLowerCase());
+		return key.replace("{device}", props.providerName.toLowerCase().replace(/\s+/g, "-"));
 	}
 	function initialize() {
 		if (props.previewState) {
