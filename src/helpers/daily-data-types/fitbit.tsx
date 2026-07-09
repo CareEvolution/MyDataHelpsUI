@@ -212,7 +212,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
         ...withGoogleHealthFallback(["HeartRateIntradayCount"], fitbitWearMinutesDataProvider, googleHealthWearMinutesDataProvider, "wearTime-daily"),
         labelKey: "fitbit-wear-time",
         icon: <FontAwesomeSvgIcon icon={faClock} />,
-        formatter: defaultFormatter,
+        formatter: minutesFormatter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [300, 700]
     }
 ];

@@ -145,7 +145,8 @@ let googleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         availabilityCheck: simpleAvailabilityCheck("GoogleHealth", "wearTime-daily"),
         labelKey: "wear-time",
         icon: <FontAwesomeSvgIcon icon={faClock} />,
-        formatter: defaultFormatter,
+        formatter: minutesFormatter,
+        yAxisConverter: minutesToHoursYAxisConverter,
         previewDataRange: [300, 700]
     },
     {
