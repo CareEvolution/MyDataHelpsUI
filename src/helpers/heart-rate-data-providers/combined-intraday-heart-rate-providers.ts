@@ -8,8 +8,22 @@ function getHeartRateTypeForNamespace(namespace: DeviceDataV2Namespace): string 
     if (namespace === "AppleHealth") return "Heart Rate";
     if (namespace === "Fitbit") return "activities-heart-intraday";
     if (namespace === "Garmin") return "daily-heartRate";
+    if (namespace === "GoogleHealth") return "heartRate-list";
     // Oura, Health Connect
     return "heart-rate";
+}
+
+// When Fitbit is a data source, transparently fall back to Google Health (Fitbit is being
+// retired in favor of it): query Google Health right after Fitbit so Fitbit still wins each
+// interval and Google Health only fills the intervals Fitbit is missing.
+export function withGoogleHealthFallback(dataSources: DeviceDataV2Namespace[]): DeviceDataV2Namespace[] {
+    const fitbitIndex = dataSources.indexOf("Fitbit");
+    if (fitbitIndex === -1 || dataSources.includes("GoogleHealth")) {
+        return dataSources;
+    }
+    const withFallback = [...dataSources];
+    withFallback.splice(fitbitIndex + 1, 0, "GoogleHealth");
+    return withFallback;
 }
 
 export default async function (dataSources: DeviceDataV2Namespace[], startDate: Date, endDate: Date,
@@ -18,7 +32,7 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
     var providers: Promise<DeviceDataV2Aggregate[]>[] = [];
     var data: IntradayHeartRateData = {};
 
-    dataSources.forEach(dataSource => {
+    withGoogleHealthFallback(dataSources).forEach(dataSource => {
         const params: DeviceDataV2AggregateQuery = {
             type: getHeartRateTypeForNamespace(dataSource),
             namespace: dataSource,
