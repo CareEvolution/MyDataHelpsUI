@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedFirstValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
-import { fitbitWithGoogleHealthFallback } from '../../../src/helpers/daily-data-providers/fitbit-with-google-health-fallback';
+import { googleHealthPreferredOverFitbit } from '../../../src/helpers/daily-data-providers/google-health-preferred-over-fitbit';
 
-describe('Daily Data Provider - Fitbit with Google Health fallback', () => {
+describe('Daily Data Provider - Google Health preferred over Fitbit', () => {
     const combinedSettings = createEmptyCombinedDataCollectionSettings();
 
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe('Daily Data Provider - Fitbit with Google Health fallback', () => {
         const googleHealthProvider = jest.fn();
         setupDailyDataProvider(fitbitProvider, sampleStartDate, sampleEndDate, fitbitResult);
 
-        const provider = fitbitWithGoogleHealthFallback(fitbitProvider, googleHealthProvider, 'steps-daily');
+        const provider = googleHealthPreferredOverFitbit(fitbitProvider, googleHealthProvider, 'steps-daily');
         expect(await provider(sampleStartDate, sampleEndDate)).toBe(fitbitResult);
         expect(googleHealthProvider).not.toHaveBeenCalled();
     });
@@ -33,12 +33,12 @@ describe('Daily Data Provider - Fitbit with Google Health fallback', () => {
         const googleHealthProvider = jest.fn();
         setupDailyDataProvider(googleHealthProvider, sampleStartDate, sampleEndDate, googleHealthResult);
 
-        const provider = fitbitWithGoogleHealthFallback(fitbitProvider, googleHealthProvider, 'steps-daily');
+        const provider = googleHealthPreferredOverFitbit(fitbitProvider, googleHealthProvider, 'steps-daily');
         expect(await provider(sampleStartDate, sampleEndDate)).toBe(googleHealthResult);
         expect(fitbitProvider).not.toHaveBeenCalled();
     });
 
-    it('prefers Fitbit (ordered first) and falls back to Google Health per day when both are available.', async () => {
+    it('prefers Google Health (ordered first) and falls back to Fitbit per day when both are available.', async () => {
         combinedSettings.settings.fitbitEnabled = true;
         combinedSettings.settings.googleHealthEnabled = true;
         combinedSettings.deviceDataV2Types = [{ namespace: 'GoogleHealth', type: 'steps-daily', enabled: true }];
@@ -48,9 +48,10 @@ describe('Daily Data Provider - Fitbit with Google Health fallback', () => {
         const googleHealthProvider = jest.fn();
         setupDailyDataProvider(fitbitProvider, sampleStartDate, sampleEndDate, fitbitResult);
         setupDailyDataProvider(googleHealthProvider, sampleStartDate, sampleEndDate, googleHealthResult);
-        setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [fitbitResult, googleHealthResult], sampleResult);
+        // Google Health ordered first so it wins each day, Fitbit fills the gaps.
+        setupCombinedFirstValueResult(sampleStartDate, sampleEndDate, [googleHealthResult, fitbitResult], sampleResult);
 
-        const provider = fitbitWithGoogleHealthFallback(fitbitProvider, googleHealthProvider, 'steps-daily');
+        const provider = googleHealthPreferredOverFitbit(fitbitProvider, googleHealthProvider, 'steps-daily');
         expect(await provider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
@@ -63,7 +64,7 @@ describe('Daily Data Provider - Fitbit with Google Health fallback', () => {
         const googleHealthProvider = jest.fn();
         setupDailyDataProvider(fitbitProvider, sampleStartDate, sampleEndDate, fitbitResult);
 
-        const provider = fitbitWithGoogleHealthFallback(fitbitProvider, googleHealthProvider, 'steps-daily');
+        const provider = googleHealthPreferredOverFitbit(fitbitProvider, googleHealthProvider, 'steps-daily');
         expect(await provider(sampleStartDate, sampleEndDate)).toBe(fitbitResult);
         expect(googleHealthProvider).not.toHaveBeenCalled();
     });

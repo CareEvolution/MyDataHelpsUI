@@ -3,16 +3,16 @@ import { getCombinedDataCollectionSettings } from "./combined-data-collection-se
 import { combineResultsUsingFirstValue } from "./daily-data";
 
 /**
- * Wraps a Fitbit daily data provider so that it prefers Fitbit data but falls back to the
- * equivalent Google Health data on any day Fitbit reports nothing (as long as the
- * participant has Google Health connected and the type is available).
+ * Wraps a Fitbit daily data provider so that it prefers the equivalent Google Health data
+ * (when the participant has Google Health connected and the type is available) and falls
+ * back to Fitbit on any day Google Health reports nothing.
  *
- * This keeps graphs that were configured against a Fitbit daily data type working as
- * Fitbit is retired in favor of Google Health: on days Fitbit still has data it is used
- * unchanged; on days it doesn't, the Google Health value fills in. Combining with
- * "first value" (Fitbit ordered first) avoids blending or double-counting the two sources.
+ * This keeps graphs that were configured against a Fitbit daily data type working while
+ * moving to Google Health as the source of truth (Fitbit is being retired in its favor):
+ * on days Google Health has data it is used, and Fitbit fills any remaining gaps. Combining
+ * with "first value" (Google Health ordered first) avoids blending or double-counting.
  */
-export function fitbitWithGoogleHealthFallback(
+export function googleHealthPreferredOverFitbit(
     fitbitProvider: DailyDataProvider,
     googleHealthProvider: DailyDataProvider,
     googleHealthTypes: string | string[]
@@ -24,13 +24,13 @@ export function fitbitWithGoogleHealthFallback(
         const googleHealthAvailable = settings.googleHealthEnabled
             && types.some(type => deviceDataV2Types.some(ddt => ddt.namespace === "GoogleHealth" && ddt.type === type && ddt.enabled));
 
-        // Fitbit is pushed first so it wins on days both sources report.
+        // Google Health is pushed first so it wins on days both sources report.
         const providers: Promise<DailyDataQueryResult>[] = [];
-        if (settings.fitbitEnabled) {
-            providers.push(fitbitProvider(startDate, endDate));
-        }
         if (googleHealthAvailable) {
             providers.push(googleHealthProvider(startDate, endDate));
+        }
+        if (settings.fitbitEnabled) {
+            providers.push(fitbitProvider(startDate, endDate));
         }
 
         if (providers.length === 0) return {};

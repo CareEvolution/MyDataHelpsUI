@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { DeviceDataV2Aggregate, DeviceDataV2AggregateQuery, DeviceDataV2Namespace } from '@careevolution/mydatahelps-js';
-import combinedIntradayHeartRateDataProvider, { withGoogleHealthFallback } from '../../../src/helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers';
+import combinedIntradayHeartRateDataProvider, { withGoogleHealthPreferred } from '../../../src/helpers/heart-rate-data-providers/combined-intraday-heart-rate-providers';
 import queryAllDeviceDataV2Aggregates from '../../../src/helpers/query-all-device-data-v2-aggregates';
 
 jest.mock('../../../src/helpers/query-all-device-data-v2-aggregates', () => ({
@@ -10,19 +10,19 @@ jest.mock('../../../src/helpers/query-all-device-data-v2-aggregates', () => ({
 
 const queryMock = queryAllDeviceDataV2Aggregates as jest.Mock;
 
-describe('withGoogleHealthFallback', () => {
-    it('inserts Google Health right after Fitbit when Fitbit is a source', () => {
-        expect(withGoogleHealthFallback(['Fitbit'])).toEqual(['Fitbit', 'GoogleHealth']);
-        expect(withGoogleHealthFallback(['AppleHealth', 'Fitbit'])).toEqual(['AppleHealth', 'Fitbit', 'GoogleHealth']);
+describe('withGoogleHealthPreferred', () => {
+    it('inserts Google Health right before Fitbit when Fitbit is a source', () => {
+        expect(withGoogleHealthPreferred(['Fitbit'])).toEqual(['GoogleHealth', 'Fitbit']);
+        expect(withGoogleHealthPreferred(['AppleHealth', 'Fitbit'])).toEqual(['AppleHealth', 'GoogleHealth', 'Fitbit']);
     });
 
     it('does nothing when Fitbit is not a source', () => {
-        expect(withGoogleHealthFallback(['Garmin', 'AppleHealth'])).toEqual(['Garmin', 'AppleHealth']);
+        expect(withGoogleHealthPreferred(['Garmin', 'AppleHealth'])).toEqual(['Garmin', 'AppleHealth']);
     });
 
     it('does not duplicate Google Health when it is already listed', () => {
-        expect(withGoogleHealthFallback(['Fitbit', 'GoogleHealth'])).toEqual(['Fitbit', 'GoogleHealth']);
-        expect(withGoogleHealthFallback(['GoogleHealth', 'Fitbit'])).toEqual(['GoogleHealth', 'Fitbit']);
+        expect(withGoogleHealthPreferred(['Fitbit', 'GoogleHealth'])).toEqual(['Fitbit', 'GoogleHealth']);
+        expect(withGoogleHealthPreferred(['GoogleHealth', 'Fitbit'])).toEqual(['GoogleHealth', 'Fitbit']);
     });
 });
 
@@ -36,15 +36,15 @@ describe('combinedIntradayHeartRateDataProvider', () => {
 
     beforeEach(() => jest.resetAllMocks());
 
-    it('queries Google Health heart-rate as a fallback for Fitbit, with Fitbit winning each interval', async () => {
+    it('prefers Google Health over Fitbit, with Google Health winning each interval and Fitbit filling gaps', async () => {
         queryMock.mockImplementation(async (params: DeviceDataV2AggregateQuery): Promise<DeviceDataV2Aggregate[]> => {
             if (params.namespace === 'Fitbit') {
                 expect(params.type).toBe('activities-heart-intraday');
-                return [aggregate('Fitbit', params.type, t1, 70)];
+                return [aggregate('Fitbit', params.type, t1, 70), aggregate('Fitbit', params.type, t2, 60)];
             }
             if (params.namespace === 'GoogleHealth') {
                 expect(params.type).toBe('heartRate-list');
-                return [aggregate('GoogleHealth', params.type, t1, 999), aggregate('GoogleHealth', params.type, t2, 60)];
+                return [aggregate('GoogleHealth', params.type, t1, 999)];
             }
             return [];
         });
@@ -52,8 +52,8 @@ describe('combinedIntradayHeartRateDataProvider', () => {
         const result = await combinedIntradayHeartRateDataProvider(['Fitbit'], new Date(t1), new Date('2024-01-01T09:00:00.000Z'), 'max', 1);
 
         const namespacesQueried = queryMock.mock.calls.map(call => (call[0] as DeviceDataV2AggregateQuery).namespace);
-        expect(namespacesQueried).toEqual(['Fitbit', 'GoogleHealth']);
-        // Fitbit wins t1 (70, not the Google Health 999); Google Health fills the t2 gap.
-        expect(result).toEqual({ [new Date(t1).getTime()]: 70, [new Date(t2).getTime()]: 60 });
+        expect(namespacesQueried).toEqual(['GoogleHealth', 'Fitbit']);
+        // Google Health wins t1 (999, not the Fitbit 70); Fitbit fills the t2 gap Google Health is missing.
+        expect(result).toEqual({ [new Date(t1).getTime()]: 999, [new Date(t2).getTime()]: 60 });
     });
 });
