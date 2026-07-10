@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, setupTotalValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
+import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, setupTotalValueResult, sleepDateFunctionEvaluator, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
 import { googleHealthDistanceDataProvider, googleHealthRestingHeartRateDataProvider, googleHealthSedentaryMinutesDataProvider, googleHealthStepsDataProvider, googleHealthTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers/google-health';
 
 describe('Daily Data Provider - Google Health', () => {
@@ -15,8 +15,9 @@ describe('Daily Data Provider - Google Health', () => {
         expect(await googleHealthRestingHeartRateDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
-    it('Sleep: sums the per-session asleep minutes into a total value result.', async () => {
-        setupDailyDataV2('GoogleHealth', 'sleep-list-session-asleep', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
+    it('Sleep: sums the per-session asleep minutes into a total value result, dated to the wake-up day.', async () => {
+        // getSleepDate (observationDate + 6h) so a night's sleep is attributed to the wake-up day, like Fitbit.
+        setupDailyDataV2('GoogleHealth', 'sleep-list-session-asleep', sampleStartDate, sampleEndDate, sleepDateFunctionEvaluator, sampleDailyDataV2);
         setupTotalValueResult(sampleDailyData, sampleResult);
         expect(await googleHealthTotalSleepMinutesDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });

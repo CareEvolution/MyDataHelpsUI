@@ -1,6 +1,6 @@
 import { DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
-import { buildMostRecentValueResult, buildTotalValueResult, DailyDataV2, getStartDate, queryForDailyDataV2 } from "./daily-data";
+import { buildMostRecentValueResult, buildTotalValueResult, DailyDataV2, getSleepDate, getStartDate, queryForDailyDataV2 } from "./daily-data";
 
 const googleHealthNamespace: DeviceDataV2Namespace = "GoogleHealth";
 
@@ -20,9 +20,12 @@ async function googleHealthDailyValue(type: string, startDate: Date, endDate: Da
     return buildMostRecentValueResult(dailyData);
 }
 
-// Session metric summed per day (e.g. minutes asleep across all sleep sessions in a day).
-async function googleHealthDailyTotal(type: string, startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    const dailyData = await queryForDailyDataV2(googleHealthNamespace, type, startDate, endDate, getStartDate);
+// Sleep session/stage minutes summed per day. Sleep is dated by getSleepDate (the session
+// end time shifted +6h, since Google Health sets a sleep point's observationDate to the
+// session's end time), so a night's sleep is attributed to the wake-up day - matching how
+// Fitbit, Apple Health, Health Connect and Oura sleep are attributed.
+async function googleHealthSleepTotal(type: string, startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    const dailyData = await queryForDailyDataV2(googleHealthNamespace, type, startDate, endDate, getSleepDate);
     return buildTotalValueResult(dailyData);
 }
 
@@ -138,17 +141,17 @@ export function googleHealthElevatedHeartRateMinutesDataProvider(startDate: Date
 }
 
 export function googleHealthTotalSleepMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return googleHealthDailyTotal("sleep-list-session-asleep", startDate, endDate);
+    return googleHealthSleepTotal("sleep-list-session-asleep", startDate, endDate);
 }
 
 export function googleHealthLightSleepMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return googleHealthDailyTotal("sleep-list-stages-summary-light-minutes", startDate, endDate);
+    return googleHealthSleepTotal("sleep-list-stages-summary-light-minutes", startDate, endDate);
 }
 
 export function googleHealthRemSleepMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return googleHealthDailyTotal("sleep-list-stages-summary-rem-minutes", startDate, endDate);
+    return googleHealthSleepTotal("sleep-list-stages-summary-rem-minutes", startDate, endDate);
 }
 
 export function googleHealthDeepSleepMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return googleHealthDailyTotal("sleep-list-stages-summary-deep-minutes", startDate, endDate);
+    return googleHealthSleepTotal("sleep-list-stages-summary-deep-minutes", startDate, endDate);
 }
