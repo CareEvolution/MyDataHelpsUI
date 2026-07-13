@@ -25,9 +25,16 @@ export type ConnectDevicePreviewState = ExternalAccountStatus | "notConnected" |
 
 export interface ConnectDeviceInfo {
 	enabled: boolean;
+	/** True only when the device has a healthy connection. An account that exists but is in a
+	 *  reconnect-required state ("unauthorized" or "error") reports connected: false. */
 	connected: boolean;
 	settings?: DataCollectionSettings;
 	externalAccounts?: ExternalAccount[];
+}
+
+/** An account counts as connected only if it exists and does not require the participant to reconnect. */
+function isHealthyConnection(status: ExternalAccountStatus | undefined): boolean {
+	return !!status && status != "unauthorized" && status != "error";
 }
 
 export default function (props: ConnectDeviceProps) {
@@ -55,7 +62,7 @@ export default function (props: ConnectDeviceProps) {
 				setLoading(false);
 				return;
 			}
-			props.onInitialized?.({ enabled: true, connected: true });
+			props.onInitialized?.({ enabled: true, connected: isHealthyConnection(props.previewState) });
 			setDeviceExternalAccount({
 				id: 1,
 				lastRefreshDate: formatISO(add(new Date(), { hours: -1 })),
@@ -77,14 +84,14 @@ export default function (props: ConnectDeviceProps) {
 			setDeviceEnabled(enabled);
 			if (enabled) {
 				MyDataHelps.getExternalAccounts().then(function (accounts) {
-					let connected = false;
+					let deviceAccount: ExternalAccount | null = null;
 					for (let i = 0; i < accounts.length; i++) {
 						if (accounts[i].provider.id == props.providerID) {
 							setDeviceExternalAccount(accounts[i]);
-							connected = true;
+							deviceAccount = accounts[i];
 						}
 					}
-					props.onInitialized?.({ enabled: true, connected: connected, settings: settings, externalAccounts: accounts });
+					props.onInitialized?.({ enabled: true, connected: isHealthyConnection(deviceAccount?.status), settings: settings, externalAccounts: accounts });
 					setLoading(false);
 				});
 			} else {
