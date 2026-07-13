@@ -8,8 +8,8 @@ const googleHealthNamespace: DeviceDataV2Namespace = "GoogleHealth";
  * Google Health daily data providers.
  *
  * All data is served through the V2 device data API under the "GoogleHealth" namespace.
- * The V2 type strings are the back-end realtimedb type names (see
- * Consumers/Mogul/Code/CfhrFramework/GoogleHealth). Two shapes are used here:
+ * The V2 type strings match the names the Google Health back-end writes. Two shapes are
+ * used here:
  *  - Daily rollups / daily lists produce one value per day -> take the most recent.
  *  - Sleep is session-based (0..n sessions per day) -> sum per day.
  */
