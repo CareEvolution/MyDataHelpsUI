@@ -4,31 +4,19 @@ import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
 import { faBed, faClock, faFireFlameCurved, faHeartbeat, faPerson, faPersonRunning, faShoePrints, faStairs, faWind } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
-import { AvailabilityCheckOptions, combinedAvailabilityCheck, simpleAvailabilityCheck, sources } from "./availability-check";
+import { combinedAvailabilityCheck, simpleAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
-import { DailyDataProvider } from "../query-daily-data";
 
-// Prefer the equivalent Google Health value, falling back to Fitbit per day when Google
-// Health reports nothing. Keeps existing Fitbit-configured graphs working while Google
-// Health becomes the source of truth (a separate back-end that participants connect to as
-// Fitbit is retired). The type's enum key is unchanged, so stored configs still resolve.
-function withGoogleHealthPreferred(
-    fitbitTypes: string | string[],
-    fitbitProvider: DailyDataProvider,
-    googleHealthProvider: DailyDataProvider,
-    googleHealthTypes: string | string[],
-    fitbitOptions?: AvailabilityCheckOptions
-): Pick<DailyDataTypeDefinition, "dataProvider" | "availabilityCheck"> {
-    return {
-        dataProvider: googleHealthPreferredOverFitbit(fitbitProvider, googleHealthProvider, googleHealthTypes),
-        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", fitbitTypes, fitbitOptions], ["GoogleHealth", googleHealthTypes]))
-    };
-}
-
+// Fitbit types prefer the equivalent Google Health value, falling back to Fitbit per day
+// when Google Health reports nothing (via googleHealthPreferredOverFitbit + a combined
+// availability check). This keeps existing Fitbit-configured graphs working while Google
+// Health becomes the source of truth as Fitbit is retired; the enum keys are unchanged, so
+// stored configs still resolve.
 let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.FitbitSedentaryMinutes,
-        ...withGoogleHealthPreferred(["MinutesSedentary"], fitbitSedentaryMinutesDataProvider, googleHealthSedentaryMinutesDataProvider, "sedentaryPeriod-daily"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitSedentaryMinutesDataProvider, googleHealthSedentaryMinutesDataProvider, "sedentaryPeriod-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "MinutesSedentary"], ["GoogleHealth", "sedentaryPeriod-daily"])),
         labelKey: "sedentary-time",
         icon: <FontAwesomeSvgIcon icon={faPerson} />,
         formatter: minutesFormatter,
@@ -36,7 +24,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitActiveMinutes,
-        ...withGoogleHealthPreferred(["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"], fitbitTotalActiveMinutesDataProvider, googleHealthTotalActiveMinutesDataProvider, ["activeMinutes-daily-light", "activeMinutes-daily-moderate", "activeMinutes-daily-vigorous"]),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitTotalActiveMinutesDataProvider, googleHealthTotalActiveMinutesDataProvider, ["activeMinutes-daily-light", "activeMinutes-daily-moderate", "activeMinutes-daily-vigorous"]),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", ["MinutesVeryActive", "MinutesFairlyActive", "MinutesLightlyActive"]], ["GoogleHealth", ["activeMinutes-daily-light", "activeMinutes-daily-moderate", "activeMinutes-daily-vigorous"]])),
         labelKey: "active-time",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: minutesFormatter,
@@ -44,7 +33,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitLightlyActiveMinutes,
-        ...withGoogleHealthPreferred(["MinutesLightlyActive"], fitbitLightlyActiveMinutesDataProvider, googleHealthLightlyActiveMinutesDataProvider, "activeMinutes-daily-light"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitLightlyActiveMinutesDataProvider, googleHealthLightlyActiveMinutesDataProvider, "activeMinutes-daily-light"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "MinutesLightlyActive"], ["GoogleHealth", "activeMinutes-daily-light"])),
         labelKey: "lightly-active-time",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: minutesFormatter,
@@ -52,7 +42,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitFairlyActiveMinutes,
-        ...withGoogleHealthPreferred(["MinutesFairlyActive"], fitbitFairlyActiveMinutesDataProvider, googleHealthFairlyActiveMinutesDataProvider, "activeMinutes-daily-moderate"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitFairlyActiveMinutesDataProvider, googleHealthFairlyActiveMinutesDataProvider, "activeMinutes-daily-moderate"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "MinutesFairlyActive"], ["GoogleHealth", "activeMinutes-daily-moderate"])),
         labelKey: "fairly-active-time",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: minutesFormatter,
@@ -60,7 +51,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitVeryActiveMinutes,
-        ...withGoogleHealthPreferred(["MinutesVeryActive"], fitbitVeryActiveMinutesDataProvider, googleHealthVeryActiveMinutesDataProvider, "activeMinutes-daily-vigorous"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitVeryActiveMinutesDataProvider, googleHealthVeryActiveMinutesDataProvider, "activeMinutes-daily-vigorous"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "MinutesVeryActive"], ["GoogleHealth", "activeMinutes-daily-vigorous"])),
         labelKey: "very-active-time",
         icon: <FontAwesomeSvgIcon icon={faPersonRunning} />,
         formatter: minutesFormatter,
@@ -68,7 +60,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitBreathingRate,
-        ...withGoogleHealthPreferred(["BreathingRate"], fitbitBreathingRateDataProvider, googleHealthBreathingRateDataProvider, "dailyRespiratoryRate-list-breathsPerMinute"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitBreathingRateDataProvider, googleHealthBreathingRateDataProvider, "dailyRespiratoryRate-list-breathsPerMinute"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "BreathingRate"], ["GoogleHealth", "dailyRespiratoryRate-list-breathsPerMinute"])),
         labelKey: "breathing-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: defaultFormatter,
@@ -76,7 +69,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitCaloriesBurned,
-        ...withGoogleHealthPreferred(["Calories"], fitbitCaloriesBurnedDataProvider, googleHealthCaloriesBurnedDataProvider, "totalCalories-daily"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitCaloriesBurnedDataProvider, googleHealthCaloriesBurnedDataProvider, "totalCalories-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "Calories"], ["GoogleHealth", "totalCalories-daily"])),
         labelKey: "calories-burned",
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
@@ -93,7 +87,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitActiveCaloriesBurned,
-        ...withGoogleHealthPreferred(["Calories", "CaloriesBMR"], fitbitActiveCaloriesBurnedDataProvider, googleHealthActiveCaloriesBurnedDataProvider, "activeEnergyBurned-daily", { requireAllTypes: true }),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitActiveCaloriesBurnedDataProvider, googleHealthActiveCaloriesBurnedDataProvider, "activeEnergyBurned-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", ["Calories", "CaloriesBMR"], { requireAllTypes: true }], ["GoogleHealth", "activeEnergyBurned-daily"])),
         labelKey: "active-calories-burned",
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
@@ -101,7 +96,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitElevatedHeartRateMinutes,
-        ...withGoogleHealthPreferred(["HeartRateZone"], fitbitElevatedHeartRateMinutesDataProvider, googleHealthElevatedHeartRateMinutesDataProvider, ["activeZoneMinutes-daily-fat-burn", "activeZoneMinutes-daily-cardio", "activeZoneMinutes-daily-peak"]),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitElevatedHeartRateMinutesDataProvider, googleHealthElevatedHeartRateMinutesDataProvider, ["activeZoneMinutes-daily-fat-burn", "activeZoneMinutes-daily-cardio", "activeZoneMinutes-daily-peak"]),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateZone"], ["GoogleHealth", ["activeZoneMinutes-daily-fat-burn", "activeZoneMinutes-daily-cardio", "activeZoneMinutes-daily-peak"]])),
         labelKey: "elevated-heart-rate-time",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: minutesFormatter,
@@ -109,7 +105,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitFatBurnHeartRateMinutes,
-        ...withGoogleHealthPreferred(["HeartRateZone"], fitbitFatBurnMinutesDataProvider, googleHealthFatBurnMinutesDataProvider, "activeZoneMinutes-daily-fat-burn"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitFatBurnMinutesDataProvider, googleHealthFatBurnMinutesDataProvider, "activeZoneMinutes-daily-fat-burn"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateZone"], ["GoogleHealth", "activeZoneMinutes-daily-fat-burn"])),
         labelKey: "fat-burn-heart-rate-time",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: minutesFormatter,
@@ -117,7 +114,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitCardioHeartRateMinutes,
-        ...withGoogleHealthPreferred(["HeartRateZone"], fitbitCardioMinutesDataProvider, googleHealthCardioMinutesDataProvider, "activeZoneMinutes-daily-cardio"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitCardioMinutesDataProvider, googleHealthCardioMinutesDataProvider, "activeZoneMinutes-daily-cardio"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateZone"], ["GoogleHealth", "activeZoneMinutes-daily-cardio"])),
         labelKey: "cardio-heart-rate-time",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: minutesFormatter,
@@ -125,7 +123,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitPeakHeartRateMinutes,
-        ...withGoogleHealthPreferred(["HeartRateZone"], fitbitPeakMinutesDataProvider, googleHealthPeakMinutesDataProvider, "activeZoneMinutes-daily-peak"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitPeakMinutesDataProvider, googleHealthPeakMinutesDataProvider, "activeZoneMinutes-daily-peak"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateZone"], ["GoogleHealth", "activeZoneMinutes-daily-peak"])),
         labelKey: "peak-heart-rate-time",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: minutesFormatter,
@@ -133,7 +132,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitFloors,
-        ...withGoogleHealthPreferred(["Floors"], fitbitFloorsDataProvider, googleHealthFloorsDataProvider, "floors-daily"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitFloorsDataProvider, googleHealthFloorsDataProvider, "floors-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "Floors"], ["GoogleHealth", "floors-daily"])),
         labelKey: "floors-climbed",
         icon: <FontAwesomeSvgIcon icon={faStairs} />,
         formatter: defaultFormatter,
@@ -141,7 +141,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitHrv,
-        ...withGoogleHealthPreferred(["HeartRateVariability"], fitbitHrvDataProvider, googleHealthHrvDataProvider, "dailyHeartRateVariability-list-averageRmssd"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitHrvDataProvider, googleHealthHrvDataProvider, "dailyHeartRateVariability-list-averageRmssd"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateVariability"], ["GoogleHealth", "dailyHeartRateVariability-list-averageRmssd"])),
         labelKey: "heart-rate-variability",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: hrvFormatter,
@@ -149,7 +150,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitRestingHeartRate,
-        ...withGoogleHealthPreferred(["RestingHeartRate"], fitbitRestingHeartRateDataProvider, googleHealthRestingHeartRateDataProvider, "dailyRestingHeartRate-list-beatsPerMinute"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitRestingHeartRateDataProvider, googleHealthRestingHeartRateDataProvider, "dailyRestingHeartRate-list-beatsPerMinute"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "RestingHeartRate"], ["GoogleHealth", "dailyRestingHeartRate-list-beatsPerMinute"])),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -157,7 +159,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitSleepMinutes,
-        ...withGoogleHealthPreferred(["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"], fitbitTotalSleepMinutesDataProvider, googleHealthTotalSleepMinutesDataProvider, "sleep-list-session-asleep"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitTotalSleepMinutesDataProvider, googleHealthTotalSleepMinutesDataProvider, "sleep-list-session-asleep"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]], ["GoogleHealth", "sleep-list-session-asleep"])),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -166,7 +169,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitLightSleepMinutes,
-        ...withGoogleHealthPreferred(["SleepLevelLight"], fitbitLightSleepMinutesDataProvider, googleHealthLightSleepMinutesDataProvider, "sleep-list-stages-summary-light-minutes"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitLightSleepMinutesDataProvider, googleHealthLightSleepMinutesDataProvider, "sleep-list-stages-summary-light-minutes"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "SleepLevelLight"], ["GoogleHealth", "sleep-list-stages-summary-light-minutes"])),
         labelKey: "light-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -175,7 +179,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitRemSleepMinutes,
-        ...withGoogleHealthPreferred(["SleepLevelRem"], fitbitRemSleepMinutesDataProvider, googleHealthRemSleepMinutesDataProvider, "sleep-list-stages-summary-rem-minutes"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitRemSleepMinutesDataProvider, googleHealthRemSleepMinutesDataProvider, "sleep-list-stages-summary-rem-minutes"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "SleepLevelRem"], ["GoogleHealth", "sleep-list-stages-summary-rem-minutes"])),
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -184,7 +189,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitDeepSleepMinutes,
-        ...withGoogleHealthPreferred(["SleepLevelDeep"], fitbitDeepSleepMinutesDataProvider, googleHealthDeepSleepMinutesDataProvider, "sleep-list-stages-summary-deep-minutes"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitDeepSleepMinutesDataProvider, googleHealthDeepSleepMinutesDataProvider, "sleep-list-stages-summary-deep-minutes"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "SleepLevelDeep"], ["GoogleHealth", "sleep-list-stages-summary-deep-minutes"])),
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -193,7 +199,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitSpO2,
-        ...withGoogleHealthPreferred(["SpO2"], fitbitSpO2DataProvider, googleHealthSpO2DataProvider, "dailyOxygenSaturation-list-avg"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitSpO2DataProvider, googleHealthSpO2DataProvider, "dailyOxygenSaturation-list-avg"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "SpO2"], ["GoogleHealth", "dailyOxygenSaturation-list-avg"])),
         labelKey: "spo2",
         icon: <FontAwesomeSvgIcon icon={faWind} />,
         formatter: (value: number) => formatNumberForLocale(value) + " %",
@@ -201,7 +208,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitSteps,
-        ...withGoogleHealthPreferred(["Steps"], fitbitStepsDataProvider, googleHealthStepsDataProvider, "steps-daily"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitStepsDataProvider, googleHealthStepsDataProvider, "steps-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "Steps"], ["GoogleHealth", "steps-daily"])),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -209,7 +217,8 @@ let fitbitTypeDefinitions: DailyDataTypeDefinition[] = [
     },
     {
         type: DailyDataType.FitbitWearMinutes,
-        ...withGoogleHealthPreferred(["HeartRateIntradayCount"], fitbitWearMinutesDataProvider, googleHealthWearMinutesDataProvider, "wearTime-daily"),
+        dataProvider: googleHealthPreferredOverFitbit(fitbitWearMinutesDataProvider, googleHealthWearMinutesDataProvider, "wearTime-daily"),
+        availabilityCheck: combinedAvailabilityCheck(sources(["Fitbit", "HeartRateIntradayCount"], ["GoogleHealth", "wearTime-daily"])),
         labelKey: "fitbit-wear-time",
         icon: <FontAwesomeSvgIcon icon={faClock} />,
         formatter: minutesFormatter,
