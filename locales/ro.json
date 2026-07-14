@@ -380,7 +380,7 @@
     "connect-garmin-button": "Conectează Garmin",
     "connect-garmin-intro": "Poți partaja date din contul tău Garmin dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Garmin.",
     "connect-google-health-button": "Conectează Google Health",
-    "connect-google-health-intro": "Poți partaja date din contul tău Google Health dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Google Health.",
+    "connect-google-health-intro": "Poți partaja date din contul tău Google Health, dacă ai unul. Pentru a începe, dă clic sau atinge mai jos pentru a te conecta cu datele tale de autentificare Google Health.",
     "connect-oura-button": "Conectează Oura",
     "connect-oura-intro": "Poți partaja date din contul tău Oura dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Oura.",
     "connect-to-device": "Conectează-te la @@DEVICE@@",
@@ -460,7 +460,6 @@
     "feeling-overall-previous": "Cum te-ai simțit în general?",
     "feeling-overall-today": "Cum te simți în general?",
     "fitbit-wear-time": "Timp de purtare Fitbit",
-    "wear-time": "Timp de purtare",
     "floors-climbed": "Etaje urcate",
     "get-badge": "Obține insignă",
     "glucose-chart-no-data": "Nu există citiri ale glicemiei",
@@ -586,7 +585,7 @@
     "received-dexcom-data": "Primim datele tale Dexcom!",
     "received-fitbit-data": "Primim datele tale Fitbit!",
     "received-garmin-data": "Primim datele tale Garmin!",
-    "received-google-health-data": "Primim datele tale Google Health!",
+    "received-google-health-data": "Primim datele dvs. Google Health!",
     "received-oura-data": "Primim datele tale Oura!",
     "recent-daily-data-bar-chart-no-data": "Fără date",
     "recent-daily-data-bar-chart-subtitle": "Ultimele 7 zile",
@@ -663,6 +662,7 @@
     "view": "Vizualizează",
     "view-all": "Vezi toate",
     "walking-heart-rate-average": "Media ritmului cardiac la mers",
+    "wear-time": "Timp de purtare",
     "weekly": "Săptămânal",
     "yesterday": "Ieri"
 }

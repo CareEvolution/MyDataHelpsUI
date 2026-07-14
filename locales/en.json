@@ -460,7 +460,6 @@
     "feeling-overall-previous": "How were you feeling overall?",
     "feeling-overall-today": "How are you feeling overall?",
     "fitbit-wear-time": "Fitbit Wear Time",
-    "wear-time": "Wear Time",
     "floors-climbed": "Floors Climbed",
     "get-badge": "Get Badge",
     "glucose-chart-no-data": "No blood glucose readings",
@@ -663,6 +662,7 @@
     "view": "View",
     "view-all": "View All",
     "walking-heart-rate-average": "Walking HR Average",
+    "wear-time": "Wear Time",
     "weekly": "Weekly",
     "yesterday": "Yesterday"
 }
