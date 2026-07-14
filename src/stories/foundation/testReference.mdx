@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Start/Test Reference" />
+
+# Test Reference
+
+When performing regression or localization testing, be sure to review the critical components in the appropriate section.
+
+## Regression Testing
+
+We make fairly heavy use of the `recharts` library.  Any updates to that library or its dependency should result in a more in depth regression testing cycle.  Focus on components such as the daily data and survey answer charts, goals, microtrend, etc.
+
+We also rely on some specific behavior of the `react-pdf` library for PDF generation.  Any updates to that library or its dependencies should also result in a more in depth regression testing cycle.  Focus on the PDF preview component, document library, meal log, health and wellness components, etc.
+
+Regression testing can usually be narrowly targeted based on the changes in a given update, but these are some of the more high volume and/or critical components that may be worth a quick check:
+
+* [DailyDataChart](/docs/container-dailydatachart--docs) - Chart of daily data values.
+* [SurveyAnswerChart](/docs/container-surveyanswerchart--docs) - Chart of daily survey values.
+* [Goal](/docs/container-goal--docs) - Goal progress indicator.
+* [MicroTrend](/docs/container-microtrend--docs) - Micro trend bar graph.
+* [MealLog](/docs/presentational-meallog--docs) - Meal log and other associated components (coordinator, editor, etc.).
+* [ConnectDevicesMenu](/docs/container-connectdevicesmenu--docs) - Device connection menu.
+* [BasicPointsForBadges](/story/container-basicpointsforbadges--with-goals-and-badges) - Icons and Progress Bar
+* [GlucoseChart](/docs/container-glucosechart--docs) - Multi-modal chart.
+* [PDFPreview](/docs/container-pdfpreview--docs) - PDF output.
+* [SeverityCalendar](/story/container-severitycalendar--default) - Calendar view.
+
+## Localization Testing
+
+When testing a new locale, be sure to check the following components:
+
+* [AppDownload](/docs/container-appdownload--docs) - App store badges.
+* [DailyDataChart](/docs/container-dailydatachart--docs) - Days of week.
+* [DeviceDataMonthCharts](/docs/container-devicedatamonthcharts--docs) - Decimal separator (on miles chart).
+* [GlucoseChart](/docs/container-glucosechart--docs) - Times of day & thousands separator (on step count).
+* [MealEditor](/docs/container-mealeditor--docs) - Long date format.
+* [RelativeActivity](/docs/container-relativeactivity--docs) - Short date format.

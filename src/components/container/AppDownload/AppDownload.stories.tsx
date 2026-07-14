@@ -17,17 +17,25 @@ const Template: StoryFn<typeof AppDownload> = (args: AppDownloadProps) =>
 		<Card><AppDownload {...args} /></Card>
 	</Layout>;
 
-export const WebBoth = Template.bind({});
-WebBoth.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web'};
+// On a desktop web browser both store links are shown, limited only by which
+// platforms the project itself supports.
+export const DesktopProjectSupportsAllPlatforms = Template.bind({});
+DesktopProjectSupportsAllPlatforms.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const WebAndroid = Template.bind({});
-WebAndroid.args = {previewProjectPlatforms: ['Web', 'Android'], previewDevicePlatform: 'Web'};
+export const DesktopProjectSupportsAndroidOnly = Template.bind({});
+DesktopProjectSupportsAndroidOnly.args = {previewProjectPlatforms: ['Web', 'Android'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const WebIOS = Template.bind({});
-WebIOS.args = {previewProjectPlatforms: ['Web', 'iOS'], previewDevicePlatform: 'Web'};
+export const DesktopProjectSupportsIOSOnly = Template.bind({});
+DesktopProjectSupportsIOSOnly.args = {previewProjectPlatforms: ['Web', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: ''};
 
-export const Android = Template.bind({});
-Android.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Android'};
+// On a mobile web browser only the store link matching the device's OS is shown,
+// even when the project supports all platforms.
+export const MobileAndroidBrowser = Template.bind({});
+MobileAndroidBrowser.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: 'Android'};
 
-export const IOS = Template.bind({});
-IOS.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'iOS'};
+export const MobileIPhoneBrowser = Template.bind({});
+MobileIPhoneBrowser.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'Web', previewOperatingSystem: 'iOS'};
+
+// In the native app the widget is hidden entirely (device platform is not Web).
+export const NativeAppHidden = Template.bind({});
+NativeAppHidden.args = {previewProjectPlatforms: ['Web', 'Android', 'iOS'], previewDevicePlatform: 'iOS', previewOperatingSystem: 'iOS'};

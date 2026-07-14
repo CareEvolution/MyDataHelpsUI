@@ -42,12 +42,13 @@ To run Storybook previews with data from one of your test MyDataHelps participan
 1. Clone this repo
 2. Get a [participant access token](https://developer.mydatahelps.org/sdk/participant_tokens.html) - either using browser dev tools while logged in as a test participant at mydatahelps.org, or by using the REST API.
     - Hint: if using browser dev tools, examine the response on the request to https://mydatahelps.org/identityserver/connect/token.
-3. Create a .env file in your root directory with the token details
+3. Create a .env file in your root directory with the token details.
 
 ```
 .env
 -----
-PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
+STORYBOOK_PARTICIPANT_ACCESS_TOKEN=05e211e4df46ca7537e064bde44148a7 
+STORYBOOK_PARTICIPANT_ENVIRONMENT_API=https://mydatahelps.org/
 ```
 4. Run `npm ci` to install dependencies.
 5. Run `npm run storybook` to view the storybook.
