@@ -13,9 +13,12 @@ function getHeartRateTypeForNamespace(namespace: DeviceDataV2Namespace): string 
     return "heart-rate";
 }
 
-// When Fitbit is a data source, prefer Google Health over it (Fitbit is being retired in
-// favor of it): query Google Health right before Fitbit so Google Health wins each interval
-// and Fitbit only fills the intervals Google Health is missing.
+// When Fitbit is a data source and Google Health is not already listed, prefer Google Health
+// over Fitbit (Fitbit is being retired in favor of it) by inserting Google Health right before
+// Fitbit, so Google Health wins each interval and Fitbit only fills the intervals it is
+// missing. If the caller already lists Google Health explicitly, their ordering is left as-is
+// (whichever of Google Health / Fitbit comes first wins, since the merge keeps the first value
+// per interval).
 export function withGoogleHealthPreferred(dataSources: DeviceDataV2Namespace[]): DeviceDataV2Namespace[] {
     const fitbitIndex = dataSources.indexOf("Fitbit");
     if (fitbitIndex === -1 || dataSources.includes("GoogleHealth")) {
