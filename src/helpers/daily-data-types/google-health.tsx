@@ -34,7 +34,7 @@ import {
     googleHealthWearMinutesDataProvider
 } from "../daily-data-providers";
 
-let googleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
+const googleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.GoogleHealthSteps,
         dataProvider: googleHealthStepsDataProvider,
