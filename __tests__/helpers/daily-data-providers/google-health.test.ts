@@ -22,15 +22,15 @@ describe('Daily Data Provider - Google Health', () => {
         expect(await googleHealthTotalSleepMinutesDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
-    it('Distance: converts the millimeter daily rollup to meters.', async () => {
+    it('Distance: reads distance-daily with a millimeters-to-meters value function.', async () => {
         setupDailyDataV2('GoogleHealth', 'distance-daily', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult); // { SomeDate: 100 } millimeters
-        expect(await googleHealthDistanceDataProvider(sampleStartDate, sampleEndDate)).toEqual({ SomeDate: 0.1 });
+        setupMostRecentValueResult(sampleDailyData, sampleResult, valueFn => !!valueFn && valueFn({ value: '1000' } as any) === 1);
+        expect(await googleHealthDistanceDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
-    it('Sedentary: converts the seconds daily rollup to minutes.', async () => {
+    it('Sedentary: reads sedentaryPeriod-daily with a seconds-to-minutes value function.', async () => {
         setupDailyDataV2('GoogleHealth', 'sedentaryPeriod-daily', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult); // { SomeDate: 100 } seconds
-        expect(await googleHealthSedentaryMinutesDataProvider(sampleStartDate, sampleEndDate)).toEqual({ SomeDate: 100 / 60 });
+        setupMostRecentValueResult(sampleDailyData, sampleResult, valueFn => !!valueFn && valueFn({ value: '120' } as any) === 2);
+        expect(await googleHealthSedentaryMinutesDataProvider(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 });

@@ -1,6 +1,6 @@
 import { DeviceDataV2Namespace } from "@careevolution/mydatahelps-js";
 import { DailyDataQueryResult } from "../query-daily-data";
-import { buildMostRecentValueResult, buildTotalValueResult, DailyDataV2, getSleepDate, getStartDate, queryForDailyDataV2 } from "./daily-data";
+import { buildMostRecentValueResult, buildTotalValueResult, DailyDataV2, DailyDataValueFunction, getSleepDate, getStartDate, queryForDailyDataV2 } from "./daily-data";
 
 const googleHealthNamespace: DeviceDataV2Namespace = "GoogleHealth";
 
@@ -14,10 +14,11 @@ const googleHealthNamespace: DeviceDataV2Namespace = "GoogleHealth";
  *  - Sleep is session-based (0..n sessions per day) -> sum per day.
  */
 
-// One value per day (daily rollup "*-daily" or daily list "*-list-*").
-async function googleHealthDailyValue(type: string, startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+// One value per day (daily rollup "*-daily" or daily list "*-list-*"). An optional valueFn
+// can convert the raw value (e.g. millimeters -> meters) as it is read.
+async function googleHealthDailyValue(type: string, startDate: Date, endDate: Date, valueFn?: DailyDataValueFunction): Promise<DailyDataQueryResult> {
     const dailyData = await queryForDailyDataV2(googleHealthNamespace, type, startDate, endDate, getStartDate);
-    return buildMostRecentValueResult(dailyData);
+    return buildMostRecentValueResult(dailyData, valueFn);
 }
 
 // Sleep session/stage minutes summed per day. Sleep is dated by getSleepDate (the session
@@ -27,15 +28,6 @@ async function googleHealthDailyValue(type: string, startDate: Date, endDate: Da
 async function googleHealthSleepTotal(type: string, startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const dailyData = await queryForDailyDataV2(googleHealthNamespace, type, startDate, endDate, getSleepDate);
     return buildTotalValueResult(dailyData);
-}
-
-// Scales every day's value by a constant factor (used to convert Google Health's raw units).
-function scaleResult(result: DailyDataQueryResult, factor: number): DailyDataQueryResult {
-    const scaled: DailyDataQueryResult = {};
-    Object.keys(result).forEach(dayKey => {
-        scaled[dayKey] = result[dayKey] * factor;
-    });
-    return scaled;
 }
 
 // Multiple session/stage metrics summed together per day (e.g. total active minutes across levels).
@@ -71,13 +63,13 @@ export function googleHealthFloorsDataProvider(startDate: Date, endDate: Date): 
 }
 
 // distance-daily is a summed distance in millimeters; convert to meters to match the other distance sources.
-export async function googleHealthDistanceDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return scaleResult(await googleHealthDailyValue("distance-daily", startDate, endDate), 1 / 1000);
+export function googleHealthDistanceDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    return googleHealthDailyValue("distance-daily", startDate, endDate, dataPoint => parseFloat(dataPoint.value) / 1000);
 }
 
 // sedentaryPeriod-daily is a summed duration in seconds; convert to minutes to match the Fitbit sedentary type.
-export async function googleHealthSedentaryMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    return scaleResult(await googleHealthDailyValue("sedentaryPeriod-daily", startDate, endDate), 1 / 60);
+export function googleHealthSedentaryMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    return googleHealthDailyValue("sedentaryPeriod-daily", startDate, endDate, dataPoint => parseFloat(dataPoint.value) / 60);
 }
 
 export function googleHealthWearMinutesDataProvider(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
