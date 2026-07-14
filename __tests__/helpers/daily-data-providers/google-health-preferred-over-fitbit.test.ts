@@ -13,7 +13,7 @@ describe('Daily Data Provider - Google Health preferred over Fitbit', () => {
         setupCombinedDataCollectionSettings(true, combinedSettings);
     });
 
-    it('returns only the Fitbit result when Google Health is not connected.', async () => {
+    it('returns only the Fitbit result when Google Health is disabled.', async () => {
         combinedSettings.settings.fitbitEnabled = true;
         const fitbitResult = createMockResult();
         const fitbitProvider = jest.fn();
