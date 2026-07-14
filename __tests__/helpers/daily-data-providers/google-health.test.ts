@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, setupTotalValueResult, sleepDateFunctionEvaluator, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
-import { googleHealthDistanceDataProvider, googleHealthRestingHeartRateDataProvider, googleHealthSedentaryMinutesDataProvider, googleHealthStepsDataProvider, googleHealthTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers/google-health';
+import { googleHealthDistanceDataProvider, googleHealthRestingHeartRateDataProvider, googleHealthSedentaryMinutesDataProvider, googleHealthStepsDataProvider, googleHealthTotalSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
 
 describe('Daily Data Provider - Google Health', () => {
     it('Steps: queries steps-daily and builds a most recent value result keyed by start date.', async () => {

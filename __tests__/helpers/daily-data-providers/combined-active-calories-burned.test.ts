@@ -35,9 +35,9 @@ jest.mock('../../../src/helpers/daily-data-providers/oura-active-calories-burned
     default: jest.fn()
 }));
 
-jest.mock('../../../src/helpers/daily-data-providers/google-health', () => ({
+jest.mock('../../../src/helpers/daily-data-providers/google-health-active-calories-burned', () => ({
     __esModule: true,
-    googleHealthActiveCaloriesBurnedDataProvider: jest.fn()
+    default: jest.fn()
 }));
 
 jest.mock('../../../src/helpers/daily-data-providers/daily-data/daily-data-result', () => ({
