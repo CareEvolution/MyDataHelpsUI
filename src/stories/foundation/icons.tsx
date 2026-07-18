@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faAddressCard, faAmbulance, faArrowUpRightFromSquare, faArrowsRotate, faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faBed, faBolt, faBoltLightning, faBurger, faCamera, faCaretDown, faCaretUp, faCheck, faCheckCircle, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faCircle, faCircleCheck, faCircleInfo, faClock, faClose, faCocktail, faCookie, faDownload, faDroplet, faEdit, faEnvelope, faExclamationTriangle, faFile, faFileAlt, faFileInvoice, faFilePdf, faFireFlameCurved, faFlag, faFlask, faGear, faGlobe, faHandBackFist, faHeart, faHeartbeat, faHospital, faHourglassHalf, faInfoCircle, faLightbulb, faList, faMoon, faPaperPlane, faPerson, faPersonRunning, faPhone, faPlus, faQuestionCircle, faRefresh, faRepeat, faRoute, faSearch, faShoePrints, faSpinner, faSpoon, faStairs, faStar, faStarSolid, faSun, faThermometer, faTrash, faTrashCan, faTriangleExclamation, faTrophy, faUserMd, faWeightScale, faWind,
+    faAddressCard, faAmbulance, faArrowUpRightFromSquare, faArrowsRotate, faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faBed, faBolt, faBoltLightning, faBurger, faCamera, faCaretDown, faCaretUp, faCheck, faCheckCircle, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faCircle, faCircleCheck, faCircleInfo, faClock, faClose, faCocktail, faCookie, faDownload, faDroplet, faEdit, faEnvelope, faExclamationTriangle, faFile, faFileAlt, faFileInvoice, faFilePdf, faFireFlameCurved, faFlag, faFlask, faGear, faGlobe, faHandBackFist, faHeart, faHeartbeat, faHospital, faHourglassHalf, faInfoCircle, faLightbulb, faList, faMoon, faPaperPlane, faPerson, faPersonRunning, faPhone, faPlus, faQuestionCircle, faRefresh, faRepeat, faRoute, faSearch, faShoePrints, faSpinner, faSpoon, faStairs, faStar, faSun, faThermometer, faTrash, faTrashCan, faTriangleExclamation, faTrophy, faUserMd, faWeightScale, faWind,
     faWineBottle
 } from '@fortawesome/free-solid-svg-icons'
 import './icons.css';
@@ -75,7 +75,6 @@ const IconReview: React.FC = () => {
             <FontAwesomeIcon icon={faSpoon} className="icon-review" size={"3x"} />
             <FontAwesomeIcon icon={faStairs} className="icon-review" size={"3x"} />
             <FontAwesomeIcon icon={faStar} className="icon-review" size={"3x"} />
-            <FontAwesomeIcon icon={faStarSolid} className="icon-review" size={"3x"} />
             <FontAwesomeIcon icon={faSun} className="icon-review" size={"3x"} />
             <FontAwesomeIcon icon={faThermometer} className="icon-review" size={"3x"} />
             <FontAwesomeIcon icon={faTrash} className="icon-review" size={"3x"} />
