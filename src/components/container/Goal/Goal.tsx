@@ -1,14 +1,15 @@
 ﻿import React, { CSSProperties, useContext, useState } from 'react';
 import './Goal.css';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faStar } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, resolveColor, SingleValueProvider, useInitializeView } from '../../../helpers';
 import { LayoutContext } from '../../presentational';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { createPreviewValueProvider, GoalPreviewState } from './Goal.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { findLast } from 'lodash';
+import Icon, { IconId } from '../../presentational/Icon/Icon';
 
 export interface GoalColorConfiguration {
     statusColor?: ColorDefinition;
@@ -43,7 +44,7 @@ export interface GoalProps {
     maxValue: number;
     valueProvider: SingleValueProvider<number>;
     maxSegments?: number;
-    icon?: IconDefinition;
+    icon?: IconDefinition | IconId; // Recommend IconId to insulate from fontawesome version
     notStartedColor?: ColorDefinition | GoalColorConfiguration;
     inProgressColor?: ColorDefinition | GoalColorConfiguration;
     completedColor?: ColorDefinition | GoalColorConfiguration;
@@ -181,7 +182,7 @@ export default function Goal(props: GoalProps) {
                 </PieChart>
             </ResponsiveContainer>
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
-                {<FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />}
+                {<Icon icon={props.icon || faGear} className={`mdhui-goal-chart-icon ${variant}`} iconColor={iconColor} />}
             </div>
         </div>;
     };

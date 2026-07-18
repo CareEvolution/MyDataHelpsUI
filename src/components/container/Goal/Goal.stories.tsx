@@ -515,6 +515,16 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
             />,
             <Goal
                 variant={args.variant}
+                label="Value From Random Provider"
+                targetValue={2}
+                maxValue={10}
+                valueProvider={createRandomIntegerValueProvider(10)}
+                icon={{ iconName: 'shield' }}
+                inProgressColor={'#23aa76ff'}
+                completedColor={'#063c22ff'}
+            />,
+            <Goal
+                variant={args.variant}
                 label="Value From Custom Field Provider"
                 targetValue={5}
                 maxValue={10}

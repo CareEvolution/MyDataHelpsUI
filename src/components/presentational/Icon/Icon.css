@@ -1,0 +1,34 @@
+﻿.mdhui-button {
+    box-sizing: border-box;
+    padding: 16px;
+    background: var(--mdhui-color-primary);
+    font-size: 17px;
+    line-height: 17px;
+    color: #FFF;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mdhui-button:disabled {
+    color: var(--mdhui-text-color-3);
+    background: var(--mdhui-background-color-2);
+    cursor: default;
+}
+
+.mdhui-button.mdhui-button-default-margin {
+    margin: 16px;
+    display: block;
+}
+
+.mdhui-button.mdhui-button-full-width {
+    width: 100%;
+    display: block;
+}
+
+.mdhui-button.mdhui-button-default-margin.mdhui-button-full-width
+{
+    width: calc(100% - 32px);
+}
