@@ -23,7 +23,6 @@ const render = (args: IconProps) =>
 
 export const SolidIcon: Story = {
 	args: {
-		disabled: false,
 		icon: { iconName: "gear" }
 	},
 	render: render
@@ -31,23 +30,30 @@ export const SolidIcon: Story = {
 
 export const RegularIcon: Story = {
 	args: {
-		disabled: false,
 		icon: { iconName: "calendar",prefix: "far" }
 	},
 	render: render
 }
 
-export const EmptyIcon: Story = {
+export const BigIcon: Story = {
 	args: {
-		disabled: false,
-		icon: { iconName: "" }
+		icon: { iconName: "face-smile" },
+		iconSize: "2x"
+	},
+	render: render
+}
+
+export const IconColors: Story = {
+	args: {
+		icon: { iconName: "gear" },
+		iconColor: "red",
+		iconBackgroundColor: "blue"
 	},
 	render: render
 }
 
 export const FontawesomeIconDirect: Story = {
 	args: {
-		disabled: false,
 		icon: faUserGear
 	},
 	render: render
@@ -55,7 +61,6 @@ export const FontawesomeIconDirect: Story = {
 
 export const ClickMe: Story = {
 	args: {
-		disabled: false,
 		icon: { iconName: "arrow-pointer" },
 		onClick: (() => console.log("Clicked"))
 	},
