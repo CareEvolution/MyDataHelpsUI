@@ -1,11 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: "npm" 
+  - package-ecosystem: "npm"
     cooldown:
-      default-days: 7
+      default-days: 14
       semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
