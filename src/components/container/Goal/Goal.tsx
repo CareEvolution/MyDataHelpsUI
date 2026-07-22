@@ -7,7 +7,6 @@ import { LayoutContext } from '../../presentational';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { createPreviewValueProvider, GoalPreviewState } from './Goal.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
-import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { findLast } from 'lodash';
 import Icon, { IconId } from '../../presentational/Icon/Icon';
 
@@ -182,7 +181,7 @@ export default function Goal(props: GoalProps) {
                 </PieChart>
             </ResponsiveContainer>
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
-                {<Icon icon={props.icon || faGear} className={`mdhui-goal-chart-icon ${variant}`} iconColor={iconColor} />}
+                {<Icon icon={props.icon || faStar} className={`mdhui-goal-chart-icon ${variant}`} iconColor={iconColor} />}
             </div>
         </div>;
     };
