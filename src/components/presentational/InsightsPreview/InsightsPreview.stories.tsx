@@ -1,0 +1,148 @@
+import React, { ComponentProps, CSSProperties } from 'react';
+import { DateRangeCoordinator, InsightsBadgeConfiguration, InsightsRenderingCoordinator, Layout } from '../index';
+import { StoryObj } from '@storybook/react';
+import { argTypesToHide } from '../../../../.storybook/helpers';
+import InsightsPreview from './InsightsPreview';
+import { faBed, faBicycle, faBurn, faSwimmer, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { DailyDataType, fnvPredictableRandomNumber, getDayKey, InsightsData, InsightsDataPreviewState } from '../../../helpers';
+import { InsightsDataCoordinator } from '../../container';
+
+type InsightsPreviewStoryArgs = ComponentProps<typeof InsightsPreview> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+    previewState: 'loading' | InsightsDataPreviewState;
+    canLog: boolean;
+    withBadges: boolean;
+    withDetails: boolean;
+    customStyling: boolean;
+};
+
+export default {
+    title: 'Presentational/InsightsPreview',
+    component: InsightsPreview,
+    parameters: {
+        layout: 'fullscreen'
+    },
+    render: (args: InsightsPreviewStoryArgs) => {
+        const customHighlightStyling: CSSProperties | undefined = args.customStyling ? {
+            boxShadow: 'inset -5px -5px 10px rgba(255, 255, 255, 0.3), inset 5px 5px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3)',
+            transition: 'border-radius 0.5s, transform 0.2s ease, box-shadow 0.2s ease'
+        } : undefined;
+
+        const getPercentComplete = (insightsData: InsightsData, resultIdentifier: string): number => {
+            const surveyAnswer = insightsData.surveyAnswers.find(surveyAnswer => surveyAnswer.resultIdentifier === resultIdentifier);
+            return !!surveyAnswer && surveyAnswer.answers[0] !== '0' ? 100 : fnvPredictableRandomNumber(`${resultIdentifier}-${getDayKey(insightsData.date)}`) % 90;
+        };
+
+        const badgeConfigurations: InsightsBadgeConfiguration[] = [
+            {
+                identifier: 'activity',
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result1'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faWalking,
+                iconColor: '#3c973c'
+            },
+            {
+                identifier: 'sleep',
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result2'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBed,
+                iconColor: '#664cda'
+            },
+            {
+                identifier: 'swimming',
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result3'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faSwimmer,
+                iconColor: '#0877b8'
+            },
+            {
+                identifier: 'cycling',
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'result4'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBicycle,
+                iconColor: '#976d1e'
+            },
+            {
+                identifier: 'other',
+                shouldRender: () => false,
+                getPercentComplete: insightsData => getPercentComplete(insightsData, 'other'),
+                customHighlightStyling: customHighlightStyling,
+                icon: faBurn,
+                iconColor: '#d81442'
+            }
+        ];
+
+        const preview = <InsightsPreview noLogTitle={args.noLogTitle || undefined} />;
+
+        return <Layout colorScheme={args.colorScheme}>
+            <DateRangeCoordinator intervalType="Day">
+                <InsightsDataCoordinator
+                    previewState={args.previewState}
+                    logSurveyName={args.canLog ? 'Log Survey' : undefined}
+                    otherSurveyNames={['Other Survey']}
+                    dailyDataTypes={[DailyDataType.AirQuality]}
+                >
+                    {(args.withBadges || args.withDetails) &&
+                        <InsightsRenderingCoordinator
+                            badgeConfigurations={args.withBadges ? badgeConfigurations : undefined}
+                            getDetails={args.withDetails ? () => {
+                                return <>
+                                    <div style={{ fontWeight: 'bold' }}>Details</div>
+                                    <div style={{ marginTop: '4px', color: 'var(--mdhui-text-color-2)', fontSize: '0.9em' }}>
+                                        <div>Some details about the day.</div>
+                                    </div>
+                                </>;
+                            } : undefined}
+                            children={preview}
+                        />}
+                    {!(args.withBadges || args.withDetails) && preview}
+                </InsightsDataCoordinator>
+            </DateRangeCoordinator>
+        </Layout>;
+    }
+};
+
+export const Default: StoryObj<InsightsPreviewStoryArgs> = {
+    args: {
+        colorScheme: 'auto',
+        previewState: 'loaded',
+        canLog: true,
+        noLogTitle: '',
+        withBadges: true,
+        withDetails: true,
+        customStyling: false
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        previewState: {
+            name: 'state',
+            control: 'radio',
+            options: ['loading', 'loaded', 'reloading', 'loaded with today', 'reloading with today']
+        },
+        canLog: {
+            name: 'can log',
+            control: 'boolean'
+        },
+        noLogTitle: {
+            name: 'no log title',
+            control: 'text'
+        },
+        withBadges: {
+            name: 'with badges',
+            control: 'boolean'
+        },
+        withDetails: {
+            name: 'with details',
+            control: 'boolean'
+        },
+        customStyling: {
+            name: 'custom styling',
+            control: 'boolean'
+        },
+        ...argTypesToHide(['innerRef'])
+    }
+};

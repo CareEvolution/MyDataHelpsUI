@@ -1,0 +1,1 @@
+export { default, InsightsBadgeConfiguration } from './InsightsBadge';
