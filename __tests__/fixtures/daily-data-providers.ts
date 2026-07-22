@@ -15,19 +15,19 @@ export const sampleStartDate = add(today, { days: -6 });
 export const sampleEndDate = today;
 
 export const sampleDailyData: DailyData = {
-    'SomeDate': [{} as DeviceDataPoint]
+    'SomeDateV1': [{} as DeviceDataPoint]
 };
 
 export const sampleDailyDataV2: DailyDataV2 = {
-    'SomeDate': [{} as DeviceDataV2Point]
+    'SomeDateV2': [{} as DeviceDataV2Point]
 };
 
 export const sampleDataPoints: DeviceDataPoint[] = [
-    {} as DeviceDataPoint
+    { identifier: "DataPointV1" } as DeviceDataPoint
 ];
 
 export const sampleDataPointsV2: DeviceDataV2Point[] = [
-    {} as DeviceDataV2Point
+    { identifier: "DataPointV2" } as DeviceDataV2Point
 ];
 
 export const sampleResult: DailyDataQueryResult = {
