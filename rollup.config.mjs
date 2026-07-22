@@ -18,7 +18,8 @@ const onAnalysis = ({ bundleSize }) => {
 };
 
 const manualChunks = {
-	prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree']
+	prettier: ['prettier/standalone', 'prettier/plugins/babel', 'prettier/plugins/estree'],
+	reactPdf: ['react-pdf']
 };
 
 const getPlugins = ({ browser = false, minify = false } = {}) => [

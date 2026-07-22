@@ -184,6 +184,7 @@ function getEventKindType(input: string) {
 }
 
 async function formatCode(toolName: string, toolInput: string) {
+    // Dynamic imports to keep bundle size down.
     const prettier = await import("prettier/standalone");
     const babelPlugin = await import("prettier/plugins/babel");
     const estreePlugin = await import("prettier/plugins/estree");

@@ -1,8 +1,5 @@
-import React, { CSSProperties, useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import React, { CSSProperties, useState, useEffect } from 'react';
 import './PdfPreview.css';
-
-pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.min.js';
 
 export interface PdfPreviewProps {
     url: string | undefined;
@@ -12,13 +9,15 @@ export interface PdfPreviewProps {
     onLoad?: () => void;
     innerRef?: React.Ref<HTMLDivElement>;
 }
-
+ 
 /**
  * This component can be used to render a preview of the first page of a PDF.
  */
 export default function PdfPreview(props: PdfPreviewProps) {
+
     const [pageHeight, setPageHeight] = useState<number>();
     const [pageWidth, setPageWidth] = useState<number>();
+    const [reactPdf, setReactPdf] = useState<any>();
 
     if (!props.url) return null;
 
@@ -27,12 +26,26 @@ export default function PdfPreview(props: PdfPreviewProps) {
 
     const scale = Math.min(heightScale, widthScale);
 
+    useEffect(() => {
+        const loadPdfPreview = async function () {
+        // Dynamic imports to keep bundle size down.
+        const reactPdfImport = await import("react-pdf");
+        reactPdfImport.pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.min.js';
+        setReactPdf(reactPdfImport);
+        }    
+        loadPdfPreview();
+    }, []);
+   
+    if (!reactPdf) {
+        return <p>Loading!</p>;
+    }
+
     return <div className="mdhui-pdf-preview" style={props.style} ref={props.innerRef}>
-        <Document file={props.url}>
-            <Page
+        <reactPdf.Document file={props.url}>
+            <reactPdf.Page
                 pageNumber={1}
                 scale={scale}
-                onLoadSuccess={page => {
+                onLoadSuccess={(page : any) => {
                     if (!pageHeight) {
                         setPageHeight(page.height);
                         setPageWidth(page.width);
@@ -43,6 +56,6 @@ export default function PdfPreview(props: PdfPreviewProps) {
                 renderTextLayer={false}
                 renderAnnotationLayer={false}
             />
-        </Document>
+        </reactPdf.Document>
     </div>;
 }
