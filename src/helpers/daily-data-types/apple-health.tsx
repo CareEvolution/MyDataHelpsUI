@@ -1,13 +1,14 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import {
     appleHealthActiveEnergyBurnedDataProvider, appleHealthDistanceDataProvider, appleHealthEstimatedAppleWatchWearTimeDataProvider, appleHealthFlightsClimbedDataProvider, appleHealthHeartRateRangeDataProvider,
-    appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
+    appleHealthHrvDataProvider, appleHealthInBedDataProvider, appleHealthMaxHeartRateDataProvider, appleHealthMinHeartRateDataProvider, appleHealthRestingHeartRateDataProvider,
     appleHealthSleepCoreDataProvider, appleHealthSleepDataProvider, appleHealthSleepDeepDataProvider, appleHealthSleepRemDataProvider,
     appleHealthStandTimeDataProvider, appleHealthStepsDataProvider, appleHealthWalkingHeartRateAverageDataProvider,
-    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider
+    appleHealthNumberOfAlcoholicBeveragesDataProvider, appleHealthMindfulMinutesDataProvider, appleHealthTherapyMinutesDataProvider, appleHealthStepsWhileWearingDeviceDataProvider,
+    appleHealthBloodGlucoseDataProvider, appleHealthMinBloodGlucoseDataProvider, appleHealthMaxBloodGlucoseDataProvider
 } from "../daily-data-providers";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faPerson, faRoute, faStairs, faCocktail, faHourglassHalf, faShoePrints, faHandBackFist } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faCocktail, faDroplet, faFireFlameCurved, faHandBackFist, faHeartbeat, faHourglassHalf, faPerson, faRoute, faShoePrints, faStairs } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, hrvFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
 import { simpleAvailabilityCheck } from "./availability-check";
@@ -47,7 +48,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthHeartRateRange,
         dataProvider: appleHealthHeartRateRangeDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Hourly Minimum Heart Rate", "Hourly Maximum Heart Rate"], { requireAllTypes: true }),
         labelKey: "heart-rate-range",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -65,16 +66,25 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthMaxHeartRate,
         dataProvider: appleHealthMaxHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlyMaximumHeartRate"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Hourly Maximum Heart Rate"]),
         labelKey: "max-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
         previewDataRange: [100, 180]
     },
     {
+        type: DailyDataType.AppleHealthMinHeartRate,
+        dataProvider: appleHealthMinHeartRateDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Hourly Minimum Heart Rate"]),
+        labelKey: "min-heart-rate",
+        icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
+        formatter: heartRateFormatter,
+        previewDataRange: [50, 80]
+    },
+    {
         type: DailyDataType.AppleHealthMindfulMinutes,
         dataProvider: appleHealthMindfulMinutesDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "MindfulSession"),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "Mindful Sessions"),
         labelKey: "mindful-minutes",
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),
@@ -83,7 +93,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthRestingHeartRate,
         dataProvider: appleHealthRestingHeartRateDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["RestingHeartRate"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Resting Heart Rate"]),
         labelKey: "resting-heart-rate",
         icon: <FontAwesomeSvgIcon icon={faHeartbeat} />,
         formatter: heartRateFormatter,
@@ -92,7 +102,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthSleepMinutes,
         dataProvider: appleHealthSleepDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -102,7 +112,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthCoreSleepMinutes,
         dataProvider: appleHealthSleepCoreDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "core-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -112,7 +122,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthDeepSleepMinutes,
         dataProvider: appleHealthSleepDeepDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "deep-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -122,7 +132,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthRemSleepMinutes,
         dataProvider: appleHealthSleepRemDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "rem-sleep-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -132,7 +142,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthInBedMinutes,
         dataProvider: appleHealthInBedDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["SleepAnalysisInterval"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Sleep Analysis"]),
         labelKey: "in-bed-time",
         icon: <FontAwesomeSvgIcon icon={faBed} />,
         formatter: minutesFormatter,
@@ -151,7 +161,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthSteps,
         dataProvider: appleHealthStepsDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["HourlySteps"]),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Hourly Steps"]),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -160,7 +170,7 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
     {
         type: DailyDataType.AppleHealthStepsWhileWearingDevice,
         dataProvider: appleHealthStepsWhileWearingDeviceDataProvider,
-        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "HourlySteps"),
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", "Hourly Steps"),
         labelKey: "steps",
         icon: <FontAwesomeSvgIcon icon={faShoePrints} />,
         formatter: defaultFormatter,
@@ -202,6 +212,33 @@ let appleHealthTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faCocktail} />,
         formatter: defaultFormatter,
         previewDataRange: [0, 20]
+    },
+    {
+        type: DailyDataType.AppleHealthBloodGlucose,
+        dataProvider: appleHealthBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [80, 160]
+    },
+    {
+        type: DailyDataType.AppleHealthMinBloodGlucose,
+        dataProvider: appleHealthMinBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose-min",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [60, 80]
+    },
+    {
+        type: DailyDataType.AppleHealthMaxBloodGlucose,
+        dataProvider: appleHealthMaxBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("AppleHealth", ["Blood Glucose"]),
+        labelKey: "blood-glucose-max",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [160, 180]
     }
 ];
 appleHealthTypeDefinitions.forEach((def) => {

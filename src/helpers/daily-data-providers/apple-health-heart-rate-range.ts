@@ -1,20 +1,15 @@
 ﻿import { DailyDataQueryResult } from "../query-daily-data";
-import { getFloatValue, getStartDate, queryForDailyData } from "./daily-data";
-import { DeviceDataPoint } from "@careevolution/mydatahelps-js";
+import { appleHealthMaxHeartRateDataProvider, appleHealthMinHeartRateDataProvider } from './index';
 
-export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
-    const dailyData = await queryForDailyData("AppleHealth", ["HourlyMaximumHeartRate", "HourlyMinimumHeartRate"], startDate, endDate, getStartDate);
+export default async function(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+    const [minResult, maxResult] = await Promise.all([
+        appleHealthMinHeartRateDataProvider(startDate, endDate),
+        appleHealthMaxHeartRateDataProvider(startDate, endDate)
+    ]);
 
-    const getHeartRate = (dataPoints: DeviceDataPoint[], type: string, aggregateFn: typeof Math.min | typeof Math.max): number => {
-        const typeFilteredDataPoints = dataPoints.filter(dataPoint => dataPoint.type === type);
-        return typeFilteredDataPoints.length > 0 ? aggregateFn(...typeFilteredDataPoints.map(getFloatValue)) : 0;
-    };
-
-    return Object.entries(dailyData).reduce((result, [dayKey, dataPoints]) => {
-        const maxHeartRate = getHeartRate(dataPoints, "HourlyMaximumHeartRate", Math.max);
-        const minHeartRate = getHeartRate(dataPoints, "HourlyMinimumHeartRate", Math.min);
-        if (maxHeartRate && minHeartRate) {
-            result[dayKey] = maxHeartRate - minHeartRate;
+    return Object.entries(minResult).reduce((result, [dayKey, minHeartRate]) => {
+        if (maxResult[dayKey] > minHeartRate) {
+            result[dayKey] = maxResult[dayKey] - minHeartRate;
         }
         return result;
     }, {} as DailyDataQueryResult);

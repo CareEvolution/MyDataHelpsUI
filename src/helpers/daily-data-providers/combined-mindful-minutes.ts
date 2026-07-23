@@ -8,7 +8,7 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
 
     const { settings, deviceDataV2Types } = await getCombinedDataCollectionSettings(true);
 
-    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'AppleHealth' && type.type === 'MindfulSession')) {
+    if (settings.appleHealthEnabled && deviceDataV2Types.some(type => type.namespace === 'AppleHealth' && type.type === 'Mindful Sessions')) {
         providers.push(appleHealthMindfulMinutesDataProvider(startDate, endDate));
     }
     if (settings.googleFitEnabled && settings.queryableDeviceDataTypes.some(type => type.namespace === 'GoogleFit' && type.type === 'ActivitySegment')) {

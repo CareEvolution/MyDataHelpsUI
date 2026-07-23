@@ -14,7 +14,7 @@ export default async function (startDate: Date, endDate: Date, includeGoogleFit?
     if (settings.garminEnabled) {
         providers.push(garminStepsDataProvider(startDate, endDate));
     }
-    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "HourlySteps")) {
+    if (settings.appleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "Hourly Steps")) {
         providers.push(appleHealthStepsDataProvider(startDate, endDate));
     }
     if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "HealthConnect" && ddt.type === "steps-daily")) {

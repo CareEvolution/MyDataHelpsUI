@@ -121,15 +121,15 @@ describe('Daily Data Provider - Combined Therapy Minutes', () => {
         expect(combinedFirstValueResultMock).not.toHaveBeenCalled();
     });
 
-    it('Should return a combined first-value result when both sources are fully enabled.', async () => {
+    it('Should return a combined first-value result when multiple sources are fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
         combinedSettings.settings.googleFitEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
             { namespace: 'AppleHealth', type: 'MindfulSession' },
             { namespace: 'GoogleFit', type: 'SilverCloudSession' }
         );
-        combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.deviceDataV2Types.push(
             { namespace: 'HealthConnect', type: 'exercise-session', enabled: true }
         );

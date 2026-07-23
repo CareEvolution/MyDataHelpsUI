@@ -1,3 +1,5 @@
+import * as dailyDataAggregateFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-aggregate';
+import { AggregateFunction } from '../../src/helpers/daily-data-providers/daily-data/daily-data-aggregate';
 import * as dailyDataQueryFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-query';
 import { DailyData, DailyDataDateFunction, DailyDataV2, DailyDataValueFunction, DeviceDataV2QueryFilters } from '../../src/helpers/daily-data-providers/daily-data';
 import * as dailyDataResultFunctions from '../../src/helpers/daily-data-providers/daily-data/daily-data-result';
@@ -108,6 +110,43 @@ export function setupDailyDataV2(
     );
 }
 
+export function setupAggregateDailyData(
+    expectedNamespace: DeviceDataV2Namespace,
+    expectedType: string,
+    expectedStartDate: Date,
+    expectedEndDate: Date,
+    expectedAggregateFn: AggregateFunction,
+    result: DailyDataQueryResult,
+    optionalScaleFactor?: number
+): void {
+    jest.spyOn(dailyDataAggregateFunctions, 'queryAggregateDailyData').mockImplementation(
+        (
+            actualNamespace: DeviceDataV2Namespace,
+            actualType: string,
+            actualStartDate: Date,
+            actualEndDate: Date,
+            actualAggregateFn: AggregateFunction,
+            actualScaleFactor: number | undefined
+        ): Promise<DailyDataQueryResult> => {
+            if (actualNamespace !== expectedNamespace) return Promise.reject();
+            if (actualType !== expectedType) return Promise.reject();
+            if (!isEqual(actualStartDate, expectedStartDate)) return Promise.reject();
+            if (!isEqual(actualEndDate, expectedEndDate)) return Promise.reject();
+            if (actualAggregateFn !== expectedAggregateFn) return Promise.reject();
+            if (actualScaleFactor !== optionalScaleFactor) return Promise.reject();
+            return Promise.resolve(result);
+        }
+    );
+}
+
+export function setupMinValueResult(
+    dailyData: DailyData | DailyDataV2,
+    result: DailyDataQueryResult,
+    valueFunctionEvaluator?: (valueFn: DailyDataValueFunction | undefined) => boolean
+): void {
+    setupResult('buildMinValueResult', dailyData, result, valueFunctionEvaluator ?? (valueFn => !valueFn));
+}
+
 export function setupMaxValueResult(
     dailyData: DailyData | DailyDataV2,
     result: DailyDataQueryResult,
@@ -141,7 +180,7 @@ export function setupMostRecentValueResult(
 }
 
 function setupResult(
-    functionName: 'buildMaxValueResult' | 'buildTotalValueResult' | 'buildAverageValueResult' | 'buildMostRecentValueResult',
+    functionName: 'buildMinValueResult' | 'buildMaxValueResult' | 'buildTotalValueResult' | 'buildAverageValueResult' | 'buildMostRecentValueResult',
     expectedDailyData: DailyData | DailyDataV2,
     result: DailyDataQueryResult,
     valueFunctionEvaluator: (valueFn: DailyDataValueFunction | undefined) => boolean
