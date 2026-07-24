@@ -1,4 +1,4 @@
-import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDataProvider, garminActiveCaloriesDataProvider, healthConnectActiveCaloriesBurnedDataProvider, ouraActiveCaloriesBurnedDataProvider } from '.';
+import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDataProvider, garminActiveCaloriesDataProvider, googleHealthActiveCaloriesBurnedDataProvider, healthConnectActiveCaloriesBurnedDataProvider, ouraActiveCaloriesBurnedDataProvider } from '.';
 import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from './combined-data-collection-settings';
 import { DailyDataQueryResult } from '../query-daily-data';
 import { combineResultsUsingMaxValue } from './daily-data';
@@ -33,6 +33,11 @@ export default async function(startDate: Date, endDate: Date, combinedDataCollec
     const ouraSupportedApisQuery: SupportedAPIsQuery = { namespace: 'Oura', types: ['daily-activity'], requireAllTypes: false };
     if (getSupportedApis(combinedDataCollectionSettings, ouraSupportedApisQuery).v2.enabled) {
         providers.push(ouraActiveCaloriesBurnedDataProvider(startDate, endDate));
+    }
+
+    const googleHealthSupportedApisQuery: SupportedAPIsQuery = { namespace: 'GoogleHealth', types: ['activeEnergyBurned-daily'], requireAllTypes: false };
+    if (getSupportedApis(combinedDataCollectionSettings, googleHealthSupportedApisQuery).v2.enabled) {
+        providers.push(googleHealthActiveCaloriesBurnedDataProvider(startDate, endDate));
     }
 
     if (providers.length === 0) return {};

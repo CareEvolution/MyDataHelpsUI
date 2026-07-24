@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
+import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, googleHealthTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from '../../../src/helpers/daily-data-providers';
 import combinedSleep from '../../../src/helpers/daily-data-providers/combined-sleep';
 
 jest.mock('../../../src/helpers/daily-data-providers/fitbit-sleep', () => ({
@@ -29,6 +29,11 @@ jest.mock('../../../src/helpers/daily-data-providers/oura-total-sleep', () => ({
     default: jest.fn()
 }));
 
+jest.mock('../../../src/helpers/daily-data-providers/google-health-sleep', () => ({
+    __esModule: true,
+    totalSleepMinutes: jest.fn()
+}));
+
 describe('Daily Data Provider - Combined Sleep', () => {
 
     const fitbitTotalSleepMinutesDataProviderMock = fitbitTotalSleepMinutesDataProvider as jest.Mock;
@@ -36,6 +41,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
     const appleHealthSleepDataProviderMock = appleHealthSleepDataProvider as jest.Mock;
     const healthConnectTotalSleepMinutesDataProviderMock = healthConnectTotalSleepMinutesDataProvider as jest.Mock;
     const ouraSleepMinutesDataProviderMock = ouraSleepMinutesDataProvider as jest.Mock;
+    const googleHealthTotalSleepMinutesDataProviderMock = googleHealthTotalSleepMinutesDataProvider as jest.Mock;
     const combinedMaxValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingMaxValue');
 
     beforeEach(() => {
@@ -55,6 +61,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -74,6 +81,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -93,6 +101,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -112,6 +121,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -134,6 +144,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -156,6 +167,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -178,6 +190,30 @@ describe('Daily Data Provider - Combined Sleep', () => {
         expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Google Health result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.googleHealthEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'GoogleHealth', type: 'sleep-list-session-asleep', enabled: true }
+        );
+
+        const googleHealthResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(googleHealthTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleHealthResult);
+
+        const result = await combinedSleep(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(googleHealthResult);
+        expect(fitbitTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(garminTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthSleepDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectTotalSleepMinutesDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraSleepMinutesDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -188,12 +224,14 @@ describe('Daily Data Provider - Combined Sleep', () => {
         combinedSettings.settings.appleHealthEnabled = true;
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.settings.googleHealthEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
             { namespace: 'AppleHealth', type: 'SleepAnalysisInterval' }
         );
         combinedSettings.deviceDataV2Types.push(
             { namespace: 'HealthConnect', type: 'sleep', enabled: true },
-            { namespace: 'Oura', type: 'sleep', enabled: true }
+            { namespace: 'Oura', type: 'sleep', enabled: true },
+            { namespace: 'GoogleHealth', type: 'sleep-list-session-asleep', enabled: true }
         );
 
         const fitbitResult = createMockResult();
@@ -201,6 +239,7 @@ describe('Daily Data Provider - Combined Sleep', () => {
         const appleHealthResult = createMockResult();
         const healthConnectResult = createMockResult();
         const ouraResult = createMockResult();
+        const googleHealthResult = createMockResult();
 
         setupCombinedDataCollectionSettings(true, combinedSettings);
         setupDailyDataProvider(fitbitTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
@@ -208,7 +247,8 @@ describe('Daily Data Provider - Combined Sleep', () => {
         setupDailyDataProvider(appleHealthSleepDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
         setupDailyDataProvider(healthConnectTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
         setupDailyDataProvider(ouraSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
-        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, ouraResult], sampleResult);
+        setupDailyDataProvider(googleHealthTotalSleepMinutesDataProviderMock, sampleStartDate, sampleEndDate, googleHealthResult);
+        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, ouraResult, googleHealthResult], sampleResult);
 
         const result = await combinedSleep(sampleStartDate, sampleEndDate);
 

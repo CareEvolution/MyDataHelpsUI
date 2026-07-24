@@ -13,7 +13,8 @@ const RESTING_HEART_RATE_SOURCES = sources(
     ["Fitbit", "RestingHeartRate"],
     ["Garmin", "Daily"],
     ["Oura", "sleep"],
-    ["HealthConnect", "resting-heart-rate"]
+    ["HealthConnect", "resting-heart-rate"],
+    ["GoogleHealth", "dailyRestingHeartRate-list-beatsPerMinute"]
 );
 
 const STEPS_SOURCES = sources(
@@ -21,7 +22,8 @@ const STEPS_SOURCES = sources(
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
     ["HealthConnect", "steps-daily"],
-    ["Oura", "daily-activity"]
+    ["Oura", "daily-activity"],
+    ["GoogleHealth", "steps-daily"]
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
@@ -30,7 +32,8 @@ const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
     ["HealthConnect", "steps-daily"],
-    ["Oura", "daily-activity"]
+    ["Oura", "daily-activity"],
+    ["GoogleHealth", "steps-daily"]
 );
 
 const SLEEP_MINUTES_SOURCES = sources(
@@ -38,7 +41,8 @@ const SLEEP_MINUTES_SOURCES = sources(
     ["Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]],
     ["Garmin", "Sleep"],
     ["Oura", "sleep"],
-    ["HealthConnect", "sleep"]
+    ["HealthConnect", "sleep"],
+    ["GoogleHealth", "sleep-list-session-asleep"]
 );
 
 const MINDFUL_MINUTES_SOURCES = sources(
@@ -59,7 +63,8 @@ const ACTIVE_CALORIES_BURNED_SOURCES = sources(
     ["AppleHealth", "ActiveEnergyBurned"],
     ["AppleHealth", "Active Energy Burned"],
     ["HealthConnect", "active-calories-burned-daily"],
-    ["Oura", "daily-activity"]
+    ["Oura", "daily-activity"],
+    ["GoogleHealth", "activeEnergyBurned-daily"]
 );
 
 const combinedTypeDefinitions: DailyDataTypeDefinition[] = [

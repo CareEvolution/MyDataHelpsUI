@@ -9,6 +9,7 @@ const enabledFlags: Record<Exclude<DeviceDataNamespace, 'Project'> | DeviceDataV
     Fitbit: 'fitbitEnabled',
     Garmin: 'garminEnabled',
     GoogleFit: 'googleFitEnabled',
+    GoogleHealth: 'googleHealthEnabled',
     HealthConnect: 'healthConnectEnabled',
     Omron: 'omronEnabled',
     Oura: 'ouraEnabled',

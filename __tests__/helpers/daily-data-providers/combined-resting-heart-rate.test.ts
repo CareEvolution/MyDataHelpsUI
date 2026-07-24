@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedRoundedAverageValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
-import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, healthConnectRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from '../../../src/helpers/daily-data-providers';
+import { appleHealthRestingHeartRateDataProvider, fitbitRestingHeartRateDataProvider, garminRestingHeartRateDataProvider, googleHealthRestingHeartRateDataProvider, healthConnectRestingHeartRateDataProvider, ouraRestingHeartRateDataProvider } from '../../../src/helpers/daily-data-providers';
 import combinedRestingHeartRate from '../../../src/helpers/daily-data-providers/combined-resting-heart-rate';
 
 jest.mock('../../../src/helpers/daily-data-providers/fitbit-resting-heart-rate', () => ({
@@ -29,6 +29,11 @@ jest.mock('../../../src/helpers/daily-data-providers/oura-resting-heart-rate', (
     default: jest.fn()
 }));
 
+jest.mock('../../../src/helpers/daily-data-providers/google-health-resting-heart-rate', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
 describe('Daily Data Provider - Combined Resting Heart Rate', () => {
 
     const fitbitRestingHeartRateDataProviderMock = fitbitRestingHeartRateDataProvider as jest.Mock;
@@ -36,6 +41,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
     const appleHealthRestingHeartRateDataProviderMock = appleHealthRestingHeartRateDataProvider as jest.Mock;
     const healthConnectRestingHeartRateDataProviderMock = healthConnectRestingHeartRateDataProvider as jest.Mock;
     const ouraRestingHeartRateDataProviderMock = ouraRestingHeartRateDataProvider as jest.Mock;
+    const googleHealthRestingHeartRateDataProviderMock = googleHealthRestingHeartRateDataProvider as jest.Mock;
     const combinedRoundedAverageValueResultMock = jest.spyOn(dailyDataResultFunctions, 'combineResultsUsingRoundedAverageValue');
 
     beforeEach(() => {
@@ -55,6 +61,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -74,6 +81,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -93,6 +101,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -112,6 +121,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -134,6 +144,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(garminRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -156,6 +167,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(garminRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -178,6 +190,30 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         expect(garminRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Google Health result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.googleHealthEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'GoogleHealth', type: 'dailyRestingHeartRate-list-beatsPerMinute', enabled: true }
+        );
+
+        const googleHealthResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(googleHealthRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, googleHealthResult);
+
+        const result = await combinedRestingHeartRate(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(googleHealthResult);
+        expect(fitbitRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(garminRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraRestingHeartRateDataProviderMock).not.toHaveBeenCalled();
         expect(combinedRoundedAverageValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -188,12 +224,14 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         combinedSettings.settings.appleHealthEnabled = true;
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
+        combinedSettings.settings.googleHealthEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
             { namespace: 'AppleHealth', type: 'RestingHeartRate' }
         );
         combinedSettings.deviceDataV2Types.push(
             { namespace: 'HealthConnect', type: 'resting-heart-rate', enabled: true },
-            { namespace: 'Oura', type: 'sleep', enabled: true }
+            { namespace: 'Oura', type: 'sleep', enabled: true },
+            { namespace: 'GoogleHealth', type: 'dailyRestingHeartRate-list-beatsPerMinute', enabled: true }
         );
 
         const fitbitResult = createMockResult();
@@ -201,6 +239,7 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         const appleHealthResult = createMockResult();
         const healthConnectResult = createMockResult();
         const ouraResult = createMockResult();
+        const googleHealthResult = createMockResult();
 
         setupCombinedDataCollectionSettings(true, combinedSettings);
         setupDailyDataProvider(fitbitRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
@@ -208,7 +247,8 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         setupDailyDataProvider(appleHealthRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
         setupDailyDataProvider(healthConnectRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
         setupDailyDataProvider(ouraRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
-        setupCombinedRoundedAverageValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, ouraResult], sampleResult);
+        setupDailyDataProvider(googleHealthRestingHeartRateDataProviderMock, sampleStartDate, sampleEndDate, googleHealthResult);
+        setupCombinedRoundedAverageValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, ouraResult, googleHealthResult], sampleResult);
 
         const result = await combinedRestingHeartRate(sampleStartDate, sampleEndDate);
 
