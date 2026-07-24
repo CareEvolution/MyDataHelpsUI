@@ -22,5 +22,5 @@ export function getOuraProviderID() {
 
 // TODO: Replace these placeholders with the real Google Health dev/prod provider IDs once provisioned.
 export function getGoogleHealthProviderID() {
-    return isDevelopment() ? 46913 : 0;
+    return isDevelopment() ? 46913 : 49369;
 }
