@@ -1,7 +1,19 @@
 import { DataCollectionSettings, ExternalAccount, ExternalAccountProvider, HealthConnectStatus, ParticipantInfo } from "@careevolution/mydatahelps-js";
-import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
+import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 
 export const previewAccounts:ExternalAccount[] = [
+        {
+            id: 6,
+            lastRefreshDate: "",
+            provider: {
+                category: "Device Manufacturer",
+                id: getGoogleHealthProviderID(),
+                name: "Google Health",
+                logoUrl: "",
+                enabled: true
+            } as ExternalAccountProvider,
+            status: "fetchComplete"
+        },
         {
             id: 1,
             lastRefreshDate: "",
@@ -86,6 +98,7 @@ export const previewSettings:DataCollectionSettings = {
     omronEnabled: true,
     healthConnectEnabled: true,
     googleFitEnabled: true,
+    googleHealthEnabled: true,
     appleHealthEnabled: true,
     appleHealthRecordsEnabled: true
 };

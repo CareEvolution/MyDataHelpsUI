@@ -379,6 +379,8 @@
     "connect-fitbit-intro": "Możesz udostępniać dane ze swojego konta Fitbit, jeśli je posiadasz. Aby rozpocząć, kliknij poniżej, aby się zalogować za pomocą swoich danych do Fitbit.",
     "connect-garmin-button": "Połącz Garmin",
     "connect-garmin-intro": "Możesz udostępniać dane ze swojego konta Garmin, jeśli je posiadasz. Aby rozpocząć, kliknij poniżej, aby się zalogować za pomocą swoich danych do Garmin.",
+    "connect-google-health-button": "Połącz Google Health",
+    "connect-google-health-intro": "Możesz udostępniać dane z konta Google Health, jeśli je posiadasz. Aby rozpocząć, kliknij lub naciśnij poniżej, aby zalogować się przy użyciu danych logowania Google Health.",
     "connect-oura-button": "Połącz Oura",
     "connect-oura-intro": "Możesz udostępniać dane ze swojego konta Oura, jeśli je posiadasz. Aby rozpocząć, kliknij poniżej, aby się zalogować za pomocą swoich danych do Oura.",
     "connect-to-device": "Połącz z @@DEVICE@@",
@@ -583,6 +585,7 @@
     "received-dexcom-data": "Otrzymujemy twoje dane z Dexcom!",
     "received-fitbit-data": "Otrzymujemy twoje dane z Fitbit!",
     "received-garmin-data": "Otrzymujemy twoje dane z Garmin!",
+    "received-google-health-data": "Otrzymujemy Twoje dane z Google Health!",
     "received-oura-data": "Otrzymujemy twoje dane z Oura!",
     "recent-daily-data-bar-chart-no-data": "Brak danych",
     "recent-daily-data-bar-chart-subtitle": "Ostatnie 7 dni",
@@ -659,6 +662,7 @@
     "view": "Wyświetl",
     "view-all": "Wyświetl wszystko",
     "walking-heart-rate-average": "Średnie tętno podczas chodzenia",
+    "wear-time": "Czas noszenia",
     "weekly": "Cotygodniowo",
     "yesterday": "Wczoraj"
 }

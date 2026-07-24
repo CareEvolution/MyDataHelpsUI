@@ -8,8 +8,25 @@ function getHeartRateTypeForNamespace(namespace: DeviceDataV2Namespace): string 
     if (namespace === "AppleHealth") return "Heart Rate";
     if (namespace === "Fitbit") return "activities-heart-intraday";
     if (namespace === "Garmin") return "daily-heartRate";
+    if (namespace === "GoogleHealth") return "heartRate-list";
     // Oura, Health Connect
     return "heart-rate";
+}
+
+// When Fitbit is a data source and Google Health is not already listed, prefer Google Health
+// over Fitbit (Fitbit is being retired in favor of it) by inserting Google Health right before
+// Fitbit, so Google Health wins each interval and Fitbit only fills the intervals it is
+// missing. If the caller already lists Google Health explicitly, their ordering is left as-is
+// (whichever of Google Health / Fitbit comes first wins, since the merge keeps the first value
+// per interval).
+export function withGoogleHealthPreferred(dataSources: DeviceDataV2Namespace[]): DeviceDataV2Namespace[] {
+    const fitbitIndex = dataSources.indexOf("Fitbit");
+    if (fitbitIndex === -1 || dataSources.includes("GoogleHealth")) {
+        return dataSources;
+    }
+    const withPreferred = [...dataSources];
+    withPreferred.splice(fitbitIndex, 0, "GoogleHealth");
+    return withPreferred;
 }
 
 export default async function (dataSources: DeviceDataV2Namespace[], startDate: Date, endDate: Date,
@@ -18,7 +35,7 @@ export default async function (dataSources: DeviceDataV2Namespace[], startDate: 
     var providers: Promise<DeviceDataV2Aggregate[]>[] = [];
     var data: IntradayHeartRateData = {};
 
-    dataSources.forEach(dataSource => {
+    withGoogleHealthPreferred(dataSources).forEach(dataSource => {
         const params: DeviceDataV2AggregateQuery = {
             type: getHeartRateTypeForNamespace(dataSource),
             namespace: dataSource,

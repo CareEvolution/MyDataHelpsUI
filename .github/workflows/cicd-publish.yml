@@ -20,7 +20,8 @@ jobs:
                     node-version: '20.x'
                     registry-url: 'https://registry.npmjs.org'
             -   name: Update npm
-                run: npm install -g npm@latest
+                # Pin to npm 11: npm@latest is now 12.x which requires Node >=22, but this job runs on Node 20.
+                run: npm install -g npm@11
             -   name: Install Dependencies
                 run: npm ci
             -   name: Run Build

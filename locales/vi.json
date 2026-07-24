@@ -379,6 +379,8 @@
     "connect-fitbit-intro": "Bạn có thể chia sẻ dữ liệu từ tài khoản Fitbit nếu bạn có. Để bắt đầu, nhấp hoặc chạm vào bên dưới để đăng nhập bằng thông tin đăng nhập Fitbit của bạn.",
     "connect-garmin-button": "Kết nối Garmin",
     "connect-garmin-intro": "Bạn có thể chia sẻ dữ liệu từ tài khoản Garmin nếu bạn có. Để bắt đầu, nhấp hoặc chạm vào bên dưới để đăng nhập bằng thông tin đăng nhập Garmin của bạn.",
+    "connect-google-health-button": "Kết nối với Google Health",
+    "connect-google-health-intro": "Bạn có thể chia sẻ dữ liệu từ tài khoản Google Health của mình nếu bạn có. Để bắt đầu, hãy nhấp hoặc chạm vào bên dưới để đăng nhập bằng thông tin đăng nhập Google Health của bạn.",
     "connect-oura-button": "Kết nối Oura",
     "connect-oura-intro": "Bạn có thể chia sẻ dữ liệu từ tài khoản Oura nếu bạn có. Để bắt đầu, nhấp hoặc chạm vào bên dưới để đăng nhập bằng thông tin đăng nhập Oura của bạn.",
     "connect-to-device": "Kết nối với @@DEVICE@@",
@@ -583,6 +585,7 @@
     "received-dexcom-data": "Chúng tôi đang nhận dữ liệu Dexcom của bạn!",
     "received-fitbit-data": "Chúng tôi đang nhận dữ liệu Fitbit của bạn!",
     "received-garmin-data": "Chúng tôi đang nhận dữ liệu Garmin của bạn!",
+    "received-google-health-data": "Chúng tôi đang nhận dữ liệu Google Health của bạn!",
     "received-oura-data": "Chúng tôi đang nhận dữ liệu Oura của bạn!",
     "recent-daily-data-bar-chart-no-data": "Không có dữ liệu",
     "recent-daily-data-bar-chart-subtitle": "7 ngày qua",
@@ -659,6 +662,7 @@
     "view": "Xem",
     "view-all": "Xem tất cả",
     "walking-heart-rate-average": "Nhịp tim trung bình khi đi bộ",
+    "wear-time": "Thời gian đeo",
     "weekly": "Hàng tuần",
     "yesterday": "Hôm qua"
 }

@@ -379,6 +379,8 @@
     "connect-fitbit-intro": "Poți partaja date din contul tău Fitbit dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Fitbit.",
     "connect-garmin-button": "Conectează Garmin",
     "connect-garmin-intro": "Poți partaja date din contul tău Garmin dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Garmin.",
+    "connect-google-health-button": "Conectează Google Health",
+    "connect-google-health-intro": "Poți partaja date din contul tău Google Health, dacă ai unul. Pentru a începe, dă clic sau atinge mai jos pentru a te conecta cu datele tale de autentificare Google Health.",
     "connect-oura-button": "Conectează Oura",
     "connect-oura-intro": "Poți partaja date din contul tău Oura dacă ai unul. Pentru a începe, apasă mai jos pentru a te autentifica cu credențialele tale Oura.",
     "connect-to-device": "Conectează-te la @@DEVICE@@",
@@ -583,6 +585,7 @@
     "received-dexcom-data": "Primim datele tale Dexcom!",
     "received-fitbit-data": "Primim datele tale Fitbit!",
     "received-garmin-data": "Primim datele tale Garmin!",
+    "received-google-health-data": "Primim datele dvs. Google Health!",
     "received-oura-data": "Primim datele tale Oura!",
     "recent-daily-data-bar-chart-no-data": "Fără date",
     "recent-daily-data-bar-chart-subtitle": "Ultimele 7 zile",
@@ -659,6 +662,7 @@
     "view": "Vizualizează",
     "view-all": "Vezi toate",
     "walking-heart-rate-average": "Media ritmului cardiac la mers",
+    "wear-time": "Timp de purtare",
     "weekly": "Săptămânal",
     "yesterday": "Ieri"
 }
