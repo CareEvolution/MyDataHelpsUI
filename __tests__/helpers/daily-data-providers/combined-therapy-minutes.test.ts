@@ -64,8 +64,8 @@ describe('Daily Data Provider - Combined Therapy Minutes', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'MindfulSession' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Mindful Sessions', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -127,10 +127,10 @@ describe('Daily Data Provider - Combined Therapy Minutes', () => {
         combinedSettings.settings.googleFitEnabled = true;
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'MindfulSession' },
             { namespace: 'GoogleFit', type: 'SilverCloudSession' }
         );
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Mindful Sessions', enabled: true },
             { namespace: 'HealthConnect', type: 'exercise-session', enabled: true }
         );
 

@@ -52,7 +52,7 @@ const MINDFUL_MINUTES_SOURCES = sources(
 );
 
 const THERAPY_MINUTES_SOURCES = sources(
-    ["AppleHealth", "MindfulSession"],
+    ["AppleHealth", "Mindful Sessions"],
     ["GoogleFit", "SilverCloudSession"],
     ["HealthConnect", "exercise-session", { v2QueryFilters: EXERCISE_SESSION_FILTERS }]
 );

@@ -202,6 +202,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
     });
 
@@ -271,6 +272,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
