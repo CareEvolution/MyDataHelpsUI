@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
 import combinedSteps from '../../../src/helpers/daily-data-providers/combined-steps';
 import * as dailyDataResultFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-result';
-import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider, googleHealthStepsDataProvider, ouraStepsDataProvider } from '../../../src/helpers/daily-data-providers';
+import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider, googleHealthStepsDataProvider, healthConnectStepsDataProvider, ouraStepsDataProvider } from '../../../src/helpers/daily-data-providers';
 
 jest.mock('../../../src/helpers/daily-data-providers/fitbit-steps', () => ({
     __esModule: true,
@@ -15,6 +15,11 @@ jest.mock('../../../src/helpers/daily-data-providers/garmin-steps', () => ({
 }));
 
 jest.mock('../../../src/helpers/daily-data-providers/apple-health-steps', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
+jest.mock('../../../src/helpers/daily-data-providers/health-connect-steps', () => ({
     __esModule: true,
     default: jest.fn()
 }));
@@ -39,6 +44,7 @@ describe('Daily Data Provider - Combined Steps', () => {
     const fitbitStepsDataProviderMock = fitbitStepsDataProvider as jest.Mock;
     const garminStepsDataProviderMock = garminStepsDataProvider as jest.Mock;
     const appleHealthStepsDataProviderMock = appleHealthStepsDataProvider as jest.Mock;
+    const healthConnectStepsDataProviderMock = healthConnectStepsDataProvider as jest.Mock;
     const googleFitStepsDataProviderMock = googleFitStepsDataProvider as jest.Mock;
     const ouraStepsDataProviderMock = ouraStepsDataProvider as jest.Mock;
     const googleHealthStepsDataProviderMock = googleHealthStepsDataProvider as jest.Mock;
@@ -59,6 +65,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -68,6 +75,7 @@ describe('Daily Data Provider - Combined Steps', () => {
     it('Should return an empty result when providers are enabled, but not the correct data types.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.googleFitEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
 
@@ -79,6 +87,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -100,6 +109,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -120,6 +130,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(result).toBe(fitbitResult);
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -140,6 +151,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(result).toBe(garminResult);
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -149,8 +161,8 @@ describe('Daily Data Provider - Combined Steps', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'HourlySteps' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Hourly Steps', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -163,6 +175,31 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(result).toBe(appleHealthResult);
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the Health Connect result when fully enabled.', async () => {
+        const combinedSettings = createEmptyCombinedDataCollectionSettings();
+        combinedSettings.settings.healthConnectEnabled = true;
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'HealthConnect', type: 'steps-daily', enabled: true }
+        );
+
+        const healthConnectResult = createMockResult();
+
+        setupCombinedDataCollectionSettings(true, combinedSettings);
+        setupDailyDataProvider(healthConnectStepsDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
+
+        const result = await combinedSteps(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(healthConnectResult);
+        expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
@@ -187,6 +224,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
@@ -210,6 +248,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleHealthStepsDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
@@ -233,6 +272,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         expect(fitbitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(garminStepsDataProviderMock).not.toHaveBeenCalled();
         expect(appleHealthStepsDataProviderMock).not.toHaveBeenCalled();
+        expect(healthConnectStepsDataProviderMock).not.toHaveBeenCalled();
         expect(googleFitStepsDataProviderMock).not.toHaveBeenCalled();
         expect(ouraStepsDataProviderMock).not.toHaveBeenCalled();
         expect(combinedMaxValueResultMock).not.toHaveBeenCalled();
@@ -243,14 +283,16 @@ describe('Daily Data Provider - Combined Steps', () => {
         combinedSettings.settings.fitbitEnabled = true;
         combinedSettings.settings.garminEnabled = true;
         combinedSettings.settings.appleHealthEnabled = true;
+        combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.googleFitEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
         combinedSettings.settings.googleHealthEnabled = true;
         combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'HourlySteps' },
             { namespace: 'GoogleFit', type: 'Steps' }
         );
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Hourly Steps', enabled: true },
+            { namespace: 'HealthConnect', type: 'steps-daily', enabled: true },
             { namespace: 'Oura', type: 'daily-activity', enabled: true },
             { namespace: 'GoogleHealth', type: 'steps-daily', enabled: true }
         );
@@ -258,6 +300,7 @@ describe('Daily Data Provider - Combined Steps', () => {
         const fitbitResult = createMockResult();
         const garminResult = createMockResult();
         const appleHealthResult = createMockResult();
+        const healthConnectResult = createMockResult();
         const googleFitResult = createMockResult();
         const ouraResult = createMockResult();
         const googleHealthResult = createMockResult();
@@ -266,10 +309,11 @@ describe('Daily Data Provider - Combined Steps', () => {
         setupDailyDataProvider(fitbitStepsDataProviderMock, sampleStartDate, sampleEndDate, fitbitResult);
         setupDailyDataProvider(garminStepsDataProviderMock, sampleStartDate, sampleEndDate, garminResult);
         setupDailyDataProvider(appleHealthStepsDataProviderMock, sampleStartDate, sampleEndDate, appleHealthResult);
+        setupDailyDataProvider(healthConnectStepsDataProviderMock, sampleStartDate, sampleEndDate, healthConnectResult);
         setupDailyDataProvider(googleFitStepsDataProviderMock, sampleStartDate, sampleEndDate, googleFitResult);
         setupDailyDataProvider(ouraStepsDataProviderMock, sampleStartDate, sampleEndDate, ouraResult);
         setupDailyDataProvider(googleHealthStepsDataProviderMock, sampleStartDate, sampleEndDate, googleHealthResult);
-        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, googleFitResult, ouraResult, googleHealthResult], sampleResult);
+        setupCombinedMaxValueResult(sampleStartDate, sampleEndDate, [fitbitResult, garminResult, appleHealthResult, healthConnectResult, googleFitResult, ouraResult, googleHealthResult], sampleResult);
 
         const result = await combinedSteps(sampleStartDate, sampleEndDate, true);
 

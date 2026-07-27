@@ -3,9 +3,9 @@ import getDayKey from '../get-day-key';
 import { DailyDataQueryResult } from '../query-daily-data';
 import queryAllDeviceDataV2Aggregates from '../query-all-device-data-v2-aggregates';
 import { DeviceDataV2Aggregate } from '@careevolution/mydatahelps-js';
-import { buildTotalValueResult, DailyData, getStartDate, queryForDailyData } from "./daily-data";
+import { queryAggregateDailyData } from './daily-data/daily-data-aggregate';
 
-export default async function (startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
+export default async function(startDate: Date, endDate: Date): Promise<DailyDataQueryResult> {
     const convertAggregatesToDates = (aggregates: DeviceDataV2Aggregate[]): string[] => {
         return aggregates.reduce((dates, aggregate) => {
             const dayKey = getDayKey(aggregate.date);
@@ -38,12 +38,9 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
         aggregateFunctions: ['sum']
     }).then(convertAggregatesToDates);
 
-    const dailyData = await queryForDailyData('AppleHealth', 'HourlySteps', startDate, endDate, getStartDate);
-
-    const filteredDailyData = Object.fromEntries(
-        Object.entries(dailyData).filter(([dayKey]) => watchDates.includes(dayKey) || ouraDates.includes(dayKey))
-    ) as DailyData;
-
-    return buildTotalValueResult(filteredDailyData);
+    const result = await queryAggregateDailyData('AppleHealth', 'Hourly Steps', startDate, endDate, 'sum');
+    return Object.fromEntries(
+        Object.entries(result).filter(([dayKey]) => watchDates.includes(dayKey) || ouraDates.includes(dayKey))
+    ) as DailyDataQueryResult;
 }
 

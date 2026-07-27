@@ -1,15 +1,15 @@
 import { FontAwesomeSvgIcon } from "react-fontawesome-svg-icon";
 import { DailyDataType, DailyDataTypeDefinition } from "../daily-data-types";
-import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
+import { faBed, faDroplet, faFireFlameCurved, faHeartbeat, faHourglassHalf, faShoePrints } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { defaultFormatter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from "./formatters";
-import { combinedActiveCaloriesBurnedDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
+import { combinedActiveCaloriesBurnedDataProvider, combinedBloodGlucoseDataProvider, combinedMindfulMinutesDataProvider, combinedRestingHeartRateDataProvider, combinedSleepDataProvider, combinedStepsDataProvider, combinedTherapyMinutesDataProvider } from "../daily-data-providers";
 import { combinedAvailabilityCheck, sources } from "./availability-check";
 import { formatNumberForLocale } from "../locale";
 import { EXERCISE_SESSION_FILTERS } from "../daily-data-providers/health-connect-therapy-minutes";
 
 const RESTING_HEART_RATE_SOURCES = sources(
-    ["AppleHealth", "RestingHeartRate"],
+    ["AppleHealth", "Resting Heart Rate"],
     ["Fitbit", "RestingHeartRate"],
     ["Garmin", "Daily"],
     ["Oura", "sleep"],
@@ -18,7 +18,7 @@ const RESTING_HEART_RATE_SOURCES = sources(
 );
 
 const STEPS_SOURCES = sources(
-    ["AppleHealth", "HourlySteps"],
+    ["AppleHealth", "Hourly Steps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
     ["HealthConnect", "steps-daily"],
@@ -27,7 +27,7 @@ const STEPS_SOURCES = sources(
 );
 
 const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
-    ["AppleHealth", "HourlySteps"],
+    ["AppleHealth", "Hourly Steps"],
     ["GoogleFit", "Steps"],
     ["Fitbit", "Steps"],
     ["Garmin", "Daily"],
@@ -37,7 +37,7 @@ const STEPS_WITH_GOOGLE_FIT_SOURCES = sources(
 );
 
 const SLEEP_MINUTES_SOURCES = sources(
-    ["AppleHealth", "SleepAnalysisInterval"],
+    ["AppleHealth", "Sleep Analysis"],
     ["Fitbit", ["SleepLevelRem", "SleepLevelLight", "SleepLevelDeep", "SleepLevelAsleep"]],
     ["Garmin", "Sleep"],
     ["Oura", "sleep"],
@@ -46,13 +46,13 @@ const SLEEP_MINUTES_SOURCES = sources(
 );
 
 const MINDFUL_MINUTES_SOURCES = sources(
-    ["AppleHealth", "MindfulSession"],
+    ["AppleHealth", "Mindful Sessions"],
     ["GoogleFit", "ActivitySegment"],
     ["HealthConnect", "mindfulness-sessions"]
 );
 
 const THERAPY_MINUTES_SOURCES = sources(
-    ["AppleHealth", "MindfulSession"],
+    ["AppleHealth", "Mindful Sessions"],
     ["GoogleFit", "SilverCloudSession"],
     ["HealthConnect", "exercise-session", { v2QueryFilters: EXERCISE_SESSION_FILTERS }]
 );
@@ -65,6 +65,11 @@ const ACTIVE_CALORIES_BURNED_SOURCES = sources(
     ["HealthConnect", "active-calories-burned-daily"],
     ["Oura", "daily-activity"],
     ["GoogleHealth", "activeEnergyBurned-daily"]
+);
+
+const BLOOD_GLUCOSE_SOURCES = sources(
+    ["AppleHealth", "Blood Glucose"],
+    ["HealthConnect", "blood-glucose"]
 );
 
 const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
@@ -139,6 +144,16 @@ const combinedTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faFireFlameCurved} />,
         formatter: defaultFormatter,
         previewDataRange: [300, 500]
+    },
+    {
+        dataSource: "Unified",
+        type: DailyDataType.BloodGlucose,
+        dataProvider: combinedBloodGlucoseDataProvider,
+        availabilityCheck: combinedAvailabilityCheck(BLOOD_GLUCOSE_SOURCES),
+        labelKey: "blood-glucose",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [80, 160]
     }
 ];
 export default combinedTypeDefinitions;

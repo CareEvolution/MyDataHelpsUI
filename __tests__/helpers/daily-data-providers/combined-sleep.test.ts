@@ -128,8 +128,8 @@ describe('Daily Data Provider - Combined Sleep', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'SleepAnalysisInterval' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Sleep Analysis', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -225,10 +225,8 @@ describe('Daily Data Provider - Combined Sleep', () => {
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
         combinedSettings.settings.googleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'SleepAnalysisInterval' }
-        );
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Sleep Analysis', enabled: true },
             { namespace: 'HealthConnect', type: 'sleep', enabled: true },
             { namespace: 'Oura', type: 'sleep', enabled: true },
             { namespace: 'GoogleHealth', type: 'sleep-list-session-asleep', enabled: true }

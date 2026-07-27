@@ -128,8 +128,8 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
     it('Should return the Apple Health result when fully enabled.', async () => {
         const combinedSettings = createEmptyCombinedDataCollectionSettings();
         combinedSettings.settings.appleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'RestingHeartRate' }
+        combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Resting Heart Rate', enabled: true }
         );
 
         const appleHealthResult = createMockResult();
@@ -225,10 +225,8 @@ describe('Daily Data Provider - Combined Resting Heart Rate', () => {
         combinedSettings.settings.healthConnectEnabled = true;
         combinedSettings.settings.ouraEnabled = true;
         combinedSettings.settings.googleHealthEnabled = true;
-        combinedSettings.settings.queryableDeviceDataTypes.push(
-            { namespace: 'AppleHealth', type: 'RestingHeartRate' }
-        );
         combinedSettings.deviceDataV2Types.push(
+            { namespace: 'AppleHealth', type: 'Resting Heart Rate', enabled: true },
             { namespace: 'HealthConnect', type: 'resting-heart-rate', enabled: true },
             { namespace: 'Oura', type: 'sleep', enabled: true },
             { namespace: 'GoogleHealth', type: 'dailyRestingHeartRate-list-beatsPerMinute', enabled: true }

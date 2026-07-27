@@ -14,7 +14,7 @@ export default async function (startDate: Date, endDate: Date): Promise<DailyDat
     if (settings.garminEnabled) {
         providers.push(garminRestingHeartRateDataProvider(startDate, endDate));
     }
-    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "RestingHeartRate")) {
+    if (settings.appleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "Resting Heart Rate")) {
         providers.push(appleHealthRestingHeartRateDataProvider(startDate, endDate));
     }
     if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "HealthConnect" && ddt.type === "resting-heart-rate")) {
