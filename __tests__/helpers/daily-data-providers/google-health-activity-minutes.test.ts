@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
+import { sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
 import * as dailyDataQueryFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-query';
 import { fairlyActiveMinutes, lightlyActiveMinutes, sedentaryMinutes, totalActiveMinutes, veryActiveMinutes } from '../../../src/helpers/daily-data-providers/google-health-activity-minutes';
 
@@ -8,25 +8,25 @@ describe('Daily Data Provider - Google Health Activity Minutes', () => {
 
     it('Sedentary: should query sedentaryPeriod-daily with a seconds-to-minutes value function.', async () => {
         setupDailyDataV2('GoogleHealth', 'sedentaryPeriod-daily', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult, valueFn => !!valueFn && valueFn({ value: '120' } as any) === 2);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult, valueFn => !!valueFn && valueFn({ value: '120' } as any) === 2);
         expect(await sedentaryMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
     it('Lightly active: should query activeMinutes-daily-light and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeMinutes-daily-light', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await lightlyActiveMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
     it('Fairly active: should query activeMinutes-daily-moderate and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeMinutes-daily-moderate', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await fairlyActiveMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
     it('Very active: should query activeMinutes-daily-vigorous and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeMinutes-daily-vigorous', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await veryActiveMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 

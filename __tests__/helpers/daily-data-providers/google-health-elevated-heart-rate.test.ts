@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { sampleDailyData, sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
+import { sampleDailyDataV2, sampleEndDate, sampleResult, sampleStartDate, setupDailyDataV2, setupMostRecentValueResult, startDateFunctionEvaluator } from '../../fixtures/daily-data-providers';
 import * as dailyDataQueryFunctions from '../../../src/helpers/daily-data-providers/daily-data/daily-data-query';
 import { cardioMinutes, fatBurnMinutes, peakMinutes, totalElevatedHeartRateMinutes } from '../../../src/helpers/daily-data-providers/google-health-elevated-heart-rate';
 
@@ -8,19 +8,19 @@ describe('Daily Data Provider - Google Health Elevated Heart Rate', () => {
 
     it('Fat burn: should query activeZoneMinutes-daily-fat-burn and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeZoneMinutes-daily-fat-burn', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await fatBurnMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
     it('Cardio: should query activeZoneMinutes-daily-cardio and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeZoneMinutes-daily-cardio', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await cardioMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
     it('Peak: should query activeZoneMinutes-daily-peak and build a most recent value result.', async () => {
         setupDailyDataV2('GoogleHealth', 'activeZoneMinutes-daily-peak', sampleStartDate, sampleEndDate, startDateFunctionEvaluator, sampleDailyDataV2);
-        setupMostRecentValueResult(sampleDailyData, sampleResult);
+        setupMostRecentValueResult(sampleDailyDataV2, sampleResult);
         expect(await peakMinutes(sampleStartDate, sampleEndDate)).toBe(sampleResult);
     });
 
