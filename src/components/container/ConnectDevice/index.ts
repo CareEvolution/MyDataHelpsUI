@@ -1,1 +1,1 @@
-export { default } from "./ConnectDevice";
+export { default, ConnectDeviceInfo } from "./ConnectDevice";

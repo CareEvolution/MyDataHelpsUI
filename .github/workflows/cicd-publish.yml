@@ -13,6 +13,11 @@ permissions:
 jobs:
     run:
         runs-on: ubuntu-latest
+        env:
+            # The rollup build (in particular the .d.ts generation step) peaks near
+            # Node's default ~4GB heap limit and intermittently OOMs. ubuntu-latest
+            # runners have 16GB of RAM, so give Node more headroom.
+            NODE_OPTIONS: --max-old-space-size=8192
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-node@v4
@@ -20,7 +25,8 @@ jobs:
                     node-version: '20.x'
                     registry-url: 'https://registry.npmjs.org'
             -   name: Update npm
-                run: npm install -g npm@latest
+                # Pin to npm 11: npm@latest is now 12.x which requires Node >=22, but this job runs on Node 20.
+                run: npm install -g npm@11
             -   name: Install Dependencies
                 run: npm ci
             -   name: Run Build
