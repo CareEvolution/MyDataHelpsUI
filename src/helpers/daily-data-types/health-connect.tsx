@@ -12,10 +12,13 @@ import {
     healthConnectStepsDataProvider,
     healthConnectTherapyMinutesDataProvider,
     healthConnectTotalCaloriesBurnedDataProvider,
-    healthConnectTotalSleepMinutesDataProvider
+    healthConnectTotalSleepMinutesDataProvider,
+    healthConnectBloodGlucoseDataProvider,
+    healthConnectMinBloodGlucoseDataProvider,
+    healthConnectMaxBloodGlucoseDataProvider
 } from '../daily-data-providers';
 import { DailyDataType, DailyDataTypeDefinition } from '../daily-data-types';
-import { faBed, faFireFlameCurved, faHeartbeat, faHourglassHalf, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faDroplet, faFireFlameCurved, faHeartbeat, faHourglassHalf, faRoute, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { defaultFormatter, distanceFormatter, distanceYAxisConverter, heartRateFormatter, minutesFormatter, minutesToHoursYAxisConverter } from './formatters';
 import { simpleAvailabilityCheck } from './availability-check';
@@ -145,6 +148,33 @@ const healthConnectTypeDefinitions: DailyDataTypeDefinition[] = [
         icon: <FontAwesomeSvgIcon icon={faHourglassHalf} />,
         formatter: value => formatNumberForLocale(value),
         previewDataRange: [0, 120]
+    },
+    {
+        type: DailyDataType.HealthConnectBloodGlucose,
+        dataProvider: healthConnectBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", ["blood-glucose"]),
+        labelKey: "blood-glucose",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [80, 160]
+    },
+    {
+        type: DailyDataType.HealthConnectMinBloodGlucose,
+        dataProvider: healthConnectMinBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", ["blood-glucose"]),
+        labelKey: "blood-glucose-min",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [60, 80]
+    },
+    {
+        type: DailyDataType.HealthConnectMaxBloodGlucose,
+        dataProvider: healthConnectMaxBloodGlucoseDataProvider,
+        availabilityCheck: simpleAvailabilityCheck("HealthConnect", ["blood-glucose"]),
+        labelKey: "blood-glucose-max",
+        icon: <FontAwesomeSvgIcon icon={faDroplet} />,
+        formatter: defaultFormatter,
+        previewDataRange: [160, 180]
     }
 ];
 healthConnectTypeDefinitions.forEach((def) => {

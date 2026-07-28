@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { createEmptyCombinedDataCollectionSettings, createMockResult, sampleEndDate, sampleResult, sampleStartDate, setupCombinedDataCollectionSettings, setupCombinedMaxValueResult, setupDailyDataProvider } from '../../fixtures/daily-data-providers';
-import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDataProvider, garminActiveCaloriesDataProvider, healthConnectActiveCaloriesBurnedDataProvider, ouraActiveCaloriesBurnedDataProvider } from '../../../src/helpers/daily-data-providers';
+import { appleHealthActiveEnergyBurnedDataProvider, fitbitActiveCaloriesBurnedDataProvider, garminActiveCaloriesDataProvider, googleHealthActiveCaloriesBurnedDataProvider, healthConnectActiveCaloriesBurnedDataProvider, ouraActiveCaloriesBurnedDataProvider } from '../../../src/helpers/daily-data-providers';
 import combinedActiveCaloriesBurned from '../../../src/helpers/daily-data-providers/combined-active-calories-burned';
 import { getSupportedApis } from '../../../src/helpers/daily-data-providers/data-collection-helper';
 import { combineResultsUsingMaxValue } from '../../../src/helpers/daily-data-providers/daily-data';
@@ -35,6 +35,11 @@ jest.mock('../../../src/helpers/daily-data-providers/oura-active-calories-burned
     default: jest.fn()
 }));
 
+jest.mock('../../../src/helpers/daily-data-providers/google-health-active-calories-burned', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
+
 jest.mock('../../../src/helpers/daily-data-providers/daily-data/daily-data-result', () => ({
     __esModule: true,
     combineResultsUsingMaxValue: jest.fn()
@@ -48,12 +53,14 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     const appleHealthActiveEnergyBurnedDataProviderMock = appleHealthActiveEnergyBurnedDataProvider as jest.Mock;
     const healthConnectActiveCaloriesBurnedDataProviderMock = healthConnectActiveCaloriesBurnedDataProvider as jest.Mock;
     const ouraActiveCaloriesBurnedDataProviderMock = ouraActiveCaloriesBurnedDataProvider as jest.Mock;
+    const googleHealthActiveCaloriesBurnedDataProviderMock = googleHealthActiveCaloriesBurnedDataProvider as jest.Mock;
     const allDataProviderMocks = [
         fitbitActiveCaloriesBurnedDataProviderMock,
         garminActiveCaloriesDataProviderMock,
         appleHealthActiveEnergyBurnedDataProviderMock,
         healthConnectActiveCaloriesBurnedDataProviderMock,
-        ouraActiveCaloriesBurnedDataProviderMock
+        ouraActiveCaloriesBurnedDataProviderMock,
+        googleHealthActiveCaloriesBurnedDataProviderMock
     ];
     const combineResultsUsingMaxValueMock = combineResultsUsingMaxValue as jest.Mock;
 
@@ -65,12 +72,13 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
     });
 
     const verifyCanQueryCalls = (): void => {
-        expect(getSupportedApisMock).toHaveBeenCalledTimes(5);
+        expect(getSupportedApisMock).toHaveBeenCalledTimes(6);
         expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Fitbit', types: ['Calories', 'CaloriesBMR'], requireAllTypes: true });
         expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Garmin', types: ['Calories'], requireAllTypes: false });
         expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'AppleHealth', types: ['ActiveEnergyBurned', 'Active Energy Burned'], requireAllTypes: false });
         expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'HealthConnect', types: ['active-calories-burned-daily'], requireAllTypes: false });
         expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'Oura', types: ['daily-activity'], requireAllTypes: false });
+        expect(getSupportedApisMock).toHaveBeenCalledWith(combinedSettings, { namespace: 'GoogleHealth', types: ['activeEnergyBurned-daily'], requireAllTypes: false });
     };
 
     const verifyDataProvidersCalls = (dataProviderMockThatWasCalled?: jest.Mock, includeCombinedSettings?: boolean): void => {
@@ -264,6 +272,24 @@ describe('Daily Data Provider - Combined Active Calories Burned', () => {
 
         verifyCanQueryCalls();
         verifyDataProvidersCalls(ouraActiveCaloriesBurnedDataProviderMock);
+        expect(combineResultsUsingMaxValueMock).not.toHaveBeenCalled();
+    });
+
+    it('Should return the GoogleHealth result when the required types can been queried from v2.', async () => {
+        getSupportedApisMock.mockImplementation((_, { namespace }) => {
+            if (namespace !== 'GoogleHealth') return { v1: { enabled: false }, v2: { enabled: false } };
+            return { v1: { enabled: false }, v2: { enabled: true, types: ['activeEnergyBurned-daily'] } };
+        });
+
+        const googleHealthResult = createMockResult();
+        googleHealthActiveCaloriesBurnedDataProviderMock.mockResolvedValue(googleHealthResult);
+
+        const result = await combinedActiveCaloriesBurned(sampleStartDate, sampleEndDate);
+
+        expect(result).toBe(googleHealthResult);
+
+        verifyCanQueryCalls();
+        verifyDataProvidersCalls(googleHealthActiveCaloriesBurnedDataProviderMock);
         expect(combineResultsUsingMaxValueMock).not.toHaveBeenCalled();
     });
 

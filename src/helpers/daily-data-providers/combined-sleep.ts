@@ -1,4 +1,4 @@
-import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from ".";
+import { appleHealthSleepDataProvider, fitbitTotalSleepMinutesDataProvider, garminTotalSleepMinutesDataProvider, googleHealthTotalSleepMinutesDataProvider, healthConnectTotalSleepMinutesDataProvider, ouraSleepMinutesDataProvider } from ".";
 import { CombinedDataCollectionSettings, getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { combineResultsUsingMaxValue } from "./daily-data";
@@ -14,7 +14,7 @@ export default async function (startDate: Date, endDate: Date, combinedDataColle
     if (settings.garminEnabled) {
         providers.push(garminTotalSleepMinutesDataProvider(startDate, endDate));
     }
-    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "SleepAnalysisInterval")) {
+    if (settings.appleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "Sleep Analysis")) {
         providers.push(appleHealthSleepDataProvider(startDate, endDate));
     }
     if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "HealthConnect" && ddt.type === "sleep")) {
@@ -22,6 +22,9 @@ export default async function (startDate: Date, endDate: Date, combinedDataColle
     }
     if (settings.ouraEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "Oura" && ddt.type === "sleep")) {
         providers.push(ouraSleepMinutesDataProvider(startDate, endDate));
+    }
+    if (settings.googleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "GoogleHealth" && ddt.type === "sleep-list-session-asleep")) {
+        providers.push(googleHealthTotalSleepMinutesDataProvider(startDate, endDate));
     }
 
     if (providers.length === 0) return {};

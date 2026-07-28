@@ -1,4 +1,4 @@
-﻿import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider, healthConnectStepsDataProvider, ouraStepsDataProvider } from ".";
+﻿import { appleHealthStepsDataProvider, fitbitStepsDataProvider, garminStepsDataProvider, googleFitStepsDataProvider, googleHealthStepsDataProvider, healthConnectStepsDataProvider, ouraStepsDataProvider } from ".";
 import { DailyDataQueryResult } from "../query-daily-data";
 import { getCombinedDataCollectionSettings } from "./combined-data-collection-settings";
 import { combineResultsUsingMaxValue } from "./daily-data";
@@ -14,7 +14,7 @@ export default async function (startDate: Date, endDate: Date, includeGoogleFit?
     if (settings.garminEnabled) {
         providers.push(garminStepsDataProvider(startDate, endDate));
     }
-    if (settings.appleHealthEnabled && settings.queryableDeviceDataTypes.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "HourlySteps")) {
+    if (settings.appleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "AppleHealth" && ddt.type === "Hourly Steps")) {
         providers.push(appleHealthStepsDataProvider(startDate, endDate));
     }
     if (settings.healthConnectEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "HealthConnect" && ddt.type === "steps-daily")) {
@@ -25,6 +25,9 @@ export default async function (startDate: Date, endDate: Date, includeGoogleFit?
     }
     if (settings.ouraEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "Oura" && ddt.type === "daily-activity")) {
         providers.push(ouraStepsDataProvider(startDate, endDate));
+    }
+    if (settings.googleHealthEnabled && deviceDataV2Types.some(ddt => ddt.namespace === "GoogleHealth" && ddt.type === "steps-daily")) {
+        providers.push(googleHealthStepsDataProvider(startDate, endDate));
     }
 
     if (providers.length === 0) return {};
