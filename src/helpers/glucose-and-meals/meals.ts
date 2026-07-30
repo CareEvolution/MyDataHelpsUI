@@ -137,12 +137,12 @@ export function itemSortByConfidenceDesc(item1: MealItem, item2: MealItem): numb
     return (item2.confidenceScore ?? 0) - (item1.confidenceScore ?? 0);
 }
 
-export function logMealEvent(type: string, meal: Meal | undefined, deviceInfo: DeviceInfo | undefined, data: any = {}) {
+export function logMealEvent(type: string, meal: Meal | undefined, deviceInfo: DeviceInfo | undefined, data: unknown = {}) {
     MyDataHelps.trackCustomEvent({
-        eventType: "meal-editor",
+        eventType: "meal-event",
         properties: {
             type: type,
-            body: data,
+            data: data,
             meal: meal?.id,
             platform: deviceInfo?.platform,
             deviceId: deviceInfo?.identifier
