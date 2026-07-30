@@ -1,6 +1,6 @@
 {
   "name": "@careevolution/mydatahelps-ui",
-  "version": "3.21.3-meal-logging2.0",
+  "version": "3.21.3-meal-logging2.1",
   "description": "MyDataHelps UI Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
