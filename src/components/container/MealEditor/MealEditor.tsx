@@ -97,11 +97,8 @@ export default function MealEditor(props: MealEditorProps) {
                 } else {
                 onError("No meal reference provided.");
                 }
+            });
         });
-
-        MyDataHelps.getDeviceInfo().then(info => {
-            setDeviceInfo(info);
-        });       
     }, [props.previewState]);
 
     if (loading || !mealToEdit) {
