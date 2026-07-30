@@ -41,8 +41,8 @@ export default function MealEditor(props: MealEditorProps) {
 
     const itemsToAddInputRef = useRef<HTMLInputElement>(null);
 
-    const reportError = (message: string) => {
-        logMealEvent("meal-error", deviceInfo, message);
+    const onError = (message: string) => {
+        logMealEvent("meal-error", mealToEdit, deviceInfo, message);
         props.onError();
     }
 
@@ -88,11 +88,11 @@ export default function MealEditor(props: MealEditorProps) {
                         setImageUrl(imageUrl);
                         setImageLoading(!!imageUrl);
                     } else {
-                        reportError("Can't find meal reference.");
+                        onError(`Can't find meal reference. id=${mealReference.id}`);
                     }
                 });
             } else {
-                reportError("No meal reference provided.");
+                onError("No meal reference provided.");
             }
         });
 
@@ -113,6 +113,8 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
+        logMealEvent("delete", mealToEdit, deviceInfo);
+
         setLoading(true);
 
         mealToEdit.archiveTimestamp = new Date();
@@ -129,16 +131,19 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
+        logMealEvent("save", mealToEdit, deviceInfo);
+
         setLoading(true);
         setImageTypeError(false);
         setImageUploadError(false);
 
         if (newImageFile) {
-            logMealEvent("uploading-image", deviceInfo);
+            logMealEvent("uploading-image", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size });
             try {
                 await uploadMealImageFile(mealToEdit, newImageFile);
+                logMealEvent("image-uploaded", mealToEdit, deviceInfo);
             } catch (err) {
-                logMealEvent("image-upload-error", deviceInfo, err);
+                logMealEvent("image-upload-error", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size, error: err });
                 setLoading(false);
                 setImageUploadError(true);
                 return;
@@ -156,7 +161,7 @@ export default function MealEditor(props: MealEditorProps) {
         const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
         const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
 
-        logMealEvent("saving-meals", deviceInfo);
+        logMealEvent("saving-meals", mealToEdit, deviceInfo);
 
         saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(props.onSave);
     };
@@ -177,6 +182,8 @@ export default function MealEditor(props: MealEditorProps) {
     };
 
     const onFileChanged = (file: File | undefined) => {
+        logMealEvent("change-file", mealToEdit, deviceInfo);
+
         if (file) {
             const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
             if (allowedTypes.includes(file.type)) {
@@ -185,15 +192,17 @@ export default function MealEditor(props: MealEditorProps) {
                 setImageUrl(URL.createObjectURL(file));
                 setImageTypeError(false);
                 setImageUploadError(false);
-                logMealEvent("image-added", deviceInfo, `Image type=${file.type} size=${file.size}`);
+                logMealEvent("image-added", mealToEdit, deviceInfo, `Image type=${file.type} size=${file.size}`);
             } else {
-                logMealEvent("image-type-error", deviceInfo, `Invalid image type ${file.type}`);
+                logMealEvent("image-type-error", mealToEdit, deviceInfo, `Invalid image type ${file.type}`);
                 setImageTypeError(true);
             }
         }
     };
 
     const onRemoveImage = () => {
+        logMealEvent("remove-image", mealToEdit, deviceInfo);
+
         setMealToEdit({ ...mealToEdit, hasImage: false });
         setNewImageFile(undefined);
         setImageUrl(undefined);
