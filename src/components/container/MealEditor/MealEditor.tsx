@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import './MealEditor.css';
-import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile, logMealEvent } from '../../../helpers';
 import { Button, Card, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
@@ -9,6 +9,7 @@ import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { getFullDayAndDateString } from '../../../helpers/date-helpers';
 import { combineItemsWithAnalysisItems, itemSortByNameAsc } from '../../../helpers/glucose-and-meals/meals';
 import MealAnalysis from '../../presentational/MealAnalysis';
+import MyDataHelps, { DeviceInfo } from "@careevolution/mydatahelps-js";
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -36,8 +37,14 @@ export default function MealEditor(props: MealEditorProps) {
     const [newImageFile, setNewImageFile] = useState<File>();
     const [imageTypeError, setImageTypeError] = useState<boolean>(false);
     const [imageUploadError, setImageUploadError] = useState<boolean>(false);
+    const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>();
 
     const itemsToAddInputRef = useRef<HTMLInputElement>(null);
+
+    const reportError = (message: string) => {
+        logMealEvent("meal-error", deviceInfo, message);
+        props.onError();
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -81,12 +88,16 @@ export default function MealEditor(props: MealEditorProps) {
                         setImageUrl(imageUrl);
                         setImageLoading(!!imageUrl);
                     } else {
-                        props.onError();
+                        reportError("Can't find meal reference.");
                     }
                 });
             } else {
-                props.onError();
+                reportError("No meal reference provided.");
             }
+        });
+
+        MyDataHelps.getDeviceInfo().then(info => {
+            setDeviceInfo(info);
         });
     }, [props.previewState]);
 
@@ -123,9 +134,11 @@ export default function MealEditor(props: MealEditorProps) {
         setImageUploadError(false);
 
         if (newImageFile) {
+            logMealEvent("uploading-image", deviceInfo);
             try {
                 await uploadMealImageFile(mealToEdit, newImageFile);
-            } catch {
+            } catch (err) {
+                logMealEvent("image-upload-error", deviceInfo, err);
                 setLoading(false);
                 setImageUploadError(true);
                 return;
@@ -142,6 +155,8 @@ export default function MealEditor(props: MealEditorProps) {
 
         const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
         const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
+
+        logMealEvent("saving-meals", deviceInfo);
 
         saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(props.onSave);
     };
@@ -170,7 +185,9 @@ export default function MealEditor(props: MealEditorProps) {
                 setImageUrl(URL.createObjectURL(file));
                 setImageTypeError(false);
                 setImageUploadError(false);
+                logMealEvent("image-added", deviceInfo, `Image type=${file.type} size=${file.size}`);
             } else {
+                logMealEvent("image-type-error", deviceInfo, `Invalid image type ${file.type}`);
                 setImageTypeError(true);
             }
         }
