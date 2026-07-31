@@ -72,11 +72,12 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
-         MyDataHelps.getDeviceInfo().then(info => {
+        MyDataHelps.getDeviceInfo().then(info => {
             setDeviceInfo(info);
-
             getMealToEdit().then(mealReference => {
                 if (mealReference) {
+                    logMealEvent("editing-started", undefined, info, `Editing meal id=${mealReference.id}`);
+
                     getMeals(mealReference.date).then(async allMeals => {
                         const activeMeals = allMeals.filter(meal => !meal.archiveTimestamp);
                         const referencedMeal = activeMeals.find(meal => meal.id === mealReference.id);
@@ -91,11 +92,11 @@ export default function MealEditor(props: MealEditorProps) {
                             setImageUrl(imageUrl);
                             setImageLoading(!!imageUrl);
                         } else {
-                        props.onError();
+                            onError(`Can't find meal id=${mealReference.id}`);
                         }
                     });
                 } else {
-                onError("No meal reference provided.");
+                    onError("No meal reference provided.");
                 }
             });
         });
@@ -141,6 +142,7 @@ export default function MealEditor(props: MealEditorProps) {
             logMealEvent("uploading-image", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size });
             try {
                 await uploadMealImageFile(mealToEdit, newImageFile);
+                logMealEvent("image-uploaded", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size });
             } catch (err) {
                 logMealEvent("image-upload-error", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size, error: err });
                 setLoading(false);
