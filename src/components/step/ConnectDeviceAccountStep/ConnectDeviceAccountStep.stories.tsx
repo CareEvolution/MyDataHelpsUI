@@ -95,3 +95,15 @@ export const OuraDefault: Story = {
     },
     render: render
 };
+
+export const GoogleHealthDefault: Story = {
+    args: {
+        title: "Connect Google Health",
+        text: "Connect your Google Health account to MyDataHelps to share your activity data.",
+        deviceType: "Google Health",
+        providerID: 5,
+        styles: {},
+        onConnect: () => {}
+    },
+    render: render
+};
