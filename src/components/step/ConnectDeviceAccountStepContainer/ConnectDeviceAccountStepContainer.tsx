@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
-import { getFitbitProviderID, getGarminProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
+import { getFitbitProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 import { deviceType } from "../../../helpers/deviceType";
 
 /**
@@ -25,7 +25,7 @@ export default function ConnectDeviceAccountStepContainer () {
         });
     }
 
-    function convertToProviderID(deviceType: deviceType) {
+    function convertToProviderID(deviceType: deviceType): number {
         switch (deviceType) {
             case "Fitbit":
                 return getFitbitProviderID();
@@ -35,6 +35,8 @@ export default function ConnectDeviceAccountStepContainer () {
                 return getGarminProviderID();
             case 'Oura':
                 return getOuraProviderID();
+            case 'Google Health':
+                return getGoogleHealthProviderID();
         }
     }
 
