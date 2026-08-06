@@ -4,7 +4,7 @@ import MyDataHelps, { DeviceDataV2AggregateQuery, StringMap } from "@careevoluti
 import { queryDailyData, getAllDailyDataTypes } from "../query-daily-data";
 import { getNewsFeedPage } from "../news-feed/data";
 import { LangGraphRunnableConfig } from "@langchain/langgraph";
-import { isDevelopment } from "../env";
+import { runPythonGraph } from "./PythonGraphRunner";
 
 const deviceDataV2QuerySchema = z.object({
   namespace: z.enum(["Fitbit", "AppleHealth", "Garmin", "Dexcom", "HealthConnect"])
@@ -268,22 +268,17 @@ export const GetEhrNewsFeedPageTool = tool(
 export const GraphingTool = tool(
   async (input, config: LangGraphRunnableConfig): Promise<string> => {
 
-    let codeRunnerUrl = isDevelopment() ? 'https://api.mydatahelps.dev/run-code' : 'https://api.mydatahelps.org/run-code';
-    let response = await fetch(codeRunnerUrl, {
-      method: 'POST',
-      body: JSON.stringify({ code: input.code }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${MyDataHelps.token.access_token}`
-      }
-    }).then(response => response.json());
-
-    if (response.image) {
-      let participantId = config?.configurable?.participantId;
-      config.store?.put([participantId, "graphing"], "lastGraph", { image: response.image });
+    let image: string;
+    try {
+      image = await runPythonGraph(input.code);
+    } catch (error) {
+      return `error: unable to generate image (${error instanceof Error ? error.message : String(error)})`;
     }
 
-    return response.image || "error: unable to generate image";
+    let participantId = config?.configurable?.participantId;
+    config.store?.put([participantId, "graphing"], "lastGraph", { image });
+
+    return image;
   },
   {
     name: "graphing",
