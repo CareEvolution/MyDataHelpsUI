@@ -10,6 +10,28 @@
     cursor: pointer;
     font-weight: bold;
     text-align: center;
+    transition: transform 150ms ease, filter 150ms ease;
+}
+
+@media (hover: hover) {
+    .mdhui-button:hover:not(:disabled) {
+        filter: brightness(1.08);
+    }
+}
+
+.mdhui-button:active:not(:disabled) {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mdhui-button {
+        transition: none;
+    }
+
+    .mdhui-button:active:not(:disabled) {
+        transform: none;
+    }
 }
 
 .mdhui-button:disabled {

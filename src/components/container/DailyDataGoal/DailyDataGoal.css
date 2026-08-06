@@ -47,6 +47,13 @@
     left: 0;
     background: #99c1dd;
     opacity: 0.3;
+    transition: height 500ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mdhui-daily-data-goal .mdhui-daily-data-goal-circle .mdhui-daily-data-goal-circle-fill {
+        transition: none;
+    }
 }
 
 .mdhui-daily-data-goal .mdhui-daily-data-goal-circle .svg-inline--fa {

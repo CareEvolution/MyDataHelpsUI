@@ -7,7 +7,7 @@ export const core = css`
     --mdhui-color-success: #00AE42;
     --mdhui-color-warning: rgb(232, 124, 0);
     --mdhui-color-danger: rgb(239, 55, 36);
-    --mdhui-fadein-animation: fadein 1s;
+    --mdhui-fadein-animation: fadein 400ms ease-out;
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;
     --mdhui-modal-overlay-color: rgba(130, 130, 130, 0.5);
@@ -21,37 +21,21 @@ export const core = css`
     --mdhui-touch: 44px;
 }
 
-@media (prefers-reduced-motion) {
-    --mdhui-fadein-animation: none;
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --mdhui-fadein-animation: none;
+    }
 }
 
 @keyframes fadein {
     from {
         opacity: 0;
+        transform: translateY(6px);
     }
 
     to {
         opacity: 1;
-    }
-}
-
-@-moz-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
+        transform: none;
     }
 }
     

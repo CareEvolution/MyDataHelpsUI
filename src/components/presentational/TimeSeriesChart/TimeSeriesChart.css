@@ -32,9 +32,7 @@
     background: var(--mdhui-background-color-0);
     border-radius: var(--mdhui-card-border-radius);
     box-shadow: var(--mdhui-box-shadow-1);
-    animation: fadein 1s;
-    -moz-animation: fadein 1s;
-    -webkit-animation: fadein 1s;
+    animation: var(--mdhui-fadein-animation);
 }
 
 .mdhui-time-series-chart .mdhui-time-series-tooltip .mdhui-single-value-tooltip-value {

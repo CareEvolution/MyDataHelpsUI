@@ -16,6 +16,13 @@
 .mdhui-unstyled-button.mdhui-action.mdhui-action-clickable
 {
     cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+.mdhui-action.mdhui-action-clickable:active,
+.mdhui-unstyled-button.mdhui-action.mdhui-action-clickable:active
+{
+    background: var(--mdhui-background-color-1);
 }
 
 .mdhui-action .mdhui-action-body {

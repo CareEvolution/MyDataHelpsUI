@@ -81,3 +81,10 @@
     animation-delay: 750ms;
     animation-fill-mode: forwards;
 }
+@media (prefers-reduced-motion: reduce) {
+    .mdhui-new-points-content,
+    .mdhui-new-points-button-panel {
+        opacity: 1;
+        animation: none;
+    }
+}

@@ -1,8 +1,5 @@
 import React from 'react';
-import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import "./LoadingIndicator.css"
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 
 export interface LoadingIndicatorProps {
 	variant?: "default" | "inline";
@@ -20,8 +17,11 @@ function LoadingIndicator(props: LoadingIndicatorProps) {
 		classes.push("mdhui-loading-indicator-inline");
 	}
 	return (
-		<div ref={props.innerRef} style={{ color: props.color }} className={classes.join(" ")}>
-			<FontAwesomeSvgIcon icon={faRefresh} spin />
+		<div ref={props.innerRef} style={{ color: props.color }} className={classes.join(" ")} role="status">
+			<svg className="mdhui-loading-indicator-spinner" viewBox="0 0 24 24" aria-hidden="true">
+				<circle className="mdhui-loading-indicator-track" cx="12" cy="12" r="10" />
+				<circle className="mdhui-loading-indicator-arc" cx="12" cy="12" r="10" />
+			</svg>
 		</div>
 	);
 }

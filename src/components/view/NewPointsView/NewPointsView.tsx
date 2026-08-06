@@ -23,6 +23,30 @@ export interface NewPointsViewProps {
     doneButtonText?: string;
 }
 
+function useCountUp(target: number, durationMs: number) {
+    const [value, setValue] = React.useState(0);
+    React.useEffect(() => {
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+            setValue(target);
+            return;
+        }
+        let start: number | undefined;
+        let handle: number;
+        const tick = (time: number) => {
+            if (start === undefined) start = time;
+            const progress = Math.min((time - start) / durationMs, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(target * eased));
+            if (progress < 1) {
+                handle = requestAnimationFrame(tick);
+            }
+        };
+        handle = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(handle);
+    }, [target, durationMs]);
+    return value;
+}
+
 /**
  * This view displays a summary of new points earned by the participant.
  */
@@ -36,12 +60,15 @@ export default function NewPointsView(props: NewPointsViewProps) {
         return sum + entry.points;
     }, totalBonusPoints);
 
+    // paced to finish alongside the 750ms ProgressRing sweep
+    const displayedPoints = useCountUp(totalPoints, 750);
+
     return (
         <Layout bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
             <div className="mdhui-new-points">
                 <ProgressRing animate={true}>
                     <div className="mdhui-new-points-total">
-                        <div className="mdhui-new-points-total-points">+{totalPoints}</div>
+                        <div className="mdhui-new-points-total-points">+{displayedPoints}</div>
                         <div className="mdhui-new-points-total-points-label">points</div>
                     </div>
                 </ProgressRing>

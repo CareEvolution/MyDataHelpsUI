@@ -57,9 +57,7 @@
     background: var(--mdhui-background-color-0);
     border-radius: var(--mdhui-card-border-radius);
     box-shadow: var(--mdhui-box-shadow-0);
-    animation: fadein 1s;
-    -moz-animation: fadein 1s;
-    -webkit-animation: fadein 1s;
+    animation: var(--mdhui-fadein-animation);
     border: solid 1px var(--mdhui-border-color-0);
 }
 

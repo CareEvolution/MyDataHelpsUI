@@ -9,7 +9,6 @@ import Button from '../Button';
 import { LayoutContext } from '../Layout';
 import { ColorDefinition, resolveColor } from '../../../helpers';
 import { ButtonVariant } from '../Button/Button';
-import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
 import { noop } from '../../../helpers/functions';
@@ -94,7 +93,10 @@ export default function (props: SingleSurveyTaskProps) {
 	};
 
 	const getCompleteTask = () => {
-		return <Action renderAs='div' className="mdhui-single-survey-task complete" indicator={<img src={checkMark} alt="check mark"></img>} innerRef={props.innerRef}>
+		const completedCheck = <svg className="mdhui-survey-task-check" viewBox="0 0 24 24" width="21" height="24" role="img" aria-label="check mark">
+			<path className="mdhui-survey-task-check-path" d="M3.5 13 L9.5 19 L20.5 7" pathLength="1" fill="none" stroke="#14B856" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+		</svg>;
+		return <Action renderAs='div' className="mdhui-single-survey-task complete" indicator={completedCheck} innerRef={props.innerRef}>
 			<div className="survey-name">{props.task.surveyDisplayName}</div>
 			{props.task.endDate &&
 				<div className="completed-date">{language('completed')} {getRelativeDateString(props.task.endDate, new Date())}</div>

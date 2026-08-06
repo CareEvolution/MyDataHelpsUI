@@ -56,3 +56,27 @@
     color: var(--mdhui-color-danger);
     font-weight: bold;
 }
+.mdhui-single-survey-task .mdhui-survey-task-check {
+    display: block;
+}
+
+.mdhui-single-survey-task .mdhui-survey-task-check-path {
+    stroke-dasharray: 1;
+    animation: mdhui-survey-task-check-draw 400ms ease-out 150ms backwards;
+}
+
+@keyframes mdhui-survey-task-check-draw {
+    from {
+        stroke-dashoffset: 1;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mdhui-single-survey-task .mdhui-survey-task-check-path {
+        animation: none;
+    }
+}

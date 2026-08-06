@@ -11,7 +11,8 @@ interface IParticle {
     tiltAngle: number
 };
 
-var colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
+var defaultColors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
+var colors = defaultColors;
 var streamingConfetti = false;
 var animationTimer: number | null = null;
 var particles: IParticle[] = [];
@@ -70,7 +71,8 @@ function updateParticles() {
     }
 }
 
-export function startConfetti() {
+export function startConfetti(customColors?: string[]) {
+    colors = customColors?.length ? customColors : defaultColors;
     var width = window.innerWidth;
     var height = window.innerHeight;
     var requestAnimFrame = (function () {
