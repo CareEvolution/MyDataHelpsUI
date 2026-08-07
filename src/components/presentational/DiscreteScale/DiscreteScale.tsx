@@ -23,7 +23,7 @@ export default function (props: DiscreteScaleProps) {
     if (selectedValue !== undefined && selectedValue < 0) selectedValue = 0;
     if (selectedValue !== undefined && selectedValue >= props.tickCount) selectedValue = props.tickCount - 1;
 
-    let sliderColor = props.sliderColor ? resolveColor(layoutContext.colorScheme, props.sliderColor) : 'var(--mdhui-color-primary)';
+    let sliderColor = props.sliderColor ? resolveColor(layoutContext.colorScheme, props.sliderColor) : 'var(--mdhui-color-primary-text)';
     let sliderStop = selectedValue ? `calc((((100% - 16px) / ${(props.tickCount - 1)}) * ${selectedValue}) + 8px)` : '0%';
     let sliderStyle = {
         background: `linear-gradient(to right, ${sliderColor} 0%, ${sliderColor} ${sliderStop}, var(--mdhui-background-color-2) ${sliderStop}, var(--mdhui-background-color-2) 100%)`

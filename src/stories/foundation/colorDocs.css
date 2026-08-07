@@ -1,8 +1,9 @@
-/* Highlight color variables for border and label */
+/* Highlight color variables for border and label; numbers match the magic-number
+   bands (40 AA-large / 50 AA / 70 AAA) */
 :root {
-  --color-highlight-40: var(--ce-grey-30);
-  --color-highlight-50: var(--ce-green-40);
-  --color-highlight-70: var(--ce-cyan-50);
+  --color-highlight-40: var(--mdh-grey-30);
+  --color-highlight-50: var(--mdh-green-40);
+  --color-highlight-70: var(--mdh-cyan-50);
   color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 * {
@@ -20,9 +21,10 @@ h3 {
 h4 {
   margin-top: 16px !important;
 }
+/* Semantic tokens (not raw --mdh-*) so the accordion flips with the theme toggle. */
 details {
-  background: var(--ce-grey-2);
-  border: 1px solid var(--ce-grey-10);
+  background: var(--mdhui-background-color-1);
+  border: 1px solid var(--mdhui-border-color-0);
   border-radius: 6px;
   margin-bottom: 16px;
 }
@@ -30,100 +32,84 @@ summary {
   font-weight: 600;
   cursor: pointer;
   padding: 10px 15px;
-  color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
+  color: var(--mdhui-text-color-1);
 }
 details .details-content {
   padding: 0 20px 10px 20px !important;
 }
 table {
-  background: #fff;
+  background: var(--mdhui-background-color-0);
 }
+
+/* "Which magic number to use" */
+.magicTableWrap { overflow-x: auto; max-width: 700px; }
+.magicTable { border-collapse: collapse; width: 100%; margin: 8px 0 14px; font-size: 14px; }
+.magicTable th, .magicTable td { border: 1px solid var(--mdhui-border-color-1); padding: 8px 10px; text-align: left; vertical-align: top; }
+.magicTable thead th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--mdhui-text-color-3); white-space: nowrap; }
+.magicTable thead th span { display: block; font-size: 10px; text-transform: none; letter-spacing: 0; font-weight: 400; white-space: normal; max-width: 15ch; }
+/* the row most callers want; semantic tokens so it tints correctly in both schemes */
+.magicTable tbody tr.magicTable-default th, .magicTable tbody tr.magicTable-default td { background: var(--mdhui-background-color-1); }
+.magicTable tbody th { font-weight: 600; }
+.magicTable tbody th span { display: block; font-weight: 400; font-size: 12px; color: var(--mdhui-text-color-3); margin-top: 2px; }
+.magicTable tbody td { font-weight: 700; white-space: nowrap; }
 td, th {
   line-height: 1.2;
 }
 .emphasis-text {
-  color: var(--ce-cyan-60);
-  background: var(--ce-cyan-4);
+  color: var(--mdh-cyan-60);
+  background: var(--mdh-cyan-4);
   padding: 2px 4px;
   border-radius: 2px;
   font-weight: 600;
 }
 
-/* Data Viz Use Case tiles */
-.data-viz-use-cases {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding-left: 0 !important;
-}
-.data-viz-use-cases li {
-  list-style: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.data-viz-air {
-  background-color: var(--ce-cyan-50);
-  color: #fff !important;
-}
-.data-viz-sleep {
-  background-color: var(--ce-indigo-50);
-  color: #fff !important;
-}
-.data-viz-heart {
-  background-color: var(--ce-orange-40);
-  color: #fff !important;
-}
-.data-viz-activity {
-  background-color: var(--ce-yellow-10);
-  color: #000 !important;
-}
-
-
 /* Color Cell Rows */
 .colorHeader {
   display: flex;
-  align-items: center;
-  min-width: 190px;
-  margin-bottom: 10px;
-  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 120px;
+  min-width: 120px;
+  margin-bottom: 0;
+  gap: 2px;
+  padding-right: 10px;
 }
 
 .colorRow h3,
 .colorRow p {
   margin: 0 !important;
 }
+.colorRow h3 {
+  font-size: 13px !important;
+}
 
 .colorHeader code {
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .colorRow .colors {
   display: flex;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 3px;
-  width: 100%;
+  flex-wrap: nowrap;
+  gap: 0;
+  flex: 1;
 }
 
 
 .colorCell-overlay {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 10px;
-  padding: 2px 4px;
-  text-align: center;
+  inset: 0;
   z-index: 12;
   pointer-events: none;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 4px;
   width: 100%;
+}
+.colorCell-gradeLabel {
+  font-size: 12px;
+  font-weight: 600;
 }
 .colorCell-overlay-light {
   color: #222;
@@ -169,21 +155,21 @@ td, th {
 .colorCell .color {
   min-width: 40px;
   width: 100%;
-  height: 60px;
+  height: 46px;
   margin: 0 auto;
 }
 
 
 .colorCell .shade {
-  color: var(--mdhui-grey-99);
+  color: var(--mdhui-text-color-1);
   font-size: 12px;
 }
 
 .colorRow {
   display: flex;
-  align-items: flex-start;
-  padding-top: 20px;
-  flex-direction: column;
+  align-items: stretch;
+  padding-top: 0;
+  flex-direction: row;
 }
 
 
@@ -255,26 +241,27 @@ td, th {
   color: rgb(46, 52, 56); /* to match storybook's css-in-js for dark mode */
 }
 
-/* hover borders */
-.colorCell {
-  border: 2px solid transparent;
-}
-.colorCell-highlight40 {
-  border: 2px solid var(--color-highlight-40) !important;
-  box-shadow: 0 0 0 2px var(--color-highlight-40);
-  z-index: 2;
-}
-.colorCell-highlight50 {
-  border: 2px solid var(--color-highlight-50) !important;
-  box-shadow: 0 0 0 2px var(--color-highlight-50);
-  z-index: 2;
-}
-.colorCell-highlight70 {
-  border: 2px solid var(--color-highlight-70) !important;
-  box-shadow: 0 0 0 2px var(--color-highlight-70);
-  z-index: 2;
-}
+/* ramp legend — rings drawn the same way as the hover highlight below */
+.rampLegend { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 6px 0 10px; font-size: 13px; }
+.rampLegend-item { display: inline-flex; align-items: center; gap: 7px; }
+.rampLegend-ring { width: 22px; height: 22px; border-radius: 3px; background: var(--mdhui-background-color-2); }
+.rampLegend-ring40 { box-shadow: inset 0 0 0 3px var(--color-highlight-40); }
+.rampLegend-ring50 { box-shadow: inset 0 0 0 3px var(--color-highlight-50); }
+.rampLegend-ring70 { box-shadow: inset 0 0 0 3px var(--color-highlight-70); }
 
+/* hover highlight — inset so cells stay gapless with no layout shift */
+.colorCell-highlight40 .color {
+  box-shadow: inset 0 0 0 3px var(--color-highlight-40);
+}
+.colorCell-highlight50 .color {
+  box-shadow: inset 0 0 0 3px var(--color-highlight-50);
+}
+.colorCell-highlight70 .color {
+  box-shadow: inset 0 0 0 3px var(--color-highlight-70);
+}
+.colorCell-highlight40, .colorCell-highlight50, .colorCell-highlight70 {
+  z-index: 2;
+}
 
 /* Gradients */
 
@@ -284,9 +271,13 @@ td, th {
 .gradients .colorHeader {
   flex-direction: column;
   align-items: flex-start;
+  /* undo the 120px hue-row header width so the intro wraps like body text */
+  width: auto;
+  min-width: 0;
+  max-width: 700px;
 }
 .gradients .colorRow {
-  border-top: 1px solid var(--mdhui-grey-30);
+  border-top: 1px solid var(--mdhui-border-color-1);
 }
 
 .gradientCells .colorCell .color {
@@ -299,3 +290,18 @@ td, th {
   gap: 10px;
   align-items: flex-start;
 }
+
+/* Tokens in context — one card rendered under each scheme via scoped token styles */
+.tokensCtx { display: flex; gap: 14px; flex-wrap: wrap; margin: 8px 0 16px; }
+.tokensCtx-col { flex: 1 1 320px; min-width: 300px; max-width: 430px; }
+.tokensCtx-colLabel { font: 700 11px ui-monospace, monospace; color: var(--mdhui-text-color-3); margin: 0 0 6px; text-transform: uppercase; }
+.tokensCtx-surface { background: var(--mdhui-background-color-1); border-radius: 14px; padding: 14px; color: var(--mdhui-text-color-1); }
+.tokensCtx-card { background: var(--mdhui-background-color-0); border: 1px solid var(--mdhui-border-color-0); border-radius: 12px; padding: 16px 18px; font-size: 15px; }
+.tokensCtx-ann { font: 10.5px ui-monospace, monospace; color: var(--mdhui-text-color-3); }
+/* one sample per row, its token name in a fixed right-hand gutter */
+.tokensCtx-line { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 3px 0; }
+.tokensCtx-divider { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; margin: 12px 0 8px; }
+.tokensCtx-caption { font: 700 9.5px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .05em; color: var(--mdhui-text-color-3); margin: 2px 0 4px; }
+.tokensCtx-grid { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: center; padding: 3px 0; }
+.tokensCtx-track { background: var(--mdhui-background-color-2); border-radius: 99px; height: 8px; }
+.tokensCtx-fill { width: 45%; height: 8px; border-radius: 99px; background: var(--mdhui-color-primary); }

@@ -61,18 +61,22 @@ export default function Layout(props: LayoutProps) {
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
-			{props.primaryColor &&
-				<EmotionGlobal styles={css`
-				:root {
-					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
-				}`
-				} />
-			}
 			{context.colorScheme == "dark" &&
 				<EmotionGlobal styles={darkColorScheme} />
 			}
 			{context.colorScheme == "light" &&
 				<EmotionGlobal styles={lightColorScheme} />
+			}
+			{/* after the scheme styles: both write --mdhui-color-primary at :root, so a
+			    customer's color only survives if it lands last. -text carries it too, since
+			    the scheme layer would otherwise pair a custom fill with the stock foreground. */}
+			{props.primaryColor &&
+				<EmotionGlobal styles={css`
+				:root {
+					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
+					--mdhui-color-primary-text: ${resolveColor(colorScheme, props.primaryColor)};
+				}`
+				} />
 			}
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />

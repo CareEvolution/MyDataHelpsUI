@@ -3,22 +3,40 @@ import './colorDocs.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy as faCopyRegular } from '@fortawesome/free-regular-svg-icons';
 import { faCopy as faCopySolid } from '@fortawesome/free-solid-svg-icons';
+import { APCAcontrast, sRGBtoY } from 'apca-w3';
+import { darkColorStyle, lightColorStyle } from '../../helpers/globalCss';
 
+// A walk around the wheel: each muted family sits beside its vivid parent.
 const colors: string[] = [
   'grey',
+  'blue-grey',
+  'blue-muted',
   'blue',
-  'blue-vivid',
+  'cobalt',
   'indigo',
+  'iris',
   'violet',
-  'cyan',
-  'green',
+  'purple',
+  'magenta',
+  'fuchsia',
+  'pink',
+  'red-muted',
   'red',
-  'red-vivid',
+  'red-orange',
   'orange',
+  'amber',
+  'gold',
   'yellow',
+  'chartreuse',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'azure',
 ];
 
-const grades = [1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 55, 60, 70, 80, 90, 99];
+const grades = [1, 2, 3, 4, 5, 10, 20, 30, 35, 40, 50, 55, 60, 70, 80, 85, 90, 95, 99];
 
 const gradientsNames: string[] = [
   'alpine-overlook',
@@ -83,8 +101,7 @@ function hexToRgb(hex: string) {
   return [num >> 16, (num >> 8) & 255, num & 255];
 }
 
-// TODO: THESE HELPERS MIGHT NOT BE ACCURATE
-// Helper: WCAG 2.0 contrast ratio
+// Helper: WCAG 2.x contrast ratio
 function luminance([r, g, b]: number[]) {
   const a = [r, g, b].map(function (v) {
     v /= 255;
@@ -97,49 +114,44 @@ function wcagContrast(rgb1: number[], rgb2: number[]) {
   const l2 = luminance(rgb2);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
-// Helper: APCA contrast (simplified, not 100% spec, but close for demo)
-function apcaContrast(txt: number[], bg: number[]) {
-  // https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA_calculation_steps.md
-  // This is a simplified version for demo purposes
-  const Ybg = luminance(bg);
-  const Ytxt = luminance(txt);
-  let contrast = 0;
-  if (Ybg > Ytxt) {
-    contrast = (Ybg - Ytxt) * 1.14 * 100;
-  } else {
-    contrast = (Ytxt - Ybg) * 1.14 * 100 * -1;
-  }
-  return Math.round(contrast);
+// APCA-4g Lc via the official apca-w3 package 
+// The sign encodes polarity: positive = dark text on light bg, negative = light on dark.
+function apcaLc(text: number[], background: number[]) {
+  return APCAcontrast(sRGBtoY(text), sRGBtoY(background));
 }
 
-// Label for contrast level (A, AA, AAA) with color
+// Label for a conformance level: WCAG A/AA/AAA, or an APCA text-role band
 function ContrastLevelLabel({ level }: { level: string }) {
-  let colorVar = '';
-  let label = '';
-  if (!level) {
-    colorVar = 'var(--ce-grey-40)';
-    label = 'N/A';
-  } else {
-    label = level;
-    if (level === 'A') colorVar = 'var(--color-highlight-40)';
-    else if (level === 'AA') colorVar = 'var(--color-highlight-50)';
-    else if (level === 'AAA') colorVar = 'var(--color-highlight-70)';
-  }
-  return <span style={{ color: colorVar, fontWeight: 600, fontSize: '14px' }}> {label}</span>;
+  const colorByLevel: { [level: string]: string } = {
+    'AA large': 'var(--color-highlight-40)',
+    'AA': 'var(--color-highlight-50)',
+    'AAA': 'var(--color-highlight-70)',
+    'muted': 'var(--color-highlight-40)',
+    'body': 'var(--color-highlight-50)',
+    'primary': 'var(--color-highlight-70)',
+    'non-text': 'var(--mdh-grey-50)',
+  };
+  return (
+    <span style={{ color: colorByLevel[level] ?? 'var(--mdh-grey-40)', fontWeight: 600, fontSize: '14px' }}> {level || 'fails'}</span>
+  );
 }
-// Helper: Get WCAG level for a contrast ratio
+// Helper: Get WCAG level for a contrast ratio. 3:1 is not Level A — it's the AA floor
+// for large text and for non-text elements.
 function getWcagLevel(contrast: number) {
   if (contrast >= 7) return 'AAA';
   if (contrast >= 4.5) return 'AA';
-  if (contrast >= 3) return 'A';
+  if (contrast >= 3) return 'AA large';
   return '';
 }
-// Helper: Get APCA level for a contrast value (absolute)
-function getApcaLevel(contrast: number) {
-  const abs = Math.abs(contrast);
-  if (abs >= 75) return 'AAA';
-  if (abs >= 60) return 'AA';
-  if (abs >= 40) return 'A';
+// APCA has no A/AA/AAA; label with the strongest text role the |Lc| supports. Each floor
+// assumes a minimum font size and weight (75 = 18px/400, 60 = 24px/400, 45 = 36px/400),
+// so these labels are a best case.
+function getApcaRole(lc: number) {
+  const abs = Math.abs(lc);
+  if (abs >= 75) return 'primary';
+  if (abs >= 60) return 'body';
+  if (abs >= 45) return 'muted';
+  if (abs >= 15) return 'non-text';
   return '';
 }
 
@@ -150,40 +162,15 @@ const ColorCell: React.FC<ColorCellProps & {
   highlight70?: boolean;
   onHover?: (grade: number | null) => void;
 }> = ({ hue, grade, hoveredGrade, highlight40, highlight50, highlight70, onHover }) => {
-  const color = `var(--ce-${hue}-${grade})`;
+  const color = `var(--mdh-${hue}-${grade})`;
   const colorDivRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = React.useState(false);
   const [showIcon, setShowIcon] = React.useState(false);
-  const [hex, setHex] = React.useState<string>('');
-  const [wcag, setWcag] = React.useState<string>('');
-  const [apca, setApca] = React.useState<string>('');
-
-  React.useEffect(() => {
-    if (colorDivRef.current) {
-      const computed = window.getComputedStyle(colorDivRef.current);
-      const bgColor = computed.backgroundColor;
-      const hexVal = rgbToHex(bgColor);
-      setHex(hexVal);
-      // Contrast against white and black, show the higher
-      const rgb = hexToRgb(hexVal);
-      const wcagWhite = wcagContrast(rgb, [255, 255, 255]);
-      const wcagBlack = wcagContrast(rgb, [0, 0, 0]);
-      setWcag(wcagWhite > wcagBlack ? wcagWhite.toFixed(2) + ' (white)' : wcagBlack.toFixed(2) + ' (black)');
-      const apcaWhite = apcaContrast(rgb, [255, 255, 255]);
-      const apcaBlack = apcaContrast(rgb, [0, 0, 0]);
-      setApca(Math.abs(apcaWhite) > Math.abs(apcaBlack) ? apcaWhite + ' (white)' : apcaBlack + ' (black)');
-    }
-  }, [colorDivRef, color]);
 
   const handleClick = async () => {
-    if (colorDivRef.current) {
-      const computed = window.getComputedStyle(colorDivRef.current);
-      const bgColor = computed.backgroundColor;
-      const hex = rgbToHex(bgColor);
-      await navigator.clipboard.writeText(hex);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
-    }
+    await navigator.clipboard.writeText(color);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
   };
 
   const isLight = grade < 50;
@@ -196,7 +183,7 @@ const ColorCell: React.FC<ColorCellProps & {
     <div
       className={`colorCell${highlightClass} ${isLight ? 'grade-light' : 'grade-dark'}`}
       onClick={handleClick}
-      title="Click to copy hex color"
+      title={`Click to copy ${color}`}
       style={{ position: 'relative', cursor: 'pointer' }}
       onMouseEnter={() => { setShowIcon(true); onHover && onHover(grade); }}
       onMouseLeave={() => { setShowIcon(false); onHover && onHover(null); }}
@@ -205,19 +192,14 @@ const ColorCell: React.FC<ColorCellProps & {
 
       <div className="color" ref={colorDivRef} style={{ backgroundColor: color, position: 'relative' }}>
         <div className={`colorCell-overlay ${isLight ? 'colorCell-overlay-light' : 'colorCell-overlay-dark'}`}>
-          <div className="colorCell-detailText">
-            {/* <span className="colorCell-detailNumber">{apca.replace(/\s*\(.*\)/, '')}</span> */}
-          </div>
-          <div className="colorCell-detailText">
-            <span className="colorCell-detailNumber">{wcag.replace(/\s*\(.*\)/, '')}</span>
-          </div>
+          <span className="colorCell-gradeLabel">{grade}</span>
         </div>
         {showIcon && (
           <div
             className={`colorCell-tooltip ${isLight ? 'colorCell-tooltip-darkbg' : 'colorCell-tooltip-lightbg'}`}
           >
             <div className="colorCell-tooltipRow">
-              <div className="colorCell-tooltipTitle">WCAG 2.0</div>
+              <div className="colorCell-tooltipTitle">WCAG 2.x</div>
               <span className="colorCell-detailGroup">
                 {(() => {
                   const colorVal = colorDivRef.current ? rgbToHex(window.getComputedStyle(colorDivRef.current).backgroundColor) : '';
@@ -238,36 +220,32 @@ const ColorCell: React.FC<ColorCellProps & {
               </span>
             </div>
             <div className="colorCell-tooltipRow">
-              <div className="colorCell-tooltipTitle">APCA (WCAG 3.0)</div>
+              <div className="colorCell-tooltipTitle">APCA Lc (as text / as background)</div>
               <span className="colorCell-detailGroup">
                 {(() => {
                   const colorVal = colorDivRef.current ? rgbToHex(window.getComputedStyle(colorDivRef.current).backgroundColor) : '';
                   const rgb = colorVal ? hexToRgb(colorVal) : [0, 0, 0];
-                  const apcaWhite = apcaContrast(rgb, [255, 255, 255]);
-                  const apcaBlack = apcaContrast(rgb, [0, 0, 0]);
-                  return <>
-                    <span className="colorCell-detailLabel">
-                      <span>#fff: <b>{apcaWhite}</b></span>
-                      <ContrastLevelLabel level={getApcaLevel(apcaWhite)} />
-                    </span>
-                    <span className="colorCell-detailLabel">
-                      <span>#000: <b>{apcaBlack}</b></span>
-                      <ContrastLevelLabel level={getApcaLevel(apcaBlack)} />
-
-                    </span>
-                  </>;
+                  // The label reflects the weaker direction — what the palette guarantees.
+                  return ([['#fff', [255, 255, 255]], ['#000', [0, 0, 0]]] as [string, number[]][]).map(([label, other]) => {
+                    const asText = apcaLc(rgb, other);
+                    const asBackground = apcaLc(other, rgb);
+                    const weaker = Math.min(Math.abs(asText), Math.abs(asBackground));
+                    return (
+                      <span className="colorCell-detailLabel" key={label}>
+                        <span>{label}: <b>{Math.round(asText)}</b> / <b>{Math.round(asBackground)}</b></span>
+                        <ContrastLevelLabel level={getApcaRole(weaker)} />
+                      </span>
+                    );
+                  });
                 })()}
               </span>
             </div>
           </div>
         )}
       </div>
-      <div className='grade'>
-        {grade}
-      </div>
       <CopyIcon hovered={showIcon} variant={isLight ? 'light' : 'dark'} />
       {copied && (
-        <div className="colorCell-copiedTooltip">Copied hex to clipboard</div>
+        <div className="colorCell-copiedTooltip">Copied {color}</div>
       )}
     </div>
   );
@@ -280,26 +258,15 @@ interface ColorRowProps {
 const ColorRow: React.FC<ColorRowProps> = ({ hue }) => {
   const [hoveredGrade, setHoveredGrade] = React.useState<number | null>(null);
 
-  // Find the first color on each side that is at least X away from hoveredGrade
-  const getHighlightIndexes = (distance: number) => {
+  // Bands are the magic-number guarantees: 40 -> AA large, 50 -> AA, 70 -> AAA.
+  const getHighlightIndexes = (band: number) => {
     if (hoveredGrade == null) return { left: null, right: null };
     let left: number | null = null;
     let right: number | null = null;
-    for (let i = grades.length - 1; i >= 0; i--) {
-      if (grades[i] < hoveredGrade - distance) {
-        left = i + 1 < grades.length ? i + 1 : null;
-        break;
-      }
-    }
     for (let i = 0; i < grades.length; i++) {
-      if (grades[i] > hoveredGrade + distance) {
-        right = i - 1 >= 0 ? i - 1 : null;
-        break;
-      }
+      if (grades[i] <= hoveredGrade - band) left = i;
+      if (right === null && grades[i] >= hoveredGrade + band) right = i;
     }
-    // If no such grade, pick the edge
-    if (left === null && hoveredGrade - distance >= grades[0]) left = 0;
-    if (right === null && hoveredGrade + distance <= grades[grades.length - 1]) right = grades.length - 1;
     return { left, right };
   };
   const highlight40 = getHighlightIndexes(40);
@@ -311,7 +278,7 @@ const ColorRow: React.FC<ColorRowProps> = ({ hue }) => {
       <header className="colorHeader">
         <h3>{hue}</h3>
         <p>
-          <code>var(--ce-{hue}-##)</code>
+          <code>var(--mdh-{hue}-##)</code>
         </p>
       </header>
       <div className="colors">
@@ -340,15 +307,15 @@ const GradientSection: React.FC = () => {
       <header className="colorHeader">
         <h3>Gradients</h3>
         <p>
-          There are both regular and dark version of the gradients. The regular version is designed for black text on top, while the dark version is designed for white text on top.
-          <code>var(--ce-gradient-##)</code>
+          Each gradient comes in a regular and a dark version: regular is made for black text on top, dark for white text.
+          <code>var(--mdh-gradient-##)</code>
         </p>
       </header>
       <h4 style={{ margin: '8px 0 4px' }}>Light (for dark text)</h4>
       <div className="gradientCells">
         {lightGradients.map((gradient) => (
           <div className="colorCell" key={gradient}>
-            <div className="color" style={{ background: `var(--ce-gradient-${gradient})` }} />
+            <div className="color" style={{ background: `var(--mdh-gradient-${gradient})` }} />
             <div className='grade'>
               {gradient}
             </div>
@@ -359,7 +326,7 @@ const GradientSection: React.FC = () => {
       <div className="gradientCells">
         {darkGradients.map((gradient) => (
           <div className="colorCell" key={gradient}>
-            <div className="color" style={{ background: `var(--ce-gradient-${gradient})` }} />
+            <div className="color" style={{ background: `var(--mdh-gradient-${gradient})` }} />
             <div className='grade'>
               {gradient}
             </div>
@@ -370,63 +337,229 @@ const GradientSection: React.FC = () => {
   )
 }
 
+// Anchors are the References list at the bottom; cvdPalette.tsx has a matching copy.
+const Ref: React.FC<{ n: number }> = ({ n }) => (
+  <sup style={{ fontSize: '10px' }}><a href={`#ref-${n}`} style={{ textDecoration: 'none' }}>[{n}]</a></sup>
+);
+
+// Scoping the real style objects per column means the preview can't drift from the tokens.
+// Base token = fills, -text = the signal as foreground; heart-rate and air-quality have
+// no -text token and fall back to the mark color. Ink is per value: air quality's light
+// grade needs white where every other fill takes near-black.
+const DARK_INK = '#12151b';
+const LIGHT_INK = '#fff';
+type SignalSwatch = { value: string; ink: string };
+const SIGNALS: { name: string; fill: string; text: string; light: SignalSwatch; dark: SignalSwatch }[] = [
+  { name: 'Sleep', fill: '--mdhui-color-sleep', text: '--mdhui-color-sleep-text', light: { value: '#7b88c6', ink: DARK_INK }, dark: { value: 'indigo-40', ink: DARK_INK } },
+  { name: 'Heart rate', fill: '--mdhui-color-heart-rate', text: '--mdhui-color-heart-rate', light: { value: '#e35c33', ink: DARK_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
+  { name: 'Activity', fill: '--mdhui-color-activity', text: '--mdhui-color-activity-text', light: { value: '#f5b722', ink: DARK_INK }, dark: { value: 'gold-20', ink: DARK_INK } },
+  { name: 'Air quality', fill: '--mdhui-color-air-quality', text: '--mdhui-color-air-quality', light: { value: 'teal-55', ink: LIGHT_INK }, dark: { value: 'teal-30', ink: DARK_INK } },
+];
+
+// Every sample sits in one column and its token name in the gutter beside it, so the
+// card reads as plausible content on the left and a token index on the right.
+const Line: React.FC<{ token: string; children: React.ReactNode }> = ({ token, children }) => (
+  <div className="tokensCtx-line">
+    <div>{children}</div>
+    <span className="tokensCtx-ann">{token}</span>
+  </div>
+);
+const Divider: React.FC<{ token: string; color: string }> = ({ token, color }) => (
+  <div className="tokensCtx-divider">
+    <div style={{ borderTop: `1px solid var(${color})` }} />
+    <span className="tokensCtx-ann">{token}</span>
+  </div>
+);
+const Caption: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="tokensCtx-caption">{children}</div>
+);
+
+const TokenContextCard: React.FC<{ scheme: 'light' | 'dark' }> = ({ scheme }) => (
+  <div className="tokensCtx-surface">
+    <div className="tokensCtx-card">
+      <Caption>text</Caption>
+      <Line token="text-0"><span style={{ color: 'var(--mdhui-text-color-0)', fontWeight: 700, fontSize: '19px' }}>118 mg/dL</span></Line>
+      <Line token="text-1"><span style={{ color: 'var(--mdhui-text-color-1)', fontWeight: 700 }}>Blood glucose, last 7 days</span></Line>
+      <Line token="text-2"><span style={{ color: 'var(--mdhui-text-color-2)' }}>Your readings stayed in range.</span></Line>
+      <Line token="text-3"><span style={{ color: 'var(--mdhui-text-color-3)', fontSize: '13px' }}>Updated 2 hours ago</span></Line>
+      <Line token="text-4"><span style={{ color: 'var(--mdhui-text-color-4)' }}>Sync unavailable</span></Line>
+      <Divider token="border-1" color="--mdhui-border-color-1" />
+      <Caption>accents — as text, then as fill</Caption>
+      <Line token="primary-text"><span style={{ color: 'var(--mdhui-color-primary-text)', fontWeight: 700 }}>View details</span></Line>
+      <Line token="success-text"><span style={{ color: 'var(--mdhui-color-success-text)', fontWeight: 700 }}>In range</span></Line>
+      <Line token="warning-text"><span style={{ color: 'var(--mdhui-color-warning-text)', fontWeight: 700 }}>Running low</span></Line>
+      <Line token="danger-text"><span style={{ color: 'var(--mdhui-color-danger-text)', fontWeight: 700 }}>Overdue</span></Line>
+      <Line token="primary"><span style={{ background: 'var(--mdhui-color-primary)', color: '#fff', fontWeight: 700, borderRadius: '8px', padding: '6px 16px', display: 'inline-block' }}>Log reading</span></Line>
+      <Line token="danger"><span style={{ background: 'var(--mdhui-color-danger)', color: '#fff', fontWeight: 700, borderRadius: '99px', padding: '3px 12px', fontSize: '13px', display: 'inline-block' }}>3 due</span></Line>
+      <Line token="bg-2 · primary"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
+      <Divider token="border-2" color="--mdhui-border-color-2" />
+      <Caption>signals — name in its text color, fill shows its value</Caption>
+      {SIGNALS.map(signal => {
+        const swatch = scheme === 'light' ? signal.light : signal.dark;
+        return (
+          <div className="tokensCtx-grid" key={signal.name}>
+            <div style={{ color: `var(${signal.text})`, fontWeight: 700 }}>{signal.name}</div>
+            <div style={{
+              background: `var(${signal.fill})`, borderRadius: '6px', height: '24px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: swatch.ink, font: '700 10.5px ui-monospace, monospace',
+            }}>{swatch.value}</div>
+          </div>
+        );
+      })}
+    </div>
+    <div className="tokensCtx-ann" style={{ marginTop: '8px' }}>surface background-color-1 · card background-color-0 · card edge border-color-0</div>
+  </div>
+);
+
+const TokensInContext: React.FC = () => (
+  <div className="tokensCtx">
+    <div className="tokensCtx-col">
+      <div className="tokensCtx-colLabel">Light</div>
+      <div style={lightColorStyle}><TokenContextCard scheme="light" /></div>
+    </div>
+    <div className="tokensCtx-col">
+      <div className="tokensCtx-colLabel">Dark</div>
+      <div style={darkColorStyle}><TokenContextCard scheme="dark" /></div>
+    </div>
+  </div>
+);
+
 const ColorDocs: React.FC = () => {
   return (
     <div>
-      <h2>The "Magic Number" Color System</h2>
-      <p>In design systems compliant with WCAG 2.0 (and Section 508), the term <strong>"magic number"</strong> refers to the specific <strong>luminance difference</strong> required
-        between two colors to ensure they meet minimum contrast standards for accessibility.
-        The higher the magic number, the greater the contrast and accessibility.
-      </p>
-      <ul>
-        <li><strong>Magic number of 40+:</strong> Meets WCAG 2.0 AA Large Text (18pt/14pt bold or larger) contrast. For example, grey-90 and indigo-50.</li>
-        <li><strong>Magic number of 50+:</strong> Meets WCAG 2.0 AA contrast or AAA Large Text contrast. For example, grey-90 and red-40. <strong className="emphasis-text">We recommend this level of contrast for most web content.</strong></li>
-        <li><strong>Magic number of 70+:</strong> Meets WCAG 2.0 AAA contrast. For example, grey-10 and red-80.</li>
-      </ul>
-      <p>Additionally, a grade of 50 will meet the Section 508 AA contrast requirement against both pure white (#000) and pure black (#fff).</p>
-      <details>
-        <summary>More about A, AA, and AAA</summary>
-        <div className="details-content">
-          <p><strong>Always aim for AA.</strong> In some cases, A may be acceptable:</p>
-          <ul>
-            <li><strong>A:</strong> <em>Minimum</em> level. Text must have a contrast ratio of at least <b>3:1</b> for large text (18pt/14pt bold or larger) and <b>4.5:1</b> for normal text against its background. This level is the basic requirement for accessibility, ensuring that text is readable for most users with mild visual impairments.</li>
-            <li><strong>AA:</strong> <em>Mid-range</em> level. Text must have a contrast ratio of at least <b>4.5:1</b> for normal text and <b>3:1</b> for large text. This is the recommended level for most web content and is required for legal compliance in many regions (such as Section 508 in the US).</li>
-            <li><strong>AAA:</strong> <em>Highest</em> level. Text must have a contrast ratio of at least <b>7:1</b> for normal text and <b>4.5:1</b> for large text. This level is intended for content that needs to be accessible to the widest possible audience, including users with significant visual impairments. AAA is not required for most content, but is encouraged where possible.</li>
-          </ul>
-          <p style={{ fontSize: '13px', color: '#666', marginTop: '0.5em' }}>
-            <b>Source:</b> <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">W3C: Understanding WCAG 2.1 Contrast (Minimum)</a>
-          </p>
-        </div>
-      </details>
-      <details>
-        <summary>Will this change with WCAG 3.0?</summary>
-        <div className="details-content">
-          <p>While WCAG 2.0 uses relative luminance to determine color contrast, WCAG 3.0 (potentially Dec 2025) is expected to use APCA (Accessible Perceptual Contrast Algorithm).
-            APCA is a new method for evaluating color contrast that takes into account human perception more effectively than previous methods.</p>
-          <p>The MyDataHelps color palette will be updated as necessary to comply with WCAG 3.0.</p>
-        </div>
-      </details>
+      <h2>The "magic number" color system</h2>
+      <p>The MyDataHelps color system makes accessible color the default, in light mode and dark. It
+        takes the U.S. Web Design System's approach<Ref n={1} />, gives it more vibrant hues, and adds
+        APCA<Ref n={4} />: a newer way of measuring contrast that dark mode needs, and the one WCAG 3
+        is expected to adopt.</p>
+      <p>Each color's name carries a number, and that number tells you how light or dark the color is.
+        The gap between two of those numbers is the <strong>"magic number"</strong>: the wider the gap,
+        the more contrast the pair is guaranteed to have, whichever two hues you picked. Choosing a
+        readable pair comes down to subtraction, so nobody has to run colors through a contrast checker
+        to know the answer.</p>
       <h3>Usage</h3>
-      <p><code>color: var(--ce-[hue]-[grade])</code> Example: <code>color: var(--ce-blue-40)</code> </p>
-      <h4>UI Use Cases</h4>
-      <ul>
-        <li>The 5 lightest (1-5) and darkest (95-99) grades are typically used as background colors.</li>
-        <li>The 55 grade is the lightest legible grade against backgrounds 1-5.</li>
-        <li>The 10 and 20 are typically used for border colors.</li>
-      </ul>
-      <h4>Data Visualization Use Cases</h4>
-      <ul className="data-viz-use-cases">
-        <li className="data-viz-air">Air Quality: Cyan</li>
-        <li className="data-viz-sleep">Sleep: Indigo</li>
-        <li className="data-viz-heart">Heart rate: Red-Orange</li>
-        <li className="data-viz-activity">Activity: Yellow</li>
-      </ul>
+      <p><code>color: var(--mdh-[hue]-[grade])</code> Example: <code>color: var(--mdh-blue-40)</code> </p>
+      <p>The palette is <strong>25 hues plus a grey</strong>, each in <strong>19 grades</strong> from 1
+        (near white) to 99 (near black), published as <code>--mdh-*</code> CSS custom properties. Ten
+        gradients cover decorative surfaces, and the color-blind-safe palettes cover charts.</p>
+      <p>In component code, always go through the semantic <code>--mdhui-*</code> tokens rather than the
+        raw palette — the raw <code>--mdh-*</code> vars exist to define them, and the semantic layer is
+        what keeps light and dark mode both correct.</p>
+      <h4>Which magic number to use</h4>
+      <p>Find the row for what you're coloring. <strong>WCAG</strong> is the legal floor that Section 508
+        requires; <strong>APCA</strong> is the perceptual model drafted for WCAG 3, which asks for a bigger
+        gap to reach the same readability. Both apply in either color scheme, so the APCA number is the one
+        to reach for when you want a single figure to remember — dark mode is audited against it, and light
+        pairs that only meet the WCAG minimum can still land short of it.</p>
+      <div className="magicTableWrap">
+        <table className="magicTable">
+          <thead>
+            <tr>
+              <th>What you're coloring</th>
+              <th>WCAG<Ref n={2} /><span>minimum</span></th>
+              <th>APCA<Ref n={4} /><span>recommended, especially in dark mode</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="magicTable-default">
+              <th scope="row">Body text<span>16–18px regular — the default for most content</span></th>
+              <td>50+</td><td>80+</td>
+            </tr>
+            <tr>
+              <th scope="row">Bold or emphasized text<span>16px bold — too small to count as large text</span></th>
+              <td>50+</td><td>70+</td>
+            </tr>
+            <tr>
+              <th scope="row">Large text<span>24px regular (18pt) — WCAG's large-text tier starts here</span></th>
+              <td>40+</td><td>70+</td>
+            </tr>
+            <tr>
+              <th scope="row">Headlines<span>36px regular, or 24px bold</span></th>
+              <td>40+</td><td>60+</td>
+            </tr>
+            <tr>
+              <th scope="row">Highest-contrast text<span>WCAG AAA at body size</span></th>
+              <td>70+</td><td>80+</td>
+            </tr>
+            <tr>
+              <th scope="row">Functional elements<span>input borders, focus rings, checkbox and toggle boundaries, icons, chart marks<Ref n={3} /></span></th>
+              <td>40+</td><td>40+</td>
+            </tr>
+            <tr>
+              <th scope="row">Structural elements<span>card edges, separators, dividers — 10 and 20 in light, 70 and 60 in dark</span></th>
+              <td colSpan={2}>no minimum</td>
+            </tr>
+            <tr>
+              <th scope="row">Backgrounds<span>the ends of the ramp — in dark: cards grey-85, app background grey-95, wells grey-99</span></th>
+              <td colSpan={2}>1-5 light · 85-99 dark</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Why dark mode needs the bigger gaps.</strong> The same gap buys less perceptual contrast
+        at the dark end of the ramp: a 50-gap measures Lc 67 near the light end but only Lc 42 near the dark
+        end, and WCAG rates that dark pair <em>higher</em> (5.5:1 vs 4.6:1) — the discrepancy APCA exists to
+        catch. Dark answers don't mirror light ones either: text on tinted backgrounds needs 55 on the light
+        end but 40 on the dark end — a band further out than symmetry would suggest — and status accents
+        ride the 35 half-step on the grade-85 cards.</p>
+      <details>
+        <summary>The standards behind the numbers — WCAG and APCA</summary>
+        <div className="details-content">
+          <p><strong>WCAG levels.</strong> Level A doesn't say anything about contrast; the minimums start at AA:</p>
+          <ul>
+            <li><strong>AA</strong> (SC 1.4.3<Ref n={2} />): at least <b>4.5:1</b> for normal text and <b>3:1</b> for large text (18pt, or 14pt bold). This is the level to hit for most web content, and it's what Section 508 requires in the US.</li>
+            <li><strong>AAA</strong> (SC 1.4.6<Ref n={2} />): at least <b>7:1</b> for normal text and <b>4.5:1</b> for large. Aim here when you want the widest possible audience; it's encouraged rather than required.</li>
+            <li><strong>Non-text elements</strong> (SC 1.4.11, Level AA<Ref n={3} />): anything functional — input borders, focus rings, checkbox and toggle boundaries, icons, chart marks — needs at least <b>3:1</b> against what's next to it. Purely structural pieces (card edges, separators, dividers) are exempt.</li>
+          </ul>
+          <p><strong>APCA.</strong> WCAG 2.x measures contrast as a ratio of relative luminance; APCA
+            (Accessible Perceptual Contrast Algorithm), drafted for WCAG 3, models how contrast actually
+            looks to people<Ref n={4} />. The difference shows up most in dark mode, where the WCAG 2.x
+            math is too optimistic about dark-on-dark pairs. Every pairing here is measured under both,
+            taking the weaker of the two text/background directions, and APCA's text tiers need bigger gaps:</p>
+          <ul>
+            <li><strong>Gap 60+:</strong> muted and large text (APCA floor Lc 45; palette worst case 47).</li>
+            <li><strong>Gap 70+:</strong> body text (floor Lc 60; worst case 68).</li>
+            <li><strong>Gap 80+:</strong> primary text (floor Lc 75; worst case 81).</li>
+          </ul>
+          <p>WCAG 3 is still a draft and APCA isn't legally required yet, so the palette conforms to both:
+            WCAG 2.x ratios stay the hard floor, the APCA measurements add the perceptual picture on top,
+            and the dark-mode semantic tokens are built at the APCA gaps.</p>
+        </div>
+      </details>
+      <h4>Tokens in context</h4>
+      <p>The same card under each scheme. Read each row left to right: the sample on the left is drawn with
+        the token named on the right. Every color here is a semantic <code>--mdhui-*</code> token, so one set
+        of rules produces both cards; in dark mode those tokens map onto the grey ramp and brighter accent
+        grades, and <code>npm run audit:colors</code> checks every pairing against the role floors.</p>
+      <TokensInContext />
+      <p>The signal rows are the data-visualization colors: heart rate on red-orange (glucose shares it),
+        activity on gold, sleep on indigo, air quality on teal.</p>
+      <h3>The full ramp</h3>
+      <p>Every hue, lightest to darkest. <strong>Hover a swatch</strong> and the ramp marks the closest
+        grade on either side that's far enough away to clear each band — so you can read a safe pairing
+        straight off the row:</p>
+      <div className="rampLegend">
+        <span className="rampLegend-item"><span className="rampLegend-ring rampLegend-ring40" /> 40+ · AA large text</span>
+        <span className="rampLegend-item"><span className="rampLegend-ring rampLegend-ring50" /> 50+ · AA body text</span>
+        <span className="rampLegend-item"><span className="rampLegend-ring rampLegend-ring70" /> 70+ · AAA</span>
+      </div>
+      <p>The same hover shows what that color measures against white and black — the WCAG 2.x ratio and
+        the APCA Lc in both directions, each with the strongest role it supports. <strong>Click</strong> a
+        swatch to copy its variable.</p>
       <div>
         {colors.map((hue) => (
           <ColorRow key={hue} hue={hue} />
         ))}
       </div>
       <GradientSection />
+      <h3>References</h3>
+      <ol style={{ fontSize: '13px' }}>
+        <li id="ref-1"><a href="https://designsystem.digital.gov/design-tokens/color/overview/" target="_blank" rel="noopener noreferrer">U.S. Web Design System: color tokens</a> — the grade-and-magic-number approach this system follows.</li>
+        <li id="ref-2"><a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">W3C: Understanding WCAG 2.1 — Contrast (Minimum)</a> — the AA and AAA text floors.</li>
+        <li id="ref-3"><a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer">W3C: Understanding WCAG 2.1 — Non-text Contrast</a> — the 3:1 functional floor and the structural exemption.</li>
+        <li id="ref-4"><a href="https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell.html" target="_blank" rel="noopener noreferrer">APCA in a Nutshell</a> — the perceptual contrast model and its Lc tiers.</li>
+      </ol>
     </div>
   );
 };

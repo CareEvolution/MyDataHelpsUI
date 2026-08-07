@@ -79,8 +79,8 @@ export default function Goal(props: GoalProps) {
     }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
 
     const defaultColor = 'var(--mdhui-text-color-3)';
-    const defaultInProgressColor = 'var(--mdhui-color-primary)';
-    const defaultCompletedColor = 'var(--mdhui-color-success)';
+    const defaultInProgressColor = 'var(--mdhui-color-primary-text)';
+    const defaultCompletedColor = 'var(--mdhui-color-success-text)';
 
     // These next few blocks of code are for backward compatibility.  When necessary, they map individual ColorDefinitions onto
     // the new GoalColorConfiguration model in a way that retains backward compatible coloring behavior.

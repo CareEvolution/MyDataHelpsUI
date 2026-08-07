@@ -99,7 +99,7 @@ export default function MicroTrend(props: MicroTrendProps) {
     const dayValue = results?.[dayKey]?.value ?? 0;
     const noData = dayValue === 0;
 
-    const color = noData ? "var(--mdhui-text-color-3)" : resolveColor(layoutContext.colorScheme, props.dataType.color) ?? "var(--mdhui-color-primary)";
+    const color = noData ? "var(--mdhui-text-color-3)" : resolveColor(layoutContext.colorScheme, props.dataType.color) ?? "var(--mdhui-color-primary-text)";
 
     const getBars = (): SparkBarChartBar[] => {
         const bars: SparkBarChartBar[] = [];
@@ -111,7 +111,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             const fillPercent = dayResult?.fillPercent ?? 0;
             bars.push({
                 barFillPercent: fillPercent,
-                color: (value > threshold ? (dataType.overThresholdColor ?? dataType.color) : dataType.color) || "var(--mdhui-color-primary)",
+                color: (value > threshold ? (dataType.overThresholdColor ?? dataType.color) : dataType.color) || "var(--mdhui-color-primary-text)",
                 opacity: (i === 0 ? 1 : 0.4)
             });
         }

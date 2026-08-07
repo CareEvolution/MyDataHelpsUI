@@ -59,7 +59,7 @@
     /* Default color for PDF Rendering, since pdf renderer does not support CSS variables */
     color:  #429bdf;
 
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .notes-timeline .ss-notes-timeline-day .ss-notes-timeline-day-title {

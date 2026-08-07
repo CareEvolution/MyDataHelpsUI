@@ -20,7 +20,7 @@
 
 .mdhui-single-data-point-setup {
     font-size: 1.3em;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-single-data-point-value {

@@ -43,7 +43,7 @@ export default function (props: GlucoseDayCoordinatorProps) {
     const dayRenderer = (dayKey: string): React.JSX.Element | null => {
         let sparkRanges: SparkRangeChartRange[] = [];
         if (glucoseRangeLookup?.hasOwnProperty(dayKey)) {
-            sparkRanges.push({ ...(glucoseRangeLookup[dayKey]) });
+            sparkRanges.push({ ...(glucoseRangeLookup[dayKey]), color: 'var(--mdhui-color-glucose-text)' });
         }
         return <div style={{ paddingTop: '4px' }}>
             <SparkRangeChart domain={[0, 240]} ranges={sparkRanges} reference={recentAverage} />

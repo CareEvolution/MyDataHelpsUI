@@ -5,7 +5,7 @@
 .mdhui-glucose-chart .mdhui-glucose-chart-title {
     font-size: .88em;
     font-weight: 600;
-    color: rgb(196, 41, 28);
+    color: var(--mdhui-color-glucose-text);
     margin: 16px 16px -8px;
 }
 

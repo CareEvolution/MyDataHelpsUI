@@ -12,7 +12,7 @@
 }
 
 .mdhui-meal-analysis-title {
-    color: var(--mdhui-color-warning);
+    color: var(--mdhui-color-warning-text);
     font-weight: bold;
     font-size: 0.9em;
     flex: 1;
@@ -46,7 +46,7 @@
 }
 
 .mdhui-meal-analysis-item-add-icon {
-    color: var(--mdhui-color-success);
+    color: var(--mdhui-color-success-text);
     font-size: 1em;
 }
 

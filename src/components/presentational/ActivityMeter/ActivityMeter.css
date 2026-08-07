@@ -11,7 +11,7 @@
     text-align: center;
     left: 16px;
     top: calc(50% - 8px);
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-size: 1em;
 }
 

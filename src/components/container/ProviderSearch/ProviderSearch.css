@@ -70,11 +70,11 @@
 }
 
 .mdhui-provider-search .search-results .provider .provider-status.error-status {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }
 
 .mdhui-provider-search .search-results .provider .provider-status.connected-status {
-    color: var(--mdhui-color-success);
+    color: var(--mdhui-color-success-text);
 }
 
 .mdhui-provider-search .search-results .provider.disabled {
