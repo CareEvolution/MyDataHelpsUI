@@ -343,17 +343,18 @@ const Ref: React.FC<{ n: number }> = ({ n }) => (
 );
 
 // Scoping the real style objects per column means the preview can't drift from the tokens.
-// Base token = fills, -text = the signal as foreground; heart-rate and air-quality have
-// no -text token and fall back to the mark color. Ink is per value: air quality's light
-// grade needs white where every other fill takes near-black.
+// "-mark" = the signal as chart marks, "-text" = as foreground; heart-rate and air-quality have
+// no -text token and fall back to the mark color. Ink is per value: glucose's and air
+// quality's light values need white where the other fills take near-black.
 const DARK_INK = '#12151b';
 const LIGHT_INK = '#fff';
 type SignalSwatch = { value: string; ink: string };
-const SIGNALS: { name: string; fill: string; text: string; light: SignalSwatch; dark: SignalSwatch }[] = [
-  { name: 'Sleep', fill: '--mdhui-color-sleep', text: '--mdhui-color-sleep-text', light: { value: '#7b88c6', ink: DARK_INK }, dark: { value: 'indigo-40', ink: DARK_INK } },
-  { name: 'Heart rate', fill: '--mdhui-color-heart-rate', text: '--mdhui-color-heart-rate', light: { value: '#e35c33', ink: DARK_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
-  { name: 'Activity', fill: '--mdhui-color-activity', text: '--mdhui-color-activity-text', light: { value: '#f5b722', ink: DARK_INK }, dark: { value: 'gold-20', ink: DARK_INK } },
-  { name: 'Air quality', fill: '--mdhui-color-air-quality', text: '--mdhui-color-air-quality', light: { value: 'teal-55', ink: LIGHT_INK }, dark: { value: 'teal-30', ink: DARK_INK } },
+const SIGNALS: { name: string; mark: string; text: string; light: SignalSwatch; dark: SignalSwatch }[] = [
+  { name: 'Glucose', mark: '--mdhui-color-glucose-mark', text: '--mdhui-color-glucose-text', light: { value: '#c4291c', ink: LIGHT_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
+  { name: 'Sleep', mark: '--mdhui-color-sleep-mark', text: '--mdhui-color-sleep-text', light: { value: '#7b88c6', ink: DARK_INK }, dark: { value: 'indigo-40', ink: DARK_INK } },
+  { name: 'Heart rate', mark: '--mdhui-color-heart-rate-mark', text: '--mdhui-color-heart-rate-mark', light: { value: '#e35c33', ink: DARK_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
+  { name: 'Activity', mark: '--mdhui-color-activity-mark', text: '--mdhui-color-activity-text', light: { value: '#f5b722', ink: DARK_INK }, dark: { value: 'gold-20', ink: DARK_INK } },
+  { name: 'Air quality', mark: '--mdhui-color-air-quality-mark', text: '--mdhui-color-air-quality-mark', light: { value: 'teal-55', ink: LIGHT_INK }, dark: { value: 'teal-35', ink: DARK_INK } },
 ];
 
 // Every sample sits in one column and its token name in the gutter beside it, so the
@@ -393,14 +394,14 @@ const TokenContextCard: React.FC<{ scheme: 'light' | 'dark' }> = ({ scheme }) =>
       <Line token="danger"><span style={{ background: 'var(--mdhui-color-danger)', color: '#fff', fontWeight: 700, borderRadius: '99px', padding: '3px 12px', fontSize: '13px', display: 'inline-block' }}>3 due</span></Line>
       <Line token="bg-2 · primary"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
       <Divider token="border-2" color="--mdhui-border-color-2" />
-      <Caption>signals — name in its text color, fill shows its value</Caption>
+      <Caption>signals — name in its text color, mark shows its value</Caption>
       {SIGNALS.map(signal => {
         const swatch = scheme === 'light' ? signal.light : signal.dark;
         return (
           <div className="tokensCtx-grid" key={signal.name}>
             <div style={{ color: `var(${signal.text})`, fontWeight: 700 }}>{signal.name}</div>
             <div style={{
-              background: `var(${signal.fill})`, borderRadius: '6px', height: '24px',
+              background: `var(${signal.mark})`, borderRadius: '6px', height: '24px',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: swatch.ink, font: '700 10.5px ui-monospace, monospace',
             }}>{swatch.value}</div>

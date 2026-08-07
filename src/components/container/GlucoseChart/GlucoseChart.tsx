@@ -244,7 +244,7 @@ export default function (props: GlucoseChartProps) {
                         data={overlaySteps}
                         type="monotone"
                         dataKey="value"
-                        fill="var(--mdhui-color-activity-text)"
+                        fill="var(--mdhui-color-activity-mark)"
                         opacity={0.3}
                         radius={[2, 2, 0, 0]}
                     />

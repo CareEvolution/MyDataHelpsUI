@@ -613,19 +613,21 @@ export const lightColorStyle: CSSProperties = {
     '--mdhui-text-color-3': '#999',
     '--mdhui-text-color-4': '#bbb',
 
-    /* Signal colors: base token = marks (bars/pins/dots); "-text" = the signal as
+    /* Signal colors: "-mark" = chart marks (bars/pins/dots); "-text" = the signal as
        foreground, since CVD-optimized mark colors can be too weak as text. Light keeps
-       the hexes components previously hardcoded; dark overrides. */
-    '--mdhui-color-glucose': '#c4291c',
+       one canonical hex per signal, picked from the values components hardcoded — where
+       components disagreed (GlucoseStats' #d36540/#8287bb), they shift to it; dark
+       overrides. */
+    '--mdhui-color-glucose-mark': '#c4291c',
     '--mdhui-color-glucose-text': '#c4291c',
-    '--mdhui-color-heart-rate': '#e35c33',
-    '--mdhui-color-activity': '#f5b722',
+    '--mdhui-color-heart-rate-mark': '#e35c33',
+    '--mdhui-color-activity-mark': '#f5b722',
     '--mdhui-color-activity-text': '#f5b722',
-    '--mdhui-color-sleep': '#7b88c6',
+    '--mdhui-color-sleep-mark': '#7b88c6',
     '--mdhui-color-sleep-text': '#7b88c6',
     // No shipped hex to mirror — this signal is new, so it comes from the ramp. Grade 55
     // is the lightest teal that still clears AA on the 1-5 backgrounds.
-    '--mdhui-color-air-quality': 'var(--mdh-teal-55)',
+    '--mdhui-color-air-quality-mark': 'var(--mdh-teal-55)',
 
     '--mdhui-box-shadow-color-0': 'rgba(0, 0, 0, 0.05)',
     '--mdhui-box-shadow-color-1': '#aaa',
@@ -659,16 +661,16 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-text-color-3': 'var(--mdh-grey-30)',
     '--mdhui-text-color-4': 'var(--mdh-grey-40)',
 
-    '--mdhui-color-glucose': 'var(--mdh-red-orange-40)',
-    // grade 30 rather than the mark's 40: as foreground on grey-80 the 40 lands at Lc 41,
-    // well under what APCA wants for text, while 30 reaches Lc 59.
+    '--mdhui-color-glucose-mark': 'var(--mdh-red-orange-40)',
+    // grade 35 rather than the mark's 40: as foreground on the grey-85 cards the 40 lands
+    // at Lc 43, under what APCA wants for text, while 35 reaches Lc 51.
     '--mdhui-color-glucose-text': 'var(--mdh-red-orange-35)',
-    '--mdhui-color-heart-rate': 'var(--mdh-red-orange-40)',
-    '--mdhui-color-activity': 'var(--mdh-gold-20)',
+    '--mdhui-color-heart-rate-mark': 'var(--mdh-red-orange-40)',
+    '--mdhui-color-activity-mark': 'var(--mdh-gold-20)',
     '--mdhui-color-activity-text': 'var(--mdh-gold-20)',
-    '--mdhui-color-sleep': 'var(--mdh-indigo-40)',
+    '--mdhui-color-sleep-mark': 'var(--mdh-indigo-40)',
     '--mdhui-color-sleep-text': 'var(--mdh-indigo-35)',
-    '--mdhui-color-air-quality': 'var(--mdh-teal-35)',
+    '--mdhui-color-air-quality-mark': 'var(--mdh-teal-35)',
 
     // Accent base tokens keep the light-mode fill grades (fills carry white text);
     // "-text" = foreground-tuned grades for links/status text.

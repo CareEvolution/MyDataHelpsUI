@@ -21,7 +21,7 @@ export interface ProgressBarProps {
 
 ProgressBar.defaultProps = {
 	backgroundColor: "var(--mdhui-background-color-0)",
-	fillColor: "var(--mdhui-color-primary)",
+	fillColor: "var(--mdhui-color-primary-text)",
 	fillPercent: 0
 }
 
