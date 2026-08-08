@@ -55,7 +55,7 @@ export function createLineChartDefs(
 
     return <defs>
         {series.map((s, i) => {
-            let lineColor = colorOrDefault(s.color, "var(--mdhui-color-primary-text");
+            let lineColor = colorOrDefault(s.color, "var(--mdhui-color-primary-text)");
 
             return <linearGradient id={`${gradientKey}${i}`} key={`${gradientKey}${i}`} x1="0%" y1="100%" x2="0%" y2="0%">
                 {createStopsFromThresholds(lineColor, options?.thresholds, dataKeys[i])}

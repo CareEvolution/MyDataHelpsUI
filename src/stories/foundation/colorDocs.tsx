@@ -519,10 +519,13 @@ const ColorDocs: React.FC = () => {
             math is too optimistic about dark-on-dark pairs. Every pairing here is measured under both,
             taking the weaker of the two text/background directions, and APCA's text tiers need bigger gaps:</p>
           <ul>
-            <li><strong>Gap 60+:</strong> muted and large text (APCA floor Lc 45; palette worst case 47).</li>
-            <li><strong>Gap 70+:</strong> body text (floor Lc 60; worst case 68).</li>
-            <li><strong>Gap 80+:</strong> primary text (floor Lc 75; worst case 81).</li>
+            <li><strong>Gap 60+</strong> clears <b>Lc 45</b>, APCA's floor for large or secondary text (palette worst case 47).</li>
+            <li><strong>Gap 70+</strong> clears <b>Lc 60</b>, its floor for body text (worst case 68).</li>
+            <li><strong>Gap 80+</strong> clears <b>Lc 75</b>, its preferred level for body text (worst case 81).</li>
           </ul>
+          <p>Those are APCA's own minimums. The table above is deliberately a step stricter for running
+            text — it puts body text at gap 80 rather than the Lc 60 floor, so the default sits with
+            headroom instead of right on the line.</p>
           <p>WCAG 3 is still a draft and APCA isn't legally required yet, so the palette conforms to both:
             WCAG 2.x ratios stay the hard floor, the APCA measurements add the perceptual picture on top,
             and the dark-mode semantic tokens are built at the APCA gaps.</p>

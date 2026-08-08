@@ -24,17 +24,37 @@ const src = readFileSync(GLOBALCSS, 'utf8');
 const ramp = {};
 for (const m of src.matchAll(/(--mdh-[a-z0-9-]+)\s*:\s*(#[0-9A-Fa-f]{3,8})/g)) ramp[m[1]] = m[2];
 
-// ---- resolve a semantic value to a hex (follows one var(--mdh-*) hop; raw hex passes through) ----
-function resolve(val) {
-  val = val.trim();
+// ---- resolve a semantic value to a hex (follows var() hops through --mdhui aliases and
+//      into the --mdh ramp; raw hex passes through) ----
+function resolve(val, toks = {}, depth = 0) {
+  val = (val ?? '').trim();
+  if (depth > 4) return null; // cycle guard
   const v = val.match(/^var\((--[a-z0-9-]+)\)$/);
-  if (v) return ramp[v[1]] ?? null;
+  if (v) {
+    if (ramp[v[1]]) return ramp[v[1]];
+    if (toks[v[1]]) return resolve(toks[v[1]], toks, depth + 1);
+    return null;
+  }
   if (/^#[0-9A-Fa-f]{3,8}$/.test(val)) return val;
   if (/^rgb/i.test(val)) return val;
   return null; // gradients / nested / unresolvable
 }
 
-// ---- parse a semantic style object (lightColorStyle / darkColorStyle) ----
+// ---- parse the :root declarations in `core` ----
+// The accent bases and their -text defaults are declared once here, and a scheme block only
+// overrides what it changes: dark redefines them, light inherits. Reading core underneath the
+// scheme is what makes the light audit see accents at all.
+function coreTokens() {
+  const start = src.indexOf('export const core');
+  if (start < 0) throw new Error('core not found');
+  const next = src.indexOf('export const', start + 'export const core'.length);
+  const block = src.slice(start, next < 0 ? src.length : next);
+  const toks = {};
+  for (const m of block.matchAll(/(--mdhui-[a-z0-9-]+)\s*:\s*([^;]+);/g)) toks[m[1]] = m[2].trim();
+  return toks;
+}
+
+// ---- parse a semantic style object (lightColorStyle / darkColorStyle), over core ----
 function semanticTokens(scheme) {
   const name = scheme === 'dark' ? 'darkColorStyle' : 'lightColorStyle';
   const start = src.indexOf(`export const ${name}`);
@@ -45,7 +65,7 @@ function semanticTokens(scheme) {
   const block = src.slice(open, end);
   const toks = {};
   for (const m of block.matchAll(/'(--mdhui-[a-z0-9-]+)'\s*:\s*'([^']+)'/g)) toks[m[1]] = m[2];
-  return toks;
+  return { ...coreTokens(), ...toks };
 }
 
 // ---- metrics ----
@@ -79,12 +99,18 @@ const MARK_FLOORS = { wcag: 3.0, apca: 15 };
 
 function auditSemantic(scheme, ci) {
   const t = semanticTokens(scheme);
-  const hex = k => (k.startsWith('#') ? k : resolve(t[k] ?? ''));
+  const hex = k => (k.startsWith('#') ? k : resolve(t[k] ?? '', t));
   const rows = [];
   let fails = 0;
 const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
     const fH = hex(fg), bH = hex(bg);
-    if (!fH || !bH) { rows.push({ label, note: `unresolved (${t[fg]} / ${t[bg]})`, skip: true }); return; }
+    // An unresolved token fails rather than skipping: a renamed or misspelled variable would
+    // otherwise drop its pair from the audit silently, and the run would still report PASS.
+    if (!fH || !bH) {
+      if (!exempt) fails++;
+      rows.push({ label, note: `unresolved (${t[fg]} / ${t[bg]})${exempt ? '' : ' — FAIL'}`, skip: true });
+      return;
+    }
     const w = wcag(fH, bH), lc = Math.abs(apca(fH, bH));
     const passW = exempt || w >= wFloor, passA = exempt || lc >= aFloor;
     const pass = passW && passA;
@@ -108,7 +134,9 @@ const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
   }
   for (const g of SIGNALS) {
     for (const s of SURFACES) {
-      if (t[`--mdhui-color-${g}`]) pushPair(`${g} mark on ${bgName(s)}`, `--mdhui-color-${g}`, s, MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
+      // -mark is required for every signal, so a missing one fails. -text is optional:
+      // heart-rate and air-quality intentionally ship none and fall back to the mark color.
+      pushPair(`${g}-mark on ${bgName(s)}`, `--mdhui-color-${g}-mark`, s, MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
       if (t[`--mdhui-color-${g}-text`]) pushPair(`${g}-text on ${bgName(s)}`, `--mdhui-color-${g}-text`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
     }
   }
