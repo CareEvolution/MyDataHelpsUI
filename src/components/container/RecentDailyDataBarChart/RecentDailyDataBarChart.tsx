@@ -121,7 +121,7 @@ export default function (props: RecentDailyDataBarChartProps) {
     const labelContent = ({x, y, width, value, index}: any) => {
         if (!value) return undefined;
 
-        let textColor = 'var(--mdhui-color-primary)';
+        let textColor = 'var(--mdhui-color-primary-text)';
         if (props.highlight && props.highlight(data[index].rawValue)) {
             textColor = '#6731AA';
         }

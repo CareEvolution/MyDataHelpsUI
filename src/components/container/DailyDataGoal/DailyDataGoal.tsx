@@ -41,8 +41,8 @@ export default function (props: DailyDataGoalProps) {
         });
     }, ["externalAccountSyncComplete"], [dateRangeContext?.intervalStart]);
 
-    const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
-    const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
+    const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success-text)";
+    const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary-text)";
 
     let goalProgress: number | null = dailyValue == null ? null : dailyValue / props.goal;
     if (goalProgress != null && goalProgress > 1) goalProgress = 1;

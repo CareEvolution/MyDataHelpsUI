@@ -53,7 +53,7 @@
     line-height: 15px;
     letter-spacing: 0em;
     text-align: left;
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }
 
 .mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
@@ -69,10 +69,10 @@
 .mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
 .mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-normal{
     font-size: 17px;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-blood-pressure-metrics .mdhui-blood-pressure-metrics-rows 
 .mdhui-blood-pressure-metrics-block .mdhui-blood-pressure-metric-not-normal{
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }

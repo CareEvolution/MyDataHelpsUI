@@ -58,22 +58,20 @@ export default function Layout(props: LayoutProps) {
 
 	let paddingBottom = props.flex ? "0" : "env(safe-area-inset-bottom)";
 
+	// One Global for scheme + brand: Emotion orders tags by mount order, so a runtime
+	// scheme toggle would land the scheme tag after a separate brand tag and clobber it.
+	// -text gets the brand too, so a custom fill never pairs with the stock foreground.
+	const schemeStyles = context.colorScheme == "dark" ? darkColorScheme : lightColorScheme;
+	const brandStyles = props.primaryColor ? css`
+	:root {
+		--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
+		--mdhui-color-primary-text: ${resolveColor(colorScheme, props.primaryColor)};
+	}` : undefined;
+
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
-			{props.primaryColor &&
-				<EmotionGlobal styles={css`
-				:root {
-					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
-				}`
-				} />
-			}
-			{context.colorScheme == "dark" &&
-				<EmotionGlobal styles={darkColorScheme} />
-			}
-			{context.colorScheme == "light" &&
-				<EmotionGlobal styles={lightColorScheme} />
-			}
+			<EmotionGlobal styles={brandStyles ? [schemeStyles, brandStyles] : schemeStyles} />
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}

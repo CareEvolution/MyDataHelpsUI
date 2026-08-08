@@ -39,11 +39,11 @@ export default function Button(props: ButtonProps) {
 	let backgroundColor = resolveColor(context?.colorScheme, props.color);
 	let textColor = "#FFF";
 	if (props.variant === "subtle") {
-		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary-text)";
 		backgroundColor = "transparent";
 	}
 	else if (props.variant === "light") {
-		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary)";
+		textColor = resolveColor(context?.colorScheme, props.color) || "var(--mdhui-color-primary-text)";
 		backgroundColor = "var(--mdhui-background-color-1)";
 	}
 
