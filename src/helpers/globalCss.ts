@@ -621,6 +621,7 @@ export const lightColorStyle: CSSProperties = {
     '--mdhui-color-glucose-mark': '#c4291c',
     '--mdhui-color-glucose-text': '#c4291c',
     '--mdhui-color-heart-rate-mark': '#e35c33',
+    '--mdhui-color-heart-rate-text': '#e35c33',
     '--mdhui-color-activity-mark': '#f5b722',
     '--mdhui-color-activity-text': '#f5b722',
     '--mdhui-color-sleep-mark': '#7b88c6',
@@ -666,6 +667,8 @@ export const darkColorStyle: CSSProperties = {
     // at Lc 43, under what APCA wants for text, while 35 reaches Lc 51.
     '--mdhui-color-glucose-text': 'var(--mdh-red-orange-35)',
     '--mdhui-color-heart-rate-mark': 'var(--mdh-red-orange-40)',
+    // grade 35 like glucose-text: the mark's 40 falls just under the Lc 45 text floor on cards.
+    '--mdhui-color-heart-rate-text': 'var(--mdh-red-orange-35)',
     '--mdhui-color-activity-mark': 'var(--mdh-gold-20)',
     '--mdhui-color-activity-text': 'var(--mdh-gold-20)',
     '--mdhui-color-sleep-mark': 'var(--mdh-indigo-40)',

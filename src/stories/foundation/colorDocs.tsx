@@ -343,16 +343,16 @@ const Ref: React.FC<{ n: number }> = ({ n }) => (
 );
 
 // Scoping the real style objects per column means the preview can't drift from the tokens.
-// "-mark" = the signal as chart marks, "-text" = as foreground; heart-rate and air-quality have
-// no -text token and fall back to the mark color. Ink is per value: glucose's and air
-// quality's light values need white where the other fills take near-black.
+// -mark = chart marks, -text = foreground. Air quality alone has no -text — its mark doubles
+// as text, and the audit checks it at the text floors. Ink is per value: glucose and air
+// quality need white in light where the other fills take near-black.
 const DARK_INK = '#12151b';
 const LIGHT_INK = '#fff';
 type SignalSwatch = { value: string; ink: string };
 const SIGNALS: { name: string; mark: string; text: string; light: SignalSwatch; dark: SignalSwatch }[] = [
   { name: 'Glucose', mark: '--mdhui-color-glucose-mark', text: '--mdhui-color-glucose-text', light: { value: '#c4291c', ink: LIGHT_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
   { name: 'Sleep', mark: '--mdhui-color-sleep-mark', text: '--mdhui-color-sleep-text', light: { value: '#7b88c6', ink: DARK_INK }, dark: { value: 'indigo-40', ink: DARK_INK } },
-  { name: 'Heart rate', mark: '--mdhui-color-heart-rate-mark', text: '--mdhui-color-heart-rate-mark', light: { value: '#e35c33', ink: DARK_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
+  { name: 'Heart rate', mark: '--mdhui-color-heart-rate-mark', text: '--mdhui-color-heart-rate-text', light: { value: '#e35c33', ink: DARK_INK }, dark: { value: 'red-orange-40', ink: DARK_INK } },
   { name: 'Activity', mark: '--mdhui-color-activity-mark', text: '--mdhui-color-activity-text', light: { value: '#f5b722', ink: DARK_INK }, dark: { value: 'gold-20', ink: DARK_INK } },
   { name: 'Air quality', mark: '--mdhui-color-air-quality-mark', text: '--mdhui-color-air-quality-mark', light: { value: 'teal-55', ink: LIGHT_INK }, dark: { value: 'teal-35', ink: DARK_INK } },
 ];
@@ -392,7 +392,7 @@ const TokenContextCard: React.FC<{ scheme: 'light' | 'dark' }> = ({ scheme }) =>
       <Line token="danger-text"><span style={{ color: 'var(--mdhui-color-danger-text)', fontWeight: 700 }}>Overdue</span></Line>
       <Line token="primary"><span style={{ background: 'var(--mdhui-color-primary)', color: '#fff', fontWeight: 700, borderRadius: '8px', padding: '6px 16px', display: 'inline-block' }}>Log reading</span></Line>
       <Line token="danger"><span style={{ background: 'var(--mdhui-color-danger)', color: '#fff', fontWeight: 700, borderRadius: '99px', padding: '3px 12px', fontSize: '13px', display: 'inline-block' }}>3 due</span></Line>
-      <Line token="bg-2 · primary"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
+      <Line token="bg-2 · primary-text"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
       <Divider token="border-2" color="--mdhui-border-color-2" />
       <Caption>signals — name in its text color, mark shows its value</Caption>
       {SIGNALS.map(signal => {
@@ -519,13 +519,21 @@ const ColorDocs: React.FC = () => {
             math is too optimistic about dark-on-dark pairs. Every pairing here is measured under both,
             taking the weaker of the two text/background directions, and APCA's text tiers need bigger gaps:</p>
           <ul>
-            <li><strong>Gap 60+</strong> clears <b>Lc 45</b>, APCA's floor for large or secondary text (palette worst case 47).</li>
-            <li><strong>Gap 70+</strong> clears <b>Lc 60</b>, its floor for body text (worst case 68).</li>
-            <li><strong>Gap 80+</strong> clears <b>Lc 75</b>, its preferred level for body text (worst case 81).</li>
+            <li><strong>Gap 60+</strong> clears <b>Lc 45</b> — APCA's minimum for large, heavy text such as headlines: 36px regular or 24px bold (ramp floor 49.3).</li>
+            <li><strong>Gap 70+</strong> clears <b>Lc 60</b> — its minimum for content text that is <em>not</em> body, column, or block text (floor 70.9).</li>
+            <li><strong>Gap 80+</strong> clears <b>Lc 75</b> — its minimum for columns of body text, at fonts no smaller than 24px/300, 18px/400, 16px/500 or 14px/700 (floor 81.5).</li>
           </ul>
-          <p>Those are APCA's own minimums. The table above is deliberately a step stricter for running
-            text — it puts body text at gap 80 rather than the Lc 60 floor, so the default sits with
-            headroom instead of right on the line.</p>
+          <p>Those are APCA's minimums, and the text rows of the table above derive from them &mdash; read
+            that column as a floor, never as headroom. One caveat the table understates: its body row spans
+            &ldquo;16&ndash;18px regular&rdquo;, but Lc 75 covers 18px regular and 16px <em>medium</em>;
+            16px regular falls into APCA's Lc 90 tier, which no gap in the table reaches. Set body copy at
+            18px, or carry 16px at medium weight.</p>
+          <p>Lc 90 is APCA's preferred level for running text, and widening the gap is not a reliable way
+            to reach it: the guarantee is not monotone in gap size. Gap 82 clears Lc 90, but 85 and 89 do
+            not (both 84.0). Individual pairs go well past it &mdash; white on a dark card measures
+            Lc 102 in the weaker direction &mdash; so measure the pair you are actually using rather than
+            reasoning from the gap. <code>node scripts/color-audit.mjs ramp --json</code> prints the
+            guaranteed floor at every gap.</p>
           <p>WCAG 3 is still a draft and APCA isn't legally required yet, so the palette conforms to both:
             WCAG 2.x ratios stay the hard floor, the APCA measurements add the perceptual picture on top,
             and the dark-mode semantic tokens are built at the APCA gaps.</p>
@@ -537,8 +545,11 @@ const ColorDocs: React.FC = () => {
         of rules produces both cards; in dark mode those tokens map onto the grey ramp and brighter accent
         grades, and <code>npm run audit:colors</code> checks every pairing against the role floors.</p>
       <TokensInContext />
-      <p>The signal rows are the data-visualization colors: heart rate on red-orange (glucose shares it),
-        activity on gold, sleep on indigo, air quality on teal.</p>
+      <p>The signal rows are the data-visualization colors: glucose and heart rate on red-orange,
+        activity on gold, sleep on indigo, air quality on teal. Glucose and heart rate resolve to the
+        same grade in dark for both duties, and in light they sit only Lc 12 apart — under the Lc 15
+        this page asks of chart marks. Don't separate them by color alone in either scheme; use shape,
+        position, or a label.</p>
       <h3>The full ramp</h3>
       <p>Every hue, lightest to darkest. <strong>Hover a swatch</strong> and the ramp marks the closest
         grade on either side that's far enough away to clear each band — so you can read a safe pairing

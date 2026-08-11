@@ -41,16 +41,20 @@ function resolve(val, toks = {}, depth = 0) {
 }
 
 // ---- parse the :root declarations in `core` ----
-// The accent bases and their -text defaults are declared once here, and a scheme block only
-// overrides what it changes: dark redefines them, light inherits. Reading core underneath the
-// scheme is what makes the light audit see accents at all.
+// Accents are declared once in core's :root; dark overrides them, light inherits. Without
+// core, the light audit would never see an accent. Scan only :root blocks — core also holds
+// @keyframes and @media blocks, and a media-conditional value must not beat the :root one.
 function coreTokens() {
   const start = src.indexOf('export const core');
   if (start < 0) throw new Error('core not found');
   const next = src.indexOf('export const', start + 'export const core'.length);
   const block = src.slice(start, next < 0 ? src.length : next);
   const toks = {};
-  for (const m of block.matchAll(/(--mdhui-[a-z0-9-]+)\s*:\s*([^;]+);/g)) toks[m[1]] = m[2].trim();
+  for (const m of block.matchAll(/:root\s*\{/g)) {
+    let depth = 1, i = m.index + m[0].length; const from = i;
+    for (; i < block.length && depth > 0; i++) { if (block[i] === '{') depth++; else if (block[i] === '}') depth--; }
+    for (const d of block.slice(from, i - 1).matchAll(/(--mdhui-[a-z0-9-]+)\s*:\s*([^;]+);/g)) toks[d[1]] = d[2].trim();
+  }
   return toks;
 }
 
@@ -91,6 +95,10 @@ const BORDERS = ['--mdhui-border-color-0', '--mdhui-border-color-1', '--mdhui-bo
 //   -text — the same role as foreground (links, status text, icons that must be seen).
 const ACCENTS = ['primary', 'success', 'warning', 'danger'];
 const SIGNALS = ['glucose', 'heart-rate', 'activity', 'sleep', 'air-quality'];
+// Signals whose -mark doubles as their foreground color. Named explicitly (not probed for)
+// so a typo'd -text token can't skip its own check; the mark is then audited at the
+// foreground floors, keeping "the mark can carry text" honest.
+const TEXT_VIA_MARK = new Set(['air-quality']);
 const FILL_INK = '#fff';                 // what the accent fills carry
 // -text is used at many sizes/weights (links, 15px/600 headings, status text): WCAG normal-text
 // floor plus the APCA muted/large tier. Aim higher for small body-size foregrounds.
@@ -104,8 +112,10 @@ function auditSemantic(scheme, ci) {
   let fails = 0;
 const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
     const fH = hex(fg), bH = hex(bg);
-    // An unresolved token fails rather than skipping: a renamed or misspelled variable would
-    // otherwise drop its pair from the audit silently, and the run would still report PASS.
+    // A token that doesn't resolve FAILS instead of skipping — otherwise a rename would
+    // silently drop its checks and the run would still say PASS. Exempt pairs only report,
+    // so a renamed border token still slips through (text-color-4 would too, but the
+    // distinct34 check below catches it).
     if (!fH || !bH) {
       if (!exempt) fails++;
       rows.push({ label, note: `unresolved (${t[fg]} / ${t[bg]})${exempt ? '' : ' — FAIL'}`, skip: true });
@@ -134,10 +144,12 @@ const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
   }
   for (const g of SIGNALS) {
     for (const s of SURFACES) {
-      // -mark is required for every signal, so a missing one fails. -text is optional:
-      // heart-rate and air-quality intentionally ship none and fall back to the mark color.
+      // Every signal is checked for both duties; nothing opts out of the foreground floor.
       pushPair(`${g}-mark on ${bgName(s)}`, `--mdhui-color-${g}-mark`, s, MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
-      if (t[`--mdhui-color-${g}-text`]) pushPair(`${g}-text on ${bgName(s)}`, `--mdhui-color-${g}-text`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+      if (TEXT_VIA_MARK.has(g))
+        pushPair(`${g}-mark as text on ${bgName(s)}`, `--mdhui-color-${g}-mark`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+      else
+        pushPair(`${g}-text on ${bgName(s)}`, `--mdhui-color-${g}-text`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
     }
   }
   // adjacent elevation surfaces — target Lc 15 (or border-assisted; reported, not gating)

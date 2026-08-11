@@ -60,12 +60,16 @@ export default function Layout(props: LayoutProps) {
 
 	// One Global for scheme + brand: Emotion orders tags by mount order, so a runtime
 	// scheme toggle would land the scheme tag after a separate brand tag and clobber it.
-	// -text gets the brand too, so a custom fill never pairs with the stock foreground.
 	const schemeStyles = context.colorScheme == "dark" ? darkColorScheme : lightColorScheme;
-	const brandStyles = props.primaryColor ? css`
+	// The brand color renders exactly as given; the library never alters it. In light it
+	// drives both tokens, as it always has. In dark it drives only fills, and links keep
+	// the scheme's readable grade: no single dark value can be both a fill under white
+	// text and legible text on the card, so text needs its own color, not this one.
+	const brand = props.primaryColor ? resolveColor(colorScheme, props.primaryColor) : undefined;
+	const brandStyles = brand ? css`
 	:root {
-		--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
-		--mdhui-color-primary-text: ${resolveColor(colorScheme, props.primaryColor)};
+		--mdhui-color-primary: ${brand};
+		${colorScheme === "light" ? `--mdhui-color-primary-text: ${brand};` : ""}
 	}` : undefined;
 
 	return (
