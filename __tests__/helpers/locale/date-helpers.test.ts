@@ -4,8 +4,8 @@
 import { toDate, daysInMonth, getDayOfWeek, getDayOfWeekLetter, 
     getAbbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
     getFullDateString, getLongDateString, getShortDateString, getShortestDateString,
-    getMonthName, getAbbreviatedMonthName, getTimeFromNowString,
-    getRelativeDateString, getTimeOfDayString, getShortTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
+    getMonthName, getAbbreviatedMonthName, getTimeFromNowString, getStrictTimeFromNowString,
+    getRelativeDateString, getTimeOfDayString, getShortTimeOfDayString, getDayOfMonth, isEndOfLocalDay } from '../../../src/helpers/date-helpers';
 import { describe, it } from '@jest/globals';
 
 let mockMDHLanguage = "en";
@@ -244,7 +244,44 @@ describe('Date Helper Tests', () => {
         });
     });
 
-    describe('getRelativeDateString', () => {        
+    describe('getStrictTimeFromNowString', () => {        
+        it('Should return an English strict time string in hours.', () => {            
+            mockMDHLanguage = "en";
+            const result = getStrictTimeFromNowString(new Date(new Date().getTime() + 3 * 60 * 60 * 1000 + 5000));
+            expect(result).toBe("3 hours");
+        });
+        it('Should return an English strict time string in minutes.', () => {            
+            mockMDHLanguage = "en";
+            const result = getStrictTimeFromNowString(new Date(new Date().getTime() + 45 * 60 * 1000 + 2000));
+            expect(result).toBe("45 minutes");
+        });
+        it('Should return a localized strict time string.', () => {
+            mockMDHLanguage = "de-DE";
+            const result = getStrictTimeFromNowString(new Date(new Date().setDate(new Date().getDate()+1)));
+            expect(result).toBe("1 Tag");
+        });
+    });
+
+    describe('isEndOfLocalDay', () => {
+        it('Should return true for 23:59.', () => {
+            const result = isEndOfLocalDay(new Date(2024, 10, 15, 23, 59, 30));
+            expect(result).toBe(true);
+        });
+        it('Should return true for 00:00.', () => {
+            const result = isEndOfLocalDay(new Date(2024, 10, 15, 0, 0, 30));
+            expect(result).toBe(true);
+        });
+        it('Should return false for a midday time.', () => {
+            const result = isEndOfLocalDay(new Date(2024, 10, 15, 12, 0));
+            expect(result).toBe(false);
+        });
+        it('Should return false for something not a date at all.', () => {
+            const result = isEndOfLocalDay("not a date");
+            expect(result).toBe(false);
+        });
+    });
+
+    describe('getRelativeDateString', () => {
         it('Should return an English time string.', () => {            
             mockMDHLanguage = "en";
             const result = getRelativeDateString(new Date(2024, 11, 4, 3, 22), new Date(2024, 11, 5));

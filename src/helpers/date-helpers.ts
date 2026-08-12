@@ -1,4 +1,4 @@
-import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow, differenceInDays } from "date-fns";
+import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow, formatDistanceToNowStrict, differenceInDays } from "date-fns";
 import language from "./language";
 import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
@@ -179,6 +179,13 @@ export function getTimeFromNowString(dateOrDateString: string | Date) {
 	return formatDistanceToNow(date, { locale: getDateLocale() });
 }
 
+/** For future dates - a tighter, single-unit string with no "about"/"almost" qualifiers, e.g., "3 hours" */
+export function getStrictTimeFromNowString(dateOrDateString: string | Date) {
+    const date = toDate(dateOrDateString);
+	if (!date) { return "" }
+	return formatDistanceToNowStrict(date, { locale: getDateLocale() });
+}
+
 /** For past dates - e.g., "2 weeks ago" or "yesterday" */
 export function getRelativeDateString(dateOrDateString: string | Date, baseDate: Date, capitalize: boolean = true): string {
     const date = toDate(dateOrDateString);
@@ -194,6 +201,14 @@ export function getTimeOfDayString(dateOrDateString: Date | string) {
 		return "";
 	}
 	return formatDateForLocale(date, "p");
+}
+
+/** Heuristic for "was this snapped to end-of-local-day" - true within about a minute of local
+ *  midnight (23:59:xx or 00:00:xx). A due date genuinely, precisely due at 23:59 is indistinguishable. */
+export function isEndOfLocalDay(dateOrDateString: Date | string): boolean {
+	const date = toDate(dateOrDateString);
+	if (!date) { return false; }
+	return (date.getHours() === 23 && date.getMinutes() === 59) || (date.getHours() === 0 && date.getMinutes() === 0);
 }
 
 /** e.g., 12 P (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
