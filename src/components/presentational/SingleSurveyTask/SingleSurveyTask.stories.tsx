@@ -89,3 +89,99 @@ export const Default = {
 	},
 	render: render
 };
+
+const dueLaterToday = () => {
+	const dueDate = new Date();
+	dueDate.setHours(23, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+const dueEarlyTomorrow = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() + 1);
+	dueDate.setHours(1, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueTodayWithTime = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueLaterToday()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+export const DueTomorrowWithTime = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueEarlyTomorrow()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+// Snapped to end-of-local-day (23:59), already past - the day-granular overdue case.
+const dueYesterdayEndOfDay = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() - 1);
+	dueDate.setHours(23, 59, 0, 0);
+	return dueDate.getTime();
+};
+
+export const OverdueDayGranular = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueYesterdayEndOfDay()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+// Non-midnight time, earlier today - the effectively-precise overdue case.
+const dueEarlierToday = () => {
+	const dueDate = new Date();
+	dueDate.setHours(dueDate.getHours() - 3);
+	return dueDate.getTime();
+};
+
+export const OverdueEarlierToday = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueEarlierToday()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+// Several days out, non-midnight time - the effectively-precise "due in N" case.
+const dueInSeveralDays = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() + 3);
+	dueDate.setHours(14, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueInDays = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueInSeveralDays()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
