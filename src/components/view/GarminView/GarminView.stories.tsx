@@ -19,7 +19,6 @@ const render = (args: GarminViewProps) => <GarminView {...args} />;
 export const NotEnabled: Story = {
     args: {
         connectPreview: "notEnabled",
-        devicesPreview: "notEnabled",
         chartsPreview: "notEnabled"
     },
     render: render
@@ -28,7 +27,6 @@ export const NotEnabled: Story = {
 export const NotConnected: Story = {
     args: {
         connectPreview: "notConnected",
-        devicesPreview: "notConnected",
         chartsPreview: "notConnected"
     },
     render: render
@@ -37,7 +35,6 @@ export const NotConnected: Story = {
 export const Connected: Story = {
     args: {
         connectPreview: "fetchComplete",
-        devicesPreview: "connected",
         chartsPreview: "connected"
     },
     render: render
