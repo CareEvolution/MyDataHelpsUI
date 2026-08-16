@@ -1,4 +1,4 @@
-import MyDataHelps, { PersistableDeviceDataPoint } from '@careevolution/mydatahelps-js';
+import MyDataHelps, { PersistableDeviceDataPoint, DeviceInfo } from '@careevolution/mydatahelps-js';
 import { add, compareDesc, endOfDay, parseISO, startOfDay } from 'date-fns';
 import { Meal, MealItem, MealReference } from './types';
 import { timestampSortAsc } from './util';
@@ -135,4 +135,17 @@ export function itemSortByNameAsc(item1: MealItem, item2: MealItem): number {
 
 export function itemSortByConfidenceDesc(item1: MealItem, item2: MealItem): number {
     return (item2.confidenceScore ?? 0) - (item1.confidenceScore ?? 0);
+}
+
+export function logMealEvent(type: string, meal: Meal | undefined, deviceInfo: DeviceInfo | undefined, data: unknown = {}) {
+    MyDataHelps.trackCustomEvent({
+        eventType: "meal-event",
+        properties: {
+            type: type,
+            data: data,
+            meal: meal?.id,
+            platform: deviceInfo?.platform,
+            deviceId: deviceInfo?.identifier
+        },
+    });
 }

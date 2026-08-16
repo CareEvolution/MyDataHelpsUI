@@ -37,6 +37,15 @@ export const ConnectedStates = {
     render: render
 };
 
+export const LegacyAccountTypes = {
+    name: "Legacy Account Types (Google Health Added Automatically)",
+    args: {
+        previewState: "Web",
+        accountTypes: ["Fitbit", "Garmin", "Dexcom"]
+    },
+    render: render
+};
+
 export const CustomLanguage = {
     args: {
         previewState: "Web",

@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import './MealEditor.css';
-import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile } from '../../../helpers';
+import { getMealImageUrls, getMeals, getMealToEdit, getMealTypeDisplayText, language, Meal, resolveColor, saveMeals, timestampSortAsc, uploadMealImageFile, logMealEvent } from '../../../helpers';
 import { Button, Card, LayoutContext, LoadingIndicator, UnstyledButton } from '../../presentational';
 import { format, parse, startOfDay } from 'date-fns';
 import { createPreviewData, MealEditorPreviewState } from './MealEditor.previewData';
@@ -9,6 +9,7 @@ import { faEdit, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { getFullDayAndDateString } from '../../../helpers/date-helpers';
 import { combineItemsWithAnalysisItems, itemSortByNameAsc } from '../../../helpers/glucose-and-meals/meals';
 import MealAnalysis from '../../presentational/MealAnalysis';
+import MyDataHelps, { DeviceInfo } from "@careevolution/mydatahelps-js";
 
 export interface MealEditorProps {
     previewState?: 'loading' | MealEditorPreviewState;
@@ -36,8 +37,14 @@ export default function MealEditor(props: MealEditorProps) {
     const [newImageFile, setNewImageFile] = useState<File>();
     const [imageTypeError, setImageTypeError] = useState<boolean>(false);
     const [imageUploadError, setImageUploadError] = useState<boolean>(false);
+    const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>();
 
     const itemsToAddInputRef = useRef<HTMLInputElement>(null);
+
+    const onError = (message: string) => {
+        logMealEvent("meal-error", mealToEdit, deviceInfo, message);
+        props.onError();
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -65,28 +72,33 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
-        getMealToEdit().then(mealReference => {
-            if (mealReference) {
-                getMeals(mealReference.date).then(async allMeals => {
-                    const activeMeals = allMeals.filter(meal => !meal.archiveTimestamp);
-                    const referencedMeal = activeMeals.find(meal => meal.id === mealReference.id);
-                    if (referencedMeal) {
-                        const imageUrls = await getMealImageUrls([referencedMeal]);
-                        const imageUrl = imageUrls[referencedMeal.id.toString()];
+        MyDataHelps.getDeviceInfo().then(info => {
+            setDeviceInfo(info);
+            getMealToEdit().then(mealReference => {
+                if (mealReference) {
+                    logMealEvent("editing-started", undefined, info, `Editing meal id=${mealReference.id}`);
 
-                        setLoading(false);
-                        setAllMeals(allMeals);
-                        setActiveMeals(activeMeals);
-                        setMealToEdit(referencedMeal);
-                        setImageUrl(imageUrl);
-                        setImageLoading(!!imageUrl);
-                    } else {
-                        props.onError();
-                    }
-                });
-            } else {
-                props.onError();
-            }
+                    getMeals(mealReference.date).then(async allMeals => {
+                        const activeMeals = allMeals.filter(meal => !meal.archiveTimestamp);
+                        const referencedMeal = activeMeals.find(meal => meal.id === mealReference.id);
+                        if (referencedMeal) {
+                            const imageUrls = await getMealImageUrls([referencedMeal]);
+                            const imageUrl = imageUrls[referencedMeal.id.toString()];
+
+                            setLoading(false);
+                            setAllMeals(allMeals);
+                            setActiveMeals(activeMeals);
+                            setMealToEdit(referencedMeal);
+                            setImageUrl(imageUrl);
+                            setImageLoading(!!imageUrl);
+                        } else {
+                            onError(`Can't find meal id=${mealReference.id}`);
+                        }
+                    });
+                } else {
+                    onError("No meal reference provided.");
+                }
+            });
         });
     }, [props.previewState]);
 
@@ -101,6 +113,8 @@ export default function MealEditor(props: MealEditorProps) {
             props.onDelete();
             return;
         }
+
+        logMealEvent("delete", mealToEdit, deviceInfo);
 
         setLoading(true);
 
@@ -118,14 +132,19 @@ export default function MealEditor(props: MealEditorProps) {
             return;
         }
 
+        logMealEvent("save", mealToEdit, deviceInfo);
+
         setLoading(true);
         setImageTypeError(false);
         setImageUploadError(false);
 
         if (newImageFile) {
+            logMealEvent("uploading-image", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size });
             try {
                 await uploadMealImageFile(mealToEdit, newImageFile);
-            } catch {
+                logMealEvent("image-uploaded", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size });
+            } catch (err) {
+                logMealEvent("image-upload-error", mealToEdit, deviceInfo, { name: newImageFile.name, size: newImageFile.size, error: err });
                 setLoading(false);
                 setImageUploadError(true);
                 return;
@@ -142,6 +161,8 @@ export default function MealEditor(props: MealEditorProps) {
 
         const otherMeals = allMeals.filter(meal => meal.id !== mealToEdit.id);
         const updatedMeals = [...otherMeals, mealToEdit].sort(timestampSortAsc);
+
+        logMealEvent("saving-meals", mealToEdit, deviceInfo);
 
         saveMeals(startOfDay(mealToEdit.timestamp), updatedMeals).then(props.onSave);
     };
@@ -162,6 +183,8 @@ export default function MealEditor(props: MealEditorProps) {
     };
 
     const onFileChanged = (file: File | undefined) => {
+        logMealEvent("change-file", mealToEdit, deviceInfo);
+
         if (file) {
             const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
             if (allowedTypes.includes(file.type)) {
@@ -170,13 +193,17 @@ export default function MealEditor(props: MealEditorProps) {
                 setImageUrl(URL.createObjectURL(file));
                 setImageTypeError(false);
                 setImageUploadError(false);
+                logMealEvent("image-added", mealToEdit, deviceInfo, `Image type=${file.type} size=${file.size}`);
             } else {
+                logMealEvent("image-type-error", mealToEdit, deviceInfo, `Invalid image type ${file.type}`);
                 setImageTypeError(true);
             }
         }
     };
 
     const onRemoveImage = () => {
+        logMealEvent("remove-image", mealToEdit, deviceInfo);
+
         setMealToEdit({ ...mealToEdit, hasImage: false });
         setNewImageFile(undefined);
         setImageUrl(undefined);
@@ -209,6 +236,11 @@ export default function MealEditor(props: MealEditorProps) {
 
         const updatedItems = combineItemsWithAnalysisItems(mealToEdit);
         setMealToEdit({ ...mealToEdit, items: updatedItems });
+    };
+
+    const onCancel = () => {
+        logMealEvent("cancel", mealToEdit, deviceInfo);
+        props.onCancel();
     };
 
     const colorStyles = {
@@ -341,7 +373,7 @@ export default function MealEditor(props: MealEditorProps) {
         {hasDuplicateTimestamp() && <div className="mdhui-meal-editor-error">{language('meal-editor-duplicate-timestamp-error')}</div>}
         {imageUploadError && <div className="mdhui-meal-editor-error">{language('meal-editor-image-upload-error')}</div>}
         <div className="mdhui-meal-editor-buttons">
-            <Button onClick={() => props.onCancel()} variant="light">{language('cancel')}</Button>
+            <Button onClick={() => onCancel()} variant="light">{language('cancel')}</Button>
             <Button onClick={() => onSave()} disabled={hasDuplicateTimestamp()}>{language('save')}</Button>
         </div>
     </div>

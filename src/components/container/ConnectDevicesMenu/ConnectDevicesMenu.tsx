@@ -155,6 +155,14 @@ export default function (props: ConnectDevicesMenuProps) {
     }
 
     let accountTypes = props.accountTypes || ["GoogleHealth", "Fitbit", "Garmin", "Oura", "Omron", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
+
+    // Google Health was added to this menu after Fitbit, so views configured before then list Fitbit
+    // without it.  Treat Fitbit as implying Google Health so those views offer it as well.  Projects
+    // without Google Health enabled are still filtered out below.
+    if (accountTypes.includes("Fitbit") && !accountTypes.includes("GoogleHealth")) {
+        accountTypes = ["GoogleHealth", ...accountTypes];
+    }
+
     if (!settings?.googleHealthEnabled) {
         accountTypes = accountTypes.filter(a => a != "GoogleHealth");
     }
