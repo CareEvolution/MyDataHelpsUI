@@ -1,5 +1,5 @@
 .mdhui-step-container {
-    background-color: #FFFFFF;
+    background-color: var(--mdhui-background-color-0);
 }
 
 .mdhui-step-container div,
