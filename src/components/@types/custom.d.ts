@@ -12,4 +12,5 @@ declare module "*.png" {
 declare module "apca-w3" {
 	export function sRGBtoY(rgb: number[]): number;
 	export function APCAcontrast(textY: number, backgroundY: number, places?: number): number;
+	export function calcAPCA(text: string | number[], background: string | number[], places?: number): number;
 }
