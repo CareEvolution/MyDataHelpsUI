@@ -1,6 +1,6 @@
 import React from 'react'
 import { BlankView, Card } from "../.."
-import { ConnectDevicesMenu, FitbitDevices, GarminDevices, ViewDeviceActivity } from '../../container'
+import { ConnectDevicesMenu, FitbitDevices, ViewDeviceActivity } from '../../container'
 import MyDataHelps from '@careevolution/mydatahelps-js'
 import standardDailyDataTypes from '../../../helpers/daily-data-types/standard'
 
@@ -35,9 +35,6 @@ export default function ConnectDevicesView(props: ConnectDevicesViewProps) {
             </Card>
             <Card>
                 <FitbitDevices previewState={props.previewState ? "connected" : undefined} />
-            </Card>
-            <Card>
-                <GarminDevices previewState={props.previewState ? "connected" : undefined} />
             </Card>
         </BlankView>
     )

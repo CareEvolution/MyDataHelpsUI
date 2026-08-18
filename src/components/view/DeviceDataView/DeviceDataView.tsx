@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Card, StatusBarBackground, FitbitDevices, DeviceDataMonthCharts, GarminDevices, ConnectDevicesMenu } from "../.."
+import { Layout, Card, StatusBarBackground, FitbitDevices, DeviceDataMonthCharts, ConnectDevicesMenu } from "../.."
 
 export interface DeviceDataViewProps {
 	preview?: boolean;
@@ -20,9 +20,6 @@ export default function DeviceDataView(props: DeviceDataViewProps) {
 			</Card>
 			<Card>
 				<FitbitDevices previewState={props.preview ? "connected" : undefined} />
-			</Card>
-			<Card>
-				<GarminDevices previewState={props.preview ? "connected" : undefined} />
 			</Card>
 			<Card>
 				<ConnectDevicesMenu previewState={props.preview ? "Web" : undefined} />
