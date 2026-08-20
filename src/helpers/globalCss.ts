@@ -16,6 +16,13 @@ export const core = css`
     --mdhui-color-success-text: var(--mdhui-color-success);
     --mdhui-color-warning-text: var(--mdhui-color-warning);
     --mdhui-color-danger-text: var(--mdhui-color-danger);
+    /* Mark tokens: the accents as data ink (meter fills, plot pills). Same values as
+       -text today; the separate name lets marks be tuned apart from text without a
+       rename. */
+    --mdhui-color-primary-mark: var(--mdhui-color-primary-text);
+    --mdhui-color-success-mark: var(--mdhui-color-success-text);
+    --mdhui-color-warning-mark: var(--mdhui-color-warning-text);
+    --mdhui-color-danger-mark: var(--mdhui-color-danger-text);
     --mdhui-fadein-animation: fadein 1s;
     --mdhui-card-border-radius: 12px;
     --mdhui-font-family: ui-rounded, -apple-system, Helvetica, Arial, sans-serif;

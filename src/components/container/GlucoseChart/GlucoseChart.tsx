@@ -228,7 +228,7 @@ export default function (props: GlucoseChartProps) {
                 {props.variant !== 'minimal' && glucoseContext?.recentAverage !== undefined &&
                     <ReferenceLine
                         y={glucoseContext.recentAverage}
-                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary-text)'}
+                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary-mark)'}
                         strokeWidth={1.5}
                         label={{
                             value: formatNumberForLocale(glucoseContext.recentAverage),

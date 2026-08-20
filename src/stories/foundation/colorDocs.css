@@ -304,4 +304,4 @@ td, th {
 .tokensCtx-caption { font: 700 9.5px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .05em; color: var(--mdhui-text-color-3); margin: 2px 0 4px; }
 .tokensCtx-grid { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: center; padding: 3px 0; }
 .tokensCtx-track { background: var(--mdhui-background-color-2); border-radius: 99px; height: 8px; }
-.tokensCtx-fill { width: 45%; height: 8px; border-radius: 99px; background: var(--mdhui-color-primary-text); }
+.tokensCtx-fill { width: 45%; height: 8px; border-radius: 99px; background: var(--mdhui-color-primary-mark); }

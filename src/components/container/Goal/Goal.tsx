@@ -81,6 +81,9 @@ export default function Goal(props: GoalProps) {
     const defaultColor = 'var(--mdhui-text-color-3)';
     const defaultInProgressColor = 'var(--mdhui-color-primary-text)';
     const defaultCompletedColor = 'var(--mdhui-color-success-text)';
+    // The ring segments are data ink; the status text and icon beside them are foreground.
+    const defaultInProgressSegmentColor = 'var(--mdhui-color-primary-mark)';
+    const defaultCompletedSegmentColor = 'var(--mdhui-color-success-mark)';
 
     // These next few blocks of code are for backward compatibility.  When necessary, they map individual ColorDefinitions onto
     // the new GoalColorConfiguration model in a way that retains backward compatible coloring behavior.
@@ -145,14 +148,14 @@ export default function Goal(props: GoalProps) {
             const resolvedInProgressColors = resolveGoalColors(inProgressColors);
             const resolvedNextTargetInProgressColors = resolveGoalColors(nextTarget.inProgressColors);
             statusColor = resolvedNextTargetInProgressColors.statusColor ?? resolvedInProgressColors.statusColor ?? defaultInProgressColor;
-            onSegmentColor = resolvedNextTargetInProgressColors.onSegmentColor ?? resolvedInProgressColors.onSegmentColor ?? defaultInProgressColor;
+            onSegmentColor = resolvedNextTargetInProgressColors.onSegmentColor ?? resolvedInProgressColors.onSegmentColor ?? defaultInProgressSegmentColor;
             offSegmentColor = resolvedNextTargetInProgressColors.offSegmentColor ?? resolvedInProgressColors.offSegmentColor ?? offSegmentColor;
             iconColor = resolvedNextTargetInProgressColors.iconColor ?? resolvedInProgressColors.iconColor ?? defaultInProgressColor;
             iconBackgroundColor = resolvedNextTargetInProgressColors.iconBackgroundColor ?? resolvedInProgressColors.iconBackgroundColor;
         } else if (maxTargetMet && !nextTarget) {
             const resolvedCompletedColors = resolveGoalColors(completedColors);
             statusColor = resolvedCompletedColors.statusColor ?? defaultCompletedColor;
-            onSegmentColor = resolvedCompletedColors.onSegmentColor ?? defaultCompletedColor;
+            onSegmentColor = resolvedCompletedColors.onSegmentColor ?? defaultCompletedSegmentColor;
             offSegmentColor = resolvedCompletedColors.offSegmentColor ?? offSegmentColor;
             iconColor = resolvedCompletedColors.iconColor ?? defaultCompletedColor;
             iconBackgroundColor = resolvedCompletedColors.iconBackgroundColor;

@@ -87,11 +87,12 @@ const TEXT_ROLES = [
 const SURFACES = ['--mdhui-background-color-0', '--mdhui-background-color-1', '--mdhui-background-color-2'];
 const BORDERS = ['--mdhui-border-color-0', '--mdhui-border-color-1', '--mdhui-border-color-2'];
 
-// Accents and signals carry two duties and are checked against different floors:
-//   base  — fills (buttons, chips) and chart marks. A filled control with contrasting text
-//           on it needs no boundary contrast (WCAG 1.4.11 exemption), so the base token is
-//           checked for the white text it carries, not against the surface behind it.
-//           Marks are non-text functional, so they do get the 3:1 floor vs the surface.
+// Accents and signals split their duties across tokens, checked against different floors:
+//   base  — fills (buttons, chips). A filled control with contrasting text on it needs
+//           no boundary contrast (WCAG 1.4.11 exemption), so the base token is checked
+//           for the white text it carries, not against the surface behind it.
+//   -mark — data ink (meter fills, plot pills, chart marks): non-text functional, so it
+//           gets the 3:1 floor vs the surface.
 //   -text — the same role as foreground (links, status text, icons that must be seen).
 const ACCENTS = ['primary', 'success', 'warning', 'danger'];
 const SIGNALS = ['glucose', 'heart-rate', 'activity', 'sleep', 'air-quality'];
@@ -140,6 +141,7 @@ const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
       // fills are 1.4.11-exempt against the surface (their ink identifies them) — reported only
       pushPair(`${a} fill vs ${bgName(s)}`, `--mdhui-color-${a}`, s, 3.0, 15, true);
       pushPair(`${a}-text on ${bgName(s)}`, `--mdhui-color-${a}-text`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+      pushPair(`${a}-mark on ${bgName(s)}`, `--mdhui-color-${a}-mark`, s, MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
     }
   }
   for (const g of SIGNALS) {

@@ -94,7 +94,7 @@ export default function BasicPointsForBadges(props: BasicPointsForBadgesProps) {
                 </Title>
                 <ProgressBar key={badges.length} // forces re-render to skip "backwards" animation when badges change
                     fillPercent={(props.pointsPerBadge - pointsUntilNextBadge()) / (props.pointsPerBadge * 1.0) * 100}
-                    fillColor={props.progressBarFillColor ?? "var(--mdhui-color-primary-text)"}
+                    fillColor={props.progressBarFillColor ?? "var(--mdhui-color-primary-mark)"}
                     backgroundColor="var(--mdhui-background-color-2)" steps={[{
                         percent: 100,
                         icon:

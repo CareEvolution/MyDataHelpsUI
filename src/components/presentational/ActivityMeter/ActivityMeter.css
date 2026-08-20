@@ -50,7 +50,7 @@
 
 .mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-fill {
     height: 16px;
-    background: var(--mdhui-color-primary-text);
+    background: var(--mdhui-color-primary-mark);
     position: relative;
     border-radius: 8px;
 }

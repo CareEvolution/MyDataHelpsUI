@@ -82,7 +82,7 @@ export default function (props: RelativeActivityProps) {
         if (dataType.threshold !== undefined && dataType.overThresholdColor && fillPercent > .5) {
             return dataType.overThresholdColor;
         }
-        return dataType.color || "var(--mdhui-color-primary-text)";
+        return dataType.color || "var(--mdhui-color-primary-mark)";
     }
 
     function getThresholdLabel(dataType: RelativeActivityDataType, threshold: number) {

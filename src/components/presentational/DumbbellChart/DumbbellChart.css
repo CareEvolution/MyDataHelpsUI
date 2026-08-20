@@ -70,8 +70,8 @@
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
 .mdhui-dumbbell-full-out-of-range-pill{
-    background-color: var(--mdhui-color-danger-text);
-    border-color:var(--mdhui-color-danger-text);
+    background-color: var(--mdhui-color-danger-mark);
+    border-color:var(--mdhui-color-danger-mark);
     position: absolute;
     width: 9px;
     height: 9px;
@@ -126,12 +126,12 @@
 
  .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
  .mdhui-dumbbell-in-range {
-    background-color: var(--mdhui-color-primary-text);
-    border-color: var(--mdhui-color-primary-text);
+    background-color: var(--mdhui-color-primary-mark);
+    border-color: var(--mdhui-color-primary-mark);
 }
 
 .mdhui-dumbbell-visualization .mdhui-dumbbell-chart .mdhui-dumbbell 
 .mdhui-dumbbell-out-of-range {
-    background-color: var(--mdhui-color-danger-text);
-    border-color: var(--mdhui-color-danger-text);
+    background-color: var(--mdhui-color-danger-mark);
+    border-color: var(--mdhui-color-danger-mark);
 }

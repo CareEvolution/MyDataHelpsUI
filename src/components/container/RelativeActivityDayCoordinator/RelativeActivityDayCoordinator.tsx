@@ -49,7 +49,7 @@ export default function RelativeActivityDateRangeCoordinator(props: RelativeActi
             const dataForDay = relativeActivityData?.[dataType.dailyDataType]?.[dayKey];
 
             const value = dataForDay?.value ?? 0;
-            let color = dataType.color || 'var(--mdhui-color-primary-text)';
+            let color = dataType.color || 'var(--mdhui-color-primary-mark)';
             if (dataType.threshold !== undefined && dataType.threshold !== '30DayAverage' && value > dataType.threshold && dataType.overThresholdColor) {
                 color = dataType.overThresholdColor;
             }

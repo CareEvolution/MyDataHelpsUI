@@ -111,7 +111,7 @@ export default function MicroTrend(props: MicroTrendProps) {
             const fillPercent = dayResult?.fillPercent ?? 0;
             bars.push({
                 barFillPercent: fillPercent,
-                color: (value > threshold ? (dataType.overThresholdColor ?? dataType.color) : dataType.color) || "var(--mdhui-color-primary-text)",
+                color: (value > threshold ? (dataType.overThresholdColor ?? dataType.color) : dataType.color) || "var(--mdhui-color-primary-mark)",
                 opacity: (i === 0 ? 1 : 0.4)
             });
         }

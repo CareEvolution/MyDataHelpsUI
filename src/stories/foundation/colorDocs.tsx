@@ -385,14 +385,14 @@ const TokenContextCard: React.FC<{ scheme: 'light' | 'dark' }> = ({ scheme }) =>
       <Line token="text-3"><span style={{ color: 'var(--mdhui-text-color-3)', fontSize: '13px' }}>Updated 2 hours ago</span></Line>
       <Line token="text-4"><span style={{ color: 'var(--mdhui-text-color-4)' }}>Sync unavailable</span></Line>
       <Divider token="border-1" color="--mdhui-border-color-1" />
-      <Caption>accents — as text, then as fill</Caption>
+      <Caption>accents — as text, as fill, as mark</Caption>
       <Line token="primary-text"><span style={{ color: 'var(--mdhui-color-primary-text)', fontWeight: 700 }}>View details</span></Line>
       <Line token="success-text"><span style={{ color: 'var(--mdhui-color-success-text)', fontWeight: 700 }}>In range</span></Line>
       <Line token="warning-text"><span style={{ color: 'var(--mdhui-color-warning-text)', fontWeight: 700 }}>Running low</span></Line>
       <Line token="danger-text"><span style={{ color: 'var(--mdhui-color-danger-text)', fontWeight: 700 }}>Overdue</span></Line>
       <Line token="primary"><span style={{ background: 'var(--mdhui-color-primary)', color: '#fff', fontWeight: 700, borderRadius: '8px', padding: '6px 16px', display: 'inline-block' }}>Log reading</span></Line>
       <Line token="danger"><span style={{ background: 'var(--mdhui-color-danger)', color: '#fff', fontWeight: 700, borderRadius: '99px', padding: '3px 12px', fontSize: '13px', display: 'inline-block' }}>3 due</span></Line>
-      <Line token="bg-2 · primary-text"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
+      <Line token="bg-2 · primary-mark"><div className="tokensCtx-track"><div className="tokensCtx-fill" /></div></Line>
       <Divider token="border-2" color="--mdhui-border-color-2" />
       <Caption>signals — name in its text color, mark shows its value</Caption>
       {SIGNALS.map(signal => {
