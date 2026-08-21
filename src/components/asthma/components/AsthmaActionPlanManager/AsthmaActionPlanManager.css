@@ -12,7 +12,7 @@
 
 .mdhui-unstyled-button.mdhui-asthma-action-plan-manager-learn-more {
     font-size: 0.8em;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     margin-bottom: 16px;
     cursor: pointer;
 }
@@ -53,7 +53,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-weight: bold;
 }
 

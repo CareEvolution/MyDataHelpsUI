@@ -44,15 +44,15 @@
 
 .mdhui-single-survey-task .due-date {
     font-size: .88em;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-single-survey-task .due-date.warning {
-    color: var(--mdhui-color-warning);
+    color: var(--mdhui-color-warning-text);
     font-weight: bold;
 }
 
 .mdhui-single-survey-task .due-date.danger {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
     font-weight: bold;
 }

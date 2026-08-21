@@ -34,7 +34,7 @@
 }
 
 .mdhui-resource-link {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-weight: 500;
     margin: 16px 0 0;
 }

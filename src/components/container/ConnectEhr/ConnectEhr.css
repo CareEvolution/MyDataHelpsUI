@@ -7,11 +7,11 @@
 }
 
 .mdhui-connect-ehr .connection-status .success svg {
-    color: var(--mdhui-color-success);
+    color: var(--mdhui-color-success-text);
 }
 
 .mdhui-connect-ehr .connection-status .warning {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }
 
 .mdhui-connect-ehr .mdhui-connect-ehr-action {

@@ -76,7 +76,7 @@ export default function (props: SingleMealProps) {
             <div className="mdhui-meal-info">
                 <div className="mdhui-meal-type">
                     {getMealTypeDisplayText(props.meal.type)}&nbsp;
-                    {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success)" />}
+                    {props.selected && <FontAwesomeSvgIcon icon={faCircleCheck} color="var(--mdhui-color-success-text)" />}
                 </div>
                 <div className="mdhui-meal-time">
                     {props.displayDateWithTime ? getDateAndTimeString(props.meal.timestamp) : getTimeOfDayString(props.meal.timestamp)}

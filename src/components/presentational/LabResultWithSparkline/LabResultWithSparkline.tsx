@@ -75,7 +75,7 @@ export default function LabResultWithSparkline(props: LabResultWithSparklineProp
                                 y={props.labResultValue.NormalRangeBottomY * sparklineYRange}
                                 width={sparklineXRange}
                                 height={props.labResultValue.NormalRangeBottomY * sparklineYRange}
-                                fill="var(--mdhui-color-primary)" />
+                                fill="var(--mdhui-color-primary-mark)" />
                         }
                         {props.labResultValue.SparklinePoints.slice(0, props.labResultValue.SparklinePoints.length - 1).map((point: any, index: number) =>
                             <line
@@ -89,7 +89,7 @@ export default function LabResultWithSparkline(props: LabResultWithSparklineProp
                         <circle cx={props.labResultValue.SparklinePoints[props.labResultValue.SparklinePoints.length - 1].X * sparklineXRange}
                             cy={props.labResultValue.SparklinePoints[props.labResultValue.SparklinePoints.length - 1].Y * sparklineYRange}
                             r="3"
-                            fill="var(--mdhui-color-primary)" />
+                            fill="var(--mdhui-color-primary-mark)" />
                     </svg>
                 }
                 {!!props.labResultValue.TermInformation &&

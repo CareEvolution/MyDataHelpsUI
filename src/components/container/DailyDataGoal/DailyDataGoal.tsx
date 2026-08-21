@@ -41,14 +41,20 @@ export default function (props: DailyDataGoalProps) {
         });
     }, ["externalAccountSyncComplete"], [dateRangeContext?.intervalStart]);
 
-    const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success)";
-    const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary)";
+    // The message is text, but the circle fill renders at opacity .3 over a light track,
+    // where the light -text grades wash out — so the fill defaults to the stronger base
+    // accent. An explicit color prop still drives both.
+    const goalCompleteColor = props.goalCompleteColor || "var(--mdhui-color-success-text)";
+    const goalIncompleteColor = props.goalIncompleteColor || "var(--mdhui-color-primary-text)";
+    const goalCompleteFill = props.goalCompleteColor || "var(--mdhui-color-success)";
+    const goalIncompleteFill = props.goalIncompleteColor || "var(--mdhui-color-primary)";
 
     let goalProgress: number | null = dailyValue == null ? null : dailyValue / props.goal;
     if (goalProgress != null && goalProgress > 1) goalProgress = 1;
 
     const formattedProgress = goalProgress == null ? "0%" : Math.round(goalProgress * 100) + "%";
     const color = goalProgress === 1 ? goalCompleteColor : goalIncompleteColor;
+    const fillColor = goalProgress === 1 ? goalCompleteFill : goalIncompleteFill;
 
     let message: string | undefined = undefined;
     if (props.messages && dailyValue != null) {
@@ -63,7 +69,7 @@ export default function (props: DailyDataGoalProps) {
 
     return <div className={classes.join(" ")} ref={props.innerRef}>
         <div className="mdhui-daily-data-goal-circle">
-            <div className="mdhui-daily-data-goal-circle-fill" style={{ height: formattedProgress, backgroundColor: resolveColor(layoutContext.colorScheme, color) }}>
+            <div className="mdhui-daily-data-goal-circle-fill" style={{ height: formattedProgress, backgroundColor: resolveColor(layoutContext.colorScheme, fillColor) }}>
             </div>
             {goalProgress === 1 &&
                 <FontAwesomeSvgIcon icon={faCheck} />

@@ -11,7 +11,7 @@
     text-align: center;
     left: 16px;
     top: calc(50% - 8px);
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-size: 1em;
 }
 
@@ -50,7 +50,7 @@
 
 .mdhui-activity-meter .mdhui-activity-meter-meter .mdhui-activity-meter-fill {
     height: 16px;
-    background: var(--mdhui-color-primary);
+    background: var(--mdhui-color-primary-mark);
     position: relative;
     border-radius: 8px;
 }

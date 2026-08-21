@@ -56,5 +56,5 @@
 }
 
 .mdhui-single-external-account .external-account-status .error {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }

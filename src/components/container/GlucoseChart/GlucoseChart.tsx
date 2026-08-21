@@ -228,11 +228,11 @@ export default function (props: GlucoseChartProps) {
                 {props.variant !== 'minimal' && glucoseContext?.recentAverage !== undefined &&
                     <ReferenceLine
                         y={glucoseContext.recentAverage}
-                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)'}
+                        stroke={resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary-mark)'}
                         strokeWidth={1.5}
                         label={{
                             value: formatNumberForLocale(glucoseContext.recentAverage),
-                            fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary)',
+                            fill: resolveColor(layoutContext.colorScheme, props.averageGlucoseLineColor) ?? 'var(--mdhui-color-primary-text)',
                             fontSize: 9,
                             position: 'insideTopRight',
                             fontWeight: 'bold'
@@ -244,14 +244,14 @@ export default function (props: GlucoseChartProps) {
                         data={overlaySteps}
                         type="monotone"
                         dataKey="value"
-                        fill="#f5b722"
+                        fill="var(--mdhui-color-activity-mark)"
                         opacity={0.3}
                         radius={[2, 2, 0, 0]}
                     />
                 }
             </TimeSeriesChart>
             {props.variant !== 'minimal' &&
-                <FontAwesomeSvgIcon className="steps-icon" color="#f5b722" icon={faShoePrints} />
+                <FontAwesomeSvgIcon className="steps-icon" color="var(--mdhui-color-activity-text)" icon={faShoePrints} />
             }
         </div>
         <div className="mdhui-glucose-chart-chart-empty" style={{ display: !loading && !glucose?.length && props.variant !== 'minimal' ? 'block' : 'none' }}>{props.emptyText ?? language('glucose-chart-no-data')}</div>

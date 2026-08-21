@@ -3,7 +3,11 @@ module.exports = {
 
   "addons": [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
+    {
+      // backgrounds only recolors the canvas; the theme button drives the real surfaces.
+      name: "@storybook/addon-essentials",
+      options: { backgrounds: false }
+    },
     "@storybook/addon-interactions",
     "@storybook/addon-webpack5-compiler-babel",
     "@chromatic-com/storybook"

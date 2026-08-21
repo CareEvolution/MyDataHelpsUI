@@ -50,7 +50,7 @@
 }
 
 .mdhui-action .mdhui-action-indicator-value {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-weight: bold;
 }
 
