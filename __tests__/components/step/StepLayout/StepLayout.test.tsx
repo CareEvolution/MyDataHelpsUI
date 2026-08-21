@@ -52,7 +52,7 @@ describe('StepLayout color scheme', () => {
         await act(async () => { render(<StepLayout />); });
         expect(globalCss()).not.toContain(DARK_CARD);
         await act(async () => {
-            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'dark' } }));
+            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'dark' }, source: window }));
         });
         expect(globalCss()).toContain(DARK_CARD);
     });
@@ -62,7 +62,7 @@ describe('StepLayout color scheme', () => {
         await act(async () => { render(<StepLayout />); });
         expect(globalCss()).toContain(DARK_CARD);
         await act(async () => {
-            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'light' } }));
+            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'light' }, source: window }));
         });
         // the dark rules must be REPLACED, not merely out-cascaded — stacking would leave them present
         expect(globalCss()).not.toContain(DARK_CARD);
@@ -86,12 +86,22 @@ describe('StepLayout color scheme', () => {
         }
     });
 
+    it('ignores a valid message from a sender that is not the embedding page', async () => {
+        setSearch('colorScheme=light');
+        await act(async () => { render(<StepLayout />); });
+        await act(async () => {
+            // source: null stands in for any window that is neither the parent nor the page itself
+            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'dark' }, source: null }));
+        });
+        expect(globalCss()).not.toContain(DARK_CARD);
+    });
+
     it('ignores unrelated messages', async () => {
         setSearch('colorScheme=light');
         await act(async () => { render(<StepLayout />); });
         await act(async () => {
-            window.dispatchEvent(new MessageEvent('message', { data: { name: 'SomethingElse', colorScheme: 'dark' } }));
-            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'weird' } }));
+            window.dispatchEvent(new MessageEvent('message', { data: { name: 'SomethingElse', colorScheme: 'dark' }, source: window }));
+            window.dispatchEvent(new MessageEvent('message', { data: { name: 'RKStudioColorScheme', colorScheme: 'weird' }, source: window }));
         });
         expect(globalCss()).not.toContain(DARK_CARD);
     });
