@@ -11,6 +11,7 @@ export * from './query-all-survey-answers';
 export * from './query-latest-survey-answers-by-date';
 export * from './Initialization';
 export * from './relative-activity';
+export * from './contrast-insight';
 export * from './BasicPointsAndBadges/PointsAndBadges';
 export { simpleAvailabilityCheck } from './daily-data-types/availability-check';
 export { default as dailyDataTypeDefinitions } from './daily-data-types/all';

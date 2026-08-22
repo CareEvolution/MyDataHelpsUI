@@ -1,0 +1,83 @@
+.mdhui-contrast-chart {
+    padding: var(--mdhui-padding-xs) 0;
+}
+
+.mdhui-contrast-chart-row {
+    display: flex;
+    align-items: center;
+    gap: var(--mdhui-padding-xs);
+    padding: 2px 0;
+}
+
+.mdhui-contrast-chart-row-label {
+    flex: 0 0 30%;
+    font-size: 0.8em;
+    color: var(--mdhui-text-color-2);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mdhui-contrast-chart-row-bar-area {
+    flex: 1 1 auto;
+}
+
+.mdhui-contrast-chart-row-bar {
+    height: 16px;
+    border-radius: 4px;
+    min-width: 2px;
+}
+
+.mdhui-contrast-chart-row-value {
+    flex: 0 0 auto;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--mdhui-text-color-1);
+    min-width: 56px;
+}
+
+.mdhui-contrast-chart-dot-columns {
+    display: flex;
+    gap: var(--mdhui-padding-md);
+    justify-content: center;
+}
+
+.mdhui-contrast-chart-column {
+    flex: 0 0 96px;
+    text-align: center;
+}
+
+.mdhui-contrast-chart-column-plot {
+    position: relative;
+    height: 140px;
+    border-bottom: 1px solid var(--mdhui-border-color-1);
+}
+
+.mdhui-contrast-chart-dot {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    opacity: 0.65;
+    transform: translate(-50%, -50%);
+}
+
+.mdhui-contrast-chart-average-tick {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    border-top: 2px solid var(--mdhui-text-color-1);
+}
+
+.mdhui-contrast-chart-column-value {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--mdhui-text-color-1);
+    margin-top: var(--mdhui-padding-xxs);
+}
+
+.mdhui-contrast-chart-column-label {
+    font-size: 0.75em;
+    color: var(--mdhui-text-color-2);
+}

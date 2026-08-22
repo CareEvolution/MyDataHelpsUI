@@ -8,6 +8,7 @@ export { default as CalendarDay, CalendarDayStateConfiguration } from "./Calenda
 export { default as Card } from "./Card"
 export { default as CardTitle } from "./CardTitle"
 export { default as Chat } from "./Chat"
+export { default as ContrastChart, ContrastChartProps, ContrastChartGroup } from "./ContrastChart"
 export { default as DateRangeCoordinator, DateRangeContext } from "./DateRangeCoordinator"
 export { default as DateRangeNavigator } from "./DateRangeNavigator"
 export { default as DateRangeTitle } from "./DateRangeTitle"
