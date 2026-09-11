@@ -711,14 +711,17 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-80)',
     '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-30)',
     '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
-    '--mdhui-color-asthma-symptoms-text': 'var(--mdh-orange-20)',
-    '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-80)',
+    // Chip is a fill, same duty as the accent fills above: a vivid grade-50, white ink —
+    // not a dark tint with light text, which nearly disappeared against the grey-85 card
+    // (chip-vs-card measured 1.5:1; grade-50 measures 3.4:1, a real visible edge).
+    '--mdhui-color-asthma-symptoms-text': '#fff',
+    '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-50)',
     '--mdhui-color-asthma-impacts-mark': 'var(--mdh-violet-40)',
-    '--mdhui-color-asthma-impacts-text': 'var(--mdh-violet-20)',
-    '--mdhui-color-asthma-impacts-chip': 'var(--mdh-violet-80)',
+    '--mdhui-color-asthma-impacts-text': '#fff',
+    '--mdhui-color-asthma-impacts-chip': 'var(--mdh-violet-50)',
     '--mdhui-color-asthma-triggers-mark': 'var(--mdh-grey-20)',
-    '--mdhui-color-asthma-triggers-text': 'var(--mdh-grey-20)',
-    '--mdhui-color-asthma-triggers-chip': 'var(--mdh-grey-70)',
+    '--mdhui-color-asthma-triggers-text': '#fff',
+    '--mdhui-color-asthma-triggers-chip': 'var(--mdh-grey-50)',
     '--mdhui-color-asthma-controlled-text': 'var(--mdh-teal-30)',
     '--mdhui-color-asthma-controlled-heading': 'var(--mdh-teal-30)',
     '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-30)',
