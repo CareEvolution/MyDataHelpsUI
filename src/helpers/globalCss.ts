@@ -637,6 +637,29 @@ export const lightColorStyle: CSSProperties = {
     // is the lightest teal that still clears AA on the 1-5 backgrounds.
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-55)',
 
+    /* Asthma program colors. Light keeps every hex the asthma components shipped with,
+       including near-duplicates for one role (two corals, three teals), so light renders
+       unchanged; dark maps each role onto the ramp. */
+    '--mdhui-color-asthma-action': '#369CFF',
+    '--mdhui-color-asthma-action-secondary': '#BBDEFF',
+    '--mdhui-color-asthma-action-secondary-text': '#007FF9',
+    '--mdhui-color-asthma-symptoms-mark': '#E87C00',
+    '--mdhui-color-asthma-symptoms-text': '#E87C00',
+    '--mdhui-color-asthma-symptoms-chip': '#f9debf',
+    '--mdhui-color-asthma-impacts-mark': '#9D5BED',
+    '--mdhui-color-asthma-impacts-text': '#9D5BED',
+    '--mdhui-color-asthma-impacts-chip': '#e6d6fa',
+    '--mdhui-color-asthma-triggers-mark': '#000000',
+    '--mdhui-color-asthma-triggers-text': '#000000',
+    '--mdhui-color-asthma-triggers-chip': '#bfbfbf',
+    '--mdhui-color-asthma-controlled-text': '#35A6A0',
+    '--mdhui-color-asthma-controlled-heading': '#03dbcc',
+    '--mdhui-color-asthma-in-range-text': '#188A83',
+    '--mdhui-color-asthma-not-controlled': '#F86A5C',
+    '--mdhui-color-asthma-not-controlled-heading': '#fc6666',
+    '--mdhui-color-asthma-not-controlled-badge': '#fc6666',
+    '--mdhui-color-asthma-out-of-range-text': '#9D5BED',
+
     '--mdhui-box-shadow-color-0': 'rgba(0, 0, 0, 0.05)',
     '--mdhui-box-shadow-color-1': '#aaa',
 
@@ -681,6 +704,31 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-sleep-mark': 'var(--mdh-indigo-40)',
     '--mdhui-color-sleep-text': 'var(--mdh-indigo-35)',
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-35)',
+
+    // Asthma: fills at grade 50 (white ink clears 4.5:1), foreground text at 30, dots at 40
+    // (3:1 mark floor on the grey-85 card), chips as an 80 tint carrying the role's 20.
+    '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-80)',
+    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-30)',
+    '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
+    // Chip is a fill, same duty as the accent fills above: a vivid grade-50, white ink —
+    // not a dark tint with light text, which nearly disappeared against the grey-85 card
+    // (chip-vs-card measured 1.5:1; grade-50 measures 3.4:1, a real visible edge).
+    '--mdhui-color-asthma-symptoms-text': '#fff',
+    '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-50)',
+    '--mdhui-color-asthma-impacts-mark': 'var(--mdh-violet-40)',
+    '--mdhui-color-asthma-impacts-text': '#fff',
+    '--mdhui-color-asthma-impacts-chip': 'var(--mdh-violet-50)',
+    '--mdhui-color-asthma-triggers-mark': 'var(--mdh-grey-20)',
+    '--mdhui-color-asthma-triggers-text': '#fff',
+    '--mdhui-color-asthma-triggers-chip': 'var(--mdh-grey-50)',
+    '--mdhui-color-asthma-controlled-text': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-controlled-heading': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-not-controlled': 'var(--mdh-red-orange-50)',
+    '--mdhui-color-asthma-not-controlled-heading': 'var(--mdh-red-orange-30)',
+    '--mdhui-color-asthma-not-controlled-badge': 'var(--mdh-red-orange-50)',
+    '--mdhui-color-asthma-out-of-range-text': 'var(--mdh-violet-30)',
 
     // Accent base tokens keep the light-mode fill grades (fills carry white text);
     // "-text" = foreground-tuned grades for links/status text.

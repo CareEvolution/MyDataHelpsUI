@@ -30,19 +30,19 @@
     border-radius: 12px;
     font-size: 0.8em;
     padding: 0 8px;
-    color: #000;
+    color: var(--mdhui-text-color-0);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-symptoms {
-    background: #f9debf;
+    background: var(--mdhui-color-asthma-symptoms-chip);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-impacts {
-    background: #e6d6fa;
+    background: var(--mdhui-color-asthma-impacts-chip);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-triggers {
-    background: #bfbfbf;
+    background: var(--mdhui-color-asthma-triggers-chip);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-icon {
@@ -53,13 +53,13 @@
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-symptoms .mdhui-asthma-control-calendar-log-entry-component-icon {
-    background: #E87C00;
+    background: var(--mdhui-color-asthma-symptoms-mark);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-impacts .mdhui-asthma-control-calendar-log-entry-component-icon {
-    background: #9D5BED;
+    background: var(--mdhui-color-asthma-impacts-mark);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-triggers .mdhui-asthma-control-calendar-log-entry-component-icon {
-    background: #000000;
+    background: var(--mdhui-color-asthma-triggers-mark);
 }

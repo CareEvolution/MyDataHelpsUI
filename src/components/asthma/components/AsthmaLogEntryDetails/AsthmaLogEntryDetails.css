@@ -21,7 +21,7 @@
     font-size: 0.8em;
     padding: 0 16px;
     color: #fff;
-    background: #369CFF;
+    background: var(--mdhui-color-asthma-action);
 }
 
 .mdhui-asthma-log-entry-details-header-edit-button {
@@ -30,8 +30,8 @@
     border-radius: 6px;
     font-size: 0.8em;
     padding: 0 16px;
-    color: #007FF9;
-    background: #BBDEFF;
+    color: var(--mdhui-color-asthma-action-secondary-text);
+    background: var(--mdhui-color-asthma-action-secondary);
 }
 
 .mdhui-unstyled-button.mdhui-asthma-log-entry-details-header-info-button {
@@ -48,30 +48,30 @@
 }
 
 .mdhui-asthma-log-entry-details-component-symptoms .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #E87C00;
+    background: var(--mdhui-color-asthma-symptoms-mark);
 }
 
 .mdhui-asthma-log-entry-details-component-symptoms .mdhui-asthma-log-entry-details-component-data {
-    background: #f9debf;
-    color: #E87C00;
+    background: var(--mdhui-color-asthma-symptoms-chip);
+    color: var(--mdhui-color-asthma-symptoms-text);
 }
 
 .mdhui-asthma-log-entry-details-component-impacts .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #9D5BED;
+    background: var(--mdhui-color-asthma-impacts-mark);
 }
 
 .mdhui-asthma-log-entry-details-component-impacts .mdhui-asthma-log-entry-details-component-data {
-    background: #e6d6fa;
-    color: #9D5BED;
+    background: var(--mdhui-color-asthma-impacts-chip);
+    color: var(--mdhui-color-asthma-impacts-text);
 }
 
 .mdhui-asthma-log-entry-details-component-triggers .mdhui-asthma-log-entry-details-component-header-icon {
-    background: #000000;
+    background: var(--mdhui-color-asthma-triggers-mark);
 }
 
 .mdhui-asthma-log-entry-details-component-triggers .mdhui-asthma-log-entry-details-component-data {
-    background: #bfbfbf;
-    color: #000000;
+    background: var(--mdhui-color-asthma-triggers-chip);
+    color: var(--mdhui-color-asthma-triggers-text);
 }
 
 .mdhui-asthma-log-entry-details-component:last-child {
