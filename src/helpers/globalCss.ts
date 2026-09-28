@@ -705,11 +705,11 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-sleep-text': 'var(--mdh-indigo-35)',
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-35)',
 
-    // Asthma: fills at grade 50 (white ink clears 4.5:1), foreground text at 30, dots at 40
-    // (3:1 mark floor on the grey-85 card), chips as an 80 tint carrying the role's 20.
+    // Asthma: fills and chips at grade 50 with white ink (4.5:1), foreground text at 30,
+    // dots at 40 (3:1 mark floor on the grey-85 card).
     '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
-    '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-80)',
-    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-30)',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-50)',
+    '--mdhui-color-asthma-action-secondary-text': '#fff',
     '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
     // Chip is a fill, same duty as the accent fills above: a vivid grade-50, white ink —
     // not a dark tint with light text, which nearly disappeared against the grey-85 card
