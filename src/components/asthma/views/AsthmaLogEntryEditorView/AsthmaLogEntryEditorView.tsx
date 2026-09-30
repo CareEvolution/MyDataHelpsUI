@@ -108,7 +108,7 @@ export default function (props: AsthmaLogEntryEditorViewProps) {
     };
 
     const cancelButton = <UnstyledButton className="button" style={{ left: '16px' }} onClick={() => onCancel()}>Cancel</UnstyledButton>;
-    const saveButton = <UnstyledButton className="button" style={{ color: '#fff', background: '#369cff', right: '16px', padding: '0 16px' }} onClick={() => onSave()}>Save</UnstyledButton>;
+    const saveButton = <UnstyledButton className="button" style={{ color: '#fff', background: 'var(--mdhui-color-asthma-action)', right: '16px', padding: '0 16px' }} onClick={() => onSave()}>Save</UnstyledButton>;
 
     return <Layout colorScheme={props.colorScheme ?? 'auto'} bodyBackgroundColor="var(--mdhui-background-color-0)">
         <NavigationBar
