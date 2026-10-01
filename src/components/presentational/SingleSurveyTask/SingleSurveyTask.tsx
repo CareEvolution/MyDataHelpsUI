@@ -13,7 +13,7 @@ import checkMark from '../../../assets/greenCheck.svg';
 import Action from '../Action';
 import LoadingIndicator from '../LoadingIndicator';
 import { noop } from '../../../helpers/functions';
-import { getTimeFromNowString, getStrictTimeFromNowString, getRelativeDateString, getTimeOfDayString, isEndOfLocalDay } from "../../../helpers/date-helpers";
+import { getTimeFromNowString, getStrictTimeFromNowString, getRelativeDateString, getTimeOfDayString } from "../../../helpers/date-helpers";
 
 export type SingleSurveyTaskVariant = 'default' | 'expanded';
 
@@ -41,24 +41,9 @@ export default function (props: SingleSurveyTaskProps) {
 		let dueDateClasses: string[] = ['due-date'];
 		let dueDateString: string;
 
-		// No precision flag on the SDK type, so infer day-granular vs. precise from the timestamp itself.
-		if (isEndOfLocalDay(dueDate)) {
-			// Day-granular: omit the clock time, it's just an artifact of the snap.
-			if (isSameDay(dueDate, tomorrow)) {
-				dueDateString = language('due-tomorrow');
-				dueDateClasses.push('warning');
-			} else if (isSameDay(dueDate, today)) {
-				dueDateString = language('due-today');
-				dueDateClasses.push('warning');
-			} else if (isAfter(today, dueDate)) {
-				dueDateString = language('overdue');
-				dueDateClasses.push('danger');
-			} else {
-				dueDateString = language('due-in') + ' ' + getTimeFromNowString(dueDate);
-			}
-		} else {
-			// Effectively precise: show the clock time, and compare against now (not startOfToday())
-			// so a task due earlier today reads as overdue instead of "Due Today at 9:00 AM".
+		if (props.task.preciseDueDate === true) {
+			// Compare against now (not startOfToday()) so a task due earlier today reads as overdue
+			// instead of "Due Today at 9:00 AM".
 			if (isAfter(now, dueDate)) {
 				dueDateString = language('overdue');
 				dueDateClasses.push('danger');
@@ -70,6 +55,19 @@ export default function (props: SingleSurveyTaskProps) {
 				dueDateClasses.push('warning');
 			} else {
 				dueDateString = language('due-in') + ' ' + getStrictTimeFromNowString(dueDate);
+			}
+		} else {
+			if (isSameDay(dueDate, tomorrow)) {
+				dueDateString = language('due-tomorrow');
+				dueDateClasses.push('warning');
+			} else if (isSameDay(dueDate, today)) {
+				dueDateString = language('due-today');
+				dueDateClasses.push('warning');
+			} else if (isAfter(today, dueDate)) {
+				dueDateString = language('overdue');
+				dueDateClasses.push('danger');
+			} else {
+				dueDateString = language('due-in') + ' ' + getTimeFromNowString(dueDate);
 			}
 		}
 
