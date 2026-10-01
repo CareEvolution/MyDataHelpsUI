@@ -21,6 +21,7 @@ interface SingleSurveyTaskStoryArgs {
 	endDate?: number;
 	surveyActive?: boolean;
 	surveyBlocked?: boolean;
+	preciseDueDate?: boolean;
 }
 
 const render = (args: SingleSurveyTaskStoryArgs) => {
@@ -30,7 +31,8 @@ const render = (args: SingleSurveyTaskStoryArgs) => {
 		status: args.status,
 		dueDate: args.dueDate ? new Date(args.dueDate).toISOString() : undefined,
 		endDate: args.endDate ? new Date(args.endDate).toISOString() : undefined,
-		hasSavedProgress: args.hasSavedProgress
+		hasSavedProgress: args.hasSavedProgress,
+		preciseDueDate: args.preciseDueDate
 	} as SurveyTask;
 
 	return <Layout colorScheme="auto">
@@ -109,7 +111,8 @@ export const DueTodayWithTime = {
 		name: 'Survey Name',
 		description: 'This is the survey description.',
 		status: 'incomplete',
-		dueDate: dueLaterToday()
+		dueDate: dueLaterToday(),
+		preciseDueDate: true
 	},
 	argTypes: Default.argTypes,
 	render: render
@@ -121,13 +124,14 @@ export const DueTomorrowWithTime = {
 		name: 'Survey Name',
 		description: 'This is the survey description.',
 		status: 'incomplete',
-		dueDate: dueEarlyTomorrow()
+		dueDate: dueEarlyTomorrow(),
+		preciseDueDate: true
 	},
 	argTypes: Default.argTypes,
 	render: render
 };
 
-// Snapped to end-of-local-day (23:59), already past - the day-granular overdue case.
+// No preciseDueDate, already past - the day-granular overdue case.
 const dueYesterdayEndOfDay = () => {
 	const dueDate = new Date();
 	dueDate.setDate(dueDate.getDate() - 1);
@@ -147,7 +151,7 @@ export const OverdueDayGranular = {
 	render: render
 };
 
-// Non-midnight time, earlier today - the effectively-precise overdue case.
+// Precise, earlier today - overdue rather than "Due Today at <time>".
 const dueEarlierToday = () => {
 	const dueDate = new Date();
 	dueDate.setHours(dueDate.getHours() - 3);
@@ -160,13 +164,14 @@ export const OverdueEarlierToday = {
 		name: 'Survey Name',
 		description: 'This is the survey description.',
 		status: 'incomplete',
-		dueDate: dueEarlierToday()
+		dueDate: dueEarlierToday(),
+		preciseDueDate: true
 	},
 	argTypes: Default.argTypes,
 	render: render
 };
 
-// Several days out, non-midnight time - the effectively-precise "due in N" case.
+// Precise, several days out - the strict "due in N" case.
 const dueInSeveralDays = () => {
 	const dueDate = new Date();
 	dueDate.setDate(dueDate.getDate() + 3);
@@ -180,7 +185,27 @@ export const DueInDays = {
 		name: 'Survey Name',
 		description: 'This is the survey description.',
 		status: 'incomplete',
-		dueDate: dueInSeveralDays()
+		dueDate: dueInSeveralDays(),
+		preciseDueDate: true
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+// No preciseDueDate, mid-day time today - legacy tasks stay "Due Today" all day.
+const dueTodayMidDay = () => {
+	const dueDate = new Date();
+	dueDate.setHours(14, 37, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueTodayLegacy = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueTodayMidDay()
 	},
 	argTypes: Default.argTypes,
 	render: render
