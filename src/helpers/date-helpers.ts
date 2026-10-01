@@ -203,14 +203,6 @@ export function getTimeOfDayString(dateOrDateString: Date | string) {
 	return formatDateForLocale(date, "p");
 }
 
-/** Heuristic for "was this snapped to end-of-local-day" - true within about a minute of local
- *  midnight (23:59:xx or 00:00:xx). A due date genuinely, precisely due at 23:59 is indistinguishable. */
-export function isEndOfLocalDay(dateOrDateString: Date | string): boolean {
-	const date = toDate(dateOrDateString);
-	if (!date) { return false; }
-	return (date.getHours() === 23 && date.getMinutes() === 59) || (date.getHours() === 0 && date.getMinutes() === 0);
-}
-
 /** e.g., 12 P (localized, may be 24h) - a time of 00:00:00 is returned as an empty string */
 export function getShortTimeOfDayString(dateOrDateString: Date | string) {
 	const date = toDate(dateOrDateString);
