@@ -108,7 +108,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@careevolution/mydatahelps-js": "^5.7.0",
+    "@careevolution/mydatahelps-js": "^5.9.1-precise-due-date-1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
