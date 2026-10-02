@@ -3,5 +3,5 @@
 }
 
 .mdhui-most-recent-notification .mdhui-action .subtitle {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }

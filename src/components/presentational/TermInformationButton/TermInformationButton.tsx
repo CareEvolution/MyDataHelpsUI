@@ -43,7 +43,7 @@ export default function TermInformationButton(props: TermInformationButtonProps)
     return <div className="mdhui-term-information-button" ref={props.innerRef}>
         {(props.termInformation || props.labObservationID) &&
             <UnstyledButton onClick={viewTermInfo} title={language("term-information-button-title")}>
-                <FontAwesomeSvgIcon color="var(--mdhui-color-primary)" icon={faQuestionCircle} />
+                <FontAwesomeSvgIcon color="var(--mdhui-color-primary-text)" icon={faQuestionCircle} />
             </UnstyledButton>
         }
     </div>;

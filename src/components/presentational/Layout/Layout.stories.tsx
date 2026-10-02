@@ -3,6 +3,7 @@ import Layout from "../Layout";
 import { LayoutProps } from "./Layout";
 import TextBlock from "../TextBlock";
 import Card from "../Card";
+import Button from "../Button";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Layout> = {
@@ -69,4 +70,30 @@ export const CustomBackgroundLightDark: Story = {
         bodyBackgroundColor: { darkMode: "#23395d", lightMode: "#ffffff" }
     },
     render: render
+};
+// Both duties a brand color can drive, using real components: the default Button is a fill
+// (brand background, white text), the subtle Button is foreground (brand-colored text).
+const brandRender = (args: LayoutProps) => <Layout {...args}>
+    <Card>
+        <TextBlock>
+            <Button onClick={() => { }}>Log reading</Button>
+            <Button variant="subtle" onClick={() => { }}>View details</Button>
+        </TextBlock>
+    </Card>
+</Layout>;
+
+export const BrandColor: Story = {
+    args: {
+        colorScheme: "auto",
+        primaryColor: "#00693E"
+    },
+    render: brandRender
+};
+
+export const BrandColorLightDark: Story = {
+    args: {
+        colorScheme: "auto",
+        primaryColor: { lightMode: "#00693E", darkMode: "#00B068" }
+    },
+    render: brandRender
 };

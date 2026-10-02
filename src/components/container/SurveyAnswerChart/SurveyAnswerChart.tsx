@@ -136,7 +136,7 @@ export default function SurveyAnswerChart(props: SurveyAnswerChartProps) {
             <table className="mdhui-multiple-value-tooltip">
                 <tbody>
                 {payload.map((series: any, index: number) => {
-                    const seriesColor = resolveColor(layoutContext.colorScheme, props.series[index].color) ?? 'var(--mdhui-color-primary)';
+                    const seriesColor = resolveColor(layoutContext.colorScheme, props.series[index].color) ?? 'var(--mdhui-color-primary-mark)';
                     return <tr key={series.dataKey}>
                         <th style={{ color: seriesColor }}>{series.dataKey}</th>
                         <td>{formatNumberForLocale(parseFloat(series.value), 2)}</td>

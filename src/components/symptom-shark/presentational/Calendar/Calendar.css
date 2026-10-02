@@ -16,7 +16,7 @@
 }
 
 .mdhui-ss-calendar .mdhui-ss-notes-icon {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     position: absolute;
     right: calc(50% - 19px);
     bottom: 2px;

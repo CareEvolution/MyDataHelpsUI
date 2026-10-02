@@ -19,11 +19,11 @@
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-connect {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-reconnect {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }
 
 .mdhui-connect-devices-menu .mdhui-connect-devices-menu-device .mdhui-connect-devices-menu-help {

@@ -6,7 +6,7 @@
     --mdhui-value-selector-button-value-selected-background-color: var(--mdhui-color-primary);
     --mdhui-value-selector-button-value-selected-text-color: #fff;
     --mdhui-value-selector-checkbox-color: var(--mdhui-text-color-4);
-    --mdhui-value-selector-checkbox-selected-color: var(--mdhui-color-primary);
+    --mdhui-value-selector-checkbox-selected-color: var(--mdhui-color-primary-text);
     padding: 16px;
 }
 

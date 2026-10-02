@@ -17,7 +17,7 @@
     text-align: right;
     line-height: 32px;
     font-size: 20px;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     margin-bottom: 16px;
 }
 
@@ -42,7 +42,7 @@
 
 .mdhui-asthma-air-qualities-setup-button {
     font-size: 1.3em;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-asthma-air-qualities-setup-label {

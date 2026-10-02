@@ -16,7 +16,7 @@ body:has(.mdhui-document-detail-view) {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-size: 1.2em;
     cursor: pointer;
 }

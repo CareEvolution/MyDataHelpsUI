@@ -108,7 +108,7 @@
 }
 
 .mdhui-chat input:focus-visible {
-    outline: 1px solid var(--mdhui-color-primary);
+    outline: 1px solid var(--mdhui-color-primary-text);
 }
 
 .mdhui-chat .mdhui-chat-suggestions {

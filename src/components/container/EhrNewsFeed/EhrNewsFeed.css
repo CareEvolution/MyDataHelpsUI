@@ -39,7 +39,7 @@
 }
 
 .mdhui-news-feed .mdhui-news-feed-list-item .mdhui-news-feed-list-item-more {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-weight: bold;
 }
 

@@ -60,7 +60,7 @@
 }
 
 .mdhui-lab-result-with-sparkline .mdhui-lab-result-with-sparkline-term-info {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-size: 24px;
     opacity: .8;
     position: absolute;

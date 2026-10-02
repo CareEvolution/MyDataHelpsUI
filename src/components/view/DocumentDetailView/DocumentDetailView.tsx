@@ -137,7 +137,7 @@ export default function DocumentDetailView(props: DocumentDetailViewProps) {
                         }
                     </div>
                     <div className="mdhui-document-detail-view-document-buttons">
-                        <Button variant="light" color="var(--mdhui-color-danger)" onClick={onDelete}>
+                        <Button variant="light" color="var(--mdhui-color-danger-text)" onClick={onDelete}>
                             {language('document-detail-view-delete-button-text')}
                         </Button>
                     </div>

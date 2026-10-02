@@ -26,7 +26,7 @@
 }
 
 .mdhui-progress-ring > svg circle:nth-child(n+2) {
-    stroke: var(--mdhui-color-primary);
+    stroke: var(--mdhui-color-primary-mark);
     animation-fill-mode: forwards;
 }
 

@@ -35,6 +35,7 @@
     font-size: .88em;
     color: var(--mdhui-text-color-2);
     margin-top: var(--mdhui-padding-xxs);
+    overflow-wrap: anywhere;
 }
 
 .mdhui-action .indicator {
@@ -49,7 +50,7 @@
 }
 
 .mdhui-action .mdhui-action-indicator-value {
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
     font-weight: bold;
 }
 

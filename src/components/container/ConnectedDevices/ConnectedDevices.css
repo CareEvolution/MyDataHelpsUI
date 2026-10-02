@@ -37,13 +37,13 @@
 
 .mdhui-connected-devices .connected-device .battery-icon.battery-empty,
 .mdhui-connected-devices .connected-device .battery-icon.battery-low {
-    color: var(--mdhui-color-danger);
+    color: var(--mdhui-color-danger-text);
 }
 
 .mdhui-connected-devices .connected-device .battery-icon.battery-medium {
-    color: var(--mdhui-color-warning);
+    color: var(--mdhui-color-warning-text);
 }
 
 .mdhui-connected-devices .connected-device .battery-icon.battery-high {
-    color: var(--mdhui-color-success);
+    color: var(--mdhui-color-success-text);
 }

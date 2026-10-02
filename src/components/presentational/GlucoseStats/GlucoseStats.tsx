@@ -45,7 +45,7 @@ export default function (props: GlucoseStatsProps) {
             loading={props.loading}
             label={language(props.variant === 'minimal' ? 'glucose-stats-range-label-minimal' : 'glucose-stats-range-label')}
             icon={props.variant === 'minimal' ? undefined : faDroplet}
-            iconColor="#d36540"
+            iconColor="var(--mdhui-color-glucose-text)"
             value={(minGlucose && maxGlucose) ? `${formatNumberForLocale(minGlucose)} - ${formatNumberForLocale(maxGlucose)} mg/dL` : undefined}
             invert={props.variant === 'minimal'}
         />
@@ -53,7 +53,7 @@ export default function (props: GlucoseStatsProps) {
             loading={props.loading}
             label={language(props.variant === 'minimal' ? 'glucose-stats-avg-label-minimal' : 'glucose-stats-avg-label')}
             icon={props.variant === 'minimal' ? undefined : faDroplet}
-            iconColor="#d36540"
+            iconColor="var(--mdhui-color-glucose-text)"
             value={avgGlucose ? `${formatNumberForLocale(avgGlucose)} mg/dL` : undefined}
             invert={props.variant === 'minimal'}
         />
@@ -63,14 +63,14 @@ export default function (props: GlucoseStatsProps) {
                     loading={props.loading}
                     label={language('glucose-stats-steps-label')}
                     icon={faShoePrints}
-                    iconColor="#f5b722"
+                    iconColor="var(--mdhui-color-activity-text)"
                     value={steps ? `${formatNumberForLocale(steps)}` : undefined}
                 />
                 <SingleGlucoseStat
                     loading={props.loading}
                     label={language('glucose-stats-sleep-label')}
                     icon={faBed}
-                    iconColor="#8287bb"
+                    iconColor="var(--mdhui-color-sleep-text)"
                     value={(sleepHours || sleepMinutes) ? formatMinutesForLocale(totalSleepMinutes) : undefined}
                 />
             </>

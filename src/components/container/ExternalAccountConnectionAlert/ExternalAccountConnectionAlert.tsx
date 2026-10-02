@@ -61,7 +61,7 @@ export default function (props: ExternalAccountConnectionAlertProps) {
     }
 
     return <Action bottomBorder
-        icon={<FontAwesomeSvgIcon color="var(--mdhui-color-danger)" icon={faTriangleExclamation} />}
+        icon={<FontAwesomeSvgIcon color="var(--mdhui-color-danger-text)" icon={faTriangleExclamation} />}
         subtitle={language("connect-ehr-needs-attention")}
         onClick={props.onClick} />
 }

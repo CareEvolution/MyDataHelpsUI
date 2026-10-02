@@ -95,12 +95,12 @@ let labReportHandler: EventTypeDefinition = {
             let acuityElement: ReactNode | undefined;
             if (labObservation.AcuityHighlight === "High") {
                 style.fontWeight = "bold";
-                style.color = "var(--mdhui-color-danger)";
+                style.color = "var(--mdhui-color-danger-text)";
                 acuityElement = <div style={{ backgroundColor: "var(--mdhui-color-danger)" }} className="mdhui-news-feed-list-item-acuity">H</div>;
             }
             if (labObservation.AcuityHighlight === "Low") {
                 style.fontWeight = "bold";
-                style.color = "var(--mdhui-color-primary)";
+                style.color = "var(--mdhui-color-primary-text)";
                 acuityElement = <div style={{ backgroundColor: "var(--mdhui-color-primary)" }} className="mdhui-news-feed-list-item-acuity">L</div>;
             }
             return <div style={style}>{labObservation.Value} {labObservation.Units} {acuityElement}</div>

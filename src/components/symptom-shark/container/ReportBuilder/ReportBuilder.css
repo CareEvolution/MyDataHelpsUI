@@ -37,7 +37,7 @@
 }
 
 .ss-report-builder .ss-report-builder-items .ss-report-builder-item .fa-circle-check {
-    color: var(--mdhui-color-success);
+    color: var(--mdhui-color-success-text);
 }
 
 .ss-report-builder .ss-report-builder-items .ss-report-builder-item.ss-report-builder-month-selector {

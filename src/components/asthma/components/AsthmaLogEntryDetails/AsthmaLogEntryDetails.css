@@ -40,7 +40,7 @@
     text-align: right;
     line-height: 32px;
     font-size: 20px;
-    color: var(--mdhui-color-primary);
+    color: var(--mdhui-color-primary-text);
 }
 
 .mdhui-asthma-log-entry-details-component {

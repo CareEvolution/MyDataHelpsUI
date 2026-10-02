@@ -58,22 +58,24 @@ export default function Layout(props: LayoutProps) {
 
 	let paddingBottom = props.flex ? "0" : "env(safe-area-inset-bottom)";
 
+	// One Global for scheme + brand: Emotion orders tags by mount order, so a runtime
+	// scheme toggle would land the scheme tag after a separate brand tag and clobber it.
+	const schemeStyles = context.colorScheme == "dark" ? darkColorScheme : lightColorScheme;
+	// The brand color renders exactly as given; the library never alters it. In light it
+	// drives both tokens, as it always has. In dark it drives only fills, and links keep
+	// the scheme's readable grade: no single dark value can be both a fill under white
+	// text and legible text on the card, so text needs its own color, not this one.
+	const brand = props.primaryColor ? resolveColor(colorScheme, props.primaryColor) : undefined;
+	const brandStyles = brand ? css`
+	:root {
+		--mdhui-color-primary: ${brand};
+		${colorScheme === "light" ? `--mdhui-color-primary-text: ${brand};` : ""}
+	}` : undefined;
+
 	return (
 		<LayoutContext.Provider value={context}>
 			<EmotionGlobal styles={core} />
-			{props.primaryColor &&
-				<EmotionGlobal styles={css`
-				:root {
-					--mdhui-color-primary: ${resolveColor(colorScheme, props.primaryColor)};
-				}`
-				} />
-			}
-			{context.colorScheme == "dark" &&
-				<EmotionGlobal styles={darkColorScheme} />
-			}
-			{context.colorScheme == "light" &&
-				<EmotionGlobal styles={lightColorScheme} />
-			}
+			<EmotionGlobal styles={brandStyles ? [schemeStyles, brandStyles] : schemeStyles} />
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
