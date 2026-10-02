@@ -131,7 +131,6 @@ export const DueTomorrowWithTime = {
 	render: render
 };
 
-// No preciseDueDate, already past - the day-granular overdue case.
 const dueYesterdayEndOfDay = () => {
 	const dueDate = new Date();
 	dueDate.setDate(dueDate.getDate() - 1);
@@ -151,7 +150,6 @@ export const OverdueDayGranular = {
 	render: render
 };
 
-// Precise, earlier today - overdue rather than "Due Today at <time>".
 const dueEarlierToday = () => {
 	const dueDate = new Date();
 	dueDate.setHours(dueDate.getHours() - 3);
@@ -171,7 +169,6 @@ export const OverdueEarlierToday = {
 	render: render
 };
 
-// Precise, several days out - the strict "due in N" case.
 const dueInSeveralDays = () => {
 	const dueDate = new Date();
 	dueDate.setDate(dueDate.getDate() + 3);
@@ -192,7 +189,6 @@ export const DueInDays = {
 	render: render
 };
 
-// No preciseDueDate, mid-day time today - legacy tasks stay "Due Today" all day.
 const dueTodayMidDay = () => {
 	const dueDate = new Date();
 	dueDate.setHours(14, 37, 0, 0);

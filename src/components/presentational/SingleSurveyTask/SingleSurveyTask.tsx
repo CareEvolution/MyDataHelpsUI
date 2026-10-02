@@ -42,8 +42,7 @@ export default function (props: SingleSurveyTaskProps) {
 		let dueDateString: string;
 
 		if (props.task.preciseDueDate === true) {
-			// Compare against now (not startOfToday()) so a task due earlier today reads as overdue
-			// instead of "Due Today at 9:00 AM".
+			// Compare against now, not startOfToday(), so a precise task due earlier today reads as overdue.
 			if (isAfter(now, dueDate)) {
 				dueDateString = language('overdue');
 				dueDateClasses.push('danger');
