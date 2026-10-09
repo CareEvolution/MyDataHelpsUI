@@ -244,20 +244,31 @@ describe('Date Helper Tests', () => {
         });
     });
 
-    describe('getStrictTimeFromNowString', () => {        
-        it('Should return an English strict time string in hours.', () => {            
+    describe('getStrictTimeFromNowString', () => {
+        const now = new Date(2026, 9, 1, 16, 0);
+
+        beforeEach(() => {
+            jest.useFakeTimers();
+            jest.setSystemTime(now);
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('Should return an English strict time string in hours.', () => {
             mockMDHLanguage = "en";
-            const result = getStrictTimeFromNowString(new Date(new Date().getTime() + 3 * 60 * 60 * 1000 + 5000));
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 3 * 60 * 60 * 1000));
             expect(result).toBe("3 hours");
         });
-        it('Should return an English strict time string in minutes.', () => {            
+        it('Should return an English strict time string in minutes.', () => {
             mockMDHLanguage = "en";
-            const result = getStrictTimeFromNowString(new Date(new Date().getTime() + 45 * 60 * 1000 + 2000));
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 45 * 60 * 1000));
             expect(result).toBe("45 minutes");
         });
         it('Should return a localized strict time string.', () => {
             mockMDHLanguage = "de-DE";
-            const result = getStrictTimeFromNowString(new Date(new Date().setDate(new Date().getDate()+1)));
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 24 * 60 * 60 * 1000));
             expect(result).toBe("1 Tag");
         });
     });
