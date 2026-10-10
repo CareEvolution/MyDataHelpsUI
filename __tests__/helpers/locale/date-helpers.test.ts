@@ -4,7 +4,7 @@
 import { toDate, daysInMonth, getDayOfWeek, getDayOfWeekLetter, 
     getAbbreviatedDayOfWeek, getDayAndDateAndTimeString, getFullDayAndDateString,
     getFullDateString, getLongDateString, getShortDateString, getShortestDateString,
-    getMonthName, getAbbreviatedMonthName, getTimeFromNowString,
+    getMonthName, getAbbreviatedMonthName, getTimeFromNowString, getStrictTimeFromNowString,
     getRelativeDateString, getTimeOfDayString, getShortTimeOfDayString, getDayOfMonth } from '../../../src/helpers/date-helpers';
 import { describe, it } from '@jest/globals';
 
@@ -240,6 +240,35 @@ describe('Date Helper Tests', () => {
         it('Should return a localized time string.', () => {            
             mockMDHLanguage = "de-DE";
             const result = getTimeFromNowString(new Date(new Date().setDate(new Date().getDate()+1)));
+            expect(result).toBe("1 Tag");
+        });
+    });
+
+    describe('getStrictTimeFromNowString', () => {
+        const now = new Date(2026, 9, 1, 16, 0);
+
+        beforeEach(() => {
+            jest.useFakeTimers();
+            jest.setSystemTime(now);
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('Should return an English strict time string in hours.', () => {
+            mockMDHLanguage = "en";
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 3 * 60 * 60 * 1000));
+            expect(result).toBe("3 hours");
+        });
+        it('Should return an English strict time string in minutes.', () => {
+            mockMDHLanguage = "en";
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 45 * 60 * 1000));
+            expect(result).toBe("45 minutes");
+        });
+        it('Should return a localized strict time string.', () => {
+            mockMDHLanguage = "de-DE";
+            const result = getStrictTimeFromNowString(new Date(now.getTime() + 24 * 60 * 60 * 1000));
             expect(result).toBe("1 Tag");
         });
     });

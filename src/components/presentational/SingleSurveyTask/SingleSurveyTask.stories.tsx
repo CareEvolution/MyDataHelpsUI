@@ -21,6 +21,7 @@ interface SingleSurveyTaskStoryArgs {
 	endDate?: number;
 	surveyActive?: boolean;
 	surveyBlocked?: boolean;
+	preciseDueDate?: boolean;
 }
 
 const render = (args: SingleSurveyTaskStoryArgs) => {
@@ -30,7 +31,8 @@ const render = (args: SingleSurveyTaskStoryArgs) => {
 		status: args.status,
 		dueDate: args.dueDate ? new Date(args.dueDate).toISOString() : undefined,
 		endDate: args.endDate ? new Date(args.endDate).toISOString() : undefined,
-		hasSavedProgress: args.hasSavedProgress
+		hasSavedProgress: args.hasSavedProgress,
+		preciseDueDate: args.preciseDueDate
 	} as SurveyTask;
 
 	return <Layout colorScheme="auto">
@@ -87,5 +89,120 @@ export const Default = {
 			if: {arg: 'status', eq: 'complete'}
 		}
 	},
+	render: render
+};
+
+const dueLaterToday = () => {
+	const dueDate = new Date();
+	dueDate.setHours(23, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+const dueEarlyTomorrow = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() + 1);
+	dueDate.setHours(1, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueTodayWithTime = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueLaterToday(),
+		preciseDueDate: true
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+export const DueTomorrowWithTime = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueEarlyTomorrow(),
+		preciseDueDate: true
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+const dueYesterdayEndOfDay = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() - 1);
+	dueDate.setHours(23, 59, 0, 0);
+	return dueDate.getTime();
+};
+
+export const OverdueDayGranular = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueYesterdayEndOfDay()
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+const dueEarlierToday = () => {
+	const dueDate = new Date();
+	dueDate.setHours(dueDate.getHours() - 3);
+	return dueDate.getTime();
+};
+
+export const OverdueEarlierToday = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueEarlierToday(),
+		preciseDueDate: true
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+const dueInSeveralDays = () => {
+	const dueDate = new Date();
+	dueDate.setDate(dueDate.getDate() + 3);
+	dueDate.setHours(14, 0, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueInDays = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueInSeveralDays(),
+		preciseDueDate: true
+	},
+	argTypes: Default.argTypes,
+	render: render
+};
+
+const dueTodayMidDay = () => {
+	const dueDate = new Date();
+	dueDate.setHours(14, 37, 0, 0);
+	return dueDate.getTime();
+};
+
+export const DueTodayLegacy = {
+	args: {
+		...Default.args,
+		name: 'Survey Name',
+		description: 'This is the survey description.',
+		status: 'incomplete',
+		dueDate: dueTodayMidDay()
+	},
+	argTypes: Default.argTypes,
 	render: render
 };

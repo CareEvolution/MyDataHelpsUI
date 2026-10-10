@@ -1,4 +1,4 @@
-import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow, differenceInDays } from "date-fns";
+import { add, Duration, isSameDay, sub, Day, parseISO, formatRelative, formatDistanceToNow, formatDistanceToNowStrict, differenceInDays } from "date-fns";
 import language from "./language";
 import { formatDateForLocale, getDateLocale, getIntlLocale, capitalizeFirstLetterForLocale } from "./locale";
 
@@ -177,6 +177,13 @@ export function getTimeFromNowString(dateOrDateString: string | Date) {
     const date = toDate(dateOrDateString);
 	if (!date) { return "" }
 	return formatDistanceToNow(date, { locale: getDateLocale() });
+}
+
+/** For future dates - a tighter, single-unit string with no "about"/"almost" qualifiers, e.g., "3 hours" */
+export function getStrictTimeFromNowString(dateOrDateString: string | Date) {
+    const date = toDate(dateOrDateString);
+	if (!date) { return "" }
+	return formatDistanceToNowStrict(date, { locale: getDateLocale() });
 }
 
 /** For past dates - e.g., "2 weeks ago" or "yesterday" */
