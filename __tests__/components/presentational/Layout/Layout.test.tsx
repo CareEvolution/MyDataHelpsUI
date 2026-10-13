@@ -32,21 +32,27 @@ describe('Layout brand color tokens', () => {
         expect(globalCss()).toContain('--mdhui-color-primary-text: #00693E');
     });
 
-    it('drives only the fill in dark for a plain-string brand', async () => {
+    it('drives fill and foreground in dark for a plain-string brand', async () => {
         await renderLayout(<Layout colorScheme="dark" primaryColor="#00693E" />);
         expect(globalCss()).toContain('--mdhui-color-primary: #00693E');
-        expect(globalCss()).not.toContain('--mdhui-color-primary-text: #00693E');
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #00693E');
     });
 
-    it('puts an explicit dark value on fills only — dark links keep the scheme grade', async () => {
+    it('uses the dark value for both tokens in dark', async () => {
         await renderLayout(<Layout colorScheme="dark" primaryColor={{ lightMode: '#00693E', darkMode: '#00B068' }} />);
         expect(globalCss()).toContain('--mdhui-color-primary: #00B068');
-        expect(globalCss()).not.toContain('--mdhui-color-primary-text: #00B068');
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #00B068');
+        expect(globalCss()).not.toContain('#00693E');
     });
 
-    it('treats an object without a dark value the same way in dark', async () => {
+    it('falls back to the light value in dark when no dark value is given', async () => {
         await renderLayout(<Layout colorScheme="dark" primaryColor={{ lightMode: '#00693E' }} />);
         expect(globalCss()).toContain('--mdhui-color-primary: #00693E');
-        expect(globalCss()).not.toContain('--mdhui-color-primary-text: #00693E');
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #00693E');
+    });
+
+    it('leaves marks to follow text', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryColor={{ lightMode: '#00693E', darkMode: '#00B068' }} />);
+        expect(globalCss()).not.toContain('--mdhui-color-primary-mark: #00B068');
     });
 });
