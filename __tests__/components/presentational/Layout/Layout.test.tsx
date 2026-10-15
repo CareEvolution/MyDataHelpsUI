@@ -55,4 +55,45 @@ describe('Layout brand color tokens', () => {
         await renderLayout(<Layout colorScheme="dark" primaryColor={{ lightMode: '#00693E', darkMode: '#00B068' }} />);
         expect(globalCss()).not.toContain('--mdhui-color-primary-mark: #00B068');
     });
+
+    it('uses primaryTextColor for text and keeps the brand on fills', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryColor="#C2185B" primaryTextColor={{ lightMode: '#C2185B', darkMode: '#F48FB1' }} />);
+        expect(globalCss()).toContain('--mdhui-color-primary: #C2185B');
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #F48FB1');
+        expect(globalCss()).toContain('--mdhui-color-primary-mark: #C2185B');
+    });
+
+    it('uses primaryTextColor without a brand and leaves marks on the scheme default', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryTextColor="#00693E" />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #00693E');
+        expect(globalCss()).not.toContain('--mdhui-color-primary: #00693E');
+        expect(globalCss()).toContain('--mdhui-color-primary-mark: var(--mdh-blue-30)');
+    });
+
+    it('falls back to the brand for text in dark when the text color has no dark value', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryColor="#E91E63" primaryTextColor={{ lightMode: '#C2185B' }} />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #E91E63');
+        expect(globalCss()).not.toContain('#C2185B');
+    });
+
+    it('falls back to the brand for text in light when the text color has no light value', async () => {
+        await renderLayout(<Layout colorScheme="light" primaryColor="#E91E63" primaryTextColor={{ darkMode: '#F48FB1' }} />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #E91E63');
+        expect(globalCss()).not.toContain('#F48FB1');
+    });
+
+    it('does not pin marks when text falls back to the brand', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryColor="#E91E63" primaryTextColor={{ lightMode: '#C2185B' }} />);
+        expect(globalCss()).toContain('--mdhui-color-primary-mark: var(--mdhui-color-primary-text)');
+        expect(globalCss()).not.toContain('--mdhui-color-primary-mark: #');
+    });
+
+    it('falls back to the brand for an invalid or null text color', async () => {
+        await renderLayout(<Layout colorScheme="dark" primaryColor="#E91E63" primaryTextColor={'not-a-color'} />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #E91E63');
+        cleanup();
+        document.querySelectorAll('style').forEach(s => s.remove());
+        await renderLayout(<Layout colorScheme="dark" primaryColor="#E91E63" primaryTextColor={null as any} />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #E91E63');
+    });
 });
