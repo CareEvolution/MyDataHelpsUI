@@ -96,4 +96,17 @@ describe('Layout brand color tokens', () => {
         await renderLayout(<Layout colorScheme="dark" primaryColor="#E91E63" primaryTextColor={null as any} />);
         expect(globalCss()).toContain('--mdhui-color-primary-text: #E91E63');
     });
+
+    it('leaves marks on the light default when a text color is set without a brand', async () => {
+        await renderLayout(<Layout colorScheme="light" primaryTextColor="#00693E" />);
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #00693E');
+        expect(globalCss()).toContain('--mdhui-color-primary-mark: var(--mdhui-color-primary)');
+    });
+
+    it('applies a plain-string text color in light and keeps marks on the brand', async () => {
+        await renderLayout(<Layout colorScheme="light" primaryColor="#E91E63" primaryTextColor="#C2185B" />);
+        expect(globalCss()).toContain('--mdhui-color-primary: #E91E63');
+        expect(globalCss()).toContain('--mdhui-color-primary-text: #C2185B');
+        expect(globalCss()).toContain('--mdhui-color-primary-mark: #E91E63');
+    });
 });
