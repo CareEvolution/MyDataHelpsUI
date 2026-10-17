@@ -35,14 +35,17 @@
 
 .mdhui-asthma-control-calendar-log-entry-component-symptoms {
     background: var(--mdhui-color-asthma-symptoms-chip);
+    color: var(--mdhui-color-asthma-symptoms-text);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-impacts {
     background: var(--mdhui-color-asthma-impacts-chip);
+    color: var(--mdhui-color-asthma-impacts-text);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-triggers {
     background: var(--mdhui-color-asthma-triggers-chip);
+    color: var(--mdhui-color-asthma-triggers-text);
 }
 
 .mdhui-asthma-control-calendar-log-entry-component-icon {

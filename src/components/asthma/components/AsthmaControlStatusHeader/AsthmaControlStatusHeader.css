@@ -17,11 +17,11 @@
 }
 
 .mdhui-asthma-control-status-header-controlled {
-    color: var(--mdhui-color-asthma-controlled-heading);
+    color: var(--mdhui-color-asthma-controlled-text);
 }
 
 .mdhui-asthma-control-status-header-not-controlled {
-    color: var(--mdhui-color-asthma-not-controlled-heading);
+    color: var(--mdhui-color-asthma-not-controlled-text);
 }
 
 .mdhui-asthma-control-status-header-not-controlled-stats {
@@ -46,6 +46,7 @@
     line-height: 20px;
     border-radius: 50%;
     text-align: center;
+    color: #fff;
     background: var(--mdhui-color-asthma-not-controlled-badge);
 }
 

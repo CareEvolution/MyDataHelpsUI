@@ -57,7 +57,7 @@ export default function (props: AsthmaControlCalendarProps) {
         'controlled': {
             style: {
                 background: 'var(--mdhui-background-color-0)',
-                border: '3px solid var(--mdhui-color-asthma-controlled-text)',
+                border: '3px solid var(--mdhui-color-asthma-controlled-mark)',
                 color: 'var(--mdhui-color-asthma-controlled-text)',
                 fontWeight: 600,
                 marginTop: '-13px'
@@ -65,7 +65,9 @@ export default function (props: AsthmaControlCalendarProps) {
         },
         'today': {
             style: {
+                background: 'var(--mdhui-color-asthma-action)',
                 border: '3px solid var(--mdhui-color-asthma-action)',
+                color: '#fff',
                 marginTop: '-13px'
             }
         },
