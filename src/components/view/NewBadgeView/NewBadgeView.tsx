@@ -12,6 +12,7 @@ export interface NewBadgeViewProps {
     text?: string;
     colorScheme?: 'auto' | 'light' | 'dark';
     primaryColor?: ColorDefinition;
+    primaryTextColor?: ColorDefinition;
     customField: string;
     previewState?: "default";
     showBadgePoints?: boolean;
@@ -41,7 +42,7 @@ export default function (props: NewBadgeViewProps) {
         return null;
     }
 
-    return <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
+    return <Layout bodyBackgroundColor={props.colorScheme === 'dark' ? '' : '#fff'} colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor} primaryTextColor={props.primaryTextColor}>
         <div className="mdhui-new-badge-view">
             {badges == null && <LoadingIndicator />}
             {badges != null && <>
