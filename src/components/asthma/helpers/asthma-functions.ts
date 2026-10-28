@@ -88,8 +88,8 @@ export const getAsthmaDataStatusText = (status: AsthmaDataStatus): string => {
 };
 
 export const getAsthmaDataStatusColor = (status: AsthmaDataStatus): ColorDefinition => {
-    if (status === 'out-of-range') return '#9D5BED';
-    if (status === 'in-range') return '#188A83';
+    if (status === 'out-of-range') return 'var(--mdhui-color-asthma-out-of-range-text)';
+    if (status === 'in-range') return 'var(--mdhui-color-asthma-in-range-text)';
     if (status === 'offline') return 'var(--mdhui-color-warning-text)';
     return 'var(--mdhui-text-color-3)';
 };
