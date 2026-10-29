@@ -1,0 +1,20 @@
+.mdhui-apple-health-sync-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-logo {
+    width: 24px;
+    margin-right: 8px;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-message {
+    color: var(--mdhui-text-color-3);
+    margin-left: 8px;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-complete {
+    color: var(--mdhui-color-success-text);
+}
