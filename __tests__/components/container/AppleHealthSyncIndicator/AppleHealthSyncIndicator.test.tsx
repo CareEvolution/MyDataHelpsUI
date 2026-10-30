@@ -70,6 +70,7 @@ describe('AppleHealthSyncIndicator', () => {
         await advance(600);
         expect(container.querySelector('.mdhui-apple-health-sync-indicator')).not.toBeNull();
         expect(container.querySelector('.mdhui-apple-health-sync-indicator-message')).toBeNull();
+        expect(container.querySelector('.mdhui-apple-health-sync-indicator-message-hidden')?.textContent).toContain('Syncing data...');
     });
 
     it('renders nothing in the not syncing preview state', async () => {

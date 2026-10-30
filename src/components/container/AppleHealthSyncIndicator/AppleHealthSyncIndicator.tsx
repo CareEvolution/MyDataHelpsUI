@@ -119,11 +119,9 @@ export default function AppleHealthSyncIndicator(props: AppleHealthSyncIndicator
         return null;
     }
 
-    return <div ref={props.innerRef} className="mdhui-apple-health-sync-indicator">
+    return <div ref={props.innerRef} className="mdhui-apple-health-sync-indicator" role="status">
         <img className="mdhui-apple-health-sync-indicator-logo" src={appleHealthLogo} alt={language("apple-health-logo-alt")} />
         {icon}
-        {!props.hideMessage &&
-            <span className="mdhui-apple-health-sync-indicator-message">{message}</span>
-        }
+        <span className={props.hideMessage ? "mdhui-apple-health-sync-indicator-message-hidden" : "mdhui-apple-health-sync-indicator-message"}>{message}</span>
     </div>;
 }
