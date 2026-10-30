@@ -148,10 +148,9 @@
     transform: translate(-50%, 0);
 }
 
-.mdhui-goal .recharts-wrapper {
-    cursor: inherit !important;
-}
-
-.mdhui-goal .recharts-sector {
-    outline: none;
+.mdhui-goal-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

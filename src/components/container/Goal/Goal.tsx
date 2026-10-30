@@ -1,6 +1,5 @@
 ﻿import React, { CSSProperties, useContext, useState } from 'react';
 import './Goal.css';
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faStar } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, resolveColor, SingleValueProvider, useInitializeView } from '../../../helpers';
@@ -9,6 +8,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { createPreviewValueProvider, GoalPreviewState } from './Goal.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { findLast } from 'lodash';
+import GoalRing from './GoalRing';
 
 export interface GoalColorConfiguration {
     statusColor?: ColorDefinition;
@@ -162,27 +162,18 @@ export default function Goal(props: GoalProps) {
         }
     }
 
-    const data: { value: number, color: string }[] = [];
+    const segmentColors: string[] = [];
     for (let i = 1; i <= scaledDenominator; i++) {
-        data.push({ value: 1, color: i <= scaledNumerator ? onSegmentColor : offSegmentColor });
+        segmentColors.push(i <= scaledNumerator ? onSegmentColor : offSegmentColor);
     }
 
     const createChart = (variant?: 'compact') => {
         return <div className={`mdhui-goal-chart ${variant}`}>
-            <ResponsiveContainer>
-                <PieChart>
-                    <Pie
-                        data={data} dataKey="value"
-                        cx="50%" cy="50%"
-                        innerRadius={variant === 'compact' ? 22 : 30} outerRadius={variant === 'compact' ? 28 : 40}
-                        startAngle={450} endAngle={90} paddingAngle={5}
-                        isAnimationActive={!loading && scaledNumerator > 0} animationBegin={0} animationDuration={500}
-                        strokeWidth={0}
-                    >
-                        {data.map((entry, index) => <Cell key={index} style={{ fill: entry.color }} />)}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+            <GoalRing
+                colors={segmentColors}
+                innerRadius={variant === 'compact' ? 22 : 30} outerRadius={variant === 'compact' ? 28 : 40}
+                animate={!loading && scaledNumerator > 0}
+            />
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
                 {<FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />}
             </div>
