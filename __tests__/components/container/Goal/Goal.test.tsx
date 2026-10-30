@@ -87,4 +87,13 @@ describe('Goal', () => {
         await settle();
         expect(container.querySelectorAll('.mdhui-goal-ring path')).toHaveLength(7);
     });
+
+    it('shows the image from iconUrl in place of the icon.', async () => {
+        const { container } = render(<Goal label="Entries" targetValue={7} maxValue={7} valueProvider={createStaticIntegerValueProvider(3)} iconUrl="medal.svg" />);
+        await settle();
+
+        const iconWrapper = container.querySelector('.mdhui-goal-chart-icon-wrapper')!;
+        expect(iconWrapper.querySelector('img')?.getAttribute('src')).toBe('medal.svg');
+        expect(iconWrapper.querySelector('svg')).toBeNull();
+    });
 });

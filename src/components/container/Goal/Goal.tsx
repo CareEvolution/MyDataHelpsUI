@@ -45,6 +45,7 @@ export interface GoalProps {
     maxSegments?: number;
     animateNewSegments?: boolean;
     icon?: IconDefinition;
+    iconUrl?: string;
     notStartedColor?: ColorDefinition | GoalColorConfiguration;
     inProgressColor?: ColorDefinition | GoalColorConfiguration;
     completedColor?: ColorDefinition | GoalColorConfiguration;
@@ -182,7 +183,10 @@ export default function Goal(props: GoalProps) {
                 animateNewSegments={props.animateNewSegments}
             />
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
-                {<FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />}
+                {props.iconUrl
+                    ? <img src={props.iconUrl} alt="" className="mdhui-goal-chart-icon-image" />
+                    : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />
+                }
             </div>
         </div>;
     };

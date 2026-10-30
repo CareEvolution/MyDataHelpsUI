@@ -5,6 +5,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { faBicycle, faCalendarDays, faDog, faHeartbeat, faListCheck, faMicrochip, faSquarePollHorizontal, faUserDoctor, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
 import { argTypesToHide } from '../../../../.storybook/helpers';
+import waterfallMedal from '../../../assets/waterfall-medal.svg';
 
 const meta: Meta<React.ComponentProps<typeof Goal>> = {
     title: 'Container/Goal',
@@ -17,7 +18,7 @@ export default meta;
 
 type GoalDefaultStoryArgs = React.ComponentProps<typeof Goal> & {
     colorScheme: 'auto' | 'light' | 'dark';
-    iconType: 'default' | 'custom';
+    iconType: 'default' | 'custom' | 'image';
     parentCursor: 'default' | 'pointer' | 'crosshair';
 };
 
@@ -80,7 +81,7 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
         iconType: {
             name: 'icon',
             control: 'radio',
-            options: ['default', 'custom']
+            options: ['default', 'custom', 'image']
         },
         parentCursor: {
             name: 'parent cursor',
@@ -112,7 +113,7 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
             control: 'color'
         },
         ...argTypesToHide([
-            'valueProvider', 'icon', 'style', 'innerRef'
+            'valueProvider', 'icon', 'iconUrl', 'style', 'innerRef'
         ])
     },
     render: args => {
@@ -121,6 +122,7 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
                 <Goal
                     {...args}
                     icon={args.iconType === 'custom' ? faHeartbeat : undefined}
+                    iconUrl={args.iconType === 'image' ? waterfallMedal : undefined}
                 />
             </div>
         </Layout>;
@@ -252,7 +254,7 @@ export const AdvancedColors: StoryObj<GoalAdvancedColorStoryArgs> = {
             control: 'color'
         },
         ...argTypesToHide([
-            'variant', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon',
+            'variant', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
             'notStartedColor', 'inProgressColor', 'completedColor', 'style', 'innerRef'
         ])
     },
@@ -327,7 +329,7 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
             }
         },
         ...argTypesToHide([
-            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon',
+            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
             'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
             'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
         ])
@@ -486,7 +488,7 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
             mapping: { 'default': undefined }
         },
         ...argTypesToHide([
-            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon',
+            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
             'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
             'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
         ])
@@ -539,6 +541,7 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
 
 type GoalAnimatedSegmentsStoryArgs = React.ComponentProps<typeof Goal> & {
     colorScheme: 'auto' | 'light' | 'dark';
+    iconType: 'default' | 'image';
 };
 
 function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
@@ -554,6 +557,7 @@ function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
             maxSegments={args.maxSegments}
             valueProvider={valueProvider}
             animateNewSegments={args.animateNewSegments}
+            iconUrl={args.iconType === 'image' ? waterfallMedal : undefined}
         />
         <div style={{ display: 'flex', gap: '8px', padding: '16px' }}>
             <Button onClick={() => setValue(Math.min(value + 1, args.maxValue))}>Add entry</Button>
@@ -569,7 +573,8 @@ export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
         variant: 'default' as any,
         targetValue: 7,
         maxValue: 7,
-        animateNewSegments: true
+        animateNewSegments: true,
+        iconType: 'image'
     },
     argTypes: {
         colorScheme: {
@@ -595,8 +600,13 @@ export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
             name: 'animate new segments',
             control: 'boolean'
         },
+        iconType: {
+            name: 'icon',
+            control: 'radio',
+            options: ['default', 'image']
+        },
         ...argTypesToHide([
-            'previewState', 'label', 'description', 'valueProvider', 'maxSegments', 'icon',
+            'previewState', 'label', 'description', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
             'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
             'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
         ])
