@@ -1,4 +1,4 @@
-﻿import React, { CSSProperties, useContext, useState } from 'react';
+﻿import React, { CSSProperties, useContext, useRef, useState } from 'react';
 import './Goal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +43,7 @@ export interface GoalProps {
     maxValue: number;
     valueProvider: SingleValueProvider<number>;
     maxSegments?: number;
+    animateNewSegments?: boolean;
     icon?: IconDefinition;
     notStartedColor?: ColorDefinition | GoalColorConfiguration;
     inProgressColor?: ColorDefinition | GoalColorConfiguration;
@@ -59,10 +60,15 @@ export default function Goal(props: GoalProps) {
 
     const [loading, setLoading] = useState<boolean>(true);
     const [value, setValue] = useState<number>(0);
+    const hasLoaded = useRef(false);
 
     useInitializeView(() => {
-        setLoading(true);
-        setValue(0);
+        // Keeping the shown value through a refresh lets the ring animate only the segments that changed.
+        const keepShownValue = props.animateNewSegments && hasLoaded.current && props.previewState !== 'loading';
+        if (!keepShownValue) {
+            setLoading(true);
+            setValue(0);
+        }
 
         if (props.previewState === 'loading') {
             return;
@@ -75,6 +81,7 @@ export default function Goal(props: GoalProps) {
         valueProvider.getValue().then(value => {
             setValue(Math.max(0, Math.min(value ?? 0, props.maxValue)));
             setLoading(false);
+            hasLoaded.current = true;
         });
     }, [], [props.previewState, props.targetValue, props.maxValue, props.valueProvider]);
 
@@ -162,17 +169,17 @@ export default function Goal(props: GoalProps) {
         }
     }
 
-    const segmentColors: string[] = [];
-    for (let i = 1; i <= scaledDenominator; i++) {
-        segmentColors.push(i <= scaledNumerator ? onSegmentColor : offSegmentColor);
-    }
+    const segmentCount = Math.max(0, Math.floor(scaledDenominator));
+    const filledSegmentCount = Math.min(segmentCount, Math.max(0, Math.floor(scaledNumerator)));
 
     const createChart = (variant?: 'compact') => {
         return <div className={`mdhui-goal-chart ${variant}`}>
             <GoalRing
-                colors={segmentColors}
+                segmentCount={segmentCount} filledCount={filledSegmentCount}
+                filledColor={onSegmentColor} unfilledColor={offSegmentColor}
                 innerRadius={variant === 'compact' ? 22 : 30} outerRadius={variant === 'compact' ? 28 : 40}
-                animate={!loading && scaledNumerator > 0}
+                animate={!loading && (scaledNumerator > 0 || !!props.animateNewSegments)}
+                animateNewSegments={props.animateNewSegments}
             />
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
                 {<FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />}

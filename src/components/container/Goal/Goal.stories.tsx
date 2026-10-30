@@ -1,6 +1,6 @@
-﻿import React from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import Goal, { GoalColorConfiguration } from './Goal';
-import { Grid, Layout } from '../../presentational';
+import { Button, Grid, Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 import { faBicycle, faCalendarDays, faDog, faHeartbeat, faListCheck, faMicrochip, faSquarePollHorizontal, faUserDoctor, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
@@ -535,4 +535,71 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
 
         return <Layout colorScheme={args.colorScheme}>{grid}</Layout>;
     }
+};
+
+type GoalAnimatedSegmentsStoryArgs = React.ComponentProps<typeof Goal> & {
+    colorScheme: 'auto' | 'light' | 'dark';
+};
+
+function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
+    const [value, setValue] = useState(3);
+    const valueProvider = useMemo(() => createStaticIntegerValueProvider(value), [value]);
+
+    return <Layout colorScheme={args.colorScheme}>
+        <Goal
+            variant={args.variant}
+            label="Diary entries toward your next medal"
+            targetValue={args.targetValue}
+            maxValue={args.maxValue}
+            maxSegments={args.maxSegments}
+            valueProvider={valueProvider}
+            animateNewSegments={args.animateNewSegments}
+        />
+        <div style={{ display: 'flex', gap: '8px', padding: '16px' }}>
+            <Button onClick={() => setValue(Math.min(value + 1, args.maxValue))}>Add entry</Button>
+            <Button variant="light" onClick={() => setValue(Math.max(value - 1, 0))}>Remove entry</Button>
+            <Button variant="light" onClick={() => setValue(0)}>Reset</Button>
+        </div>
+    </Layout>;
+}
+
+export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
+    args: {
+        colorScheme: 'auto',
+        variant: 'default' as any,
+        targetValue: 7,
+        maxValue: 7,
+        animateNewSegments: true
+    },
+    argTypes: {
+        colorScheme: {
+            name: 'color scheme',
+            control: 'radio',
+            options: ['auto', 'light', 'dark']
+        },
+        variant: {
+            name: 'variant',
+            control: 'radio',
+            options: ['default', 'verbose', 'compact'],
+            mapping: { 'default': undefined }
+        },
+        targetValue: {
+            name: 'target value',
+            control: { type: 'number', min: 1 }
+        },
+        maxValue: {
+            name: 'max value',
+            control: { type: 'number', min: 1 }
+        },
+        animateNewSegments: {
+            name: 'animate new segments',
+            control: 'boolean'
+        },
+        ...argTypesToHide([
+            'previewState', 'label', 'description', 'valueProvider', 'maxSegments', 'icon',
+            'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
+            'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
+        ])
+    },
+    render: args => <AnimatedSegmentsStory {...args} />
 };
