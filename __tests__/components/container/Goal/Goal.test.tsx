@@ -96,4 +96,11 @@ describe('Goal', () => {
         expect(iconWrapper.querySelector('img')?.getAttribute('src')).toBe('medal.svg');
         expect(iconWrapper.querySelector('svg')).toBeNull();
     });
+
+    it.each([[0, true], [3, true], [7, false]])('greys out the image at %i of 7 until the goal is complete.', async (value, unearned) => {
+        const { container } = render(<Goal label="Entries" targetValue={7} maxValue={7} valueProvider={createStaticIntegerValueProvider(value)} iconUrl="medal.svg" />);
+        await settle();
+
+        expect(container.querySelector('.mdhui-goal-chart-icon-image')!.classList.contains('unearned')).toBe(unearned);
+    });
 });

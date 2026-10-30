@@ -120,6 +120,7 @@ export default function Goal(props: GoalProps) {
 
     const maxTargetMet = findLast(targetsMinToMax, target => target.targetValue <= value);
     const nextTarget = targetsMinToMax.find(target => target.targetValue > value);
+    const completed = value > 0 && !!maxTargetMet && !nextTarget;
 
     const denominator = targetsMinToMax.length <= 1 ? props.maxValue : nextTarget?.targetValue ?? props.maxValue;
 
@@ -160,7 +161,7 @@ export default function Goal(props: GoalProps) {
             offSegmentColor = resolvedNextTargetInProgressColors.offSegmentColor ?? resolvedInProgressColors.offSegmentColor ?? offSegmentColor;
             iconColor = resolvedNextTargetInProgressColors.iconColor ?? resolvedInProgressColors.iconColor ?? defaultInProgressColor;
             iconBackgroundColor = resolvedNextTargetInProgressColors.iconBackgroundColor ?? resolvedInProgressColors.iconBackgroundColor;
-        } else if (maxTargetMet && !nextTarget) {
+        } else if (completed) {
             const resolvedCompletedColors = resolveGoalColors(completedColors);
             statusColor = resolvedCompletedColors.statusColor ?? defaultCompletedColor;
             onSegmentColor = resolvedCompletedColors.onSegmentColor ?? defaultCompletedSegmentColor;
@@ -184,7 +185,7 @@ export default function Goal(props: GoalProps) {
             />
             <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
                 {props.iconUrl
-                    ? <img src={props.iconUrl} alt="" className="mdhui-goal-chart-icon-image" />
+                    ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${completed ? '' : ' unearned'}`} />
                     : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />
                 }
             </div>
