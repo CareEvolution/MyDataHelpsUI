@@ -164,3 +164,99 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.mdhui-goal-chart-icon-wrapper.stamp {
+    animation: mdhui-goal-stamp 550ms cubic-bezier(.2, .9, .3, 1.3);
+}
+
+@keyframes mdhui-goal-stamp {
+    0% {
+        transform: scale(1.75);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(.92);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.mdhui-goal-chart-icon-image.reveal {
+    animation: mdhui-goal-reveal 500ms ease-out;
+}
+
+@keyframes mdhui-goal-reveal {
+    from {
+        filter: grayscale(1) opacity(0.35);
+    }
+    to {
+        filter: none;
+    }
+}
+
+.mdhui-goal-chart-icon-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, .75) 50%, rgba(255, 255, 255, 0) 62%);
+    background-size: 300% 100%;
+    background-repeat: no-repeat;
+    animation: mdhui-goal-shine 900ms ease-in-out 380ms both;
+}
+
+@keyframes mdhui-goal-shine {
+    from {
+        background-position: 100% 0;
+    }
+    to {
+        background-position: 0% 0;
+    }
+}
+
+.mdhui-goal-celebration {
+    position: absolute;
+    top: 50%;
+    left: -60px;
+    width: 420px;
+    height: 240px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.mdhui-goal-celebration-rays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 280px;
+    height: 280px;
+    margin: -140px 0 0 -140px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    background: repeating-conic-gradient(from 0deg, rgba(232, 185, 60, .5) 0deg 9deg, transparent 9deg 22deg);
+    -webkit-mask: radial-gradient(circle, #000 18%, transparent 68%);
+    mask: radial-gradient(circle, #000 18%, transparent 68%);
+    animation: mdhui-goal-rays 2800ms ease-out 460ms;
+}
+
+@keyframes mdhui-goal-rays {
+    0% {
+        opacity: 0;
+        transform: rotate(0deg) scale(.5);
+    }
+    18% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(80deg) scale(1.15);
+    }
+}

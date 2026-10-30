@@ -90,8 +90,18 @@ export function getSegmentFillProgress(fill: SegmentFill, index: number): number
     return time <= 0 ? 0 : springEase(time);
 }
 
-function prefersReducedMotion(): boolean {
+export function prefersReducedMotion(): boolean {
     return !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+}
+
+function getSegmentFillStagger(newSegmentCount: number): number {
+    return Math.min(segmentFillStagger, maxSegmentFillStaggerTotal / newSegmentCount);
+}
+
+export function getRingAnimationDuration(newSegmentCount: number, animateNewSegments: boolean | undefined): number {
+    if (!animateNewSegments) return sweepDuration;
+    if (newSegmentCount <= 0) return 0;
+    return (newSegmentCount - 1) * getSegmentFillStagger(newSegmentCount) + segmentFillDuration;
 }
 
 interface RingSweep {
@@ -124,8 +134,7 @@ export default function GoalRing(props: GoalRingProps) {
             setFill(undefined);
         } else if (!fill) {
             const newSegmentCount = props.filledCount - rendered.filledCount;
-            const stagger = Math.min(segmentFillStagger, maxSegmentFillStaggerTotal / newSegmentCount);
-            setFill({ fromCount: rendered.filledCount, stagger, elapsed: 0 });
+            setFill({ fromCount: rendered.filledCount, stagger: getSegmentFillStagger(newSegmentCount), elapsed: 0 });
         }
     }
 

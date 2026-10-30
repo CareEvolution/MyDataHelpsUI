@@ -1,6 +1,6 @@
 ﻿import React, { useMemo, useState } from 'react';
 import Goal, { GoalColorConfiguration } from './Goal';
-import { Button, Grid, Layout } from '../../presentational';
+import { Button, Card, Grid, Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 import { faBicycle, faCalendarDays, faDog, faHeartbeat, faListCheck, faMicrochip, faSquarePollHorizontal, faUserDoctor, faWandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { ColorDefinition, createCustomFieldIntegerValueProvider, createRandomIntegerValueProvider, createStaticIntegerValueProvider } from '../../../helpers';
@@ -113,7 +113,7 @@ export const Default: StoryObj<GoalDefaultStoryArgs> = {
             control: 'color'
         },
         ...argTypesToHide([
-            'valueProvider', 'icon', 'iconUrl', 'style', 'innerRef'
+            'valueProvider', 'icon', 'iconUrl', 'celebration', 'animateNewSegments', 'style', 'innerRef'
         ])
     },
     render: args => {
@@ -254,7 +254,7 @@ export const AdvancedColors: StoryObj<GoalAdvancedColorStoryArgs> = {
             control: 'color'
         },
         ...argTypesToHide([
-            'variant', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
+            'variant', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl', 'celebration', 'animateNewSegments',
             'notStartedColor', 'inProgressColor', 'completedColor', 'style', 'innerRef'
         ])
     },
@@ -329,7 +329,7 @@ export const Tiered: StoryObj<GoalTieredStoryArgs> = {
             }
         },
         ...argTypesToHide([
-            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
+            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl', 'celebration', 'animateNewSegments',
             'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
             'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
         ])
@@ -488,7 +488,7 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
             mapping: { 'default': undefined }
         },
         ...argTypesToHide([
-            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',
+            'previewState', 'label', 'description', 'targetValue', 'maxValue', 'valueProvider', 'maxSegments', 'icon', 'iconUrl', 'celebration', 'animateNewSegments',
             'notStartedColor', 'inProgressColor', 'completedColor', 'loadingIndicatorColor',
             'progressBarColor', 'progressBarBackgroundColor', 'style', 'innerRef'
         ])
@@ -542,6 +542,7 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
 type GoalAnimatedSegmentsStoryArgs = React.ComponentProps<typeof Goal> & {
     colorScheme: 'auto' | 'light' | 'dark';
     iconType: 'default' | 'image';
+    allowOverflow: boolean;
 };
 
 function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
@@ -549,16 +550,20 @@ function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
     const valueProvider = useMemo(() => createStaticIntegerValueProvider(value), [value]);
 
     return <Layout colorScheme={args.colorScheme}>
-        <Goal
-            variant={args.variant}
-            label="Diary entries toward your next medal"
-            targetValue={args.targetValue}
-            maxValue={args.maxValue}
-            maxSegments={args.maxSegments}
-            valueProvider={valueProvider}
-            animateNewSegments={args.animateNewSegments}
-            iconUrl={args.iconType === 'image' ? waterfallMedal : undefined}
-        />
+        <div style={{ height: '48px' }} />
+        <Card allowOverflow={args.allowOverflow}>
+            <Goal
+                variant={args.variant}
+                label="Diary entries toward your next medal"
+                targetValue={args.targetValue}
+                maxValue={args.maxValue}
+                maxSegments={args.maxSegments}
+                valueProvider={valueProvider}
+                animateNewSegments={args.animateNewSegments}
+                celebration={args.celebration}
+                iconUrl={args.iconType === 'image' ? waterfallMedal : undefined}
+            />
+        </Card>
         <div style={{ display: 'flex', gap: '8px', padding: '16px' }}>
             <Button onClick={() => setValue(Math.min(value + 1, args.maxValue))}>Add entry</Button>
             <Button variant="light" onClick={() => setValue(Math.max(value - 1, 0))}>Remove entry</Button>
@@ -574,7 +579,9 @@ export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
         targetValue: 7,
         maxValue: 7,
         animateNewSegments: true,
-        iconType: 'image'
+        celebration: 'random',
+        iconType: 'image',
+        allowOverflow: false
     },
     argTypes: {
         colorScheme: {
@@ -600,10 +607,20 @@ export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
             name: 'animate new segments',
             control: 'boolean'
         },
+        celebration: {
+            name: 'celebration',
+            control: 'radio',
+            options: ['none', 'random', 'confetti', 'light rays', 'fireworks', 'everything'],
+            mapping: { 'none': undefined }
+        },
         iconType: {
             name: 'icon',
             control: 'radio',
             options: ['default', 'image']
+        },
+        allowOverflow: {
+            name: 'card allows overflow',
+            control: 'boolean'
         },
         ...argTypesToHide([
             'previewState', 'label', 'description', 'valueProvider', 'maxSegments', 'icon', 'iconUrl',

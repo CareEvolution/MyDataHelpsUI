@@ -103,4 +103,100 @@ describe('Goal', () => {
 
         expect(container.querySelector('.mdhui-goal-chart-icon-image')!.classList.contains('unearned')).toBe(unearned);
     });
+
+    describe('celebration', () => {
+        const getContext = HTMLCanvasElement.prototype.getContext;
+
+        beforeEach(() => {
+            HTMLCanvasElement.prototype.getContext = jest.fn(() => null) as any;
+        });
+
+        afterEach(() => {
+            HTMLCanvasElement.prototype.getContext = getContext;
+        });
+
+        const renderCelebratingGoal = (value: number, props: Partial<React.ComponentProps<typeof Goal>> = {}) =>
+            <Goal label="Entries" targetValue={7} maxValue={7} valueProvider={createStaticIntegerValueProvider(value)} iconUrl="medal.svg"
+                animateNewSegments={true} celebration="confetti" {...props} />;
+
+        const isCelebrating = (container: HTMLElement) => !!container.querySelector('canvas.mdhui-goal-celebration');
+        const imageClasses = (container: HTMLElement) => container.querySelector('.mdhui-goal-chart-icon-image')!.classList;
+
+        it('waits for the last segment to fill, then stamps the image in and celebrates.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(6));
+            await settle();
+
+            rerender(renderCelebratingGoal(7));
+            await advance(400);
+            expect(isCelebrating(container)).toBe(false);
+            expect(imageClasses(container).contains('unearned')).toBe(true);
+
+            await advance(400);
+            expect(isCelebrating(container)).toBe(true);
+            expect(imageClasses(container).contains('unearned')).toBe(false);
+            expect(container.querySelector('.mdhui-goal-chart-icon-wrapper')!.classList.contains('stamp')).toBe(true);
+            expect(container.querySelector('.mdhui-goal-chart-icon-shine')).not.toBeNull();
+
+            await advance(5000);
+            expect(isCelebrating(container)).toBe(false);
+        });
+
+        const expectNoCelebration = async (container: HTMLElement) => {
+            for (let elapsed = 0; elapsed < 2000; elapsed += 100) {
+                await advance(100);
+                expect(isCelebrating(container)).toBe(false);
+            }
+        };
+
+        it('does not celebrate when the goal loads already complete.', async () => {
+            const { container } = render(renderCelebratingGoal(7));
+            await expectNoCelebration(container);
+        });
+
+        it('does not celebrate when no celebration is set.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(6, { celebration: undefined }));
+            await settle();
+            rerender(renderCelebratingGoal(7, { celebration: undefined }));
+            await expectNoCelebration(container);
+        });
+
+        it('does not celebrate again when the app becomes visible at 7 of 7.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(6));
+            await settle();
+            rerender(renderCelebratingGoal(7));
+            await advance(6000);
+
+            act(() => { becameVisible!(); });
+            await expectNoCelebration(container);
+        });
+
+        it('celebrates after the ring sweeps in when new segments do not animate.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(3, { animateNewSegments: false }));
+            await settle();
+
+            rerender(renderCelebratingGoal(7, { animateNewSegments: false }));
+            await advance(300);
+            expect(isCelebrating(container)).toBe(false);
+            await advance(500);
+            expect(isCelebrating(container)).toBe(true);
+        });
+
+        it('only fades the image to color when the device asks for reduced motion.', async () => {
+            const matchMedia = window.matchMedia;
+            window.matchMedia = jest.fn().mockReturnValue({ matches: true });
+            try {
+                const { container, rerender } = render(renderCelebratingGoal(6));
+                await settle();
+                rerender(renderCelebratingGoal(7));
+                await advance(100);
+
+                expect(isCelebrating(container)).toBe(false);
+                expect(container.querySelector('.mdhui-goal-chart-icon-wrapper')!.classList.contains('stamp')).toBe(false);
+                expect(imageClasses(container).contains('reveal')).toBe(true);
+                expect(imageClasses(container).contains('unearned')).toBe(false);
+            } finally {
+                window.matchMedia = matchMedia;
+            }
+        });
+    });
 });

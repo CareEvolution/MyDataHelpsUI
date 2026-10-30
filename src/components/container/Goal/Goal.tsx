@@ -1,4 +1,4 @@
-﻿import React, { CSSProperties, useContext, useRef, useState } from 'react';
+﻿import React, { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import './Goal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,8 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { createPreviewValueProvider, GoalPreviewState } from './Goal.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { findLast } from 'lodash';
-import GoalRing from './GoalRing';
+import GoalRing, { getRingAnimationDuration, prefersReducedMotion } from './GoalRing';
+import GoalCelebration, { chooseCelebrationStyle, GoalCelebrationStyle } from './GoalCelebration';
 
 export interface GoalColorConfiguration {
     statusColor?: ColorDefinition;
@@ -44,6 +45,7 @@ export interface GoalProps {
     valueProvider: SingleValueProvider<number>;
     maxSegments?: number;
     animateNewSegments?: boolean;
+    celebration?: GoalCelebrationStyle | 'random';
     icon?: IconDefinition;
     iconUrl?: string;
     notStartedColor?: ColorDefinition | GoalColorConfiguration;
@@ -56,12 +58,21 @@ export interface GoalProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
+interface Celebration {
+    style: GoalCelebrationStyle;
+    reducedMotion: boolean;
+    playing: boolean;
+}
+
 export default function Goal(props: GoalProps) {
     const layoutContext = useContext(LayoutContext);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [value, setValue] = useState<number>(0);
     const hasLoaded = useRef(false);
+    const [celebration, setCelebration] = useState<Celebration>();
+    const lastLoaded = useRef<{ completed: boolean, filledSegmentCount: number }>();
+    const celebrationTimer = useRef<number>();
 
     useInitializeView(() => {
         // Keeping the shown value through a refresh lets the ring animate only the segments that changed.
@@ -174,8 +185,35 @@ export default function Goal(props: GoalProps) {
     const segmentCount = Math.max(0, Math.floor(scaledDenominator));
     const filledSegmentCount = Math.min(segmentCount, Math.max(0, Math.floor(scaledNumerator)));
 
+    useEffect(() => () => clearTimeout(celebrationTimer.current), []);
+
+    useEffect(() => {
+        if (loading) return;
+        const previous = lastLoaded.current;
+        lastLoaded.current = { completed, filledSegmentCount };
+        if (!props.celebration || !previous || previous.completed || !completed) return;
+
+        const reducedMotion = prefersReducedMotion();
+        const ringDuration = reducedMotion && props.animateNewSegments
+            ? 0
+            : getRingAnimationDuration(filledSegmentCount - previous.filledSegmentCount, props.animateNewSegments);
+        setCelebration({ style: chooseCelebrationStyle(props.celebration), reducedMotion, playing: false });
+        clearTimeout(celebrationTimer.current);
+        celebrationTimer.current = window.setTimeout(() => {
+            setCelebration(current => current && { ...current, playing: true });
+            if (reducedMotion) {
+                celebrationTimer.current = window.setTimeout(() => setCelebration(undefined), 500);
+            }
+        }, ringDuration);
+    }, [loading, completed, filledSegmentCount]);
+
+    const waitingToCelebrate = !!celebration && !celebration.playing;
+    const showsEarned = completed && !waitingToCelebrate;
+    const playsMotion = !!celebration?.playing && !celebration.reducedMotion;
+
     const createChart = (variant?: 'compact') => {
         return <div className={`mdhui-goal-chart ${variant}`}>
+            {playsMotion && <GoalCelebration style={celebration!.style} colors={[onSegmentColor]} onDone={() => setCelebration(undefined)} />}
             <GoalRing
                 segmentCount={segmentCount} filledCount={filledSegmentCount}
                 filledColor={onSegmentColor} unfilledColor={offSegmentColor}
@@ -183,11 +221,12 @@ export default function Goal(props: GoalProps) {
                 animate={!loading && (scaledNumerator > 0 || !!props.animateNewSegments)}
                 animateNewSegments={props.animateNewSegments}
             />
-            <div className="mdhui-goal-chart-icon-wrapper" style={{ background: iconBackgroundColor }}>
+            <div className={`mdhui-goal-chart-icon-wrapper${playsMotion ? ' stamp' : ''}`} style={{ background: iconBackgroundColor }}>
                 {props.iconUrl
-                    ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${completed ? '' : ' unearned'}`} />
+                    ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${showsEarned ? '' : ' unearned'}${celebration?.playing && celebration.reducedMotion ? ' reveal' : ''}`} />
                     : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />
                 }
+                {playsMotion && props.iconUrl && <div className="mdhui-goal-chart-icon-shine" style={{ WebkitMaskImage: `url(${JSON.stringify(props.iconUrl)})`, maskImage: `url(${JSON.stringify(props.iconUrl)})` }} />}
             </div>
         </div>;
     };
