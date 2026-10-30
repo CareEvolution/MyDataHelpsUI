@@ -1,0 +1,30 @@
+.mdhui-apple-health-sync-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-logo {
+    width: 24px;
+    margin-right: 8px;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-message {
+    color: var(--mdhui-text-color-3);
+    margin-left: 8px;
+}
+
+/* Keeps the status available to screen readers when hideMessage is set. */
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-message-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-complete {
+    color: var(--mdhui-color-success-text);
+}
