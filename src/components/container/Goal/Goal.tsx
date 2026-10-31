@@ -58,6 +58,12 @@ export interface GoalProps {
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
+function getIconMaskUrl(icon: IconDefinition): string {
+    const [width, height, , , pathData] = icon.icon;
+    const paths = (Array.isArray(pathData) ? pathData : [pathData]).map(path => `<path d="${path}"/>`).join('');
+    return `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">${paths}</svg>`)}")`;
+}
+
 interface Celebration {
     style: GoalCelebrationStyle;
     reducedMotion: boolean;
@@ -211,6 +217,12 @@ export default function Goal(props: GoalProps) {
     const showsEarned = completed && !waitingToCelebrate;
     const playsMotion = !!celebration?.playing && !celebration.reducedMotion;
 
+    const createShine = (variant?: 'compact') => {
+        const maskImage = props.iconUrl ? `url(${JSON.stringify(props.iconUrl)})` : getIconMaskUrl(props.icon ?? faStar);
+        const className = props.iconUrl ? 'mdhui-goal-chart-icon-shine' : `mdhui-goal-chart-icon-shine icon ${variant}`;
+        return <div className={className} style={{ WebkitMaskImage: maskImage, maskImage }} />;
+    };
+
     const createChart = (variant?: 'compact') => {
         return <div className={`mdhui-goal-chart ${variant}`}>
             {playsMotion && <GoalCelebration style={celebration!.style} colors={[onSegmentColor]} onDone={() => setCelebration(undefined)} />}
@@ -226,7 +238,7 @@ export default function Goal(props: GoalProps) {
                     ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${showsEarned ? '' : ' unearned'}${celebration?.playing && celebration.reducedMotion ? ' reveal' : ''}`} />
                     : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />
                 }
-                {playsMotion && props.iconUrl && <div className="mdhui-goal-chart-icon-shine" style={{ WebkitMaskImage: `url(${JSON.stringify(props.iconUrl)})`, maskImage: `url(${JSON.stringify(props.iconUrl)})` }} />}
+                {playsMotion && createShine(variant)}
             </div>
         </div>;
     };

@@ -141,6 +141,17 @@ describe('Goal', () => {
             expect(isCelebrating(container)).toBe(false);
         });
 
+        it('sweeps the shine across a Font Awesome icon in its shape.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(6, { iconUrl: undefined }));
+            await settle();
+            rerender(renderCelebratingGoal(7, { iconUrl: undefined }));
+            await advance(800);
+
+            const shine = container.querySelector<HTMLElement>('.mdhui-goal-chart-icon-shine')!;
+            expect(shine.classList.contains('icon')).toBe(true);
+            expect(decodeURIComponent(shine.style.maskImage)).toContain('<path d="M');
+        });
+
         const expectNoCelebration = async (container: HTMLElement) => {
             for (let elapsed = 0; elapsed < 2000; elapsed += 100) {
                 await advance(100);

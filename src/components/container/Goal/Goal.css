@@ -211,6 +211,16 @@
     animation: mdhui-goal-shine 900ms ease-in-out 380ms both;
 }
 
+.mdhui-goal-chart-icon-shine.icon {
+    -webkit-mask-size: auto 34px;
+    mask-size: auto 34px;
+}
+
+.mdhui-goal-chart-icon-shine.icon.compact {
+    -webkit-mask-size: auto 24px;
+    mask-size: auto 24px;
+}
+
 @keyframes mdhui-goal-shine {
     from {
         background-position: 100% 0;
