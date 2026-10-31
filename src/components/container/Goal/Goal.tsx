@@ -8,7 +8,8 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { createPreviewValueProvider, GoalPreviewState } from './Goal.previewData';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
 import { findLast } from 'lodash';
-import GoalRing, { getRingAnimationDuration, prefersReducedMotion } from './GoalRing';
+import GoalRing from './GoalRing';
+import { prefersReducedMotion } from './reducedMotion';
 import GoalCelebration, { chooseCelebrationStyle, GoalCelebrationStyle } from './GoalCelebration';
 
 export interface GoalColorConfiguration {
@@ -64,10 +65,13 @@ function getIconMaskUrl(icon: IconDefinition): string {
     return `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">${paths}</svg>`)}")`;
 }
 
+const revealDuration = 500;
+
 interface Celebration {
+    key: number;
     style: GoalCelebrationStyle;
     reducedMotion: boolean;
-    playing: boolean;
+    started: boolean;
 }
 
 export default function Goal(props: GoalProps) {
@@ -76,9 +80,8 @@ export default function Goal(props: GoalProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [value, setValue] = useState<number>(0);
     const hasLoaded = useRef(false);
-    const [celebration, setCelebration] = useState<Celebration>();
-    const lastLoaded = useRef<{ completed: boolean, filledSegmentCount: number }>();
-    const celebrationTimer = useRef<number>();
+    const [activeCelebration, setActiveCelebration] = useState<Celebration>();
+    const [lastLoadedCompleted, setLastLoadedCompleted] = useState<boolean>();
 
     useInitializeView(() => {
         // Keeping the shown value through a refresh lets the ring animate only the segments that changed.
@@ -169,6 +172,15 @@ export default function Goal(props: GoalProps) {
     let iconColor = resolvedNotStartedColors.iconColor ?? defaultColor;
     let iconBackgroundColor = resolvedNotStartedColors.iconBackgroundColor;
 
+    const resolveInProgressIconColors = (target?: GoalTarget) => {
+        const resolvedInProgressColors = resolveGoalColors(inProgressColors);
+        const resolvedTargetInProgressColors = resolveGoalColors(target?.inProgressColors);
+        return {
+            iconColor: resolvedTargetInProgressColors.iconColor ?? resolvedInProgressColors.iconColor ?? defaultInProgressColor,
+            iconBackgroundColor: resolvedTargetInProgressColors.iconBackgroundColor ?? resolvedInProgressColors.iconBackgroundColor
+        };
+    };
+
     if (value > 0) {
         if (nextTarget) {
             const resolvedInProgressColors = resolveGoalColors(inProgressColors);
@@ -176,8 +188,7 @@ export default function Goal(props: GoalProps) {
             statusColor = resolvedNextTargetInProgressColors.statusColor ?? resolvedInProgressColors.statusColor ?? defaultInProgressColor;
             onSegmentColor = resolvedNextTargetInProgressColors.onSegmentColor ?? resolvedInProgressColors.onSegmentColor ?? defaultInProgressSegmentColor;
             offSegmentColor = resolvedNextTargetInProgressColors.offSegmentColor ?? resolvedInProgressColors.offSegmentColor ?? offSegmentColor;
-            iconColor = resolvedNextTargetInProgressColors.iconColor ?? resolvedInProgressColors.iconColor ?? defaultInProgressColor;
-            iconBackgroundColor = resolvedNextTargetInProgressColors.iconBackgroundColor ?? resolvedInProgressColors.iconBackgroundColor;
+            ({ iconColor, iconBackgroundColor } = resolveInProgressIconColors(nextTarget));
         } else if (completed) {
             const resolvedCompletedColors = resolveGoalColors(completedColors);
             statusColor = resolvedCompletedColors.statusColor ?? defaultCompletedColor;
@@ -191,52 +202,62 @@ export default function Goal(props: GoalProps) {
     const segmentCount = Math.max(0, Math.floor(scaledDenominator));
     const filledSegmentCount = Math.min(segmentCount, Math.max(0, Math.floor(scaledNumerator)));
 
-    useEffect(() => () => clearTimeout(celebrationTimer.current), []);
+    if (!loading && lastLoadedCompleted !== completed) {
+        setLastLoadedCompleted(completed);
+        if (props.celebration && lastLoadedCompleted === false && completed) {
+            setActiveCelebration({
+                key: (activeCelebration?.key ?? 0) + 1,
+                style: chooseCelebrationStyle(props.celebration),
+                reducedMotion: prefersReducedMotion(),
+                started: false
+            });
+        }
+    }
 
+    const startCelebration = (key: number) => {
+        setActiveCelebration(current => current?.key === key ? { ...current, started: true } : current);
+    };
+
+    const endCelebration = (key: number) => {
+        setActiveCelebration(current => current?.key === key ? undefined : current);
+    };
+
+    const revealing = !!activeCelebration?.started && activeCelebration.reducedMotion;
     useEffect(() => {
-        if (loading) return;
-        const previous = lastLoaded.current;
-        lastLoaded.current = { completed, filledSegmentCount };
-        if (!props.celebration || !previous || previous.completed || !completed) return;
+        if (!revealing) return;
+        const key = activeCelebration!.key;
+        const timer = setTimeout(() => endCelebration(key), revealDuration);
+        return () => clearTimeout(timer);
+    }, [revealing]);
 
-        const reducedMotion = prefersReducedMotion();
-        const ringDuration = reducedMotion && props.animateNewSegments
-            ? 0
-            : getRingAnimationDuration(filledSegmentCount - previous.filledSegmentCount, props.animateNewSegments);
-        setCelebration({ style: chooseCelebrationStyle(props.celebration), reducedMotion, playing: false });
-        clearTimeout(celebrationTimer.current);
-        celebrationTimer.current = window.setTimeout(() => {
-            setCelebration(current => current && { ...current, playing: true });
-            if (reducedMotion) {
-                celebrationTimer.current = window.setTimeout(() => setCelebration(undefined), 500);
-            }
-        }, ringDuration);
-    }, [loading, completed, filledSegmentCount]);
-
-    const waitingToCelebrate = !!celebration && !celebration.playing;
+    const waitingToCelebrate = !!activeCelebration && !activeCelebration.started;
     const showsEarned = completed && !waitingToCelebrate;
-    const playsMotion = !!celebration?.playing && !celebration.reducedMotion;
+    const playsMotion = !!activeCelebration?.started && !activeCelebration.reducedMotion;
+    const shownIconColors = waitingToCelebrate ? resolveInProgressIconColors() : { iconColor, iconBackgroundColor };
+    const revealStyle: CSSProperties | undefined = revealing ? { animationDuration: `${revealDuration}ms`, transitionDuration: `${revealDuration}ms` } : undefined;
 
     const createShine = (variant?: 'compact') => {
         const maskImage = props.iconUrl ? `url(${JSON.stringify(props.iconUrl)})` : getIconMaskUrl(props.icon ?? faStar);
-        const className = props.iconUrl ? 'mdhui-goal-chart-icon-shine' : `mdhui-goal-chart-icon-shine icon ${variant}`;
+        const className = ['mdhui-goal-chart-icon-shine', !props.iconUrl && 'icon', !props.iconUrl && variant].filter(Boolean).join(' ');
         return <div className={className} style={{ WebkitMaskImage: maskImage, maskImage }} />;
     };
 
     const createChart = (variant?: 'compact') => {
         return <div className={`mdhui-goal-chart ${variant}`}>
-            {playsMotion && <GoalCelebration style={celebration!.style} colors={[onSegmentColor]} onDone={() => setCelebration(undefined)} />}
+            {playsMotion && <GoalCelebration style={activeCelebration!.style} colors={[onSegmentColor]} onDone={() => endCelebration(activeCelebration!.key)} />}
             <GoalRing
                 segmentCount={segmentCount} filledCount={filledSegmentCount}
                 filledColor={onSegmentColor} unfilledColor={offSegmentColor}
                 innerRadius={variant === 'compact' ? 22 : 30} outerRadius={variant === 'compact' ? 28 : 40}
                 animate={!loading && (scaledNumerator > 0 || !!props.animateNewSegments)}
                 animateNewSegments={props.animateNewSegments}
+                settleKey={waitingToCelebrate ? activeCelebration!.key : undefined}
+                onSettled={startCelebration}
             />
-            <div className={`mdhui-goal-chart-icon-wrapper${playsMotion ? ' stamp' : ''}`} style={{ background: iconBackgroundColor }}>
+            <div className={`mdhui-goal-chart-icon-wrapper${playsMotion ? ' stamp' : ''}`} style={{ background: shownIconColors.iconBackgroundColor }}>
                 {props.iconUrl
-                    ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${showsEarned ? '' : ' unearned'}${celebration?.playing && celebration.reducedMotion ? ' reveal' : ''}`} />
-                    : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}`} style={{ color: iconColor }} />
+                    ? <img src={props.iconUrl} alt="" className={`mdhui-goal-chart-icon-image${showsEarned ? '' : ' unearned'}${revealing ? ' reveal' : ''}`} style={revealStyle} />
+                    : <FontAwesomeIcon icon={props.icon ?? faStar} className={`mdhui-goal-chart-icon ${variant}${revealing ? ' reveal' : ''}`} style={{ color: shownIconColors.iconColor, ...revealStyle }} />
                 }
                 {playsMotion && createShine(variant)}
             </div>

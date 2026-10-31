@@ -8,7 +8,7 @@ export interface GoalCelebrationProps {
     onDone: () => void;
 }
 
-export const celebrationDelay = 460;
+const celebrationDelay = 460;
 const raysDuration = 2800;
 const maxParticles = 150;
 const goldColors = ['#E8B93C', '#FFF3C4', '#9C7414', '#F2C14E'];
@@ -200,7 +200,7 @@ export default function GoalCelebration(props: GoalCelebrationProps) {
     }, []);
 
     return <>
-        {showsRays(props.style) && <div className="mdhui-goal-celebration-rays" />}
+        {showsRays(props.style) && <div className="mdhui-goal-celebration-rays" style={{ animationDuration: `${raysDuration}ms`, animationDelay: `${celebrationDelay}ms` }} />}
         <canvas ref={canvasRef} className="mdhui-goal-celebration" aria-hidden="true" />
     </>;
 }

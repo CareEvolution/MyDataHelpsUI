@@ -152,6 +152,77 @@ describe('Goal', () => {
             expect(decodeURIComponent(shine.style.maskImage)).toContain('<path d="M');
         });
 
+        const ringPaths = (container: HTMLElement) => Array.from(container.querySelectorAll('.mdhui-goal-ring path')).map(path => path.getAttribute('d')).join('|');
+
+        const waitForCelebration = async (container: HTMLElement) => {
+            for (let elapsed = 50; elapsed <= 3000; elapsed += 50) {
+                await advance(50);
+                if (isCelebrating(container)) return { ring: ringPaths(container), elapsed };
+            }
+            throw new Error('The celebration never started.');
+        };
+
+        it('waits for a fill that grew while it was running.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(3));
+            await settle();
+
+            rerender(renderCelebratingGoal(5));
+            await advance(100);
+            rerender(renderCelebratingGoal(7));
+
+            const { ring } = await waitForCelebration(container);
+            await settle();
+            expect(ring).toBe(ringPaths(container));
+        });
+
+        it('waits for the ring to resize when completing changes the number of segments.', async () => {
+            const targets = { targetValue: [{ targetValue: 3 }, { targetValue: 5 }], maxValue: 7 };
+            const { container, rerender } = render(renderCelebratingGoal(4, targets));
+            await settle();
+            expect(container.querySelectorAll('.mdhui-goal-ring path')).toHaveLength(5);
+
+            rerender(renderCelebratingGoal(5, targets));
+            const { ring, elapsed } = await waitForCelebration(container);
+            await settle();
+            expect(container.querySelectorAll('.mdhui-goal-ring path')).toHaveLength(7);
+            expect(ring).toBe(ringPaths(container));
+            expect(elapsed).toBeLessThanOrEqual(700);
+        });
+
+        it('celebrates a goal whose segments are scaled down.', async () => {
+            const scaled = { targetValue: 100, maxValue: 100, maxSegments: 10 };
+            const { container, rerender } = render(renderCelebratingGoal(95, scaled));
+            await settle();
+
+            rerender(renderCelebratingGoal(100, scaled));
+            await waitForCelebration(container);
+        });
+
+        it('keeps a Font Awesome icon in its in-progress color until the stamp.', async () => {
+            const colors = { iconUrl: undefined, inProgressColor: 'blue', completedColor: 'green' };
+            const iconColor = (container: HTMLElement) => container.querySelector<HTMLElement>('.mdhui-goal-chart-icon')!.style.color;
+            const { container, rerender } = render(renderCelebratingGoal(6, colors));
+            await settle();
+
+            rerender(renderCelebratingGoal(7, colors));
+            await advance(200);
+            expect(isCelebrating(container)).toBe(false);
+            expect(iconColor(container)).toBe('blue');
+
+            await waitForCelebration(container);
+            expect(iconColor(container)).toBe('green');
+        });
+
+        it('leaves no timers or frames running when unmounted mid-celebration.', async () => {
+            const { container, rerender, unmount } = render(renderCelebratingGoal(6));
+            await settle();
+            rerender(renderCelebratingGoal(7));
+            await waitForCelebration(container);
+
+            unmount();
+            expect(jest.getTimerCount()).toBe(0);
+        });
+
         const expectNoCelebration = async (container: HTMLElement) => {
             for (let elapsed = 0; elapsed < 2000; elapsed += 100) {
                 await advance(100);
@@ -179,6 +250,20 @@ describe('Goal', () => {
 
             act(() => { becameVisible!(); });
             await expectNoCelebration(container);
+        });
+
+        it('does not celebrate again when the app becomes visible at 7 of 7 and new segments do not animate.', async () => {
+            const { container, rerender } = render(renderCelebratingGoal(6, { animateNewSegments: false }));
+            await settle();
+            const completeProvider = createStaticIntegerValueProvider(7);
+            const getValue = jest.spyOn(completeProvider, 'getValue');
+            rerender(renderCelebratingGoal(7, { animateNewSegments: false, valueProvider: completeProvider }));
+            await advance(6000);
+
+            act(() => { becameVisible!(); });
+            await expectNoCelebration(container);
+            expect(getValue).toHaveBeenCalledTimes(2);
+            expect(ratioText(container)).toBe('7/7');
         });
 
         it('celebrates after the ring sweeps in when new segments do not animate.', async () => {

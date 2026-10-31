@@ -183,7 +183,13 @@
 }
 
 .mdhui-goal-chart-icon-image.reveal {
-    animation: mdhui-goal-reveal 500ms ease-out;
+    animation-name: mdhui-goal-reveal;
+    animation-timing-function: ease-out;
+}
+
+.mdhui-goal-chart-icon.reveal {
+    transition-property: color;
+    transition-timing-function: ease-out;
 }
 
 @keyframes mdhui-goal-reveal {
@@ -254,7 +260,8 @@
     background: repeating-conic-gradient(from 0deg, rgba(232, 185, 60, .5) 0deg 9deg, transparent 9deg 22deg);
     -webkit-mask: radial-gradient(circle, #000 18%, transparent 68%);
     mask: radial-gradient(circle, #000 18%, transparent 68%);
-    animation: mdhui-goal-rays 2800ms ease-out 460ms;
+    animation-name: mdhui-goal-rays;
+    animation-timing-function: ease-out;
 }
 
 @keyframes mdhui-goal-rays {

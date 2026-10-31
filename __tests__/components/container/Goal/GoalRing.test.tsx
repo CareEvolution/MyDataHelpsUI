@@ -4,7 +4,7 @@
 import React from 'react';
 import { act, render, RenderResult } from '@testing-library/react';
 import { Cell, Pie, PieChart } from 'recharts';
-import GoalRing, { GoalRingProps } from '../../../../src/components/container/Goal/GoalRing';
+import GoalRing, { GoalRingProps, planRingAnimations, RingState } from '../../../../src/components/container/Goal/GoalRing';
 
 function normalizePath(path: string | null): string {
     return (path ?? '').trim().split(/[\s,]+/).map(token => {
@@ -210,6 +210,47 @@ describe('GoalRing', () => {
             } finally {
                 window.matchMedia = matchMedia;
             }
+        });
+    });
+
+    describe('planRingAnimations', () => {
+        const sevenSegments = [-1, -1, -1, -1, -1, -1, -1];
+        const ring = (filledCount: number, sizes: number[] = sevenSegments, animate: boolean = true): RingState => ({ animate, sizes, filledCount });
+        const plan = (previous: RingState, next: RingState, options: { animateNewSegments?: boolean, reducedMotion?: boolean, current?: object } = {}) =>
+            planRingAnimations(previous, next, options.current ?? {}, options.animateNewSegments ?? true, options.reducedMotion ?? false);
+
+        it('fills only the new segments when the count goes up.', () => {
+            expect(plan(ring(3), ring(5))).toEqual({ fill: { fromCount: 3, stagger: 200 } });
+        });
+
+        it('squeezes the stagger so many new segments still fill within a second.', () => {
+            expect(plan(ring(0), ring(7)).fill!.stagger).toBeCloseTo(1000 / 7);
+        });
+
+        it('keeps a fill that is already running when the count goes up again.', () => {
+            const running = { fill: { fromCount: 3, stagger: 200 } };
+            expect(plan(ring(5), ring(7), { current: running })).toBe(running);
+        });
+
+        it.each<[string, RingState, { animateNewSegments?: boolean, reducedMotion?: boolean }]>([
+            ['the count goes down', ring(2), {}],
+            ['new segments do not animate', ring(5), { animateNewSegments: false }],
+            ['the device asks for reduced motion', ring(5), { reducedMotion: true }]
+        ])('does not fill when %s.', (_, next, options) => {
+            expect(plan(ring(3), next, options)).toEqual({ sweep: undefined });
+        });
+
+        it('sweeps the whole ring in when it starts animating.', () => {
+            expect(plan(ring(3, sevenSegments, false), ring(3))).toEqual({ sweep: { previousSizes: [] } });
+        });
+
+        it('sweeps from the old layout when the number of segments changes.', () => {
+            const fiveSegments = [-1, -1, -1, -1, -1];
+            expect(plan(ring(4, fiveSegments), ring(5))).toEqual({ sweep: { previousSizes: fiveSegments } });
+        });
+
+        it('does not sweep an empty ring in when new segments animate.', () => {
+            expect(plan(ring(0, sevenSegments, false), ring(0))).toEqual({});
         });
     });
 });
