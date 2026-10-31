@@ -540,7 +540,6 @@ export const Live: StoryObj<GoalLiveStoryArgs> = {
 };
 
 type GoalAnimatedSegmentsStoryArgs = React.ComponentProps<typeof Goal> & {
-    colorScheme: 'auto' | 'light' | 'dark';
     iconType: 'default' | 'image';
     allowOverflow: boolean;
 };
@@ -549,7 +548,7 @@ function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
     const [value, setValue] = useState(3);
     const valueProvider = useMemo(() => createStaticIntegerValueProvider(value), [value]);
 
-    return <Layout colorScheme={args.colorScheme}>
+    return <Layout colorScheme="auto">
         <div style={{ height: '48px' }} />
         <Card allowOverflow={args.allowOverflow}>
             <Goal
@@ -574,7 +573,6 @@ function AnimatedSegmentsStory(args: GoalAnimatedSegmentsStoryArgs) {
 
 export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
     args: {
-        colorScheme: 'auto',
         variant: 'default' as any,
         targetValue: 7,
         maxValue: 7,
@@ -584,11 +582,6 @@ export const AnimatedSegments: StoryObj<GoalAnimatedSegmentsStoryArgs> = {
         allowOverflow: false
     },
     argTypes: {
-        colorScheme: {
-            name: 'color scheme',
-            control: 'radio',
-            options: ['auto', 'light', 'dark']
-        },
         variant: {
             name: 'variant',
             control: 'radio',
