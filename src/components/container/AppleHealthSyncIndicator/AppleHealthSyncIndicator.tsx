@@ -106,21 +106,24 @@ export default function AppleHealthSyncIndicator(props: AppleHealthSyncIndicator
     let message: string;
     if (status.syncing) {
         icon = <LoadingIndicator variant="inline" />;
-        message = language("syncing-data");
+        message = language("apple-health-syncing");
     } else if (!props.alwaysDisplay) {
         return null;
     } else if (justCompleted) {
         icon = <FontAwesomeSvgIcon className="mdhui-apple-health-sync-indicator-complete" icon={faCheckCircle} />;
-        message = language("sync-complete");
+        message = language("apple-health-sync-complete");
     } else if (status.lastSyncCompletionDate) {
         icon = <FontAwesomeSvgIcon className="mdhui-apple-health-sync-indicator-complete" icon={faCheckCircle} />;
-        message = `${language("last-full-sync")} ${getRelativeDateString(status.lastSyncCompletionDate, new Date(), false)}`;
+        message = `${language("apple-health-last-full-sync")} ${getRelativeDateString(status.lastSyncCompletionDate, new Date(), false)}`;
     } else {
         return null;
     }
 
     return <div ref={props.innerRef} className="mdhui-apple-health-sync-indicator" role="status">
         <img className="mdhui-apple-health-sync-indicator-logo" src={appleHealthLogo} alt={language("apple-health-logo-alt")} />
+        {props.hideMessage &&
+            <span className="mdhui-apple-health-sync-indicator-name" aria-hidden="true">{language("apple-health")}</span>
+        }
         {icon}
         <span className={props.hideMessage ? "mdhui-apple-health-sync-indicator-message-hidden" : "mdhui-apple-health-sync-indicator-message"}>{message}</span>
     </div>;

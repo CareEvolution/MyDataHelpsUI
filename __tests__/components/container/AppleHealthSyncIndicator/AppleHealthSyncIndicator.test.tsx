@@ -61,7 +61,7 @@ describe('AppleHealthSyncIndicator', () => {
         const { container } = render(<AppleHealthSyncIndicator previewState="syncing" />);
         await advance(600);
         expect(container.querySelector('.mdhui-apple-health-sync-indicator')).not.toBeNull();
-        expect(container.textContent).toContain('Syncing data...');
+        expect(container.textContent).toContain('Syncing Apple Health data...');
         expect(getAppleHealthStatusMock).not.toHaveBeenCalled();
     });
 
@@ -70,7 +70,8 @@ describe('AppleHealthSyncIndicator', () => {
         await advance(600);
         expect(container.querySelector('.mdhui-apple-health-sync-indicator')).not.toBeNull();
         expect(container.querySelector('.mdhui-apple-health-sync-indicator-message')).toBeNull();
-        expect(container.querySelector('.mdhui-apple-health-sync-indicator-message-hidden')?.textContent).toContain('Syncing data...');
+        expect(container.querySelector('.mdhui-apple-health-sync-indicator-message-hidden')?.textContent).toContain('Syncing Apple Health data...');
+        expect(container.querySelector('.mdhui-apple-health-sync-indicator-name')?.textContent).toBe('Apple Health');
     });
 
     it('renders nothing in the not syncing preview state', async () => {
@@ -130,23 +131,23 @@ describe('AppleHealthSyncIndicator', () => {
         const { container } = render(<AppleHealthSyncIndicator alwaysDisplay />);
         await advance(600);
         expect(container.querySelector('.mdhui-apple-health-sync-indicator-complete')).not.toBeNull();
-        expect(container.textContent).toContain('Last full sync');
-        expect(container.textContent).not.toContain('Sync complete');
+        expect(container.textContent).toContain('Last full Apple Health sync');
+        expect(container.textContent).not.toContain('Apple Health sync complete');
     });
 
     it('shows sync complete briefly after a first full sync with alwaysDisplay, then the last full sync time', async () => {
         getAppleHealthStatusMock.mockResolvedValue(syncingStatus);
         const { container } = render(<AppleHealthSyncIndicator alwaysDisplay />);
         await advance(600);
-        expect(container.textContent).toContain('Syncing data...');
+        expect(container.textContent).toContain('Syncing Apple Health data...');
 
         getAppleHealthStatusMock.mockResolvedValue(idleStatus);
         trigger('appleHealthSyncComplete');
         await advance(600);
-        expect(container.textContent).toContain('Sync complete');
+        expect(container.textContent).toContain('Apple Health sync complete');
 
         await advance(5000);
-        expect(container.textContent).toContain('Last full sync');
+        expect(container.textContent).toContain('Last full Apple Health sync');
     });
 
     it('shows sync complete when a session advances the last full sync date with alwaysDisplay', async () => {
@@ -157,20 +158,20 @@ describe('AppleHealthSyncIndicator', () => {
         getAppleHealthStatusMock.mockResolvedValue(idleStatus);
         trigger('appleHealthSyncComplete');
         await advance(600);
-        expect(container.textContent).toContain('Sync complete');
+        expect(container.textContent).toContain('Apple Health sync complete');
     });
 
     it('skips sync complete when a session ends without a new full sync with alwaysDisplay', async () => {
         getAppleHealthStatusMock.mockResolvedValue({ ...syncingStatus, lastSyncCompletionDate: '2026-10-22T08:00:00Z' });
         const { container } = render(<AppleHealthSyncIndicator alwaysDisplay />);
         await advance(600);
-        expect(container.textContent).toContain('Syncing data...');
+        expect(container.textContent).toContain('Syncing Apple Health data...');
 
         // Canceled or partial session: no completion event, and the last full sync date is unchanged.
         getAppleHealthStatusMock.mockResolvedValue({ available: true, enabled: true, lastSyncCompletionDate: '2026-10-22T08:00:00Z' });
         await advance(10000);
-        expect(container.textContent).not.toContain('Sync complete');
-        expect(container.textContent).toContain('Last full sync');
+        expect(container.textContent).not.toContain('Apple Health sync complete');
+        expect(container.textContent).toContain('Last full Apple Health sync');
     });
 
     it('renders nothing with alwaysDisplay when a session ends before any full sync', async () => {
@@ -200,7 +201,7 @@ describe('AppleHealthSyncIndicator', () => {
     it('shows the sync complete preview state with alwaysDisplay', async () => {
         const { container } = render(<AppleHealthSyncIndicator previewState="syncComplete" alwaysDisplay />);
         await advance(600);
-        expect(container.textContent).toContain('Sync complete');
+        expect(container.textContent).toContain('Apple Health sync complete');
     });
 
     it('renders nothing when Apple Health sync is not enabled', async () => {

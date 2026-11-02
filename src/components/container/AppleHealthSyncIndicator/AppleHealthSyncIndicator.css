@@ -15,6 +15,11 @@
     margin-left: 8px;
 }
 
+.mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-name {
+    color: var(--mdhui-text-color-3);
+    margin-right: 8px;
+}
+
 /* Keeps the status available to screen readers when hideMessage is set. */
 .mdhui-apple-health-sync-indicator .mdhui-apple-health-sync-indicator-message-hidden {
     position: absolute;
