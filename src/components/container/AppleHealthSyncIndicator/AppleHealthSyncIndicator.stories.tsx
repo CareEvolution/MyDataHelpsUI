@@ -43,6 +43,18 @@ const argTypes = {
     alwaysDisplay: {
         name: 'always display',
         control: 'boolean'
+    },
+    syncingText: {
+        name: 'syncing text',
+        control: 'text'
+    },
+    syncCompleteText: {
+        name: 'sync complete text',
+        control: 'text'
+    },
+    lastFullSyncText: {
+        name: 'last full sync text',
+        control: 'text'
     }
 };
 
@@ -93,6 +105,18 @@ export const AlwaysDisplayLastSynced: Story = {
 export const Live: Story = {
     args: {
         colorScheme: 'auto'
+    },
+    argTypes
+};
+
+export const CustomLabels: Story = {
+    args: {
+        colorScheme: 'auto',
+        previewState: 'syncing',
+        alwaysDisplay: true,
+        syncingText: 'Updating your Apple Health data...',
+        syncCompleteText: 'Apple Health data is up to date',
+        lastFullSyncText: 'Apple Health data last updated'
     },
     argTypes
 };

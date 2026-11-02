@@ -204,6 +204,40 @@ describe('AppleHealthSyncIndicator', () => {
         expect(container.textContent).toContain('Apple Health sync complete');
     });
 
+    it('uses custom labels in place of the defaults', async () => {
+        const labels = { syncingText: 'Custom syncing', syncCompleteText: 'Custom complete', lastFullSyncText: 'Custom last sync' };
+
+        const syncing = render(<AppleHealthSyncIndicator previewState="syncing" {...labels} />);
+        await advance(600);
+        expect(syncing.container.textContent).toContain('Custom syncing');
+        expect(syncing.container.textContent).not.toContain('Syncing Apple Health data...');
+        syncing.unmount();
+
+        const complete = render(<AppleHealthSyncIndicator previewState="syncComplete" alwaysDisplay {...labels} />);
+        await advance(600);
+        expect(complete.container.textContent).toContain('Custom complete');
+        expect(complete.container.textContent).not.toContain('Apple Health sync complete');
+        complete.unmount();
+
+        const idle = render(<AppleHealthSyncIndicator previewState="notSyncing" alwaysDisplay {...labels} />);
+        await advance(600);
+        expect(idle.container.textContent).toContain('Custom last sync');
+        expect(idle.container.textContent).not.toContain('Last full Apple Health sync');
+    });
+
+    it('falls back to the default labels when custom labels are blank', async () => {
+        const { container } = render(<AppleHealthSyncIndicator previewState="syncing" syncingText="   " />);
+        await advance(600);
+        expect(container.textContent).toContain('Syncing Apple Health data...');
+    });
+
+    it('keeps the Apple Health name visible with a custom label and hideMessage', async () => {
+        const { container } = render(<AppleHealthSyncIndicator previewState="syncing" hideMessage syncingText="Custom syncing" />);
+        await advance(600);
+        expect(container.querySelector('.mdhui-apple-health-sync-indicator-name')?.textContent).toBe('Apple Health');
+        expect(container.querySelector('.mdhui-apple-health-sync-indicator-message-hidden')?.textContent).toBe('Custom syncing');
+    });
+
     it('renders nothing when Apple Health sync is not enabled', async () => {
         getAppleHealthStatusMock.mockResolvedValue({ available: true, enabled: false, syncSession: { syncStartDate: '2026-10-23T12:00:00Z' } });
         const { container } = render(<AppleHealthSyncIndicator />);

@@ -16,6 +16,12 @@ export interface AppleHealthSyncIndicatorProps {
     hideMessage?: boolean;
     /** Keeps the indicator visible when not syncing, showing "Sync complete" briefly after a full sync and then the last full sync time. */
     alwaysDisplay?: boolean;
+    /** Overrides the "Syncing Apple Health data..." message. Per Apple's HIG, labels next to the icon should name Apple Health. */
+    syncingText?: string;
+    /** Overrides the "Apple Health sync complete" message. */
+    syncCompleteText?: string;
+    /** Overrides the "Last full Apple Health sync" text shown before the relative time of the last full sync. */
+    lastFullSyncText?: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -25,6 +31,10 @@ interface SyncStatus {
 }
 
 const syncCompleteDisplayMs = 5000;
+
+function textOrDefault(text: string | undefined, defaultKey: string): string {
+    return text?.trim() ? text : language(defaultKey);
+}
 
 /**
  * Shows a small indicator while the iOS app is syncing Apple Health data, and renders nothing otherwise
@@ -106,15 +116,15 @@ export default function AppleHealthSyncIndicator(props: AppleHealthSyncIndicator
     let message: string;
     if (status.syncing) {
         icon = <LoadingIndicator variant="inline" />;
-        message = language("apple-health-syncing");
+        message = textOrDefault(props.syncingText, "apple-health-syncing");
     } else if (!props.alwaysDisplay) {
         return null;
     } else if (justCompleted) {
         icon = <FontAwesomeSvgIcon className="mdhui-apple-health-sync-indicator-complete" icon={faCheckCircle} />;
-        message = language("apple-health-sync-complete");
+        message = textOrDefault(props.syncCompleteText, "apple-health-sync-complete");
     } else if (status.lastSyncCompletionDate) {
         icon = <FontAwesomeSvgIcon className="mdhui-apple-health-sync-indicator-complete" icon={faCheckCircle} />;
-        message = `${language("apple-health-last-full-sync")} ${getRelativeDateString(status.lastSyncCompletionDate, new Date(), false)}`;
+        message = `${textOrDefault(props.lastFullSyncText, "apple-health-last-full-sync")} ${getRelativeDateString(status.lastSyncCompletionDate, new Date(), false)}`;
     } else {
         return null;
     }
