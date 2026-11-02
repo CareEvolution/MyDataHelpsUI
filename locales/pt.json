@@ -432,7 +432,7 @@
     "due-today": "Vencimento hoje",
     "due-today-with-time": "Vencimento hoje às {time}",
     "due-tomorrow": "Vencimento amanhã",
-    "due-tomorrow-with-time": "Vencimento amanhã às {time}",
+    "due-tomorrow-with-time": "Entrega amanhã às {time}",
     "edit": "Editar",
     "ehr-intro-search": "Pesquise digitando o nome do seu provedor ou portal de membros do seu provedor de saúde ou plano de saúde.",
     "elevated-heart-rate-time": "Tempo com Frequência Cardíaca Elevada",
