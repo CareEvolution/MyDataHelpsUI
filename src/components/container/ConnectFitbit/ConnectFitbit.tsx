@@ -3,6 +3,7 @@ import { ConnectExternalAccountOptions, ExternalAccountStatus } from "@careevolu
 import React from "react";
 
 export interface ConnectFitbitProps {
+	/** @deprecated Ignored. The Google Health tile uses its own title. */
 	title?: string,
 	/** @deprecated Ignored. Fitbit accounts cannot be connected. */
 	fitbitProviderID?: number,
