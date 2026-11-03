@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectFitbit, ConnectGarmin, ProjectSupport, ConnectDevicesMenu } from "../../.."
+import { Layout, StatusBarBackground, Card, MostRecentNotification, SurveyTaskList, ConnectGarmin, ProjectSupport, ConnectDevicesMenu } from "../../.."
 import MyDataHelps, { NotificationType } from "@careevolution/mydatahelps-js"
 import language from "../../../helpers/language"
 import ConnectEhr from "../../container/ConnectEhr";

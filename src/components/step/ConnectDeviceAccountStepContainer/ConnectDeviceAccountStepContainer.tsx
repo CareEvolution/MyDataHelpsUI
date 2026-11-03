@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyDataHelps, { StepConfiguration } from "@careevolution/mydatahelps-js";
 import ConnectDeviceAccountStep from "../ConnectDeviceAccountStep";
-import { getFitbitProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
+import { getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from "../../../helpers/providerIDs";
 import { deviceType } from "../../../helpers/deviceType";
 
 /**
@@ -27,8 +27,6 @@ export default function ConnectDeviceAccountStepContainer () {
 
     function convertToProviderID(deviceType: deviceType): number {
         switch (deviceType) {
-            case "Fitbit":
-                return getFitbitProviderID();
             case "Omron":
                 return getOmronProviderID();
             case "Garmin":
@@ -36,8 +34,13 @@ export default function ConnectDeviceAccountStepContainer () {
             case 'Oura':
                 return getOuraProviderID();
             case 'Google Health':
+            case "Fitbit":
                 return getGoogleHealthProviderID();
         }
+    }
+
+    function replaceRetiredDeviceType(deviceType: deviceType): deviceType {
+        return deviceType === "Fitbit" ? "Google Health" : deviceType;
     }
 
     async function completeStepIfConnected(deviceType: deviceType) {
@@ -66,9 +69,10 @@ export default function ConnectDeviceAccountStepContainer () {
             if (!config.properties.deviceType) {
                 throw new Error("deviceType is required");
             }
-            setDeviceType(config.properties.deviceType);
+            const configuredDeviceType = replaceRetiredDeviceType(config.properties.deviceType);
+            setDeviceType(configuredDeviceType);
             setStyles(config.styles ?? {});
-            completeStepIfConnected(config.properties.deviceType);
+            completeStepIfConnected(configuredDeviceType);
         });
     }, []);
 
