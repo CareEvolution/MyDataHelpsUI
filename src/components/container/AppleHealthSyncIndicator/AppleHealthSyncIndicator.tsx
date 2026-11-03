@@ -16,11 +16,11 @@ export interface AppleHealthSyncIndicatorProps {
     hideMessage?: boolean;
     /** Keeps the indicator visible when not syncing, showing "Sync complete" briefly after a full sync and then the last full sync time. */
     alwaysDisplay?: boolean;
-    /** Overrides the "Syncing Apple Health data..." message. Per Apple's HIG, labels next to the icon should name Apple Health. */
+    /** Overrides the "Syncing Apple Health data…" message. Per Apple's HIG, labels next to the icon should name Apple Health. */
     syncingText?: string;
     /** Overrides the "Apple Health sync complete" message. */
     syncCompleteText?: string;
-    /** Overrides the "Last full Apple Health sync" text shown before the relative time of the last full sync. */
+    /** Overrides the "Last full Apple Health sync:" text shown before the relative time of the last full sync. Include any separator, such as a colon. */
     lastFullSyncText?: string;
     innerRef?: React.Ref<HTMLDivElement>;
 }
@@ -33,7 +33,7 @@ interface SyncStatus {
 const syncCompleteDisplayMs = 5000;
 
 function textOrDefault(text: string | undefined, defaultKey: string): string {
-    return text?.trim() ? text : language(defaultKey);
+    return text?.trim() || language(defaultKey);
 }
 
 /**

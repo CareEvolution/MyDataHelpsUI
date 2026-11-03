@@ -114,9 +114,9 @@ export const CustomLabels: Story = {
         colorScheme: 'auto',
         previewState: 'syncing',
         alwaysDisplay: true,
-        syncingText: 'Updating your Apple Health data...',
+        syncingText: 'Updating your Apple Health data…',
         syncCompleteText: 'Apple Health data is up to date',
-        lastFullSyncText: 'Apple Health data last updated'
+        lastFullSyncText: 'Apple Health data last updated:'
     },
     argTypes
 };
