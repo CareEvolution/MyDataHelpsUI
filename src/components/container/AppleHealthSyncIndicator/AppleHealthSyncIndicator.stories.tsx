@@ -3,9 +3,7 @@ import AppleHealthSyncIndicator from './AppleHealthSyncIndicator';
 import { Card, Layout } from '../../presentational';
 import { Meta, StoryObj } from '@storybook/react';
 
-type AppleHealthSyncIndicatorStoryArgs = React.ComponentProps<typeof AppleHealthSyncIndicator> & {
-    colorScheme: 'auto' | 'light' | 'dark';
-};
+type AppleHealthSyncIndicatorStoryArgs = React.ComponentProps<typeof AppleHealthSyncIndicator>;
 
 const meta: Meta<AppleHealthSyncIndicatorStoryArgs> = {
     title: 'Container/AppleHealthSyncIndicator',
@@ -14,7 +12,7 @@ const meta: Meta<AppleHealthSyncIndicatorStoryArgs> = {
         layout: 'fullscreen',
     },
     render: args => {
-        return <Layout colorScheme={args.colorScheme}>
+        return <Layout colorScheme="auto">
             <Card>
                 <AppleHealthSyncIndicator {...args} />
             </Card>
@@ -26,11 +24,6 @@ export default meta;
 type Story = StoryObj<AppleHealthSyncIndicatorStoryArgs>;
 
 const argTypes = {
-    colorScheme: {
-        name: 'color scheme',
-        control: 'radio',
-        options: ['auto', 'light', 'dark']
-    },
     previewState: {
         name: 'state',
         control: 'radio',
@@ -60,7 +53,6 @@ const argTypes = {
 
 export const Syncing: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'syncing',
         hideMessage: false
     },
@@ -69,7 +61,6 @@ export const Syncing: Story = {
 
 export const IconOnly: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'syncing',
         hideMessage: true
     },
@@ -78,7 +69,6 @@ export const IconOnly: Story = {
 
 export const NotSyncing: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'notSyncing'
     },
     argTypes
@@ -86,7 +76,6 @@ export const NotSyncing: Story = {
 
 export const AlwaysDisplaySyncComplete: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'syncComplete',
         alwaysDisplay: true
     },
@@ -95,7 +84,6 @@ export const AlwaysDisplaySyncComplete: Story = {
 
 export const AlwaysDisplayLastSynced: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'notSyncing',
         alwaysDisplay: true
     },
@@ -103,18 +91,14 @@ export const AlwaysDisplayLastSynced: Story = {
 };
 
 export const Live: Story = {
-    args: {
-        colorScheme: 'auto'
-    },
     argTypes
 };
 
 export const CustomLabels: Story = {
     args: {
-        colorScheme: 'auto',
         previewState: 'syncing',
         alwaysDisplay: true,
-        syncingText: 'Updating your Apple Health data…',
+        syncingText: 'Updating your Apple Health data...',
         syncCompleteText: 'Apple Health data is up to date',
         lastFullSyncText: 'Apple Health data last updated:'
     },

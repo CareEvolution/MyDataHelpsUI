@@ -16,7 +16,7 @@ export interface AppleHealthSyncIndicatorProps {
     hideMessage?: boolean;
     /** Keeps the indicator visible when not syncing, showing "Sync complete" briefly after a full sync and then the last full sync time. */
     alwaysDisplay?: boolean;
-    /** Overrides the "Syncing Apple Health data…" message. Per Apple's HIG, labels next to the icon should name Apple Health. */
+    /** Overrides the "Syncing Apple Health data..." message. Per Apple's HIG, labels next to the icon should name Apple Health. */
     syncingText?: string;
     /** Overrides the "Apple Health sync complete" message. */
     syncCompleteText?: string;
