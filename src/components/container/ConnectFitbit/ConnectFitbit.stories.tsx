@@ -27,48 +27,42 @@ const render = (args: ConnectFitbitProps) => <Layout colorScheme="auto">
 
 export const NotConnected: Story = {
     args: {
-        previewState: "notConnected",
-        title: "Fitbit"
+        previewState: "notConnected"
     },
     render: render
 };
 
 export const Unauthorized: Story = {
     args: {
-        previewState: "unauthorized",
-        title: "Fitbit"
+        previewState: "unauthorized"
     },
     render: render
 };
 
 export const ConnectionError: Story = {
     args: {
-        previewState: "error",
-        title: "Fitbit"
+        previewState: "error"
     },
     render: render
 };
 
 export const FetchComplete: Story = {
     args: {
-        previewState: "fetchComplete",
-        title: "Fitbit"
+        previewState: "fetchComplete"
     },
     render: render
 };
 
 export const FetchingData: Story = {
     args: {
-        previewState: "fetchingData",
-        title: "Fitbit"
+        previewState: "fetchingData"
     },
     render: render
 };
 
 export const NotEnabledDefault: Story = {
     args: {
-        previewState: "notEnabled",
-        title: "Fitbit"
+        previewState: "notEnabled"
     },
     render: render
 };
@@ -76,7 +70,6 @@ export const NotEnabledDefault: Story = {
 export const NotEnabledHide: Story = {
     args: {
         previewState: "notEnabled",
-        title: "Fitbit",
         disabledBehavior: "hide"
     },
     render: render
@@ -85,7 +78,6 @@ export const NotEnabledHide: Story = {
 export const NotEnabledDisplayError: Story = {
     args: {
         previewState: "notEnabled",
-        title: "Fitbit",
         disabledBehavior: "displayError"
     },
     render: render
@@ -98,24 +90,6 @@ export const HideConnected: Story = {
     },
     argTypes: {
         previewState: { name: "Connection State", control: "radio", options: ["fetchComplete", "fetchingData", "unauthorized", "error"] }
-    },
-    render: render
-};
-
-export const PromptGoogleHealth: Story = {
-    args: {
-        previewState: "fetchComplete",
-        googleHealthPreviewState: "notConnected",
-        title: "Fitbit"
-    },
-    render: render
-};
-
-export const GoogleHealthConnected: Story = {
-    args: {
-        previewState: "fetchComplete",
-        googleHealthPreviewState: "fetchComplete",
-        title: "Fitbit"
     },
     render: render
 };

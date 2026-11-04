@@ -31,14 +31,14 @@ export const Android = {
 export const ConnectedStates = {
     args: {
         previewState: "ConnectedStates",
-        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Fitbit", "Garmin", "Dexcom", "HealthConnect", "Environmental", "Oura", "GoogleHealth"],
+        accountTypes: ["Omron", "AppleHealth", "GoogleFit", "Garmin", "Dexcom", "HealthConnect", "Environmental", "Oura", "GoogleHealth"],
         postalCodeSurveyName: "SetPostalCode"
     },
     render: render
 };
 
 export const LegacyAccountTypes = {
-    name: "Legacy Account Types (Google Health Added Automatically)",
+    name: "Legacy Account Types (Fitbit Replaced by Google Health)",
     args: {
         previewState: "Web",
         accountTypes: ["Fitbit", "Garmin", "Dexcom"]

@@ -2,11 +2,10 @@ import MyDataHelps, { ConnectExternalAccountOptions, DataCollectionSettings, Ext
 import React, { ReactNode, useState } from 'react';
 import { Action, TextBlock, Title } from '../../presentational';
 import "./ConnectDevicesMenu.css"
-import { getDexcomProviderID, getFitbitProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from '../../../helpers/providerIDs';
+import { getDexcomProviderID, getGarminProviderID, getGoogleHealthProviderID, getOmronProviderID, getOuraProviderID } from '../../../helpers/providerIDs';
 import { generateSampleParticipantInfo, previewAccounts, previewHealthConnectStatus, previewSettings } from './ConnectDevicesMenu.previewdata';
 import language from '../../../helpers/language';
 import FitnessWearable from '../../../assets/fitness-wearable.svg';
-import FitbitLogo from '../../../assets/fitbit-logo.svg';
 import GarminLogo from '../../../assets/garmin-logo.svg';
 import DexcomLogo from '../../../assets/dexcom-logo.svg';
 import AppleHealthLogo from '../../../assets/applehealth-logo.svg';
@@ -154,20 +153,16 @@ export default function (props: ConnectDevicesMenuProps) {
         return null;
     }
 
-    let accountTypes = props.accountTypes || ["GoogleHealth", "Fitbit", "Garmin", "Oura", "Omron", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
+    let accountTypes = props.accountTypes || ["GoogleHealth", "Garmin", "Oura", "Omron", "Dexcom", "AppleHealth", "GoogleFit", "HealthConnect", "Environmental"];
 
-    // Google Health was added to this menu after Fitbit, so views configured before then list Fitbit
-    // without it.  Treat Fitbit as implying Google Health so those views offer it as well.  Projects
-    // without Google Health enabled are still filtered out below.
+    // Google Health replaces Fitbit, so views configured with Fitbit offer Google Health in its place.
     if (accountTypes.includes("Fitbit") && !accountTypes.includes("GoogleHealth")) {
         accountTypes = ["GoogleHealth", ...accountTypes];
     }
+    accountTypes = accountTypes.filter(a => a != "Fitbit");
 
     if (!settings?.googleHealthEnabled) {
         accountTypes = accountTypes.filter(a => a != "GoogleHealth");
-    }
-    if (!settings?.fitbitEnabled) {
-        accountTypes = accountTypes.filter(a => a != "Fitbit");
     }
     if (!settings?.garminEnabled) {
         accountTypes = accountTypes.filter(a => a != "Garmin");
@@ -199,13 +194,6 @@ export default function (props: ConnectDevicesMenuProps) {
             return null;
         }
         return getExternalAccountMenuItem("Google Health", getGoogleHealthProviderID(), <img src={GoogleHealthLogo} />);
-    }
-
-    function getFitbitMenuItem() {
-        if (!accountTypes.includes("Fitbit")) {
-            return null;
-        }
-        return getExternalAccountMenuItem("Fitbit", getFitbitProviderID(), <img src={FitbitLogo} />);
     }
 
     function getGarminMenuItem() {
@@ -301,7 +289,6 @@ export default function (props: ConnectDevicesMenuProps) {
         </TextBlock>
         <div className="mdhui-connect-devices-menu-inner">
             {getGoogleHealthMenuItem()}
-            {getFitbitMenuItem()}
             {getGarminMenuItem()}
             {getDexcomMenuItem()}
             {getOuraMenuItem()}
