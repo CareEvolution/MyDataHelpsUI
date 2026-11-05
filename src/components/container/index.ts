@@ -30,7 +30,7 @@ export { default as FitbitMonthCharts } from "./FitbitMonthCharts"
 export { default as GarminMonthCharts } from "./GarminMonthCharts"
 export { default as GlucoseChart } from "./GlucoseChart"
 export { default as GlucoseDayCoordinator, GlucoseContext, GlucoseDayCoordinatorPreviewState } from "./GlucoseDayCoordinator"
-export { default as Goal, GoalColorConfiguration, GoalPreviewState, GoalTarget, isGoalColorConfiguration } from "./Goal";
+export { default as Goal, GoalCelebrationStyle, GoalColorConfiguration, GoalPreviewState, GoalTarget, isGoalColorConfiguration } from "./Goal";
 export { default as HealthConnectPhrSync } from "./HealthConnectPhrSync"
 export { default as HealthPreviewSection } from "./HealthPreviewSection"
 export { default as InboxItemList, InboxItemListPreviewState } from "./InboxItemList"
