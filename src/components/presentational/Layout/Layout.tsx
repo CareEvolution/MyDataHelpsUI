@@ -2,13 +2,14 @@ import React, { createContext } from 'react';
 import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
-import { darkColorScheme, lightColorScheme, global, core } from '../../../helpers/globalCss';
+import { darkColorScheme, darkColorStyle, lightColorScheme, global, core } from '../../../helpers/globalCss';
 import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 
 export interface LayoutProps {
 	children?: React.ReactNode;
 	bodyBackgroundColor?: ColorDefinition;
 	primaryColor?: ColorDefinition;
+	primaryTextColor?: ColorDefinition;
 	statusBarStyle?: StatusBarStyle;
 	className?: string;
 	noGlobalStyles?: boolean;
@@ -62,10 +63,17 @@ export default function Layout(props: LayoutProps) {
 	// scheme toggle would land the scheme tag after a separate brand tag and clobber it.
 	const schemeStyles = context.colorScheme == "dark" ? darkColorScheme : lightColorScheme;
 	const brand = props.primaryColor ? resolveColor(colorScheme, props.primaryColor) : undefined;
-	const brandStyles = brand ? css`
+	const textColor = props.primaryTextColor && typeof props.primaryTextColor === "object"
+		? (colorScheme === "dark" ? props.primaryTextColor.darkMode : props.primaryTextColor.lightMode)
+		: props.primaryTextColor;
+	const brandText = resolveColor(colorScheme, textColor) ?? brand;
+	const schemeText = colorScheme === "dark" ? (darkColorStyle as Record<string, string>)['--mdhui-color-primary-text'] : "var(--mdhui-color-primary)";
+	const markColor = brand ?? schemeText;
+	const brandStyles = brand || brandText ? css`
 	:root {
-		--mdhui-color-primary: ${brand};
-		--mdhui-color-primary-text: ${brand};
+		${brand ? `--mdhui-color-primary: ${brand};` : ""}
+		${brandText ? `--mdhui-color-primary-text: ${brandText};` : ""}
+		${brandText !== brand ? `--mdhui-color-primary-mark: ${markColor};` : ""}
 	}` : undefined;
 
 	return (

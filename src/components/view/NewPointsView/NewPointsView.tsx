@@ -20,6 +20,7 @@ export interface NewPointsViewProps {
     pointsToNextReward?: number;
     colorScheme?: 'auto' | 'light' | 'dark';
     primaryColor?: ColorDefinition;
+    primaryTextColor?: ColorDefinition;
     doneButtonText?: string;
 }
 
@@ -37,7 +38,7 @@ export default function NewPointsView(props: NewPointsViewProps) {
     }, totalBonusPoints);
 
     return (
-        <Layout bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor}>
+        <Layout bodyBackgroundColor="var(--mdhui-background-color-0)" colorScheme={props.colorScheme ?? 'auto'} primaryColor={props.primaryColor} primaryTextColor={props.primaryTextColor}>
             <div className="mdhui-new-points">
                 <ProgressRing animate={true}>
                     <div className="mdhui-new-points-total">
