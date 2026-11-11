@@ -31,7 +31,7 @@ jobs:
       # runners have 16GB of RAM, so give Node more headroom.
       NODE_OPTIONS: --max-old-space-size=8192
     steps:
-      - uses: actions/checkout@v4.4.0
+      - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v4.4.0
         with:
           node-version: 20.x
