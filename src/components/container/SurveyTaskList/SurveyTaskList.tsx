@@ -92,16 +92,7 @@ export default function (props: SurveyTaskListProps) {
 					return a.surveyName.localeCompare(b.surveyName) * sortMultiplier;
 
 				case 'insertedDate':
-					if (a.insertedDate === b.insertedDate) return 0;
-					if (!a.insertedDate) return 1;
-					if (!b.insertedDate) return -1;
-
-					const dateA = parseISO(a.insertedDate);
-					const dateB = parseISO(b.insertedDate);
-					if (dateA > dateB) return 1 * sortMultiplier;
-					if (dateA < dateB) return -1 * sortMultiplier;
-
-					return 0;
+					return compareInsertedDates(a, b, sortMultiplier);
 
 				case 'userDefined':
 					const userDefinedOrder = sortBehavior?.userDefinedOrder ?? [];
@@ -121,7 +112,9 @@ export default function (props: SurveyTaskListProps) {
 
 				case 'dueDate':
 				default:
-					if (a.dueDate === b.dueDate) return 0;
+					// Due dates often tie (e.g. several tasks due at the same end of day), and the query returns
+					// newest first, so break ties oldest-inserted first to keep tasks in the order they were assigned.
+					if (a.dueDate === b.dueDate) return compareInsertedDates(a, b, 1);
 					if (!a.dueDate) { return 1; }
 					if (!b.dueDate) { return -1; }
 
@@ -130,7 +123,7 @@ export default function (props: SurveyTaskListProps) {
 					if (dueDateA > dueDateB) { return 1 * sortMultiplier; }
 					if (dueDateA < dueDateB) { return -1 * sortMultiplier; }
 
-					return 0;
+					return compareInsertedDates(a, b, 1);
 			}
 		};
 
@@ -224,6 +217,19 @@ export default function (props: SurveyTaskListProps) {
 			</div>
 		</TaskListWrapper>
 	);
+}
+
+function compareInsertedDates(a: SurveyTask, b: SurveyTask, sortMultiplier: number): number {
+	if (a.insertedDate === b.insertedDate) return 0;
+	if (!a.insertedDate) return 1;
+	if (!b.insertedDate) return -1;
+
+	const dateA = parseISO(a.insertedDate);
+	const dateB = parseISO(b.insertedDate);
+	if (dateA > dateB) return 1 * sortMultiplier;
+	if (dateA < dateB) return -1 * sortMultiplier;
+
+	return 0;
 }
 
 function TaskListWrapper(props: { children?: React.ReactNode, card: boolean, innerRef?: React.Ref<HTMLDivElement>, cardStyle?: React.CSSProperties, cardBackgroundColor?: ColorDefinition }) {
