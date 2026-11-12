@@ -8,6 +8,11 @@ declare module "*.png" {
 	export default content;
 }
 
+declare module "*.webp" {
+	const content: string;
+	export default content;
+}
+
 // apca-w3 ships no type definitions; only the pieces used by colorDocs/scripts are declared.
 declare module "apca-w3" {
 	export function sRGBtoY(rgb: number[]): number;

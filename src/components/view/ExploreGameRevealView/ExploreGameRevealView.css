@@ -1,0 +1,80 @@
+.mdhui-explore-game-reveal {
+    min-height: 100vh;
+}
+
+.mdhui-explore-game-reveal .mdhui-navigation-bar {
+    /*padding-right: 6px;*/
+    /*padding-top: 6px;*/
+}
+
+.mdhui-explore-game-reveal .mdhui-navigation-bar .navigation-bar-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mdhui-explore-game-reveal-loading {
+    padding: 16px;
+    text-align: center;
+}
+
+.mdhui-explore-game-reveal-card {
+    margin-top: auto;
+}
+
+.mdhui-explore-game-reveal-card-category {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-2);
+    margin-bottom: 8px;
+}
+
+.mdhui-explore-game-reveal-card-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-card-location {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-3);
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-card-fact {
+    margin-top: 8px;
+}
+
+.mdhui-explore-game-reveal-card-added-to-album {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-3);
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-close-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-top: -10px;
+    margin-right: -10px;
+}
+
+.mdhui-explore-game-reveal-close-button {
+    background: var(--mdhui-background-color-1);
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.7em;
+}
+
+.mdhui-explore-game-reveal-close-button.loading {
+    border: 2px solid var(--mdhui-text-color-0);
+}
+
+.mdhui-explore-game-reveal-card-done-button.mdhui-button {
+    margin: 8px 16px 16px;
+}
