@@ -9,6 +9,7 @@ export { default as DocumentDetailView } from "./DocumentDetailView"
 export { default as DocumentLibraryView } from "./DocumentLibraryView"
 export { default as EhrNewsFeedView } from "./EhrNewsFeedView";
 export { default as EhrNewsFeedEventDetailView } from "./EhrNewsFeedEventDetailView";
+export { default as ExploreGameRevealView } from "./ExploreGameRevealView"
 export { default as ExternalAccountsView } from "./ExternalAccountsView"
 export { default as FitbitView } from "./FitbitView"
 export { default as GarminView } from "./GarminView"

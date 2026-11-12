@@ -1,0 +1,78 @@
+.mdhui-explore-game-reveal {
+    height: calc(100vh - env(safe-area-inset-top, 0));
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.mdhui-explore-game-reveal .mdhui-navigation-bar {
+    padding: max(0px, calc(8px - env(safe-area-inset-top, 0))) 16px;
+    min-height: 56px;
+}
+
+.mdhui-explore-game-reveal .mdhui-navigation-bar .navigation-bar-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mdhui-explore-game-reveal-loading {
+    padding: 16px;
+    text-align: center;
+}
+
+.mdhui-explore-game-reveal-category {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    font-weight: bold;
+    color: var(--mdhui-text-color-2);
+    margin-bottom: 8px;
+}
+
+.mdhui-explore-game-reveal-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-location {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-3);
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-fact {
+    margin-top: 8px;
+}
+
+.mdhui-explore-game-reveal-added-to-album {
+    font-size: 0.7em;
+    color: var(--mdhui-text-color-3);
+    margin: 8px 16px;
+}
+
+.mdhui-explore-game-reveal-close-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-top: -6px;
+    margin-right: -6px;
+}
+
+.mdhui-explore-game-reveal-close-button {
+    background: var(--mdhui-background-color-1);
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.8em;
+}
+
+.mdhui-explore-game-reveal-close-button.loading {
+    border: 2px solid var(--mdhui-text-color-0);
+}
+
+.mdhui-explore-game-reveal-done-button.mdhui-button {
+    margin: 8px 16px 16px;
+}
