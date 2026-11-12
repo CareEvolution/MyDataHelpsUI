@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, CSSProperties } from 'react';
 import MyDataHelps, { StatusBarStyle } from '@careevolution/mydatahelps-js';
 import { Global as EmotionGlobal, css } from '@emotion/react';
 import "./Layout.css"
@@ -8,6 +8,7 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 export interface LayoutProps {
 	children?: React.ReactNode;
 	bodyBackgroundColor?: ColorDefinition;
+	background?: CSSProperties['background'];
 	primaryColor?: ColorDefinition;
 	primaryTextColor?: ColorDefinition;
 	statusBarStyle?: StatusBarStyle;
@@ -16,7 +17,7 @@ export interface LayoutProps {
 	colorScheme?: "light" | "dark" | "auto";
 	flex?: boolean;
 	/**
-	  * @deprecated 
+	  * @deprecated
 	  */
 	stylesheetPath?: string;
 	innerRef?: React.Ref<HTMLDivElement>;
@@ -53,6 +54,8 @@ export default function Layout(props: LayoutProps) {
 	}
 	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: backgroundColor || "var(--mdhui-background-color-1)" };
 
+	const backgroundStyles: CSSProperties = props.background !== undefined ? { background: props.background } : {};
+
 	if (props.statusBarStyle) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
 	}
@@ -83,7 +86,7 @@ export default function Layout(props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom }}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom, ...backgroundStyles }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}
