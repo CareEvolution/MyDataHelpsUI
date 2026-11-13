@@ -1,10 +1,15 @@
 .mdhui-explore-game-reveal {
     position: absolute;
-    top: env(safe-area-inset-top, 0);
+    top: 0;
     right: 0;
-    bottom: env(safe-area-inset-bottom, 0);
+    bottom: 0;
     left: 0;
     justify-content: space-between;
+}
+
+.mdhui-explore-game-reveal .mdhui-navigation-bar {
+    padding: 8px 16px;
+    min-height: 56px;
 }
 
 .mdhui-explore-game-reveal .mdhui-navigation-bar .navigation-bar-right {
