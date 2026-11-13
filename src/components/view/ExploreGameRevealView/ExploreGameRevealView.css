@@ -1,9 +1,5 @@
 .mdhui-explore-game-reveal {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    height: calc(100vh - 100px);
     justify-content: space-between;
 }
 
