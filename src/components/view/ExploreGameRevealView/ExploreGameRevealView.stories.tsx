@@ -11,10 +11,7 @@ const meta: Meta<ExploreGameRevealViewStoryArgs> = {
     parameters: {
         layout: 'fullscreen'
     },
-    render: args => <div>
-        <style>{':root { --mdhui-color-primary: #375A4FFF; }'}</style>
-        <ExploreGameRevealView {...args} />
-    </div>
+    render: args => <ExploreGameRevealView {...args} />
 };
 export default meta;
 
