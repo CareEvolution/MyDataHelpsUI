@@ -1,10 +1,9 @@
 .mdhui-explore-game-reveal {
-    min-height: 100vh;
-}
-
-.mdhui-explore-game-reveal .mdhui-navigation-bar {
-    /*padding-right: 6px;*/
-    /*padding-top: 6px;*/
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .mdhui-explore-game-reveal .mdhui-navigation-bar .navigation-bar-right {
@@ -17,11 +16,7 @@
     text-align: center;
 }
 
-.mdhui-explore-game-reveal-card {
-    margin-top: auto;
-}
-
-.mdhui-explore-game-reveal-card-category {
+.mdhui-explore-game-reveal-category {
     text-transform: uppercase;
     font-size: 0.7em;
     font-weight: bold;
@@ -29,23 +24,23 @@
     margin-bottom: 8px;
 }
 
-.mdhui-explore-game-reveal-card-name {
+.mdhui-explore-game-reveal-name {
     font-size: 1.5em;
     font-weight: bold;
     margin: 8px 16px;
 }
 
-.mdhui-explore-game-reveal-card-location {
+.mdhui-explore-game-reveal-location {
     font-size: 0.7em;
     color: var(--mdhui-text-color-3);
     margin: 8px 16px;
 }
 
-.mdhui-explore-game-reveal-card-fact {
+.mdhui-explore-game-reveal-fact {
     margin-top: 8px;
 }
 
-.mdhui-explore-game-reveal-card-added-to-album {
+.mdhui-explore-game-reveal-added-to-album {
     font-size: 0.7em;
     color: var(--mdhui-text-color-3);
     margin: 8px 16px;
@@ -57,24 +52,24 @@
     justify-content: center;
     width: 48px;
     height: 48px;
-    margin-top: -10px;
-    margin-right: -10px;
+    margin-top: -6px;
+    margin-right: -6px;
 }
 
 .mdhui-explore-game-reveal-close-button {
     background: var(--mdhui-background-color-1);
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
     text-align: center;
     border-radius: 50%;
-    font-size: 0.7em;
+    font-size: 0.8em;
 }
 
 .mdhui-explore-game-reveal-close-button.loading {
     border: 2px solid var(--mdhui-text-color-0);
 }
 
-.mdhui-explore-game-reveal-card-done-button.mdhui-button {
+.mdhui-explore-game-reveal-done-button.mdhui-button {
     margin: 8px 16px 16px;
 }

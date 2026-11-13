@@ -5,6 +5,8 @@ import MyDataHelps from '@careevolution/mydatahelps-js';
 import { ExploreGamePlace, language, loadGameState, loadPlace, placeImageUrl } from '../../../helpers';
 import { Button, LoadingIndicator, NavigationBar, TextBlock } from '../../presentational';
 import './ExploreGameRevealView.css';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export interface ExploreGameRevealViewProps {
     colorScheme?: 'auto' | 'light' | 'dark';
@@ -19,11 +21,12 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
     const [place, setPlace] = useState<ExploreGamePlace>();
 
     const initialize = async () => {
-        try {
+        if (props.previewState === 'loading') {
             setLoading(true);
-            if (props.previewState === 'loading') {
-                return;
-            }
+            return;
+        }
+
+        try {
             if (!!props.previewState) {
                 setPlace(await loadPlace('preview'));
             } else {
@@ -70,17 +73,17 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
                 backgroundColor={'transparent'}
                 navigationBarRight={
                     <div className="mdhui-explore-game-reveal-close-button-wrapper">
-                        <div className={'mdhui-explore-game-reveal-close-button' + (loading ? ' loading' : '')} onClick={dismiss}>&#x1F5D9;</div>
+                        <div className={'mdhui-explore-game-reveal-close-button' + (loading ? ' loading' : '')} onClick={dismiss}><FontAwesomeSvgIcon icon={faXmark} /></div>
                     </div>
                 }
             />
-            <Card className="mdhui-explore-game-reveal-card">
-                <TextBlock className="mdhui-explore-game-reveal-card-category">{place.category}</TextBlock>
-                <TextBlock className="mdhui-explore-game-reveal-card-name">{place.name}</TextBlock>
-                <TextBlock className="mdhui-explore-game-reveal-card-location">{place.location}</TextBlock>
-                <TextBlock className="mdhui-explore-game-reveal-card-fact">{place.fact}</TextBlock>
-                <TextBlock className="mdhui-explore-game-reveal-card-added-to-album">{language('explore-game-reveal-added-to-album')}</TextBlock>
-                <Button className="mdhui-explore-game-reveal-card-done-button" onClick={dismiss} defaultMargin>{language('done')}</Button>
+            <Card>
+                <TextBlock className="mdhui-explore-game-reveal-category">{place.category}</TextBlock>
+                <TextBlock className="mdhui-explore-game-reveal-name">{place.name}</TextBlock>
+                <TextBlock className="mdhui-explore-game-reveal-location">{place.location}</TextBlock>
+                <TextBlock className="mdhui-explore-game-reveal-fact">{place.fact}</TextBlock>
+                <TextBlock className="mdhui-explore-game-reveal-added-to-album">{language('explore-game-reveal-added-to-album')}</TextBlock>
+                <Button className="mdhui-explore-game-reveal-done-button" onClick={dismiss} defaultMargin>{language('done')}</Button>
             </Card>
         </>,
         placeImageUrl(place)
