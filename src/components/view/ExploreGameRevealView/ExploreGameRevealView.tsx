@@ -60,7 +60,7 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
     };
 
     if (loading || !place) {
-        if (!place) dismiss();
+        if (!loading) dismiss();
         return wrapContent(<LoadingIndicator />);
     }
 
