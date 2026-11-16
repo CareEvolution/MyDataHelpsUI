@@ -1,5 +1,10 @@
-.mdhui-explore-game-reveal-content {
+.mdhui-explore-game-reveal {
     height: calc(100vh - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
+    padding-top: 0;
+}
+
+.mdhui-explore-game-reveal-content {
+    height: 100%;
     box-sizing: border-box;
     background-size: cover;
     background-position: center;
@@ -12,8 +17,7 @@
 }
 
 .mdhui-explore-game-reveal .mdhui-navigation-bar {
-    padding: max(0px, calc(8px - env(safe-area-inset-top, 0))) 16px;
-    min-height: 56px;
+    padding: max(8px, env(safe-area-inset-top, 0)) 16px 8px;
 }
 
 .mdhui-explore-game-reveal .mdhui-navigation-bar .navigation-bar-right {
