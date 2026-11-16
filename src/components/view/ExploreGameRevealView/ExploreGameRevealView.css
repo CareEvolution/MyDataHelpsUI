@@ -1,7 +1,14 @@
-.mdhui-explore-game-reveal {
+.mdhui-explore-game-reveal-content {
     height: calc(100vh - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
     box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    max-width: 430px;
+    align-self: center;
 }
 
 .mdhui-explore-game-reveal .mdhui-navigation-bar {

@@ -8,7 +8,7 @@ import { ColorDefinition, resolveColor } from '../../../helpers/colors';
 export interface LayoutProps {
 	children?: React.ReactNode;
 	bodyBackgroundColor?: ColorDefinition;
-	bodyBackgroundImageUrl?: string;
+	background?: CSSProperties['background'];
 	primaryColor?: ColorDefinition;
 	statusBarStyle?: StatusBarStyle;
 	className?: string;
@@ -53,15 +53,7 @@ export default function Layout(props: LayoutProps) {
 	}
 	let context: LayoutContext = { colorScheme: colorScheme, bodyBackgroundColor: backgroundColor || "var(--mdhui-background-color-1)" };
 
-	let backgroundImageStyles : CSSProperties | undefined = undefined;
-	if ( props.bodyBackgroundImageUrl ) {
-		backgroundImageStyles = {
-			backgroundImage: `url(${props.bodyBackgroundImageUrl})`,
-			backgroundSize: 'cover',
-			backgroundPosition: 'center',
-			backgroundRepeat: 'no-repeat'
-		};
-	}
+	const backgroundStyles: CSSProperties = props.background !== undefined ? { background: props.background } : {};
 
 	if (props.statusBarStyle) {
 		MyDataHelps.setStatusBarStyle(props.statusBarStyle);
@@ -86,7 +78,7 @@ export default function Layout(props: LayoutProps) {
 			{!props.noGlobalStyles &&
 				<EmotionGlobal styles={global} />
 			}
-			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom, ...backgroundImageStyles }}>
+			<div ref={props.innerRef} className={className} style={{ backgroundColor, paddingBottom, ...backgroundStyles }}>
 				{props.stylesheetPath &&
 					<link rel="stylesheet" type="text/css" href={props.stylesheetPath} />
 				}
