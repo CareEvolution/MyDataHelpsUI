@@ -50,7 +50,7 @@ jobs:
         run: npm run build-storybook
         continue-on-error: false
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: storybook-build
           path: storybook-static
@@ -58,7 +58,7 @@ jobs:
       - name: test
         run: npm run test
       - name: Upload test results
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: test-results
