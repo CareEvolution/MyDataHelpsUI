@@ -140,7 +140,7 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
 
     if (loading || !place) {
         if (!loading) dismiss();
-        return wrapContent(<LoadingIndicator />);
+        return wrapContent(<LoadingIndicator className="mdhui-explore-game-reveal-loading" />);
     }
 
     return wrapContent(

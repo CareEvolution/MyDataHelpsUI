@@ -3,6 +3,12 @@
     padding-top: 0;
 }
 
+.mdhui-explore-game-reveal-loading {
+    margin-top: calc(25vh + env(safe-area-inset-top, 0));
+    font-size: 3.0em;
+    color: var(--mdhui-color-primary);
+}
+
 .mdhui-explore-game-reveal-content {
     height: 100%;
     box-sizing: border-box;
