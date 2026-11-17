@@ -47,8 +47,8 @@ export default function (props: AsthmaControlCalendarProps) {
         },
         'not-controlled': {
             style: {
-                background: '#F86A5C',
-                border: '3px solid #F86A5C',
+                background: 'var(--mdhui-color-asthma-not-controlled)',
+                border: '3px solid var(--mdhui-color-asthma-not-controlled)',
                 color: '#fff',
                 fontWeight: 600,
                 marginTop: '-13px'
@@ -57,15 +57,17 @@ export default function (props: AsthmaControlCalendarProps) {
         'controlled': {
             style: {
                 background: 'var(--mdhui-background-color-0)',
-                border: '3px solid #35A6A0',
-                color: '#35A6A0',
+                border: '3px solid var(--mdhui-color-asthma-controlled-mark)',
+                color: 'var(--mdhui-color-asthma-controlled-text)',
                 fontWeight: 600,
                 marginTop: '-13px'
             }
         },
         'today': {
             style: {
-                border: '3px solid #369CFF',
+                background: 'var(--mdhui-color-asthma-action)',
+                border: '3px solid var(--mdhui-color-asthma-action)',
+                color: '#fff',
                 marginTop: '-13px'
             }
         },

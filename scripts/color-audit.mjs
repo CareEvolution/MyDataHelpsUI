@@ -154,6 +154,22 @@ const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
         pushPair(`${g}-text on ${bgName(s)}`, `--mdhui-color-${g}-text`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
     }
   }
+  // Asthma tokens: the same duties as accents and signals, plus chips (a tinted pill holding its role's
+  // text). WCAG 1.4.11 exempts a chip from 3:1 against the card, so that pair is reported, not enforced.
+  const ASTHMA_ROLES = ['symptoms', 'impacts', 'triggers'];
+  for (const r of ASTHMA_ROLES) {
+    pushPair(`asthma ${r}-mark on bg0`, `--mdhui-color-asthma-${r}-mark`, SURFACES[0], MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
+    pushPair(`asthma ${r}-text on ${r}-chip`, `--mdhui-color-asthma-${r}-text`, `--mdhui-color-asthma-${r}-chip`, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+    pushPair(`asthma ${r}-chip vs bg0`, `--mdhui-color-asthma-${r}-chip`, SURFACES[0], 3.0, 15, true);
+  }
+  for (const f of ['action', 'not-controlled'])
+    pushPair(`#fff on asthma ${f} fill`, FILL_INK, `--mdhui-color-asthma-${f}`, 4.5, 45, false);
+  pushPair('asthma action-secondary-text on its fill', '--mdhui-color-asthma-action-secondary-text', '--mdhui-color-asthma-action-secondary', FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+  pushPair('asthma controlled-mark on bg0', '--mdhui-color-asthma-controlled-mark', SURFACES[0], MARK_FLOORS.wcag, MARK_FLOORS.apca, false);
+  for (const t of ['controlled-text', 'not-controlled-text', 'in-range-text', 'out-of-range-text'])
+    for (const s of SURFACES)
+      pushPair(`asthma ${t} on ${bgName(s)}`, `--mdhui-color-asthma-${t}`, s, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
+
   // adjacent elevation surfaces — target Lc 15 (or border-assisted; reported, not gating)
   const surfPairs = [[0, 1], [1, 2]];
   const surfaceNotes = surfPairs.map(([a, b]) => {

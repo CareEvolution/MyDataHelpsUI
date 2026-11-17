@@ -32,7 +32,7 @@
     font-size: 0.8em;
     padding: 0 16px;
     color: #fff;
-    background: #369CFF;
+    background: var(--mdhui-color-asthma-action);
 }
 
 .mdhui-asthma-log-entry-summary-chevron {

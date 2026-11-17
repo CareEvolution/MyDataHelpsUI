@@ -637,6 +637,25 @@ export const lightColorStyle: CSSProperties = {
     // is the lightest teal that still clears AA on the 1-5 backgrounds.
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-55)',
 
+    '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-azure-10)',
+    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-60)',
+    '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
+    '--mdhui-color-asthma-symptoms-text': 'var(--mdh-orange-55)',
+    '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-5)',
+    '--mdhui-color-asthma-impacts-mark': 'var(--mdh-violet-40)',
+    '--mdhui-color-asthma-impacts-text': 'var(--mdh-violet-55)',
+    '--mdhui-color-asthma-impacts-chip': 'var(--mdh-violet-5)',
+    '--mdhui-color-asthma-triggers-mark': '#000000',
+    '--mdhui-color-asthma-triggers-text': 'var(--mdh-grey-55)',
+    '--mdhui-color-asthma-triggers-chip': 'var(--mdh-grey-5)',
+    '--mdhui-color-asthma-controlled-mark': 'var(--mdh-teal-40)',
+    '--mdhui-color-asthma-controlled-text': 'var(--mdh-teal-55)',
+    '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-55)',
+    '--mdhui-color-asthma-not-controlled': 'var(--mdh-red-muted-50)',
+    '--mdhui-color-asthma-not-controlled-text': 'var(--mdh-red-muted-55)',
+    '--mdhui-color-asthma-out-of-range-text': 'var(--mdh-violet-55)',
+
     '--mdhui-box-shadow-color-0': 'rgba(0, 0, 0, 0.05)',
     '--mdhui-box-shadow-color-1': '#aaa',
 
@@ -681,6 +700,25 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-sleep-mark': 'var(--mdh-indigo-40)',
     '--mdhui-color-sleep-text': 'var(--mdh-indigo-35)',
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-35)',
+
+    '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-azure-20)',
+    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-70)',
+    '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
+    '--mdhui-color-asthma-symptoms-text': '#fff',
+    '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-50)',
+    '--mdhui-color-asthma-impacts-mark': 'var(--mdh-violet-40)',
+    '--mdhui-color-asthma-impacts-text': '#fff',
+    '--mdhui-color-asthma-impacts-chip': 'var(--mdh-violet-50)',
+    '--mdhui-color-asthma-triggers-mark': 'var(--mdh-grey-20)',
+    '--mdhui-color-asthma-triggers-text': '#fff',
+    '--mdhui-color-asthma-triggers-chip': 'var(--mdh-grey-50)',
+    '--mdhui-color-asthma-controlled-mark': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-controlled-text': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-30)',
+    '--mdhui-color-asthma-not-controlled': 'var(--mdh-red-orange-50)',
+    '--mdhui-color-asthma-not-controlled-text': 'var(--mdh-red-orange-30)',
+    '--mdhui-color-asthma-out-of-range-text': 'var(--mdh-violet-30)',
 
     // Accent base tokens keep the light-mode fill grades (fills carry white text);
     // "-text" = foreground-tuned grades for links/status text.
