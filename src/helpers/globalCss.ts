@@ -638,8 +638,8 @@ export const lightColorStyle: CSSProperties = {
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-55)',
 
     '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
-    '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-50)',
-    '--mdhui-color-asthma-action-secondary-text': '#fff',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-azure-10)',
+    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-60)',
     '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
     '--mdhui-color-asthma-symptoms-text': 'var(--mdh-orange-55)',
     '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-5)',
@@ -703,8 +703,8 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-air-quality-mark': 'var(--mdh-teal-35)',
 
     '--mdhui-color-asthma-action': 'var(--mdh-blue-50)',
-    '--mdhui-color-asthma-action-secondary': 'var(--mdh-blue-50)',
-    '--mdhui-color-asthma-action-secondary-text': '#fff',
+    '--mdhui-color-asthma-action-secondary': 'var(--mdh-azure-20)',
+    '--mdhui-color-asthma-action-secondary-text': 'var(--mdh-blue-70)',
     '--mdhui-color-asthma-symptoms-mark': 'var(--mdh-orange-40)',
     '--mdhui-color-asthma-symptoms-text': '#fff',
     '--mdhui-color-asthma-symptoms-chip': 'var(--mdh-orange-50)',
