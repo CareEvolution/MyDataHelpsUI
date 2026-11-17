@@ -162,7 +162,7 @@ const pushPair = (label, fg, bg, wFloor, aFloor, exempt) => {
     pushPair(`asthma ${r}-text on ${r}-chip`, `--mdhui-color-asthma-${r}-text`, `--mdhui-color-asthma-${r}-chip`, FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
     pushPair(`asthma ${r}-chip vs bg0`, `--mdhui-color-asthma-${r}-chip`, SURFACES[0], 3.0, 15, true);
   }
-  for (const f of ['action', 'not-controlled', 'not-controlled-badge'])
+  for (const f of ['action', 'not-controlled'])
     pushPair(`#fff on asthma ${f} fill`, FILL_INK, `--mdhui-color-asthma-${f}`, 4.5, 45, false);
   pushPair('asthma action-secondary-text on its fill', '--mdhui-color-asthma-action-secondary-text', '--mdhui-color-asthma-action-secondary', FOREGROUND_FLOORS.wcag, FOREGROUND_FLOORS.apca, false);
   pushPair('asthma controlled-mark on bg0', '--mdhui-color-asthma-controlled-mark', SURFACES[0], MARK_FLOORS.wcag, MARK_FLOORS.apca, false);

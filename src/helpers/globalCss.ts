@@ -654,7 +654,6 @@ export const lightColorStyle: CSSProperties = {
     '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-55)',
     '--mdhui-color-asthma-not-controlled': 'var(--mdh-red-muted-50)',
     '--mdhui-color-asthma-not-controlled-text': 'var(--mdh-red-muted-55)',
-    '--mdhui-color-asthma-not-controlled-badge': 'var(--mdh-red-muted-50)',
     '--mdhui-color-asthma-out-of-range-text': 'var(--mdh-violet-55)',
 
     '--mdhui-box-shadow-color-0': 'rgba(0, 0, 0, 0.05)',
@@ -719,7 +718,6 @@ export const darkColorStyle: CSSProperties = {
     '--mdhui-color-asthma-in-range-text': 'var(--mdh-teal-30)',
     '--mdhui-color-asthma-not-controlled': 'var(--mdh-red-orange-50)',
     '--mdhui-color-asthma-not-controlled-text': 'var(--mdh-red-orange-30)',
-    '--mdhui-color-asthma-not-controlled-badge': 'var(--mdh-red-orange-50)',
     '--mdhui-color-asthma-out-of-range-text': 'var(--mdh-violet-30)',
 
     // Accent base tokens keep the light-mode fill grades (fills carry white text);

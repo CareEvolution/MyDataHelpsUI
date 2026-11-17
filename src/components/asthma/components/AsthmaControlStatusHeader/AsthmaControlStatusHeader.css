@@ -47,7 +47,7 @@
     border-radius: 50%;
     text-align: center;
     color: #fff;
-    background: var(--mdhui-color-asthma-not-controlled-badge);
+    background: var(--mdhui-color-asthma-not-controlled);
 }
 
 .mdhui-asthma-control-status-header-not-controlled-stat-label {
