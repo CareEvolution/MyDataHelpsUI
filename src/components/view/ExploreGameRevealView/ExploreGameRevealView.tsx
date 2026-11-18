@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Layout from '../../presentational/Layout';
 import Card from '../../presentational/Card';
 import MyDataHelps from '@careevolution/mydatahelps-js';
-import { ExploreGamePlace, getRevealColorsFromImage, language, loadGameState, loadPlace, placeImageUrl, RevealColors } from '../../../helpers';
+import { ExploreGamePlace, ExploreGamePlaceImageColors, ExploreGameState, fetchGameState, fetchPlace, fetchPlaceImage, language, resolvePlaceImageColors } from '../../../helpers';
 import { Button, LoadingIndicator, NavigationBar, TextBlock } from '../../presentational';
 import './ExploreGameRevealView.css';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -19,74 +19,84 @@ export interface ExploreGameRevealViewProps {
 export default function ExploreGameRevealView(props: ExploreGameRevealViewProps) {
     const [loading, setLoading] = useState(true);
     const [place, setPlace] = useState<ExploreGamePlace>();
-    const [colors, setColors] = useState<RevealColors>();
+    const [imageUrl, setImageUrl] = useState<string>();
+    const [colors, setColors] = useState<ExploreGamePlaceImageColors>();
 
-    const backgroundImageUrl = useMemo(() => place ? placeImageUrl(place) : undefined, [place]);
-
-    const dismiss = () => {
+    const dismiss = useCallback((): void => {
         if (props.previewState) return;
         MyDataHelps.dismiss();
-    };
+    }, [props.previewState]);
 
-    useEffect(() => {
+    const loadPlace = useCallback((placeId: string, signal: AbortSignal): void => {
+        if (signal.aborted) return;
+        Promise.all([
+            fetchPlace(placeId, signal),
+            fetchPlaceImage(placeId, signal)
+        ]).then(([place, imageBlob]) => {
+            if (signal.aborted) return;
+            return resolvePlaceImageColors(imageBlob).then(colors => {
+                if (signal.aborted) return;
+                setPlace(place);
+                setImageUrl(URL.createObjectURL(imageBlob));
+                setColors(colors);
+                setLoading(false);
+            });
+        }).catch(error => {
+            if (signal.aborted) return;
+            console.error(`Error loading place: ${placeId}`, error);
+            dismiss();
+        });
+    }, [dismiss]);
+
+    const initialize = useCallback(async (signal: AbortSignal): Promise<void> => {
         setLoading(true);
+
         if (props.previewState === 'loading') {
             return;
         }
-        if (!!props.previewState) {
-            loadPlace('preview').then(place => {
-                setPlace(place);
-                setLoading(false);
-            }).catch(error => {
-                console.error("Error loading place: preview", error);
-            });
+
+        if (props.previewState) {
+            loadPlace('preview', signal);
             return;
         }
-        loadGameState(props.gameStateCustomFieldName).then(gameState => {
+
+        let gameState: ExploreGameState | undefined;
+        try {
+            gameState = await fetchGameState(props.gameStateCustomFieldName);
+            if (signal.aborted) return;
             if (!gameState) {
-                console.error("Game state not found.");
+                console.error('Game state not found.');
                 dismiss();
                 return;
             }
-            if (!gameState.unlocked.includes(props.placeId)) {
-                console.error("Place not unlocked: " + props.placeId);
-                dismiss();
-                return;
-            }
-            loadPlace(props.placeId).then(place => {
-                setPlace(place);
-                setLoading(false);
-            }).catch(error => {
-                console.error("Error loading place: " + props.placeId, error);
-                dismiss();
-            });
-        }).catch(error => {
-            console.error("Error loading game state.", error);
+        } catch (error) {
+            if (signal.aborted) return;
+            console.error('Error loading game state: ', error);
             dismiss();
-        });
-    }, [props.previewState, props.gameStateCustomFieldName, props.placeId]);
+            return;
+        }
+
+        if (!gameState.unlocked.includes(props.placeId)) {
+            console.error(`Place ${props.placeId} is not unlocked.`);
+            dismiss();
+            return;
+        }
+
+        loadPlace(props.placeId, signal);
+    }, [props.previewState, props.gameStateCustomFieldName, props.placeId, loadPlace, dismiss]);
 
     useEffect(() => {
-        setColors(undefined);
-        if (!backgroundImageUrl) return;
+        const controller = new AbortController();
+        initialize(controller.signal).then();
+        return () => controller.abort();
+    }, [initialize]);
 
-        let cancelled = false;
-        const image = new Image();
-        image.crossOrigin = 'anonymous';
-        image.onload = () => {
-            if (cancelled) return;
-            setColors(getRevealColorsFromImage(image));
-        };
-        image.src = backgroundImageUrl;
+    useEffect(() => {
+        if (!imageUrl) return;
+        return () => URL.revokeObjectURL(imageUrl);
+    }, [imageUrl]);
 
-        return () => {
-            cancelled = true;
-            image.onload = null;
-        };
-    }, [backgroundImageUrl]);
-
-    if (loading || !place) {
-        if (!loading) dismiss();
+    if (loading || !place || !imageUrl) {
         return <Layout
             colorScheme={props.colorScheme ?? 'auto'}
             className="mdhui-explore-game-reveal"
@@ -103,7 +113,8 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
         background={colors?.backgroundGradient}
         flex={true}
         innerRef={props.innerRef}>
-        <div className="mdhui-explore-game-reveal-content" style={{ backgroundImage: `url(${backgroundImageUrl})` }}>
+        <div className="mdhui-explore-game-reveal-content">
+            <img className="mdhui-explore-game-reveal-background" src={imageUrl} alt="" aria-hidden="true" />
             <NavigationBar
                 backgroundColor={'transparent'}
                 navigationBarRight={
@@ -112,7 +123,7 @@ export default function ExploreGameRevealView(props: ExploreGameRevealViewProps)
                     </div>
                 }
             />
-            <Card>
+            <Card className="mdhui-explore-game-reveal-card">
                 <TextBlock className="mdhui-explore-game-reveal-category">{place.category}</TextBlock>
                 <TextBlock className="mdhui-explore-game-reveal-name">{place.name}</TextBlock>
                 <TextBlock className="mdhui-explore-game-reveal-location">{place.location}</TextBlock>
